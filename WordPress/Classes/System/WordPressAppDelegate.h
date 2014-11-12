@@ -9,9 +9,11 @@
 @class Blog;
 
 // Tab index constants
+extern NSInteger const kMySitesTabIndex;
 extern NSInteger const kReaderTabIndex;
-extern NSInteger const kNotificationsTabIndex;
+extern NSInteger const kNewPostTabIndex;
 extern NSInteger const kMeTabIndex;
+extern NSInteger const kNotificationsTabIndex;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
@@ -43,8 +45,8 @@ extern NSInteger const kMeTabIndex;
 - (void)showTabForIndex:(NSInteger)tabIndex;
 - (void)showPostTab;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
-- (void)switchMeTabToStatsViewForBlog:(Blog *)blog;
-- (BOOL)isNavigatingMeTab;
+- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
+- (BOOL)isNavigatingMySitesTab;
 
 ///-----------
 /// @name NUX

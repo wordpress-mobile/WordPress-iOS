@@ -66,9 +66,11 @@ static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavi
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
 
-NSInteger const kReaderTabIndex                                 = 0;
-NSInteger const kNotificationsTabIndex                          = 1;
-NSInteger const kMeTabIndex                                     = 2;
+NSInteger const kMySitesTabIndex                                = 0;
+NSInteger const kReaderTabIndex                                 = 1;
+NSInteger const kNewPostTabIndex                                = 2;
+NSInteger const kMeTabIndex                                     = 3;
+NSInteger const kNotificationsTabIndex                          = 4;
 
 static NSString* const kWPNewPostURLParamTitleKey = @"title";
 static NSString* const kWPNewPostURLParamContentKey = @"content";
@@ -396,14 +398,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
     switch (self.tabBarController.selectedIndex) {
+        case kMySitesTabIndex:
+            currentlySelectedScreen = @"Blog List";
+            break;
         case kReaderTabIndex:
             currentlySelectedScreen = @"Reader";
             break;
         case kNotificationsTabIndex:
             currentlySelectedScreen = @"Notifications";
-            break;
-        case kMeTabIndex:
-            currentlySelectedScreen = @"Blog List";
             break;
         default:
             break;
@@ -669,6 +671,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // (not strictly needed when white, but left here for possible customization)
     _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
 
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
+    blogListNavigationController.navigationBar.translucent = NO;
+    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-mysites"];
+    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-mysites"];
+    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
+    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
+    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
+
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
@@ -688,25 +700,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
 
-    self.blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    blogListNavigationController.navigationBar.translucent = NO;
-    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
-    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-blogs-filled"];
-    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
-    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"Me";
-    
-    
-    UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
-    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIViewController *postsViewController = [[UIViewController alloc] init];
-    postsViewController.tabBarItem.image = image;
-    postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
-    if (IS_IPAD) {
-        postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
-    }
+    UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
+    newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    UIViewController *newPostViewController = [[UIViewController alloc] init];
+    newPostViewController.tabBarItem.image = newPostImage;
+    newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
 
     /*
      If title is used, the title will be visible. See #1158
@@ -715,12 +713,19 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
      The only apparent solution is to have an actual title, and then move it out of view
      non-VoiceOver users.
      */
-    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    postsViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
 
-    _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
+    UIViewController *meController = [UIViewController new];
+    meController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
+    meController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
+    meController.title = @"Me";
+    meController.tabBarItem.titlePositionAdjustment = tabBarTitleOffset;
+    UINavigationController *meNavController = [[UINavigationController alloc] initWithRootViewController:meController];
 
-    [_tabBarController setSelectedViewController:readerNavigationController];
+    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, newPostViewController, meNavController, notificationsNavigationController];
+
+    [_tabBarController setSelectedViewController:blogListNavigationController];
 
     return _tabBarController;
 }
@@ -782,10 +787,10 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     // Make sure the desired tab is selected.
-    [self showTabForIndex:kMeTabIndex];
+    [self showTabForIndex:kMySitesTabIndex];
 
     // Check which VC is showing.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMySitesTabIndex];
     UIViewController *topVC = blogListNavController.topViewController;
     if ([topVC isKindOfClass:[PostsViewController class]]) {
         Blog *blog = ((PostsViewController *)topVC).blog;
@@ -808,13 +813,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
 }
 
-- (void)switchMeTabToStatsViewForBlog:(Blog *)blog
+- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
     // Make sure the desired tab is selected.
-    [self showTabForIndex:kMeTabIndex];
+    [self showTabForIndex:kMySitesTabIndex];
     
     // Build and set the navigation heirarchy for the Me tab.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
+    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMySitesTabIndex];
     BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
 
     BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
@@ -826,16 +831,16 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
 }
 
-- (BOOL)isNavigatingMeTab
+- (BOOL)isNavigatingMySitesTab
 {
-    return (self.tabBarController.selectedIndex == kMeTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.tabBarController.selectedIndex == kMySitesTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - UITabBarControllerDelegate methods.
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == kNewPostTabIndex) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
@@ -846,14 +851,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             [self showPostTab];
         }
         return NO;
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == kMySitesTabIndex) {
         // If the user has one blog then we don't want to present them with the main "me"
         // screen where they can see all their blogs. In the case of only one blog just show
         // the main blog details screen
 
         // Don't kick of this auto selecting behavior if the user taps the the active tab as it
         // would break from standard iOS UX
-        if (tabBarController.selectedIndex != 2) {
+        if (tabBarController.selectedIndex != kNewPostTabIndex) {
             UINavigationController *navController = (UINavigationController *)viewController;
             BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
             if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {

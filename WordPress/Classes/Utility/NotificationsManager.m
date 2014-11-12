@@ -424,7 +424,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog = [blogService lastUsedOrFirstWPcomBlog];
     if (blog != nil && [blog isWPcom]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchMeTabToStatsViewForBlog:blog];
+        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchMySitesTabToStatsViewForBlog:blog];
     }
 }
 

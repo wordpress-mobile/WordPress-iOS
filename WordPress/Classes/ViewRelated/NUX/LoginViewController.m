@@ -657,7 +657,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (!defaultAccount) {
-        [delegate showTabForIndex:kMeTabIndex];
+        [delegate showTabForIndex:kMySitesTabIndex];
     }
 
     self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
