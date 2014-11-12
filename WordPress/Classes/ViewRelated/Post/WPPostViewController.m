@@ -831,7 +831,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     if (_mediaUploadQueue.operationCount > 0) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMySitesTab]) {
         aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
