@@ -436,6 +436,10 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
+    if (linkURL.path && !linkURL.host) {
+        NSURL *postURL = [NSURL URLWithString:self.post.blogURL];
+        linkURL = [[NSURL alloc] initWithScheme:postURL.scheme host:postURL.host path:linkURL.path];
+    }
     WPWebViewController *controller = [[WPWebViewController alloc] init];
     [controller setUrl:linkURL];
     [self.navigationController pushViewController:controller animated:YES];
