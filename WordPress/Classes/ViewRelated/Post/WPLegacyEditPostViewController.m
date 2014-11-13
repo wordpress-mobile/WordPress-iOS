@@ -21,16 +21,16 @@
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 static NSInteger const MaximumNumberOfPictures = 10;
+static void *ProgressObserverContext = &ProgressObserverContext;
 
-@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
-@property (nonatomic, strong) UIView *uploadStatusView;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic, strong) NSProgress * mediaProgress;
 
 @end
 
@@ -74,7 +74,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
 - (void)dealloc
 {
     _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -117,7 +117,6 @@ static NSInteger const MaximumNumberOfPictures = 10;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
-        [self configureMediaUploadQueue];
 
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -126,13 +125,6 @@ static NSInteger const MaximumNumberOfPictures = 10;
         }
     }
     return self;
-}
-
-- (void)configureMediaUploadQueue
-{
-    _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = 4;
-    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void)viewDidLoad
@@ -171,9 +163,24 @@ static NSInteger const MaximumNumberOfPictures = 10;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
-
-    if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
+    if (self.mediaProgress &&
+        ![self.mediaProgress isCancelled] &&
+        self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount) {
+        UIButton *titleButton = self.uploadStatusButton;
+        if (self.navigationItem.titleView != titleButton){
+            self.navigationItem.titleView = titleButton;
+        }
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        
+        NSString *subtext = [self.mediaProgress localizedAdditionalDescription];
+        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
+        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
+                                                                                         attributes:subtextAttributes];
+        [titleText appendAttributedString:titleSubtext];
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        
+        //[titleButton sizeToFit];
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
@@ -309,7 +316,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
 - (void)cancelMediaUploads
 {
-    [_mediaUploadQueue cancelAllOperations];
+    [self.mediaProgress cancel];
 }
 
 - (void)showSettings
@@ -531,17 +538,14 @@ static NSInteger const MaximumNumberOfPictures = 10;
     return _titleBarButton;
 }
 
-- (UIView *)uploadStatusView
+- (UIButton *)uploadStatusButton
 {
-    if (_uploadStatusView) {
-        return _uploadStatusView;
+    if (!_uploadStatusButton) {
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 250.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _uploadStatusButton = button;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
-    uploadStatusView.tappedView = ^{
-        [self showCancelMediaUploadPrompt];
-    };
-    _uploadStatusView = uploadStatusView;
-    return _uploadStatusView;
+    return _uploadStatusButton;
 }
 
 # pragma mark - Model State Methods
@@ -958,16 +962,35 @@ static NSInteger const MaximumNumberOfPictures = 10;
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     [self dismissViewControllerAnimated:YES completion:nil];
-
+    
+    if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
+        [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+        self.mediaProgress = nil;
+    }
+    
+    if (!self.mediaProgress){
+        self.mediaProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
+                                                       userInfo:nil];
+        self.mediaProgress.totalUnitCount = assets.count;
+        [self.mediaProgress addObserver:self
+                   forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                      options:NSKeyValueObservingOptionInitial
+                      context:ProgressObserverContext];
+    } else {
+        self.mediaProgress.totalUnitCount += assets.count;
+    }
+    
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];            
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
                 if (error){
                     [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                     return;
                 }
-                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
+                NSProgress *uploadProgress = nil;
+                [mediaService uploadMedia:media progress:&uploadProgress success:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -976,11 +999,10 @@ static NSInteger const MaximumNumberOfPictures = 10;
                     }
                     [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                 }];
-                [_mediaUploadQueue addOperation:operation];
+                [self.mediaProgress resignCurrent];
             }];
         }
     }
-
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
@@ -1002,10 +1024,12 @@ static NSInteger const MaximumNumberOfPictures = 10;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([object isEqual:_mediaUploadQueue]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    if (context == ProgressObserverContext && object == self.mediaProgress) {        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self setupNavbar];
-        });
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

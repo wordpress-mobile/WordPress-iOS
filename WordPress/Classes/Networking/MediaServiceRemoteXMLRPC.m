@@ -19,50 +19,6 @@
     return self;
 }
 
-- (AFHTTPRequestOperation *)operationToUploadFile:(NSString *)path
-                                           ofType:(NSString *)type
-                                     withFilename:(NSString *)filename
-                                           toBlog:(Blog *)blog
-                                          success:(void (^)(RemoteMedia * media))success
-                                          failure:(void (^)(NSError *))failure
-{
-    NSDictionary *data = @{
-                           @"name": filename,
-                           @"type": type,
-                           @"bits": [NSInputStream inputStreamWithFileAtPath:path],
-                           };
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *directory = [paths objectAtIndex:0];
-    NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
-    NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
-
-    NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
-    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
-        success:^(AFHTTPRequestOperation *operation, id responseObject) {
-            NSDictionary *response = (NSDictionary *)responseObject;
-            [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
-            if (![response isKindOfClass:[NSDictionary class]]) {
-              NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
-              if (failure) {
-                  failure(error);
-              }
-              return;
-            }
-            
-            RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
-            if (success){
-                success(remoteMedia);
-            }
-      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
-          if (failure) {
-              failure(error);
-          }
-      }];
-    return operation;
-}
-
 - (void)getMediaWithID:(NSNumber *)mediaID
                forBlog:(Blog *)blog
                success:(void (^)(RemoteMedia *remoteMedia))success
@@ -86,10 +42,68 @@
 
 - (void)createMedia:(RemoteMedia *)media
             forBlog:(Blog *)blog
+           progress:(NSProgress **)progress
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSOperation * operation = [self operationToUploadFile:media.localURL ofType:media.mimeType withFilename:media.file toBlog:blog success:success failure:failure];
+    NSProgress * localProgress = [NSProgress progressWithTotalUnitCount:2];    
+    NSString * path = media.localURL;
+    NSString * type = media.mimeType;
+    NSString * filename = media.file;
+    
+    NSDictionary *data = @{
+                           @"name": filename,
+                           @"type": type,
+                           @"bits": [NSInputStream inputStreamWithFileAtPath:path],
+                           };
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:data];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *directory = [paths objectAtIndex:0];
+    NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
+    NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
+    
+    NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
+    
+    AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
+      success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          NSDictionary *response = (NSDictionary *)responseObject;
+          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
+          if (![response isKindOfClass:[NSDictionary class]]) {
+              NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
+              if (failure) {
+                  failure(error);
+              }
+          } else {
+              RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
+              if (success){
+                  success(remoteMedia);
+              }
+          }
+          localProgress.completedUnitCount=localProgress.totalUnitCount;
+      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
+          if (failure) {
+              failure(error);
+          }
+          localProgress.completedUnitCount=localProgress.totalUnitCount;
+      }];
+    
+    // Setup progress object
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        localProgress.completedUnitCount+=bytesWritten;
+    }];
+    unsigned long long size = [[request valueForHTTPHeaderField:@"Content-Length"] longLongValue];
+    // Adding some extra time because after the upload is done the backend takes some time to process the data sent
+    localProgress.totalUnitCount = size*2;
+    localProgress.cancellable = YES;
+    localProgress.pausable = NO;
+    localProgress.cancellationHandler = ^(){
+        [operation cancel];
+    };
+    
+    if (progress){
+        *progress = localProgress;
+    }
     
     [self.api.operationQueue addOperation:operation];
 }
