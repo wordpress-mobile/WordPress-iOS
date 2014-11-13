@@ -15,7 +15,7 @@ pod 'wpxmlrpc', '~> 0.5'
 pod 'WordPressApi', :git => 'https://github.com/wordpress-mobile/WordPressApi.git', :tag => '0.2.0'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Mixpanel', '2.5.4'
-pod 'CocoaLumberjack', '~>1.8.1'
+pod 'CocoaLumberjack', '~>1.9'
 pod 'NSLogger-CocoaLumberjack-connector', '~>1.3'
 pod 'google-plus-ios-sdk', '~>1.5'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
@@ -24,9 +24,9 @@ pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '~>4.8.0'
 pod 'CTAssetsPickerController', '~> 2.7.0'
-pod 'WordPress-iOS-Shared', '0.1.3'
-pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => '7116f1fb9ea3471d5bbd73c3779fc4c8fe401ab0'
-pod 'WordPressCom-Stats-iOS', '0.1.4'
+pod 'WordPress-iOS-Shared', '0.1.4'
+pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => 'ec94a87363eaa4b86b13d867c0af7dbf55fa4676'
+pod 'WordPressCom-Stats-iOS', '0.1.6'
 pod 'WordPressCom-Analytics-iOS', '0.0.12'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
@@ -35,7 +35,7 @@ pod 'Lookback', '0.6.5', :configurations => ['Release-Internal']
 pod "AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "4bb1b53814a4301c1ecac025c90fe158a43dbc99"
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', '0.1.4'
+    pod 'WordPressCom-Stats-iOS', '0.1.6'
 end
 
 target :WordPressTest, :exclusive => true do

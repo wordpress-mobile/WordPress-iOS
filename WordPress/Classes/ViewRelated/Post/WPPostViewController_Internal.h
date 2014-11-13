@@ -1,5 +1,4 @@
 #import "WPPostViewController.h"
-#import <WordPress-iOS-Editor/WPEditorViewController_Internal.h>
 #import "PostSettingsViewController.h"
 #import "MediaBrowserViewController.h"
 #import "PostPreviewViewController.h"
