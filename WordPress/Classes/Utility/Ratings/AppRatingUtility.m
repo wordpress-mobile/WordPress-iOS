@@ -13,7 +13,9 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
 + (BOOL)shouldPromptForAppReview
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion]) {
+    if ([userDefaults boolForKey:AppRatingRatedCurrentVersion]
+        || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion]
+        || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion]) {
         return NO;
     }
     
