@@ -22,6 +22,8 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
+#import "AppRatingUtility.h"
+
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
@@ -124,6 +126,7 @@ static CGFloat NotificationSectionSeparator     = 10;
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
     self.tableView.accessibilityIdentifier = @"Notification Details Table";
+    [AppRatingUtility incrementSignificantEvent];
 }
 
 - (void)viewWillAppear:(BOOL)animated
