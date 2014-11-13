@@ -32,7 +32,7 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
 pod 'Simperium', '0.7.2'
 pod 'Lookback', '0.6.5', :configurations => ['Release-Internal']
-pod "AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "4bb1b53814a4301c1ecac025c90fe158a43dbc99"
+pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "e41464a2bd7d0bde2d689df1e89fd774f6259956"
 
 target 'WordPressTodayWidget', :exclusive => true do
     pod 'WordPressCom-Stats-iOS', '0.1.6'
