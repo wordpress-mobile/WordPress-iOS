@@ -438,7 +438,7 @@ static CGFloat const VerticalMargin = 40;
 {
     if (linkURL.path && !linkURL.host) {
         NSURL *postURL = [NSURL URLWithString:self.post.blogURL];
-        linkURL = [[NSURL alloc] initWithScheme:postURL.scheme host:postURL.host path:linkURL.path];
+        linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
     WPWebViewController *controller = [[WPWebViewController alloc] init];
     [controller setUrl:linkURL];
