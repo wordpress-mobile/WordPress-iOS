@@ -247,15 +247,15 @@
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
                                                                                          mode:kWPPostViewControllerModePreview];
-        postViewController.restorationIdentifier = WPEditorNavigationRestorationID;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
         // In legacy mode, view means edit
         WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
-        editPostViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = UIModalPresentationFullScreen;
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
 
         [self presentViewController:navController animated:YES completion:nil];
     }
