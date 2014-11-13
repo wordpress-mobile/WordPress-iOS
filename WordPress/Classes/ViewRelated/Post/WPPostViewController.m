@@ -25,10 +25,14 @@
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 
-NSString *const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
-NSString *const WPAbstractPostRestorationKey = @"WPAbstractPostRestorationKey";
-NSString *const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
-NSString *const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+// State Restoration
+NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
+static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
+static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
+
+NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
+NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
     .origin.y = 0.0f,
@@ -161,36 +165,126 @@ static NSDictionary *EnabledButtonBarStyle;
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents
 															coder:(NSCoder *)coder
 {
-    if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
-        UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        return navController;
+    UIViewController* restoredViewController = nil;
+    
+    // IMPORTANT: the reason why we don't do any restoring before the post is found, is that we
+    // don't want any of the VCs to be restored unless we're sure there's a post they can use.
+    //
+    AbstractPost* restoredPost = [self decodePostFromCoder:coder];
+    
+    if (restoredPost) {
+        BOOL mustRestoreParentNavigationController = [[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID];
+        
+        if (mustRestoreParentNavigationController) {
+            UINavigationController *navController = [[UINavigationController alloc] init];
+            navController.restorationIdentifier = WPEditorNavigationRestorationID;
+            navController.restorationClass = self;
+            
+            restoredViewController = navController;
+        } else {
+            BOOL mustRestoreThisViewController = [[identifierComponents lastObject] isEqualToString:NSStringFromClass([self class])];
+            
+            if (mustRestoreThisViewController) {
+                WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
+                
+                restoredViewController = [[self alloc] initWithPost:restoredPost
+                                                               mode:mode];
+            }
+        }
     }
     
-    NSString *postID = [coder decodeObjectForKey:WPAbstractPostRestorationKey];
-    if (!postID) {
-        return nil;
-    }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:postID]];
-    if (!objectID) {
-        return nil;
-    }
-    
-    NSError *error = nil;
-    AbstractPost *restoredPost = (AbstractPost *)[context existingObjectWithID:objectID error:&error];
-    if (error || !restoredPost) {
-        return nil;
-    }
-    
-    return [[self alloc] initWithPost:restoredPost];
+    return restoredViewController;
 }
+
+#pragma mark - UIViewController (UIStateRestoration)
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
-    [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:WPAbstractPostRestorationKey];
+    [self encodeEditModeInCoder:coder];
+    [self encodePostInCoder:coder];
+    
     [super encodeRestorableStateWithCoder:coder];
+}
+
+#pragma mark - Restoration: encoding
+
+/**
+ *  @brief      Encodes the edit mode info from this VC into the specified coder.
+ *
+ *  @param      coder       The coder to store the information.  Cannot be nil.
+ */
+- (void)encodeEditModeInCoder:(NSCoder*)coder
+{
+    BOOL isInEditMode = self.isEditing;
+    NSNumber* isInEditModeValue = [NSNumber numberWithBool:isInEditMode];
+        
+    [coder encodeObject:isInEditModeValue forKey:WPPostViewControllerEditModeRestorationKey];
+}
+
+/**
+ *  @brief      Encodes the post ID info from this VC into the specified coder.
+ *
+ *  @param      coder       The coder to store the information.  Cannot be nil.
+ */
+- (void)encodePostInCoder:(NSCoder*)coder
+{
+    NSURL* postURIRepresentation = [self.post.objectID URIRepresentation];
+    [coder encodeObject:postURIRepresentation forKey:WPPostViewControllerPostRestorationKey];
+}
+
+#pragma mark - Restoration: decoding
+
+/**
+ *  @brief      Obtains the edit mode for this VC from the specified coder.
+ *
+ *  @param      coder       The coder to retrieve the information from.  Cannot be nil.
+ *
+ *  @return     The edit mode stored in the coder.
+ */
++ (WPPostViewControllerMode)decodeEditModeFromCoder:(NSCoder*)coder
+{
+    NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
+    
+    NSNumber* isInEditModeValue = [coder decodeObjectForKey:WPPostViewControllerEditModeRestorationKey];
+    BOOL isInEditMode = [isInEditModeValue boolValue];
+    
+    WPPostViewControllerMode mode = kWPEditorViewControllerModePreview;
+    
+    if (isInEditMode) {
+        mode = kWPEditorViewControllerModeEdit;
+    }
+    
+    return mode;
+}
+
+/**
+ *  @brief      Obtains the post for this VC from the specified coder.
+ *
+ *  @param      coder       The coder to retrieve the information from.  Cannot be nil.
+ *
+ *  @return     The post for this VC.  Can be nil.
+ */
++ (AbstractPost*)decodePostFromCoder:(NSCoder*)coder
+{
+    NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
+    
+    AbstractPost* post = nil;
+    NSURL* postURIRepresentation = [coder decodeObjectForKey:WPPostViewControllerPostRestorationKey];
+    
+    if (postURIRepresentation) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:postURIRepresentation];
+        
+        if (objectID) {
+            NSError *error = nil;
+            AbstractPost *restoredPost = (AbstractPost *)[context existingObjectWithID:objectID error:&error];
+            if (!error && restoredPost) {
+                post = restoredPost;
+            }
+        }
+    }
+    
+    return post;
 }
 
 #pragma mark - Media upload configuration
