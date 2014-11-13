@@ -200,18 +200,39 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
-    BOOL isInEditMode = self.isEditing;
-    NSNumber* isInEditModeValue = [NSNumber numberWithBool:isInEditMode];
-    
-    NSURL* postURIRepresentation = [self.post.objectID URIRepresentation];
-    
-    [coder encodeObject:isInEditModeValue forKey:WPPostViewControllerEditModeRestorationKey];
-    [coder encodeObject:postURIRepresentation forKey:WPPostViewControllerPostRestorationKey];
+    [self encodeEditModeInCoder:coder];
+    [self encodePostInCoder:coder];
     
     [super encodeRestorableStateWithCoder:coder];
 }
 
-#pragma mark - Restoration helpers
+#pragma mark - Restoration: encoding
+
+/**
+ *  @brief      Encodes the edit mode info from this VC into the specified coder.
+ *
+ *  @param      coder       The coder to store the information.  Cannot be nil.
+ */
+- (void)encodeEditModeInCoder:(NSCoder*)coder
+{
+    BOOL isInEditMode = self.isEditing;
+    NSNumber* isInEditModeValue = [NSNumber numberWithBool:isInEditMode];
+        
+    [coder encodeObject:isInEditModeValue forKey:WPPostViewControllerEditModeRestorationKey];
+}
+
+/**
+ *  @brief      Encodes the post ID info from this VC into the specified coder.
+ *
+ *  @param      coder       The coder to store the information.  Cannot be nil.
+ */
+- (void)encodePostInCoder:(NSCoder*)coder
+{
+    NSURL* postURIRepresentation = [self.post.objectID URIRepresentation];
+    [coder encodeObject:postURIRepresentation forKey:WPPostViewControllerPostRestorationKey];
+}
+
+#pragma mark - Restoration: decoding
 
 /**
  *  @brief      Obtains the edit mode for this VC from the specified coder.
