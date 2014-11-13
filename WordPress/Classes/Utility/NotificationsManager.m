@@ -297,6 +297,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 {
     NSDictionary *settings          = [NotificationsManager notificationSettingsDictionary];
     if (!settings) {
+        DDLogError(@"%@ %@ returning early because of blank notifications setting dictionary", self, NSStringFromSelector(_cmd));
         return;
     }
     
