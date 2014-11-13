@@ -63,6 +63,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic) BOOL shouldSkipRowAnimation;
+@property (nonatomic) UIDeviceOrientation previousOrientation;
 
 @end
 
@@ -120,6 +121,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewWillAppear:animated];
 
+    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
+        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+            [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+            [self.tableView reloadData];
+        }
+    }
+
     [self updateTitle];
 
     [self configureNoResultsView];
@@ -155,6 +163,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
             [self.animatedBox animate];
         }
     });
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.previousOrientation = self.interfaceOrientation;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
@@ -721,6 +735,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
+                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
                 if (success) {
                     success(count, hasMore);
                 }
