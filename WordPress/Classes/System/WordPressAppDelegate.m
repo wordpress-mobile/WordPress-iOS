@@ -652,7 +652,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)initializeAppTracking
 {
-	NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
     [AppRatingUtility initializeForVersion:version];
     [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
 }
