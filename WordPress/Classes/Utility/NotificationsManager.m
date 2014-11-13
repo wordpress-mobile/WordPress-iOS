@@ -296,6 +296,11 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 + (void)saveNotificationSettings
 {
     NSDictionary *settings          = [NotificationsManager notificationSettingsDictionary];
+    if (!settings) {
+        DDLogError(@"%@ %@ returning early because of blank notifications setting dictionary", self, NSStringFromSelector(_cmd));
+        return;
+    }
+    
     NSString *deviceId              = [[NSUserDefaults standardUserDefaults] stringForKey:NotificationsDeviceIdKey];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
