@@ -100,53 +100,13 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 if (completion) {
                     completion(media, nil);
                 }
-                
             }];
         }];
     }];
 }
 
-- (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media
-                                       withSuccess:(void (^)())success
-                                           failure:(void (^)(NSError *error))failure
-{
-    id<MediaServiceRemote> remote = [self remoteForBlog:media.blog];
-    
-    media.remoteStatus = MediaRemoteStatusPushing;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-    NSManagedObjectID *mediaObjectID = media.objectID;
-    return [remote operationToUploadFile:media.localURL
-                                  ofType:[self mimeTypeForFilename:media.filename]
-                            withFilename:media.filename
-                                  toBlog:media.blog
-                                 success:^(RemoteMedia * remoteMedia) {
-                                     [self.managedObjectContext performBlock:^{
-                                         NSError * error = nil;
-                                         Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
-                                         if (!mediaInContext && error){
-                                             DDLogError(@"Error retrieving media object: %@", error);
-                                         }
-                                         if (mediaInContext) {
-                                             [self updateMedia:mediaInContext withRemoteMedia:remoteMedia];
-                                             mediaInContext.remoteStatus = MediaRemoteStatusSync;
-                                             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                                                     if (success) {
-                                                         success();
-                                                     }
-                                             }];
-                                         }
-                                     }];
-                                 } failure:^(NSError *error) {
-                                     [self.managedObjectContext performBlock:^{
-                                         media.remoteStatus = MediaRemoteStatusFailed;
-                                         if (failure) {
-                                             failure(error);
-                                         }
-                                     }];
-                                 }];
-}
-
 - (void)uploadMedia:(Media *)media
+           progress:(NSProgress **)progress
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure
 {
@@ -160,18 +120,20 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         [self.managedObjectContext performBlock:^{
             NSError * error = nil;
             Media *mediaInContext = (Media *)[self.managedObjectContext existingObjectWithID:mediaObjectID error:&error];
-            if (!mediaInContext && error){
+            if (!mediaInContext){
                 DDLogError(@"Error retrieving media object: %@", error);
+                if (failure){
+                    failure(error);
+                }
             }
-            if (mediaInContext) {
-                [self updateMedia:mediaInContext withRemoteMedia:media];
-                mediaInContext.remoteStatus = MediaRemoteStatusSync;
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-                    if (success) {
-                        success();
-                    }
-                }];
-            }
+            
+            [self updateMedia:mediaInContext withRemoteMedia:media];
+            mediaInContext.remoteStatus = MediaRemoteStatusSync;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    success();
+                }
+            }];
         }];
     };
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
@@ -188,9 +150,10 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     };
     
     [remote createMedia:remoteMedia
-               forBlog:media.blog
-               success:successBlock
-               failure:failureBlock];
+                forBlog:media.blog
+               progress:progress
+                success:successBlock
+                failure:failureBlock];
 }
 
 - (void) getMediaWithID:(NSNumber *) mediaID inBlog:(Blog *) blog

@@ -1064,7 +1064,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 return;
             }
             media.mediaType = MediaTypeFeatured;
-            [mediaService uploadMedia:media success:^{
+            [mediaService uploadMedia:media progress:nil success:^{
                 weakSelf.isUploadingMedia = NO;
                 Post *post = (Post *)weakSelf.apost;
                 post.featuredImage = media;

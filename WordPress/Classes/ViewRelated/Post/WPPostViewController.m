@@ -47,15 +47,16 @@ static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+static void *ProgressObserverContext = &ProgressObserverContext;
+
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIView *uploadStatusView;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic, strong) NSProgress * mediaProgress;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -74,7 +75,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)dealloc
 {
     _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [_mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -105,9 +106,7 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
 
-        _post = post;
-		
-        [self configureMediaUploadQueue];
+        _post = post;		        
 		
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -189,15 +188,6 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     [coder encodeObject:[[self.post.objectID URIRepresentation] absoluteString] forKey:WPAbstractPostRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
-}
-
-#pragma mark - Media upload configuration
-
-- (void)configureMediaUploadQueue
-{
-    _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = 4;
-    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 #pragma mark - View lifecycle
@@ -355,7 +345,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)cancelMediaUploads
 {
-    [_mediaUploadQueue cancelAllOperations];
+    [self.mediaProgress cancel];
 }
 
 - (void)showSettings
@@ -829,7 +819,9 @@ static NSDictionary *EnabledButtonBarStyle;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (_mediaUploadQueue.operationCount > 0) {
+    if (self.mediaProgress &&
+        ![self.mediaProgress isCancelled] &&
+        self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusView];
     } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
@@ -1338,7 +1330,24 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:^{        
+    if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
+        [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+        self.mediaProgress = nil;
+    }
+    
+    if (!self.mediaProgress){
+        self.mediaProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
+                                                       userInfo:nil];
+        self.mediaProgress.totalUnitCount = assets.count;
+        [self.mediaProgress addObserver:self
+                             forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                                options:NSKeyValueObservingOptionInitial
+                                context:ProgressObserverContext];
+    } else {
+        self.mediaProgress.totalUnitCount += assets.count;
+    }
+    
+    [self dismissViewControllerAnimated:YES completion:^{
         for (ALAsset *asset in assets) {
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
                 // Could handle videos here
@@ -1354,8 +1363,9 @@ static NSDictionary *EnabledButtonBarStyle;
                     NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
                     
                     [self.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
-                    
-                    AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
+                    [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
+                    NSProgress *uploadProgress = nil;
+                    [mediaService uploadMedia:media progress:&uploadProgress success:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
                     } failure:^(NSError *error) {
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1365,8 +1375,9 @@ static NSDictionary *EnabledButtonBarStyle;
                         
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                     }];
-                    [_mediaUploadQueue addOperation:operation];
+                    [self.mediaProgress resignCurrent];
                 }];
+                
             }
         }
         
@@ -1387,11 +1398,13 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - KVO
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:_mediaUploadQueue]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {    
+    if (context == ProgressObserverContext && object == self.mediaProgress) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
-        });
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 

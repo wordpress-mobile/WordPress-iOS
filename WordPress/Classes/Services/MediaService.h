@@ -26,11 +26,19 @@ extern NSInteger const MediaMaxImageSizeDimension;
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media, NSError *error))completion;
 
-- (AFHTTPRequestOperation *)operationToUploadMedia:(Media *)media withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (void)getMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog withSuccess:(void (^)(Media *media))success failure:(void (^)(NSError *error))failure;
 
+/**
+ Uploads the Media object to the server.
+ 
+ @param media object to upload to the server.
+ @param progress a NSProgress that tracks the upload progress to the server.
+ @sucess a block that will be invoked when the media upload finished with success
+ @failure a block that will be invoked when there is upload error.
+ */
 - (void)uploadMedia:(Media *)media
+           progress:(NSProgress **) progress
             success:(void (^)())success
             failure:(void (^)(NSError *error))failure;
 
