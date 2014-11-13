@@ -112,7 +112,7 @@ import Foundation
         // Separator Line should be 1px: Handle Retina!
         let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
         separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        
+
         // Setup Action Buttons
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor               = WPStyleGuide.Notifications.blockActionEnabledColor
@@ -268,7 +268,7 @@ import Foundation
     // MARK: - IBOutlets
     @IBOutlet private weak var approvalStatusView   : UIView!
     @IBOutlet private weak var approvalSidebarView  : UIView!
-    @IBOutlet private weak var gravatarImageView    : UIImageView!
+    @IBOutlet private weak var gravatarImageView    : CircularImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var siteLabel            : UILabel!

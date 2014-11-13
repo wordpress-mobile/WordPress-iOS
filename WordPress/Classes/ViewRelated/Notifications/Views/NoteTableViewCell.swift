@@ -58,7 +58,9 @@ import Foundation
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
 
         iconImageView.image             = UIImage(named: placeholderName)
-        
+
+        noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
+
         noticonView.layer.cornerRadius  = noticonRadius
         noticonLabel.font               = Style.noticonFont
         noticonLabel.textColor          = Style.noticonTextColor
@@ -99,10 +101,13 @@ import Foundation
         // Noticon Background
         if unapproved {
             noticonView.backgroundColor = Style.noticonUnmoderatedColor
+            noticonContainerView.backgroundColor = Style.noticonTextColor
         } else if read {
             noticonView.backgroundColor = Style.noticonReadColor
+            noticonContainerView.backgroundColor = Style.noticonTextColor
         } else {
             noticonView.backgroundColor = Style.noticonUnreadColor
+            noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
         }
 
         // Cell Background
@@ -128,10 +133,11 @@ import Foundation
     private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets
-    @IBOutlet private weak var iconImageView:       UIImageView!
-    @IBOutlet private weak var noticonLabel:        UILabel!
-    @IBOutlet private weak var noticonView:         UIView!
-    @IBOutlet private weak var subjectLabel:        UILabel!
-    @IBOutlet private weak var snippetLabel:        UILabel!
-    @IBOutlet private weak var timestampLabel:      UILabel!
+    @IBOutlet private weak var iconImageView:           CircularImageView!
+    @IBOutlet private weak var noticonLabel:            UILabel!
+    @IBOutlet private weak var noticonContainerView:    UIView!
+    @IBOutlet private weak var noticonView:             UIView!
+    @IBOutlet private weak var subjectLabel:            UILabel!
+    @IBOutlet private weak var snippetLabel:            UILabel!
+    @IBOutlet private weak var timestampLabel:          UILabel!
 }
