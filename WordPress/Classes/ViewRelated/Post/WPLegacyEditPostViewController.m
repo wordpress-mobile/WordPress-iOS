@@ -39,9 +39,10 @@ static NSInteger const MaximumNumberOfPictures = 10;
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
 
-    if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
+    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [self class];
         return navController;
     }
 
