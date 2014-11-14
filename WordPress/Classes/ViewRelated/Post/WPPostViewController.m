@@ -120,8 +120,8 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
-    Post *post = [PostService createDraftPostInMainContextForBlog:blog];
-    NSAssert([post isKindOfClass:[Post class]],
+    AbstractPost *post = [self createNewDraftForBlog:blog];
+    NSAssert([post isKindOfClass:[AbstractPost class]],
              @"There should be no issues in creating a draft post.");
     
     _ownsPost = YES;
