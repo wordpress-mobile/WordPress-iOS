@@ -175,6 +175,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
                 self.tableView.tableHeaderView.alpha = 1.0;
             } completion:nil];
         });
+        [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
     }
 }
 
@@ -663,6 +664,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptForReview
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
     [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
     [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
@@ -670,6 +672,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptForFeedback
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
     [ABXFeedbackViewController showFromController:self placeholder:nil];
     [AppRatingUtility gaveFeedbackForCurrentVersion];
     [self hideRatingView];
@@ -677,6 +680,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptClose
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
     [AppRatingUtility declinedToRateCurrentVersion];
     [self hideRatingView];
 }
