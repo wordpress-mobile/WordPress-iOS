@@ -200,29 +200,27 @@ import Foundation
     
     private func refreshButtonSize(button: UIButton, isVisible: Bool) {
         // When disabled, let's hide the button by shrinking it's width
-        let width    : CGFloat  = isVisible ? buttonWidth     : CGFloat.min
-        let trailing : CGFloat  = isVisible ? buttonTrailing  : CGFloat.min
+        let newWidth   = isVisible ? buttonWidth   : CGFloat.min
+        let newSpacing = isVisible ? buttonSpacing : CGFloat.min
         
-        button.updateConstraint(.Width, constant: width)
+        button.updateConstraint(.Width, constant: newWidth)
         
-        contentView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: trailing)
-        contentView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: trailing)
+        actionsView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: newSpacing)
+        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: newSpacing)
         
         button.hidden   = !isVisible
         button.enabled  = isVisible
     }
 
     private func refreshBottomSpacing() {
-        //  Note:
-        //  When all of the buttons are disabled, let's remove the bottom space.
-        //  Every button is linked to btnMore: We can do this in just one shot!
-        //
-        let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
-        let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
-        let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
+        //  Let's remove the bottom space when every action button is disabled
+        let hasActions   = isReplyEnabled || isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
+        let newTop       = hasActions ? actionsTop    : CGFloat.min
+        let newHeight    = hasActions ? actionsHeight : CGFloat.min
         
-        contentView.updateConstraintWithFirstItem(btnSpam, attribute: .Top, constant: moreTop)
-        btnSpam.updateConstraint(.Height, constant: moreHeight)
+        contentView.updateConstraintWithFirstItem(actionsView, attribute: .Top, constant: newTop)
+        actionsView.updateConstraint(.Height, constant: newHeight)
+        actionsView.hidden = !hasActions
         setNeedsLayout()
     }
     
@@ -256,10 +254,9 @@ import Foundation
     private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
     private let separatorHeight                     = CGFloat(1)
     private let buttonWidth                         = CGFloat(55)
-    private let buttonHeight                        = CGFloat(30)
-    private let buttonTop                           = CGFloat(20)
-    private let buttonTrailing                      = CGFloat(20)
-    private let firstLineHeadIndent                 = UIDevice.isPad() ? CGFloat(47) : CGFloat(43)
+    private let buttonSpacing                       = CGFloat(20)
+    private let actionsHeight                       = CGFloat(34)
+    private let actionsTop                          = CGFloat(11)
     private let placeholderName                     = String("gravatar")
     
     // MARK: - Private Properties
@@ -268,6 +265,7 @@ import Foundation
     // MARK: - IBOutlets
     @IBOutlet private weak var approvalStatusView   : UIView!
     @IBOutlet private weak var approvalSidebarView  : UIView!
+    @IBOutlet private weak var actionsView          : UIView!
     @IBOutlet private weak var gravatarImageView    : CircularImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
