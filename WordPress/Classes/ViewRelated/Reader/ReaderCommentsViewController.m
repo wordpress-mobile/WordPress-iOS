@@ -521,20 +521,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
-- (void)removeTapOffKeyboardRecognizerIfNeeded
-{
-    if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
-        [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
-    }
-}
-
-- (void)addTapOffKeyboardRecognizerIfNeeded
-{
-    if (! [self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
-        [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-    }
-}
-
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -649,7 +635,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)tapRecognized:(id)sender
 {
-    [self removeTapOffKeyboardRecognizerIfNeeded];
+    self.tapOffKeyboardGesture.enabled = NO;
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
     [self configureTextReplyViewPlaceholder];
@@ -942,10 +928,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     if ([self.suggestionsTableView showSuggestionsForWord:word]) {
         // we're showing suggestions, so allow them to tap on one
-        [self removeTapOffKeyboardRecognizerIfNeeded];
+        self.tapOffKeyboardGesture.enabled = NO;
     } else {
-        // we're not showing any suggestions, add back tap off detection
-        [self addTapOffKeyboardRecognizerIfNeeded];        
+        // we're not showing any suggestions, enable tap off detection
+        self.tapOffKeyboardGesture.enabled = YES;
     }    
 }
 
@@ -953,8 +939,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
-    [self addTapOffKeyboardRecognizerIfNeeded];
-    
+    self.tapOffKeyboardGesture.enabled = YES;
 }
 
 #pragma mark - ReaderCommentCell Delegate methods
@@ -1068,7 +1053,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    [self addTapOffKeyboardRecognizerIfNeeded];
+    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
     return YES;
 }
 
