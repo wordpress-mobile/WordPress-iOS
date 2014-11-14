@@ -25,9 +25,9 @@
 
 #import "AppRatingUtility.h"
 
-#import <AppbotX/ABXPromptView.h>
-#import <AppbotX/ABXAppStore.h>
-#import <AppbotX/ABXFeedbackViewController.h>
+#import <WordPress-AppbotX/ABXPromptView.h>
+#import <WordPress-AppbotX/ABXAppStore.h>
+#import <WordPress-AppbotX/ABXFeedbackViewController.h>
 
 #import "WordPress-Swift.h"
 
