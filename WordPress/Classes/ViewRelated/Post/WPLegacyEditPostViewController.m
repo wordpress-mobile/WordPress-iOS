@@ -258,9 +258,12 @@ static NSInteger const MaximumNumberOfPictures = 10;
             self.post = newPost;
             [self createRevisionOfPost];
 
+            NSManagedObjectContext* context = oldPost.original.managedObjectContext;
+            
             [oldPost.original deleteRevision];
             [oldPost.original remove];
-            [oldPost.original save];
+            
+            [[ContextManager sharedInstance] saveContext:context];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
@@ -582,8 +585,11 @@ static NSInteger const MaximumNumberOfPictures = 10;
     [self.post.original deleteRevision];
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
+        NSManagedObjectContext* context = self.post.original.managedObjectContext;
+        
         [self.post.original remove];
-        [self.post.original save];
+        
+        [[ContextManager sharedInstance] saveContext:context];
     }
 }
 
