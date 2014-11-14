@@ -10,7 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <AppbotX/ABX.h>
+#import <WordPress-AppbotX/ABX.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
