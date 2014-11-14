@@ -74,9 +74,9 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
   - WordPress-iOS-Editor (0.2.2):
-    - CocoaLumberjack (~> 1.9)
+    - CocoaLumberjack (~> 1.8.1)
     - UIAlertView+Blocks
-    - WordPress-iOS-Shared (~> 0.1.4)
+    - WordPress-iOS-Shared (~> 0.1.3)
     - WordPressCom-Analytics-iOS (~> 0.0.4)
   - WordPress-iOS-Shared (0.1.4):
     - AFNetworking (~> 2.3.1)
@@ -173,7 +173,7 @@ SPEC CHECKSUMS:
   SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
-  WordPress-iOS-Editor: 8352cfe6be7601d9a7933a4d126e29f8ce5ccf67
+  WordPress-iOS-Editor: 95a9ebb07bb955396fc17bed8b4e285a3f33add0
   WordPress-iOS-Shared: cb00b5b2530e5b581d34926ac6966b7ec476a93a
   WordPressApi: 6d28e1f6e6bf6cea2aa52d99d2cc795ff398e479
   WordPressCom-Analytics-iOS: d62898a09b4ce8005206c8ae7f4d59b24a7690d1
