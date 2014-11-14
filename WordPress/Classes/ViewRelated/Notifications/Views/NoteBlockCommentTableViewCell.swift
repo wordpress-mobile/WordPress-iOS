@@ -12,7 +12,7 @@ import Foundation
     public var onApproveClick:      EventHandler?
     public var onUnapproveClick:    EventHandler?
     public var onTrashClick:        EventHandler?
-    public var onMoreClick:         EventHandler?
+    public var onSpamClick:         EventHandler?
     public var onSiteClick:         EventHandler?
 
     public var attributedCommentText: NSAttributedString? {
@@ -59,9 +59,9 @@ import Foundation
             refreshBottomSpacing()
         }
     }
-    public var isMoreEnabled: Bool = false {
+    public var isSpamEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnMore, isVisible: isMoreEnabled)
+            refreshButtonSize(btnSpam, isVisible: isSpamEnabled)
             refreshBottomSpacing()
         }
     }
@@ -117,15 +117,15 @@ import Foundation
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor               = WPStyleGuide.Notifications.blockActionEnabledColor
         
-        let likeNormalTitle                 = NSLocalizedString("Like", comment: "Like a comment")
-        let likeSelectedTitle               = NSLocalizedString("Liked", comment: "A comment has been liked")
+        let likeNormalTitle                 = NSLocalizedString("Like",     comment: "Like a comment")
+        let likeSelectedTitle               = NSLocalizedString("Liked",    comment: "A comment has been liked")
 
-        let approveNormalTitle              = NSLocalizedString("Approve", comment: "Approve a comment")
+        let approveNormalTitle              = NSLocalizedString("Approve",  comment: "Approve a comment")
         let approveSelectedTitle            = NSLocalizedString("Approved", comment: "Unapprove a comment")
 
-        let replyTitle                      = NSLocalizedString("Reply",  comment: "Verb, reply to a comment")
-        let moreTitle                       = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
-        let trashTitle                      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let replyTitle                      = NSLocalizedString("Reply",    comment: "Verb, reply to a comment")
+        let spamTitle                       = NSLocalizedString("Spam",     comment: "Verb, spam a comment")
+        let trashTitle                      = NSLocalizedString("Trash",    comment: "Move a comment to the trash")
         
         btnReply.setTitle(replyTitle, forState: .Normal)
         btnReply.setTitleColor(textNormalColor, forState: .Normal)
@@ -147,9 +147,9 @@ import Foundation
         btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
         btnApprove.accessibilityLabel = approveNormalTitle
         
-        btnMore.setTitle(moreTitle, forState: .Normal)
-        btnMore.setTitleColor(textNormalColor, forState: .Normal)
-        btnMore.accessibilityLabel = moreTitle
+        btnSpam.setTitle(spamTitle, forState: .Normal)
+        btnSpam.setTitleColor(textNormalColor, forState: .Normal)
+        btnSpam.accessibilityLabel = spamTitle
         
         btnTrash.setTitle(trashTitle, forState: .Normal)
         btnTrash.setTitleColor(textNormalColor, forState: .Normal)
@@ -183,8 +183,8 @@ import Foundation
         hitEventHandler(onTrashClick, sender: sender)
     }
     
-    @IBAction public func moreWasPressed(sender: AnyObject) {
-        hitEventHandler(onMoreClick, sender: sender)
+    @IBAction public func spamWasPressed(sender: AnyObject) {
+        hitEventHandler(onSpamClick, sender: sender)
     }
 
     @IBAction public func siteWasPressed(sender: AnyObject) {
@@ -217,12 +217,12 @@ import Foundation
         //  When all of the buttons are disabled, let's remove the bottom space.
         //  Every button is linked to btnMore: We can do this in just one shot!
         //
-        let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isMoreEnabled
+        let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
         let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
         let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
         
-        contentView.updateConstraintWithFirstItem(btnMore, attribute: .Top, constant: moreTop)
-        btnMore.updateConstraint(.Height, constant: moreHeight)
+        contentView.updateConstraintWithFirstItem(btnSpam, attribute: .Top, constant: moreTop)
+        btnSpam.updateConstraint(.Height, constant: moreHeight)
         setNeedsLayout()
     }
     
@@ -277,5 +277,5 @@ import Foundation
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
     @IBOutlet private weak var btnTrash             : UIButton!
-    @IBOutlet private weak var btnMore              : UIButton!
+    @IBOutlet private weak var btnSpam              : UIButton!
 }
