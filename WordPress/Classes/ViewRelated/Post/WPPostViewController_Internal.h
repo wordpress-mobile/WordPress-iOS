@@ -12,15 +12,9 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertCancelMediaUpload,
 };
 
-typedef NS_ENUM(NSUInteger, EditPostViewControllerMode) {
-    EditPostViewControllerModeNewPost,
-    EditPostViewControllerModeEditPost
-};
-
 @interface WPPostViewController () <UIActionSheetDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
-@property (nonatomic, assign) EditPostViewControllerMode editMode;
 @property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
 
