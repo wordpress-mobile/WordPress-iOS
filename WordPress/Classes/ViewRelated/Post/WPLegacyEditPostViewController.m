@@ -260,6 +260,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
             [oldPost.original deleteRevision];
             [oldPost.original remove];
+            [oldPost.original save];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
@@ -582,6 +583,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
         [self.post.original remove];
+        [self.post.original save];
     }
 }
 
