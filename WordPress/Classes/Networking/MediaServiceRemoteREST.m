@@ -92,7 +92,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
     unsigned long long size = [[request valueForHTTPHeaderField:@"Content-Length"] longLongValue];
     // Adding some extra time because after the upload is done the backend takes some time to process the data sent
-    localProgress.totalUnitCount = size*2;
+    localProgress.totalUnitCount = size+1;
     localProgress.cancellable = YES;
     localProgress.pausable = NO;
     localProgress.cancellationHandler = ^(){
