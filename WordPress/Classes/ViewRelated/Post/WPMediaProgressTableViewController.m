@@ -41,11 +41,11 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
         self.tableView.contentInset = tableInset;
         
         // Cancel button
-        UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
                                                                                           target:self
-                                                                                          action:@selector(cancelButtonTapped:)];
+                                                                                          action:@selector(doneButtonTapped:)];
         
-        self.navigationItem.leftBarButtonItem = cancelButtonItem;
+        self.navigationItem.leftBarButtonItem = doneButtonItem;
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -82,7 +82,7 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
 
 #pragma mark - Actions
 
-- (IBAction)cancelButtonTapped:(id)sender
+- (IBAction)doneButtonTapped:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
