@@ -459,25 +459,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         // Suggestions Table View
         if ([self shouldAttachSuggestionsTableView]) {
             // Pin the suggestions view left and right edges to the super view edges
-            NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+            views[@"suggestionsview"] = self.suggestionsTableView;
             [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
                                                                               options:0
                                                                               metrics:nil
                                                                                 views:views]];
 
             // Pin the suggestions view top to the super view top
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+            // and the suggestions view bottom to the top of the reply box
+            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview][replyTextView]"
                                                                               options:0
                                                                               metrics:nil
                                                                                 views:views]];
-            // Pin the suggestions view bottom to the top of the reply box
-            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                                  attribute:NSLayoutAttributeBottom
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:self.replyTextView
-                                                                  attribute:NSLayoutAttributeTop
-                                                                 multiplier:1
-                                                                   constant:0]];
         }
     }
 }
