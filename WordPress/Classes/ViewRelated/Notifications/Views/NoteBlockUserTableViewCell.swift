@@ -88,5 +88,5 @@ import Foundation
     @IBOutlet private weak var nameLabel:           UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
     @IBOutlet private weak var btnFollow:           UIButton!
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
+    @IBOutlet private weak var gravatarImageView:   CircularImageView!
 }
