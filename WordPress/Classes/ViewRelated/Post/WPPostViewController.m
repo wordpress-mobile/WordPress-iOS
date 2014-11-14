@@ -341,7 +341,6 @@ static NSDictionary *EnabledButtonBarStyle;
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
                                                  name:MediaShouldInsertBelowNotification
                                                object:nil];
@@ -568,8 +567,6 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)cancelEditing
 {
-    if (_currentActionSheet) return;
-    
     if ([self isMediaInUploading]) {
         [self showMediaInUploadingAlert];
         return;
@@ -578,17 +575,16 @@ static NSDictionary *EnabledButtonBarStyle;
 	[self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 	
-    if (![self hasChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
-		
-		if (self.ownsPost) {
-			[self discardChangesAndDismiss];
-		} else {
-            [self refreshNavigationBarButtons:YES];
-            [self discardChanges];
-		}
-        return;
+    if ([self hasChanges]) {
+        [self showPostHasChangesActionSheet];
+    } else {
+        [self refreshNavigationBarButtons:YES];
+        [self discardChangesAndUpdateGUI];
     }
+}
+
+- (void)showPostHasChangesActionSheet
+{
 	UIActionSheet *actionSheet;
 	if (![self.post.original.status isEqualToString:@"draft"] && ![self isPostLocal]) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
@@ -1064,36 +1060,44 @@ static NSDictionary *EnabledButtonBarStyle;
     }];
 }
 
-// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
-// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
-// browser to see a users attached images we should remove this image from the post.
-// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
-- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
-{
-    [self.post.managedObjectContext performBlock:^{
-        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
-        for (Media *media in self.post.media) {
-            if (media.remoteStatus == MediaRemoteStatusPushing) {
-                [mediaToRemove addObject:media];
-            }
-        }
-        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
-    }];
-}
-
+/**
+ *  @brief      Discards all changes in the last editing session.
+ *  @details    The GUI won't be affected by this method.  If you want to update the GUI you can
+ *              call `discardChangesAndUpdateGUI` instead.
+ */
 - (void)discardChanges
 {
-    [self.post.original deleteRevision];
+    NSManagedObjectContext* context = self.post.managedObjectContext;
+    NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
+             @"The object should be related to a managed object context here.");
+    
+    self.post = self.post.original;
+    [self.post deleteRevision];
     
     if (self.ownsPost) {
-        [self.post.original remove];
+        [self.post remove];
+        self.post = nil;
     }
+    
+    [[ContextManager sharedInstance] saveContext:context];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
 }
 
-- (void)discardChangesAndDismiss
+/**
+ *  @brief      Discards all changes in the last editing session and updates the GUI accordingly.
+ *  @details    The GUI will be affected by this method.  If you want to avoid updating the GUI you
+ *              can call `discardChanges` instead.
+ */
+- (void)discardChangesAndUpdateGUI
 {
     [self discardChanges];
-    [self dismissEditView];
+    
+    if (!self.post) {
+        [self dismissEditView];
+    } else {
+        [self refreshUIForCurrentPost];
+    }
 }
 
 - (void)dismissEditView
@@ -1106,6 +1110,8 @@ static NSDictionary *EnabledButtonBarStyle;
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];
 	}
+    
+    [WPAnalytics track:WPAnalyticsStatEditorClosed];
 }
 
 - (void)saveAction
@@ -1294,6 +1300,23 @@ static NSDictionary *EnabledButtonBarStyle;
     }
 }
 
+// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
+// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
+// browser to see a users attached images we should remove this image from the post.
+// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
+- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
+{
+    [self.post.managedObjectContext performBlock:^{
+        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
+        for (Media *media in self.post.media) {
+            if (media.remoteStatus == MediaRemoteStatusPushing) {
+                [mediaToRemove addObject:media];
+            }
+        }
+        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
+    }];
+}
+
 #pragma mark - Media Formatting
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
@@ -1422,8 +1445,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)actionSheetDiscardButtonPressed
 {
-    [self discardChangesAndDismiss];
-    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+    [self discardChangesAndUpdateGUI];
 }
 
 - (void)actionSheetKeepEditingButtonPressed
