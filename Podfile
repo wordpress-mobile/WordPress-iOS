@@ -23,7 +23,7 @@ pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailCh
 pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.5.0'
 pod 'Helpshift', '~>4.8.0'
-pod 'CTAssetsPickerController', '~> 2.6'
+pod 'CTAssetsPickerController', '~> 2.7.0'
 pod 'WordPress-iOS-Shared', '0.1.4'
 pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => 'ec94a87363eaa4b86b13d867c0af7dbf55fa4676'
 pod 'WordPressCom-Stats-iOS', '0.1.6'
@@ -32,6 +32,7 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
 pod 'Simperium', '0.7.2'
 pod 'Lookback', '0.6.5', :configurations => ['Release-Internal']
+pod "AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "4bb1b53814a4301c1ecac025c90fe158a43dbc99"
 
 target 'WordPressTodayWidget', :exclusive => true do
     pod 'WordPressCom-Stats-iOS', '0.1.6'
