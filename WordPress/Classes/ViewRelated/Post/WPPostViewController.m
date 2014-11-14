@@ -71,11 +71,14 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+
+#pragma mark - Post ownership
+@property (nonatomic, assign, readwrite) BOOL ownsPost;
 @end
 
 @implementation WPPostViewController
 
-#pragma mark - Initializers & dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
@@ -84,20 +87,40 @@ static NSDictionary *EnabledButtonBarStyle;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark - Initializers
+
 - (id)initWithDraftForLastUsedBlog
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
+    NSAssert([blog isKindOfClass:[Blog class]],
+             @"There should be no issues in obtaining the last used blog.");
+    
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
+
+    return [self initWithDraftForBlog:blog];
+}
+
+- (instancetype)initWithDraftForBlog:(Blog*)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     Post *post = [PostService createDraftPostInMainContextForBlog:blog];
+    NSAssert([post isKindOfClass:[Post class]],
+             @"There should be no issues in creating a draft post.");
+    
+    _ownsPost = YES;
+    
     return [self initWithPost:post
-						 mode:kWPPostViewControllerModeEdit];
+                         mode:kWPPostViewControllerModeEdit];
 }
 
 - (id)initWithPost:(AbstractPost *)post
 {
+    NSParameterAssert([post isKindOfClass:[Post class]]);
+    
     return [self initWithPost:post
                          mode:kWPPostViewControllerModePreview];
 }
@@ -114,12 +137,6 @@ static NSDictionary *EnabledButtonBarStyle;
         _post = post;
 		
         [self configureMediaUploadQueue];
-		
-        if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
-            _editMode = EditPostViewControllerModeNewPost;
-        } else {
-            _editMode = EditPostViewControllerModeEditPost;
-        }
     }
 	
     return self;
@@ -310,7 +327,6 @@ static NSDictionary *EnabledButtonBarStyle;
     self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     self.negativeSeparator.width = -12;
     
-    [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -401,12 +417,13 @@ static NSDictionary *EnabledButtonBarStyle;
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
-
+            
+            NSAssert(self.isEditing,
+                     @"We assume that changing blogs is only enabled during editing.");
+            
+            [self discardChanges];
             self.post = newPost;
             [self createRevisionOfPost];
-            
-            [oldPost.original deleteRevision];
-            [oldPost.original remove];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
@@ -528,6 +545,13 @@ static NSDictionary *EnabledButtonBarStyle;
     picker.childNavigationController.navigationBar.translucent = NO;
 }
 
+#pragma mark - Data Model: Post
+
+- (BOOL)isPostLocal
+{
+    return self.post.remoteStatus == AbstractPostRemoteStatusLocal;
+}
+
 #pragma mark - Editing
 
 - (void)cancelEditing
@@ -545,7 +569,7 @@ static NSDictionary *EnabledButtonBarStyle;
     if (![self hasChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
 		
-		if (self.editMode == EditPostViewControllerModeNewPost) {
+		if (self.ownsPost) {
 			[self discardChangesAndDismiss];
 		} else {
             [self refreshNavigationBarButtons:YES];
@@ -554,14 +578,14 @@ static NSDictionary *EnabledButtonBarStyle;
         return;
     }
 	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+	if (![self.post.original.status isEqualToString:@"draft"] && ![self isPostLocal]) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
 												  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
-    } else if (self.editMode == EditPostViewControllerModeNewPost) {
+    } else if ([self isPostLocal]) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -584,6 +608,13 @@ static NSDictionary *EnabledButtonBarStyle;
     } else {
         [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
     }
+}
+
+- (void)startEditing
+{
+    [self createRevisionOfPost];
+    
+    [super startEditing];
 }
 
 #pragma mark - Visual editor in settings
@@ -643,7 +674,7 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 - (void)geotagNewPost {
-    if (EditPostViewControllerModeNewPost != self.editMode) {
+    if (![self isPostLocal]) {
         return;
     }
     
@@ -684,7 +715,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if ([self isPostLocal]) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.post.postTitle length]) {
@@ -962,7 +993,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     if (self.mediaInProgress && self.mediaInProgress.count > 0) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
@@ -1042,7 +1073,7 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     [self.post.original deleteRevision];
     
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.ownsPost) {
         [self.post.original remove];
     }
 }
@@ -1122,7 +1153,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)didSaveNewPost
 {
-    if (_editMode == EditPostViewControllerModeNewPost) {
+    if ([self isPostLocal]) {
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
     }
 }
