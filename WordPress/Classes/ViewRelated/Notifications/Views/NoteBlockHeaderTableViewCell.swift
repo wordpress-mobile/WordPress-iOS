@@ -39,7 +39,7 @@ import Foundation
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
-        nameLabel.font                  = WPStyleGuide.Notifications.blockRegularFont
+        nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
         snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
         snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
