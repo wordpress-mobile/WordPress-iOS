@@ -29,7 +29,9 @@ NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey = @"TodayVisitorCo
 NSString *const WPInternalBetaShakeToPullUpFeedbackKey = @"InternalBetaShakeToPullUpFeedback";
 
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
-BOOL const WPJetpackRESTSupported = YES;
+BOOL const WPJetpackRESTEnabled = YES;
 #else
-BOOL const WPJetpackRESTSupported = NO;
+BOOL const WPJetpackRESTEnabled = NO;
 #endif
+
+NSString *const WPiTunesAppId = @"335703880";

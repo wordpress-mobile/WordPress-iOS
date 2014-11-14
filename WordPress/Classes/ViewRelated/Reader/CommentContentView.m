@@ -1,24 +1,22 @@
 #import "CommentContentView.h"
-#import <DTCoreText/DTCoreText.h>
-#import "DTTiledLayerWithoutFade.h"
 #import "NSDate+StringFormatting.h"
-
-//#import <WordPress-iOS-Shared/WPFontManager.h>
 #import "WordPress-Swift.h"
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
+static const CGFloat CommentContentViewButtonHeight = 16.0;
+static const CGFloat CommentContnetViewButtonSpacingTop = 4.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
 static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
-@interface CommentContentView()<DTAttributedTextContentViewDelegate>
+@interface CommentContentView()<WPRichTextViewDelegate>
 
-@property (nonatomic, strong) UIImageView *avatarImageView;
+@property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UIButton *authorButton;
 @property (nonatomic, strong) UIButton *timeButton;
-@property (nonatomic, strong) DTAttributedTextContentView *textContentView;
+@property (nonatomic, strong) WPRichTextView *textContentView;
 @property (nonatomic, strong) UIButton *replyButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UILabel *numberOfLikesLabel;
@@ -40,17 +38,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     return self;
 }
 
-- (void)layoutSubviews
-{
-    // Redraw text if necessary.
-    CGFloat contentHeight = CGRectGetHeight(self.textContentView.frame);
-    [super layoutSubviews];
-    if (contentHeight != CGRectGetHeight(self.textContentView.frame)) {
-        [self relayoutTextContentView];
-    }
-}
-
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+- (void)setContentProvider:(id<WPCommentContentViewProvider>)contentProvider
 {
     if (_contentProvider == contentProvider) {
         return;
@@ -65,19 +53,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self.avatarImageView setImage:image];
 }
 
-- (void)setLikeCount:(NSInteger)likeCount
-{
-    _likeCount = likeCount;
-
-    [self updateNumberOfLikesLabel];
-}
-
-- (void)setIsLiked:(BOOL)isLiked
-{
-    _isLiked = isLiked;
-    self.likeButton.selected = isLiked;
-}
-
 - (void)reset
 {
     [self setContentProvider:nil];
@@ -85,11 +60,20 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat height = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:size.width].height;
+    CGFloat height = [self.textContentView sizeThatFits:size].height;
     height = height + CommentContentViewContentViewOffsetTop + CommentContentViewContentViewOffsetBottom;
     return CGSizeMake(size.width, ceil(height));
 }
 
+- (void)refreshMediaLayout
+{
+    [self.textContentView refreshMediaLayout];
+}
+
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    [self.textContentView preventPendingMediaLayout:prevent];
+}
 
 #pragma mark - Private Methods
 
@@ -99,7 +83,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     NSDictionary *metrics = @{@"avatarSize": @(CommentContentViewAvatarSize),
                               @"offsetTop" : @(CommentContentViewContentViewOffsetTop),
                               @"offsetBottom" : @(CommentContentViewContentViewOffsetBottom),
-                              @"offsetLeft" : @(CommentContentViewContentOffsetLeft)
+                              @"offsetLeft" : @(CommentContentViewContentOffsetLeft),
+                              @"buttonMarginTop" : @(CommentContnetViewButtonSpacingTop),
+                              @"buttonHeight" : @(CommentContentViewButtonHeight)
                               };
 
     // Avatar
@@ -113,15 +99,15 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                    views:views]];
 
     // Author and date
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1@200)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-(>=1)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-(>=1@200)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(16)]-3-[_timeButton(16)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_authorButton(buttonHeight)]-3-[_timeButton(buttonHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -140,15 +126,15 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_replyButton(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_replyButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_likeButton(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_likeButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_numberOfLikesLabel(16)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_numberOfLikesLabel(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -157,8 +143,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (void)constructSubviews
 {
     self.avatarImageView = [self imageViewForAvatar];
-    [self addSubview:self.avatarImageView];
 
+    [self addSubview:self.avatarImageView];
+    
     self.authorButton = [self buttonForAuthorButton];
     [self addSubview:self.authorButton];
 
@@ -183,9 +170,10 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 #pragma mark - Subview factories
 
-- (UIImageView *)imageViewForAvatar
+- (CircularImageView *)imageViewForAvatar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    CGRect avatarFrame = CGRectMake(0.0f, 0.0f, CommentContentViewAvatarSize, CommentContentViewAvatarSize);
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }
@@ -195,8 +183,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-// TODO : Create a comment font and add it to WPStyleGuide
-//    button.titleLabel.font = [WPFontManager openSansBoldFontOfSize:14.0];
     button.titleLabel.font = [WPStyleGuide commentTitleFont];
     button.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -211,7 +197,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-//    button.titleLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
     button.titleLabel.font = [WPStyleGuide commentBodyFont];
 
     button.backgroundColor = [WPStyleGuide itsEverywhereGrey];
@@ -226,18 +211,14 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     return button;
 }
 
-- (DTAttributedTextContentView *)viewForContent
+- (WPRichTextView *)viewForContent
 {
-    [DTAttributedTextContentView setLayerClass:[DTTiledLayerWithoutFade class]];
-
     // Needs an initial frame
-    DTAttributedTextContentView *textContentView = [[DTAttributedTextContentView alloc] initWithFrame:self.bounds];
+    WPRichTextView *textContentView = [[WPRichTextView alloc] initWithFrame:self.bounds];
     textContentView.translatesAutoresizingMaskIntoConstraints = NO;
     textContentView.delegate = self;
-    textContentView.shouldDrawImages = NO;
-    textContentView.shouldDrawLinks = NO;
-    textContentView.relayoutMask = DTAttributedTextContentViewRelayoutOnWidthChanged | DTAttributedTextContentViewRelayoutOnHeightChanged;
     textContentView.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    textContentView.textOptions = [WPStyleGuide commentDTCoreTextOptions];
 
     return textContentView;
 }
@@ -309,6 +290,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self configureAuthorButton];
     [self configureTimeButton];
     [self configureContentView];
+    [self configureLikeButton];
+    [self configureNumberOfLikes];
 }
 
 - (void)configureAuthorButton
@@ -321,6 +304,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     if ([self.contentProvider respondsToSelector:@selector(authorURL)] && [self.contentProvider authorURL]) {
         self.authorButton.enabled = ([[[self.contentProvider authorURL] absoluteString] length] > 0);
     }
+
+    [self highlightAuthor:[self.contentProvider authorIsPostAuthor]];
 }
 
 - (void)highlightAuthor:(BOOL)highlight
@@ -342,61 +327,48 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self.timeButton setTitle:title forState:UIControlStateNormal | UIControlStateDisabled];
 }
 
-- (void)configureContentView
+- (void)configureLikeButton
 {
-    self.textContentView.attributedString = [self attributedStringForContent:[self.contentProvider contentForDisplay]];
-    [self relayoutTextContentView];
+    self.likeButton.selected = [self.contentProvider isLiked];
 }
 
-- (void)relayoutTextContentView
+- (void)configureNumberOfLikes
 {
-    // need to reset the layouter because otherwise we get the old framesetter or
-    self.textContentView.layouter = nil;
+    NSInteger likeCount = [[self.contentProvider numberOfLikes] integerValue];
+    if (likeCount == 0) {
+        self.numberOfLikesLabel.text = @"";
+    } else if (likeCount == 1) {
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
+    } else {
+        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", likeCount, NSLocalizedString(@"Likes", nil)];
+    }
+}
 
-    // layout might have changed due to image sizes
-    [self.textContentView relayoutText];
-    [self invalidateIntrinsicContentSize];
+- (void)configureContentView
+{
+    self.textContentView.content = [self sanitizedContentStringForDisplay:[self.contentProvider contentForDisplay]];
 }
 
 /**
- Returns an attributed string for the specified `string`, formatted for the content view.
+ Returns a string for the specified `string`, formatted for the content view.
 
- @param title The string to convert to an attriubted string.
- @return An attributed string formatted to display in the title view.
+ @param string The string to convert to an attriubted string.
+ @return A string formatted to display in the comment view.
  */
-- (NSAttributedString *)attributedStringForContent:(NSString *)string
+- (NSString *)sanitizedContentStringForDisplay:(NSString *)string
 {
-    string = [string trim];
-    if (string == nil) {
-        string = @"";
+    NSString *str = [string trim];
+    if (str == nil) {
+        str = @"";
     }
 
     // remove trailing br tags
-    NSRange prng = [string rangeOfString:@"/p>" options:NSBackwardsSearch];
+    NSRange prng = [str rangeOfString:@"/p>" options:NSBackwardsSearch];
     if (prng.location != NSNotFound) {
-        string = [string substringToIndex:prng.location + 3];
+        str = [str substringToIndex:prng.location + 3];
     }
 
-//    NSString *defaultStyles = @"blockquote {width: 100%; display: block; font-style: italic;}";
-//    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
-//    NSDictionary *options = @{
-//             DTDefaultFontFamily:@"Open Sans",
-//             DTDefaultLineHeightMultiplier:@1.52,
-//             DTDefaultFontSize:@14.0,
-//             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
-//             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
-//             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
-//             DTDefaultLinkDecoration:@NO,
-//             DTDefaultStyleSheet:cssStylesheet
-//             };
-
-
-    NSDictionary *options = [WPStyleGuide commentDTCoreTextOptions];
-    NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-    NSAttributedString *attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                              options:options
-                                                                   documentAttributes:nil];
-    return attributedString;
+    return str;
 }
 
 
@@ -404,18 +376,9 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (void)handleAuthorTapped:(id)sender
 {
+    // Just do a hand off to the rich text delegate
     NSURL *url = [self.contentProvider authorURL];
-    if ([self.delegate respondsToSelector:@selector(handleLinkTapped:)]) {
-        [self.delegate handleLinkTapped:url];
-    }
-}
-
-- (void)handleLinkTapped:(id)sender
-{
-    NSURL *url = ((DTLinkButton *)sender).URL;
-    if ([self.delegate respondsToSelector:@selector(handleLinkTapped:)]) {
-        [self.delegate handleLinkTapped:url];
-    }
+    [self richTextView:self.textContentView didReceiveLinkAction:url];
 }
 
 - (void)handleReplyTapped:(id)sender
@@ -432,56 +395,26 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     }
 }
 
-#pragma mark - DTAttributedTextContentView Delegate Methods
 
-- (UIView *)attributedTextContentView:(DTAttributedTextContentView *)attributedTextContentView viewForAttributedString:(NSAttributedString *)string frame:(CGRect)frame
+#pragma mark - WPRichTextView Delegate methods
+
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
-    if (CGRectGetWidth(frame) == 0 || CGRectGetHeight(frame) == 0) {
-        return nil;
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveLinkAction:)]) {
+        [self.delegate richTextView:richTextView didReceiveLinkAction:linkURL];
     }
-
-    NSDictionary *attributes = [string attributesAtIndex:0 effectiveRange:nil];
-
-    NSURL *URL = [attributes objectForKey:DTLinkAttribute];
-
-    // get image with normal link text
-    UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
-
-    if (!URL || !normalImage) {
-        return nil;
-    }
-
-    // get image for highlighted link text
-    UIImage *highlightImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDrawLinksHighlighted];
-    if (!highlightImage) {
-        highlightImage = normalImage;
-    }
-
-    DTLinkButton *button = [[DTLinkButton alloc] initWithFrame:frame];
-    button.clipsToBounds = YES;
-    button.URL = URL;
-    button.minimumHitSize = CGSizeMake(25.0, 25.0); // adjusts it's bounds so that button is always large enough
-    button.GUID = [attributes objectForKey:DTGUIDAttribute];
-    [button setImage:normalImage forState:UIControlStateNormal];
-    [button setImage:highlightImage forState:UIControlStateHighlighted];
-    // use normal push action for opening URL
-    [button addTarget:self action:@selector(handleLinkTapped:) forControlEvents:UIControlEventTouchUpInside];
-    
-    return button;
 }
 
-#pragma mark - Helper
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
+{
+    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
+        [self.delegate richTextView:richTextView didReceiveImageLinkAction:imageControl];
+    }
+}
 
-- (void)updateNumberOfLikesLabel {
-    if (self.likeCount == 0) {
-        self.numberOfLikesLabel.text = @"";
-    }
-    else if (self.likeCount == 1) {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
-    }
-    else {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", self.likeCount, NSLocalizedString(@"Likes", nil)];
-    }
+- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
+{
+    [self.delegate commentView:self updatedAttachmentViewsForProvider:self.contentProvider];
 }
 
 @end
