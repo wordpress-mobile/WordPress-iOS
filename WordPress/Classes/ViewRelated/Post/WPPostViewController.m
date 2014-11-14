@@ -1,6 +1,7 @@
 #import "WPPostViewController.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Editor/WPEditorField.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -572,13 +573,13 @@ static NSDictionary *EnabledButtonBarStyle;
         return;
     }
     
-	[self stopEditing];
-    [self.postSettingsViewController endEditingAction:nil];
+    [self.editorView saveSelection];
+    [self.editorView.focusedField blur];
 	
     if ([self hasChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
-        [self refreshNavigationBarButtons:YES];
+        [self stopEditing];
         [self discardChangesAndUpdateGUI];
     }
 }
@@ -821,6 +822,8 @@ static NSDictionary *EnabledButtonBarStyle;
 			self.bodyText = self.post.content;
         }
     }
+    
+    [self refreshNavigationBarButtons:YES];
 }
 
 /**
@@ -1131,6 +1134,7 @@ static NSDictionary *EnabledButtonBarStyle;
         return;
     }
     
+    [self stopEditing];
 	[self savePostAndDismissVC];
 }
 
@@ -1153,13 +1157,14 @@ static NSDictionary *EnabledButtonBarStyle;
 
     [self.view endEditing:YES];
     
-    [self.post.original applyRevision];
-    [self.post.original deleteRevision];
+    self.post = self.post.original;
+    [self.post applyRevision];
+    [self.post deleteRevision];
     
-	NSString *postTitle = self.post.original.postTitle;
+	NSString *postTitle = self.post.postTitle;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    [postService uploadPost:(Post *)self.post.original
+    [postService uploadPost:self.post
                     success:^{
                         DDLogInfo(@"post uploaded: %@", postTitle);
                     } failure:^(NSError *error) {
@@ -1445,20 +1450,25 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)actionSheetDiscardButtonPressed
 {
+    [self stopEditing];
     [self discardChangesAndUpdateGUI];
 }
 
 - (void)actionSheetKeepEditingButtonPressed
 {
-    [self startEditing];
+    [self.editorView restoreSelection];
 }
 
 - (void)actionSheetSaveDraftButtonPressed
 {
+    [self stopEditing];
+    
     if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
         self.post.status = @"draft";
     }
+    
     DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+    
     [self savePostAndDismissVC];
 }
 
