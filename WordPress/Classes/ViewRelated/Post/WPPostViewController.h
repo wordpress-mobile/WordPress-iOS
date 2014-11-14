@@ -4,6 +4,7 @@
 
 @class AbstractPost;
 @class Blog;
+@class PostSettingsViewController;
 
 typedef enum
 {
@@ -34,6 +35,15 @@ typedef void (^EditPostCompletionHandler)(void);
  *              discarded by the user.
  */
 @property (nonatomic, assign, readonly) BOOL ownsPost;
+
+#pragma mark - Properties: Misc
+
+@property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
+@property (nonatomic, strong) AbstractPost *post;
+@property (readonly) BOOL hasChanges;
+
+@property (nonatomic, strong) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
 
 #pragma mark - Initializers
 
@@ -119,5 +129,8 @@ typedef void (^EditPostCompletionHandler)(void);
  */
 + (void)setNewEditorEnabled:(BOOL)isEnabled;
 
+#pragma mark - Misc methods
+
+- (void)didSaveNewPost;
 
 @end
