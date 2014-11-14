@@ -584,9 +584,19 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"declined_to_rate_app"];
             break;
         case WPAnalyticsStatAppReviewsSentFeedback:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Sent Feedback"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Selected Send Feedback"];
             [instructions addSuperPropertyToFlag:@"sent_feedback_through_app_review_tool"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"sent_feedback_through_app_review_tool"];
+            break;
+        case WPAnalyticsStatAppReviewsLikedApp:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Liked App"];
+            [instructions addSuperPropertyToFlag:@"indicated_liked_app_when_prompted"];
+            [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_liked_app_when_prompted"];
+            break;
+        case WPAnalyticsStatAppReviewsDidntLikeApp:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Didn't Like App"];
+            [instructions addSuperPropertyToFlag:@"indicated_didnt_like_app_when_prompted"];
+            [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_didnt_like_app_when_prompted"];
             break;
         default:
             break;
