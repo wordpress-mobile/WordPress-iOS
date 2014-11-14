@@ -210,8 +210,6 @@
 
 - (void)showAddPostView
 {
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
-
     [self newPost];
 }
 
@@ -237,28 +235,8 @@
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)editPost:(AbstractPost *)apost
-{
-    UINavigationController *navController;
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModeEdit];
-        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-    }
     
-	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    
-    [self presentViewController:navController animated:YES completion:nil];
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
 
 - (void)viewPost:(AbstractPost *)apost
