@@ -1,5 +1,4 @@
 #import "WPPostViewController.h"
-#import "WPPostViewController_Internal.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
@@ -17,13 +16,24 @@
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "MediaBrowserViewController.h"
 #import "MediaService.h"
+#import "PostPreviewViewController.h"
 #import "PostService.h"
+#import "PostSettingsViewController.h"
 #import "NSString+Helpers.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs,
+    EditPostViewControllerAlertCancelMediaUpload,
+};
 
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -52,10 +62,9 @@ static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
 
+#pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
@@ -74,6 +83,9 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - Post ownership
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
+
+#pragma mark - Media uploads
+@property (nonatomic, strong, readwrite) NSOperationQueue *mediaUploadQueue;
 @end
 
 @implementation WPPostViewController
@@ -83,7 +95,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)dealloc
 {
     _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [self.mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -497,7 +509,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)cancelMediaUploads
 {
-    [_mediaUploadQueue cancelAllOperations];
+    [self.mediaUploadQueue cancelAllOperations];
     [self.mediaInProgress removeAllObjects];
     [self refreshNavigationBarButtons:NO];
 }
@@ -1526,7 +1538,7 @@ static NSDictionary *EnabledButtonBarStyle;
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                         [self refreshNavigationBarButtons:NO];
                     }];
-                    [_mediaUploadQueue addOperation:operation];
+                    [self.mediaUploadQueue addOperation:operation];
                 }];
             }
         }
@@ -1549,7 +1561,7 @@ static NSDictionary *EnabledButtonBarStyle;
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:_mediaUploadQueue]) {
+    if ([object isEqual:self.mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refreshNavigationBarButtons:NO];
         });
