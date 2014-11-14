@@ -1,10 +1,10 @@
-#import "WPTableViewProgressCell.h"
+#import "WPProgressTableViewCell.h"
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
-@implementation WPTableViewProgressCell {
+@implementation WPProgressTableViewCell {
     NSProgress * _progress;
 }
 
@@ -16,6 +16,10 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
         self.accessoryView = _progressView;
     }
     return self;
+}
+
+- (void)dealloc {
+    [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
 }
 
 - (void) setProgress:(NSProgress *) progress {
@@ -38,6 +42,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     [self.progressView setProgress:_progress.fractionCompleted animated:YES];
     self.textLabel.text = [_progress localizedDescription];
     self.detailTextLabel.text = [_progress localizedAdditionalDescription];
+    [self.imageView setImage:_progress.userInfo[WPProgressImageThumbnailKey]];
 }
 
 #pragma mark - KVO
