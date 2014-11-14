@@ -698,6 +698,9 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
         void (^createUserSuccess)(id) = ^(id responseObject){
+            // Turn on the new editor only for users that create a new account within the iOS app
+            [WPPostViewController setNewEditorAvailable:YES];
+            [WPPostViewController setNewEditorEnabled:YES];
             [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
