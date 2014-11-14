@@ -1,11 +1,19 @@
 #import "MeViewController.h"
 #import "SettingsViewController.h"
 #import "SupportViewController.h"
+#import "UIImageView+AFNetworkingExtra.h"
+#import "ContextManager.h"
+#import "AccountService.h"
+#import "WPAccount.h"
 
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 static NSInteger const MVCNumberOfSections = 1;
 
 static CGFloat const MVCTableViewRowHeight = 50.0;
+static CGFloat const MVCTableViewHeaderHeight = 200.0;
+static CGFloat const MVCGravatarOffset = 20.0;
+static CGFloat const MVCGravatarWidth = 120.0;
+static CGFloat const MVCGravatarHeight = 120.0;
 
 static NSInteger const MVCAccountSettingsIndex = 0;
 static NSInteger const MVCBillingIndex = 1;
@@ -19,6 +27,9 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong, readonly) NSArray *rowTitles;
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIImageView *gravatarView;
+@property (nonatomic, strong) UILabel *usernameLabel;
 
 @end
 
@@ -34,6 +45,31 @@ static NSString *const MVCHelpTitle = @"Help & Support";
     self.tableView.rowHeight = MVCTableViewRowHeight;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];
+
+    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MVCTableViewHeaderHeight)];
+    self.tableView.tableHeaderView = self.headerView;
+
+    float x = (self.headerView.frame.size.width - MVCGravatarWidth) / 2.0;
+    self.gravatarView = [[UIImageView alloc] initWithFrame:CGRectMake(x, MVCGravatarOffset, MVCGravatarWidth, MVCGravatarHeight)];
+    [self.headerView addSubview:self.gravatarView];
+
+    self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.gravatarView.frame.origin.y + self.gravatarView.frame.size.height + 20.0, self.headerView.frame.size.width, 20.0)];
+    self.usernameLabel.font = [WPStyleGuide regularTextFont];
+    self.usernameLabel.textColor = [WPStyleGuide wordPressBlue];
+    self.usernameLabel.textAlignment = NSTextAlignmentCenter;
+    [self.headerView addSubview:self.usernameLabel];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    [self.gravatarView setImageWithURL:[NSURL URLWithString:@"http://lorempixel.com/240/240/"] emptyCachePlaceholderImage:nil];
+    self.usernameLabel.text = [NSString stringWithFormat:@"@%@", defaultAccount.username];
 }
 
 #pragma mark - UITableViewDataSource methods
