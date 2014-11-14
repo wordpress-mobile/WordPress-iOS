@@ -11,12 +11,12 @@ typedef enum
 }
 WPPostViewControllerMode;
 
-extern NSString *const WPEditorNavigationRestorationID;
-extern NSString *const kUserDefaultsNewEditorEnabled;
+extern NSString* const WPEditorNavigationRestorationID;
+extern NSString* const kUserDefaultsNewEditorEnabled;
 
 // Secret URL config parameters
-extern NSString *const kWPEditorConfigURLParamAvailable;
-extern NSString *const kWPEditorConfigURLParamEnabled;
+extern NSString* const kWPEditorConfigURLParamAvailable;
+extern NSString* const kWPEditorConfigURLParamEnabled;
 
 @interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate>
 
