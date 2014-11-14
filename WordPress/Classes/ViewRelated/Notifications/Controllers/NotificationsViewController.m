@@ -685,4 +685,14 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     [self hideRatingView];
 }
 
+- (void)appbotPromptLiked
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
+}
+
+- (void)appbotPromptDidntLike
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
+}
+
 @end
