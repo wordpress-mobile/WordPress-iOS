@@ -14,6 +14,8 @@
 #import "WPMediaUploader.h"
 #import "WPUploadStatusView.h"
 #import "WordPressAppDelegate.h"
+#import "WPMediaProgressTableViewController.h"
+#import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -28,9 +30,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic, strong) NSProgress * mediaProgress;
+@property (nonatomic, strong) NSMutableArray * childrenMediaProgress;
 
 @end
 
@@ -130,6 +134,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.childrenMediaProgress = [NSMutableArray array];
     [self setupNavbar];
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
@@ -305,6 +310,40 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (Class)classForSettingsViewController
 {
     return [PostSettingsViewController class];
+}
+
+- (void)showMediaProgress
+{
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
+    
+    vc.title = NSLocalizedString(@"Media Progress", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+        
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.mediaProgressPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+        self.mediaProgressPopover.delegate = self;
+        [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:navController animated:YES completion:nil];
+    }
 }
 
 - (void)showCancelMediaUploadPrompt
@@ -542,7 +581,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     if (!_uploadStatusButton) {
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 250.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
-        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(showMediaProgress) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = button;
     }
     return _uploadStatusButton;
@@ -966,6 +1005,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
         [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
         self.mediaProgress = nil;
+        [self.childrenMediaProgress removeAllObjects];
     }
     
     if (!self.mediaProgress){
@@ -999,6 +1039,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     }
                     [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                 }];
+                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
+                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                [self.childrenMediaProgress addObject:uploadProgress];
                 [self.mediaProgress resignCurrent];
             }];
         }

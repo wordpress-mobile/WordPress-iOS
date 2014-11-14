@@ -25,7 +25,7 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
-#import "WPTableViewProgressCell.h"
+#import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
@@ -114,7 +114,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
 
-    [self.tableView registerClass:[WPTableViewProgressCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
+    [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -601,7 +601,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         cell = activityCell;
 
     } else if (self.isUploadingMedia){
-        WPTableViewProgressCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+        WPProgressTableViewCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
         [progressCell setProgress:self.featuredImageProgress];
         [progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
         progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;

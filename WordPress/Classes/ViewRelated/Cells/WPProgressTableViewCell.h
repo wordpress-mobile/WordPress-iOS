@@ -5,7 +5,7 @@
  */
 extern NSString * const WPProgressImageThumbnailKey;
 
-@interface WPTableViewProgressCell : WPTableViewCell
+@interface WPProgressTableViewCell : WPTableViewCell
 
 @property (nonatomic, strong) IBOutlet UIProgressView * progressView;
 
