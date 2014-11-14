@@ -22,6 +22,8 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
+#import "AppRatingUtility.h"
+
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
@@ -127,6 +129,8 @@ static NSInteger NotificationSectionCount               = 1;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+
+    [AppRatingUtility incrementSignificantEvent];
 }
 
 - (void)viewWillAppear:(BOOL)animated

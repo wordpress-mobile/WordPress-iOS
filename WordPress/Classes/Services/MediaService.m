@@ -69,6 +69,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 		}
 		return;
 	}
+
     geoLocationEnabled = post.blog.geolocationEnabled;
     
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
