@@ -96,7 +96,7 @@
                                   andServiceName:WordPressComOAuthKeychainServiceName
                                            error:&error];
         if (error) {
-            DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
+            DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
     }
 }
