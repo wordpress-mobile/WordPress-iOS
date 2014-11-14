@@ -10,6 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WordPress-AppbotX/ABX.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -46,6 +47,8 @@
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
+
+#import "AppRatingUtility.h"
 
 #import "Reachability.h"
 #import "WordPress-Swift.h"
@@ -196,6 +199,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
+    [self setupAppbotX];
 
     return YES;
 }
@@ -208,6 +212,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         if ([WordPressComApiCredentials lookbackToken].length > 0) {
             [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
             [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPInternalBetaShakeToPullUpFeedbackKey: @YES}];
+            [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:LookbackCameraEnabledSettingsKey];
             [Lookback lookback].shakeToRecord = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
             
             // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
@@ -230,6 +235,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         }
     });
 #endif
+}
+
+- (void)setupAppbotX
+{
+    if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
+        [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
+    }
 }
 
 - (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
@@ -426,6 +438,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
+    [self initializeAppTracking];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -598,6 +611,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
 
+    [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
     
@@ -636,6 +650,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+- (void)initializeAppTracking
+{
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    [AppRatingUtility initializeForVersion:version];
+    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
 }
 
 - (void)trackLowMemory

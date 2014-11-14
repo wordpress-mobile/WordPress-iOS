@@ -35,9 +35,6 @@ import Foundation
         selectionStyle  = .None
     }
     
-    // MARK: - Private Methods
-
-    
     // MARK: - Private
     private var imageURL:               NSURL?
     

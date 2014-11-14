@@ -41,7 +41,7 @@
     NSMutableArray *remoteBlogs = [NSMutableArray arrayWithCapacity:[jsonBlogs count]];
     for (NSDictionary *jsonBlog in jsonBlogs) {
         BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-        if (!isJetpack || WPJetpackRESTSupported) {
+        if (!isJetpack || WPJetpackRESTEnabled) {
             [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
         }
     }

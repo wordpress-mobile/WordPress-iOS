@@ -1,5 +1,6 @@
 #import "Notification.h"
 #import "NSDictionary+SafeExpectations.h"
+#import "NSString+Helpers.h"
 #import "WordPress-Swift.h"
 
 
@@ -8,13 +9,13 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-NSString const *NoteActionFollowKey     = @"follow";
-NSString const *NoteActionReplyKey      = @"replyto-comment";
-NSString const *NoteActionApproveKey    = @"approve-comment";
-NSString const *NoteActionSpamKey       = @"spam-comment";
-NSString const *NoteActionTrashKey      = @"trash-comment";
-NSString const *NoteActionLikeKey       = @"like-comment";
-NSString const *NoteActionEditKey       = @"approve-comment";
+NSString *NoteActionFollowKey           = @"follow";
+NSString *NoteActionReplyKey            = @"replyto-comment";
+NSString *NoteActionApproveKey          = @"approve-comment";
+NSString *NoteActionSpamKey             = @"spam-comment";
+NSString *NoteActionTrashKey            = @"trash-comment";
+NSString *NoteActionLikeKey             = @"like-comment";
+NSString *NoteActionEditKey             = @"approve-comment";
 
 NSString const *NoteLinkTypeUser        = @"user";
 NSString const *NoteLinkTypePost        = @"post";
@@ -200,7 +201,8 @@ NSString const *NotePostIdKey           = @"post_id";
 
 @interface NotificationBlock ()
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
-@property (nonatomic, assign, readwrite) NoteBlockType         type;
+@property (nonatomic, assign, readwrite) NoteBlockType          type;
+@property (nonatomic, assign, readwrite) BOOL                   isBadge;
 @end
 
 
@@ -255,6 +257,19 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
+- (NSArray *)imageUrls
+{
+    NSMutableArray *urls = [NSMutableArray array];
+    
+    for (NotificationMedia *media in self.media) {
+        if (media.isImage && media.mediaURL != nil) {
+            [urls addObject:media.mediaURL];
+        }
+    }
+    
+    return urls;
+}
+
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
 {
     if (!_actionsOverride) {
@@ -291,6 +306,7 @@ NSString const *NotePostIdKey           = @"post_id";
     }
     
     NSMutableArray *parsed  = [NSMutableArray array];
+    BOOL isBadge = false;
     
     for (NSDictionary *rawDict in rawBlocks) {
         if (![rawDict isKindOfClass:[NSDictionary class]]) {
@@ -320,9 +336,22 @@ NSString const *NotePostIdKey           = @"post_id";
         } else {
             block.type = NoteBlockTypeText;
         }
-        
+
+        // Figure out if this is a badge
+        for (NotificationMedia *media in block.media) {
+            if (media.isBadge) {
+                isBadge = true;
+            }
+        }
         
         [parsed addObject:block];
+    }
+    
+    // Note: Seriously. Duck typing should be abolished.
+    if (isBadge) {
+        for (NotificationBlock *block in parsed) {
+            block.isBadge = true;
+        }
     }
     
     return parsed;
@@ -336,8 +365,8 @@ NSString const *NotePostIdKey           = @"post_id";
 #pragma mark ====================================================================================
 
 @interface NotificationBlockGroup ()
-@property (nonatomic, strong) NSArray             *blocks;
-@property (nonatomic, assign) NoteBlockGroupType type;
+@property (nonatomic, strong) NSArray               *blocks;
+@property (nonatomic, assign) NoteBlockGroupType    type;
 @end
 
 @implementation NotificationBlockGroup
@@ -350,6 +379,24 @@ NSString const *NotePostIdKey           = @"post_id";
         }
     }
     return nil;
+}
+
+- (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types
+{
+    NSMutableSet *urls = [NSMutableSet set];
+    
+    for (NotificationBlock *block in self.blocks) {
+        if ([types containsObject:@(block.type)] == false) {
+            continue;
+        }
+        
+        NSArray *imageUrls = [block imageUrls];
+        if (imageUrls) {
+            [urls addObjectsFromArray:imageUrls];
+        }
+    }
+    
+    return urls;
 }
 
 + (NotificationBlockGroup *)groupWithBlocks:(NSArray *)blocks type:(NoteBlockGroupType)type
@@ -539,10 +586,8 @@ NSString const *NotePostIdKey           = @"post_id";
     //
     for (NotificationBlockGroup *group in self.bodyBlockGroups) {
         for (NotificationBlock *block in group.blocks) {
-            for (NotificationMedia *media in block.media) {
-                if (media.isBadge) {
-                    return true;
-                }
+            if (block.isBadge) {
+                return true;
             }
         }
     }
@@ -581,6 +626,27 @@ NSString const *NotePostIdKey           = @"post_id";
         }
     }
     return nil;
+}
+
+// Check if this note is a comment and in 'unapproved' status
+- (BOOL)isUnapprovedComment
+{
+    NotificationBlockGroup *group = [self blockGroupOfType:NoteBlockGroupTypeComment];
+    if (group && [group blockOfType:NoteBlockTypeComment]) {
+        NotificationBlock *block = [group blockOfType:NoteBlockTypeComment];
+        return [block isActionEnabled:NoteActionApproveKey] && ![block isActionOn:NoteActionApproveKey];
+    }
+
+    return NO;
+}
+
+- (void)didChangeOverrides
+{
+    // HACK:
+    // This is a NO-OP that will force NSFetchedResultsController to reload the row for this object.
+    // Helpful when dealing with non-CoreData backed attributes.
+    //
+    self.read = self.read;
 }
 
 @end
