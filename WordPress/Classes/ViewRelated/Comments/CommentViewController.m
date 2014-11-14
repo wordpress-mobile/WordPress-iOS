@@ -109,6 +109,16 @@ static NSInteger const CVCNumberOfSections = 2;
     }
 }
 
+- (void)attachEditActionButton
+{
+    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(editComment)];
+    
+    self.navigationItem.rightBarButtonItem = editBarButton;
+}
+
 - (void)setupAutolayoutConstraints
 {
     NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
@@ -163,6 +173,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [super viewDidLoad];
 
+    [self attachEditActionButton];
     [self fetchPostIfNecessary];
 }
 
@@ -183,6 +194,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 #pragma mark - Fetching Post
 
@@ -299,7 +311,7 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.isLikeEnabled = self.comment.blog.isWPcom;
     cell.isApproveEnabled = YES;
     cell.isTrashEnabled = YES;
-    cell.isMoreEnabled = YES;
+    cell.isSpamEnabled = YES;
 
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
@@ -347,8 +359,8 @@ static NSInteger const CVCNumberOfSections = 2;
         [weakSelf trashComment];
     };
 
-    cell.onMoreClick = ^(UIButton *sender){
-        [weakSelf displayMoreActionsForSender:sender];
+    cell.onSpamClick = ^(UIButton *sender){
+        [weakSelf spamComment];
     };
 
     cell.onSiteClick = ^(UIButton *sender){
@@ -423,35 +435,6 @@ static NSInteger const CVCNumberOfSections = 2;
              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
              otherButtonTitles:@[NSLocalizedString(@"Delete", @"Delete")]
                       tapBlock:completion];
-}
-
-- (void)displayMoreActionsForSender:(UIButton *)sender
-{
-    NSString *editTitle = NSLocalizedString(@"Edit Comment", @"Edit a comment");
-    NSString *spamTitle = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
-
-    NSArray *otherButtonTitles = @[editTitle, spamTitle];
-
-    // Render the actionSheet
-    __typeof(self) __weak weakSelf = self;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:cancelTitle
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:otherButtonTitles
-                                                           completion:^(NSString *buttonTitle) {
-                                                               if ([buttonTitle isEqualToString:editTitle]) {
-                                                                   [weakSelf editComment];
-                                                               } else if ([buttonTitle isEqualToString:spamTitle]) {
-                                                                   [weakSelf spamComment];
-                                                               }
-                                                           }];
-
-    if ([UIDevice isPad]) {
-        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
-    } else {
-        [actionSheet showInView:self.view.window];
-    }
 }
 
 - (void)spamComment
