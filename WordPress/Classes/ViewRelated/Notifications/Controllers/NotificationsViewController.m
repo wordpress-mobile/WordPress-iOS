@@ -48,7 +48,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -672,8 +672,8 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptForFeedback
 {
-    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
-    [ABXFeedbackViewController showFromController:self placeholder:nil];
+    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
+    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
     [AppRatingUtility gaveFeedbackForCurrentVersion];
     [self hideRatingView];
 }
@@ -693,6 +693,16 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)appbotPromptDidntLike
 {
     [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
+}
+
+- (void)abxFeedbackDidSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
+}
+
+- (void)abxFeedbackDidntSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
 
 @end
