@@ -569,40 +569,40 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
             break;
         case WPAnalyticsStatAppReviewsSawPrompt:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Saw App Review Prompt"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Saw App Review Prompt"];
             [instructions addSuperPropertyToFlag:@"saw_app_review_prompt"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"saw_app_review_prompt"];
             break;
         case WPAnalyticsStatAppReviewsRatedApp:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Rated App"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Rated App"];
             [instructions addSuperPropertyToFlag:@"rated_app"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"rated_app"];
             break;
         case WPAnalyticsStatAppReviewsDeclinedToRateApp:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Declined to Rate App"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Declined to Rate App"];
             [instructions addSuperPropertyToFlag:@"declined_to_rate_app"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"declined_to_rate_app"];
             break;
         case WPAnalyticsStatAppReviewsOpenedFeedbackScreen:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Opened Feedback Screen"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Opened Feedback Screen"];
             [instructions addSuperPropertyToFlag:@"opened_feedback_screen_through_app_review_tool"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"opened_feedback_screen_through_app_review_tool"];
             break;
         case WPAnalyticsStatAppReviewsSentFeedback:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Sent Feedback"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Sent Feedback"];
             [instructions addSuperPropertyToFlag:@"sent_feedback_through_app_review_tool"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"sent_feedback_through_app_review_tool"];
             break;
         case WPAnalyticsStatAppReviewsCanceledFeedbackScreen:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Canceled Sending Feedback After Opening Feedback Screen"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Canceled Sending Feedback After Opening Feedback Screen"];
             break;
         case WPAnalyticsStatAppReviewsLikedApp:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Liked App"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Liked App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_liked_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_liked_app_when_prompted"];
             break;
         case WPAnalyticsStatAppReviewsDidntLikeApp:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"App Reviews - Didn't Like App"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Didn't Like App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
             break;
