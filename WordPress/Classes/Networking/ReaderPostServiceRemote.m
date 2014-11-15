@@ -441,7 +441,10 @@ static const NSInteger FeaturedImageMinimumWidth = 600;
 - (NSString *)featuredImageFromPostDictionary:(NSDictionary *)dict
 {
     NSString *featuredImage = @"";
-
+    NSDictionary *featured_media = [dict dictionaryForKey:@"featured_media"];
+    NSArray *attachments = [[dict dictionaryForKey:@"attachments"] allValues];
+    NSString *content = [dict stringForKey:@"content"];
+    
     // Editorial trumps all
     featuredImage = [dict stringForKeyPath:@"editorial.image"];
 
@@ -450,9 +453,31 @@ static const NSInteger FeaturedImageMinimumWidth = 600;
         featuredImage = [dict stringForKey:@"featured_image"];
     }
 
-    // Parse content for a match
-    if ([featuredImage length] == 0) {
-        featuredImage = [self searchContentForImageToFeature:[dict stringForKey:@"content"]];
+    // If no featured image specified, try featured media.
+    if (([featuredImage length] == 0) && ([[featured_media stringForKey:@"type"] isEqualToString:@"image"])) {
+        featuredImage = [self stringOrEmptyString:[featured_media stringForKey:@"uri"]];
+    }
+
+    // If still no image specified, try attachments.
+    if ([featuredImage length] == 0 && [attachments count] > 0) {
+        NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
+        attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
+        NSDictionary *attachment = [attachments firstObject];
+        NSString *mimeType = [attachment stringForKey:@"mime_type"];
+        NSInteger width = [[attachment numberForKey:@"width"] integerValue];
+        if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= 1024) {
+            featuredImage = [self stringOrEmptyString:[attachment stringForKey:@"URL"]];
+        }
+    }
+
+    if ([featuredImage length] == 0 && [content rangeOfString:@"<img"].location != NSNotFound) {
+        // If stilll no match, parse content
+        featuredImage = [self searchContentForImageToFeature:content];
+
+        // If *still* no match, parse by size classes
+        if ([featuredImage length] == 0) {
+            featuredImage = [self searchContentBySizeClassForImageToFeature:content];
+        }
     }
 
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
@@ -507,6 +532,55 @@ static const NSInteger FeaturedImageMinimumWidth = 600;
     }
 
     return imageSrc;
+}
+
+/**
+ Search the passed string for an image that is a good candidate to feature.
+ @param content The content string to search.
+ @return The url path for the image or an empty string.
+ */
+- (NSString *)searchContentBySizeClassForImageToFeature:(NSString *)content
+{
+    NSString *str = @"";
+    // If there is no image tag in the content, just bail.
+    if (!content || [content rangeOfString:@"<img"].location == NSNotFound) {
+        return str;
+    }
+    // If there is not a large or full sized image, just bail.
+    NSString *className = @"size-full";
+    NSRange range = [content rangeOfString:className];
+    if (range.location == NSNotFound) {
+        className = @"size-large";
+        range = [content rangeOfString:className];
+        if (range.location == NSNotFound) {
+            className = @"size-medium";
+            range = [content rangeOfString:className];
+            if (range.location == NSNotFound) {
+                return str;
+            }
+        }
+    }
+    // find the start of the image
+    range = [content rangeOfString:@"<img" options:NSBackwardsSearch | NSCaseInsensitiveSearch range:NSMakeRange(0, range.location)];
+    if (range.location == NSNotFound) {
+        return str;
+    }
+    // Build the regex once and keep it around for subsequent calls.
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+    NSInteger length = [content length] - range.location;
+    range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];
+    if (range.location == NSNotFound) {
+        return str;
+    }
+    range = NSMakeRange(range.location+5, range.length-6);
+    str = [content substringWithRange:range];
+    str = [[str componentsSeparatedByString:@"?"] objectAtIndex:0];
+    return str;
 }
 
 - (NSInteger)widthFromElementAttribute:(NSString *)tag
