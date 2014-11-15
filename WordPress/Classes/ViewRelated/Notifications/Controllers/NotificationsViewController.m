@@ -48,7 +48,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -175,6 +175,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
                 self.tableView.tableHeaderView.alpha = 1.0;
             } completion:nil];
         });
+        [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
     }
 }
 
@@ -663,6 +664,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptForReview
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
     [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
     [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
@@ -670,15 +672,37 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 
 - (void)appbotPromptForFeedback
 {
-    [ABXFeedbackViewController showFromController:self placeholder:nil];
+    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
+    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
     [AppRatingUtility gaveFeedbackForCurrentVersion];
     [self hideRatingView];
 }
 
 - (void)appbotPromptClose
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
     [AppRatingUtility declinedToRateCurrentVersion];
     [self hideRatingView];
+}
+
+- (void)appbotPromptLiked
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
+}
+
+- (void)appbotPromptDidntLike
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
+}
+
+- (void)abxFeedbackDidSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
+}
+
+- (void)abxFeedbackDidntSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
 
 @end
