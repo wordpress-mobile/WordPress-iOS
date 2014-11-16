@@ -35,7 +35,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
-    WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
+    WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat withProperties:properties];
     if (instructions == nil) {
         DDLogInfo(@"No instructions, do nothing");
         return;
@@ -197,7 +197,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [[Mixpanel sharedInstance].people set:@{ property : value } ];
 }
 
-- (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
+- (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat withProperties:(NSDictionary *)properties
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
 
@@ -605,6 +605,14 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Didn't Like App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
+            break;
+        case WPAnalyticsStatAppUpgraded:
+            NSAssert(properties[@"last_version"] != nil, @"Should not use this stat without passing in a 'last_version' parameter");
+            NSAssert(properties[@"current_version"] != nil, @"Should not use this stat without passing in a 'current_version' parameter");
+            
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Upgraded App"];
+            [instructions.peoplePropertiesToAssign setValue:properties[@"last_version"] forKey:@"last_ios_version"];
+            [instructions.peoplePropertiesToAssign setValue:properties[@"current_version"] forKey:@"current_ios_version"];
             break;
         default:
             break;
