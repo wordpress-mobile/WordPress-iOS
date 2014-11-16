@@ -496,7 +496,7 @@ static NSDictionary *EnabledButtonBarStyle;
     [self.failedMediaAlertView show];
 }
 
-- (void)showMediaInUploadingAlert
+- (void)showMediaUploadingAlert
 {
     //the post is using the network connection and cannot be stoped, show a message to the user
     UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
@@ -516,8 +516,8 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showSettings
 {
-    if ([self isMediaInUploading]) {
-        [self showMediaInUploadingAlert];
+    if ([self isMediaUploading]) {
+        [self showMediaUploadingAlert];
         return;
     }
     
@@ -529,8 +529,8 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)showPreview
 {
-    if ([self isMediaInUploading]) {
-        [self showMediaInUploadingAlert];
+    if ([self isMediaUploading]) {
+        [self showMediaUploadingAlert];
         return;
     }
     
@@ -568,8 +568,8 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)cancelEditing
 {
-    if ([self isMediaInUploading]) {
-        [self showMediaInUploadingAlert];
+    if ([self isMediaUploading]) {
+        [self showMediaUploadingAlert];
         return;
     }
     
@@ -1002,7 +1002,7 @@ static NSDictionary *EnabledButtonBarStyle;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    if (self.mediaInProgress && self.mediaInProgress.count > 0) {
+    if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
     } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         aUIButtonBarItem = nil;
@@ -1124,8 +1124,8 @@ static NSDictionary *EnabledButtonBarStyle;
         _currentActionSheet = nil;
     }
     
-	if ([self isMediaInUploading] ) {
-		[self showMediaInUploadingAlert];
+	if ([self isMediaUploading] ) {
+		[self showMediaUploadingAlert];
 		return;
 	}
     
@@ -1271,20 +1271,26 @@ static NSDictionary *EnabledButtonBarStyle;
 	return hasFailedMedia;
 }
 
-//check if there are media in uploading status
-- (BOOL)isMediaInUploading
+- (BOOL)isMediaUploading
 {
-	BOOL isMediaInUploading = NO;
+	BOOL mediaStillInProgress = NO;
 	
+    // First check to see if media is being uploaded
 	NSSet *mediaFiles = self.post.media;
 	for (Media *media in mediaFiles) {
 		if(media.remoteStatus == MediaRemoteStatusPushing) {
-			isMediaInUploading = YES;
+			mediaStillInProgress = YES;
 			break;
 		}
 	}
 	mediaFiles = nil;
-	return isMediaInUploading;
+    
+    // If media is not begin uploaded, check to see if we are waiting on the remote URLs
+    if (!mediaStillInProgress) {
+        mediaStillInProgress =  (self.mediaInProgress && self.mediaInProgress.count > 0);
+    }
+    
+	return mediaStillInProgress;
 }
 
 - (void)removeFromMediaInProgress:(NSString *)uniqueMediaId
@@ -1501,6 +1507,15 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     [self autosaveContent];
     [self refreshNavigationBarButtons:NO];
+}
+
+- (BOOL)editorShouldDisplaySourceView:(WPEditorViewController *)editorController
+{
+    if ([self isMediaUploading]) {
+        [self showMediaUploadingAlert];
+        return NO;        
+    }
+    return YES;
 }
 
 - (void)editorDidPressSettings:(WPEditorViewController *)editorController
