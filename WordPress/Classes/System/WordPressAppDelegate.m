@@ -673,7 +673,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     
     if (userUpgraded) {
         DDLogInfo(@"User upgraded from %@ to %@", lastVersion, currentVersion);
-        [WPAnalytics track:WPAnalyticsStatAppUpgraded withProperties:@{ @"last_version": lastVersion, @"current_version": currentVersion }];
+        [WPAnalytics track:WPAnalyticsStatAppUpgraded withProperties:@{ @"last_ios_version": lastVersion, @"current_ios_version": currentVersion }];
         [userDefaults setValue:currentVersion forKey:WPVersionUsedForLastLaunch];
         [userDefaults synchronize];
     }

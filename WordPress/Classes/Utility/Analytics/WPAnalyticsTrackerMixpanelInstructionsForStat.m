@@ -15,6 +15,7 @@
         _disableTrackingForSelfHosted = NO;
         _superPropertiesToFlag = [[NSMutableArray alloc] init];
         _peoplePropertiesToAssign = [[NSMutableDictionary alloc] init];
+        _superPropertiesToAssign = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
