@@ -34,6 +34,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic, strong) NSProgress * mediaProgress;
+@property (nonatomic, strong) UIProgressView * mediaProgressView;
 @property (nonatomic, strong) NSMutableArray * childrenMediaProgress;
 
 @end
@@ -145,11 +146,28 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self geotagNewPost];
     self.delegate = self;
+    
+    // setup media progress view on navbar
+    self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
+    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
+    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.mediaProgressView.hidden = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [self refreshButtons];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    //layout mediaProgressView 
+    CGRect frame = self.mediaProgressView.frame;
+    frame.size.width = self.view.frame.size.width;
+    frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    [self.mediaProgressView setFrame:frame];
 }
 
 #pragma mark - View Setup
@@ -168,24 +186,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
+    
+    self.mediaProgressView.hidden = YES;
     if (self.mediaProgress &&
         ![self.mediaProgress isCancelled] &&
         self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount) {
+        
+        self.mediaProgressView.hidden = NO;
+        self.mediaProgressView.progress = self.mediaProgress.fractionCompleted;
         UIButton *titleButton = self.uploadStatusButton;
         if (self.navigationItem.titleView != titleButton){
             self.navigationItem.titleView = titleButton;
         }
-        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@\n", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
-        
-        NSString *subtext = [self.mediaProgress localizedAdditionalDescription];
-        NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
-        NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:subtext
-                                                                                         attributes:subtextAttributes];
-        [titleText appendAttributedString:titleSubtext];
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
-        
-        //[titleButton sizeToFit];
+        [titleButton sizeToFit];
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
