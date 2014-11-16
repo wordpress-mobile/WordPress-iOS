@@ -68,6 +68,7 @@ static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNa
 static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+static NSString * const WPVersionUsedForLastLaunch = @"WPVersionUsedForLastLaunch";
 
 NSInteger const kReaderTabIndex                                 = 0;
 NSInteger const kNotificationsTabIndex                          = 1;
@@ -200,6 +201,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self showWelcomeScreenIfNeededAnimated:NO];
     [self setupLookback];
     [self setupAppbotX];
+    [self trackIfUserUpgraded];
 
     return YES;
 }
@@ -650,6 +652,31 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+- (void)trackIfUserUpgraded
+{
+    BOOL userUpgraded = NO;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *currentVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString *lastVersion = [userDefaults stringForKey:WPVersionUsedForLastLaunch];
+    
+    if ([lastVersion length] == 0) {
+        // We haven't tracked this property for the user before so just set the last version to the current version
+        lastVersion = currentVersion;
+        userUpgraded = YES;
+    }
+    
+    if (![lastVersion isEqualToString:currentVersion]) {
+        userUpgraded = YES;
+    }
+    
+    if (userUpgraded) {
+        DDLogInfo(@"User upgraded from %@ to %@", lastVersion, currentVersion);
+        [WPAnalytics track:WPAnalyticsStatAppUpgraded withProperties:@{ @"last_ios_version": lastVersion, @"current_ios_version": currentVersion }];
+        [userDefaults setValue:currentVersion forKey:WPVersionUsedForLastLaunch];
+        [userDefaults synchronize];
+    }
 }
 
 - (void)initializeAppTracking

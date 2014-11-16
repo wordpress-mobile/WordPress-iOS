@@ -35,7 +35,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
-    WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
+    WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat withProperties:properties];
     if (instructions == nil) {
         DDLogInfo(@"No instructions, do nothing");
         return;
@@ -170,6 +170,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [self setValue:obj forPeopleProperty:key];
     }];
+    
+    if ([instructions.superPropertiesToAssign count] > 0) {
+        [self setSuperProperties:instructions.superPropertiesToAssign];
+    }
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -197,7 +201,15 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [[Mixpanel sharedInstance].people set:@{ property : value } ];
 }
 
-- (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
+- (void)setSuperProperties:(NSDictionary *)properties
+{
+    NSParameterAssert(properties != nil);
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    [superProperties addEntriesFromDictionary:properties];
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat withProperties:(NSDictionary *)properties
 {
     WPAnalyticsTrackerMixpanelInstructionsForStat *instructions;
 
@@ -605,6 +617,18 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Didn't Like App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
+            break;
+        case WPAnalyticsStatAppUpgraded:
+            NSAssert(properties[@"last_ios_version"] != nil, @"Should not use this stat without passing in a 'last_ios_version' parameter");
+            NSAssert(properties[@"current_ios_version"] != nil, @"Should not use this stat without passing in a 'current_ios_version' parameter");
+            
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Upgraded App"];
+            
+            [instructions.peoplePropertiesToAssign setValue:properties[@"last_ios_version"] forKey:@"last_ios_version"];
+            [instructions.superPropertiesToAssign setValue:properties[@"last_ios_version"] forKey:@"last_ios_version"];
+            
+            [instructions.peoplePropertiesToAssign setValue:properties[@"current_ios_version"] forKey:@"current_ios_version"];
+            [instructions.superPropertiesToAssign setValue:properties[@"current_ios_version"] forKey:@"current_ios_version"];
             break;
         default:
             break;
