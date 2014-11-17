@@ -3,6 +3,8 @@
 #import "CTAssetsPickerController.h"
 
 @class AbstractPost;
+@class Blog;
+@class PostSettingsViewController;
 
 typedef enum
 {
@@ -26,12 +28,38 @@ extern NSString* const kWPEditorConfigURLParamEnabled;
 typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
+/**
+ *  @brief      Wether this VC owns the post or not.
+ *  @details    This is set to YES when this VC is initialized with one of the draft post creation
+ *              initializers.  It means this VC will delete the post objects if changes are
+ *              discarded by the user.
+ */
+@property (nonatomic, assign, readonly) BOOL ownsPost;
+
+#pragma mark - Properties: Misc
+
+@property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
+@property (nonatomic, strong) AbstractPost *post;
+@property (readonly) BOOL hasChanges;
+
+@property (nonatomic, strong) UIActionSheet *currentActionSheet;
+@property (nonatomic, strong) UIAlertView *failedMediaAlertView;
+
 #pragma mark - Initializers
 
 /*
  Compose a new post with the last used blog.
  */
 - (id)initWithDraftForLastUsedBlog;
+
+/**
+ *  @brief      Initializes the editor with a new draft for the specified blog.
+ *
+ *  @param      blog    The blog to create the new draft for.  Cannot be nil.
+ *
+ *  @returns    The initialized object.
+ */
+- (instancetype)initWithDraftForBlog:(Blog*)blog;
 
 /*
  Initialize the editor with the specified post and default to preview mode.
@@ -101,5 +129,8 @@ typedef void (^EditPostCompletionHandler)(void);
  */
 + (void)setNewEditorEnabled:(BOOL)isEnabled;
 
+#pragma mark - Misc methods
+
+- (void)didSaveNewPost;
 
 @end
