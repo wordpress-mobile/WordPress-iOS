@@ -1573,8 +1573,12 @@ static NSDictionary *EnabledButtonBarStyle;
                     
                     AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                        [self removeFromMediaInProgress:imageUniqueId];
-                        [self refreshNavigationBarButtons:NO];
+                        // Delay execution of this for 1 second to let the web view "settle".
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                            [self removeFromMediaInProgress:imageUniqueId];
+                            [self refreshNavigationBarButtons:NO];
+                        });
+                        
                     } failure:^(NSError *error) {
                         [self removeFromMediaInProgress:imageUniqueId];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
