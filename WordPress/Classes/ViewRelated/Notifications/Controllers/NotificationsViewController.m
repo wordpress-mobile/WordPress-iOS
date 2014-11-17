@@ -25,9 +25,9 @@
 
 #import "AppRatingUtility.h"
 
-#import <AppbotX/ABXPromptView.h>
-#import <AppbotX/ABXAppStore.h>
-#import <AppbotX/ABXFeedbackViewController.h>
+#import <WordPress-AppbotX/ABXPromptView.h>
+#import <WordPress-AppbotX/ABXAppStore.h>
+#import <WordPress-AppbotX/ABXFeedbackViewController.h>
 
 #import "WordPress-Swift.h"
 
@@ -49,7 +49,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -202,6 +202,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
                 self.tableView.tableHeaderView.alpha = 1.0;
             } completion:nil];
         });
+        [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
     }
 }
 
@@ -680,6 +681,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)appbotPromptForReview
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
     [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
     [AppRatingUtility ratedCurrentVersion];
     [self hideRatingView];
@@ -687,15 +689,37 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)appbotPromptForFeedback
 {
-    [ABXFeedbackViewController showFromController:self placeholder:nil];
+    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
+    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
     [AppRatingUtility gaveFeedbackForCurrentVersion];
     [self hideRatingView];
 }
 
 - (void)appbotPromptClose
 {
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
     [AppRatingUtility declinedToRateCurrentVersion];
     [self hideRatingView];
+}
+
+- (void)appbotPromptLiked
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
+}
+
+- (void)appbotPromptDidntLike
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
+}
+
+- (void)abxFeedbackDidSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
+}
+
+- (void)abxFeedbackDidntSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
 
 @end
