@@ -1,8 +1,14 @@
 #import "WPProgressTableViewCell.h"
+#import "MRProgress.h"
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
+@interface WPProgressTableViewCell ()
+
+@property (nonatomic, strong) IBOutlet MRActivityIndicatorView * progressView;
+
+@end
 
 @implementation WPProgressTableViewCell {
     NSProgress * _progress;
@@ -11,8 +17,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        _progressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
-        _progressView.frame = CGRectMake(0,0,50,50);
+        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10,0,40,40)];
         self.accessoryView = _progressView;
     }
     return self;
@@ -22,24 +27,42 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
 }
 
+- (void)prepareForReuse
+{
+    [self setProgress:nil];
+    [self.progressView stopAnimating];
+}
+
+#pragma mark - Progress handling
+
 - (void) setProgress:(NSProgress *) progress {
     if (progress == _progress){
         return;
     }
     [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-    
+
     _progress = progress;
     
     [_progress addObserver:self
                          forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
                             options:NSKeyValueObservingOptionInitial
                             context:ProgressObserverContext];
+    
+    if (_progress.isCancellable){
+        [self.progressView.stopButton addTarget:self action:@selector(stopPressed:) forControlEvents:UIControlEventTouchUpInside];
+    }
     [self updateProgress];
 }
 
 - (void) updateProgress
 {
-    [self.progressView setProgress:_progress.fractionCompleted animated:YES];
+    if (_progress.fractionCompleted < 1){
+        [_progressView startAnimating];
+    } else {
+        [_progressView stopAnimating];
+    }
+    
+    self.progressView.mayStop = _progress.isCancellable;
     self.textLabel.text = [_progress localizedDescription];
     self.detailTextLabel.text = [_progress localizedAdditionalDescription];
     [self.imageView setImage:_progress.userInfo[WPProgressImageThumbnailKey]];
@@ -61,10 +84,11 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     }
 }
 
-- (void)prepareForReuse
+#pragma mark - Stop Button events
+
+- (void) stopPressed:(id)sender
 {
-    [self setProgress:nil];
-    self.progressView.progress = 0;
+    [_progress cancel];
 }
 
 @end
