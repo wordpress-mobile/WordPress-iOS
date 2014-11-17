@@ -23,7 +23,7 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
 - (instancetype)initWithMasterProgress:(NSProgress *)masterProgress
              childrenProgress:(NSArray *)childrenProgress
 {
-    self = [super initWithStyle:UITableViewStylePlain];
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _masterProgress = masterProgress;
         _childrenProgress = childrenProgress;
