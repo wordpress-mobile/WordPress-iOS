@@ -46,7 +46,9 @@
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSProgress * localProgress = [NSProgress progressWithTotalUnitCount:2];    
+    NSProgress * localProgress = [NSProgress progressWithTotalUnitCount:2];
+    //The enconding of the request uses a NSData that has a progress
+    [localProgress becomeCurrentWithPendingUnitCount:1];
     NSString * path = media.localURL;
     NSString * type = media.mimeType;
     NSString * filename = media.file;
@@ -63,6 +65,7 @@
     NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
     
     NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
+    [localProgress resignCurrent];
     
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
       success:^(AFHTTPRequestOperation *operation, id responseObject) {
