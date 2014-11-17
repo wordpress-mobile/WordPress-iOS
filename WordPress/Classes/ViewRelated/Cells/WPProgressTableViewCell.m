@@ -63,8 +63,13 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     }
     
     self.progressView.mayStop = _progress.isCancellable;
-    self.textLabel.text = [_progress localizedDescription];
-    self.detailTextLabel.text = [_progress localizedAdditionalDescription];
+    if ( [_progress isCancelled]){
+        self.textLabel.text = NSLocalizedString(@"Cancelled",@"The action was cancelled");
+        self.detailTextLabel.text = @"";
+    } else {
+        self.textLabel.text = [_progress localizedDescription];
+        self.detailTextLabel.text = [_progress localizedAdditionalDescription];
+    }
     [self.imageView setImage:_progress.userInfo[WPProgressImageThumbnailKey]];
 }
 
