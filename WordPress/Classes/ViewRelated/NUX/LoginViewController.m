@@ -18,6 +18,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
+#import <NSString+XMLExtensions.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <NSURL+IDN.h>
@@ -949,7 +950,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
             _blog.url = url;
         }
         if (blogName) {
-            _blog.blogName = blogName;
+            _blog.blogName = [blogName stringByDecodingXMLCharacters];
         }
     }
     _blog.xmlrpc = xmlrpc;
