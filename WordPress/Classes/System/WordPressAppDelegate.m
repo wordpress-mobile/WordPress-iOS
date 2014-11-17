@@ -10,7 +10,7 @@
 #import <Simperium/Simperium.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <AppbotX/ABX.h>
+#import <WordPress-AppbotX/ABX.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -215,6 +215,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         if ([WordPressComApiCredentials lookbackToken].length > 0) {
             [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
             [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPInternalBetaShakeToPullUpFeedbackKey: @YES}];
+            [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:LookbackCameraEnabledSettingsKey];
             [Lookback lookback].shakeToRecord = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
             
             // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
