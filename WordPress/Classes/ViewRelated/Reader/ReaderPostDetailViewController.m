@@ -437,7 +437,7 @@ static CGFloat const VerticalMargin = 40;
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
     if (linkURL.path && !linkURL.host) {
-        NSURL *postURL = [NSURL URLWithString:self.post.blogURL];
+        NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
     WPWebViewController *controller = [[WPWebViewController alloc] init];
