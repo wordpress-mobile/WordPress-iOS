@@ -1,5 +1,4 @@
 #import "EditPageViewController.h"
-#import "WPPostViewController_Internal.h"
 #import "AbstractPost.h"
 #import "ContextManager.h"
 #import "PostService.h"
@@ -18,7 +17,7 @@
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.ownsPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
     } else {
         if ([self.post.postTitle length] > 0) {
