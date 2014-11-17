@@ -193,7 +193,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount) {
         
         self.mediaProgressView.hidden = NO;
-        self.mediaProgressView.progress = self.mediaProgress.fractionCompleted;
+        self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
         UIButton *titleButton = self.uploadStatusButton;
         if (self.navigationItem.titleView != titleButton){
             self.navigationItem.titleView = titleButton;
