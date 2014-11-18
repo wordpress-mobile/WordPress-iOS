@@ -883,7 +883,9 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
             [self.navigationController pushViewController:featuredImageVC animated:YES];
         }
     } else {
-        [self showPhotoPicker];
+        if (!self.isUploadingMedia) {
+            [self showPhotoPicker];
+        }
     }
 }
 
@@ -1053,7 +1055,13 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media) {
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+            if (error) {
+                DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
+                weakSelf.isUploadingMedia = NO;
+                return;
+            }
             media.mediaType = MediaTypeFeatured;
             [mediaService uploadMedia:media success:^{
                 weakSelf.isUploadingMedia = NO;
@@ -1062,7 +1070,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
                 weakSelf.isUploadingMedia = NO;
-                DDLogError(@"Couldn't upload asset %@: %@", assetURL, [error localizedDescription]);
+                [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
+                DDLogError(@"Couldn't upload featured image %@: %@", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
         }];

@@ -22,6 +22,8 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
+#import "AppRatingUtility.h"
+
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
@@ -38,20 +40,16 @@
 #pragma mark Constants
 #pragma mark ==========================================================================================
 
-static UIEdgeInsets NotificationTableInsetsPhone    = {0.0f,  0.0f, 20.0f, 0.0f};
-static UIEdgeInsets NotificationTableInsetsPad      = {40.0f, 0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
+static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
 
-static NSString *NotificationReplyToastImage        = @"action-icon-replied";
-static NSString *NotificationSuccessToastImage      = @"action-icon-success";
+static UIEdgeInsets NotificationHeaderSeparatorInsets   = {0.0f,  0.0f,  0.0f, 0.0f};
+static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
-typedef NS_ENUM(NSInteger, NotificationSection) {
-    NotificationSectionHeader,
-    NotificationSectionBody,
-    NotificationSectionCount
-};
+static NSString *NotificationReplyToastImage            = @"action-icon-replied";
+static NSString *NotificationSuccessToastImage          = @"action-icon-success";
 
-static NSInteger NotificationSectionHeaderRows  = 1;
-static CGFloat NotificationSectionSeparator     = 10;
+static NSInteger NotificationSectionCount               = 1;
 
 
 #pragma mark ==========================================================================================
@@ -69,9 +67,11 @@ static CGFloat NotificationSectionSeparator     = 10;
 // Table Helpers
 @property (nonatomic, strong) NSDictionary                  *layoutCellMap;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
-@property (nonatomic, assign) NSInteger                     sectionCount;
-@property (nonatomic, assign) NSInteger                     headerSectionIndex;
-@property (nonatomic, assign) NSInteger                     bodySectionIndex;
+@property (nonatomic, strong) NSArray                       *blockGroups;
+@property (nonatomic, assign) UIEdgeInsets                  firstRowInsets;
+
+// Media Helpers
+@property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
 
 // Model
 @property (nonatomic, strong) Notification                  *note;
@@ -99,17 +99,23 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewDidLoad];
     
-    self.title                          = self.note.title;
-    self.restorationClass               = [self class];
-    self.view.backgroundColor           = [WPStyleGuide itsEverywhereGrey];
+    self.title                              = self.note.title;
+    self.restorationClass                   = [self class];
+    self.view.backgroundColor               = [WPStyleGuide itsEverywhereGrey];
     
     // Don't show the notification title in the next-view's back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
+    self.navigationItem.backBarButtonItem   = backButton;
 
-    self.tableView.separatorStyle       = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
-    self.tableView.backgroundColor      = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.separatorStyle           = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
+    self.tableView.accessibilityIdentifier  = @"Notification Details Table";
+    self.tableView.separatorInset           = UIEdgeInsetsZero;
+    self.tableView.separatorColor           = [WPStyleGuide notificationsBlockSeparatorColor];
+    self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     
+    self.mediaDownloader                    = [[NotificationMediaDownloader alloc] initWithMaximumImageWidth:self.maxMediaEmbedWidth];
+
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)      : NoteBlockTextTableViewCell.reuseIdentifier,
@@ -123,7 +129,8 @@ static CGFloat NotificationSectionSeparator     = 10;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
-    self.tableView.accessibilityIdentifier = @"Notification Details Table";
+
+    [AppRatingUtility incrementSignificantEvent];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,20 +159,25 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     [super viewDidLayoutSubviews];
     [self adjustTableInsetsIfNeeded];
+    [self adjustTableSeparatorsIfNeeded];
 }
 
 - (void)reloadData
 {
     // Hide the header, if needed
-    self.sectionCount       = NotificationSectionCount;
-    self.headerSectionIndex = NotificationSectionHeader;
-    self.bodySectionIndex   = NotificationSectionBody;
+    NSMutableArray *blockGroups = [NSMutableArray array];
+    BOOL hasHeaderBlocks        = (_note.headerBlockGroup != nil);
     
-    if (self.note.headerBlockGroup == nil) {
-        self.sectionCount--;
-        self.headerSectionIndex--;
-        self.bodySectionIndex--;
+    if (hasHeaderBlocks) {
+        [blockGroups addObject:_note.headerBlockGroup];
     }
+    
+    if (_note.bodyBlockGroups) {
+        [blockGroups addObjectsFromArray:_note.bodyBlockGroups];
+    }
+    
+    self.firstRowInsets = hasHeaderBlocks ? NotificationHeaderSeparatorInsets : NotificationBlockSeparatorInsets;
+    self.blockGroups    = blockGroups;
     
     [self.tableView reloadData];
     [self adjustTableInsetsIfNeeded];
@@ -178,6 +190,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 {
     self.note = notification;
     [self attachReplyViewIfNeeded];
+    [self attachEditActionIfNeeded];
     [self reloadData];
 }
 
@@ -226,62 +239,100 @@ static CGFloat NotificationSectionSeparator     = 10;
         return;
     }
     
-    // Attach the SuggestionsTableView for WPCOM blogs
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-        
-    BOOL shouldAddSuggestionView = (blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]);
+    __typeof(self) __weak weakSelf          = self;
     
-    if (shouldAddSuggestionView) {
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
-        self.suggestionsTableView.suggestionsDelegate = self;
-        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:self.suggestionsTableView];        
-    }
-    
-    __typeof(self) __weak weakSelf  = self;
-    
-    ReplyTextView *replyTextView    = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
-    replyTextView.placeholder       = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
-    replyTextView.replyText         = [NSLocalizedString(@"Reply", @"") uppercaseString];
-    replyTextView.onReply           = ^(NSString *content) {
+    ReplyTextView *replyTextView            = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
+    replyTextView.placeholder               = NSLocalizedString(@"Write a reply…", @"Placeholder text for inline compose view");
+    replyTextView.replyText                 = [NSLocalizedString(@"Reply", @"") uppercaseString];
+    replyTextView.accessibilityIdentifier   = @"Reply Text";
+    replyTextView.onReply                   = ^(NSString *content) {
         [weakSelf sendReplyWithBlock:block content:content];
     };
-    replyTextView.delegate          = self;
-    self.replyTextView              = replyTextView;
-    replyTextView.accessibilityIdentifier = @"Reply Text";
+    replyTextView.delegate                  = self;
+    self.replyTextView                      = replyTextView;
+
     // Attach the ReplyTextView at the very bottom
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
-    // If allowing suggestions, set up the reply text view keyboard and suggestion view constraints
-    if (shouldAddSuggestionView) {
-        // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
-        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-        
-        // Pin the suggestions view left and right edges to the super view edges
-        NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
+    // Attach suggestionsView
+    [self attachSuggestionsViewIfNeeded];
+}
 
-        // Pin the suggestions view top to the super view top
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
-                                                                          options:0
-                                                                          metrics:nil
-                                                                            views:views]];
-        
-        // Pin the suggestions view bottom to the top of the reply box
-        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                             attribute:NSLayoutAttributeBottom
-                                                             relatedBy:NSLayoutRelationEqual
-                                                                toItem:self.replyTextView
-                                                             attribute:NSLayoutAttributeTop
-                                                            multiplier:1
-                                                              constant:0]];
+
+#pragma mark - Suggestions View Helpers
+
+- (void)attachSuggestionsViewIfNeeded
+{
+    // Proceed only if needed!
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
+
+    if (!shouldAddSuggestionView) {
+        return;
+    }
+    
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.note.metaSiteID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.suggestionsTableView];
+    
+    // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
+    [self.replyTextView setKeyboardType:UIKeyboardTypeTwitter];
+    
+    // Pin the suggestions view left and right edges to the super view edges
+    NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+
+    // Pin the suggestions view top to the super view top
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    
+    // Pin the suggestions view bottom to the top of the reply box
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                         attribute:NSLayoutAttributeBottom
+                                                         relatedBy:NSLayoutRelationEqual
+                                                            toItem:self.replyTextView
+                                                         attribute:NSLayoutAttributeTop
+                                                        multiplier:1
+                                                          constant:0]];
+}
+
+
+#pragma mark - Edition Helpers
+
+- (void)attachEditActionIfNeeded
+{
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
+    UIBarButtonItem *editBarButton  = nil;
+    
+    if ([block isActionOn:NoteActionEditKey]) {
+        editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(editButtonWasPressed)];
+    }
+    
+    self.navigationItem.rightBarButtonItem = editBarButton;
+}
+
+- (IBAction)editButtonWasPressed
+{
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
+    if ([block isActionOn:NoteActionEditKey]) {
+        [self editCommentWithBlock:block];
     }
 }
 
@@ -302,6 +353,17 @@ static CGFloat NotificationSectionSeparator     = 10;
     }
     
     self.tableView.contentInset = contentInset;
+}
+
+- (void)adjustTableSeparatorsIfNeeded
+{
+    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+    
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
+    }
 }
 
 
@@ -352,7 +414,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 
 - (NotificationBlockGroup *)blockGroupForIndexPath:(NSIndexPath *)indexPath
 {
-    return (indexPath.section == _headerSectionIndex) ? _note.headerBlockGroup : _note.bodyBlockGroups[indexPath.row];
+    return self.blockGroups[indexPath.row];
 }
 
 
@@ -366,24 +428,43 @@ static CGFloat NotificationSectionSeparator     = 10;
         Ref.: http://stackoverflow.com/questions/17699831/how-to-change-height-of-grouped-uitableview-header
      */
 
-    return (section == _bodySectionIndex && _sectionCount > 1) ? NotificationSectionSeparator : CGFLOAT_MIN;
+    return CGFLOAT_MIN;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return CGFLOAT_MIN;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // Make sure no SectionHeader is rendered
+    return nil;
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    // Make sure no SectionFooter is rendered
+    return nil;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.sectionCount;
+    return NotificationSectionCount;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return (section == _headerSectionIndex) ? NotificationSectionHeaderRows : self.note.bodyBlockGroups.count;
+    return self.blockGroups.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
     NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
-    
+
     [self setupCell:tableViewCell blockGroup:blockGroup];
 
     CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
@@ -391,12 +472,24 @@ static CGFloat NotificationSectionSeparator     = 10;
     return height;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UIEdgeInsets separatorInsets            = (indexPath.row == 0) ? self.firstRowInsets : NotificationBlockSeparatorInsets;
+    cell.separatorInset                     = separatorInsets;
+    
+    // iOS 8 Only!
+    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
+        cell.layoutMargins = separatorInsets;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
     NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypeText)];
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
+ 
+    [self enqueueMediaDownloads:blockGroup indexPath:indexPath];
     [self setupCell:cell blockGroup:blockGroup];
 
     return cell;
@@ -419,6 +512,35 @@ static CGFloat NotificationSectionSeparator     = 10;
 
         [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
     }
+}
+
+
+#pragma mark - Media Download Helper
+
+- (void)enqueueMediaDownloads:(NotificationBlockGroup *)group indexPath:(NSIndexPath *)indexPath
+{
+    // Download Media: Only embeds for Text and Comment notifications
+    NSSet *richBlockTypes           = [NSSet setWithObjects:@(NoteBlockTypeText), @(NoteBlockTypeComment), nil];
+    NSSet *imageUrls                = [group imageUrlsForBlocksOfTypes:richBlockTypes];
+    __weak __typeof(self) weakSelf  = self;
+    
+    [self.mediaDownloader downloadMediaWithUrls:imageUrls completion:^{
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }];
+}
+
+- (CGFloat)maxMediaEmbedWidth
+{
+    // Maximum Media Embed Width should match with the RichTextView's width in portrait mode
+    NoteBlockTextTableViewCell *textCell = self.layoutCellMap[@(NoteBlockGroupTypeText)];
+    NSAssert(textCell, @"Missing TextCell?");
+    
+    // Note: First iteration doesn't support embed resize on rotation. Let's take the portrait width
+    CGRect bounds           = self.view.bounds;
+    CGFloat portraitWidth   = [UIDevice isPad] ? WPTableViewFixedWidth : MIN(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
+    CGFloat maxWidth        = portraitWidth - textCell.labelPadding.left - textCell.labelPadding.right;
+    
+    return maxWidth;
 }
 
 
@@ -487,29 +609,40 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
-    
     NSAssert(commentBlock, nil);
     NSAssert(userBlock, nil);
     
-    __weak __typeof(self) weakSelf  = self;
+    // Merge the Attachments with their ranges: [NSRange: UIImage]
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
+    NSDictionary *mediaRanges       = [commentBlock buildRangesToImagesMap:mediaMap];
     
+    // Timestamp: Append bullet character if we have a site title or url to show
+    NSString *site                  = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
+    NSString *timestamp             = [self.note.timestampAsDate shortString];
+    if (site) {
+        timestamp = [timestamp stringByAppendingString:@" • "];
+    }
+    
+    // Setup the cell
     cell.isReplyEnabled             = [UIDevice isPad] && [commentBlock isActionOn:NoteActionReplyKey];
     cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
     cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
     cell.isTrashEnabled             = [commentBlock isActionEnabled:NoteActionTrashKey];
-    cell.isMoreEnabled              = [commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isSpamEnabled              = [commentBlock isActionEnabled:NoteActionSpamKey];
 
     cell.isLikeOn                   = [commentBlock isActionOn:NoteActionLikeKey];
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
     
     cell.name                       = userBlock.text;
-    cell.timestamp                  = [self.note.timestampAsDate shortString];
-    cell.attributedCommentText      = commentBlock.regularAttributedTextOverride ?: commentBlock.regularAttributedText;
-
+    cell.attributedCommentText      = [commentBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.timestamp                  = timestamp;
+    cell.site                       = site;
+    
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
-    
     cell.onReplyClick               = ^(UIButton * sender){
         [weakSelf editReplyWithBlock:commentBlock];
     };
@@ -534,8 +667,19 @@ static CGFloat NotificationSectionSeparator     = 10;
         [weakSelf trashCommentWithBlock:commentBlock];
     };
     
-    cell.onMoreClick                = ^(UIButton * sender){
-        [weakSelf displayMoreActionsWithBlock:commentBlock sender:sender];
+    cell.onSpamClick                = ^(UIButton * sender){
+        [weakSelf spamCommentWithBlock:commentBlock];
+    };
+
+    cell.onSiteClick                = ^(UIButton * sender){
+        if (!userBlock.metaLinksHome) {
+            return;
+        }
+
+        NSURL *url = [[NSURL alloc] initWithString:userBlock.metaLinksHome];
+        if (url) {
+            [weakSelf openURL:url];
+        }
     };
 
     [cell downloadGravatarWithURL:media.mediaURL];
@@ -557,10 +701,16 @@ static CGFloat NotificationSectionSeparator     = 10;
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
     NSAssert(textBlock, nil);
     
-    __weak __typeof(self) weakSelf  = self;
+    // Merge the Attachments with their ranges: [NSRange: UIImage]
+    NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
+    NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
-    cell.attributedText             = textBlock.regularAttributedText;
-    cell.isBadge                    = self.note.isBadge;
+    // Setup the Cell
+    cell.attributedText             = [textBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.isBadge                    = textBlock.isBadge;
+    
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
         [weakSelf openURL:url];
     };
@@ -572,10 +722,7 @@ static CGFloat NotificationSectionSeparator     = 10;
 - (void)openURL:(NSURL *)url
 {
     //  NOTE:
-    //
-    //  DTAttributedLabel doesn't allow us to use *any* object as a DTLinkAttribute instance.
-    //  So, we lose the range metadata: is it a post? stats? comment?.
-    //  In this step, we attempt to match the URL with any NotificationRange instance, contained in the note,
+    //  In this step, we attempt to match the URL tapped with any NotificationRange instance, contained in the note,
     //  and thus, recover the metadata!
     //
     NotificationRange *range    = [self.note notificationRangeWithUrl:url];
@@ -635,44 +782,6 @@ static CGFloat NotificationSectionSeparator     = 10;
         [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
     }
     return success;
-}
-
-- (void)displayMoreActionsWithBlock:(NotificationBlock *)block sender:(UIButton *)sender
-{
-    NSString *editTitle     = NSLocalizedString(@"Edit Comment", @"Edit a comment");
-    NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
-    NSString *cancelTitle   = NSLocalizedString(@"Cancel", nil);
-    
-    // Prepare the More Menu
-    NSMutableArray *otherButtonTitles  = [NSMutableArray array];
-    
-    if ([block isActionEnabled:NoteActionEditKey]) {
-        [otherButtonTitles addObject:editTitle];
-    }
-    
-    if ([block isActionEnabled:NoteActionSpamKey]) {
-        [otherButtonTitles addObject:spamTitle];
-    }
-    
-    // Render the actionSheet
-    __typeof(self) __weak weakSelf = self;
-    UIActionSheet *actionSheet  = [[UIActionSheet alloc] initWithTitle:nil
-                                                     cancelButtonTitle:cancelTitle
-                                                destructiveButtonTitle:nil
-                                                     otherButtonTitles:otherButtonTitles
-                                                            completion:^(NSString *buttonTitle) {
-                                                                if ([buttonTitle isEqualToString:editTitle]) {
-                                                                    [weakSelf editCommentWithBlock:block];
-                                                                } else if ([buttonTitle isEqualToString:spamTitle]) {
-                                                                    [weakSelf spamCommentWithBlock:block];
-                                                                }
-                                                            }];
-    
-    if ([UIDevice isPad]) {
-        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
-    } else {
-        [actionSheet showInView:self.view.window];
-    }
 }
 
 
@@ -754,8 +863,11 @@ static CGFloat NotificationSectionSeparator     = 10;
         [block removeActionOverrideForKey:NoteActionApproveKey];
         [weakSelf reloadData];
     }];
-    
+
     [block setActionOverrideValue:@(true) forKey:NoteActionApproveKey];
+    
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
@@ -772,6 +884,9 @@ static CGFloat NotificationSectionSeparator     = 10;
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
+    
+    // Hack: force NSFetchedResultsController to reload this notification
+    [self.note didChangeOverrides];
 }
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
@@ -1038,6 +1153,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     self.tableGesturesRecognizer.enabled = false;
 }
 
+
 #pragma mark - SuggestionsTableViewDelegate
 
 - (void)view:(UIView *)view didTypeInWord:(NSString *)word
@@ -1050,6 +1166,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
+
 
 #pragma mark - Gestures Recognizer Delegate
 

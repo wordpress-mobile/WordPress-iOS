@@ -23,6 +23,12 @@
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
 
+#import "AppRatingUtility.h"
+
+#import <WordPress-AppbotX/ABXPromptView.h>
+#import <WordPress-AppbotX/ABXAppStore.h>
+#import <WordPress-AppbotX/ABXFeedbackViewController.h>
+
 #import "WordPress-Swift.h"
 
 
@@ -31,18 +37,19 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait = 1;
-static CGFloat const NoteEstimatedHeight            = 70;
-static CGRect NotificationsTableHeaderFrame         = {0.0f, 0.0f, 0.0f, 40.0f};
-static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
-static NSTimeInterval NotificationsSyncTimeout      = 10;
+static NSTimeInterval const NotificationPushMaxWait     = 1;
+static CGFloat const NoteEstimatedHeight                = 70;
+static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
+static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
+static NSTimeInterval NotificationsSyncTimeout          = 10;
+static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -141,6 +148,23 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     [self reloadResultsControllerIfNeeded];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self showRatingViewIfApplicable];
+}
+
+-(void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+
+    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
+
+    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
+        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -151,6 +175,42 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self invalidateAllRowHeights];
+}
+
+
+#pragma mark - AppBotX Helpers
+
+- (void)showRatingViewIfApplicable
+{
+    if ([AppRatingUtility shouldPromptForAppReview]) {
+        if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
+            // Rating View is already visible, don't bother to do anything
+            return;
+        }
+        
+        ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+        UIFont *appRatingFont = [WPFontManager openSansRegularFontOfSize:15.0];
+        appRatingView.label.font = appRatingFont;
+        appRatingView.leftButton.titleLabel.font = appRatingFont;
+        appRatingView.rightButton.titleLabel.font = appRatingFont;
+        appRatingView.delegate = self;
+        appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+        appRatingView.alpha = 0.0;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
+                self.tableView.tableHeaderView = appRatingView;
+                self.tableView.tableHeaderView.alpha = 1.0;
+            } completion:nil];
+        });
+        [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
+    }
+}
+
+- (void)hideRatingView
+{
+    [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
+        self.tableView.tableHeaderView = nil;
+    } completion:nil];
 }
 
 
@@ -544,6 +604,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
+    cell.unapproved                         = note.isUnapprovedComment;
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -614,6 +675,51 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     
     return ![accountService defaultWordPressComAccount];
+}
+
+#pragma mark - ABXPromptViewDelegate
+
+- (void)appbotPromptForReview
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsRatedApp];
+    [ABXAppStore openAppStoreReviewForApp:WPiTunesAppId];
+    [AppRatingUtility ratedCurrentVersion];
+    [self hideRatingView];
+}
+
+- (void)appbotPromptForFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsOpenedFeedbackScreen];
+    [ABXFeedbackViewController showFromController:self placeholder:nil delegate:self];
+    [AppRatingUtility gaveFeedbackForCurrentVersion];
+    [self hideRatingView];
+}
+
+- (void)appbotPromptClose
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDeclinedToRateApp];
+    [AppRatingUtility declinedToRateCurrentVersion];
+    [self hideRatingView];
+}
+
+- (void)appbotPromptLiked
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
+}
+
+- (void)appbotPromptDidntLike
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
+}
+
+- (void)abxFeedbackDidSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSentFeedback];
+}
+
+- (void)abxFeedbackDidntSendFeedback
+{
+    [WPAnalytics track:WPAnalyticsStatAppReviewsCanceledFeedbackScreen];
 }
 
 @end

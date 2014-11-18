@@ -57,4 +57,8 @@
    return @"";
 }
 
++ (NSString *)appbotXAPIKey {
+   return @"";
+}
+
 @end

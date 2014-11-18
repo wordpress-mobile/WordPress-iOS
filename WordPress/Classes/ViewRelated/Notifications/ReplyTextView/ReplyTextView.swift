@@ -43,6 +43,17 @@ import Foundation
         }
     }
     
+    public var autocorrectionType: UITextAutocorrectionType = .Yes {
+        didSet {
+            textView.autocorrectionType = autocorrectionType
+        }
+    }
+    
+    public var keyboardType: UIKeyboardType = .Default {
+        didSet {
+            textView.keyboardType = keyboardType
+        }
+    }
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
@@ -139,9 +150,6 @@ import Foundation
         super.layoutSubviews()
     }
     
-    public func setKeyboardType(keyboardType: Int) {
-        textView.keyboardType = UIKeyboardType(rawValue: keyboardType)!
-    }
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
@@ -186,8 +194,9 @@ import Foundation
         textView.textContainer.lineFragmentPadding  = 0
         textView.layoutManager.allowsNonContiguousLayout = false
         textView.accessibilityIdentifier = "ReplyText"
-        // Disable QuickType
-        textView.autocorrectionType     = .No
+        
+        // Enable QuickType
+        textView.autocorrectionType     = .Yes
         
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Reply.textFont
@@ -205,6 +214,19 @@ import Foundation
         // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
+        
+        // iPhone's Width knows No Limits
+        if UIDevice.isPad() {
+            let maxWidthConstraint = NSLayoutConstraint(item: self,
+                                        attribute:  .Width,
+                                        relatedBy:  .LessThanOrEqual,
+                                        toItem:     nil,
+                                        attribute:  .NotAnAttribute,
+                                        multiplier: 1,
+                                        constant:   WPTableViewFixedWidth)
+
+            addConstraint(maxWidthConstraint)
+        }
     }
     
     
@@ -252,17 +274,17 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewDefaultPadding:     CGFloat         = 12
-    private let textViewMaxHeight:          CGFloat         = 82   // Fits 3 lines onscreen
-    private let textViewMinHeight:          CGFloat         = 44
+    private let textViewDefaultPadding:         CGFloat         = 12
+    private let textViewMaxHeight:              CGFloat         = 82   // Fits 3 lines onscreen
+    private let textViewMinHeight:              CGFloat         = 44
     
     // MARK: - Private Properties
-    private var bundle:                     NSArray?
-    
+    private var bundle:                         NSArray?
+
     // MARK: - IBOutlets
-    @IBOutlet private var textView:         UITextView!
-    @IBOutlet private var placeholderLabel: UILabel!
-    @IBOutlet private var replyButton:      UIButton!
-    @IBOutlet private var layoutView:       UIView!
-    @IBOutlet private var containerView:    UIView!
+    @IBOutlet private var textView:             UITextView!
+    @IBOutlet private var placeholderLabel:     UILabel!
+    @IBOutlet private var replyButton:          UIButton!
+    @IBOutlet private var layoutView:           UIView!
+    @IBOutlet private var containerView:        UIView!
 }
