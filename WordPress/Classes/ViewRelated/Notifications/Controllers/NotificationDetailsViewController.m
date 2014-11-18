@@ -22,6 +22,8 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
+#import "AppRatingUtility.h"
+
 #import "WordPress-Swift.h"
 
 #import "NSURL+Util.h"
@@ -127,6 +129,8 @@ static NSInteger NotificationSectionCount               = 1;
                                              selector:@selector(handleNotificationChange:)
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
+
+    [AppRatingUtility incrementSignificantEvent];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -186,6 +190,7 @@ static NSInteger NotificationSectionCount               = 1;
 {
     self.note = notification;
     [self attachReplyViewIfNeeded];
+    [self attachEditActionIfNeeded];
     [self reloadData];
 }
 
@@ -299,6 +304,36 @@ static NSInteger NotificationSectionCount               = 1;
                                                          attribute:NSLayoutAttributeTop
                                                         multiplier:1
                                                           constant:0]];
+}
+
+
+#pragma mark - Edition Helpers
+
+- (void)attachEditActionIfNeeded
+{
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
+    UIBarButtonItem *editBarButton  = nil;
+    
+    if ([block isActionOn:NoteActionEditKey]) {
+        editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
+                                                         style:UIBarButtonItemStylePlain
+                                                        target:self
+                                                        action:@selector(editButtonWasPressed)];
+    }
+    
+    self.navigationItem.rightBarButtonItem = editBarButton;
+}
+
+- (IBAction)editButtonWasPressed
+{
+    NotificationBlockGroup *group   = [self.note blockGroupOfType:NoteBlockGroupTypeComment];
+    NotificationBlock *block        = [group blockOfType:NoteBlockTypeComment];
+    
+    if ([block isActionOn:NoteActionEditKey]) {
+        [self editCommentWithBlock:block];
+    }
 }
 
 
@@ -593,7 +628,7 @@ static NSInteger NotificationSectionCount               = 1;
     cell.isLikeEnabled              = [commentBlock isActionEnabled:NoteActionLikeKey];
     cell.isApproveEnabled           = [commentBlock isActionEnabled:NoteActionApproveKey];
     cell.isTrashEnabled             = [commentBlock isActionEnabled:NoteActionTrashKey];
-    cell.isMoreEnabled              = [commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isSpamEnabled              = [commentBlock isActionEnabled:NoteActionSpamKey];
 
     cell.isLikeOn                   = [commentBlock isActionOn:NoteActionLikeKey];
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
@@ -632,8 +667,8 @@ static NSInteger NotificationSectionCount               = 1;
         [weakSelf trashCommentWithBlock:commentBlock];
     };
     
-    cell.onMoreClick                = ^(UIButton * sender){
-        [weakSelf displayMoreActionsWithBlock:commentBlock sender:sender];
+    cell.onSpamClick                = ^(UIButton * sender){
+        [weakSelf spamCommentWithBlock:commentBlock];
     };
 
     cell.onSiteClick                = ^(UIButton * sender){
@@ -749,44 +784,6 @@ static NSInteger NotificationSectionCount               = 1;
     return success;
 }
 
-- (void)displayMoreActionsWithBlock:(NotificationBlock *)block sender:(UIButton *)sender
-{
-    NSString *editTitle     = NSLocalizedString(@"Edit Comment", @"Edit a comment");
-    NSString *spamTitle     = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
-    NSString *cancelTitle   = NSLocalizedString(@"Cancel", nil);
-    
-    // Prepare the More Menu
-    NSMutableArray *otherButtonTitles  = [NSMutableArray array];
-    
-    if ([block isActionEnabled:NoteActionEditKey]) {
-        [otherButtonTitles addObject:editTitle];
-    }
-    
-    if ([block isActionEnabled:NoteActionSpamKey]) {
-        [otherButtonTitles addObject:spamTitle];
-    }
-    
-    // Render the actionSheet
-    __typeof(self) __weak weakSelf = self;
-    UIActionSheet *actionSheet  = [[UIActionSheet alloc] initWithTitle:nil
-                                                     cancelButtonTitle:cancelTitle
-                                                destructiveButtonTitle:nil
-                                                     otherButtonTitles:otherButtonTitles
-                                                            completion:^(NSString *buttonTitle) {
-                                                                if ([buttonTitle isEqualToString:editTitle]) {
-                                                                    [weakSelf editCommentWithBlock:block];
-                                                                } else if ([buttonTitle isEqualToString:spamTitle]) {
-                                                                    [weakSelf spamCommentWithBlock:block];
-                                                                }
-                                                            }];
-    
-    if ([UIDevice isPad]) {
-        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
-    } else {
-        [actionSheet showInView:self.view.window];
-    }
-}
-
 
 #pragma mark - Action Handlers
 
@@ -887,6 +884,7 @@ static NSInteger NotificationSectionCount               = 1;
     }];
     
     [block setActionOverrideValue:@(false) forKey:NoteActionApproveKey];
+    
     // Hack: force NSFetchedResultsController to reload this notification
     [self.note didChangeOverrides];
 }

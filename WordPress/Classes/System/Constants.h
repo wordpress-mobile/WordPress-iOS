@@ -21,4 +21,6 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 
 extern NSString *const WPInternalBetaShakeToPullUpFeedbackKey;
-extern BOOL const WPJetpackRESTSupported;
+extern BOOL const WPJetpackRESTEnabled;
+
+extern NSString *const WPiTunesAppId;
