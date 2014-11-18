@@ -267,17 +267,12 @@
         return nil;
     }
     
-    NSArray *medias = [self.blog.media allObjects];
-    if ([medias count] == 0) {
-        return nil;
-    }
-    Media * featuredMedia = nil;
-    for (Media * media in medias) {
-        if ([media.mediaID isEqualToNumber:self.post_thumbnail]){
-            featuredMedia = media;
-            break;
-        }
-    }
+    Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+        Media *media = (Media *)obj;
+        *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        return *stop;
+    }] anyObject];
+
     return featuredMedia;
 }
 
