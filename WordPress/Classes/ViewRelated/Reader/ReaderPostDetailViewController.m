@@ -436,7 +436,8 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
 {
-    if (linkURL.path && !linkURL.host) {
+    if (!linkURL.host) {
+        // fix relative URLs 
         NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
