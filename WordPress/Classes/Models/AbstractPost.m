@@ -258,13 +258,33 @@
 
 - (void)setFeaturedImage:(Media *)featuredImage
 {
-    // Implement in subclasses.
+    self.post_thumbnail = featuredImage.mediaID;
 }
 
 - (Media *)featuredImage
 {
-    // Imlplement in subclasses
-    return nil;
+    if (!self.post_thumbnail) {
+        return nil;
+    }
+    
+    NSArray *arr = [self.blog.media allObjects];
+    if ([arr count] == 0) {
+        return nil;
+    }
+    
+    NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    if (index == NSNotFound) {
+        return nil;
+    }
+    
+    return [arr objectAtIndex:index];
 }
 
 #pragma mark - WPContentViewProvider protocol
