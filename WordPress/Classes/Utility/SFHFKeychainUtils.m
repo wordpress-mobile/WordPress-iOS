@@ -374,11 +374,13 @@ static NSString *SFHFKeychainUtilsErrorDomain = @"SFHFKeychainUtilsErrorDomain";
             NSArray *keys = [[[NSArray alloc] initWithObjects: (NSString *) kSecClass,
                               kSecAttrService,
                               kSecAttrAccount,
+                              kSecReturnAttributes,
                               nil] autorelease];
 
             NSArray *objects = [[[NSArray alloc] initWithObjects: (NSString *) kSecClassGenericPassword,
                                  serviceName,
                                  username,
+                                 kCFBooleanTrue,
                                  nil] autorelease];
 
             NSMutableDictionary *query = [[[NSMutableDictionary alloc] initWithObjects: objects forKeys: keys] autorelease];

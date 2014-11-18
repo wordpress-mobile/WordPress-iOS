@@ -9,6 +9,12 @@
 
 @implementation EditPageViewController
 
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.titlePlaceholderText = NSLocalizedString(@"Page title", @"Placeholder text for the title field on Pages screen.");
+}
+
 - (NSString *)editorTitle
 {
     NSString *title = @"";

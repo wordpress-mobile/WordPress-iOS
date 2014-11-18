@@ -86,6 +86,13 @@
             _receiver = dict;
         }
 
+        // NOTE: Due to memory issues related to animated gifs, just use the
+        // first image of a gif until we have a better solution.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/2105
+        if ([image.images count] > 0) {
+            image = [image.images firstObject];
+        }
+
         [self setCachedImage:image forURL:url withSize:_maxSize];
         [self processImage:image forURL:url receiver:_receiver];
     };
