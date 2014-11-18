@@ -11,12 +11,12 @@ typedef enum
 }
 WPPostViewControllerMode;
 
-extern NSString *const WPEditorNavigationRestorationID;
-extern NSString *const kUserDefaultsNewEditorEnabled;
+extern NSString* const WPEditorNavigationRestorationID;
+extern NSString* const kUserDefaultsNewEditorEnabled;
 
 // Secret URL config parameters
-extern NSString *const kWPEditorConfigURLParamAvailable;
-extern NSString *const kWPEditorConfigURLParamEnabled;
+extern NSString* const kWPEditorConfigURLParamAvailable;
+extern NSString* const kWPEditorConfigURLParamEnabled;
 
 @interface WPPostViewController : WPEditorViewController <UINavigationControllerDelegate, WPEditorViewControllerDelegate>
 
@@ -32,6 +32,15 @@ typedef void (^EditPostCompletionHandler)(void);
  Compose a new post with the last used blog.
  */
 - (id)initWithDraftForLastUsedBlog;
+
+/*
+ Initialize the editor with the specified post and default to preview mode.
+ 
+ @param		post		The post to edit.  Cannot be nil.
+ 
+ @returns	The initialized object.
+ */
+- (id)initWithPost:(AbstractPost *)post;
 
 /*
  Initialize the editor with the specified post.

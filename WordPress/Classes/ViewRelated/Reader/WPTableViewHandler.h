@@ -31,6 +31,7 @@
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 - (void)tableViewHandlerWillRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
 - (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler;
 
@@ -45,10 +46,16 @@
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;
 @property (nonatomic) BOOL shouldRefreshTableViewPreservingOffset;
+@property (nonatomic) UITableViewRowAnimation updateRowAnimation;
+@property (nonatomic) UITableViewRowAnimation insertRowAnimation;
+@property (nonatomic) UITableViewRowAnimation deleteRowAnimation;
+@property (nonatomic) UITableViewRowAnimation moveRowAnimation;
+@property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
 - (instancetype)initWithTableView:(UITableView *)tableView;
 - (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
+- (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath;
 
 @end

@@ -21,6 +21,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
+@property (nonatomic) BOOL shouldPreventPendingMediaLayout;
 
 @end
 
@@ -55,6 +56,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
         _mediaArray = [NSMutableArray array];
         _mediaIndexPathsNeedingLayout = [NSMutableArray array];
         _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [WPStyleGuide defaultDTCoreTextOptions];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
@@ -75,6 +77,12 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 - (CGSize)intrinsicContentSize
 {
     CGSize size = self.textContentView.intrinsicContentSize;
+    return size;
+}
+
+- (CGSize)sizeThatFits:(CGSize)sizeToFit
+{
+    CGSize size = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:sizeToFit.width];
     return size;
 }
 
@@ -109,9 +117,16 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 
     NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
     self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                                 options:self.textOptions
                                                       documentAttributes:nil];
 }
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.textContentView.backgroundColor = backgroundColor;
+}
+
 
 #pragma mark - Private Methods
 
@@ -368,10 +383,22 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 }
 
 
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    self.shouldPreventPendingMediaLayout = prevent;
+    if (!prevent) {
+        [self checkPendingMediaDownloads];
+    }
+}
+
 #pragma mark - Pending Download / Layout 
 
 - (void)checkPendingMediaDownloads
 {
+    if (self.shouldPreventPendingMediaLayout) {
+        return;
+    }
+
     if (!self.dateOfLastMediaRefresh) {
         self.dateOfLastMediaRefresh = [NSDate distantPast];
     }
@@ -434,7 +461,6 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     button.GUID = identifier;
 
     // get image with normal link text
-    frame.size.width = frame.size.width + 2; // slight padding to avoid cropping italic characters
     UIImage *normalImage = [attributedTextContentView contentImageWithBounds:frame options:DTCoreTextLayoutFrameDrawingDefault];
     [button setImage:normalImage forState:UIControlStateNormal];
 

@@ -12,7 +12,7 @@
 #import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
-#import "WPUploadStatusView.h"
+#import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -20,14 +20,14 @@
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 4;
+static NSInteger const MaximumNumberOfPictures = 10;
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate> {
     NSOperationQueue *_mediaUploadQueue;
 }
 
 @property (nonatomic, strong) UIButton *titleBarButton;
-@property (nonatomic, strong) UIView *uploadStatusView;
+@property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
@@ -39,9 +39,10 @@ static NSInteger const MaximumNumberOfPictures = 4;
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
 
-    if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
+    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [self class];
         return navController;
     }
 
@@ -173,7 +174,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
     NSInteger blogCount = [blogService blogCountForAllAccounts];
 
     if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusView;
+        self.navigationItem.titleView = self.uploadStatusButton;
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
@@ -531,17 +532,15 @@ static NSInteger const MaximumNumberOfPictures = 4;
     return _titleBarButton;
 }
 
-- (UIView *)uploadStatusView
+- (UIButton *)uploadStatusButton
 {
-    if (_uploadStatusView) {
-        return _uploadStatusView;
+    if (!_uploadStatusButton) {
+        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 33.0f)];
+        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        _uploadStatusButton = button;
     }
-    WPUploadStatusView *uploadStatusView = [[WPUploadStatusView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 33.0)];
-    uploadStatusView.tappedView = ^{
-        [self showCancelMediaUploadPrompt];
-    };
-    _uploadStatusView = uploadStatusView;
-    return _uploadStatusView;
+    
+    return _uploadStatusButton;
 }
 
 # pragma mark - Model State Methods
@@ -962,7 +961,11 @@ static NSInteger const MaximumNumberOfPictures = 4;
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+                if (error){
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                    return;
+                }
                 AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
@@ -970,8 +973,7 @@ static NSInteger const MaximumNumberOfPictures = 4;
                         DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                         return;
                     }
-
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                 }];
                 [_mediaUploadQueue addOperation:operation];
             }];
