@@ -267,24 +267,18 @@
         return nil;
     }
     
-    NSArray *arr = [self.blog.media allObjects];
-    if ([arr count] == 0) {
+    NSArray *medias = [self.blog.media allObjects];
+    if ([medias count] == 0) {
         return nil;
     }
-    
-    NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
-            *stop = YES;
-            return YES;
+    Media * featuredMedia = nil;
+    for (Media * media in medias) {
+        if ([media.mediaID isEqualToNumber:self.post_thumbnail]){
+            featuredMedia = media;
+            break;
         }
-        return NO;
-    }];
-    
-    if (index == NSNotFound) {
-        return nil;
     }
-    
-    return [arr objectAtIndex:index];
+    return featuredMedia;
 }
 
 #pragma mark - WPContentViewProvider protocol
