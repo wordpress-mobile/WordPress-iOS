@@ -586,7 +586,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail && !self.isUploadingMedia) {
+    if (!self.apost.post_thumbnail && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -924,7 +924,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media * media = [mediaService findMediaWithID:self.post.post_thumbnail inBlog:self.post.blog];
+    Media * media = [mediaService findMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog];
     void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -938,14 +938,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
-                                 isPrivate:self.post.blog.isPrivate];
+                                 isPrivate:self.apost.blog.isPrivate];
     };
     if (media){
         successBlock(media);
         return;
     }
     
-    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:successBlock failure:^(NSError *error) {
+    [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
         [self featuredImageFailedLoading:indexPath withError:error];
     }];
 }
@@ -1053,7 +1053,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media) {
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media) {
             media.mediaType = MediaTypeFeatured;
             [mediaService uploadMedia:media success:^{
                 weakSelf.isUploadingMedia = NO;
@@ -1072,8 +1072,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         } else {
             [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
-        // Reload the featured image row so that way the activity indicator will be displayed.
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+        // Reload the featured image row so that way the activity indicator will be displayed.        
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
         weakSelf.isUploadingMedia = NO;
