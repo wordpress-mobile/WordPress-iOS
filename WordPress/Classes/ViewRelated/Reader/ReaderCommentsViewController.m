@@ -80,6 +80,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super viewDidLoad];
 
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
+    self.tapOffKeyboardGesture.enabled = NO;    
+    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
 
@@ -1053,7 +1055,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+    self.tapOffKeyboardGesture.enabled = YES;
     return YES;
 }
 
