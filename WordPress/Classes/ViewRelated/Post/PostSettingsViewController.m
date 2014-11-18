@@ -304,9 +304,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    if ([self.post.blog supportsFeaturedImages]) {
-        [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-    }
+    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
+
     if (self.post.blog.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }

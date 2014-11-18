@@ -24,9 +24,7 @@
 {
     self.sections = [NSMutableArray array];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
-    if ([self.page.blog supportsFeaturedImages]) {
-        [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-    }
+    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];    
 }
 
 - (Page *)page
