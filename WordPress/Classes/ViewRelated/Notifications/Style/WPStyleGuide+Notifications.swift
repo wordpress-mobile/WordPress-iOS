@@ -53,7 +53,7 @@ extension WPStyleGuide
         public static let blockBackgroundColor      = UIColor.whiteColor()
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
-        public static let blockSeparatorColor       = UIColor(red: 0xC8/255.0, green: 0xD6/255.0, blue: 0xE0/255.0, alpha: 0xFF/255.0)
+        public static let blockSeparatorColor       = WPStyleGuide.readGrey()
         
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)

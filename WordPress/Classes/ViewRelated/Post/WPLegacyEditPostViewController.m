@@ -12,7 +12,7 @@
 #import "PostService.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
-#import "WPUploadStatusView.h"
+#import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
@@ -44,9 +44,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
 
-    if ([[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID]) {
+    if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [self class];
         return navController;
     }
 
@@ -1057,6 +1058,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
                 [self.childrenMediaProgress addObject:uploadProgress];
+                
                 [self.mediaProgress resignCurrent];
             }];
         }

@@ -1,3 +1,4 @@
+#import "WordPress-Swift.h"
 #import "WPContentCell.h"
 
 #import <AFNetworking/UIKit+AFNetworking.h>
@@ -9,7 +10,7 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 @interface WPContentCell() {
-    UIImageView *_gravatarImageView;
+    CircularImageView *_gravatarImageView;
     UILabel *_statusLabel;
     UILabel *_titleLabel;
     UILabel *_dateLabel;
@@ -37,7 +38,7 @@ CGFloat const WPContentCellDefaultOrigin                    = 15.0f;
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
 
-        _gravatarImageView = [[UIImageView alloc] init];
+        _gravatarImageView = [[CircularImageView alloc] init];
         [self.contentView addSubview:_gravatarImageView];
 
         _statusLabel = [[UILabel alloc] init];
