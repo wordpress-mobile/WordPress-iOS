@@ -310,9 +310,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionTaxonomy]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFormat]];
-    if ([self.post.blog supportsFeaturedImages]) {
-        [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
-    }
+    [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionFeaturedImage]];
+
     if (self.post.blog.geolocationEnabled || self.post.geolocation) {
         [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionGeolocation]];
     }
@@ -593,7 +592,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail && !self.isUploadingMedia) {
+    if (!self.apost.post_thumbnail && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
@@ -942,7 +941,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media * media = [mediaService findMediaWithID:self.post.post_thumbnail inBlog:self.post.blog];
+    Media * media = [mediaService findMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog];
     void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -956,14 +955,14 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
-                                 isPrivate:self.post.blog.isPrivate];
+                                 isPrivate:self.apost.blog.isPrivate];
     };
     if (media){
         successBlock(media);
         return;
     }
     
-    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:successBlock failure:^(NSError *error) {
+    [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
         [self featuredImageFailedLoading:indexPath withError:error];
     }];
 }
@@ -1109,8 +1108,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         } else {
             [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
-        // Reload the featured image row so that way the activity indicator will be displayed.
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+        // Reload the featured image row so that way the activity indicator will be displayed.        
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
         weakSelf.isUploadingMedia = NO;
