@@ -87,6 +87,7 @@ PODS:
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.5)
   - WordPressCom-Analytics-iOS (0.0.13)
+  - WordPressCom-Analytics-iOS (0.0.14)
   - WordPressCom-Stats-iOS (0.1.6):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.9)
