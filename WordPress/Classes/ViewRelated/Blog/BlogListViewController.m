@@ -41,6 +41,13 @@ CGFloat const blavatarImageSize = 50.f;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+
+        // show 'Switch Site' for the next page's back button
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:nil
+                                                                      action:nil];
+        [self.navigationItem setBackBarButtonItem:backButton];
     }
     return self;
 }
