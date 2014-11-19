@@ -258,13 +258,22 @@
 
 - (void)setFeaturedImage:(Media *)featuredImage
 {
-    // Implement in subclasses.
+    self.post_thumbnail = featuredImage.mediaID;
 }
 
 - (Media *)featuredImage
 {
-    // Imlplement in subclasses
-    return nil;
+    if (!self.post_thumbnail) {
+        return nil;
+    }
+    
+    Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+        Media *media = (Media *)obj;
+        *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        return *stop;
+    }] anyObject];
+
+    return featuredMedia;
 }
 
 #pragma mark - WPContentViewProvider protocol
