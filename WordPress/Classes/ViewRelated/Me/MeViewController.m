@@ -16,11 +16,9 @@ static CGFloat const MVCGravatarWidth = 120.0;
 static CGFloat const MVCGravatarHeight = 120.0;
 
 static NSInteger const MVCAccountSettingsIndex = 0;
-static NSInteger const MVCBillingIndex = 1;
-static NSInteger const MVCHelpIndex = 2;
+static NSInteger const MVCHelpIndex = 1;
 
 static NSString *const MVCAccountSettingsTitle = @"Account Settings";
-static NSString *const MVCBillingTitle = @"Billing";
 static NSString *const MVCHelpTitle = @"Help & Support";
 
 @interface MeViewController () <UITableViewDataSource, UITableViewDelegate>
@@ -103,9 +101,6 @@ static NSString *const MVCHelpTitle = @"Help & Support";
         case MVCAccountSettingsIndex:
             [self navigateToSettings];
             break;
-        case MVCBillingIndex:
-            [self navigateToBilling];
-            break;
         case MVCHelpIndex:
             [self navigateToHelp];
         default:
@@ -123,11 +118,6 @@ static NSString *const MVCHelpTitle = @"Help & Support";
     [self.navigationController pushViewController:settingsViewController animated:YES];
 }
 
-- (void)navigateToBilling
-{
-
-}
-
 - (void)navigateToHelp
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -138,7 +128,7 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 
 - (NSArray *)rowTitles
 {
-    return @[MVCAccountSettingsTitle, MVCBillingTitle, MVCHelpTitle];
+    return @[MVCAccountSettingsTitle, MVCHelpTitle];
 }
 
 @end
