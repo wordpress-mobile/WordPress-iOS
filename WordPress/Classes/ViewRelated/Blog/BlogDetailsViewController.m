@@ -24,6 +24,7 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "UIImageView+Gravatar.h"
 
 const typedef enum {
     BlogDetailsRowPosts = 0,
@@ -44,7 +45,15 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
+static CGFloat const BDVCTableViewHeaderHeight = 130.0;
+static CGFloat const BDVCBlavatarOffset = 10.0;
+static CGFloat const BDVCBlavatarWidth = 120.0;
+static CGFloat const BDVCBlavatarHeight = 120.0;
+
 @interface BlogDetailsViewController ()
+
+@property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIImageView *gravatarView;
 
 @end
 
@@ -103,6 +112,14 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     [blogService syncBlog:_blog success:nil failure:nil];
+
+    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BDVCTableViewHeaderHeight)];
+    self.tableView.tableHeaderView = self.headerView;
+
+    float x = (self.headerView.frame.size.width - BDVCBlavatarWidth) / 2.0;
+    self.gravatarView = [[UIImageView alloc] initWithFrame:CGRectMake(x, BDVCBlavatarOffset, BDVCBlavatarWidth, BDVCBlavatarHeight)];
+    [self.gravatarView setImageWithBlavatarUrl:self.blog.blavatarUrl isWPcom:self.blog.isWPcom];
+    [self.headerView addSubview:self.gravatarView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
