@@ -2210,8 +2210,6 @@
 				5DB3BA0418D0E7B600F3F3E9 /* WPPickerView.m */,
 				5DB3BA0618D11D8D00F3F3E9 /* PublishDatePickerView.h */,
 				5DB3BA0718D11D8D00F3F3E9 /* PublishDatePickerView.m */,
-				85435BE8190F837500E868D0 /* WPUploadStatusView.h */,
-				85435BE9190F837500E868D0 /* WPUploadStatusView.m */,
 				FF0AAE0B1A16550D0089841D /* WPMediaProgressTableViewController.h */,
 				FF0AAE0C1A16550D0089841D /* WPMediaProgressTableViewController.m */,
 			);
