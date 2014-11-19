@@ -703,6 +703,15 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
     blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+    if (blogToOpen) {
+        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blogToOpen;
+        [blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
+    }
+
     self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
     UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
     readerNavigationController.navigationBar.translucent = NO;
