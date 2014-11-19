@@ -11,7 +11,8 @@
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
-static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey";
+static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
+static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
 @interface ReaderTopicService ()
 
@@ -74,12 +75,47 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
 - (ReaderTopic *)currentTopic
 {
     ReaderTopic *topic;
-    NSError *error;
+    topic = [self currentTopicFromSavedPath];
+
+    if (!topic) {
+        topic = [self currentTopicFromSavedURIString];
+    }
+
+    if (!topic) {
+        topic = [self currentTopicFromSavedURIString];
+        [self setCurrentTopic:topic];
+    }
+
+    return topic;
+}
+
+- (ReaderTopic *)currentTopicFromSavedPath
+{
+    ReaderTopic *topic;
+    NSString *topicPathString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicPathKey];
+    if (topicPathString) {
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderTopic class])];
+        request.predicate = [NSPredicate predicateWithFormat:@"path = %@", topicPathString];
+
+        NSError *error;
+        topic = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
+        if (error) {
+            DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        }
+    }
+    return topic;
+}
+
+// Deprecated. This can be removed after the bulk of our user base has updated to 4.7 or later
+- (ReaderTopic *)currentTopicFromSavedURIString
+{
+    ReaderTopic *topic;
     NSString *topicURIString = [[NSUserDefaults standardUserDefaults] stringForKey:ReaderTopicCurrentTopicURIKey];
     if (topicURIString) {
         NSURL *topicURI = [NSURL URLWithString:topicURIString];
         NSManagedObjectID *objectID = [self.managedObjectContext.persistentStoreCoordinator managedObjectIDForURIRepresentation:topicURI];
         if (objectID) {
+            NSError *error;
             topic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
             if (error) {
                 DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
@@ -87,33 +123,41 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
         }
     }
 
-    if (topic == nil) {
-        // clear any saved topic that is no longer valid
-        [self setCurrentTopic:nil];
-
-        // Return a default topic
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-        request.predicate = [NSPredicate predicateWithFormat:@"type == %@", ReaderTopicTypeList];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
-        request.sortDescriptors = @[sortDescriptor];
-        NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
-        if (error) {
-            DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
-            return nil;
-        }
-
-        if ([topics count] == 0) {
-            return nil;
-        }
-
-        NSArray *matches = [topics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS[cd] %@", ReaderTopicFreshlyPressedPathCommponent]];
-        if ([matches count]) {
-            topic = matches[0];
-        } else {
-            topic = topics[0];
-        }
-
+    if (topic) {
+        // transition to the new key
+        [[NSUserDefaults standardUserDefaults] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicURIKey];
+        [NSUserDefaults resetStandardUserDefaults];
         [self setCurrentTopic:topic];
+    }
+
+    return topic;
+}
+
+- (ReaderTopic *)currentTopicFromDefaultTopic
+{
+    // Return the default topic
+    ReaderTopic *topic;
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderTopic class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"type = %@", ReaderTopicTypeList];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    if ([topics count] == 0) {
+        return nil;
+    }
+
+    NSArray *matches = [topics filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path CONTAINS[cd] %@", ReaderTopicFreshlyPressedPathCommponent]];
+    if ([matches count]) {
+        topic = matches[0];
+    } else {
+        topic = topics[0];
     }
 
     return topic;
@@ -122,14 +166,10 @@ static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopi
 - (void)setCurrentTopic:(ReaderTopic *)topic
 {
     if (!topic) {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicURIKey];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
     } else {
-        if ([topic.objectID isTemporaryID]) {
-            [[ContextManager sharedInstance] obtainPermanentIDForObject:topic];
-        }
-        NSURL *topicURI = topic.objectID.URIRepresentation;
-        [[NSUserDefaults standardUserDefaults] setObject:[topicURI absoluteString] forKey:ReaderTopicCurrentTopicURIKey];
+        [[NSUserDefaults standardUserDefaults] setObject:topic.path forKey:ReaderTopicCurrentTopicPathKey];
         [NSUserDefaults resetStandardUserDefaults];
         
         dispatch_async(dispatch_get_main_queue(), ^{
