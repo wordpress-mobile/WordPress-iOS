@@ -2,6 +2,7 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import "Blog.h"
 
 @interface PrivateSiteURLProtocol()
 @property (nonatomic, strong) NSURLConnection *connection;
@@ -13,7 +14,7 @@
 {
     NSString *token = [self bearerToken];
     NSString *authHeader = [request.allHTTPHeaderFields stringForKey:@"Authorization"];
-    if (token && (!authHeader || [authHeader rangeOfString:@"Bearer"].location == NSNotFound)) {
+    if (token && (!authHeader || [authHeader rangeOfString:@"Bearer"].location == NSNotFound) && [self requestGoesToWPComSite:request]) {
         return YES;
     }
     return NO;
@@ -26,9 +27,30 @@
 
 + (NSString *)bearerToken
 {
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    NSString *token = [[service defaultWordPressComAccount] authToken];
+    NSString *token = [[self defaultWPComAccount] authToken];
     return token;
+}
+
++ (WPAccount *)defaultWPComAccount
+{
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    return [service defaultWordPressComAccount];
+}
+
++ (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
+{
+    if ([request.URL.host containsString:@"wordpress.com"]) {
+        return YES;
+    }
+
+    WPAccount *account = [self defaultWPComAccount];
+    for (Blog *blog in account.blogs) {
+        if ([request.URL.absoluteString containsString:blog.url]) {
+            return YES;
+        }
+    }
+
+    return NO;
 }
 
 - (void)startLoading
