@@ -8,7 +8,25 @@
 @property (nonatomic, strong) NSURLConnection *connection;
 @end
 
+static NSInteger regcount = 0;
+
 @implementation PrivateSiteURLProtocol
+
++ (void)registerPrivateSiteURLProtocol
+{
+    if (regcount == 0) {
+        [NSURLProtocol registerClass:[self class]];
+    }
+    regcount++;
+}
+
++ (void)unregisterPrivateSiteURLProtocol
+{
+    regcount--;
+    if (regcount == 0) {
+        [NSURLProtocol unregisterClass:[self class]];
+    }
+}
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request
 {
