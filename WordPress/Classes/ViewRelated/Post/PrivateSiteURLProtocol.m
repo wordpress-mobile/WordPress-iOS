@@ -39,13 +39,17 @@
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
 {
-    if ([request.URL.host containsString:@"wordpress.com"]) {
+    if ([request.URL.host hasSuffix:@".wordpress.com"]) {
         return YES;
     }
 
     WPAccount *account = [self defaultWPComAccount];
     for (Blog *blog in account.blogs) {
-        if ([request.URL.absoluteString containsString:blog.url]) {
+        if (!blog.isWPcom) {
+            continue;
+        }
+        NSURL *blogURL = [NSURL URLWithString:blog.url];
+        if ([request.URL.host isEqualToString:blogURL.host]) {
             return YES;
         }
     }
