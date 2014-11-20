@@ -83,7 +83,7 @@ static NSDictionary *EnabledButtonBarStyle;
     _failedMediaAlertView.delegate = nil;
     [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [NSURLProtocol unregisterClass:[PrivateSiteURLProtocol class]];
+    [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
 - (id)initWithDraftForLastUsedBlog
@@ -115,7 +115,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
         _post = post;
         if (post.blog.isPrivate) {
-            [NSURLProtocol registerClass:[PrivateSiteURLProtocol class]];
+            [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
 
         [self configureMediaUploadQueue];
