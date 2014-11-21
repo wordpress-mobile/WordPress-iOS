@@ -1,15 +1,17 @@
 // Blog Details contents:
 //
-// + Content
-// | Posts
+// + (No Title)
+// | View Site
+// | Stats
+// | View Admin
+//
+// + Publish
+// | Blog Posts
 // | Pages
 // | Comments
 //
-// + Admin
-// | Stats
-// | Settings
-// | View Site
-// | View Admin
+// + Configuration
+// | Edit Site
 
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
@@ -27,25 +29,26 @@
 #import "UIImageView+Gravatar.h"
 
 const typedef enum {
-    BlogDetailsRowPosts = 0,
+    BlogDetailsRowViewSite = 0,
+    BlogDetailsRowStats = 1,
+    BlogDetailsRowViewAdmin = 2,
+    BlogDetailsRowBlogPosts = 0,
     BlogDetailsRowPages = 1,
     BlogDetailsRowComments = 2,
-    BlogDetailsRowStats = 0,
-    BlogDetailsRowViewSite = 1,
-    BlogDetailsRowEditSettings = 2,
-    BlogDetailsRowViewAdmin = 3
+    BlogDetailsRowEditSite = 0
 } BlogDetailsRow;
 
 const typedef enum {
-    TableViewSectionContentType = 0,
-    TableViewSectionAdminType
+    TableViewSectionGeneralType = 0,
+    TableViewSectionPublishType,
+    TableViewSectionConfigurationType
 } TableSectionContentType;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
-static CGFloat const BDVCTableViewHeaderHeight = 130.0;
+static CGFloat const BDVCTableViewHeaderHeight = 160.0;
 static CGFloat const BDVCBlavatarOffset = 10.0;
 static CGFloat const BDVCBlavatarWidth = 120.0;
 static CGFloat const BDVCBlavatarHeight = 120.0;
@@ -138,15 +141,17 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == TableViewSectionContentType) {
+    if (section == TableViewSectionGeneralType) {
         return 3;
-    } else if (section == TableViewSectionAdminType) {
-        return 4;
+    } else if (section == TableViewSectionPublishType) {
+        return 3;
+    } else if (section == TableViewSectionConfigurationType) {
+        return 1;
     }
 
     return 0;
@@ -154,10 +159,27 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == TableViewSectionContentType) {
+    if (indexPath.section == TableViewSectionGeneralType) {
         switch (indexPath.row) {
-            case BlogDetailsRowPosts:
-                cell.textLabel.text = NSLocalizedString(@"Posts", nil);
+            case BlogDetailsRowViewSite:
+                cell.textLabel.text = NSLocalizedString(@"View Site", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
+                break;
+            case BlogDetailsRowStats:
+                cell.textLabel.text = NSLocalizedString(@"Stats", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
+                break;
+            case BlogDetailsRowViewAdmin:
+                cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
+                break;
+            default:
+                break;
+        }
+    } else if (indexPath.section == TableViewSectionPublishType) {
+        switch (indexPath.row) {
+            case BlogDetailsRowBlogPosts:
+                cell.textLabel.text = NSLocalizedString(@"Blog Posts", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-posts"];
                 break;
             case BlogDetailsRowPages:
@@ -175,26 +197,10 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
             default:
                 break;
         }
-    } else if (indexPath.section == TableViewSectionAdminType) {
-        switch (indexPath.row) {
-            case BlogDetailsRowStats:
-                cell.textLabel.text = NSLocalizedString(@"Stats", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-                break;
-            case BlogDetailsRowEditSettings:
-                cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
-                break;
-            case BlogDetailsRowViewSite:
-                cell.textLabel.text = NSLocalizedString(@"View Site", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
-                break;
-            case BlogDetailsRowViewAdmin:
-                cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
-                break;
-            default:
-                break;
+    } else if (indexPath.section == TableViewSectionConfigurationType) {
+        if (indexPath.row == BlogDetailsRowEditSite) {
+            cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
+            cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         }
     }
 }
@@ -213,15 +219,30 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == TableViewSectionAdminType && indexPath.row == BlogDetailsRowEditSettings) {
+    if (indexPath.section == TableViewSectionConfigurationType && indexPath.row == BlogDetailsRowEditSite) {
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
 
     Class controllerClass;
-    if (indexPath.section == TableViewSectionContentType) {
+    if (indexPath.section == TableViewSectionGeneralType) {
         switch (indexPath.row) {
-            case BlogDetailsRowPosts:
+            case BlogDetailsRowViewSite:
+                [self showViewSiteForBlog:self.blog];
+                break;
+            case BlogDetailsRowStats:
+                [WPAnalytics track:WPAnalyticsStatStatsAccessed];
+                controllerClass =  [StatsViewController class];
+                break;
+            case BlogDetailsRowViewAdmin:
+                [self showViewAdminForBlog:self.blog];
+                break;
+            default:
+                break;
+        }
+    } else if (indexPath.section == TableViewSectionPublishType) {
+        switch (indexPath.row) {
+            case BlogDetailsRowBlogPosts:
                 [WPAnalytics track:WPAnalyticsStatOpenedPosts];
                 controllerClass = [PostsViewController class];
                 break;
@@ -232,21 +253,6 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
             case BlogDetailsRowComments:
                 [WPAnalytics track:WPAnalyticsStatOpenedComments];
                 controllerClass = [CommentsViewController class];
-                break;
-            default:
-                break;
-        }
-    } else if (indexPath.section == TableViewSectionAdminType) {
-        switch (indexPath.row) {
-            case BlogDetailsRowStats:
-                [WPAnalytics track:WPAnalyticsStatStatsAccessed];
-                controllerClass =  [StatsViewController class];
-                break;
-            case BlogDetailsRowViewSite:
-                [self showViewSiteForBlog:self.blog];
-                break;
-            case BlogDetailsRowViewAdmin:
-                [self showViewAdminForBlog:self.blog];
                 break;
             default:
                 break;
@@ -298,10 +304,10 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *headingTitle = nil;
-    if (section == TableViewSectionContentType) {
-        headingTitle = NSLocalizedString(@"Content", @"");
-    } else if (section == TableViewSectionAdminType) {
-        headingTitle = NSLocalizedString(@"Admin", @"");
+    if (section == TableViewSectionPublishType) {
+        headingTitle = NSLocalizedString(@"Publish", @"");
+    } else if (section == TableViewSectionConfigurationType) {
+        headingTitle = NSLocalizedString(@"Configuration", @"");
     }
 
     return headingTitle;
@@ -342,21 +348,6 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
-}
-
-- (BOOL)isRowForViewSite:(NSUInteger)index
-{
-    return index == BlogDetailsRowViewSite;
-}
-
-- (BOOL)isRowForViewAdmin:(NSUInteger)index
-{
-    return index == BlogDetailsRowViewAdmin;
-}
-
-- (BOOL)isRowForEditBlog:(NSUInteger)index
-{
-    return index == BlogDetailsRowEditSettings;
 }
 
 @end
