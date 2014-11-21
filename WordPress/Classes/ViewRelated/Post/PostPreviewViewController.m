@@ -189,7 +189,7 @@
 - (void)showRealPreview
 {
     BOOL needsLogin = NO;
-    NSString *status = self.apost.original.status;
+    NSString *status = self.apost.status;
     NSDate *postGMTDate = self.apost.date_created_gmt;
     NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
@@ -205,7 +205,7 @@
         needsLogin = YES; // Scheduled post
     }
 
-    NSString *link = self.apost.original.permaLink;
+    NSString *link = self.apost.permaLink;
 
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
 
@@ -294,7 +294,7 @@
         return YES;
     }
 
-    if ([[[request URL] absoluteString] isEqualToString:self.apost.original.permaLink]) {
+    if ([[[request URL] absoluteString] isEqualToString:self.apost.permaLink]) {
         // Always allow loading the preview
         return YES;
     }
