@@ -57,19 +57,8 @@ static NSInteger regcount = 0;
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
 {
-    if ([request.URL.host hasSuffix:@".wordpress.com"]) {
+    if ([request.URL.scheme isEqualToString:@"https"] && [request.URL.host hasSuffix:@".wordpress.com"]) {
         return YES;
-    }
-
-    WPAccount *account = [self defaultWPComAccount];
-    for (Blog *blog in account.blogs) {
-        if (!blog.isWPcom) {
-            continue;
-        }
-        NSURL *blogURL = [NSURL URLWithString:blog.url];
-        if ([request.URL.host isEqualToString:blogURL.host]) {
-            return YES;
-        }
     }
 
     return NO;
