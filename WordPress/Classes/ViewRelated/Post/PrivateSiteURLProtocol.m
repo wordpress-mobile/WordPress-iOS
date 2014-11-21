@@ -14,17 +14,21 @@ static NSInteger regcount = 0;
 
 + (void)registerPrivateSiteURLProtocol
 {
-    if (regcount == 0) {
-        [NSURLProtocol registerClass:[self class]];
+    @synchronized(self) {
+        if (regcount == 0) {
+            [NSURLProtocol registerClass:[self class]];
+        }
+        regcount++;
     }
-    regcount++;
 }
 
 + (void)unregisterPrivateSiteURLProtocol
 {
-    regcount--;
-    if (regcount == 0) {
-        [NSURLProtocol unregisterClass:[self class]];
+    @synchronized(self) {
+        regcount--;
+        if (regcount == 0) {
+            [NSURLProtocol unregisterClass:[self class]];
+        }
     }
 }
 
