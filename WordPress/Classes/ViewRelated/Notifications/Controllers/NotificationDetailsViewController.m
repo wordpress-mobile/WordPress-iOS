@@ -260,10 +260,7 @@ static CGFloat NotificationSectionSeparator     = 10;
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
     
     // If allowing suggestions, set up the reply text view keyboard and suggestion view constraints
-    if (shouldAddSuggestionView) {
-        // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
-        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-        
+    if (shouldAddSuggestionView) {        
         // Pin the suggestions view left and right edges to the super view edges
         NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
