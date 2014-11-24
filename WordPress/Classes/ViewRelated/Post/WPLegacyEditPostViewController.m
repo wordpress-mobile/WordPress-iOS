@@ -833,8 +833,57 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [blogIsCurrentlyBusy show];
 }
 
-#pragma mark - Media Formatting
+- (void) insertMediaAssets:(NSArray *)assets
+{
+    if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
+        [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+        self.mediaProgress = nil;
+        [self.childrenMediaProgress removeAllObjects];
+    }
 
+    if (!self.mediaProgress){
+        self.mediaProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
+                                                       userInfo:nil];
+        self.mediaProgress.totalUnitCount = assets.count;
+        [self.mediaProgress addObserver:self
+                             forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                                options:NSKeyValueObservingOptionInitial
+                                context:ProgressObserverContext];
+    } else {
+        self.mediaProgress.totalUnitCount += assets.count;
+    }
+
+    for (ALAsset *asset in assets) {
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+                if (error){
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                    return;
+                }
+                [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
+                NSProgress *uploadProgress = nil;
+                [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [self insertMedia:media];
+                } failure:^(NSError *error) {
+                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                        return;
+                    }
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                }];
+                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
+                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                [self.childrenMediaProgress addObject:uploadProgress];
+                
+                [self.mediaProgress resignCurrent];
+            }];
+        }
+    }
+    // Need to refresh the post object. If we didn't, self.post.media would appear
+    // to be unchanged causing the Media State Methods to fail.
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
 - (void)insertMediaBelow:(NSNotification *)notification
 {
     Media *media = (Media *)[notification object];
@@ -1010,56 +1059,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-    
-    if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
-        [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-        self.mediaProgress = nil;
-        [self.childrenMediaProgress removeAllObjects];
-    }
-    
-    if (!self.mediaProgress){
-        self.mediaProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
-                                                       userInfo:nil];
-        self.mediaProgress.totalUnitCount = assets.count;
-        [self.mediaProgress addObserver:self
-                   forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
-                      options:NSKeyValueObservingOptionInitial
-                      context:ProgressObserverContext];
-    } else {
-        self.mediaProgress.totalUnitCount += assets.count;
-    }
-    
-    for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];            
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
-                if (error){
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                    return;
-                }
-                [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
-                NSProgress *uploadProgress = nil;
-                [mediaService uploadMedia:media progress:&uploadProgress success:^{
-                    [self insertMedia:media];
-                } failure:^(NSError *error) {
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
-                        return;
-                    }
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
-                }];
-                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
-                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
-                [self.childrenMediaProgress addObject:uploadProgress];
-                
-                [self.mediaProgress resignCurrent];
-            }];
-        }
-    }
-    // Need to refresh the post object. If we didn't, self.post.media would appear
-    // to be unchanged causing the Media State Methods to fail.
-    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self insertMediaAssets:assets];
+    }];
 }
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
