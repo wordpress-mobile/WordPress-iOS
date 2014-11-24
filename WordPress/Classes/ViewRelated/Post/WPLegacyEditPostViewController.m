@@ -81,6 +81,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     _failedMediaAlertView.delegate = nil;
     [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -197,12 +198,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if ([self isMediaUploading]) {
         self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
         UIButton *titleButton = self.uploadStatusButton;
-        if (self.navigationItem.titleView != titleButton){
-            self.navigationItem.titleView = titleButton;
-        }
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
         [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
         [titleButton sizeToFit];
+        if (self.navigationItem.titleView != titleButton){
+            self.navigationItem.titleView = titleButton;
+        }
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
@@ -740,8 +741,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Media State Methods
 
-#pragma mark - Media Progress
-
 - (BOOL)isMediaUploading
 {
     return self.mediaProgress &&
@@ -758,7 +757,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
     
-    vc.title = NSLocalizedString(@"Media Progress", @"");
+    vc.title = NSLocalizedString(@"Media Uploading", @"");
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
@@ -771,7 +770,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
         
         self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.mediaProgressPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
         self.mediaProgressPopover.delegate = self;
         [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         
