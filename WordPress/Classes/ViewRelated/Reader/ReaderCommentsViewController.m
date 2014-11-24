@@ -638,15 +638,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)tapRecognized:(id)sender
 {
-<<<<<<< HEAD
     self.tapOffKeyboardGesture.enabled = NO;
-=======
-    if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
-        [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
-    }
-
     self.indexPathForCommentRepliedTo = nil;
->>>>>>> release/4.6
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
     [self configureTextReplyViewPlaceholder];
@@ -998,15 +991,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self.replyTextView becomeFirstResponder];
-<<<<<<< HEAD
 
     Comment *comment = (Comment *)contentProvider;
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-=======
-    self.indexPathForCommentRepliedTo = [self.tableView indexPathForCell:cell];
+    self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
->>>>>>> release/4.6
     [self configureTextReplyViewPlaceholder];
 }
 
