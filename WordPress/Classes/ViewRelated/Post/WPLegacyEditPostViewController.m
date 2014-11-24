@@ -329,60 +329,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return [PostSettingsViewController class];
 }
 
-#pragma mark - Media Progress
-
-- (BOOL)isMediaUploading
-{
-    return self.mediaProgress &&
-    ![self.mediaProgress isCancelled] &&
-    self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount;
-}
-
-- (void)showMediaProgress
-{
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-    
-    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
-    
-    vc.title = NSLocalizedString(@"Media Progress", @"");
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navController.navigationBar.translucent = NO;
-    navController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-        
-        CGRect titleRect = self.navigationItem.titleView.frame;
-        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
-        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.mediaProgressPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-        self.mediaProgressPopover.delegate = self;
-        [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-}
-
-- (void)showCancelMediaUploadPrompt
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
-    [alertView show];
-}
-
-- (void)cancelMediaUploads
-{
-    [self.mediaProgress cancel];
-}
+#pragma mark - Post Options
 
 - (void)showSettings
 {
@@ -421,7 +368,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 
-    if ([self isMediaInUploading]) {
+    if ([self isMediaUploading]) {
         [self showMediaInUploadingAlert];
         return;
     }
@@ -673,7 +620,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         _currentActionSheet = nil;
     }
 
-    if ([self isMediaInUploading] ) {
+    if ([self isMediaUploading] ) {
         [self showMediaInUploadingAlert];
         return;
     }
@@ -793,6 +740,61 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Media State Methods
 
+#pragma mark - Media Progress
+
+- (BOOL)isMediaUploading
+{
+    return self.mediaProgress &&
+    ![self.mediaProgress isCancelled] &&
+    self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount;
+}
+
+- (void)showMediaProgress
+{
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
+    
+    vc.title = NSLocalizedString(@"Media Progress", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+        
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.mediaProgressPopover.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+        self.mediaProgressPopover.delegate = self;
+        [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+}
+
+- (void)showCancelMediaUploadPrompt
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    [alertView show];
+}
+
+- (void)cancelMediaUploads
+{
+    [self.mediaProgress cancel];
+}
+
 - (BOOL)hasFailedMedia
 {
     BOOL hasFailedMedia = NO;
@@ -807,22 +809,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     mediaFiles = nil;
 
     return hasFailedMedia;
-}
-
-//check if there are media in uploading status
-- (BOOL)isMediaInUploading
-{
-    BOOL isMediaInUploading = NO;
-
-    NSSet *mediaFiles = self.post.media;
-    for (Media *media in mediaFiles) {
-        if (media.remoteStatus == MediaRemoteStatusPushing) {
-            isMediaInUploading = YES;
-            break;
-        }
-    }
-    mediaFiles = nil;
-    return isMediaInUploading;
 }
 
 - (void)showFailedMediaAlert
