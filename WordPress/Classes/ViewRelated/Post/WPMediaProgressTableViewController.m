@@ -40,17 +40,19 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
         
-        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                          target:self
-                                                                                          action:@selector(doneButtonTapped:)];
+        UIBarButtonItem *doneButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"Label for the button to close a view.")
+                                                                           style:UIBarButtonItemStylePlain
+                                                                          target:self
+                                                                          action:@selector(doneButtonTapped:)];
         
         self.navigationItem.leftBarButtonItem = doneButtonItem;
     }
     
     // Cancel button
-    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                      target:self
-                                                                                      action:@selector(cancelButtonTapped:)];
+    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel All", @"Label for the button to cancel all progress.")
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(cancelButtonTapped:)];
     
     self.navigationItem.rightBarButtonItem = cancelButtonItem;
     
