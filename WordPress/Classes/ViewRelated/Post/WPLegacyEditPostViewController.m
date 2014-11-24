@@ -146,6 +146,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 
     [self geotagNewPost];
+    self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     self.delegate = self;
 }
 
@@ -154,16 +155,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [super viewDidAppear:animated];
     [self refreshButtons];
     // setup media progress view on navbar
-    self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     [self.navigationController.navigationBar addSubview:self.mediaProgressView];
     [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    self.mediaProgressView.hidden = YES;
+    self.mediaProgressView.hidden = ![self isMediaUploading];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.mediaProgressView removeFromSuperview];
-    self.mediaProgressView = nil;
 }
 
 - (void)viewWillLayoutSubviews
@@ -194,12 +193,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
     
-    self.mediaProgressView.hidden = YES;
-    if (self.mediaProgress &&
-        ![self.mediaProgress isCancelled] &&
-        self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount) {
-        
-        self.mediaProgressView.hidden = NO;
+    self.mediaProgressView.hidden = ![self isMediaUploading];
+    if ([self isMediaUploading]) {
         self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
         UIButton *titleButton = self.uploadStatusButton;
         if (self.navigationItem.titleView != titleButton){
@@ -332,6 +327,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (Class)classForSettingsViewController
 {
     return [PostSettingsViewController class];
+}
+
+#pragma mark - Media Progress
+
+- (BOOL)isMediaUploading
+{
+    return self.mediaProgress &&
+    ![self.mediaProgress isCancelled] &&
+    self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount;
 }
 
 - (void)showMediaProgress
