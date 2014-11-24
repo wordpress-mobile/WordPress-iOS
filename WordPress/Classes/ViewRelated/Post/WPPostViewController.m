@@ -24,6 +24,7 @@
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+#import "PrivateSiteURLProtocol.h"
 
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -82,6 +83,7 @@ static NSDictionary *EnabledButtonBarStyle;
     _failedMediaAlertView.delegate = nil;
     [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
 - (id)initWithDraftForLastUsedBlog
@@ -112,7 +114,10 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationClass = [self class];
 
         _post = post;
-		
+        if (post.blog.isPrivate) {
+            [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
+        }
+
         [self configureMediaUploadQueue];
 		
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
