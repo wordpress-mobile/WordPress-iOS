@@ -24,6 +24,7 @@
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+#import "PrivateSiteURLProtocol.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
 
@@ -89,6 +90,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [_mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
     _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
 - (id)initWithDraftForLastUsedBlog
@@ -118,7 +120,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
 
-        _post = post;		        
+        _post = post;
+        if (post.blog.isPrivate) {
+            [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
+        }
 		
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;

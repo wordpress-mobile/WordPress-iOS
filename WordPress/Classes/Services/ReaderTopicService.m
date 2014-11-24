@@ -82,7 +82,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     if (!topic) {
-        topic = [self currentTopicFromSavedURIString];
+        topic = [self currentTopicFromDefaultTopic];
         [self setCurrentTopic:topic];
     }
 
