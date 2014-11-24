@@ -147,7 +147,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self geotagNewPost];
     self.delegate = self;
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    [self refreshButtons];
     // setup media progress view on navbar
     self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     [self.navigationController.navigationBar addSubview:self.mediaProgressView];
@@ -155,9 +160,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaProgressView.hidden = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [self refreshButtons];
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.mediaProgressView removeFromSuperview];
+    self.mediaProgressView = nil;
 }
 
 - (void)viewWillLayoutSubviews
