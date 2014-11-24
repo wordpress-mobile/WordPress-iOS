@@ -29,6 +29,7 @@
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
+static NSString* const WPProgressImageId = @"WPProgressImageId";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
@@ -61,7 +62,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic, strong) NSProgress * mediaProgress;
-@property (nonatomic) NSMutableArray *mediaInProgress;
+@property (nonatomic, strong) NSMutableArray * childrenMediaProgress;
+@property (nonatomic, strong) NSMutableArray *mediaInProgress;
+
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -314,6 +317,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.delegate = self;
     self.failedMediaAlertView = nil;
     self.mediaInProgress = [NSMutableArray array];
+    self.childrenMediaProgress = [NSMutableArray array];
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -1470,6 +1474,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
         [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
         self.mediaProgress = nil;
+        [self.childrenMediaProgress removeAllObjects];
     }
     
     if (!self.mediaProgress){
@@ -1495,6 +1500,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
                         return;
                     }
+                    
+                    
                     NSString* imageUniqueId = [self uniqueId];
                     [self addToMediaInProgress:imageUniqueId];
                     
@@ -1517,6 +1524,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                         [self refreshNavigationBarButtons:NO];
                     }];
+                    UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
+                    //[uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                    [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
+                    [self.childrenMediaProgress addObject:uploadProgress];
                     [self.mediaProgress resignCurrent];
                 }];
                 
@@ -1544,9 +1555,19 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (context == ProgressObserverContext && object == self.mediaProgress) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
+            [self refreshMediaProgress];
         }];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+#pragma mark - Media Progress
+
+- (void) refreshMediaProgress
+{
+    for(NSProgress * progress in self.childrenMediaProgress){
+        [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
     }
 }
 
