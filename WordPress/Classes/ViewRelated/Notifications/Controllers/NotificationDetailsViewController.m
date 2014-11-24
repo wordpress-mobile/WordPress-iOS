@@ -280,9 +280,6 @@ static NSInteger NotificationSectionCount               = 1;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
     
-    // Set reply text view keyboard type to Twitter to expose the @ key for easy suggesting
-    [self.replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-    
     // Pin the suggestions view left and right edges to the super view edges
     NSDictionary *views = @{@"suggestionsview": self.suggestionsTableView };
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
