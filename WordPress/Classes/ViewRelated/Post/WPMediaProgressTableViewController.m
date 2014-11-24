@@ -45,14 +45,14 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
                                                                                           action:@selector(doneButtonTapped:)];
         
         self.navigationItem.leftBarButtonItem = doneButtonItem;
-        
-        // Cancel button
-        UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
-                                                                                        target:self
-                                                                                        action:@selector(cancelButtonTapped:)];
-        
-        self.navigationItem.rightBarButtonItem = cancelButtonItem;
     }
+    
+    // Cancel button
+    UIBarButtonItem *cancelButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                      target:self
+                                                                                      action:@selector(cancelButtonTapped:)];
+    
+    self.navigationItem.rightBarButtonItem = cancelButtonItem;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
