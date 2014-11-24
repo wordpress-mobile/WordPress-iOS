@@ -61,49 +61,53 @@
     [postService syncPostsOfType:PostServiceTypePage forBlog:self.blog success:success failure:failure];
 }
 
-- (void)editPost:(AbstractPost *)apost
+
+- (void)showAddPostView
+{
+    [self newPost];
+}
+
+- (void)newPost
 {
     UINavigationController *navController;
-    if ([WPPostViewController isNewEditorEnabled]) {
-        EditPageViewController *editPageViewController = [[EditPageViewController alloc] initWithPost:apost
-                                                                                                 mode:kWPPostViewControllerModeEdit];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
+    
+    if ([EditPageViewController isNewEditorEnabled]) {
+        EditPageViewController *postViewController = [[EditPageViewController alloc] initWithDraftForBlog:self.blog];
+        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
+        navController.restorationClass = [EditPageViewController class];
     } else {
-        WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
+        WPLegacyEditPageViewController *editPostViewController = [[WPLegacyEditPageViewController alloc] initWithDraftForLastUsedBlog];
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
+        navController.restorationClass = [WPLegacyEditPageViewController class];
     }
     
-	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-	[self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
 
 - (void)viewPost:(AbstractPost *)apost
 {
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *pageViewController = [[EditPageViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModePreview];
-        pageViewController.restorationIdentifier = WPEditorNavigationRestorationID;
-        self.navigationController.restorationClass = [EditPageViewController class];
+    if ([EditPageViewController isNewEditorEnabled]) {
+        EditPageViewController *pageViewController = [[EditPageViewController alloc] initWithPost:apost
+                                                                                             mode:kWPPostViewControllerModePreview];
         [self.navigationController pushViewController:pageViewController animated:YES];
     } else {
         // In legacy mode, view means edit
         WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
-        editPageViewController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
         navController.modalPresentationStyle = UIModalPresentationCurrentContext;
-        [self.view.window.rootViewController presentViewController:navController animated:YES completion:nil];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPageViewController class];
+        
+        [self presentViewController:navController animated:YES completion:nil];
     }
-}
-
-- (void)showAddPostView {
-    Page *post = [PostService createDraftPageInMainContextForBlog:self.blog];
-    [self editPost:post];
 }
 
 - (Class)classForSettingsViewController {

@@ -629,7 +629,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
     [self.tableView reloadData];
-    [self refresh];
+    [self syncItemsWithUserInteraction:NO];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTopicFreshlyPressed]) {
@@ -665,7 +665,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     NSDate *lastSynced = self.currentTopic.lastSynced;
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > RPVCRefreshInterval) {
-        [self refresh];
+        [self syncItemsWithUserInteraction:NO];
     }
 }
 
