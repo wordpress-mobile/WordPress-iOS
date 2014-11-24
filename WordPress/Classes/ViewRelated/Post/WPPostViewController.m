@@ -62,8 +62,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic, strong) NSProgress * mediaProgress;
-@property (nonatomic, strong) NSMutableArray * childrenMediaProgress;
+@property (nonatomic, strong) NSMutableArray *childrenMediaProgress;
 @property (nonatomic, strong) NSMutableArray *mediaInProgress;
+@property (nonatomic, strong) UIProgressView *mediaProgressView;
 
 
 #pragma mark - Bar Button Items
@@ -318,6 +319,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.failedMediaAlertView = nil;
     self.mediaInProgress = [NSMutableArray array];
     self.childrenMediaProgress = [NSMutableArray array];
+    self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     [self refreshNavigationBarButtons:NO];
 }
 
@@ -326,6 +328,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 	[super viewDidAppear:animated];
     
 	[self refreshNavigationBarButtons:NO];
+
+    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
     
 	if (self.isEditing) {
 		if ([self shouldHideStatusBarWhileTyping]) {
@@ -333,6 +337,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 													withAnimation:UIStatusBarAnimationSlide];
 		}
 	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.mediaProgressView removeFromSuperview];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    //layout mediaProgressView
+    CGRect frame = self.mediaProgressView.frame;
+    frame.size.width = self.view.frame.size.width;
+    frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    [self.mediaProgressView setFrame:frame];
 }
 
 #pragma mark - Actions
@@ -707,6 +727,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     [self refreshNavigationBarLeftButtons:editingChanged];
     [self refreshNavigationBarRightButtons:editingChanged];
+    [self refreshMediaProgress];
 }
 
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
@@ -1555,7 +1576,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (context == ProgressObserverContext && object == self.mediaProgress) {
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self refreshNavigationBarButtons:NO];
-            [self refreshMediaProgress];
         }];
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
@@ -1566,6 +1586,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void) refreshMediaProgress
 {
+    self.mediaProgressView.hidden = ![self isMediaUploading];
+    self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
     for(NSProgress * progress in self.childrenMediaProgress){
         [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
     }
