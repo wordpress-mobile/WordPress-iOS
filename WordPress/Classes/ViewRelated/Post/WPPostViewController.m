@@ -24,6 +24,8 @@
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+#import "WPMediaProgressTableViewController.h"
+#import "WPProgressTableViewCell.h"
 
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -65,7 +67,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) NSMutableArray *childrenMediaProgress;
 @property (nonatomic, strong) NSMutableArray *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
-
+@property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -85,6 +87,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     _failedMediaAlertView.delegate = nil;
     [_mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -1012,7 +1015,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     if (!_uploadStatusButton) {
         UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 30.0f)];
-        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        button.titleLabel.text = NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server");
+        [button addTarget:self action:@selector(showMediaProgress) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = button;
     }
     
@@ -1268,6 +1272,35 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if(uniqueMediaId)
     {
         [self.mediaInProgress addObject:uniqueMediaId];
+    }
+}
+
+- (void)showMediaProgress
+{
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
+    
+    vc.title = NSLocalizedString(@"Media Uploading", @"");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.mediaProgressPopover.delegate = self;
+        [self.mediaProgressPopover presentPopoverFromBarButtonItem:self.secondaryLeftUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:navController animated:YES completion:nil];
     }
 }
 
@@ -1546,7 +1579,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [self refreshNavigationBarButtons:NO];
                     }];
                     UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
-                    //[uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                    [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
                     [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
                     [self.childrenMediaProgress addObject:uploadProgress];
                     [self.mediaProgress resignCurrent];
