@@ -26,7 +26,7 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "UIImageView+Gravatar.h"
+#import "BlogDetailHeaderView.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -48,15 +48,9 @@ static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
-static CGFloat const BDVCTableViewHeaderHeight = 160.0;
-static CGFloat const BDVCBlavatarOffset = 10.0;
-static CGFloat const BDVCBlavatarWidth = 120.0;
-static CGFloat const BDVCBlavatarHeight = 120.0;
-
 @interface BlogDetailsViewController ()
 
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, strong) UIImageView *gravatarView;
+@property (nonatomic, strong) BlogDetailHeaderView *headerView;
 
 @end
 
@@ -116,13 +110,35 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 
     [blogService syncBlog:_blog success:nil failure:nil];
 
-    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BDVCTableViewHeaderHeight)];
-    self.tableView.tableHeaderView = self.headerView;
+    [self configureBlogDetailHeader];
+    [self.headerView setBlog:_blog];
+}
 
-    float x = (self.headerView.frame.size.width - BDVCBlavatarWidth) / 2.0;
-    self.gravatarView = [[UIImageView alloc] initWithFrame:CGRectMake(x, BDVCBlavatarOffset, BDVCBlavatarWidth, BDVCBlavatarHeight)];
-    [self.gravatarView setImageWithBlavatarUrl:self.blog.blavatarUrl isWPcom:self.blog.isWPcom];
-    [self.headerView addSubview:self.gravatarView];
+- (void)configureBlogDetailHeader
+{
+    NSInteger margin = 12;
+
+    // Wrapper view
+    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + margin * 2)];
+
+    // Blog detail header view
+    self.headerView = [[BlogDetailHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize)];
+    self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
+    [headerWrapper addSubview:self.headerView];
+
+    // Layout
+    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
+    NSDictionary *metrics = @{@"margin": @(margin)};
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(margin)-[_headerView]-(margin)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[_headerView]-(margin)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+
+    self.tableView.tableHeaderView = headerWrapper;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -134,7 +150,6 @@ static CGFloat const BDVCBlavatarHeight = 120.0;
 - (void)setBlog:(Blog *)blog
 {
     _blog = blog;
-    self.title = blog.blogName;
 }
 
 #pragma mark - Table view data source
