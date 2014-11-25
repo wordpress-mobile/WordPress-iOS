@@ -56,6 +56,7 @@ import Foundation
         gravatarURL = url
     }
  
+    
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -78,7 +79,7 @@ import Foundation
         // Separator: Make sure the height is 1pixel, not 1point
         let separatorHeightInPixels     = separatorHeight / UIScreen.mainScreen().scale
         separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColor
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.noteSeparatorColor
     }
     
     public override func layoutSubviews() {
