@@ -42,7 +42,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
@@ -118,12 +117,15 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+    // Setup the tableView
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,17 +154,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
-
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
