@@ -866,6 +866,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
                     [self insertMedia:media];
                 } failure:^(NSError *error) {
+                    // the progress was completed event if it was an error state
+                    self.mediaProgress.completedUnitCount++;
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                         return;
@@ -875,7 +877,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
                 [self.childrenMediaProgress addObject:uploadProgress];
-                
                 [self.mediaProgress resignCurrent];
             }];
         }

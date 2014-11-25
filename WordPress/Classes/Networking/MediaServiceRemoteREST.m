@@ -67,8 +67,11 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             if (success){
                 success(remoteMedia);
             }
+            localProgress.completedUnitCount=localProgress.totalUnitCount;
         } else {
             DDLogDebug(@"Error uploading file: %@", errorList);
+            localProgress.totalUnitCount=0;
+            localProgress.completedUnitCount=0;
             NSError * error = nil;
             if (errorList.count > 0){
                 NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
@@ -78,12 +81,13 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                 failure(error);
             }
         }
-        localProgress.completedUnitCount=localProgress.totalUnitCount;
+        
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        localProgress.totalUnitCount=0;
+        localProgress.completedUnitCount=0;
         if (failure) {
             failure(error);
         }
-        localProgress.completedUnitCount=localProgress.totalUnitCount;
     }];
 
     // Setup progress object
