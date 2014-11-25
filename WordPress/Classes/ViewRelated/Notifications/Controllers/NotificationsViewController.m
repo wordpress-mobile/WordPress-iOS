@@ -117,7 +117,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         self.tableView.tableFooterView = [UIView new];
     }
     
-    // Setup the tableView
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
     self.tableView.accessibilityIdentifier = @"Notifications Table";
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
@@ -392,6 +394,17 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self.lastReloadDate = [NSDate date];
 }
 
+- (BOOL)isLastRowInSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -596,6 +609,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isLastRowInSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
