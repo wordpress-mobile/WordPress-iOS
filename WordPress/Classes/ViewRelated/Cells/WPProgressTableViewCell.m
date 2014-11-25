@@ -59,7 +59,8 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 
 - (void) updateProgress
 {
-    if (_progress.fractionCompleted < 1){
+    if (_progress.fractionCompleted < 1 &&
+        !(_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0)){
         [_progressView startAnimating];
     } else {
         [_progressView stopAnimating];
@@ -68,6 +69,9 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     self.progressView.mayStop = _progress.isCancellable;
     if ( [_progress isCancelled]){
         self.textLabel.text = NSLocalizedString(@"Cancelled",@"The action was cancelled");
+        self.detailTextLabel.text = @"";
+    } else if (_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0){
+        self.textLabel.text = NSLocalizedString(@"Failed",@"The action was failed");
         self.detailTextLabel.text = @"";
     } else {
         self.textLabel.text = [_progress localizedDescription];

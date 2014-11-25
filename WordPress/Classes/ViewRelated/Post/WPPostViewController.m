@@ -1560,7 +1560,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         return;
                     }
                     
-                    
                     NSString* imageUniqueId = [self uniqueId];
                     [self addToMediaInProgress:imageUniqueId];
                     
@@ -1575,13 +1574,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [self refreshNavigationBarButtons:NO];
                     } failure:^(NSError *error) {
                         [self removeFromMediaInProgress:imageUniqueId];
+                        [self.editorView markImageAsFailed:imageUniqueId];
+                        self.mediaProgress.totalUnitCount++;
+                        [self refreshNavigationBarButtons:NO];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                             DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
                             return;
                         }
-                        
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
-                        [self refreshNavigationBarButtons:NO];
                     }];
                     UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                     [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
@@ -1627,7 +1627,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaProgressView.hidden = ![self isMediaUploading];
     self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
     for(NSProgress * progress in self.childrenMediaProgress){
-        [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
+        if (progress.isCancelled || progress.totalUnitCount == 0){
+           [self.editorView markImageAsFailed:progress.userInfo[WPProgressImageId]];
+        } else {
+            [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
+        }
     }
 }
 

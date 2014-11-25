@@ -72,23 +72,26 @@
           NSDictionary *response = (NSDictionary *)responseObject;
           [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
           if (![response isKindOfClass:[NSDictionary class]]) {
+              localProgress.completedUnitCount=0;
+              localProgress.totalUnitCount=0;
               NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
               if (failure) {
                   failure(error);
-              }
+              }              
           } else {
+              localProgress.completedUnitCount=localProgress.totalUnitCount;
               RemoteMedia * remoteMedia = [self remoteMediaFromUploadXMLRPCDictionary:response];
               if (success){
                   success(remoteMedia);
               }
           }
-          localProgress.completedUnitCount=localProgress.totalUnitCount;
       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+          localProgress.completedUnitCount=0;
+          localProgress.totalUnitCount=0;
           [[NSFileManager defaultManager] removeItemAtPath:streamingCacheFilePath error:nil];
           if (failure) {
               failure(error);
           }
-          localProgress.completedUnitCount=localProgress.totalUnitCount;
       }];
     
     // Setup progress object
