@@ -52,6 +52,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) UIView *postHeader;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic) UIDeviceOrientation previousOrientation;
+@property (nonatomic) NSIndexPath *indexPathForCommentRepliedTo;
 
 @end
 
@@ -638,6 +639,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)tapRecognized:(id)sender
 {
     self.tapOffKeyboardGesture.enabled = NO;
+    self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
     [self configureTextReplyViewPlaceholder];
@@ -666,9 +668,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    if (indexPath) {
-        Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+
+    if (self.indexPathForCommentRepliedTo) {
+        Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:self.indexPathForCommentRepliedTo];
         [service replyToHierarchicalCommentWithID:comment.commentID
                                            postID:self.post.postID
                                            siteID:self.post.siteID
@@ -682,6 +684,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                            success:successBlock
                            failure:failureBlock];
     }
+    self.indexPathForCommentRepliedTo = nil;
 }
 
 
@@ -990,8 +993,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.replyTextView becomeFirstResponder];
 
     Comment *comment = (Comment *)contentProvider;
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-    [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
+    self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self configureTextReplyViewPlaceholder];
 }
 
