@@ -625,6 +625,18 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     success();
 }
 
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isLastRowInSection:indexPath];
+    }
+}
+
 
 #pragma mark - No Results Helpers
 
@@ -681,6 +693,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     return ![accountService defaultWordPressComAccount];
 }
+
 
 #pragma mark - ABXPromptViewDelegate
 
