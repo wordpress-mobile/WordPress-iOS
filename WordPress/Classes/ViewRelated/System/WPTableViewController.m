@@ -350,6 +350,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
+    [self didChangeContent];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -762,6 +763,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Optional: Override if needed
+}
+
+- (void)didChangeContent
 {
     // Optional: Override if needed
 }
