@@ -1355,7 +1355,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     [self refreshNavigationBarButtons:NO];
                 } failure:^(NSError *error) {
                     [self removeFromMediaInProgress:imageUniqueId];
-                    [self.editorView markImageAsFailed:imageUniqueId];
+                    [self.editorView markImageUploadFailed:imageUniqueId];
                     self.mediaProgress.totalUnitCount++;
                     [self refreshNavigationBarButtons:NO];
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1634,7 +1634,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
     for(NSProgress * progress in self.childrenMediaProgress){
         if (progress.isCancelled || progress.totalUnitCount == 0){
-           [self.editorView markImageAsFailed:progress.userInfo[WPProgressImageId]];
+           [self.editorView markImageUploadFailed:progress.userInfo[WPProgressImageId]];
         } else {
             [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
         }
