@@ -13,16 +13,13 @@
 
 #define TAG_OFFSET 1010
 
-@interface PostsViewController () {
-    BOOL _addingNewPost;
-}
-
+@interface PostsViewController ()
+@property (nonatomic, assign, readwrite) BOOL addingNewPost;
 @end
 
 @implementation PostsViewController
 
 @synthesize anyMorePosts, drafts;
-//@synthesize resultsController;
 
 #pragma mark -
 #pragma mark View lifecycle
@@ -100,9 +97,9 @@
 	}
     
     // Scroll to the top of the UItableView to show the newly added post.
-    if (_addingNewPost) {
+    if (self.addingNewPost) {
         [self.tableView setContentOffset:CGPointZero animated:NO];
-        _addingNewPost = NO;
+        self.addingNewPost = NO;
     }
 
 }
@@ -213,33 +210,33 @@
 
 - (void)showAddPostView
 {
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
-
-    _addingNewPost = YES;
-    Post *post = [PostService createDraftPostInMainContextForBlog:self.blog];
-    [self editPost:post];
+    [self newPost];
 }
 
-- (void)editPost:(AbstractPost *)apost
+- (void)newPost
 {
+    self.addingNewPost = YES;
+    
     UINavigationController *navController;
+    
     if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModeEdit];
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
         navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
         navController.restorationClass = [WPPostViewController class];
     } else {
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithPost:apost];
+        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         navController.restorationClass = [WPLegacyEditPostViewController class];
     }
     
-	[navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-	navController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:navController animated:YES completion:nil];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
 
 - (void)viewPost:(AbstractPost *)apost
@@ -247,6 +244,7 @@
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
                                                                                          mode:kWPPostViewControllerModePreview];
+        postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
         // In legacy mode, view means edit
@@ -325,8 +323,8 @@
     [super controller:controller didChangeObject:anObject atIndexPath:indexPath forChangeType:type newIndexPath:newIndexPath];
 
     if (type == NSFetchedResultsChangeDelete) {
-        if (_addingNewPost && NSOrderedSame == [indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]]) {
-            _addingNewPost = NO;
+        if (self.addingNewPost && NSOrderedSame == [indexPath compare:[NSIndexPath indexPathForRow:0 inSection:0]]) {
+            self.addingNewPost = NO;
         }
     }
 }

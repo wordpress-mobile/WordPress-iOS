@@ -43,7 +43,7 @@ PODS:
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.8.0)
-  - HockeySDK (3.5.7)
+  - HockeySDK (3.6.1)
   - JRSwizzle (1.0)
   - KIF (3.0.8):
     - KIF/XCTest
@@ -74,7 +74,7 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.2.2):
+  - WordPress-iOS-Editor (0.2.3):
     - CocoaLumberjack (~> 1.9)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.1.4)
@@ -105,7 +105,7 @@ DEPENDENCIES:
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.8.0)
-  - HockeySDK (~> 3.5.0)
+  - HockeySDK (~> 3.6.0)
   - KIF (from `https://github.com/SergioEstevao/KIF.git`, branch `issue/470-AccessibilityIdentifier`)
   - Lookback (= 0.6.5)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
@@ -121,7 +121,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `ddc98a8cc03cc224e064a530356a8e548b442987`)
+  - WordPress-iOS-Editor (= 0.2.3)
   - WordPress-iOS-Shared (= 0.1.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.0`)
   - WordPressCom-Analytics-iOS (= 0.0.13)
@@ -143,9 +143,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-iOS-Editor:
-    :commit: ddc98a8cc03cc224e064a530356a8e548b442987
-    :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.0
@@ -161,7 +158,7 @@ SPEC CHECKSUMS:
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
   google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
-  HockeySDK: f0e874d1c6833163ee0c4e423606faf33ad04071
+  HockeySDK: 15b24068466aa5ee421eed0cc1d58428d698edf6
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   KIF: ca6fee58d795e2ca432b852369641b5f6e7b08c7
   Lookback: 59f217e51c1f2bcdf23d00522ef14b66be8557d1
@@ -180,7 +177,7 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: 8352cfe6be7601d9a7933a4d126e29f8ce5ccf67
+  WordPress-iOS-Editor: ca6e935d22099c6bb0865cf4b0599b135cd0d0a0
   WordPress-iOS-Shared: cb00b5b2530e5b581d34926ac6966b7ec476a93a
   WordPressApi: 6d28e1f6e6bf6cea2aa52d99d2cc795ff398e479
   WordPressCom-Analytics-iOS: 05bdd495e26a378a27083034fa63b543e0b3aee9
