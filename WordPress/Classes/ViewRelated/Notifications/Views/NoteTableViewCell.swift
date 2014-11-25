@@ -9,6 +9,16 @@ import Foundation
             refreshBackgrounds()
         }
     }
+    public var unapproved: Bool = false {
+        didSet {
+            refreshBackgrounds()
+        }
+    }
+    public var showsSeparator: Bool = false {
+        didSet {
+            separatorView.hidden = !showsSeparator
+        }
+    }
     public var attributedSubject: NSAttributedString? {
         didSet {
             subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
@@ -25,11 +35,6 @@ import Foundation
     public var noticon: NSString? {
         didSet {
             noticonLabel.text = noticon ?? String()
-        }
-    }
-    public var unapproved: Bool = false {
-        didSet {
-            refreshBackgrounds()
         }
     }
     
@@ -69,6 +74,11 @@ import Foundation
         subjectLabel.shadowOffset       = CGSizeZero
 
         snippetLabel.numberOfLines      = snippetNumberOfLines
+        
+        // Separator: Make sure the height is 1pixel, not 1point
+        let separatorHeightInPixels     = separatorHeight / UIScreen.mainScreen().scale
+        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.blockSeparatorColor
     }
     
     public override func layoutSubviews() {
@@ -124,6 +134,7 @@ import Foundation
     private typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Properties
+    private let separatorHeight:                    CGFloat     = 1
     private let subjectPaddingRight:                CGFloat     = 12
     private let subjectNumberOfLinesWithoutSnippet: Int         = 3
     private let subjectNumberOfLinesWithSnippet:    Int         = 2
@@ -140,4 +151,5 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
+    @IBOutlet private weak var separatorView:           UIView!
 }
