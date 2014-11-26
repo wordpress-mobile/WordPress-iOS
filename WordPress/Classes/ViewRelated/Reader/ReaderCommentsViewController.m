@@ -92,7 +92,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableViewHandler];
     [self configureCellForLayout];
     [self configureInfiniteScroll];
-    [self attachSuggestionsTableViewIfNeeded];
+    [self configureSuggestionsTableViewIfNeeded];
     [self configureTextReplyView];
     [self configureConstraints];
 
@@ -341,7 +341,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 }
 
-- (void)attachSuggestionsTableViewIfNeeded
+- (void)configureSuggestionsTableViewIfNeeded
 {
     if (![self shouldAttachSuggestionsTableView]) {
         return;
