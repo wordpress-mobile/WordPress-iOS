@@ -78,12 +78,10 @@ static NSInteger const CVCNumberOfSections = 2;
         return;
     }
     
-    if ([self shouldAttachSuggestionsTableView]) {
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
-        self.suggestionsTableView.suggestionsDelegate = self;
-        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:self.suggestionsTableView];        
-    }
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.suggestionsTableView];
 }
 
 - (void)attachReplyViewIfNeeded
