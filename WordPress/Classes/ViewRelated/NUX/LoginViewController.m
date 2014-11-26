@@ -26,7 +26,6 @@
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
-static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
 @interface LoginViewController () <UITextFieldDelegate, HelpshiftDelegate> {
 
