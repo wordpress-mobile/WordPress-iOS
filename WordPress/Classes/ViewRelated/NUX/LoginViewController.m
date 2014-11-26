@@ -11,6 +11,7 @@
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
 #import "WPWalkthroughOverlayView.h"
+#import "WPNUXErrorViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
 #import "WPAccount.h"
@@ -178,118 +179,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
 
     return YES;
-}
-
-#pragma mark - Displaying of Error Messages
-
-- (WPWalkthroughOverlayView *)baseLoginErrorOverlayView:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [[WPWalkthroughOverlayView alloc] initWithFrame:self.view.bounds];
-    overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
-    overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
-    overlayView.overlayDescription = message;
-    overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);
-    overlayView.primaryButtonText = NSLocalizedString(@"OK", nil);
-    overlayView.dismissCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    return overlayView;
-}
-
-- (void)displayErrorMessageForXMLRPC:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.primaryButtonText = NSLocalizedString(@"Enable Now", nil);
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpViewController:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-
-        NSString *path = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php"
-                                                                               options:NSRegularExpressionCaseInsensitive
-                                                                                 error:nil];
-        NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
-
-        if (rng.location == NSNotFound) {
-            path = [self getSiteUrl];
-            path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-            path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-        } else {
-            path = [message substringWithRange:rng];
-        }
-
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:path]];
-        [webViewController setUsername:_usernameText.text];
-        [webViewController setPassword:_passwordText.text];
-        webViewController.shouldScrollToBottom = YES;
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:NO];
-    };
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayErrorMessageForBadUrl:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayGenerateApplicationSpecificPasswordErrorMessage:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:GenerateApplicationSpecificPasswordUrl]];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayGenericErrorMessage:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpViewController:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    overlayView.accessibilityIdentifier = @"GenericErrorMessage";
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the error message when a user has repeated trouble logging in");
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpshiftConversationView];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
 }
 
 #pragma mark - Button Press Methods
@@ -995,40 +884,30 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)displayRemoteError:(NSError *)error
 {
     DDLogError(@"%@", error);
-    NSString *message = [error localizedDescription];
-    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
-            [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
-        } else {
-            if (error.code == WordPressComOAuthErrorInvalidRequest) {
-                _numberOfTimesLoginFailed++;
-            }
+    WPNUXErrorViewController *controller = [[WPNUXErrorViewController alloc] initWithRemoteError:error];
+    if ([error.domain isEqual:WordPressComOAuthErrorDomain] && error.code == WordPressComOAuthErrorInvalidRequest) {
+        _numberOfTimesLoginFailed++;
+    }
 
-            if ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
-                [self displayGenericErrorMessageWithHelpshiftButton:message];
-            } else {
-                [self displayGenericErrorMessage:message];
-            }
+    __weak __typeof(self)weakSelf = self;
+
+    BOOL liveChatEnabled = ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2);
+    controller.liveChatEnabled = liveChatEnabled;
+    if (liveChatEnabled) {
+        controller.contactCompletionBlock = ^() {
+            [weakSelf dismissViewControllerAnimated:NO completion:^{
+                [self showHelpshiftConversationView];
+            }];
+        };
+    }
+    controller.dismissCompletionBlock = ^(UIViewController *nextController) {
+        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        if (nextController) {
+            [weakSelf.navigationController setNavigationBarHidden:NO animated:NO];
+            [weakSelf.navigationController pushViewController:nextController animated:NO];
         }
-        return;
-    }
-    if ([error code] == 403) {
-        message = NSLocalizedString(@"Please try entering your login details again.", nil);
-    }
-
-    if ([[message trim] length] == 0) {
-        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
-    }
-
-    if ([error code] == 405) {
-        [self displayErrorMessageForXMLRPC:message];
-    } else {
-        if ([error code] == NSURLErrorBadURL) {
-            [self displayErrorMessageForBadUrl:message];
-        } else {
-            [self displayGenericErrorMessage:message];
-        }
-    }
+    };
+    [self presentViewController:controller animated:YES completion:NO];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
