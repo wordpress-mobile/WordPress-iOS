@@ -101,10 +101,6 @@ static NSInteger const CVCNumberOfSections = 2;
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
     [self.view addSubview:self.replyTextView];
-    
-    if ([self shouldAttachSuggestionsTableView]) {
-        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-    }
 }
 
 - (void)attachEditActionButton
