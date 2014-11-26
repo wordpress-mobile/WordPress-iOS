@@ -3,39 +3,24 @@
 
 @implementation WPNUXMainButton {
     UIActivityIndicatorView *activityIndicator;
-}
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self configureButton];
-    }
-    return self;
-}
-
-- (id)initWithCoder:(NSCoder *)aDecoder
-{
-    self = [super initWithCoder:aDecoder];
-    if (self) {
-        [self configureButton];
-    }
-    return self;
+    BOOL viewIsConfigured;
 }
 
 - (void)layoutSubviews
 {
-
     [super layoutSubviews];
-    if ([activityIndicator isAnimating]) {
+    if (!viewIsConfigured) {
+        [self configureView];
+    }
 
+    if ([activityIndicator isAnimating]) {
         // hide the title label when the activity indicator is visible
         self.titleLabel.frame = CGRectZero;
         activityIndicator.frame = CGRectMake((self.frame.size.width - activityIndicator.frame.size.width) / 2.0, (self.frame.size.height - activityIndicator.frame.size.height) / 2.0, activityIndicator.frame.size.width, activityIndicator.frame.size.height);
     }
 }
 
-- (void)configureButton
+- (void)configureView
 {
     [self setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
@@ -47,6 +32,8 @@
     activityIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
     activityIndicator.hidesWhenStopped = YES;
     [self addSubview:activityIndicator];
+
+    viewIsConfigured = YES;
 }
 
 - (void)showActivityIndicator:(BOOL)show
@@ -74,7 +61,13 @@
     mainImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
 
-    [self setBackgroundImage:[mainImage resizableImageWithCapInsets:capInsets] forState:UIControlStateNormal];
+    UIImage *backgroundImage = [mainImage resizableImageWithCapInsets:capInsets];
+    [self setBackgroundImage:backgroundImage forState:UIControlStateNormal];
+}
+
+- (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state
+{
+    [super setBackgroundImage:image forState:state];
 }
 
 @end
