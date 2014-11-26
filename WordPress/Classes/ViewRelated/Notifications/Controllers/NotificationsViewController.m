@@ -42,7 +42,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
@@ -118,12 +117,17 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,17 +156,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
-
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -401,6 +394,17 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     self.lastReloadDate = [NSDate date];
 }
 
+- (BOOL)isLastRowInSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -605,6 +609,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isLastRowInSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -618,6 +623,18 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     // No-Op. Handled by Simperium!
     success();
+}
+
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isLastRowInSection:indexPath];
+    }
 }
 
 
@@ -676,6 +693,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     
     return ![accountService defaultWordPressComAccount];
 }
+
 
 #pragma mark - ABXPromptViewDelegate
 
