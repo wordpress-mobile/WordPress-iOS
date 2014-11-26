@@ -57,6 +57,7 @@
 
 - (void)configureOverlayView
 {
+    self.overlayView.transparent = YES;
     self.overlayView.overlayMode = WPWalkthroughGrayOverlayViewOverlayModeTwoButtonMode;
     self.overlayView.overlayTitle = NSLocalizedString(@"Sorry, we can't log you in.", nil);
     self.overlayView.secondaryButtonText = NSLocalizedString(@"Need Help?", nil);

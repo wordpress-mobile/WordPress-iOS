@@ -10,7 +10,6 @@
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
 #import "JetpackSettingsViewController.h"
-#import "WPWalkthroughOverlayView.h"
 #import "WPNUXErrorViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"

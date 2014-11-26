@@ -107,10 +107,10 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     }
 }
 
-- (void)setHideBackgroundView:(BOOL)hideBackgroundView
+- (void)setTransparent:(BOOL)transparent
 {
-    if (_hideBackgroundView != hideBackgroundView) {
-        _hideBackgroundView = hideBackgroundView;
+    if (_transparent != transparent) {
+        _transparent = transparent;
         [self configureBackgroundColor];
         [self setNeedsLayout];
     }
@@ -184,8 +184,8 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
 - (void)configureBackgroundColor
 {
     CGFloat alpha = 0.95;
-    if (self.hideBackgroundView) {
-        alpha = 1.0;
+    if (self.transparent) {
+        alpha = 0.0;
     }
     self.backgroundColor = [UIColor colorWithRed:17.0/255.0 green:17.0/255.0 blue:17.0/255.0 alpha:alpha];
 }
@@ -213,8 +213,6 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _title.lineBreakMode = NSLineBreakByWordWrapping;
     _title.font = [WPFontManager openSansLightFontOfSize:25.0];
     _title.text = self.overlayTitle;
-    _title.shadowColor = [UIColor blackColor];
-    _title.shadowOffset = CGSizeMake(1.0, 1.0);
     _title.textColor = [UIColor whiteColor];
     [self addSubview:_title];
 
@@ -226,7 +224,6 @@ CGFloat const WPWalkthroughGrayOverlayMaxLabelWidth = 289.0;
     _description.lineBreakMode = NSLineBreakByWordWrapping;
     _description.font = [WPNUXUtility descriptionTextFont];
     _description.text = self.overlayDescription;
-    _description.shadowColor = [UIColor blackColor];
     _description.textColor = [UIColor whiteColor];
     [self addSubview:_description];
 

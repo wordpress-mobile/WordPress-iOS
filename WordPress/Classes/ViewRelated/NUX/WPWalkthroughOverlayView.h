@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, WPWalkthroughOverlayViewIcon) {
 @property (nonatomic, strong) NSString *footerDescription;
 @property (nonatomic, strong) NSString *secondaryButtonText;
 @property (nonatomic, strong) NSString *primaryButtonText;
-@property (nonatomic, assign) BOOL hideBackgroundView;
+@property (nonatomic, assign) BOOL transparent;
 
 @property (nonatomic, copy) void (^dismissCompletionBlock)(WPWalkthroughOverlayView *);
 @property (nonatomic, copy) void (^secondaryButtonCompletionBlock)(WPWalkthroughOverlayView *);
