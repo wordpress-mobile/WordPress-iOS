@@ -53,7 +53,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
 @end
@@ -66,7 +65,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)dealloc
 {
-    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
@@ -80,9 +78,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         // Watch for application badge number changes
         NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
-        
-        // Cache Row Heights!
-        self.cachedRowHeights = [NSMutableDictionary dictionary];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -174,7 +169,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self invalidateAllRowHeights];
 }
 
 
@@ -427,34 +421,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 }
 
 
-#pragma mark - Row Height Cache
-
-- (void)invalidateAllRowHeights
-{
-    [self.cachedRowHeights removeAllObjects];
-}
-
-- (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
-}
-
-- (void)invalidateRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *nukedPathKey = indexPath.toString;
-    NSMutableArray *invalidKeys = [NSMutableArray array];
-    
-    for (NSString *key in self.cachedRowHeights.allKeys) {
-        if ([key compare:nukedPathKey] == NSOrderedDescending) {
-            [invalidKeys addObject:key];
-        }
-    }
-    
-    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
-    [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
-}
-
-
 #pragma mark - UITableViewDelegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -502,30 +468,15 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-
     return NoteEstimatedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Hit the cache first
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-    
-    // Setup the cell
     NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self configureCell:layoutCell atIndexPath:indexPath];
     
     CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
-    
-    // Cache
-    self.cachedRowHeights[indexPath.toString] = @(height);
 
     return height;
 }
