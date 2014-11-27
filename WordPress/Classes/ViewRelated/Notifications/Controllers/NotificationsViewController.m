@@ -48,9 +48,9 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
 @interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
+@property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
@@ -135,9 +135,10 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Hit the Tracker
-    dispatch_once(&_trackedViewDisplay, ^{
+    if(!_trackedViewDisplay) {
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    });
+        _trackedViewDisplay = true;
+    }
 
     // Refresh the UI
     [self updateLastSeenTime];
