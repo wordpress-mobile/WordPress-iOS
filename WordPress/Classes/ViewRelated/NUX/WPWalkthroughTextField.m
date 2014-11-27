@@ -1,34 +1,17 @@
 #import "WPWalkthroughTextField.h"
 
 @interface WPWalkthroughTextField ()
-@property (nonatomic, strong) UIImage *leftViewImage;
 @property (nonatomic, strong) UIButton *secureTextEntryToggle;
 @property (nonatomic, strong) UIImage *secureTextEntryImageVisible;
 @property (nonatomic, strong) UIImage *secureTextEntryImageHidden;
+@property (nonatomic, assign) BOOL viewIsConfigured;
 @end
 
 @implementation WPWalkthroughTextField
 
-- (id)init
+- (instancetype)initWithFrame:(CGRect)frame
 {
-    self = [super init];
-    if (self) {
-        self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
-        self.layer.cornerRadius = 1.0;
-        self.clipsToBounds = YES;
-        self.showTopLineSeparator = NO;
-        self.showSecureTextEntryToggle = NO;
-
-        self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible"];
-        self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text"];
-
-        self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
-        [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
-
-        [self addSubview:self.secureTextEntryToggle];
-        [self updateSecureTextEntryToggleImage];
-    }
+    self = [super initWithFrame:frame];
     return self;
 }
 
@@ -37,10 +20,52 @@
     self = [self init];
     if (self) {
         self.leftViewImage = image;
-        self.leftView = [[UIImageView alloc] initWithImage:image];
-        self.leftViewMode = UITextFieldViewModeAlways;
     }
     return self;
+}
+
+- (void)configureView
+{
+    self.textInsets = UIEdgeInsetsMake(7, 10, 7, 10);
+    self.layer.cornerRadius = 1.0;
+    self.clipsToBounds = YES;
+
+    /*
+     We need to specify the bundle so Interface Builder can load the resources
+     
+     `-[UIImage imageNamed:` defaults to the main bundle, which in IB won't match
+     the app's bundle.
+     
+     See https://stackoverflow.com/questions/24603232/xcode-6-ib-designable-not-loading-resources-from-bundle-in-interface-builder
+     */
+    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+    if ([UIImage respondsToSelector:@selector(imageNamed:inBundle:compatibleWithTraitCollection:)]) {
+        self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible" inBundle:bundle compatibleWithTraitCollection:self.traitCollection];
+        self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text" inBundle:bundle compatibleWithTraitCollection:self.traitCollection];
+    } else {
+        self.secureTextEntryImageVisible = [UIImage imageNamed:@"icon-secure-text-visible"];
+        self.secureTextEntryImageHidden = [UIImage imageNamed:@"icon-secure-text"];
+    }
+
+    self.secureTextEntryToggle = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.secureTextEntryToggle.frame = CGRectMake(0, 0, 40, 30);
+    [self.secureTextEntryToggle addTarget:self action:@selector(secureTextEntryToggleAction:) forControlEvents:UIControlEventTouchUpInside];
+
+    [self addSubview:self.secureTextEntryToggle];
+    [self updateSecureTextEntryToggleImage];
+    [self configureLeftView];
+    self.viewIsConfigured = YES;
+}
+
+- (void)configureLeftView
+{
+    if (self.leftViewImage) {
+        self.leftView = [[UIImageView alloc] initWithImage:self.leftViewImage];
+        self.leftViewMode = UITextFieldViewModeAlways;
+    } else {
+        self.leftView = nil;
+        self.leftViewMode = UITextFieldViewModeNever;
+    }
 }
 
 - (void)drawRect:(CGRect)rect
@@ -64,7 +89,9 @@
 
 - (void)layoutSubviews
 {
-
+    if (!self.viewIsConfigured) {
+        [self configureView];
+    }
     [super layoutSubviews];
 
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
