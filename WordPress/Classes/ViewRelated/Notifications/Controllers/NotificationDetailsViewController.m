@@ -1170,7 +1170,6 @@ static NSInteger NotificationSectionCount               = 1;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
-    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 
