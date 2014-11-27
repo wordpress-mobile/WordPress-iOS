@@ -5,8 +5,7 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewControllerSubclass.h"
+#import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "Notification.h"
 #import "Meta.h"
@@ -49,8 +48,9 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
 @property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
+@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
+@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
@@ -95,8 +95,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.infiniteScrollEnabled = NO;
-
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
@@ -112,6 +110,12 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     } else {
         self.tableView.tableFooterView = [UIView new];
     }
+    
+    // WPTableViewHandler
+    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights        = true;
+    tableViewHandler.delegate               = self;
+    self.tableViewHandler                   = tableViewHandler;
     
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
@@ -169,6 +173,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [self.tableViewHandler clearCachedRowHeights];
 }
 
 
@@ -338,7 +343,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)updateLastSeenTime
 {
-    Notification *note      = [self.resultsController.fetchedObjects firstObject];
+    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
     if (!note) {
         return;
     }
@@ -390,7 +395,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         return;
     }
     
-    [self.resultsController performFetch:nil];
+    [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     self.lastReloadDate = [NSDate date];
 }
@@ -435,7 +440,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
     NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
@@ -483,7 +488,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if (!note) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
@@ -513,21 +518,11 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 }
 
 
-#pragma mark - WPTableViewController subclass methods
+#pragma mark - WPTableViewHandlerDelegate methods
 
-- (NSString *)entityName
+- (NSManagedObjectContext *)managedObjectContext
 {
-    return NSStringFromClass([Notification class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSDate *)lastSyncDate
-{
-    return [NSDate date];
+    return [[ContextManager sharedInstance] mainContext];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -539,14 +534,9 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     return fetchRequest;
 }
 
-- (Class)cellClass
-{
-    return [NoteTableViewCell class];
-}
-
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
     NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
     NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
@@ -560,15 +550,14 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
-- (void)syncItems
+- (NSString *)sectionNameKeyPath
 {
-    // No-Op. Handled by Simperium!
+    return NSStringFromSelector(@selector(sectionIdentifier));
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+- (NSString *)entityName
 {
-    // No-Op. Handled by Simperium!
-    success();
+    return NSStringFromClass([Notification class]);
 }
 
 
@@ -627,6 +616,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     
     return ![accountService defaultWordPressComAccount];
 }
+
 
 #pragma mark - ABXPromptViewDelegate
 
