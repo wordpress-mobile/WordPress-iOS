@@ -3618,12 +3618,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
-					"$(inherited)",
-					"BITHOCKEY_VERSION=\"@\\\"3.5.7\\\"\"",
-					"BITHOCKEY_C_VERSION=\"\\\"3.5.7\\\"\"",
-					"BITHOCKEY_BUILD=\"@\\\"32\\\"\"",
-					"BITHOCKEY_C_BUILD=\"\\\"32\\\"\"",
-					"${inherited}",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -3751,6 +3745,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
