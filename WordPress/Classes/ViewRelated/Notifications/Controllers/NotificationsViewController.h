@@ -3,7 +3,7 @@
 
 
 
-@interface NotificationsViewController : WPTableViewController
+@interface NotificationsViewController : UITableViewController
 
 - (void)showDetailsForNoteWithID:(NSString *)notificationID;
 
