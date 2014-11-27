@@ -119,6 +119,11 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
     
+    // UIRefreshControl
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -560,6 +565,15 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 - (NSString *)entityName
 {
     return NSStringFromClass([Notification class]);
+}
+
+
+#pragma mark - UIRefreshControl Methods
+
+- (void)refresh
+{
+    // Yes. This is dummy. Simperium handles sync for us!
+    [self.refreshControl endRefreshing];
 }
 
 
