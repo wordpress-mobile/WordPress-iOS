@@ -92,8 +92,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
@@ -111,6 +109,10 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+    // UITableView
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     // WPTableViewHandler
     WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     tableViewHandler.cacheRowHeights        = true;
@@ -122,7 +124,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -502,7 +503,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 #pragma mark - Storyboard Helpers
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
     NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
