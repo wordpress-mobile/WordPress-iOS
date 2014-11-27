@@ -7,6 +7,8 @@
 
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
+#import "WPNoResultsView.h"
+
 #import "Notification.h"
 #import "Meta.h"
 
@@ -21,6 +23,8 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
+
+#import "UIView+Subviews.h"
 
 #import "AppRatingUtility.h"
 
@@ -48,8 +52,10 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
+@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
+                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
 @property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView       *noResultsView;
 @property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
@@ -129,6 +135,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
+    [self setupNoResultsView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,6 +159,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
+    [self setupNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -567,6 +575,11 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     return NSStringFromClass([Notification class]);
 }
 
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self setupNoResultsView];
+}
+
 
 #pragma mark - UIRefreshControl Methods
 
@@ -579,58 +592,76 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 #pragma mark - No Results Helpers
 
+- (void)setupNoResultsView
+{
+    // Remove If Needed
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+    
+    // Attach the view
+    WPNoResultsView *noResultsView  = self.noResultsView;
+    if (!noResultsView.superview) {
+        [self.tableView addSubviewWithFadeAnimation:noResultsView];
+    }
+    
+    // Refresh its properties: The user may have signed into WordPress.com
+    noResultsView.titleText         = self.noResultsTitleText;
+    noResultsView.messageText       = self.noResultsMessageText;
+    noResultsView.accessoryView     = self.noResultsAccessoryView;
+    noResultsView.buttonTitle       = self.noResultsButtonText;
+}
+
+- (WPNoResultsView *)noResultsView
+{
+    if (!_noResultsView) {
+        _noResultsView          = [WPNoResultsView new];
+        _noResultsView.delegate = self;
+    }
+    return _noResultsView;
+}
+
 - (NSString *)noResultsTitleText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
+    NSString *emptyMessage      = NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    return self.showsJetpackMessage ? jetapackMessage : emptyMessage;
 }
 
 - (NSString *)noResultsMessageText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return nil;
-    }
-}
-
-- (NSString *)noResultsButtonText
-{
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Learn more", @"");
-    } else {
-        return nil;
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
+    return self.showsJetpackMessage ? jetapackMessage : nil;
 }
 
 - (UIView *)noResultsAccessoryView
 {
-    if (self.showJetpackConnectMessage) {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-    } else {
-        return nil;
-    }
+    return self.showsJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
+}
+ 
+- (NSString *)noResultsButtonText
+{
+    return self.showsJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
+}
+ 
+- (BOOL)showsJetpackMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
+    
+    return showsJetpackMessage;
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
 	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-    
+ 
     [self.navigationController pushViewController:webViewController animated:YES];
-    
+ 
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
-}
-
-- (BOOL)showJetpackConnectMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    
-    return ![accountService defaultWordPressComAccount];
 }
 
 
