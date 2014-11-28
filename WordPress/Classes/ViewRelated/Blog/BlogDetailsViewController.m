@@ -3,7 +3,6 @@
 // + (No Title)
 // | View Site
 // | Stats
-// | View Admin
 //
 // + Publish
 // | Blog Posts
@@ -12,6 +11,9 @@
 //
 // + Configuration
 // | Edit Site
+//
+// + Admin
+// | View Admin
 
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
@@ -31,17 +33,18 @@
 const typedef enum {
     BlogDetailsRowViewSite = 0,
     BlogDetailsRowStats = 1,
-    BlogDetailsRowViewAdmin = 2,
     BlogDetailsRowBlogPosts = 0,
     BlogDetailsRowPages = 1,
     BlogDetailsRowComments = 2,
-    BlogDetailsRowEditSite = 0
+    BlogDetailsRowEditSite = 0,
+    BlogDetailsRowViewAdmin = 0
 } BlogDetailsRow;
 
 const typedef enum {
     TableViewSectionGeneralType = 0,
     TableViewSectionPublishType,
-    TableViewSectionConfigurationType
+    TableViewSectionConfigurationType,
+    TableViewSectionAdmin
 } TableSectionContentType;
 
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
@@ -156,16 +159,18 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == TableViewSectionGeneralType) {
-        return 3;
+        return 2;
     } else if (section == TableViewSectionPublishType) {
         return 3;
     } else if (section == TableViewSectionConfigurationType) {
+        return 1;
+    } else if (section == TableViewSectionAdmin) {
         return 1;
     }
 
@@ -183,10 +188,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
             case BlogDetailsRowStats:
                 cell.textLabel.text = NSLocalizedString(@"Stats", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-stats"];
-                break;
-            case BlogDetailsRowViewAdmin:
-                cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
             default:
                 break;
@@ -216,6 +217,11 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         if (indexPath.row == BlogDetailsRowEditSite) {
             cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
+        }
+    } else if (indexPath.section == TableViewSectionAdmin) {
+        if (indexPath.row == BlogDetailsRowViewAdmin) {
+            cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+            cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
         }
     }
 }
@@ -249,9 +255,6 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
                 [WPAnalytics track:WPAnalyticsStatStatsAccessed];
                 controllerClass =  [StatsViewController class];
                 break;
-            case BlogDetailsRowViewAdmin:
-                [self showViewAdminForBlog:self.blog];
-                break;
             default:
                 break;
         }
@@ -271,6 +274,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
                 break;
             default:
                 break;
+        }
+    } else if (indexPath.section == TableViewSectionAdmin) {
+        if (indexPath.row == BlogDetailsRowViewAdmin) {
+            [self showViewAdminForBlog:self.blog];
         }
     }
 
@@ -323,6 +330,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
         headingTitle = NSLocalizedString(@"Publish", @"");
     } else if (section == TableViewSectionConfigurationType) {
         headingTitle = NSLocalizedString(@"Configuration", @"");
+    } else if (section == TableViewSectionAdmin) {
+        headingTitle = NSLocalizedString(@"Admin", @"");
     }
 
     return headingTitle;
