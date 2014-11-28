@@ -3,7 +3,7 @@
 #import "UIImageView+Gravatar.h"
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 60.0;
-const CGFloat BlogDetailHeaderViewLabelHeight = 18.0;
+const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
 
 @interface BlogDetailHeaderView ()
 
@@ -61,7 +61,7 @@ const CGFloat BlogDetailHeaderViewLabelHeight = 18.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(labelHeight)]-[_subtitleLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_titleLabel(labelHeight)]-[_subtitleLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
