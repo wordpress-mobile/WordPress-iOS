@@ -607,8 +607,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UINavigationBar appearanceWhenContainedIn:[MFMailComposeViewController class], nil] setTintColor:defaultTintColor];
 
     [[UITabBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:230.0/255.0 alpha:1.0]]];
-    [[UITabBar appearance] setTintColor:[WPStyleGuide allTAllShadeGrey]];
-    [[UITabBar appearance] setSelectedImageTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
+    [[UITabBar appearance] setTintColor:[WPStyleGuide newKidOnTheBlockBlue]];
 
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 
