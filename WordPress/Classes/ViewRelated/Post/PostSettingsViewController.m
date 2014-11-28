@@ -2,7 +2,6 @@
 #import "PostSettingsViewController_Internal.h"
 
 #import "CategoriesViewController.h"
-#import "WPPostViewController_Internal.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"

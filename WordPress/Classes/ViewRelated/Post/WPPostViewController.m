@@ -1,7 +1,7 @@
 #import "WPPostViewController.h"
-#import "WPPostViewController_Internal.h"
 
 #import <AssetsLibrary/AssetsLibrary.h>
+#import <WordPress-iOS-Editor/WPEditorField.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -17,13 +17,25 @@
 #import "WPBlogSelectorButton.h"
 #import "LocationService.h"
 #import "BlogService.h"
+#import "MediaBrowserViewController.h"
 #import "MediaService.h"
+#import "PostPreviewViewController.h"
 #import "PostService.h"
+#import "PostSettingsViewController.h"
 #import "NSString+Helpers.h"
 #import "WPMediaUploader.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+#import "PrivateSiteURLProtocol.h"
+
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs,
+    EditPostViewControllerAlertCancelMediaUpload,
+};
 
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
@@ -52,10 +64,9 @@ static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
 
+#pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
@@ -71,18 +82,27 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
+
+#pragma mark - Post ownership
+@property (nonatomic, assign, readwrite) BOOL ownsPost;
+
+#pragma mark - Media uploads
+@property (nonatomic, strong, readwrite) NSOperationQueue *mediaUploadQueue;
 @end
 
 @implementation WPPostViewController
 
-#pragma mark - Initializers & dealloc
+#pragma mark - Dealloc
 
 - (void)dealloc
 {
     _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [self.mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
+
+#pragma mark - Initializers
 
 - (id)initWithDraftForLastUsedBlog
 {
@@ -90,14 +110,32 @@ static NSDictionary *EnabledButtonBarStyle;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     Blog *blog = [blogService lastUsedOrFirstBlog];
+    NSAssert([blog isKindOfClass:[Blog class]],
+             @"There should be no issues in obtaining the last used blog.");
+    
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
-    Post *post = [PostService createDraftPostInMainContextForBlog:blog];
+
+    return [self initWithDraftForBlog:blog];
+}
+
+- (instancetype)initWithDraftForBlog:(Blog*)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
+    AbstractPost *post = [self createNewDraftForBlog:blog];
+    NSAssert([post isKindOfClass:[AbstractPost class]],
+             @"There should be no issues in creating a draft post.");
+    
+    _ownsPost = YES;
+    
     return [self initWithPost:post
-						 mode:kWPPostViewControllerModeEdit];
+                         mode:kWPPostViewControllerModeEdit];
 }
 
 - (id)initWithPost:(AbstractPost *)post
 {
+    NSParameterAssert([post isKindOfClass:[Post class]]);
+    
     return [self initWithPost:post
                          mode:kWPPostViewControllerModePreview];
 }
@@ -112,14 +150,11 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationClass = [self class];
 
         _post = post;
-		
-        [self configureMediaUploadQueue];
-		
-        if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
-            _editMode = EditPostViewControllerModeNewPost;
-        } else {
-            _editMode = EditPostViewControllerModeEditPost;
+        if (post.blog.isPrivate) {
+            [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
+
+        [self configureMediaUploadQueue];
     }
 	
     return self;
@@ -310,10 +345,8 @@ static NSDictionary *EnabledButtonBarStyle;
     self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     self.negativeSeparator.width = -12;
     
-    [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
                                                  name:MediaShouldInsertBelowNotification
                                                object:nil];
@@ -401,12 +434,13 @@ static NSDictionary *EnabledButtonBarStyle;
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
-
+            
+            NSAssert(self.isEditing,
+                     @"We assume that changing blogs is only enabled during editing.");
+            
+            [self discardChanges];
             self.post = newPost;
             [self createRevisionOfPost];
-            
-            [oldPost.original deleteRevision];
-            [oldPost.original remove];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
@@ -480,7 +514,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)cancelMediaUploads
 {
-    [_mediaUploadQueue cancelAllOperations];
+    [self.mediaUploadQueue cancelAllOperations];
     [self.mediaInProgress removeAllObjects];
     [self refreshNavigationBarButtons:NO];
 }
@@ -528,40 +562,44 @@ static NSDictionary *EnabledButtonBarStyle;
     picker.childNavigationController.navigationBar.translucent = NO;
 }
 
+#pragma mark - Data Model: Post
+
+- (BOOL)isPostLocal
+{
+    return self.post.remoteStatus == AbstractPostRemoteStatusLocal;
+}
+
 #pragma mark - Editing
 
 - (void)cancelEditing
 {
-    if (_currentActionSheet) return;
-    
     if ([self isMediaUploading]) {
         [self showMediaUploadingAlert];
         return;
     }
     
-	[self stopEditing];
-    [self.postSettingsViewController endEditingAction:nil];
+    [self.editorView saveSelection];
+    [self.editorView.focusedField blur];
 	
-    if (![self hasChanges]) {
-        [WPAnalytics track:WPAnalyticsStatEditorClosed];
-		
-		if (self.editMode == EditPostViewControllerModeNewPost) {
-			[self discardChangesAndDismiss];
-		} else {
-            [self refreshNavigationBarButtons:YES];
-            [self discardChanges];
-		}
-        return;
+    if ([self hasChanges]) {
+        [self showPostHasChangesActionSheet];
+    } else {
+        [self stopEditing];
+        [self discardChangesAndUpdateGUI];
     }
+}
+
+- (void)showPostHasChangesActionSheet
+{
 	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+	if (![self.post.original.status isEqualToString:@"draft"] && ![self isPostLocal]) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
 												  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
 										 otherButtonTitles:nil];
-    } else if (self.editMode == EditPostViewControllerModeNewPost) {
+    } else if ([self isPostLocal]) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -584,6 +622,13 @@ static NSDictionary *EnabledButtonBarStyle;
     } else {
         [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
     }
+}
+
+- (void)startEditing
+{
+    [self createRevisionOfPost];
+    
+    [super startEditing];
 }
 
 #pragma mark - Visual editor in settings
@@ -643,7 +688,7 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 - (void)geotagNewPost {
-    if (EditPostViewControllerModeNewPost != self.editMode) {
+    if (![self isPostLocal]) {
         return;
     }
     
@@ -684,7 +729,7 @@ static NSDictionary *EnabledButtonBarStyle;
 - (NSString *)editorTitle
 {
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if ([self isPostLocal]) {
         title = NSLocalizedString(@"New Post", @"Post Editor screen title.");
     } else {
         if ([self.post.postTitle length]) {
@@ -782,6 +827,8 @@ static NSDictionary *EnabledButtonBarStyle;
 			self.bodyText = self.post.content;
         }
     }
+    
+    [self refreshNavigationBarButtons:YES];
 }
 
 /**
@@ -962,7 +1009,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMySitesTab]) {
+    } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMySitesTab]) {
         aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
@@ -1021,36 +1068,44 @@ static NSDictionary *EnabledButtonBarStyle;
     }];
 }
 
-// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
-// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
-// browser to see a users attached images we should remove this image from the post.
-// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
-- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
-{
-    [self.post.managedObjectContext performBlock:^{
-        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
-        for (Media *media in self.post.media) {
-            if (media.remoteStatus == MediaRemoteStatusPushing) {
-                [mediaToRemove addObject:media];
-            }
-        }
-        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
-    }];
-}
-
+/**
+ *  @brief      Discards all changes in the last editing session.
+ *  @details    The GUI won't be affected by this method.  If you want to update the GUI you can
+ *              call `discardChangesAndUpdateGUI` instead.
+ */
 - (void)discardChanges
 {
-    [self.post.original deleteRevision];
+    NSManagedObjectContext* context = self.post.managedObjectContext;
+    NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
+             @"The object should be related to a managed object context here.");
     
-    if (self.editMode == EditPostViewControllerModeNewPost) {
-        [self.post.original remove];
+    self.post = self.post.original;
+    [self.post deleteRevision];
+    
+    if (self.ownsPost) {
+        [self.post remove];
+        self.post = nil;
     }
+    
+    [[ContextManager sharedInstance] saveContext:context];
+    
+    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
 }
 
-- (void)discardChangesAndDismiss
+/**
+ *  @brief      Discards all changes in the last editing session and updates the GUI accordingly.
+ *  @details    The GUI will be affected by this method.  If you want to avoid updating the GUI you
+ *              can call `discardChanges` instead.
+ */
+- (void)discardChangesAndUpdateGUI
 {
     [self discardChanges];
-    [self dismissEditView];
+    
+    if (!self.post) {
+        [self dismissEditView];
+    } else {
+        [self refreshUIForCurrentPost];
+    }
 }
 
 - (void)dismissEditView
@@ -1063,6 +1118,8 @@ static NSDictionary *EnabledButtonBarStyle;
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];
 	}
+    
+    [WPAnalytics track:WPAnalyticsStatEditorClosed];
 }
 
 - (void)saveAction
@@ -1082,6 +1139,7 @@ static NSDictionary *EnabledButtonBarStyle;
         return;
     }
     
+    [self stopEditing];
 	[self savePostAndDismissVC];
 }
 
@@ -1104,13 +1162,14 @@ static NSDictionary *EnabledButtonBarStyle;
 
     [self.view endEditing:YES];
     
-    [self.post.original applyRevision];
-    [self.post.original deleteRevision];
+    self.post = self.post.original;
+    [self.post applyRevision];
+    [self.post deleteRevision];
     
-	NSString *postTitle = self.post.original.postTitle;
+	NSString *postTitle = self.post.postTitle;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
-    [postService uploadPost:(Post *)self.post.original
+    [postService uploadPost:self.post
                     success:^{
                         DDLogInfo(@"post uploaded: %@", postTitle);
                     } failure:^(NSError *error) {
@@ -1122,7 +1181,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)didSaveNewPost
 {
-    if (_editMode == EditPostViewControllerModeNewPost) {
+    if ([self isPostLocal]) {
         [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
     }
 }
@@ -1257,6 +1316,23 @@ static NSDictionary *EnabledButtonBarStyle;
     }
 }
 
+// This will remove any media objects that are in the uploading status. The reason we do this is because if the editor crashes during an image upload the app
+// will have an image stuck in the uploading state and the user will be unable to quit out of the app unless they remove the image by hand. In the absence of a media
+// browser to see a users attached images we should remove this image from the post.
+// NOTE: This is a temporary fix, long term we should explore other options such as automatically retrying after a crash
+- (void)removeIncompletelyUploadedMediaFilesAsAResultOfACrash
+{
+    [self.post.managedObjectContext performBlock:^{
+        NSMutableArray *mediaToRemove = [[NSMutableArray alloc] init];
+        for (Media *media in self.post.media) {
+            if (media.remoteStatus == MediaRemoteStatusPushing) {
+                [mediaToRemove addObject:media];
+            }
+        }
+        [mediaToRemove makeObjectsPerformSelector:@selector(remove)];
+    }];
+}
+
 #pragma mark - Media Formatting
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
@@ -1385,21 +1461,25 @@ static NSDictionary *EnabledButtonBarStyle;
 
 - (void)actionSheetDiscardButtonPressed
 {
-    [self discardChangesAndDismiss];
-    [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+    [self stopEditing];
+    [self discardChangesAndUpdateGUI];
 }
 
 - (void)actionSheetKeepEditingButtonPressed
 {
-    [self startEditing];
+    [self.editorView restoreSelection];
 }
 
 - (void)actionSheetSaveDraftButtonPressed
 {
+    [self stopEditing];
+    
     if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
         self.post.status = @"draft";
     }
+    
     DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+    
     [self savePostAndDismissVC];
 }
 
@@ -1498,8 +1578,12 @@ static NSDictionary *EnabledButtonBarStyle;
                     
                     AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
                         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                        [self removeFromMediaInProgress:imageUniqueId];
-                        [self refreshNavigationBarButtons:NO];
+                        // Delay execution of this for 1 second to let the web view "settle".
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+                            [self removeFromMediaInProgress:imageUniqueId];
+                            [self refreshNavigationBarButtons:NO];
+                        });
+                        
                     } failure:^(NSError *error) {
                         [self removeFromMediaInProgress:imageUniqueId];
                         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1510,7 +1594,7 @@ static NSDictionary *EnabledButtonBarStyle;
                         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                         [self refreshNavigationBarButtons:NO];
                     }];
-                    [_mediaUploadQueue addOperation:operation];
+                    [self.mediaUploadQueue addOperation:operation];
                 }];
             }
         }
@@ -1533,7 +1617,7 @@ static NSDictionary *EnabledButtonBarStyle;
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isEqual:_mediaUploadQueue]) {
+    if ([object isEqual:self.mediaUploadQueue]) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self refreshNavigationBarButtons:NO];
         });

@@ -11,7 +11,7 @@ import Foundation
     
     public var isFollowEnabled: Bool = false {
         didSet {
-            btnFollow.enabled = isFollowEnabled
+            btnFollow.hidden  = !isFollowEnabled
         }
     }
     public var isFollowOn: Bool = false {
