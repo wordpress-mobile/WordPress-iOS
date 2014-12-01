@@ -33,6 +33,11 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 
 @implementation MeViewController
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)loadView
 {
     [super loadView];
@@ -62,6 +67,13 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 {
     [super viewDidLoad];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
+    [self refreshDetails];
+}
+
+- (void)refreshDetails
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -129,6 +141,13 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 - (NSArray *)rowTitles
 {
     return @[MVCAccountSettingsTitle, MVCHelpTitle];
+}
+
+#pragma mark - Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
+    [self refreshDetails];
 }
 
 @end
