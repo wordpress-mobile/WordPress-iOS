@@ -40,6 +40,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
+static NSString* const WPPostViewControllerOwnsPostRestorationKey = @"WPPostViewControllerOwnsPostRestorationKey";
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
@@ -88,6 +89,14 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - Media uploads
 @property (nonatomic, strong, readwrite) NSOperationQueue *mediaUploadQueue;
+
+#pragma mark - State restoration
+/**
+ *  @brief      In failed state restoration, this VC will be restored empty and closed immediately.
+ *  @details    The reason why this VC will be restored and closed, as opposed to not restored at
+ *              all is that we have no way of preventing the
+ */
+@property (nonatomic, assign, readwrite) BOOL failedStateRestorationMode;
 @end
 
 @implementation WPPostViewController
@@ -104,7 +113,21 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - Initializers
 
-- (id)initWithDraftForLastUsedBlog
+- (instancetype)initInFailedStateRestorationMode
+{
+    self = [super init];
+    
+    if (self) {
+        self.restorationIdentifier = NSStringFromClass([self class]);
+        self.restorationClass = [self class];
+        
+        _failedStateRestorationMode = YES;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithDraftForLastUsedBlog
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -132,7 +155,7 @@ static NSDictionary *EnabledButtonBarStyle;
                          mode:kWPPostViewControllerModeEdit];
 }
 
-- (id)initWithPost:(AbstractPost *)post
+- (instancetype)initWithPost:(AbstractPost *)post
 {
     NSParameterAssert([post isKindOfClass:[Post class]]);
     
@@ -140,8 +163,8 @@ static NSDictionary *EnabledButtonBarStyle;
                          mode:kWPPostViewControllerModePreview];
 }
 
-- (id)initWithPost:(AbstractPost *)post
-			  mode:(WPPostViewControllerMode)mode
+- (instancetype)initWithPost:(AbstractPost *)post
+                        mode:(WPPostViewControllerMode)mode
 {
     self = [super initWithMode:mode];
 	
@@ -150,10 +173,11 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationClass = [self class];
 
         _post = post;
+        
         if (post.blog.isPrivate) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
-
+		
         [self configureMediaUploadQueue];
     }
 	
@@ -191,8 +215,65 @@ static NSDictionary *EnabledButtonBarStyle;
             }
         }
     }
-	
+
     return self;
+}
+
+
+#pragma mark - View lifecycle
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    DisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
+    EnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
+    
+    // This is a trick to kick the starting UIButtonBarItem to the left
+    self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    self.negativeSeparator.width = -12;
+    
+    [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
+    
+    [self startListeningToMediaNotifications];
+    
+    [self geotagNewPost];
+    self.delegate = self;
+    self.failedMediaAlertView = nil;
+    self.hidesBottomBarWhenPushed = YES;
+    
+    [self refreshNavigationBarButtons:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    if (self.failedStateRestorationMode) {
+        [self dismissEditView];
+    } else {
+        [self refreshNavigationBarButtons:NO];
+        
+        if (self.isEditing) {
+            if ([self shouldHideStatusBarWhileTyping]) {
+                [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                                        withAnimation:UIStatusBarAnimationSlide];
+            }
+        }
+    }
+}
+
+#pragma mark - viewDidLoad helpers
+
+- (void)startListeningToMediaNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
+                                                 name:MediaShouldInsertBelowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeMedia:)
+                                                 name:@"ShouldRemoveMedia"
+                                               object:nil];
 }
 
 #pragma mark - UIViewControllerRestoration
@@ -201,30 +282,26 @@ static NSDictionary *EnabledButtonBarStyle;
 															coder:(NSCoder *)coder
 {
     UIViewController* restoredViewController = nil;
-    
-    // IMPORTANT: the reason why we don't do any restoring before the post is found, is that we
-    // don't want any of the VCs to be restored unless we're sure there's a post they can use.
-    //
-    AbstractPost* restoredPost = [self decodePostFromCoder:coder];
-    
-    if (restoredPost) {
-        BOOL mustRestoreParentNavigationController = [[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID];
+
+    if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
         
-        if (mustRestoreParentNavigationController) {
-            UINavigationController *navController = [[UINavigationController alloc] init];
-            navController.restorationIdentifier = WPEditorNavigationRestorationID;
-            navController.restorationClass = self;
+        UINavigationController *navController = [[UINavigationController alloc] init];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = self;
+        
+        restoredViewController = navController;
+        
+    } else if ([self isSelfIdentifierPath:identifierComponents]) {
+        
+        AbstractPost* restoredPost = [self decodePostFromCoder:coder];
+        
+        if (restoredPost) {
+            WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
             
-            restoredViewController = navController;
+            restoredViewController = [[self alloc] initWithPost:restoredPost
+                                                           mode:mode];
         } else {
-            BOOL mustRestoreThisViewController = [[identifierComponents lastObject] isEqualToString:NSStringFromClass([self class])];
-            
-            if (mustRestoreThisViewController) {
-                WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
-                
-                restoredViewController = [[self alloc] initWithPost:restoredPost
-                                                               mode:mode];
-            }
+            restoredViewController = [[self alloc] initInFailedStateRestorationMode];
         }
     }
     
@@ -233,12 +310,32 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - UIViewController (UIStateRestoration)
 
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    BOOL ownsPost = [[self class] decodeOwnsPostFromCoder:coder];
+    
+    self.ownsPost = ownsPost;
+}
+
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
     [self encodeEditModeInCoder:coder];
+    [self encodeOwnsPostInCoder:coder];
     [self encodePostInCoder:coder];
     
     [super encodeRestorableStateWithCoder:coder];
+}
+
+#pragma mark - State Restoration Helpers
+
++ (BOOL)isParentNavigationControllerIdentifierPath:(NSArray*)identifierComponents
+{
+    return [[identifierComponents lastObject] isEqualToString:WPEditorNavigationRestorationID];
+}
+
++ (BOOL)isSelfIdentifierPath:(NSArray*)identifierComponents
+{
+    return [[identifierComponents lastObject] isEqualToString:NSStringFromClass([self class])];
 }
 
 #pragma mark - Restoration: encoding
@@ -251,9 +348,20 @@ static NSDictionary *EnabledButtonBarStyle;
 - (void)encodeEditModeInCoder:(NSCoder*)coder
 {
     BOOL isInEditMode = self.isEditing;
-    NSNumber* isInEditModeValue = [NSNumber numberWithBool:isInEditMode];
-        
-    [coder encodeObject:isInEditModeValue forKey:WPPostViewControllerEditModeRestorationKey];
+    
+    [coder encodeBool:isInEditMode forKey:WPPostViewControllerEditModeRestorationKey];
+}
+
+/**
+ *  @brief      Encodes the ownsPost property from this VC into the specified coder.
+ *
+ *  @param      coder       The coder to store the information.  Cannot be nil.
+ */
+- (void)encodeOwnsPostInCoder:(NSCoder*)coder
+{
+    BOOL ownsPost = self.ownsPost;
+    
+    [coder encodeBool:ownsPost forKey:WPPostViewControllerOwnsPostRestorationKey];
 }
 
 /**
@@ -280,8 +388,7 @@ static NSDictionary *EnabledButtonBarStyle;
 {
     NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
     
-    NSNumber* isInEditModeValue = [coder decodeObjectForKey:WPPostViewControllerEditModeRestorationKey];
-    BOOL isInEditMode = [isInEditModeValue boolValue];
+    BOOL isInEditMode = [coder decodeBoolForKey:WPPostViewControllerEditModeRestorationKey];
     
     WPPostViewControllerMode mode = kWPEditorViewControllerModePreview;
     
@@ -290,6 +397,22 @@ static NSDictionary *EnabledButtonBarStyle;
     }
     
     return mode;
+}
+
+/**
+ *  @brief      Obtains the ownsPost property for this VC from the specified coder.
+ *
+ *  @param      coder       The coder to retrieve the information from.  Cannot be nil.
+ *
+ *  @return     The ownsPost value stored in the coder.
+ */
++ (BOOL)decodeOwnsPostFromCoder:(NSCoder*)coder
+{
+    NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
+    
+    BOOL ownsPost = [coder decodeBoolForKey:WPPostViewControllerOwnsPostRestorationKey];
+    
+    return ownsPost;
 }
 
 /**
@@ -330,49 +453,6 @@ static NSDictionary *EnabledButtonBarStyle;
     _mediaUploadQueue.maxConcurrentOperationCount = MaxConcurrentOperationCountForUploads;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
     _mediaInProgress = [NSMutableArray array];
-}
-
-#pragma mark - View lifecycle
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    
-    DisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
-    EnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
-    
-    // This is a trick to kick the starting UIButtonBarItem to the left
-    self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
-    self.negativeSeparator.width = -12;
-    
-    [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
-    
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
-                                                 name:MediaShouldInsertBelowNotification
-                                               object:nil];
-	[[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(removeMedia:)
-                                                 name:@"ShouldRemoveMedia"
-                                               object:nil];
-    
-    [self geotagNewPost];
-    self.delegate = self;
-    self.failedMediaAlertView = nil;
-    [self refreshNavigationBarButtons:NO];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-	[super viewDidAppear:animated];
-    
-	[self refreshNavigationBarButtons:NO];
-    
-	if (self.isEditing) {
-		if ([self shouldHideStatusBarWhileTyping]) {
-			[[UIApplication sharedApplication] setStatusBarHidden:YES
-													withAnimation:UIStatusBarAnimationSlide];
-		}
-	}
 }
 
 #pragma mark - Actions
