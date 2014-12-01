@@ -11,6 +11,7 @@
 #import "SettingsViewController.h"
 #import "SupportViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
+#import "MeHeaderView.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPAccount.h"
@@ -28,22 +29,16 @@ const typedef enum {
 
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
-static CGFloat const MVCTableViewRowHeight = 50.0;
-static CGFloat const MVCTableViewHeaderHeight = 200.0;
-static CGFloat const MVCGravatarOffset = 20.0;
-static CGFloat const MVCGravatarWidth = 120.0;
-static CGFloat const MVCGravatarHeight = 120.0;
-
 static NSString *const MVCAccountSettingsTitle = @"Account Settings";
 static NSString *const MVCHelpTitle = @"Help & Support";
 static NSString *const MVCLogoutTitle = @"Log out";
 
+static CGFloat const MVCTableViewRowHeight = 50.0;
+
 @interface MeViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIView *headerView;
-@property (nonatomic, strong) UIImageView *gravatarView;
-@property (nonatomic, strong) UILabel *usernameLabel;
+@property (nonatomic, strong) MeHeaderView *headerView;
 
 @end
 
@@ -62,21 +57,27 @@ static NSString *const MVCLogoutTitle = @"Log out";
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.rowHeight = MVCTableViewRowHeight;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];
 
-    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MVCTableViewHeaderHeight)];
+    self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
     self.tableView.tableHeaderView = self.headerView;
 
-    float x = (self.headerView.frame.size.width - MVCGravatarWidth) / 2.0;
-    self.gravatarView = [[UIImageView alloc] initWithFrame:CGRectMake(x, MVCGravatarOffset, MVCGravatarWidth, MVCGravatarHeight)];
-    [self.headerView addSubview:self.gravatarView];
+    [self setupAutolayoutConstraints];
+}
 
-    self.usernameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, self.gravatarView.frame.origin.y + self.gravatarView.frame.size.height + 20.0, self.headerView.frame.size.width, 20.0)];
-    self.usernameLabel.font = [WPStyleGuide regularTextFont];
-    self.usernameLabel.textColor = [WPStyleGuide wordPressBlue];
-    self.usernameLabel.textAlignment = NSTextAlignmentCenter;
-    [self.headerView addSubview:self.usernameLabel];
+- (void)setupAutolayoutConstraints
+{
+    NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
 }
 
 - (void)viewDidLoad
@@ -94,8 +95,8 @@ static NSString *const MVCLogoutTitle = @"Log out";
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [self.gravatarView setImageWithURL:[NSURL URLWithString:@"http://lorempixel.com/240/240/"] emptyCachePlaceholderImage:nil];
-    self.usernameLabel.text = [NSString stringWithFormat:@"@%@", defaultAccount.username];
+    [self.headerView setUsername:defaultAccount.username];
+    [self.headerView setGravatarEmail:@"oguz.kocer@automattic.com"];
 }
 
 #pragma mark - UITableViewDataSource methods
