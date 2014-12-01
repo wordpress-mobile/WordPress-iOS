@@ -339,6 +339,26 @@ static CGFloat const DefaultCellHeight = 44.0;
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
+        return [self.delegate tableView:tableView heightForFooterInSection:section];
+    }
+    
+    // Remove footer height for all but last section
+    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
+}
+
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
+        return [self.delegate tableView:tableView viewForFooterInSection:section];
+    }
+    
+    return nil;
+}
+
 
 #pragma mark - TableView Datasource Methods
 
@@ -358,15 +378,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
     return [sectionInfo name];
-}
-
-
-#pragma mark - TableView Delegate Methods
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    // remove footer height for all but last section
-    return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
 
 
