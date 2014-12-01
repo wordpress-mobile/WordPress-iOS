@@ -94,7 +94,9 @@ static NSDictionary *EnabledButtonBarStyle;
 /**
  *  @brief      In failed state restoration, this VC will be restored empty and closed immediately.
  *  @details    The reason why this VC will be restored and closed, as opposed to not restored at
- *              all is that we have no way of preventing the
+ *              all is that we have no way of preventing the restoration of this VC's parent
+ *              navigation controller.  Restoring this VC and closing it means the parent nav
+ *              controller will be closed too.
  */
 @property (nonatomic, assign, readwrite) BOOL failedStateRestorationMode;
 @end
