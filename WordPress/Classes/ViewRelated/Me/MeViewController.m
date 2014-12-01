@@ -1,3 +1,12 @@
+// Me contents:
+//
+// + (No Title)
+// | Account Settings
+// | Help & Support
+//
+// + (No Title)
+// | Log out
+
 #import "MeViewController.h"
 #import "SettingsViewController.h"
 #import "SupportViewController.h"
@@ -6,8 +15,18 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 
+const typedef enum {
+    MeRowAccountSettings = 0,
+    MeRowHelp = 1,
+    MeRowLogout = 0
+} MeRow;
+
+const typedef enum {
+    MeSectionGeneralType = 0,
+    MeSectionLogout
+} MeSectionContentType;
+
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
-static NSInteger const MVCNumberOfSections = 1;
 
 static CGFloat const MVCTableViewRowHeight = 50.0;
 static CGFloat const MVCTableViewHeaderHeight = 200.0;
@@ -15,16 +34,13 @@ static CGFloat const MVCGravatarOffset = 20.0;
 static CGFloat const MVCGravatarWidth = 120.0;
 static CGFloat const MVCGravatarHeight = 120.0;
 
-static NSInteger const MVCAccountSettingsIndex = 0;
-static NSInteger const MVCHelpIndex = 1;
-
 static NSString *const MVCAccountSettingsTitle = @"Account Settings";
 static NSString *const MVCHelpTitle = @"Help & Support";
+static NSString *const MVCLogoutTitle = @"Log out";
 
 @interface MeViewController () <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong, readonly) NSArray *rowTitles;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIImageView *gravatarView;
 @property (nonatomic, strong) UILabel *usernameLabel;
@@ -86,12 +102,18 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return MVCNumberOfSections;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.rowTitles count];
+    if (section == MeSectionGeneralType) {
+        return 2;
+    }
+    if (section == MeSectionLogout) {
+        return 1;
+    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -99,7 +121,26 @@ static NSString *const MVCHelpTitle = @"Help & Support";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [WPStyleGuide configureTableViewActionCell:cell];
-    cell.textLabel.text = self.rowTitles[indexPath.row];
+
+    NSString *text = nil;
+    if (indexPath.section == MeSectionGeneralType) {
+        switch (indexPath.row) {
+            case MeRowAccountSettings:
+                text = MVCAccountSettingsTitle;
+                break;
+            case MeRowHelp:
+                text = MVCHelpTitle;
+                break;
+            default:
+                break;
+        }
+    }
+    else if (indexPath.section == MeSectionLogout) {
+        if (indexPath.row == MeRowLogout) {
+            text = MVCLogoutTitle;
+        }
+    }
+    cell.textLabel.text = NSLocalizedString(text, nil);
     return cell;
 }
 
@@ -109,14 +150,22 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    switch (indexPath.row) {
-        case MVCAccountSettingsIndex:
-            [self navigateToSettings];
-            break;
-        case MVCHelpIndex:
-            [self navigateToHelp];
-        default:
-            break;
+    if (indexPath.section == MeSectionGeneralType) {
+        switch (indexPath.row) {
+            case MeRowAccountSettings:
+                [self navigateToSettings];
+                break;
+            case MeRowHelp:
+                [self navigateToHelp];
+                break;
+            default:
+                break;
+        }
+    }
+    else if (indexPath.section == MeSectionLogout) {
+        if (indexPath.row == MeRowLogout) {
+            // log out
+        }
     }
 }
 
@@ -134,13 +183,6 @@ static NSString *const MVCHelpTitle = @"Help & Support";
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     [self.navigationController pushViewController:supportViewController animated:YES];
-}
-
-#pragma mark - Accessors
-
-- (NSArray *)rowTitles
-{
-    return @[MVCAccountSettingsTitle, MVCHelpTitle];
 }
 
 #pragma mark - Notifications
