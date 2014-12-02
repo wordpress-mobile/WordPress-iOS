@@ -16,6 +16,7 @@
 #import <Helpshift/Helpshift.h>
 #import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
+#import "Blog.h"
 
 
 
