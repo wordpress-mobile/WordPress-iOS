@@ -149,7 +149,7 @@ CHECKOUT OPTIONS:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
-    :commit: 04b9c1d135d7791f6d8b2947b3c53ff3f3b1248d
+    :commit: bcac6bd87f6530b172f21017634d0b313a5a83b7
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
