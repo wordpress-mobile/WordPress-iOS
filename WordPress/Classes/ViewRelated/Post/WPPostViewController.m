@@ -122,6 +122,7 @@ static NSDictionary *EnabledButtonBarStyle;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        self.hidesBottomBarWhenPushed = YES;
         
         _failedStateRestorationMode = YES;
     }
@@ -173,6 +174,7 @@ static NSDictionary *EnabledButtonBarStyle;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+        self.hidesBottomBarWhenPushed = YES;
 
         _post = post;
         
@@ -242,7 +244,6 @@ static NSDictionary *EnabledButtonBarStyle;
     [self geotagNewPost];
     self.delegate = self;
     self.failedMediaAlertView = nil;
-    self.hidesBottomBarWhenPushed = YES;
     
     [self refreshNavigationBarButtons:NO];
 }
