@@ -84,8 +84,11 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
 
-#pragma mark - Post ownership
+#pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
+
+#pragma mark - Unsaved changes support
+@property (nonatomic, assign, readonly) BOOL changedToEditModeDueToUnsavedChanges;
 
 #pragma mark - Media uploads
 @property (nonatomic, strong, readwrite) NSOperationQueue *mediaUploadQueue;
@@ -169,13 +172,21 @@ static NSDictionary *EnabledButtonBarStyle;
 - (instancetype)initWithPost:(AbstractPost *)post
                         mode:(WPPostViewControllerMode)mode
 {
+    BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
+                                                && [post hasUnsavedChanges]);
+    
+    if (changeToEditModeDueToUnsavedChanges) {
+        mode = kWPEditorViewControllerModeEdit;
+    }
+    
     self = [super initWithMode:mode];
 	
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         self.hidesBottomBarWhenPushed = YES;
-
+        
+        _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
         
         if (post.blog.isPrivate) {
@@ -263,6 +274,10 @@ static NSDictionary *EnabledButtonBarStyle;
                                                         withAnimation:UIStatusBarAnimationSlide];
             }
         }
+    }
+
+    if (self.changedToEditModeDueToUnsavedChanges) {
+        [self showUnsavedChangesAlert];
     }
 }
 
@@ -456,6 +471,24 @@ static NSDictionary *EnabledButtonBarStyle;
     _mediaUploadQueue.maxConcurrentOperationCount = MaxConcurrentOperationCountForUploads;
     [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
     _mediaInProgress = [NSMutableArray array];
+}
+
+#pragma mark - Alerts
+
+- (void)showUnsavedChangesAlert
+{
+    NSString *title = NSLocalizedString(@"Unsaved changes.",
+                                        @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
+    NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
+                                          @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:nil
+                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
+    
+    [alertView show];
 }
 
 #pragma mark - Actions
