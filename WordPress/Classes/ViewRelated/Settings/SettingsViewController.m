@@ -12,16 +12,11 @@
     - Video API
     - Video Quality
     - Video Content
- - Info
-    - Version
-    - About
-    - Extra debug
 
  */
 
 #import "SettingsViewController.h"
 #import "WordPressComApi.h"
-#import "AboutViewController.h"
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
@@ -47,7 +42,6 @@ typedef enum {
     SettingsSectionWpcom = 0,
     SettingsSectionMedia,
     SettingsSectionEditor,
-    SettingsSectionInfo,
     SettingsSectionInternalBeta,
     SettingsSectionCount
 } SettingsSection;
@@ -257,9 +251,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 				return 1;
 			}
 		}
-		
-        case SettingsSectionInfo:
-            return 1;
+
         case SettingsSectionInternalBeta:
             if (self.showInternalBetaSection) {
                 return 1;
@@ -318,8 +310,6 @@ static CGFloat const SettingsRowHeight = 44.0;
     } else if (section == SettingsSectionEditor) {
         return NSLocalizedString(@"Editor", @"Title label for the editor settings section in the app settings");
 		
-    } else if (section == SettingsSectionInfo) {
-        return NSLocalizedString(@"App Info", @"Title label for the application information section in the app settings");
     } else if (section == SettingsSectionInternalBeta) {
         if (self.showInternalBetaSection) {
             return NSLocalizedString(@"Internal Beta", @"");
@@ -382,12 +372,6 @@ static CGFloat const SettingsRowHeight = 44.0;
         UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
         aSwitch.on = [WPPostViewController isNewEditorEnabled];
         
-    } else if (indexPath.section == SettingsSectionInfo) {
-        if (indexPath.row == 0) {
-            // About
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
     } else if (indexPath.section == SettingsSectionInternalBeta) {
         cell.textLabel.text = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -529,11 +513,6 @@ static CGFloat const SettingsRowHeight = 44.0;
             [self.navigationController pushViewController:loginViewController animated:YES];
         }
 
-    } else if (indexPath.section == SettingsSectionInfo) {
-        if (indexPath.row == 0) {
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-            [self.navigationController pushViewController:aboutViewController animated:YES];
-        }
     }
 }
 
