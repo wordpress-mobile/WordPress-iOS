@@ -15,6 +15,7 @@
 #import "Blog.h"
 #import <Mixpanel/MPTweakInline.h>
 #import "WordPress-Swift.h"
+#import "AboutViewController.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -271,7 +272,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 
     if (section == SettingsSectionActivityLog) {
-        return 4;
+        return 5;
     }
 
     if (section == SettingsSectionFeedback) {
@@ -381,6 +382,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        } else if (indexPath.row == 4) {
+            cell.textLabel.text = NSLocalizedString(@"About", @"");
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
@@ -436,9 +440,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         } else {
             [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
-    } else if (indexPath.section == SettingsSectionActivityLog && indexPath.row == 3) {
-        ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
-        [self.navigationController pushViewController:activityLogViewController animated:YES];
+    } else if (indexPath.section == SettingsSectionActivityLog) {
+        if (indexPath.row == 3) {
+            ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
+            [self.navigationController pushViewController:activityLogViewController animated:YES];
+        } else if (indexPath.row == 4) {
+            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+            [self.navigationController pushViewController:aboutViewController animated:YES];
+        }
     }
 }
 
