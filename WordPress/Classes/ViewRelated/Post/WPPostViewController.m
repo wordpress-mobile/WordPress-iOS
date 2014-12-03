@@ -1304,11 +1304,11 @@ static NSDictionary *EnabledButtonBarStyle;
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
                         if ([postStatus isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
-                            hudText = NSLocalizedString(@"Error occurred during scheduling.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                            hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
                         } else if ([postStatus isEqualToString:@"publish"]){
-                            hudText = NSLocalizedString(@"Error occurred during publishing.", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                            hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
                         } else {
-                            hudText = NSLocalizedString(@"Error occurred during saving.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                            hudText = NSLocalizedString(@"Error occurred\nduring saving", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
                         }
                         [SVProgressHUD showErrorWithStatus:hudText];
                     }];
