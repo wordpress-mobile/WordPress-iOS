@@ -629,7 +629,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
     
     // SVProgressHUD styles
-    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0.088 green:0.126 blue:0.188 alpha:0.8]];
+    [SVProgressHUD setBackgroundColor:[UIColor colorWithRed:0.196 green:0.255 blue:0.333 alpha:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
     [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
 }
