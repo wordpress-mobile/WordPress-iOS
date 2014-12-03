@@ -8,6 +8,7 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <SVProgressHUD.h>
 #import "ContextManager.h"
 #import "Post.h"
 #import "Coordinate.h"
@@ -1282,14 +1283,34 @@ static NSDictionary *EnabledButtonBarStyle;
     [self.post applyRevision];
     [self.post deleteRevision];
     
-	NSString *postTitle = self.post.postTitle;
+	__block NSString *postTitle = self.post.postTitle;
+    __block NSString *postStatus = self.post.status;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
                     success:^{
                         DDLogInfo(@"post uploaded: %@", postTitle);
+                        NSString *hudText;
+                        if ([postStatus isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+                            hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
+                        } else if ([postStatus isEqualToString:@"publish"]){
+                            hudText = NSLocalizedString(@"Published!", @"Text displayed in HUD after a post was successfully published.");
+                        } else {
+                            hudText = NSLocalizedString(@"Saved!", @"Text displayed in HUD after a post was successfully saved as a draft.");
+                        }
+                        [SVProgressHUD showSuccessWithStatus:hudText];
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
+                        NSString *hudText;
+                        if ([postStatus isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+                            hudText = NSLocalizedString(@"Error occurred during scheduling.", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
+                        } else if ([postStatus isEqualToString:@"publish"]){
+                            hudText = NSLocalizedString(@"Error occurred during publishing.", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
+                        } else {
+                            hudText = NSLocalizedString(@"Error occurred during saving.", @"Text displayed in HUD after attempting to save a draft post and an error occurred.");
+                        }
+                        [SVProgressHUD showErrorWithStatus:hudText];
                     }];
 
     [self didSaveNewPost];
