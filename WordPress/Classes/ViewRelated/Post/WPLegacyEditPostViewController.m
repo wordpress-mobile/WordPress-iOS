@@ -287,8 +287,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.post = newPost;
             [self createRevisionOfPost];
 
+            NSManagedObjectContext* context = oldPost.original.managedObjectContext;
+            
             [oldPost.original deleteRevision];
             [oldPost.original remove];
+            
+            [[ContextManager sharedInstance] saveContext:context];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
@@ -599,7 +603,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.post.original deleteRevision];
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
+        NSManagedObjectContext* context = self.post.original.managedObjectContext;
+        
         [self.post.original remove];
+        
+        [[ContextManager sharedInstance] saveContext:context];
     }
 }
 

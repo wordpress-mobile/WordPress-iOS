@@ -651,13 +651,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     // Update depth and hierarchy
-    if (parentComment) {
-        comment.hierarchy = [NSString stringWithFormat:@"%@.%@", parentComment.hierarchy, [self formattedHierarchyElement:comment.commentID]];
-        comment.depth = @([parentComment.depth integerValue] + 1);
-    } else {
-        comment.hierarchy = [self formattedHierarchyElement:comment.commentID];
-        comment.depth = @(0);
-    }
+    [self setHierarchAndDepthOnComment:comment withParentComment:parentComment];
 
     [self.managedObjectContext performBlock:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -666,9 +660,41 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     return comment;
 }
 
+- (void)setHierarchAndDepthOnComment:(Comment *)comment withParentComment:(Comment *)parentComment
+{
+    // Update depth and hierarchy
+    NSNumber *commentID = comment.commentID;
+    if (!commentID) {
+        // A new comment will have a nil commentID.  If nil is used when formatting the hierarchy,
+        // the comment will preceed any other comment in its level of the hierarchy.
+        // Instead we'll pass a number so large as to ensure the comment will appear last in a list.
+        commentID = @9999999;
+    }
+
+    if (parentComment) {
+        comment.hierarchy = [NSString stringWithFormat:@"%@.%@", parentComment.hierarchy, [self formattedHierarchyElement:commentID]];
+        comment.depth = @([parentComment.depth integerValue] + 1);
+    } else {
+        comment.hierarchy = [self formattedHierarchyElement:commentID];
+        comment.depth = @(0);
+    }
+
+    [self.managedObjectContext performBlock:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 - (void)updateCommentAndSave:(Comment *)comment withRemoteComment:(RemoteComment *)remoteComment
 {
     [self updateComment:comment withRemoteComment:remoteComment];
+    // Find its parent comment (if it exists)
+    Comment *parentComment;
+    if (comment.parentID) {
+        parentComment = [self findCommentWithID:comment.parentID fromPost:(ReaderPost *)comment.post];
+    }
+
+    // Update depth and hierarchy
+    [self setHierarchAndDepthOnComment:comment withParentComment:parentComment];
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 

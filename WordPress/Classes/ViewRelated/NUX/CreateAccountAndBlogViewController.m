@@ -701,6 +701,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
             // Turn on the new editor only for users that create a new account within the iOS app
             [WPPostViewController setNewEditorAvailable:YES];
             [WPPostViewController setNewEditorEnabled:YES];
+            [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
             [operation didSucceed];
         };
         void (^createUserFailure)(NSError *) = ^(NSError *error) {
