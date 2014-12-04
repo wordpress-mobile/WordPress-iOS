@@ -94,7 +94,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     if (defaultAccount) {
         self.tableView.tableHeaderView = self.headerView;
         [self.headerView setUsername:defaultAccount.username];
-        [self.headerView setGravatarEmail:@"oguz.kocer@automattic.com"];
+        [self.headerView setGravatarEmail:@"beau@automattic.com"];
     }
     else {
         self.tableView.tableHeaderView = nil;
