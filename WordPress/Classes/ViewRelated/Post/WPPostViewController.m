@@ -1355,14 +1355,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     [self refreshNavigationBarButtons:NO];
                 } failure:^(NSError *error) {
                     [self removeFromMediaInProgress:imageUniqueId];
-                    [self.editorView markImageUploadFailed:imageUniqueId];
                     self.mediaProgress.totalUnitCount++;
                     [self refreshNavigationBarButtons:NO];
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
-                        return;
+                        [self.editorView removeImage:imageUniqueId];
+                        [media remove];
+                    } else {
+                        [self.editorView markImageUploadFailed:imageUniqueId];
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                     }
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
                 }];
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
