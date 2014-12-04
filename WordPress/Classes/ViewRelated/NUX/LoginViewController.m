@@ -500,7 +500,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
 
     // Add Cancel Button
-    if (self.dismissBlock && _cancelButton == nil) {
+    if (!self.cancelButtonDisabled && _cancelButton == nil) {
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -661,8 +661,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [delegate showTabForIndex:kMeTabIndex];
     }
 
-    self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
 }
 
 - (void)showCreateAccountView
