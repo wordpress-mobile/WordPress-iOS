@@ -18,6 +18,7 @@
 #import "AccountServiceRemoteXMLRPC.h"
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
+#import "TodayExtensionService.h"
 
 @interface BlogService ()
 
@@ -170,6 +171,28 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
             [self mergeBlogs:blogs withAccount:account completion:success];
+            
+            Blog *defaultBlog = account.defaultBlog;
+            TodayExtensionService *service = [TodayExtensionService new];
+            BOOL widgetIsConfigured = [service widgetIsConfigured];
+            
+            if (WIDGETS_EXIST
+                && !widgetIsConfigured
+                && defaultBlog != nil
+                && account.isWpcom) {
+                NSNumber *siteId = defaultBlog.blogID;
+                NSString *blogName = defaultBlog.blogName;
+                NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
+                NSString *oauth2Token = account.authToken;
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    TodayExtensionService *service = [TodayExtensionService new];
+                    [service configureTodayWidgetWithSiteID:siteId
+                                                   blogName:blogName
+                                               siteTimeZone:timeZone
+                                             andOAuth2Token:oauth2Token];
+                });
+            }
         }];
     } failure:^(NSError *error) {
         DDLogError(@"Error syncing blogs: %@", error);
@@ -354,6 +377,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
+        
+        // If non-WPcom then always default or if first from remote (assuming .com)
+        if (!account.isWpcom || [blogs indexOfObject:remoteBlog] == 0) {
+            account.defaultBlog = blog;
+        }
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
