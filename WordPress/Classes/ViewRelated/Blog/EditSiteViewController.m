@@ -4,7 +4,7 @@
 #import "WordPressComApi.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
-#import "JetpackSettingsViewController.h"
+#import "JetpackLoginViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
@@ -275,15 +275,15 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     } else if (indexPath.section == 2) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
 
-        cell.textLabel.text = NSLocalizedString(@"Configure", @"");
         if (self.blog.jetpackUsername) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpackUsername];
+            cell.textLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified username"), self.blog.jetpackUsername];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.accessoryType = UITableViewCellAccessoryNone;
         } else {
-            cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
+            cell.textLabel.text = NSLocalizedString(@"Configure Jetpack", @"Jetpack is not connected yet.");
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         [WPStyleGuide configureTableViewCell:cell];
 
         return cell;
@@ -308,10 +308,10 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
     [tv deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == 2) {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-        controller.showFullScreen = NO;
-        [controller setCompletionBlock:^(BOOL didAuthenticate) {
+    if (indexPath.section == 2 && !self.blog.jetpackUsername) {
+        JetpackLoginViewController *controller = [JetpackLoginViewController instantiate];
+        [controller setBlog:self.blog];
+        [controller setCompletionBlock:^(WPAccount *account) {
             [self.navigationController popViewControllerAnimated:YES];
         }];
         [self.navigationController pushViewController:controller animated:YES];
