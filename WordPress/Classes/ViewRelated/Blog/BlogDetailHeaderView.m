@@ -1,9 +1,12 @@
 #import "BlogDetailHeaderView.h"
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
-const CGFloat BlogDetailHeaderViewBlavatarSize = 60.0;
+const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
 const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
+const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
+const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
 
 @interface BlogDetailHeaderView ()
 
@@ -48,20 +51,22 @@ const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
 {
     NSDictionary *views = NSDictionaryOfVariableBindings(_blavatarImageView, _titleLabel, _subtitleLabel);
     NSDictionary *metrics = @{@"blavatarSize": @(BlogDetailHeaderViewBlavatarSize),
-                              @"labelHeight":@(BlogDetailHeaderViewLabelHeight)};
+                              @"labelHeight":@(BlogDetailHeaderViewLabelHeight),
+                              @"labelHorizontalPadding": @(BlogDetailHeaderViewLabelHorizontalPadding),
+                              @"labelVerticalPadding": @(BlogDetailHeaderViewLabelVerticalPadding)};
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_blavatarImageView(blavatarSize)]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_blavatarImageView(blavatarSize)]-[_titleLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_blavatarImageView(blavatarSize)]-labelHorizontalPadding-[_titleLabel]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_blavatarImageView(blavatarSize)]-[_subtitleLabel]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_blavatarImageView(blavatarSize)]-labelHorizontalPadding-[_subtitleLabel]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-5-[_titleLabel(labelHeight)]-[_subtitleLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-labelVerticalPadding-[_titleLabel(labelHeight)]-labelVerticalPadding-[_subtitleLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -78,7 +83,7 @@ const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPStyleGuide subtitleFont];
+    label.font = [WPFontManager openSansRegularFontOfSize:13.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -92,7 +97,7 @@ const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPStyleGuide subtitleFont];
+    label.font = [WPFontManager openSansRegularFontOfSize:13.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -103,6 +108,8 @@ const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
     CGRect blavatarFrame = CGRectMake(0.0f, 0.0f, BlogDetailHeaderViewBlavatarSize, BlogDetailHeaderViewBlavatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    imageView.layer.borderWidth = 1.0;
     return imageView;
 }
 
