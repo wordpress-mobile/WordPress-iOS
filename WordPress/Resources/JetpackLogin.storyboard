@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="rSy-GN-wsa">
+    <dependencies>
+        <deployment version="2048" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Regular.ttf">
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+            <string>OpenSans</string>
+        </mutableArray>
+    </customFonts>
+    <scenes>
+        <!--Jetpack Manage-->
+        <scene sceneID="Czk-4j-Q1t">
+            <objects>
+                <viewController title="Jetpack Manage" id="rSy-GN-wsa" customClass="JetpackLoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="QFk-rp-6d9"/>
+                        <viewControllerLayoutGuide type="bottom" id="aGg-lV-fqm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FGp-bS-aqp">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="1000" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="kpP-yM-UY2">
+                                <rect key="frame" x="140" y="60" width="320" height="480"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x7x-2a-a5i" customClass="WPNUXMainButton">
+                                        <rect key="frame" x="15" y="372" width="290" height="41"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="41" id="mnW-Pl-xFB"/>
+                                            <constraint firstAttribute="width" constant="290" id="sGQ-Uz-AgZ"/>
+                                        </constraints>
+                                        <state key="normal" title="Sign In">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="signIn:" destination="rSy-GN-wsa" eventType="touchUpInside" id="pYz-qq-XkB"/>
+                                        </connections>
+                                    </button>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lost your password?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DK3-mB-Gtq">
+                                        <rect key="frame" x="15" y="443" width="290" height="17"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="17" id="FAZ-Su-3ox"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
+                                        <color key="textColor" red="0.4941176471" green="0.61960784310000006" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="Bez-hJ-1nJ" appends="YES" id="lEf-qs-1ab"/>
+                                        </connections>
+                                    </label>
+                                    <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" horizontalHuggingPriority="1000" verticalHuggingPriority="1000" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="1000" image="icon-jetpack-gray" translatesAutoresizingMaskIntoConstraints="NO" id="ohT-6H-uYz">
+                                        <rect key="frame" x="124" y="20" width="73" height="73"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="73" id="YIC-JJ-CRN"/>
+                                            <constraint firstAttribute="height" constant="73" id="g0T-PA-mON"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="We need your WordPress.com password to unleash all the power of Jetpack Manage" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BhQ-O0-ck4">
+                                        <rect key="frame" x="15" y="101" width="290" height="74"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="290" id="We8-Cu-zOQ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="18"/>
+                                        <color key="textColor" red="0.49411764705882355" green="0.61960784313725492" blue="0.70980392156862748" alpha="1" colorSpace="calibratedRGB"/>
+                                    </label>
+                                    <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Learn More" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uvk-tX-ubk">
+                                        <rect key="frame" x="15" y="187" width="290" height="21"/>
+                                        <gestureRecognizers/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="290" id="Pxx-XA-hPe"/>
+                                            <constraint firstAttribute="height" constant="21" id="yLc-iS-da5"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="12"/>
+                                        <color key="textColor" red="0.4941176471" green="0.61960784310000006" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <connections>
+                                            <outletCollection property="gestureRecognizers" destination="tjP-tZ-URd" appends="YES" id="Fdp-2R-joE"/>
+                                        </connections>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WZo-Hv-qP4" customClass="WPNUXUserView">
+                                        <rect key="frame" x="15" y="254" width="290" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="290" id="5yo-5p-GhH"/>
+                                            <constraint firstAttribute="height" constant="44" id="n0x-75-fMV"/>
+                                        </constraints>
+                                    </view>
+                                    <textField hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="WordPress.com Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yhh-qS-Cg6" customClass="WPWalkthroughTextField">
+                                        <rect key="frame" x="15" y="254" width="290" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration" label=""/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="gLf-fl-Iw9"/>
+                                            <constraint firstAttribute="width" constant="290" id="hvl-kC-KJv"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="next"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-username-field"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="NO"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="NO"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="rSy-GN-wsa" id="5LR-NG-eco"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="WordPress.com Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rT4-8L-SfK" customClass="WPWalkthroughTextField">
+                                        <rect key="frame" x="15" y="298" width="290" height="44"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <accessibility key="accessibilityConfiguration" label=""/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="44" id="BXo-Uf-iuZ"/>
+                                            <constraint firstAttribute="width" constant="290" id="zE5-ZY-dxp"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" returnKeyType="done" secureTextEntry="YES"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="image" keyPath="leftViewImage" value="icon-password-field"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showSecureTextEntryToggle" value="YES"/>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="showTopLineSeparator" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <outlet property="delegate" destination="rSy-GN-wsa" id="Ulq-9W-0fh"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerY" secondItem="rT4-8L-SfK" secondAttribute="centerY" id="1O2-Tm-02V"/>
+                                    <constraint firstAttribute="centerY" secondItem="Uvk-tX-ubk" secondAttribute="centerY" id="6GB-tT-0ay"/>
+                                    <constraint firstItem="rT4-8L-SfK" firstAttribute="top" secondItem="yhh-qS-Cg6" secondAttribute="bottom" id="89Z-r9-wcF"/>
+                                    <constraint firstAttribute="centerX" secondItem="rT4-8L-SfK" secondAttribute="centerX" id="8qD-eX-Xid"/>
+                                    <constraint firstItem="rT4-8L-SfK" firstAttribute="top" secondItem="WZo-Hv-qP4" secondAttribute="bottom" id="CvH-F8-LNR"/>
+                                    <constraint firstItem="Uvk-tX-ubk" firstAttribute="top" secondItem="BhQ-O0-ck4" secondAttribute="bottom" priority="100" constant="12" id="GMS-cl-SHP"/>
+                                    <constraint firstAttribute="centerX" secondItem="ohT-6H-uYz" secondAttribute="centerX" id="Jiy-SS-MQU"/>
+                                    <constraint firstAttribute="centerY" secondItem="ohT-6H-uYz" secondAttribute="centerY" id="KfY-IJ-AWE"/>
+                                    <constraint firstItem="x7x-2a-a5i" firstAttribute="top" secondItem="rT4-8L-SfK" secondAttribute="bottom" priority="100" constant="30" id="MLb-dq-O6K"/>
+                                    <constraint firstAttribute="centerX" secondItem="Uvk-tX-ubk" secondAttribute="centerX" id="Q62-BL-c9u"/>
+                                    <constraint firstItem="yhh-qS-Cg6" firstAttribute="centerX" secondItem="rT4-8L-SfK" secondAttribute="centerX" id="RNI-pe-e0O"/>
+                                    <constraint firstAttribute="centerY" secondItem="DK3-mB-Gtq" secondAttribute="centerY" constant="-222" id="Xgq-yu-Amz"/>
+                                    <constraint firstItem="Uvk-tX-ubk" firstAttribute="top" relation="greaterThanOrEqual" secondItem="BhQ-O0-ck4" secondAttribute="bottom" constant="8" symbolic="YES" id="Yfb-cK-MSm"/>
+                                    <constraint firstItem="DK3-mB-Gtq" firstAttribute="top" relation="greaterThanOrEqual" secondItem="x7x-2a-a5i" secondAttribute="bottom" priority="250" constant="20" id="anb-Wr-1g5"/>
+                                    <constraint firstAttribute="centerY" secondItem="x7x-2a-a5i" secondAttribute="centerY" id="d5N-Qa-RfO"/>
+                                    <constraint firstItem="BhQ-O0-ck4" firstAttribute="top" secondItem="ohT-6H-uYz" secondAttribute="bottom" constant="8" id="da0-f5-ZOn"/>
+                                    <constraint firstAttribute="centerY" secondItem="WZo-Hv-qP4" secondAttribute="centerY" id="eQI-vO-NzW"/>
+                                    <constraint firstItem="x7x-2a-a5i" firstAttribute="top" relation="greaterThanOrEqual" secondItem="rT4-8L-SfK" secondAttribute="bottom" constant="8" symbolic="YES" id="f7H-9s-dYX"/>
+                                    <constraint firstItem="ohT-6H-uYz" firstAttribute="top" secondItem="kpP-yM-UY2" secondAttribute="top" priority="250" constant="20" symbolic="YES" id="hfP-9c-f6u"/>
+                                    <constraint firstAttribute="width" constant="320" id="i7i-Kn-aRm"/>
+                                    <constraint firstItem="WZo-Hv-qP4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Uvk-tX-ubk" secondAttribute="bottom" constant="8" symbolic="YES" id="ndy-FY-IiB"/>
+                                    <constraint firstAttribute="centerX" secondItem="x7x-2a-a5i" secondAttribute="centerX" id="pYA-kc-ehv"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="x7x-2a-a5i" secondAttribute="bottom" constant="20" id="qtK-XH-ivy"/>
+                                    <constraint firstItem="BhQ-O0-ck4" firstAttribute="top" relation="greaterThanOrEqual" secondItem="ohT-6H-uYz" secondAttribute="bottom" constant="8" symbolic="YES" id="rVJ-Ue-RaL"/>
+                                    <constraint firstAttribute="centerX" secondItem="BhQ-O0-ck4" secondAttribute="centerX" id="tye-pe-9Q9"/>
+                                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="x7x-2a-a5i" secondAttribute="bottom" priority="750" constant="37" id="uFT-e3-ho0"/>
+                                    <constraint firstAttribute="centerX" secondItem="WZo-Hv-qP4" secondAttribute="centerX" id="uq2-J4-h8u"/>
+                                    <constraint firstItem="x7x-2a-a5i" firstAttribute="width" secondItem="DK3-mB-Gtq" secondAttribute="width" id="vV4-ZA-Pye"/>
+                                    <constraint firstAttribute="bottom" secondItem="DK3-mB-Gtq" secondAttribute="bottom" priority="750" constant="20" id="vjd-Ln-esO"/>
+                                    <constraint firstItem="DK3-mB-Gtq" firstAttribute="top" secondItem="x7x-2a-a5i" secondAttribute="bottom" priority="100" constant="30" id="wbh-Ig-XAd"/>
+                                    <constraint firstAttribute="centerY" secondItem="BhQ-O0-ck4" secondAttribute="centerY" id="yFJ-mN-sw7"/>
+                                    <constraint firstAttribute="centerX" secondItem="DK3-mB-Gtq" secondAttribute="centerX" id="z08-YK-SDI"/>
+                                    <constraint firstAttribute="height" priority="750" constant="480" id="zPS-xE-dHN"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="yFJ-mN-sw7"/>
+                                        <exclude reference="KfY-IJ-AWE"/>
+                                        <exclude reference="6GB-tT-0ay"/>
+                                        <exclude reference="eQI-vO-NzW"/>
+                                        <exclude reference="1O2-Tm-02V"/>
+                                        <exclude reference="d5N-Qa-RfO"/>
+                                        <exclude reference="uFT-e3-ho0"/>
+                                        <exclude reference="Xgq-yu-Amz"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AsC-wl-hGl" customClass="WPNUXSecondaryButton">
+                                <rect key="frame" x="553" y="554" width="31" height="30"/>
+                                <state key="normal" title="Skip">
+                                    <color key="titleColor" red="0.4941176471" green="0.61960784310000006" blue="0.70980392160000005" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="skip:" destination="rSy-GN-wsa" eventType="touchUpInside" id="1xm-DQ-i1X"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.90980392156862744" green="0.94117647058823528" blue="0.96470588235294119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <gestureRecognizers/>
+                        <constraints>
+                            <constraint firstItem="aGg-lV-fqm" firstAttribute="top" relation="greaterThanOrEqual" secondItem="kpP-yM-UY2" secondAttribute="bottom" id="647-qz-gNW"/>
+                            <constraint firstItem="AsC-wl-hGl" firstAttribute="trailing" secondItem="FGp-bS-aqp" secondAttribute="trailingMargin" constant="16" id="FWI-Fd-Ffv"/>
+                            <constraint firstAttribute="centerX" secondItem="kpP-yM-UY2" secondAttribute="centerX" id="HtQ-L9-jrM"/>
+                            <constraint firstItem="aGg-lV-fqm" firstAttribute="top" secondItem="AsC-wl-hGl" secondAttribute="bottom" constant="16" id="KY1-1L-pZs"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="kpP-yM-UY2" secondAttribute="trailing" constant="124" id="Ys0-tB-xDM"/>
+                            <constraint firstItem="AsC-wl-hGl" firstAttribute="trailing" secondItem="FGp-bS-aqp" secondAttribute="trailingMargin" id="Zng-4o-Ic8"/>
+                            <constraint firstItem="aGg-lV-fqm" firstAttribute="top" secondItem="AsC-wl-hGl" secondAttribute="bottom" constant="16" id="cqe-m8-HIB"/>
+                            <constraint firstItem="kpP-yM-UY2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QFk-rp-6d9" secondAttribute="bottom" priority="750" id="dBZ-6f-bVj"/>
+                            <constraint firstItem="kpP-yM-UY2" firstAttribute="top" relation="greaterThanOrEqual" secondItem="QFk-rp-6d9" secondAttribute="bottom" priority="250" id="fTm-Om-yta"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="AsC-wl-hGl" secondAttribute="trailing" id="oH8-nH-uUt"/>
+                            <constraint firstAttribute="centerY" secondItem="kpP-yM-UY2" secondAttribute="centerY" id="pKr-1r-3cE"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" secondItem="kpP-yM-UY2" secondAttribute="height" priority="750" id="wwB-uP-dBk"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="Ys0-tB-xDM"/>
+                                <exclude reference="dBZ-6f-bVj"/>
+                                <exclude reference="fTm-Om-yta"/>
+                                <exclude reference="wwB-uP-dBk"/>
+                                <exclude reference="cqe-m8-HIB"/>
+                                <exclude reference="FWI-Fd-Ffv"/>
+                                <exclude reference="Zng-4o-Ic8"/>
+                            </mask>
+                        </variation>
+                        <connections>
+                            <outletCollection property="gestureRecognizers" destination="yqT-ZW-UCF" appends="YES" id="dz9-SU-nBi"/>
+                        </connections>
+                    </view>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <connections>
+                        <outlet property="bottomLayoutConstraint" destination="qtK-XH-ivy" id="Agx-Q0-Omr"/>
+                        <outlet property="learnMoreLabel" destination="Uvk-tX-ubk" id="k2i-5a-Z8L"/>
+                        <outlet property="lostPasswordLabel" destination="DK3-mB-Gtq" id="SIK-sC-Mzc"/>
+                        <outlet property="messageLabel" destination="BhQ-O0-ck4" id="6gw-Xn-w5k"/>
+                        <outlet property="passwordField" destination="rT4-8L-SfK" id="iU9-zN-HcH"/>
+                        <outlet property="signInButton" destination="x7x-2a-a5i" id="7vK-XX-cpQ"/>
+                        <outlet property="skipButton" destination="AsC-wl-hGl" id="sRY-UW-Dob"/>
+                        <outlet property="userField" destination="yhh-qS-Cg6" id="N5X-3y-e0c"/>
+                        <outlet property="userView" destination="WZo-Hv-qP4" id="Hl4-cH-oEu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="udK-g0-aha" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tapGestureRecognizer id="tjP-tZ-URd" userLabel="Learn More Gesture Recognizer">
+                    <connections>
+                        <action selector="learnMore:" destination="rSy-GN-wsa" id="9oX-rK-cKT"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="Bez-hJ-1nJ" userLabel="Lost Password Gesture Recognizer">
+                    <connections>
+                        <action selector="lostPassword:" destination="rSy-GN-wsa" id="agW-cs-z4g"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="yqT-ZW-UCF">
+                    <connections>
+                        <action selector="endEditing:" destination="rSy-GN-wsa" id="Hrq-RP-kHt"/>
+                    </connections>
+                </tapGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="997" y="736"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="icon-jetpack-gray" width="73" height="90"/>
+        <image name="icon-password-field" width="18" height="22"/>
+        <image name="icon-username-field" width="18" height="18"/>
+    </resources>
+</document>

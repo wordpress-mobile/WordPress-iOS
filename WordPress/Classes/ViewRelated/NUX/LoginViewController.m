@@ -9,7 +9,7 @@
 #import "WordPressComOAuthClient.h"
 #import "WPWebViewController.h"
 #import "Blog+Jetpack.h"
-#import "JetpackSettingsViewController.h"
+#import "JetpackLoginViewController.h"
 #import "WPNUXErrorViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
@@ -48,7 +48,6 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     CGFloat _keyboardOffset;
 
     BOOL _userIsDotCom;
-    BOOL _blogConnectedToJetpack;
     NSString *_dotComSiteUrl;
     NSArray *_blogs;
     Blog *_blog;
@@ -561,19 +560,19 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)showJetpackAuthentication
 {
     [self setAuthenticating:NO withStatusMessage:nil];
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
-    jetpackSettingsViewController.canBeSkipped = YES;
-    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
+    JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
+    [jetpackLoginViewController setBlog:_blog];
+    jetpackLoginViewController.canBeSkipped = YES;
+    jetpackLoginViewController.completionBlock = ^(WPAccount *account){
+        if (account) {
             [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
             [WPAnalytics refreshMetadata];
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
-        _blogConnectedToJetpack = didAuthenticate;
         [self dismiss];
-    }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
+    };
+    [self.navigationController pushViewController:jetpackLoginViewController animated:YES];
 }
 
 - (void)showHelpViewController:(BOOL)animated
