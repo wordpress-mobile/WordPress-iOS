@@ -10,14 +10,17 @@
 #import "WPWebViewController.h"
 #import "Notification.h"
 #import "Meta.h"
+#import "JetpackLoginViewController.h"
 
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 #import "NotificationSettingsViewController.h"
 
 #import "WPAccount.h"
+#import "Blog+Jetpack.h"
 
 #import "AccountService.h"
+#import "BlogService.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
@@ -625,8 +628,12 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (NSString *)noResultsTitleText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    if (!self.hasDotcomAccount) {
+        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
+            return NSLocalizedString(@"Connect to Jetpack Manage", @"Displayed in the notifications view when a self-hosted user is connected to Jetpack");
+        } else {
+            return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        }
     } else {
         return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
     }
@@ -634,8 +641,12 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (NSString *)noResultsMessageText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+    if (!self.hasDotcomAccount) {
+        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
+            return NSLocalizedString(@"Connect now to Jetpack Manage to enjoy notifications on your device", @"Displayed in the notifications view when a self-hosted user is nconnected to Jetpack");
+        } else {
+            return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
+        }
     } else {
         return nil;
     }
@@ -643,8 +654,12 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (NSString *)noResultsButtonText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Learn more", @"");
+    if (!self.hasDotcomAccount) {
+        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
+            return NSLocalizedString(@"Connect", @"");
+        } else {
+            return NSLocalizedString(@"Learn more", @"");
+        }
     } else {
         return nil;
     }
@@ -652,7 +667,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (UIView *)noResultsAccessoryView
 {
-    if (self.showJetpackConnectMessage) {
+    if (!self.hasDotcomAccount) {
         return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
     } else {
         return nil;
@@ -661,20 +676,42 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-    
-    [self.navigationController pushViewController:webViewController animated:YES];
-    
-    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
+    if ([self blogHasJetpackAndIsConnectedToWPCom]) {
+        JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
+
+        [jetpackLoginViewController setBlog:[self jetpackBlog]];
+        jetpackLoginViewController.completionBlock = ^(WPAccount *account){
+            [self.navigationController popToViewController:self animated:YES];
+        };
+        [self.navigationController pushViewController:jetpackLoginViewController animated:YES];
+    } else {
+        WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
+        webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+
+        [self.navigationController pushViewController:webViewController animated:YES];
+
+        [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
+    }
 }
 
-- (BOOL)showJetpackConnectMessage
+- (BOOL)hasDotcomAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     
-    return ![accountService defaultWordPressComAccount];
+    return [accountService defaultWordPressComAccount];
+}
+
+- (BOOL)blogHasJetpackAndIsConnectedToWPCom
+{
+    return [[self jetpackBlog] hasJetpackAndIsConnectedToWPCom];
+}
+
+- (Blog *)jetpackBlog
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Blog *blog = [blogService lastUsedOrFirstBlog];
+    return blog;
 }
 
 #pragma mark - ABXPromptViewDelegate
