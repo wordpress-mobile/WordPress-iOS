@@ -1,13 +1,13 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
 
-@class WPAccount;
+@class WPAccount, Blog;
 
 @interface JetpackService : NSObject<LocalCoreDataService>
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
-                              siteID:(NSNumber *)siteID
+                                blog:(Blog *)blog
                              success:(void (^)(WPAccount *account))success
                              failure:(void (^)(NSError *error))failure;
 

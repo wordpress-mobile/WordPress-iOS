@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *learnMoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lostPasswordLabel;
+
+@property (strong, nonatomic) Blog *blog;
 @end
 
 @implementation JetpackLoginViewController
@@ -70,7 +72,7 @@
     JetpackService *jetpackService = [[JetpackService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [jetpackService validateAndLoginWithUsername:username
                                         password:self.passwordField.text
-                                          siteID:self.siteID
+                                            blog:self.blog
                                          success:^(WPAccount *account) {
                                              [self.signInButton showActivityIndicator:NO];
                                              if (self.completionBlock) {
@@ -173,7 +175,7 @@ replacementString:(NSString *)string
 {
     self.username = [blog getOptionValue:@"jetpack_user_login"];
     self.email = [blog getOptionValue:@"jetpack_user_email"];
-    self.siteID = [blog jetpackBlogID];
+    _blog = blog;
 }
 
 - (void)setCanBeSkipped:(BOOL)canBeSkipped

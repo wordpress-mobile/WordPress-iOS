@@ -3,7 +3,10 @@
 #import "BlogService.h"
 #import "JetpackServiceRemote.h"
 #import "WordPressComOAuthClient.h"
+#import "ContextManager.h"
 #import "WPAccount.h"
+#import "Blog.h"
+#import "Blog+Jetpack.h"
 
 @interface JetpackService ()
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
@@ -22,7 +25,7 @@
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
-                              siteID:(NSNumber *)siteID
+                                blog:(Blog *)blog
                              success:(void (^)(WPAccount *account))success
                              failure:(void (^)(NSError *error))failure
 {
@@ -42,14 +45,15 @@
         }
     };
 
+    NSManagedObjectID *blogObjectID = [blog objectID];
     JetpackServiceRemote *remote = [JetpackServiceRemote new];
     [remote validateJetpackUsername:username
                            password:password
-                          forSiteID:siteID
+                          forSiteID:blog.jetpackBlogID
                             success:^{
                                 [self loginWithUsername:username
                                                password:password
-                                                 siteID:siteID
+                                           blogObejctID:blogObjectID
                                                 success:successBlock
                                                 failure:failureBlock];
                             }
@@ -58,7 +62,7 @@
 
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
-                   siteID:(NSNumber *)siteID
+             blogObejctID:(NSManagedObjectID *)blogObjectID
                   success:(void (^)(WPAccount *account))success
                   failure:(void (^)(NSError *error))failure
 {
@@ -69,6 +73,10 @@
                                  [self.managedObjectContext performBlock:^{
                                      AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                     Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+                                     if (blogInContext) {
+                                         blogInContext.jetpackAccount = account;
+                                     }
                                      BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      [blogService syncBlogsForAccount:account success:^{
                                          success(account);
