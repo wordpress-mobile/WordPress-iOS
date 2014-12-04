@@ -99,6 +99,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     else {
         self.tableView.tableHeaderView = nil;
     }
+
+    [self.tableView reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -210,9 +212,11 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 LoginViewController *loginViewController = [[LoginViewController alloc] init];
                 loginViewController.onlyDotComAllowed = YES;
                 loginViewController.dismissBlock = ^{
-                    [self.navigationController popToViewController:self animated:YES];
+                    [self dismissViewControllerAnimated:YES completion:nil];
                 };
-                [self.navigationController pushViewController:loginViewController animated:YES];
+
+                UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+                [self presentViewController:loginNavigationController animated:YES completion:nil];
             }
         }
     }
@@ -253,7 +257,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
         [accountService removeDefaultWordPressComAccount];
 
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:MeSectionWpCom] withRowAnimation:UITableViewRowAnimationFade];
+        // reload all table view to update the header as well
+        [self.tableView reloadData];
     }
 }
 
