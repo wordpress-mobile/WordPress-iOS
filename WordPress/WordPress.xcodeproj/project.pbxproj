@@ -1143,7 +1143,6 @@
 		E18165FC14E4428B006CE885 /* loader.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = loader.html; path = Resources/HTML/loader.html; sourceTree = "<group>"; };
 		E183BD7217621D85000B0822 /* WPCookie.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPCookie.h; sourceTree = "<group>"; };
 		E183BD7317621D86000B0822 /* WPCookie.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPCookie.m; sourceTree = "<group>"; };
-		E183EC9B16B1C01D00C2EB11 /* WPPostViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
 		E1863F9A1355E0AB0031BBC8 /* pt */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pt; path = pt.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E1874BFE161C5DBC0058BDC4 /* WordPress 7.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 7.xcdatamodel"; sourceTree = "<group>"; };
 		E18D8AE21397C51A00000861 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
@@ -2194,7 +2193,6 @@
 				ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */,
 				5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */,
 				5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */,
-				E183EC9B16B1C01D00C2EB11 /* WPPostViewController_Internal.h */,
 				ACBAB6840E1247F700F38795 /* PostPreviewViewController.h */,
 				ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */,
 				74D5FFD419ACDF6700389E8F /* WPLegacyEditPostViewController.h */,
@@ -3636,12 +3634,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
-					"$(inherited)",
-					"BITHOCKEY_VERSION=\"@\\\"3.5.7\\\"\"",
-					"BITHOCKEY_C_VERSION=\"\\\"3.5.7\\\"\"",
-					"BITHOCKEY_BUILD=\"@\\\"32\\\"\"",
-					"BITHOCKEY_C_BUILD=\"\\\"32\\\"\"",
-					"${inherited}",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
@@ -3769,6 +3761,11 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
