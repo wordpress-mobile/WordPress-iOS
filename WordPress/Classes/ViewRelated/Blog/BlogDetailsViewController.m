@@ -50,6 +50,8 @@ const typedef enum {
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
+NSInteger const BlogDetailHeaderViewHorizontalMargin = 15;
+NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 @interface BlogDetailsViewController ()
 
@@ -119,10 +121,8 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
 - (void)configureBlogDetailHeader
 {
-    NSInteger margin = 12;
-
     // Wrapper view
-    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + margin * 2)];
+    UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
 
     // Blog detail header view
     self.headerView = [[BlogDetailHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize)];
@@ -131,12 +131,13 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 
     // Layout
     NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-    NSDictionary *metrics = @{@"margin": @(margin)};
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(margin)-[_headerView]-(margin)-|"
+    NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMargin),
+                              @"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(margin)-[_headerView]-(margin)-|"
+    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_headerView]-(verticalMargin)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
