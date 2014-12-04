@@ -15,27 +15,24 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPAccount.h"
+#import "LoginViewController.h"
 
 const typedef enum {
     MeRowAccountSettings = 0,
     MeRowHelp = 1,
-    MeRowLogout = 0
+    MeRowLoginLogout = 0
 } MeRow;
 
 const typedef enum {
     MeSectionGeneralType = 0,
-    MeSectionLogout
+    MeSectionWpCom
 } MeSectionContentType;
 
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
-static NSString *const MVCAccountSettingsTitle = @"Account Settings";
-static NSString *const MVCHelpTitle = @"Help & Support";
-static NSString *const MVCLogoutTitle = @"Log out";
-
 static CGFloat const MVCTableViewRowHeight = 50.0;
 
-@interface MeViewController () <UITableViewDataSource, UITableViewDelegate>
+@interface MeViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MeHeaderView *headerView;
@@ -62,7 +59,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self.view addSubview:self.tableView];
 
     self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
-    self.tableView.tableHeaderView = self.headerView;
 
     [self setupAutolayoutConstraints];
 }
@@ -95,8 +91,20 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    [self.headerView setUsername:defaultAccount.username];
-    [self.headerView setGravatarEmail:@"oguz.kocer@automattic.com"];
+    if (defaultAccount) {
+        self.tableView.tableHeaderView = self.headerView;
+        [self.headerView setUsername:defaultAccount.username];
+        [self.headerView setGravatarEmail:@"oguz.kocer@automattic.com"];
+    }
+    else {
+        self.tableView.tableHeaderView = nil;
+    }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -111,7 +119,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     if (section == MeSectionGeneralType) {
         return 2;
     }
-    if (section == MeSectionLogout) {
+    if (section == MeSectionWpCom) {
         return 1;
     }
     return 0;
@@ -123,25 +131,36 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [WPStyleGuide configureTableViewActionCell:cell];
 
-    NSString *text = nil;
     if (indexPath.section == MeSectionGeneralType) {
         switch (indexPath.row) {
             case MeRowAccountSettings:
-                text = MVCAccountSettingsTitle;
+                cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
+                cell.accessibilityLabel = @"Account Settings";
                 break;
             case MeRowHelp:
-                text = MVCHelpTitle;
+                cell.textLabel.text = NSLocalizedString(@"Help & Support", @"");
+                cell.accessibilityLabel = @"Help & Support";
                 break;
             default:
                 break;
         }
     }
-    else if (indexPath.section == MeSectionLogout) {
-        if (indexPath.row == MeRowLogout) {
-            text = MVCLogoutTitle;
+    else if (indexPath.section == MeSectionWpCom) {
+        if (indexPath.row == MeRowLoginLogout) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            if (defaultAccount) {
+                cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                cell.accessibilityIdentifier = @"Sign Out";
+            }
+            else {
+                cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+                cell.accessibilityIdentifier = @"Sign In";
+            }
         }
     }
-    cell.textLabel.text = NSLocalizedString(text, nil);
     return cell;
 }
 
@@ -163,9 +182,38 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 break;
         }
     }
-    else if (indexPath.section == MeSectionLogout) {
-        if (indexPath.row == MeRowLogout) {
-            // log out
+    else if (indexPath.section == MeSectionWpCom) {
+        if (indexPath.row == MeRowLoginLogout) {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            if (defaultAccount) {
+                // Present the Sign out ActionSheet
+                NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
+                signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
+                UIActionSheet *actionSheet;
+                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")
+                                                 otherButtonTitles:nil];
+                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+
+                if (IS_IPAD) {
+                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+                    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
+                } else {
+                    [actionSheet showInView:self.view];
+                }
+            } else {
+                LoginViewController *loginViewController = [[LoginViewController alloc] init];
+                loginViewController.onlyDotComAllowed = YES;
+                loginViewController.dismissBlock = ^{
+                    [self.navigationController popToViewController:self animated:YES];
+                };
+                [self.navigationController pushViewController:loginViewController animated:YES];
+            }
         }
     }
 }
@@ -191,6 +239,22 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
     [self refreshDetails];
+}
+
+#pragma mark -
+#pragma mark Action Sheet Delegate Methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        // Sign out
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+        [accountService removeDefaultWordPressComAccount];
+
+        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:MeSectionWpCom] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 @end

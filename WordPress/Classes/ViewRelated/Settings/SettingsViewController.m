@@ -5,8 +5,6 @@
  - Blogs list
     - Add blog
     - Edit/Delete
- - WordPress.com account
-    - Sign out / Sign in
  - Media Settings
     - Image Resize
     - Video API
@@ -20,7 +18,6 @@
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
 #import "Blog+Jetpack.h"
-#import "LoginViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"
@@ -39,8 +36,7 @@
 #endif
 
 typedef enum {
-    SettingsSectionWpcom = 0,
-    SettingsSectionMedia,
+    SettingsSectionMedia = 0,
     SettingsSectionEditor,
     SettingsSectionInternalBeta,
     SettingsSectionCount
@@ -51,7 +47,7 @@ static CGFloat const MediaSizeControlHeight = 44.0;
 static CGFloat const MediaSizeControlOffset = 12.0;
 static CGFloat const SettingsRowHeight = 44.0;
 
-@interface SettingsViewController () <UIActionSheetDelegate>
+@interface SettingsViewController ()
 
 @property (nonatomic, assign) BOOL showInternalBetaSection;
 @property (nonatomic, strong) UISlider *mediaSizeSlider;
@@ -79,8 +75,6 @@ static CGFloat const SettingsRowHeight = 44.0;
     self.showInternalBetaSection = NO;
 #endif
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -89,15 +83,6 @@ static CGFloat const SettingsRowHeight = 44.0;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [self.tableView reloadData];
-}
-
-#pragma mark - Notifications
-
-- (void)defaultAccountDidChange:(NSNotification *)notification
-{
-    NSMutableIndexSet *sections = [NSMutableIndexSet indexSet];
-    [sections addIndex:SettingsSectionWpcom];
-    [self.tableView reloadSections:sections withRowAnimation:UITableViewRowAnimationFade];
 }
 
 
@@ -208,39 +193,9 @@ static CGFloat const SettingsRowHeight = 44.0;
     return [self.tableView isEditing] ? 1 : SettingsSectionCount;
 }
 
-// The Sign Out row in Wpcom section can change, so identify it dynamically
-- (NSInteger)rowForSignOut
-{
-    NSInteger rowForSignOut = 1;
-    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
-        rowForSignOut += 1;
-    }
-    return rowForSignOut;
-}
-
-- (NSInteger)rowForNotifications
-{
-    if ([NotificationsManager deviceRegisteredForPushNotifications]) {
-        return 1;
-    }
-    return -1;
-}
-
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     switch (section) {
-        case SettingsSectionWpcom: {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            if (defaultAccount) {
-                return [self rowForSignOut] + 1;
-            }
-
-            return 1;
-        }
-
         case SettingsSectionMedia:
             return 1;
         
@@ -261,8 +216,7 @@ static CGFloat const SettingsRowHeight = 44.0;
             }
         default:
             return 0;
-            
-            
+
     }
 }
 
@@ -301,10 +255,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    if (section == SettingsSectionWpcom) {
-        return NSLocalizedString(@"WordPress.com", @"");
-
-    } else if (section == SettingsSectionMedia) {
+    if (section == SettingsSectionMedia) {
         return NSLocalizedString(@"Media", @"Title label for the media settings section in the app settings");
 
     } else if (section == SettingsSectionEditor) {
@@ -334,35 +285,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
     cell.accessoryType = UITableViewCellAccessoryNone;
 
-    if (indexPath.section == SettingsSectionWpcom) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            if (indexPath.row == 0) {
-                cell.textLabel.text = NSLocalizedString(@"Username", @"");
-                cell.detailTextLabel.text = [defaultAccount username];
-                cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.accessibilityIdentifier = @"Username";
-            } else if (indexPath.row == [self rowForNotifications]) {
-                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                cell.textLabel.text = NSLocalizedString(@"Manage Notifications", @"");
-                cell.accessibilityIdentifier = @"Manage Notifications";
-            } else {
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
-                cell.accessibilityIdentifier = @"Sign Out";
-            }
-        } else {
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
-            cell.accessibilityIdentifier = @"Sign In";
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        }
-
-    } else if (indexPath.section == SettingsSectionMedia) {
+    if (indexPath.section == SettingsSectionMedia) {
         cell.textLabel.text = nil;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
@@ -385,19 +308,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     NSString *cellIdentifier = @"Cell";
     UITableViewCellStyle cellStyle = UITableViewCellStyleDefault;
 
-    if (indexPath.section == SettingsSectionWpcom) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount && indexPath.row == 0) {
-            cellIdentifier = @"WpcomUsernameCell";
-            cellStyle = UITableViewCellStyleValue1;
-        } else {
-            cellIdentifier = @"WpcomCell";
-            cellStyle = UITableViewCellStyleDefault;
-        }
-    } else if (indexPath.section == SettingsSectionMedia) {
+    if (indexPath.section == SettingsSectionMedia) {
             cellIdentifier = @"Media";
             cellStyle = UITableViewCellStyleDefault;
     } else if (indexPath.section == SettingsSectionEditor) {
@@ -452,84 +363,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     [WPStyleGuide configureTableViewCell:cell];
     [self configureCell:cell atIndexPath:indexPath];
 
-    BOOL isSignInCell = NO;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if (![[defaultAccount restApi] hasCredentials]) {
-        isSignInCell = indexPath.section == SettingsSectionWpcom && indexPath.row == 0;
-    }
-
-    BOOL isSignOutCell = indexPath.section == SettingsSectionWpcom && indexPath.row == [self rowForSignOut];
-    if (isSignOutCell || isSignInCell) {
-        [WPStyleGuide configureTableViewActionCell:cell];
-    }
-
     return cell;
-}
-
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (indexPath.section == SettingsSectionWpcom) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            if (indexPath.row == [self rowForSignOut]) {
-                // Present the Sign out ActionSheet
-                NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
-                signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
-                UIActionSheet *actionSheet;
-                actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")otherButtonTitles:nil, nil ];
-                actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
-
-                if (IS_IPAD) {
-                    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-                    [actionSheet showFromRect:[cell bounds] inView:cell animated:YES];
-                } else {
-                    [actionSheet showInView:self.view];
-                }
-
-            } else if (indexPath.row == [self rowForNotifications]) {
-                NotificationSettingsViewController *notificationSettingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-                [self.navigationController pushViewController:notificationSettingsViewController animated:YES];
-            }
-        } else {
-            LoginViewController *loginViewController = [[LoginViewController alloc] init];
-            loginViewController.onlyDotComAllowed = YES;
-            loginViewController.dismissBlock = ^{
-                [self.navigationController popToViewController:self animated:YES];
-            };
-            [self.navigationController pushViewController:loginViewController animated:YES];
-        }
-
-    }
-}
-
-#pragma mark -
-#pragma mark Action Sheet Delegate Methods
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == 0) {
-        // Sign out
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-        [accountService removeDefaultWordPressComAccount];
-
-        [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:SettingsSectionWpcom] withRowAnimation:UITableViewRowAnimationFade];
-    }
 }
 
 @end
