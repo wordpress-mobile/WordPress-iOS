@@ -216,7 +216,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
         }
     } else if (indexPath.section == TableViewSectionConfigurationType) {
         if (indexPath.row == BlogDetailsRowEditSite) {
-            cell.textLabel.text = NSLocalizedString(@"Edit Site", nil);
+            cell.textLabel.text = NSLocalizedString(@"Settings", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         }
     } else if (indexPath.section == TableViewSectionAdmin) {
