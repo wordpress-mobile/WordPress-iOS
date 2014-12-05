@@ -126,7 +126,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-<<<<<<< HEAD
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_replyButton(buttonHeight)]|"
                                                                  options:0
                                                                  metrics:metrics
@@ -136,17 +135,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  metrics:metrics
                                                                    views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_numberOfLikesLabel(buttonHeight)]|"
-=======
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_replyButton(16)]-(>=0@200)-|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_likeButton(16)]-(>=0@200)-|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView][_numberOfLikesLabel(16)]-(>=0@200)-|"
->>>>>>> release/4.6
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
