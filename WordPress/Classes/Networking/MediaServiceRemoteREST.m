@@ -47,10 +47,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSProgress * localProgress = [NSProgress progressWithTotalUnitCount:2];
-    NSString * path = media.localURL;
-    NSString * type = media.mimeType;
-    NSString * filename = media.file;
+    NSProgress *localProgress = [NSProgress progressWithTotalUnitCount:2];
+    NSString *path = media.localURL;
+    NSString *type = media.mimeType;
+    NSString *filename = media.file;
     
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
@@ -64,7 +64,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         NSArray * mediaList = response[@"media"];
         if (mediaList.count > 0){
             RemoteMedia * remoteMedia = [self remoteMediaFromJSONDictionary:mediaList[0]];
-            if (success){
+            if (success) {
                 success(remoteMedia);
             }
             localProgress.completedUnitCount=localProgress.totalUnitCount;
@@ -77,7 +77,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                 NSDictionary * errorDictionary = @{NSLocalizedDescriptionKey: errorList[0]};
                 error = [NSError errorWithDomain:WordPressRestApiErrorDomain code:WPRestErrorCodeMediaNew userInfo:errorDictionary];
             }
-            if (failure){
+            if (failure) {
                 failure(error);
             }
         }
@@ -103,7 +103,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         [operation cancel];
     };
     
-    if (progress){
+    if (progress) {
         *progress = localProgress;
     }
     [self.api.operationQueue addOperation:operation];
@@ -112,7 +112,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
 {
     RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];    
-    if (jsonMedia[@"id"]){
+    if (jsonMedia[@"id"]) {
         remoteMedia.mediaID =  @([jsonMedia[@"id"] intValue]);
         remoteMedia.url = [NSURL URLWithString:jsonMedia[@"link"]];
         //remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];

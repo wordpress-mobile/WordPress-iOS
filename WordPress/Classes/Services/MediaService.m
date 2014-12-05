@@ -90,7 +90,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             media.filename = [imagePath lastPathComponent];
             media.localURL = imagePath;
             media.thumbnail = thumbnailData;
-            NSDictionary * fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
+            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
             media.filesize = @([fileAttributes fileSize] / 1024);
@@ -286,7 +286,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
 {
-    RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
+    RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;
     remoteMedia.url = [NSURL URLWithString:media.remoteURL];
     remoteMedia.date = media.creationDate;

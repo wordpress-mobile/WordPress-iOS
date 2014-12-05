@@ -11,7 +11,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 @end
 
 @implementation WPProgressTableViewCell {
-    NSProgress * _progress;
+    NSProgress *_progress;
 }
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -60,7 +60,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 - (void) updateProgress
 {
     if (_progress.fractionCompleted < 1 &&
-        !(_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0)){
+        !(_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0)) {
         [_progressView startAnimating];
     } else {
         [_progressView stopAnimating];
