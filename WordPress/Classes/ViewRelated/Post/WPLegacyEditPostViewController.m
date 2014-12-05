@@ -765,7 +765,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
     
-    vc.title = NSLocalizedString(@"Media Uploading", @"");
+    vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
