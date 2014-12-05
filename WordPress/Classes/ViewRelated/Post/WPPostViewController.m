@@ -1789,10 +1789,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
     if ([self.mediaInProgress containsObject:imageId]){
-        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"Cancel Image Upload?", @"Prompt the user if he wants to cancel the media upload of a image")
+        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                   delegate:self
-                                                         cancelButtonTitle:NSLocalizedString(@"No",@"User action to not cancel upload")
-                                                    destructiveButtonTitle:NSLocalizedString(@"Cancel",@"User action to cancel upload")otherButtonTitles:nil];
+                                                         cancelButtonTitle:NSLocalizedString(@"Cancel",@"User action to not cancel upload")
+                                                    destructiveButtonTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")otherButtonTitles:nil];
         actionSheet.tag = WPPostViewControllerCancelUploadActionSheetTag;
         [actionSheet showInView:self.view];
         self.selectedImageId= imageId;
