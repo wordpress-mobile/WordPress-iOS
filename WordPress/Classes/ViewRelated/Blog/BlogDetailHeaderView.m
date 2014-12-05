@@ -4,9 +4,8 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 const CGFloat BlogDetailHeaderViewBlavatarSize = 40.0;
-const CGFloat BlogDetailHeaderViewLabelHeight = 16.0;
+const CGFloat BlogDetailHeaderViewLabelHeight = 20.0;
 const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
-const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
 
 @interface BlogDetailHeaderView ()
 
@@ -52,8 +51,7 @@ const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
     NSDictionary *views = NSDictionaryOfVariableBindings(_blavatarImageView, _titleLabel, _subtitleLabel);
     NSDictionary *metrics = @{@"blavatarSize": @(BlogDetailHeaderViewBlavatarSize),
                               @"labelHeight":@(BlogDetailHeaderViewLabelHeight),
-                              @"labelHorizontalPadding": @(BlogDetailHeaderViewLabelHorizontalPadding),
-                              @"labelVerticalPadding": @(BlogDetailHeaderViewLabelVerticalPadding)};
+                              @"labelHorizontalPadding": @(BlogDetailHeaderViewLabelHorizontalPadding)};
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_blavatarImageView(blavatarSize)]|"
                                                                  options:0
                                                                  metrics:metrics
@@ -66,7 +64,7 @@ const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-labelVerticalPadding-[_titleLabel(labelHeight)]-labelVerticalPadding-[_subtitleLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(labelHeight)]-0-[_subtitleLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -83,7 +81,7 @@ const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide littleEddieGrey];
-    label.font = [WPFontManager openSansRegularFontOfSize:13.0];
+    label.font = [WPFontManager openSansRegularFontOfSize:16.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
@@ -97,7 +95,7 @@ const CGFloat BlogDetailHeaderViewLabelVerticalPadding = 3.0;
     label.backgroundColor = [UIColor clearColor];
     label.opaque = YES;
     label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPFontManager openSansRegularFontOfSize:13.0];
+    label.font = [WPFontManager openSansItalicFontOfSize:12.0];
     label.adjustsFontSizeToFitWidth = NO;
 
     return label;
