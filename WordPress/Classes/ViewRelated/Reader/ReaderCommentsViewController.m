@@ -638,7 +638,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)tapRecognized:(id)sender
 {
+<<<<<<< HEAD
     self.tapOffKeyboardGesture.enabled = NO;
+=======
+    if ([self.view.gestureRecognizers containsObject:self.tapOffKeyboardGesture]) {
+        [self.view removeGestureRecognizer:self.tapOffKeyboardGesture];
+    }
+
+>>>>>>> release/4.6
     self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
@@ -685,6 +692,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                            failure:failureBlock];
     }
     self.indexPathForCommentRepliedTo = nil;
+<<<<<<< HEAD
 }
 
 
@@ -744,6 +752,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     for (ReaderCommentCell *cell in [self.mediaCellCache allValues]) {
         [cell preventPendingMediaLayout:prevent];
     }
+=======
+>>>>>>> release/4.6
 }
 
 
@@ -991,9 +1001,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self.replyTextView becomeFirstResponder];
+<<<<<<< HEAD
 
     Comment *comment = (Comment *)contentProvider;
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
+=======
+    self.indexPathForCommentRepliedTo = [self.tableView indexPathForCell:cell];
+>>>>>>> release/4.6
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
     [self configureTextReplyViewPlaceholder];
 }
