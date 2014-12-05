@@ -46,12 +46,12 @@
             success:(void (^)(RemoteMedia *remoteMedia))success
             failure:(void (^)(NSError *error))failure
 {
-    NSProgress * localProgress = [NSProgress progressWithTotalUnitCount:2];
+    NSProgress *localProgress = [NSProgress progressWithTotalUnitCount:2];
     //The enconding of the request uses a NSData that has a progress
     [localProgress becomeCurrentWithPendingUnitCount:1];
-    NSString * path = media.localURL;
-    NSString * type = media.mimeType;
-    NSString * filename = media.file;
+    NSString *path = media.localURL;
+    NSString *type = media.mimeType;
+    NSString *filename = media.file;
     
     NSDictionary *data = @{
                            @"name": filename,
@@ -107,7 +107,7 @@
         [operation cancel];
     };
     
-    if (progress){
+    if (progress) {
         *progress = localProgress;
     }
     

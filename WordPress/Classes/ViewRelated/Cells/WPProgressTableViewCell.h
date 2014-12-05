@@ -7,6 +7,6 @@ extern NSString * const WPProgressImageThumbnailKey;
 
 @interface WPProgressTableViewCell : WPTableViewCell
 
-- (void) setProgress:(NSProgress *) progress;
+- (void) setProgress:(NSProgress *)progress;
 
 @end
