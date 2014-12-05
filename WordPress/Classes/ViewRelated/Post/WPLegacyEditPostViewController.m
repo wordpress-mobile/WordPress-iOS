@@ -791,7 +791,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", @"Title for alert for cancelling all uploads") message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
     alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
     [alertView show];
 }
