@@ -386,6 +386,7 @@ CGFloat const blavatarImageSize = 50.f;
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         [self setEditing:NO animated:NO];
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
+        loginViewController.cancellable = YES;
 
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
