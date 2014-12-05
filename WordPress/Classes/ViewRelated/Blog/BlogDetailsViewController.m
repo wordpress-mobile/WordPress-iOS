@@ -50,7 +50,7 @@ const typedef enum {
 static NSString *const BlogDetailsCellIdentifier = @"BlogDetailsCell";
 NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
 NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
-NSInteger const BlogDetailHeaderViewHorizontalMargin = 15;
+NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 @interface BlogDetailsViewController ()
@@ -129,9 +129,11 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
     self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
     [headerWrapper addSubview:self.headerView];
 
+    float horizontalMargin = IS_IPAD ? (CGRectGetWidth(self.view.bounds) - WPTableViewFixedWidth) / 2.f : BlogDetailHeaderViewHorizontalMarginiPhone;
+
     // Layout
     NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-    NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMargin),
+    NSDictionary *metrics = @{@"horizontalMargin": @(horizontalMargin),
                               @"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
                                                                           options:0
