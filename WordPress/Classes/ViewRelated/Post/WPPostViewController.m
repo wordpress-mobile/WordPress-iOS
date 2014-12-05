@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertCancelMediaUpload,
 };
 
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs,
+    EditPostViewControllerAlertCancelMediaUpload,
+};
+
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -84,6 +92,7 @@ static NSDictionary *EnabledButtonBarStyle;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *optionsBarButtonItem;
 
+<<<<<<< HEAD
 #pragma mark - Post info
 @property (nonatomic, assign, readwrite) BOOL ownsPost;
 
@@ -102,6 +111,13 @@ static NSDictionary *EnabledButtonBarStyle;
  *              controller will be closed too.
  */
 @property (nonatomic, assign, readwrite) BOOL failedStateRestorationMode;
+=======
+#pragma mark - Post ownership
+@property (nonatomic, assign, readwrite) BOOL ownsPost;
+
+#pragma mark - Media uploads
+@property (nonatomic, strong, readwrite) NSOperationQueue *mediaUploadQueue;
+>>>>>>> release/4.6
 @end
 
 @implementation WPPostViewController
@@ -118,6 +134,7 @@ static NSDictionary *EnabledButtonBarStyle;
 
 #pragma mark - Initializers
 
+<<<<<<< HEAD
 - (instancetype)initInFailedStateRestorationMode
 {
     self = [super init];
@@ -134,6 +151,9 @@ static NSDictionary *EnabledButtonBarStyle;
 }
 
 - (instancetype)initWithDraftForLastUsedBlog
+=======
+- (id)initWithDraftForLastUsedBlog
+>>>>>>> release/4.6
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -482,11 +502,39 @@ static NSDictionary *EnabledButtonBarStyle;
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
                                           @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
     
+<<<<<<< HEAD
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:message
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
+=======
+    // This is a trick to kick the starting UIButtonBarItem to the left
+    self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    self.negativeSeparator.width = -12;
+    
+    [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
+    
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
+                                                 name:MediaShouldInsertBelowNotification
+                                               object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(removeMedia:)
+                                                 name:@"ShouldRemoveMedia"
+                                               object:nil];
+    
+    [self geotagNewPost];
+    self.delegate = self;
+    self.failedMediaAlertView = nil;
+    [self refreshNavigationBarButtons:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+	[super viewDidAppear:animated];
+    
+	[self refreshNavigationBarButtons:NO];
+>>>>>>> release/4.6
     
     [alertView show];
 }
