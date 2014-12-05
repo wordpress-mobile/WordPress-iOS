@@ -1104,7 +1104,8 @@ static NSInteger NotificationSectionCount               = 1;
     CGFloat bottomInset = CGRectGetHeight(kbRect) - (CGRectGetMaxY(kbRect) - CGRectGetHeight(viewFrame));
     
     [UIView beginAnimations:nil context:nil];
-    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValuectAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
+    [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
+    [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
     [self.view updateConstraintWithFirstItem:self.view
                                   secondItem:self.replyTextView
