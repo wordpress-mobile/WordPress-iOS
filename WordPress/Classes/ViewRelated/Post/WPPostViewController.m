@@ -150,6 +150,7 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationClass = [self class];
 
         _post = post;
+
         if (post.blog.isPrivate) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
