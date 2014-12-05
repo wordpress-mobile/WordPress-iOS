@@ -97,7 +97,7 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.3):
+  - WordPress-iOS-Editor (0.2.3.1):
     - CocoaLumberjack (~> 1.9)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.1.4)
@@ -144,7 +144,7 @@ DEPENDENCIES:
   - SVProgressHUD (~> 1.0)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, branch `release/0.3`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `0912b7ceadd4cecb97a981e15c54475de98d4f8e`)
   - WordPress-iOS-Shared (= 0.1.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.0`)
   - WordPressCom-Analytics-iOS (= 0.0.13)
@@ -167,7 +167,7 @@ EXTERNAL SOURCES:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :branch: release/0.3
+    :commit: 0912b7ceadd4cecb97a981e15c54475de98d4f8e
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -187,7 +187,7 @@ CHECKOUT OPTIONS:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: d1c2947510855aa05fd829e65af45e77da08346d
+    :commit: 0912b7ceadd4cecb97a981e15c54475de98d4f8e
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -224,7 +224,7 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: 6391c16211a971d34543a1e878ec4d6d68b42fd5
+  WordPress-iOS-Editor: 90921cc23a033bc701c0ee105633cb6d6178f1cd
   WordPress-iOS-Shared: cb00b5b2530e5b581d34926ac6966b7ec476a93a
   WordPressApi: 6d28e1f6e6bf6cea2aa52d99d2cc795ff398e479
   WordPressCom-Analytics-iOS: 05bdd495e26a378a27083034fa63b543e0b3aee9
