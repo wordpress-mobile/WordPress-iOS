@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertCancelMediaUpload,
 };
 
+typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
+    EditPostViewControllerAlertTagNone,
+    EditPostViewControllerAlertTagLinkHelper,
+    EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagSwitchBlogs,
+    EditPostViewControllerAlertCancelMediaUpload,
+};
+
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
@@ -150,6 +158,7 @@ static NSDictionary *EnabledButtonBarStyle;
         self.restorationClass = [self class];
 
         _post = post;
+
         if (post.blog.isPrivate) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
