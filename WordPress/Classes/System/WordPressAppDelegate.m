@@ -568,7 +568,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
-    loginViewController.cancelButtonDisabled = YES;
+    loginViewController.cancellable = NO;
     loginViewController.dismissBlock = ^{
         [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
     };
