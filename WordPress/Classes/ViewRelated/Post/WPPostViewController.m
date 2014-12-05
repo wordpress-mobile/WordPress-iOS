@@ -37,14 +37,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertCancelMediaUpload,
 };
 
-typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
-    EditPostViewControllerAlertTagNone,
-    EditPostViewControllerAlertTagLinkHelper,
-    EditPostViewControllerAlertTagFailedMedia,
-    EditPostViewControllerAlertTagSwitchBlogs,
-    EditPostViewControllerAlertCancelMediaUpload,
-};
-
 // State Restoration
 NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestorationID";
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
