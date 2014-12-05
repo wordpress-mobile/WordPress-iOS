@@ -28,6 +28,8 @@ extern NSString* const kWPEditorConfigURLParamEnabled;
 typedef void (^EditPostCompletionHandler)(void);
 @property (nonatomic, copy, readwrite) EditPostCompletionHandler onClose;
 
+#pragma mark - Properties: Post
+
 /**
  *  @brief      Wether this VC owns the post or not.
  *  @details    This is set to YES when this VC is initialized with one of the draft post creation
@@ -36,10 +38,14 @@ typedef void (^EditPostCompletionHandler)(void);
  */
 @property (nonatomic, assign, readonly) BOOL ownsPost;
 
+/**
+ *  @brief      The post that's being displayed by this VC.
+ */
+@property (nonatomic, strong) AbstractPost *post;
+
 #pragma mark - Properties: Misc
 
 @property (nonatomic, strong) PostSettingsViewController *postSettingsViewController;
-@property (nonatomic, strong) AbstractPost *post;
 @property (readonly) BOOL hasChanges;
 
 @property (nonatomic, strong) UIActionSheet *currentActionSheet;
