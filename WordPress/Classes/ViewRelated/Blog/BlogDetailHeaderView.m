@@ -41,7 +41,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 {
     [self.blavatarImageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
     [self.titleLabel setText:blog.blogName];
-    [self.subtitleLabel setText:blog.url];
+    [self.subtitleLabel setText:blog.displayURL];
 }
 
 #pragma mark - Private Methods
