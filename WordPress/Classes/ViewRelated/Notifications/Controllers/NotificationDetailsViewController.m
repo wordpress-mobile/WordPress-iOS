@@ -255,7 +255,11 @@ static NSInteger NotificationSectionCount               = 1;
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> release/4.7
     // Attach suggestionsView
     [self attachSuggestionsViewIfNeeded];
 }

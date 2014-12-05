@@ -247,6 +247,16 @@
     return NO;
 }
 
+- (BOOL)hasRevision
+{
+    return self.revision != nil;
+}
+
+- (BOOL)hasUnsavedChanges
+{
+    return [self hasRevision] && [self.revision hasChanged];
+}
+
 - (void)findComments
 {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
