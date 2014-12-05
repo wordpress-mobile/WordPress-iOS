@@ -16,6 +16,7 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "LoginViewController.h"
+#import <WordPress-iOS-Shared/WPTableViewCell.h>
 
 const typedef enum {
     MeRowAccountSettings = 0,
@@ -55,7 +56,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     self.tableView.delegate = self;
     self.tableView.rowHeight = MVCTableViewRowHeight;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];
 
     self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
@@ -129,7 +130,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
+    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [WPStyleGuide configureTableViewActionCell:cell];
 
