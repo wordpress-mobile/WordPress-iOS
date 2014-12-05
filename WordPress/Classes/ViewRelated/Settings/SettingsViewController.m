@@ -534,6 +534,7 @@ static CGFloat const SettingsRowHeight = 44.0;
         } else {
             LoginViewController *loginViewController = [[LoginViewController alloc] init];
             loginViewController.onlyDotComAllowed = YES;
+            loginViewController.cancellable = YES;
             loginViewController.dismissBlock = ^{
                 [self.navigationController popToViewController:self animated:YES];
             };
