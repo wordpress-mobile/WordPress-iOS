@@ -40,7 +40,7 @@
    stripGeoLocation:(BOOL)stripGeoLocation
   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
-    
+
     [self.operationQueue addOperationWithBlock:^{
         UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
         NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
@@ -48,21 +48,17 @@
         WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
         NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
-        if (!data) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                handler(YES, newSize, thumbnailJPEGData, nil);
-            }];
+        if (!data && handler) {
+            handler(NO, newSize, thumbnailJPEGData, nil);
         }
         NSError *error;
-        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                handler(YES, newSize, thumbnailJPEGData, nil);
-            }];
+        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error] && handler) {
+            handler(NO, newSize, thumbnailJPEGData, error);
         }
         
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (handler){
             handler(YES, newSize, thumbnailJPEGData, nil);
-        }];
+        }
     }];
 }
 
