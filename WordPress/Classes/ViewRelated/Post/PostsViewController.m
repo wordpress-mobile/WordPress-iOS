@@ -244,6 +244,7 @@
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
                                                                                          mode:kWPPostViewControllerModePreview];
+        postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
         // In legacy mode, view means edit
