@@ -17,6 +17,6 @@ typedef NS_ENUM(NSInteger, JetpackServiceRemoteErrorCore) {
 
 @interface JetpackServiceRemote : NSObject
 
-- (void)validateJetpackUsername:(NSString *)username password:(NSString *)password forSiteID:(NSNumber *)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)validateJetpackUsername:(NSString *)username password:(NSString *)password forSiteID:(NSNumber *)siteID success:(void (^)(NSArray *blogIDs))success failure:(void (^)(NSError *error))failure;
 
 @end

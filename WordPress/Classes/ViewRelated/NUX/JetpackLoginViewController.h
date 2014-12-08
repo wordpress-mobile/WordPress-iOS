@@ -12,6 +12,7 @@
 
 @property (copy, nonatomic) NSString *username;
 @property (copy, nonatomic) NSString *email;
+@property (strong, nonatomic) NSNumber *siteID;
 
 @property (nonatomic, copy) void (^completionBlock)(WPAccount *account);
 

@@ -7,7 +7,7 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
 
 @implementation JetpackServiceRemote
 
-- (void)validateJetpackUsername:(NSString *)username password:(NSString *)password forSiteID:(NSNumber *)siteID success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)validateJetpackUsername:(NSString *)username password:(NSString *)password forSiteID:(NSNumber *)siteID success:(void (^)(NSArray *blogIDs))success failure:(void (^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     [manager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
@@ -22,8 +22,9 @@ static NSString * const GetUsersBlogsApiPath = @"https://public-api.wordpress.co
              NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"id = %@", siteID]];
              if (foundBlogs.count > 0) {
                  DDLogInfo(@"Found blog: %@", foundBlogs);
+                 NSArray *blogs = [foundBlogs valueForKey:@"id"];
                  if (success) {
-                     success();
+                     success(blogs);
                  }
              } else {
                  if (failure) {

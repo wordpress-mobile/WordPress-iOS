@@ -25,7 +25,7 @@
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
-                                blog:(Blog *)blog
+                              siteID:(NSNumber *)siteID
                              success:(void (^)(WPAccount *account))success
                              failure:(void (^)(NSError *error))failure
 {
@@ -45,15 +45,14 @@
         }
     };
 
-    NSManagedObjectID *blogObjectID = [blog objectID];
     JetpackServiceRemote *remote = [JetpackServiceRemote new];
     [remote validateJetpackUsername:username
                            password:password
-                          forSiteID:blog.jetpackBlogID
-                            success:^{
+                          forSiteID:siteID
+                            success:^(NSArray *blogs){
                                 [self loginWithUsername:username
                                                password:password
-                                           blogObejctID:blogObjectID
+                                                  blogs:blogs
                                                 success:successBlock
                                                 failure:failureBlock];
                             }
@@ -62,7 +61,7 @@
 
 - (void)loginWithUsername:(NSString *)username
                  password:(NSString *)password
-             blogObejctID:(NSManagedObjectID *)blogObjectID
+                    blogs:(NSArray *)blogIDs
                   success:(void (^)(WPAccount *account))success
                   failure:(void (^)(NSError *error))failure
 {
@@ -73,17 +72,28 @@
                                  [self.managedObjectContext performBlock:^{
                                      AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
-                                     Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
-                                     if (blogInContext) {
-                                         blogInContext.jetpackAccount = account;
-                                     }
                                      BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                     [self associateBlogIDs:blogIDs withJetpackAccount:account];
                                      [blogService syncBlogsForAccount:account success:^{
                                          success(account);
                                      } failure:failure];
                                  }];
                              }
                              failure:failure];
+}
+
+- (void)associateBlogIDs:(NSArray *)blogIDs withJetpackAccount:(WPAccount *)account
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@ AND jetpackAccount = NULL", @NO];
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:nil];
+    NSSet *accountBlogIDs = [NSSet setWithArray:blogIDs];
+    blogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        Blog *blog = (Blog *)evaluatedObject;
+        NSNumber *jetpackBlogID = [blog jetpackBlogID];
+        return jetpackBlogID && [accountBlogIDs containsObject:jetpackBlogID];
+    }]];
+    [account addJetpackBlogs:[NSSet setWithArray:blogs]];
 }
 
 @end
