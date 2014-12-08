@@ -632,6 +632,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
     [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
     [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
+    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
+    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
 }
 
 #pragma mark - Tracking methods
