@@ -13,6 +13,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
+#import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
@@ -509,8 +510,14 @@ static NSInteger const CVCNumberOfSections = 2;
 - (void)editReply
 {
     __typeof(self) __weak weakSelf = self;
-
-    EditReplyViewController *editViewController = [EditReplyViewController newEditViewController];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.comment.blog.blogID];
+    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
+    
+    NSNumber *siteID = shouldAddSuggestionView ? self.comment.blog.blogID : nil;
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
