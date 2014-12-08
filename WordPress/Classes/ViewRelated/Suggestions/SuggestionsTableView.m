@@ -9,6 +9,7 @@ CGFloat const RowHeight = 44.0f;
 @interface SuggestionsTableView ()
 
 @property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIView *separatorView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSArray *suggestions;
@@ -20,6 +21,7 @@ CGFloat const RowHeight = 44.0f;
 
 @implementation SuggestionsTableView
 
+#pragma mark Public methods
 
 - (instancetype)initWithSiteID:(NSNumber *)siteID
 {    
@@ -29,7 +31,7 @@ CGFloat const RowHeight = 44.0f;
         _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
         _searchResults = [[NSMutableArray alloc] init];
-        
+        [self setUseTransparentHeader:NO];
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
@@ -38,12 +40,36 @@ CGFloat const RowHeight = 44.0f;
     return self;
 }
 
+- (void)setUseTransparentHeader:(BOOL)useTransparentHeader
+{
+    _useTransparentHeader = useTransparentHeader;
+    [self updateHeaderStyles];
+}
+
+#pragma mark Private methods
+
+- (void)updateHeaderStyles
+{
+    if (_useTransparentHeader) {
+        [self.headerView setBackgroundColor: [UIColor clearColor]];
+    } else {
+        [self.headerView setBackgroundColor: [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3f]];
+    }
+    
+}
+
 - (void)setupHeaderView
 {
     _headerView = [[UIView alloc] init];
-    _headerView.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3f];
     [_headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:_headerView];
+    
+    _separatorView = [[UIView alloc] init];
+    [_separatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_separatorView setBackgroundColor: [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.1f]];
+    [self addSubview:_separatorView];
+
+    [self updateHeaderStyles];
 }
 
 - (void)setupTableView
@@ -67,19 +93,25 @@ CGFloat const RowHeight = 44.0f;
 {
     // Pin the table view to the view's edges
     NSDictionary *views = @{@"headerview": self.headerView,
+                        @"separatorview" : self.separatorView,
                              @"tableview": self.tableView };
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[headerview]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
         
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[separatorview]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableview]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
         
     // Vertically arrange the header and table
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][tableview]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][separatorview(1)][tableview]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
@@ -123,7 +155,11 @@ CGFloat const RowHeight = 44.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self setHidden:(self.searchResults.count == 0)];
+    NSUInteger suggestionCount = self.searchResults.count;
+    [self setHidden:(0 == suggestionCount)];
+    if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didChangeTableBounds:)]) {
+        [self.suggestionsDelegate suggestionsTableView:self didChangeTableBounds:self.tableView.bounds];
+    }
 }
 
 - (void)updateConstraints

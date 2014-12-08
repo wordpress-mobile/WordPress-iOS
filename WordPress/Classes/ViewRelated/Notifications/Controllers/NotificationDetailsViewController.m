@@ -947,7 +947,13 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
+    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
+    
+    NSNumber *siteID = shouldAddSuggestionView ? self.note.metaSiteID : nil;
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
