@@ -10,7 +10,7 @@ pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.13'
 pod 'UIDeviceIdentifier', '~> 0.1'
-pod 'SVProgressHUD', :head
+pod 'SVProgressHUD', :git => 'https://github.com/TransitApp/SVProgressHUD.git', :commit => '2ac46ae2f2dd37db153ce1daea73b1273ac2bba3'
 pod 'wpxmlrpc', '~> 0.6'
 pod 'WordPressApi', :git => 'https://github.com/wordpress-mobile/WordPressApi.git', :tag => '0.2.0'
 pod 'NSObject-SafeExpectations', '0.0.2'
