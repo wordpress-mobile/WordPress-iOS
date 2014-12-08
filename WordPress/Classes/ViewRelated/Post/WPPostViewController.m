@@ -1285,6 +1285,7 @@ static NSDictionary *EnabledButtonBarStyle;
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
+    __block BOOL postIsScheduled = self.post.isScheduled;
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
@@ -1292,7 +1293,7 @@ static NSDictionary *EnabledButtonBarStyle;
                     success:^{
                         DDLogInfo(@"post uploaded: %@", postTitle);
                         NSString *hudText;
-                        if ([postStatus isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+                        if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Scheduled!", @"Text displayed in HUD after a post was successfully scheduled to be published.");
                         } else if ([postStatus isEqualToString:@"publish"]){
                             hudText = NSLocalizedString(@"Published!", @"Text displayed in HUD after a post was successfully published.");
@@ -1303,7 +1304,7 @@ static NSDictionary *EnabledButtonBarStyle;
                     } failure:^(NSError *error) {
                         DDLogError(@"post failed: %@", [error localizedDescription]);
                         NSString *hudText;
-                        if ([postStatus isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+                        if (postIsScheduled) {
                             hudText = NSLocalizedString(@"Error occurred\nduring scheduling", @"Text displayed in HUD after attempting to schedule a post and an error occurred.");
                         } else if ([postStatus isEqualToString:@"publish"]){
                             hudText = NSLocalizedString(@"Error occurred\nduring publishing", @"Text displayed in HUD after attempting to publish a post and an error occurred.");
