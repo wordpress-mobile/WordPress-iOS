@@ -65,7 +65,7 @@ PODS:
     - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
-  - SVProgressHUD (HEAD based on 1.0)
+  - SVProgressHUD (1.1.1)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.3)
   - WordPress-AppbotX (1.0.6)
@@ -112,7 +112,7 @@ DEPENDENCIES:
   - Reachability (= 3.1.1)
   - Simperium (= 0.7.4)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
-  - SVProgressHUD (HEAD)
+  - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `4a67eb8a3f605560d798b3b24fb5ed6bbb62948e`)
@@ -134,6 +134,9 @@ EXTERNAL SOURCES:
   SocketRocket:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
+  SVProgressHUD:
+    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
+    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -154,6 +157,9 @@ CHECKOUT OPTIONS:
   SocketRocket:
     :commit: bcac6bd87f6530b172f21017634d0b313a5a83b7
     :git: https://github.com/jleandroperez/SocketRocket.git
+  SVProgressHUD:
+    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
+    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
@@ -190,7 +196,7 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: 64b0afb56bbed9aa21cf7661a9402e95f4b72ec8
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
-  SVProgressHUD: 5034c6e22b8c2ca3e09402e48d41ed0340aa1c50
+  SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: a313d8f8d5a0ad34898f332e65dbecfa2d9b2af3
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
