@@ -14,6 +14,8 @@
 #import "WPMediaUploader.h"
 #import "WPUploadStatusButton.h"
 #import "WordPressAppDelegate.h"
+#import "WPMediaProgressTableViewController.h"
+#import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
@@ -21,16 +23,19 @@
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 static NSInteger const MaximumNumberOfPictures = 10;
+static void *ProgressObserverContext = &ProgressObserverContext;
 
-@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate> {
-    NSOperationQueue *_mediaUploadQueue;
-}
+@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic, strong) NSProgress * mediaProgress;
+@property (nonatomic, strong) UIProgressView * mediaProgressView;
+@property (nonatomic, strong) NSMutableArray * childrenMediaProgress;
 
 @end
 
@@ -75,7 +80,8 @@ static NSInteger const MaximumNumberOfPictures = 10;
 - (void)dealloc
 {
     _failedMediaAlertView.delegate = nil;
-    [_mediaUploadQueue removeObserver:self forKeyPath:@"operationCount"];
+    [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+    _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -118,7 +124,6 @@ static NSInteger const MaximumNumberOfPictures = 10;
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         _post = post;
-        [self configureMediaUploadQueue];
 
         if (_post.remoteStatus == AbstractPostRemoteStatusLocal) {
             _editMode = EditPostViewControllerModeNewPost;
@@ -129,16 +134,10 @@ static NSInteger const MaximumNumberOfPictures = 10;
     return self;
 }
 
-- (void)configureMediaUploadQueue
-{
-    _mediaUploadQueue = [NSOperationQueue new];
-    _mediaUploadQueue.maxConcurrentOperationCount = 4;
-    [_mediaUploadQueue addObserver:self forKeyPath:@"operationCount" options:NSKeyValueObservingOptionNew context:nil];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.childrenMediaProgress = [NSMutableArray array];
     [self setupNavbar];
     [self createRevisionOfPost];
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
@@ -148,12 +147,34 @@ static NSInteger const MaximumNumberOfPictures = 10;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 
     [self geotagNewPost];
+    self.mediaProgressView = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleBar];
     self.delegate = self;
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     [self refreshButtons];
+    // setup media progress view on navbar
+    [self.navigationController.navigationBar addSubview:self.mediaProgressView];
+    [self.mediaProgressView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    self.mediaProgressView.hidden = ![self isMediaUploading];
+}
+
+- (void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
+    [self.mediaProgressView removeFromSuperview];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    
+    //layout mediaProgressView 
+    CGRect frame = self.mediaProgressView.frame;
+    frame.size.width = self.view.frame.size.width;
+    frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    [self.mediaProgressView setFrame:frame];
 }
 
 #pragma mark - View Setup
@@ -172,9 +193,17 @@ static NSInteger const MaximumNumberOfPictures = 10;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
-
-    if (_mediaUploadQueue.operationCount > 0) {
-        self.navigationItem.titleView = self.uploadStatusButton;
+    
+    self.mediaProgressView.hidden = ![self isMediaUploading];
+    if ([self isMediaUploading]) {
+        self.mediaProgressView.progress = MIN((float)(self.mediaProgress.completedUnitCount+1)/(float)self.mediaProgress.totalUnitCount,self.mediaProgress.fractionCompleted);
+        UIButton *titleButton = self.uploadStatusButton;
+        NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server")]                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+        [titleButton setAttributedTitle:titleText forState:UIControlStateNormal];
+        [titleButton sizeToFit];
+        if (self.navigationItem.titleView != titleButton){
+            self.navigationItem.titleView = titleButton;
+        }
     } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
@@ -305,17 +334,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
     return [PostSettingsViewController class];
 }
 
-- (void)showCancelMediaUploadPrompt
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", nil) message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
-    [alertView show];
-}
-
-- (void)cancelMediaUploads
-{
-    [_mediaUploadQueue cancelAllOperations];
-}
+#pragma mark - Post Options
 
 - (void)showSettings
 {
@@ -354,7 +373,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
     [self stopEditing];
     [self.postSettingsViewController endEditingAction:nil];
 
-    if ([self isMediaInUploading]) {
+    if ([self isMediaUploading]) {
         [self showMediaInUploadingAlert];
         return;
     }
@@ -539,11 +558,10 @@ static NSInteger const MaximumNumberOfPictures = 10;
 - (UIButton *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
-        UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 33.0f)];
-        [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
+        UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 250.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
+        [button addTarget:self action:@selector(showMediaProgress) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = button;
     }
-    
     return _uploadStatusButton;
 }
 
@@ -611,7 +629,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
         _currentActionSheet = nil;
     }
 
-    if ([self isMediaInUploading] ) {
+    if ([self isMediaUploading] ) {
         [self showMediaInUploadingAlert];
         return;
     }
@@ -731,6 +749,58 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
 #pragma mark - Media State Methods
 
+- (BOOL)isMediaUploading
+{
+    return self.mediaProgress &&
+    ![self.mediaProgress isCancelled] &&
+    self.mediaProgress.completedUnitCount < self.mediaProgress.totalUnitCount;
+}
+
+- (void)showMediaProgress
+{
+    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
+        [self.blogSelectorPopover dismissPopoverAnimated:YES];
+        self.blogSelectorPopover = nil;
+    }
+    
+    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaProgress childrenProgress:self.childrenMediaProgress];
+    
+    vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
+    navController.navigationBar.translucent = NO;
+    navController.navigationBar.barStyle = UIBarStyleBlack;
+    
+    if (IS_IPAD) {
+        vc.preferredContentSize = CGSizeMake(320.0, 500);
+        
+        CGRect titleRect = self.navigationItem.titleView.frame;
+        titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+        
+        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
+        self.mediaProgressPopover.delegate = self;
+        [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+        
+    } else {
+        navController.modalPresentationStyle = UIModalPresentationPageSheet;
+        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+        
+        [self presentViewController:navController animated:YES completion:nil];
+    }
+}
+
+- (void)showCancelMediaUploadPrompt
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", @"Title for alert for cancelling all uploads") message:NSLocalizedString(@"This will stop the current media uploads in progress. Are you sure you want to proceed?", @"This is displayed if the user taps the uploading text in the post editor") delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) otherButtonTitles:NSLocalizedString(@"Ok", nil), nil];
+    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    [alertView show];
+}
+
+- (void)cancelMediaUploads
+{
+    [self.mediaProgress cancel];
+}
+
 - (BOOL)hasFailedMedia
 {
     BOOL hasFailedMedia = NO;
@@ -745,22 +815,6 @@ static NSInteger const MaximumNumberOfPictures = 10;
     mediaFiles = nil;
 
     return hasFailedMedia;
-}
-
-//check if there are media in uploading status
-- (BOOL)isMediaInUploading
-{
-    BOOL isMediaInUploading = NO;
-
-    NSSet *mediaFiles = self.post.media;
-    for (Media *media in mediaFiles) {
-        if (media.remoteStatus == MediaRemoteStatusPushing) {
-            isMediaInUploading = YES;
-            break;
-        }
-    }
-    mediaFiles = nil;
-    return isMediaInUploading;
 }
 
 - (void)showFailedMediaAlert
@@ -787,8 +841,58 @@ static NSInteger const MaximumNumberOfPictures = 10;
     [blogIsCurrentlyBusy show];
 }
 
-#pragma mark - Media Formatting
+- (void) insertMediaAssets:(NSArray *)assets
+{
+    if (self.mediaProgress.isCancelled || self.mediaProgress.completedUnitCount >= self.mediaProgress.totalUnitCount){
+        [self.mediaProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
+        self.mediaProgress = nil;
+        [self.childrenMediaProgress removeAllObjects];
+    }
 
+    if (!self.mediaProgress){
+        self.mediaProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
+                                                       userInfo:nil];
+        self.mediaProgress.totalUnitCount = assets.count;
+        [self.mediaProgress addObserver:self
+                             forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                                options:NSKeyValueObservingOptionInitial
+                                context:ProgressObserverContext];
+    } else {
+        self.mediaProgress.totalUnitCount += assets.count;
+    }
+
+    for (ALAsset *asset in assets) {
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+                if (error){
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                    return;
+                }
+                [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
+                NSProgress *uploadProgress = nil;
+                [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [self insertMedia:media];
+                } failure:^(NSError *error) {
+                    // the progress was completed event if it was an error state
+                    self.mediaProgress.completedUnitCount++;
+                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+                        return;
+                    }
+                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                }];
+                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
+                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                [self.childrenMediaProgress addObject:uploadProgress];
+                [self.mediaProgress resignCurrent];
+            }];
+        }
+    }
+    // Need to refresh the post object. If we didn't, self.post.media would appear
+    // to be unchanged causing the Media State Methods to fail.
+    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
 - (void)insertMediaBelow:(NSNotification *)notification
 {
     Media *media = (Media *)[notification object];
@@ -964,33 +1068,9 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
 - (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-
-    for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
-                if (error){
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                    return;
-                }
-                AFHTTPRequestOperation *operation = [mediaService operationToUploadMedia:media withSuccess:^{
-                    [self insertMedia:media];
-                } failure:^(NSError *error) {
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
-                        return;
-                    }
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
-                }];
-                [_mediaUploadQueue addOperation:operation];
-            }];
-        }
-    }
-
-    // Need to refresh the post object. If we didn't, self.post.media would appear
-    // to be unchanged causing the Media State Methods to fail.
-    [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [self insertMediaAssets:assets];
+    }];
 }
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
@@ -1009,10 +1089,12 @@ static NSInteger const MaximumNumberOfPictures = 10;
                         change:(NSDictionary *)change
                        context:(void *)context
 {
-    if ([object isEqual:_mediaUploadQueue]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
+    if (context == ProgressObserverContext && object == self.mediaProgress) {        
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self setupNavbar];
-        });
+        }];
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
 }
 
