@@ -22,7 +22,9 @@
 
 - (void)configureView
 {
-    [self setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    if (![self titleForState:UIControlStateNormal]) {
+        [self setTitle:NSLocalizedString(@"Sign In", nil) forState:UIControlStateNormal];
+    }
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.9] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateDisabled];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
