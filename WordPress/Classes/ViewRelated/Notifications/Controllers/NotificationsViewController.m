@@ -117,10 +117,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
     // UITableView
     self.tableView.accessibilityIdentifier = @"Notifications Table";
-    // NOTE:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
@@ -128,6 +124,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     tableViewHandler.cacheRowHeights        = true;
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     // UIRefreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -411,11 +411,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
 {
     // Failsafe!
-    if (indexPath.section >= self.resultsController.sections.count) {
+    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
         return false;
     }
     
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
 }
 
