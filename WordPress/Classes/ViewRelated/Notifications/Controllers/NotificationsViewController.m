@@ -45,7 +45,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
@@ -115,8 +114,13 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+
     // UITableView
     self.tableView.accessibilityIdentifier = @"Notifications Table";
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
@@ -129,7 +133,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-    
+
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -166,17 +170,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
-
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -415,6 +408,17 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     self.lastReloadDate = [NSDate date];
 }
 
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -561,6 +565,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -587,6 +592,18 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     // Yes. This is dummy. Simperium handles sync for us!
     [self.refreshControl endRefreshing];
+}
+
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+    }
 }
 
 
@@ -663,6 +680,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
  
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
+
 
 
 #pragma mark - ABXPromptViewDelegate
