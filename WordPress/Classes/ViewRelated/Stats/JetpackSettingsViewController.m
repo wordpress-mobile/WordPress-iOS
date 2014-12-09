@@ -223,7 +223,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)layoutControls
 {
     CGFloat x,y;
-    BOOL hasJetpack = [_blog hasJetpack];
+    BOOL hasJetpack = [_blog hasJetpackAndIsConnectedToWPCom];
 
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
@@ -485,7 +485,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)updateMessage
 {
-    if ([_blog hasJetpack]) {
+    if ([_blog hasJetpackAndIsConnectedToWPCom]) {
         _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
         _description.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
@@ -497,7 +497,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
 
 - (void)checkForJetpack
 {
-    if ([_blog hasJetpack]) {
+    if ([_blog hasJetpackAndIsConnectedToWPCom]) {
         if (!_blog.jetpackUsername || !_blog.jetpackPassword) {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -513,7 +513,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncOptionsForBlog:_blog success:^{
-        if ([_blog hasJetpack]) {
+        if ([_blog hasJetpackAndIsConnectedToWPCom]) {
             [self updateMessage];
         }
     } failure:^(NSError *error) {
