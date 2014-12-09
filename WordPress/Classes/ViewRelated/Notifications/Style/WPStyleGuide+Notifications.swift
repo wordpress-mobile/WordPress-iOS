@@ -15,8 +15,10 @@ extension WPStyleGuide
         public static let noticonUnreadColor            = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
         public static let noticonUnmoderatedColor       = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
 
-        public static let noteBackgroundReadColor   = UIColor.whiteColor()
-        public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
+        public static let noteBackgroundReadColor       = UIColor.whiteColor()
+        public static let noteBackgroundUnreadColor     = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
+
+        public static let noteSeparatorColor            = blockSeparatorColor
 
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
@@ -41,7 +43,7 @@ extension WPStyleGuide
         //  Header
         public static let headerFont                = WPStyleGuide.tableviewSectionHeaderFont()
         public static let headerTextColor           = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue:0xFF/255.0, alpha: 0xEA/255.0)
+        public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
@@ -54,7 +56,7 @@ extension WPStyleGuide
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
-        
+
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
