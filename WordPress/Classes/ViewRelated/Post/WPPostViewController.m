@@ -1522,7 +1522,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             __weak __typeof__(self) weakSelf = self;
-            __block NSString* imageUniqueId = [self uniqueId];
+            NSString* imageUniqueId = [self uniqueId];
             [self addToMediaInProgress:imageUniqueId];
             
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
