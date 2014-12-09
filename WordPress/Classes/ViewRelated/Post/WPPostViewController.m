@@ -1521,43 +1521,45 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             // Could handle videos here
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
-                if (error){
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                    return;
-                }
-                
-                NSString* imageUniqueId = [self uniqueId];
-                [self addToMediaInProgress:imageUniqueId];
-                
-                NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
-                
-                [self.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
-                [self.mediaProgress becomeCurrentWithPendingUnitCount:1];
-                NSProgress *uploadProgress = nil;
-                [mediaService uploadMedia:media progress:&uploadProgress success:^{
-                    [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                    [self removeFromMediaInProgress:imageUniqueId];
-                    [self refreshNavigationBarButtons:NO];
-                } failure:^(NSError *error) {
-                    [self removeFromMediaInProgress:imageUniqueId];
-                    self.mediaProgress.totalUnitCount++;
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        [self.editorView removeImage:imageUniqueId];
-                        [media remove];
-                    } else {
-                        [self.editorView markImageUploadFailed:imageUniqueId];
-                        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
-                    }
-                    [self refreshNavigationBarButtons:NO];
-                }];
-                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
-                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
-                [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
-                [self.childrenMediaProgress addObject:uploadProgress];
-                [self.mediaProgress resignCurrent];
-            }];
+            __weak __typeof__(self) weakSelf = self;
+            NSString* imageUniqueId = [self uniqueId];
+            [self addToMediaInProgress:imageUniqueId];
             
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+                __typeof__(self) strongSelf = weakSelf;
+                if (strongSelf) {
+                    if (error) {
+                        [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                        return;
+                    }
+                    NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
+                    
+                    [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
+                    [strongSelf.mediaProgress becomeCurrentWithPendingUnitCount:1];
+                    NSProgress *uploadProgress = nil;
+                    [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                        [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+                        [strongSelf removeFromMediaInProgress:imageUniqueId];
+                        [strongSelf refreshNavigationBarButtons:NO];
+                    } failure:^(NSError *error) {
+                        [strongSelf removeFromMediaInProgress:imageUniqueId];
+                        strongSelf.mediaProgress.totalUnitCount++;
+                        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                            [strongSelf.editorView removeImage:imageUniqueId];
+                            [media remove];
+                        } else {
+                            [strongSelf.editorView markImageUploadFailed:imageUniqueId];
+                            [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                        }
+                        [strongSelf refreshNavigationBarButtons:NO];
+                    }];
+                    UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
+                    [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                    [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
+                    [strongSelf.childrenMediaProgress addObject:uploadProgress];
+                    [strongSelf.mediaProgress resignCurrent];
+                }
+            }];
         }
     }
     
