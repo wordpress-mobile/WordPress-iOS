@@ -362,10 +362,18 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
         str = @"";
     }
 
-    // remove trailing br tags
-    NSRange prng = [str rangeOfString:@"/p>" options:NSBackwardsSearch];
-    if (prng.location != NSNotFound) {
-        str = [str substringToIndex:prng.location + 3];
+    // remove trailing br tags so we don't have a bunch of whitespace
+    static NSRegularExpression *brRegex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        brRegex = [NSRegularExpression regularExpressionWithPattern:@"(\\s*<br\\s*(/?)\\s*>\\s*)*$" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSArray *matches = [brRegex matchesInString:str options:NSMatchingReportCompletion range:NSMakeRange(0, [str length])];
+    if ([matches count]) {
+        NSTextCheckingResult *match = [matches firstObject];
+        str = [str substringToIndex:match.range.location];
     }
 
     return str;
