@@ -394,7 +394,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self.lastReloadDate = [NSDate date];
 }
 
-- (BOOL)isLastRowInSection:(NSIndexPath *)indexPath
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
 {
     // Failsafe!
     if (indexPath.section >= self.resultsController.sections.count) {
@@ -609,7 +609,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
-    cell.showsSeparator                     = ![self isLastRowInSection:indexPath];
+    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -633,7 +633,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
     {
         NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsSeparator     = ![self isLastRowInSection:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
     }
 }
 
