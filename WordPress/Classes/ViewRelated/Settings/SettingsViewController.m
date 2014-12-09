@@ -360,7 +360,6 @@ static CGFloat const SettingsRowHeight = 44.0;
             if (indexPath.row == 0) {
                 cell.textLabel.text = NSLocalizedString(@"Username", @"");
                 cell.detailTextLabel.text = [defaultAccount username];
-                cell.detailTextLabel.textColor = [UIColor UIColorFromHex:0x888888];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 cell.accessibilityIdentifier = @"Username";
             } else if (indexPath.row == [self rowForNotifications]) {
