@@ -127,7 +127,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!self.cachedRowHeights) {
+    if (!self.cacheRowHeights) {
         return;
     }
 
