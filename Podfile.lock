@@ -181,7 +181,7 @@ CHECKOUT OPTIONS:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
-    :commit: 04b9c1d135d7791f6d8b2947b3c53ff3f3b1248d
+    :commit: 3244d812c52cf1b2aca7c4995e2be03f78faea97
     :git: https://github.com/jleandroperez/SocketRocket.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
@@ -189,23 +189,6 @@ CHECKOUT OPTIONS:
   WordPress-iOS-Editor:
     :commit: 0912b7ceadd4cecb97a981e15c54475de98d4f8e
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
-  WordPressApi:
-    :git: https://github.com/wordpress-mobile/WordPressApi.git
-    :tag: 0.2.0
-
-CHECKOUT OPTIONS:
-  KIF:
-    :commit: f9e3ae3c30447d9efa9dcf2279a77b580157ccbf
-    :git: https://github.com/SergioEstevao/KIF.git
-  MGImageUtilities:
-    :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
-    :git: git://github.com/wordpress-mobile/MGImageUtilities.git
-  SocketRocket:
-    :commit: 3244d812c52cf1b2aca7c4995e2be03f78faea97
-    :git: https://github.com/jleandroperez/SocketRocket.git
-  WordPress-AppbotX:
-    :commit: a0273598d22aac982bec5807e638050b0032a9c9
-    :git: https://github.com/wordpress-mobile/appbotx.git
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.0
