@@ -461,12 +461,23 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         
         // Suggestions Table View
         if ([self shouldAttachSuggestionsTableView]) {
-            // Pin the suggestions view left and right edges to the super view edges
+            // Pin the suggestions view left and right edges to the reply view edges
             views[@"suggestionsview"] = self.suggestionsTableView;
-            [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[suggestionsview]|"
-                                                                              options:0
-                                                                              metrics:nil
-                                                                                views:views]];
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.replyTextView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
+
+            [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                                  attribute:NSLayoutAttributeRight
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self.replyTextView
+                                                                  attribute:NSLayoutAttributeRight
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
 
             // Pin the suggestions view top to the super view top
             // and the suggestions view bottom to the top of the reply box
