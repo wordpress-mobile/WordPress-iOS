@@ -347,6 +347,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
         Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        if (!blog && account.jetpackBlogs.count > 0) {
+            blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
+        }
         if (!blog) {
             blog = [self createBlogWithAccount:account];
             blog.xmlrpc = remoteBlog.xmlrpc;
@@ -361,6 +364,46 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     if (completion != nil) {
         dispatch_async(dispatch_get_main_queue(), completion);
     }
+}
+
+/**
+ Searches for Jetpack blog on the specified account and transfers it as a WPCC blog
+
+ When a Jetpack blog appears on the results to sync blogs, we want to see if it's
+ already added in the app as a self hosted site. If that's the case, this method
+ will take the blog and transfer it to the account.
+
+ It would be the equivalent of just syncing and removing the previous self hosted,
+ but this will preserve the synced blog objects and local drafts.
+
+ @param remoteBlog the RemoteBlog object with the blog details
+ @param account the account in which to search for the blog
+ @returns the migrated blog if found, or nil otherwise
+ */
+- (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog forAccount:(WPAccount *)account
+{
+    Blog *jetpackBlog = [[account.jetpackBlogs filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        Blog *blogToTest = (Blog *)evaluatedObject;
+        return [blogToTest.xmlrpc isEqualToString:remoteBlog.xmlrpc] && [blogToTest.dotComID isEqual:remoteBlog.ID];
+    }]] anyObject];
+
+    if (jetpackBlog) {
+        WPAccount *oldAccount = jetpackBlog.account;
+        jetpackBlog.account = account;
+        jetpackBlog.jetpackAccount = nil;
+
+        /*
+         Purge the blog's old account if it has no more blogs
+         Generally, there's a 1-1 relationship between accounts and self-hosted
+         blogs, so in most cases the self hosted account would stay invisible
+         unless purged, and credentials would stay in the Keychain.
+         */
+        if (oldAccount.blogs.count == 0) {
+            [self.managedObjectContext deleteObject:oldAccount];
+        }
+    }
+
+    return jetpackBlog;
 }
 
 - (id<BlogServiceRemote>)remoteForBlog:(Blog *)blog
