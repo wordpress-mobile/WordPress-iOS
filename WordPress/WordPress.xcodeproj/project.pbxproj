@@ -3092,7 +3092,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#!/bin/bash\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" WordPress/Info.plist)\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" WordPress/Info.plist\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release-Internal\" ]; then\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" WordPress/WordPress-Internal-Info.plist)\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" WordPress/WordPress-Internal-Info.plist\nfi\n";
+			shellScript = "#!/bin/bash\nif [ \"${CONFIGURATION}\" = \"Release\" ]; then\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" Info.plist)\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" Info.plist\nfi\n\nif [ \"${CONFIGURATION}\" = \"Release-Internal\" ]; then\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" WordPress-Internal-Info.plist)\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" WordPress-Internal-Info.plist\nfi\n";
 		};
 		A279580D198819F50031C6A3 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
