@@ -471,11 +471,11 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
             if ([linkType isEqualToString:@"none"]) {
                 result = [NSString stringWithFormat:
                           @"<img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" />",
-                          self.remoteURL, self.filename];
+                          self.remoteURL, self.title];
             } else {
                 result = [NSString stringWithFormat:
                           @"<a href=\"%@\"><img src=\"%@\" alt=\"%@\" class=\"alignnone size-full\" /></a>",
-                          self.remoteURL, self.remoteURL, self.filename];
+                          self.remoteURL, self.remoteURL, self.title];
             }
         }
     } else if (self.mediaType == MediaTypeVideo) {

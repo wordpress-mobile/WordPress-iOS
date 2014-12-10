@@ -5,26 +5,26 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewControllerSubclass.h"
+#import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
+#import "WPNoResultsView.h"
+
 #import "Notification.h"
 #import "Meta.h"
-#import "JetpackLoginViewController.h"
 
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 #import "NotificationSettingsViewController.h"
 
 #import "WPAccount.h"
-#import "Blog+Jetpack.h"
 
 #import "AccountService.h"
-#import "BlogService.h"
 
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
+
+#import "UIView+Subviews.h"
 
 #import "AppRatingUtility.h"
 
@@ -45,18 +45,19 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
-@property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
+@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
+                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
+@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView       *noResultsView;
+@property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
 @end
@@ -69,7 +70,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)dealloc
 {
-    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
@@ -84,9 +84,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
         
-        // Cache Row Heights!
-        self.cachedRowHeights = [NSMutableDictionary dictionary];
-        
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
     }
@@ -100,11 +97,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.infiniteScrollEnabled = NO;
-
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
@@ -121,12 +114,32 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+
+    // UITableView
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    // WPTableViewHandler
+    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights        = true;
+    tableViewHandler.delegate               = self;
+    self.tableViewHandler                   = tableViewHandler;
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
+    // UIRefreshControl
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    [self setupNoResultsView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,9 +152,10 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
     
     // Hit the Tracker
-    dispatch_once(&_trackedViewDisplay, ^{
+    if(!_trackedViewDisplay) {
         [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    });
+        _trackedViewDisplay = true;
+    }
 
     // Refresh the UI
     [self updateLastSeenTime];
@@ -149,23 +163,13 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
+    [self setupNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
-
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -177,7 +181,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self invalidateAllRowHeights];
+    [self.tableViewHandler clearCachedRowHeights];
 }
 
 
@@ -347,7 +351,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (void)updateLastSeenTime
 {
-    Notification *note      = [self.resultsController.fetchedObjects firstObject];
+    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
     if (!note) {
         return;
     }
@@ -399,9 +403,20 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         return;
     }
     
-    [self.resultsController performFetch:nil];
+    [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     self.lastReloadDate = [NSDate date];
+}
+
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
 }
 
 
@@ -430,34 +445,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 }
 
 
-#pragma mark - Row Height Cache
-
-- (void)invalidateAllRowHeights
-{
-    [self.cachedRowHeights removeAllObjects];
-}
-
-- (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
-}
-
-- (void)invalidateRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *nukedPathKey = indexPath.toString;
-    NSMutableArray *invalidKeys = [NSMutableArray array];
-    
-    for (NSString *key in self.cachedRowHeights.allKeys) {
-        if ([key compare:nukedPathKey] == NSOrderedDescending) {
-            [invalidKeys addObject:key];
-        }
-    }
-    
-    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
-    [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
-}
-
-
 #pragma mark - UITableViewDelegate
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -472,7 +459,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
     NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
@@ -505,37 +492,22 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-
     return NoteEstimatedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Hit the cache first
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-    
-    // Setup the cell
     NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self configureCell:layoutCell atIndexPath:indexPath];
     
     CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
-    
-    // Cache
-    self.cachedRowHeights[indexPath.toString] = @(height);
 
     return height;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if (!note) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
@@ -548,7 +520,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 #pragma mark - Storyboard Helpers
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
     NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
@@ -565,21 +537,11 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 }
 
 
-#pragma mark - WPTableViewController subclass methods
+#pragma mark - WPTableViewHandlerDelegate methods
 
-- (NSString *)entityName
+- (NSManagedObjectContext *)managedObjectContext
 {
-    return NSStringFromClass([Notification class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSDate *)lastSyncDate
-{
-    return [NSDate date];
+    return [[ContextManager sharedInstance] mainContext];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -591,14 +553,9 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     return fetchRequest;
 }
 
-- (Class)cellClass
-{
-    return [NoteTableViewCell class];
-}
-
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
     NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
     NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
@@ -608,111 +565,123 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
-- (void)syncItems
+- (NSString *)sectionNameKeyPath
 {
-    // No-Op. Handled by Simperium!
+    return NSStringFromSelector(@selector(sectionIdentifier));
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+- (NSString *)entityName
 {
-    // No-Op. Handled by Simperium!
-    success();
+    return NSStringFromClass([Notification class]);
+}
+
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self setupNoResultsView];
+}
+
+
+#pragma mark - UIRefreshControl Methods
+
+- (void)refresh
+{
+    // Yes. This is dummy. Simperium handles sync for us!
+    [self.refreshControl endRefreshing];
+}
+
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+    }
 }
 
 
 #pragma mark - No Results Helpers
 
+- (void)setupNoResultsView
+{
+    // Remove If Needed
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+    
+    // Attach the view
+    WPNoResultsView *noResultsView  = self.noResultsView;
+    if (!noResultsView.superview) {
+        [self.tableView addSubviewWithFadeAnimation:noResultsView];
+    }
+    
+    // Refresh its properties: The user may have signed into WordPress.com
+    noResultsView.titleText         = self.noResultsTitleText;
+    noResultsView.messageText       = self.noResultsMessageText;
+    noResultsView.accessoryView     = self.noResultsAccessoryView;
+    noResultsView.buttonTitle       = self.noResultsButtonText;
+}
+
+- (WPNoResultsView *)noResultsView
+{
+    if (!_noResultsView) {
+        _noResultsView          = [WPNoResultsView new];
+        _noResultsView.delegate = self;
+    }
+    return _noResultsView;
+}
+
 - (NSString *)noResultsTitleText
 {
-    if (!self.hasDotcomAccount) {
-        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
-            return NSLocalizedString(@"Connect to Jetpack Manage", @"Displayed in the notifications view when a self-hosted user is connected to Jetpack");
-        } else {
-            return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-        }
-    } else {
-        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
+    NSString *emptyMessage      = NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    return self.showsJetpackMessage ? jetapackMessage : emptyMessage;
 }
 
 - (NSString *)noResultsMessageText
 {
-    if (!self.hasDotcomAccount) {
-        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
-            return NSLocalizedString(@"Connect now to Jetpack Manage to enjoy notifications on your device", @"Displayed in the notifications view when a self-hosted user is nconnected to Jetpack");
-        } else {
-            return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-        }
-    } else {
-        return nil;
-    }
-}
-
-- (NSString *)noResultsButtonText
-{
-    if (!self.hasDotcomAccount) {
-        if ([self blogHasJetpackAndIsConnectedToWPCom]) {
-            return NSLocalizedString(@"Connect", @"");
-        } else {
-            return NSLocalizedString(@"Learn more", @"");
-        }
-    } else {
-        return nil;
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
+    return self.showsJetpackMessage ? jetapackMessage : nil;
 }
 
 - (UIView *)noResultsAccessoryView
 {
-    if (!self.hasDotcomAccount) {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-    } else {
-        return nil;
-    }
+    return self.showsJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
+}
+ 
+- (NSString *)noResultsButtonText
+{
+    return self.showsJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
+}
+ 
+- (BOOL)showsJetpackMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
+    
+    return showsJetpackMessage;
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    if ([self blogHasJetpackAndIsConnectedToWPCom]) {
-        JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
-
-        [jetpackLoginViewController setBlog:[self jetpackBlog]];
-        jetpackLoginViewController.completionBlock = ^(WPAccount *account){
-            [self.navigationController popToViewController:self animated:YES];
-        };
-        [self.navigationController pushViewController:jetpackLoginViewController animated:YES];
-    } else {
-        WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-        webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-
-        [self.navigationController pushViewController:webViewController animated:YES];
-
-        [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
-    }
+    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
+	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+ 
+    [self.navigationController pushViewController:webViewController animated:YES];
+ 
+    [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
 
-- (BOOL)hasDotcomAccount
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    
-    return [accountService defaultWordPressComAccount];
-}
 
-- (BOOL)blogHasJetpackAndIsConnectedToWPCom
-{
-    return [[self jetpackBlog] hasJetpackAndIsConnectedToWPCom];
-}
-
-- (Blog *)jetpackBlog
-{
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    Blog *blog = [blogService lastUsedOrFirstBlog];
-    return blog;
-}
 
 #pragma mark - ABXPromptViewDelegate
 

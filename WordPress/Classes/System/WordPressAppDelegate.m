@@ -567,12 +567,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    if (thenEditor) {
-        loginViewController.dismissBlock = ^{
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        };
-        loginViewController.showEditorAfterAddingSites = YES;
-    }
+    loginViewController.showEditorAfterAddingSites = thenEditor;
+    loginViewController.cancellable = NO;
+    loginViewController.dismissBlock = ^{
+        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;

@@ -184,6 +184,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordField.font = [WPNUXUtility textFieldFont];
         _passwordField.delegate = self;
         _passwordField.secureTextEntry = YES;
+        _passwordField.showSecureTextEntryToggle = YES;
         _passwordField.text = _blog.jetpackPassword;
         _passwordField.clearsOnBeginEditing = YES;
         _passwordField.showTopLineSeparator = YES;
