@@ -8,6 +8,7 @@
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "WPNoResultsView.h"
+#import "WPTabBarController.h"
 
 #import "Notification.h"
 #import "Meta.h"
@@ -347,7 +348,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 - (void)updateTabBarBadgeNumber
 {
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
-    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
     UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
  
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];

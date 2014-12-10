@@ -32,6 +32,7 @@
 #import "SVProgressHUD.h"
 #import "TodayExtensionService.h"
 
+#import "WPTabBarController.h"
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "MeViewController.h"
@@ -64,30 +65,10 @@
 #endif
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
-static NSString * const WPTabBarRestorationID                   = @"WPTabBarID";
-static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNavigationID";
-static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
-static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
-
-NSInteger const kMySitesTabIndex                                = 0;
-NSInteger const kReaderTabIndex                                 = 1;
-NSInteger const kNewPostTabIndex                                = 2;
-NSInteger const kMeTabIndex                                     = 3;
-NSInteger const kNotificationsTabIndex                          = 4;
-
-static NSString* const kWPNewPostURLParamTitleKey = @"title";
-static NSString* const kWPNewPostURLParamContentKey = @"content";
-static NSString* const kWPNewPostURLParamTagsKey = @"tags";
-static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
 
-@property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
-@property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
-@property (nonatomic, strong, readwrite) ReaderPostsViewController      *readerPostsViewController;
-@property (nonatomic, strong, readwrite) BlogListViewController         *blogListViewController;
-@property (nonatomic, strong, readwrite) NotificationsViewController    *notificationsViewController;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
 @property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
@@ -185,7 +166,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
-    self.window.rootViewController = self.tabBarController;
+    self.window.rootViewController = [WPTabBarController sharedInstance];
 
     return YES;
 }
@@ -291,11 +272,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
-                
-                [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
-                NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
-                [self.tabBarController setSelectedIndex:readerTabIndex];
-                [self.readerPostsViewController openPost:postId onBlog:blogId];
+
+                WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
+                [tabBarController.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
+                [tabBarController showReaderTab];
+                [tabBarController.readerPostsViewController openPost:postId onBlog:blogId];
                 
                 returnValue = YES;
             }
@@ -315,13 +296,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                     StatsViewController *statsViewController = [[StatsViewController alloc] init];
                     statsViewController.blog = blog;
                     statsViewController.dismissBlock = ^{
-                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                        [[WPTabBarController sharedInstance] dismissViewControllerAnimated:YES completion:nil];
                     };
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
                     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
                     navController.navigationBar.translucent = NO;
-                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
                 }
                 
             }
@@ -408,23 +389,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         }
     }
 
-    // Check which tab is currently selected
-    NSString *currentlySelectedScreen = @"";
-    switch (self.tabBarController.selectedIndex) {
-        case kMySitesTabIndex:
-            currentlySelectedScreen = @"Blog List";
-            break;
-        case kReaderTabIndex:
-            currentlySelectedScreen = @"Reader";
-            break;
-        case kNotificationsTabIndex:
-            currentlySelectedScreen = @"Notifications";
-            break;
-        default:
-            break;
-    }
-
-    return currentlySelectedScreen;
+    return [[WPTabBarController sharedInstance] currentlySelectedScreen];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -511,7 +476,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     params = [self sanitizeNewPostParameters:params];
     
     if ([params count]) {
-        [self showPostTabWithOptions:params];
+        [[WPTabBarController sharedInstance] showPostTabWithOptions:params];
         handled = YES;
     }
 	
@@ -669,251 +634,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)lowMemoryWarning:(NSNotification *)notification
 {
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
-
-#pragma mark - Tab bar methods
-
-- (UITabBarController *)tabBarController
-{
-    if (_tabBarController) {
-        return _tabBarController;
-    }
-
-    UIOffset tabBarTitleOffset = UIOffsetMake(0, 0);
-    if ( IS_IPHONE ) {
-        tabBarTitleOffset = UIOffsetMake(0, -2);
-    }
-    _tabBarController = [[UITabBarController alloc] init];
-    _tabBarController.delegate = self;
-    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
-    [_tabBarController.tabBar setTranslucent:NO];
-    _tabBarController.tabBar.accessibilityIdentifier = @"Main Navigation";
-    // Create a background
-    // (not strictly needed when white, but left here for possible customization)
-    _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
-
-    self.blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    blogListNavigationController.navigationBar.translucent = NO;
-    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-mysites"];
-    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-mysites"];
-    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
-    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
-    if (blogToOpen) {
-        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-        blogDetailsViewController.blog = blogToOpen;
-        [blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
-    }
-
-    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
-    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
-    readerNavigationController.navigationBar.translucent = NO;
-    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-    readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
-    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
-    [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    
-    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
-    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
-    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
-    notificationsNavigationController.navigationBar.translucent = NO;
-    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-    notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
-    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
-    [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
-    UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
-    newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIViewController *newPostViewController = [[UIViewController alloc] init];
-    newPostViewController.tabBarItem.image = newPostImage;
-    newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
-
-    /*
-     If title is used, the title will be visible. See #1158
-     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
-
-     The only apparent solution is to have an actual title, and then move it out of view
-     non-VoiceOver users.
-     */
-    newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
-
-    MeViewController *meViewController = [MeViewController new];
-    meViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
-    meViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
-    meViewController.title = @"Me";
-    meViewController.tabBarItem.titlePositionAdjustment = tabBarTitleOffset;
-    UINavigationController *meNavController = [[UINavigationController alloc] initWithRootViewController:meViewController];
-
-    _tabBarController.viewControllers = @[blogListNavigationController, readerNavigationController, newPostViewController, meNavController, notificationsNavigationController];
-
-    [_tabBarController setSelectedViewController:blogListNavigationController];
-
-    return _tabBarController;
-}
-
-- (void)showTabForIndex:(NSInteger)tabIndex
-{
-    [self.tabBarController setSelectedIndex:tabIndex];
-}
-
-- (void)showPostTab
-{
-    [self showPostTabWithOptions:nil];
-}
-
-- (void)showPostTabWithOptions:(NSDictionary *)options
-{
-    UIViewController *presenter = self.window.rootViewController;
-    if (presenter.presentedViewController) {
-        [presenter dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    UINavigationController *navController;
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *editPostViewController;
-        if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-        } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostLegacyViewController;
-        if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-        } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-    }
-        
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;
-    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)switchTabToPostsListForPost:(AbstractPost *)post
-{
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:kMySitesTabIndex];
-
-    // Check which VC is showing.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMySitesTabIndex];
-    UIViewController *topVC = blogListNavController.topViewController;
-    if ([topVC isKindOfClass:[PostsViewController class]]) {
-        Blog *blog = ((PostsViewController *)topVC).blog;
-        if ([post.blog.objectID isEqual:blog.objectID]) {
-            // The desired post view controller is already the top viewController for the tab.
-            // Nothing to see here.  Move along.
-            return;
-        }
-    }
-
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
-
-    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-    blogDetailsViewController.blog = post.blog;
-
-    PostsViewController *postsViewController = [[PostsViewController alloc] init];
-    [postsViewController setBlog:post.blog];
-
-    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
-}
-
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
-{
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:kMySitesTabIndex];
-    
-    // Build and set the navigation heirarchy for the Me tab.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMySitesTabIndex];
-    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
-
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    StatsViewController *statsViewController = [StatsViewController new];
-    statsViewController.blog = blog;
-    
-    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
-}
-
-- (BOOL)isNavigatingMySitesTab
-{
-    return (self.tabBarController.selectedIndex == kMySitesTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
-}
-
-#pragma mark - UITabBarControllerDelegate methods.
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
-{
-    if ([tabBarController.viewControllers indexOfObject:viewController] == kNewPostTabIndex) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        // Ignore taps on the post tab and instead show the modal.
-        if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [self showWelcomeScreenAnimated:YES thenEditor:YES];
-        } else {
-            [self showPostTab];
-        }
-        return NO;
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == kMySitesTabIndex) {
-        // If the user has one blog then we don't want to present them with the main "me"
-        // screen where they can see all their blogs. In the case of only one blog just show
-        // the main blog details screen
-
-        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
-        // would break from standard iOS UX
-        if (tabBarController.selectedIndex != kNewPostTabIndex) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
-            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
-                    [blogListViewController bypassBlogListViewController];
-                }
-            }
-        }
-    }
-
-    // If the current view controller is selected already and it's at its root then scroll to the top
-    if (tabBarController.selectedViewController == viewController) {
-        if ([viewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            if (navController.topViewController == navController.viewControllers.firstObject &&
-                [navController.topViewController.view isKindOfClass:[UITableView class]]) {
-                
-                UITableView *tableView = (UITableView *)[[navController topViewController] view];
-                CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
-                [tableView setContentOffset:topOffset animated:YES];
-            }
-        }
-    }
-
-    return YES;
 }
 
 #pragma mark - Application directories

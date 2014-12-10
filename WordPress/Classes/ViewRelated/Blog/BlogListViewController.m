@@ -13,6 +13,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
+#import "WPTabBarController.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -27,7 +28,7 @@ CGFloat const blavatarImageSize = 50.f;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] blogListViewController];
+    return [[WPTabBarController sharedInstance] blogListViewController];
 }
 
 - (void)dealloc

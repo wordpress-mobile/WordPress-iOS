@@ -18,11 +18,6 @@ extern NSInteger const kNotificationsTabIndex;
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong, readwrite) IBOutlet UIWindow              *window;
-@property (nonatomic, strong,  readonly) UINavigationController         *navigationController;
-@property (nonatomic, strong,  readonly) UITabBarController             *tabBarController;
-@property (nonatomic, strong,  readonly) ReaderPostsViewController      *readerPostsViewController;
-@property (nonatomic, strong,  readonly) BlogListViewController         *blogListViewController;
-@property (nonatomic, strong,  readonly) NotificationsViewController    *notificationsViewController;
 @property (nonatomic, strong,  readonly) Reachability                   *internetReachability;
 @property (nonatomic, strong,  readonly) Reachability                   *wpcomReachability;
 @property (nonatomic, strong,  readonly) DDFileLogger                   *fileLogger;
@@ -39,18 +34,10 @@ extern NSInteger const kNotificationsTabIndex;
 - (void)useAppUserAgent;
 - (NSString *)applicationUserAgent;
 
-///-----------------------
-/// @name Tab bar controls
-///-----------------------
-- (void)showTabForIndex:(NSInteger)tabIndex;
-- (void)showPostTab;
-- (void)switchTabToPostsListForPost:(AbstractPost *)post;
-- (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog;
-- (BOOL)isNavigatingMySitesTab;
-
 ///-----------
 /// @name NUX
 ///-----------
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated;
+- (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor;
 
 @end
