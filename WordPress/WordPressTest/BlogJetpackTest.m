@@ -3,6 +3,7 @@
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "BlogService.h"
 #import "TestContextManager.h"
 #import <XCTest/XCTest.h>
 
@@ -159,6 +160,81 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
+}
+
+- (void)testWPCCShouldntDuplicateBlogs {
+    [OHHTTPStubs shouldStubRequestsPassingTest:^BOOL(NSURLRequest *request) {
+        return [request.URL.path hasSuffix:@"me/sites"];
+    } withStubResponse:^OHHTTPStubsResponse *(NSURLRequest *request) {
+        return [OHHTTPStubsResponse responseWithFile:@"me-sites-with-jetpack.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
+    }];
+
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+
+    Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
+    dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
+    dotcomBlog.url = @"http://dotcom1.wordpress.com/";
+    dotcomBlog.blogID = @1;
+
+    WPAccount *selfHostedAccount = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://jetpack.example.com/xmlrpc.php" username:@"jetpack" andPassword:@"jetpack"];
+    Blog *jetpackLegacyBlog = [blogService createBlogWithAccount:selfHostedAccount];
+    jetpackLegacyBlog.blogID = @0;
+    jetpackLegacyBlog.xmlrpc = selfHostedAccount.xmlrpc;
+    jetpackLegacyBlog.url = @"http://jetpack.example.com/";
+    jetpackLegacyBlog.options = @{@"jetpack_version": @{
+                                          @"value": @"1.8.2",
+                                          @"desc": @"stub",
+                                          @"readonly": @YES,
+                                          },
+                                  @"jetpack_client_id": @{
+                                          @"value": @"2",
+                                          @"desc": @"stub",
+                                          @"readonly": @YES,
+                                          },
+                                  };
+    jetpackLegacyBlog.jetpackAccount = wpComAccount;
+
+    // Wait on the merge to be completed
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
+    // test.blog + wp.com + jetpack
+    XCTAssertEqual(3, [accountService numberOfAccounts]);
+    // test.blog + wp.com + jetpack (legacy)
+    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+    // dotcom1.wordpress.com
+    XCTAssertEqual(1, wpComAccount.blogs.count);
+    Blog *testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
+    XCTAssertNotNil(testBlog);
+    XCTAssertEqual(1, wpComAccount.jetpackBlogs.count);
+    XCTAssertEqual(wpComAccount.jetpackBlogs.anyObject, jetpackLegacyBlog);
+
+    XCTestExpectation *syncExpectation = [self expectationWithDescription:@"Blogs sync"];
+    [blogService syncBlogsForAccount:wpComAccount success:^{
+        [syncExpectation fulfill];
+    } failure:^(NSError *error) {
+        XCTFail(@"Sync blogs shouldn't fail");
+    }];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
+    // test.blog + wp.com
+    XCTAssertEqual(2, [accountService numberOfAccounts]);
+    // dotcom1.wordpress.com + jetpack.example.com
+    XCTAssertEqual(2, wpComAccount.blogs.count);
+    XCTAssertEqual(0, wpComAccount.jetpackBlogs.count);
+    // test.blog + wp.com + jetpack (wpcc)
+    XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
+
+    testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 1"]] anyObject];
+    XCTAssertNotNil(testBlog);
+    XCTAssertEqualObjects(testBlog.xmlrpc, @"https://dotcom1.wordpress.com/xmlrpc.php");
+    testBlog = [[wpComAccount.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = 2"]] anyObject];
+    XCTAssertNotNil(testBlog);
+    XCTAssertEqualObjects(testBlog.xmlrpc, @"http://jetpack.example.com/xmlrpc.php");
 }
 
 @end
