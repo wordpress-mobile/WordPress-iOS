@@ -627,6 +627,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
 
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
+    
+    // SVProgressHUD styles    
+    [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
+    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
+    [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
+    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
+    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
 }
 
 #pragma mark - Tracking methods
@@ -1509,8 +1516,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 		} else {
 			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
 		}
-		
-		[SVProgressHUD showSuccessWithStatus:statusString];
+        
+        [SVProgressHUD showSuccessWithStatus:statusString maskType:SVProgressHUDMaskTypeNone];
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 			[UIView animateWithDuration:0.2f animations:^{
