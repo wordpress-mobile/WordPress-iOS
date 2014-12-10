@@ -1014,6 +1014,7 @@
 		B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Reply.swift"; sourceTree = "<group>"; };
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
+		B5B9C08F1A38A23A00B5B85F /* Notification+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Notification+Internals.h"; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
 		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
@@ -2259,6 +2260,7 @@
 				B5CC05F81962186D00975CAC /* Meta.m */,
 				B55853F819630E7900FAF6C3 /* Notification.h */,
 				B55853F919630E7900FAF6C3 /* Notification.m */,
+				B5B9C08F1A38A23A00B5B85F /* Notification+Internals.h */,
 			);
 			path = Notifications;
 			sourceTree = "<group>";
