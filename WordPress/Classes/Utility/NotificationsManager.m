@@ -1,5 +1,6 @@
 #import "NotificationsManager.h"
 #import "NotificationsViewController.h"
+#import "WPTabBarController.h"
 
 #import "WordPressAppDelegate.h"
 #import "UIDevice+WordPressIdentifier.h"
@@ -158,11 +159,8 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     
 
     if (state == UIApplicationStateInactive) {
-        NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
-        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-        
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
+        NSString *notificationID = [[userInfo numberForKey:@"note_id"] stringValue];
+        [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
             Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
@@ -183,7 +181,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
+        [[WPTabBarController sharedInstance] showNotificationsTab];
     }
 }
 
@@ -228,11 +226,8 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         }
     } else if ([identifier isEqualToString:NotificationActionCommentReply]) {
         // Load notifications detail view
-        NSString *notificationID            = [[remoteNotification numberForKey:@"note_id"] stringValue];
-        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
+        NSString *notificationID = [[remoteNotification numberForKey:@"note_id"] stringValue];
+        [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     }
 }
 
@@ -414,11 +409,10 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 + (void)handleMixpanelPushNotification:(NSDictionary *)userInfo
 {
     NSString *targetToOpen = [userInfo stringForKey:@"open"];
-    WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if ([targetToOpen isEqualToString:@"reader"]) {
-        [appDelegate showTabForIndex:kReaderTabIndex];
+        [[WPTabBarController sharedInstance] showReaderTab];
     } else if ([targetToOpen isEqualToString:@"notifications"]) {
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
+        [[WPTabBarController sharedInstance] showNotificationsTab];
     } else if ([targetToOpen isEqualToString:@"stats"]) {
         [self openStatsForLastUsedOrFirstWPComBlog];
     }
@@ -430,7 +424,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog = [blogService lastUsedOrFirstWPcomBlog];
     if (blog != nil && [blog isWPcom]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchMySitesTabToStatsViewForBlog:blog];
+        [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
 }
 

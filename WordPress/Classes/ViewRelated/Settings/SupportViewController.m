@@ -16,6 +16,7 @@
 #import <Mixpanel/MPTweakInline.h>
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
+#import "WPTabBarController.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
@@ -118,7 +119,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
     }
 
-    UIViewController *presenter = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
+    UIViewController *presenter = [WPTabBarController sharedInstance];
     if (presenter.presentedViewController) {
         presenter = presenter.presentedViewController;
     }
