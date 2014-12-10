@@ -6,12 +6,16 @@ import Foundation
     // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
-            refreshBackgrounds()
+            if read != oldValue {
+                refreshBackgrounds()
+            }
         }
     }
     public var unapproved: Bool = false {
         didSet {
-            refreshBackgrounds()
+            if unapproved != oldValue {
+                refreshBackgrounds()
+            }
         }
     }
     public var showsSeparator: Bool = false {
