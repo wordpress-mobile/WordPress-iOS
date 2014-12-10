@@ -203,6 +203,7 @@ NSString const *NotePostIdKey           = @"post_id";
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
 @property (nonatomic, assign, readwrite) NoteBlockType          type;
 @property (nonatomic, assign, readwrite) BOOL                   isBadge;
+@property (nonatomic, strong, readwrite) NSMutableDictionary    *dynamicAttributesCache;
 @end
 
 
@@ -221,6 +222,7 @@ NSString const *NotePostIdKey           = @"post_id";
 		_media                      = [NotificationMedia mediaFromArray:rawMedia];
         _meta                       = [rawBlock dictionaryForKey:NoteMetaKey];
         _actions                    = [rawBlock dictionaryForKey:NoteActionsKey];
+        _dynamicAttributesCache     = [NSMutableDictionary dictionary];
 	}
 	
 	return self;
@@ -297,6 +299,20 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isActionOn:(NSString *)key
 {
     return [[self actionForKey:key] boolValue];
+}
+
+- (id)cacheValueForKey:(NSString *)key
+{
+    return _dynamicAttributesCache[key];
+}
+
+- (void)setCacheValue:(id)value forKey:(NSString *)key
+{
+    if (!value) {
+        return;
+    }
+    
+    _dynamicAttributesCache[key] = value;
 }
 
 + (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
