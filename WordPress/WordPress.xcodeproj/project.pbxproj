@@ -3639,6 +3639,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3668,6 +3669,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -3694,6 +3696,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					NS_BLOCK_ASSERTIONS,
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3721,6 +3724,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -3769,6 +3773,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3797,6 +3802,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Distribution;
 		};
@@ -3844,6 +3850,7 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					LOOKBACK_ENABLED,
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3871,6 +3878,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
+				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
 		};
