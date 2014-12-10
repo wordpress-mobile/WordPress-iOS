@@ -1,7 +1,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "WordPressAppDelegate.h"
+#import "WPTabBarController.h"
 #import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
@@ -643,11 +643,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dismiss
 {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-
     // If we were invoked from the post tab proceed to the editor. Our work here is done.
     if (_showEditorAfterAddingSites) {
-        [delegate showPostTab];
+        [[WPTabBarController sharedInstance] showPostTab];
         return;
     }
 
@@ -658,7 +656,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (!defaultAccount) {
-        [delegate showTabForIndex:kMySitesTabIndex];
+        [[WPTabBarController sharedInstance] showMySitesTab];
     }
 
     if (self.dismissBlock) {
