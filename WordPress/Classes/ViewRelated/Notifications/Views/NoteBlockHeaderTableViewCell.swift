@@ -21,6 +21,7 @@ import Foundation
             return
         }
         
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         let success = { (image: UIImage) in
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
@@ -42,7 +43,7 @@ import Foundation
         nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
         snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
         snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
-        gravatarImageView.image         = placeholderImage!
+        gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
@@ -54,7 +55,6 @@ import Foundation
 
     // MARK: - Private
     private let gravatarImageSizePad:               CGSize      = CGSize(width: 36.0, height: 36.0)
-    private let placeholderImage:                   UIImage?    = UIImage(named: "gravatar")
     private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets

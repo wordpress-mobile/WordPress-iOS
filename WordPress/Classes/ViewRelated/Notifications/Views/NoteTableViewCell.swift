@@ -48,13 +48,15 @@ import Foundation
             return
         }
 
-        iconImageView.image = Placeholder.image
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         
         // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderImage: nil)
+            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
+        } else {
+            iconImageView.image     = placeholderImage
         }
         
         gravatarURL = url
@@ -67,7 +69,7 @@ import Foundation
 
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
 
-        iconImageView.image             = Placeholder.image
+        iconImageView.image             = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
         noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
 
@@ -140,11 +142,6 @@ import Foundation
     
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
-
-    // MARK: - Performance Optimization: just one UIImage instance please!
-    struct Placeholder {
-        static let image = UIImage(named: "gravatar")
-    }
     
     // MARK: - Private Properties
     private let separatorHeight:                    CGFloat     = 1
