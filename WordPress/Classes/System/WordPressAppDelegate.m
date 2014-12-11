@@ -275,7 +275,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         returnValue = YES;
     }
 
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 

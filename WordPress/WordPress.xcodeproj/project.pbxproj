@@ -578,6 +578,7 @@
 		501C8A355B53A6971F731ECA /* Pods.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.distribution.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.distribution.xcconfig"; sourceTree = "<group>"; };
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
+		591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayWidgetPrefix.pch; sourceTree = "<group>"; };
 		5D08B90219648C3400D5B381 /* ReaderSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSubscriptionViewController.h; sourceTree = "<group>"; };
 		5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSubscriptionViewController.m; sourceTree = "<group>"; };
 		5D0C2CB719AB932C002DF1E5 /* WPContentSyncHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPContentSyncHelper.swift; sourceTree = "<group>"; };
@@ -2139,6 +2140,7 @@
 			children = (
 				93E5283F19A7741A003A1A9C /* Info.plist */,
 				93267A6019B896CD00997EB8 /* Info-Internal.plist */,
+				591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -3624,6 +3626,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3653,6 +3656,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -3679,6 +3683,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					NS_BLOCK_ASSERTIONS,
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3706,6 +3711,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -3754,6 +3760,7 @@
 					"$(inherited)",
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3782,6 +3789,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Distribution;
 		};
@@ -3829,6 +3837,7 @@
 					"$(inherited)",
 					INTERNAL_BUILD,
 					LOOKBACK_ENABLED,
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -3856,6 +3865,7 @@
 				TARGETED_DEVICE_FAMILY = "1,2";
 				USER_HEADER_SEARCH_PATHS = "";
 				WPCOM_CONFIG = $HOME/.wpcom_internal_app_credentials;
+				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
 		};
@@ -3910,9 +3920,12 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressTodayWidget/TodayWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -3929,6 +3942,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WPCOM_SCHEME = wpdebug;
 			};
 			name = Debug;
 		};
@@ -3956,6 +3970,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressTodayWidget/TodayWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3969,6 +3990,7 @@
 				PROVISIONING_PROFILE = "5f7ea6f8-301e-439c-865d-8042dfd989a9";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Release;
 		};
@@ -3996,10 +4018,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressTodayWidget/TodayWidgetPrefix.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
 					INTERNAL_BUILD,
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -4014,6 +4039,7 @@
 				PROVISIONING_PROFILE = "f9ad82b2-9f92-4ed0-990a-ea88898921bb";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				WPCOM_SCHEME = wpinternal;
 			};
 			name = "Release-Internal";
 		};
@@ -4041,6 +4067,13 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressTodayWidget/TodayWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -4054,6 +4087,7 @@
 				PROVISIONING_PROFILE = "5f7ea6f8-301e-439c-865d-8042dfd989a9";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				WPCOM_SCHEME = wordpress;
 			};
 			name = Distribution;
 		};

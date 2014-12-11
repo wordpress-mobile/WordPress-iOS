@@ -1,0 +1,8 @@
+#ifdef __OBJC__
+
+#ifndef WPCOM_SCHEME
+#warning WPCOM_SCHEME is not defined for this target configuration! Defaulting to "wordpress".
+#define WPCOM_SCHEME @"wordpress"
+#endif
+
+#endif
