@@ -8,13 +8,6 @@
 @class Simperium;
 @class Blog;
 
-// Tab index constants
-extern NSInteger const kMySitesTabIndex;
-extern NSInteger const kReaderTabIndex;
-extern NSInteger const kNewPostTabIndex;
-extern NSInteger const kMeTabIndex;
-extern NSInteger const kNotificationsTabIndex;
-
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
 @property (nonatomic, strong, readwrite) IBOutlet UIWindow              *window;
