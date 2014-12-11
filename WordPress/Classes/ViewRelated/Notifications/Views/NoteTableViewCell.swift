@@ -115,18 +115,21 @@ import Foundation
     private func refreshBackgrounds() {
         // Noticon Background
         if unapproved {
-            noticonView.backgroundColor = Style.noticonUnmoderatedColor
-            noticonContainerView.backgroundColor = Style.noticonTextColor
+            noticonView.backgroundColor             = Style.noticonUnmoderatedColor
+            noticonContainerView.backgroundColor    = Style.noticonTextColor
         } else if read {
-            noticonView.backgroundColor = Style.noticonReadColor
-            noticonContainerView.backgroundColor = Style.noticonTextColor
+            noticonView.backgroundColor             = Style.noticonReadColor
+            noticonContainerView.backgroundColor    = Style.noticonTextColor
         } else {
-            noticonView.backgroundColor = Style.noticonUnreadColor
-            noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
+            noticonView.backgroundColor             = Style.noticonUnreadColor
+            noticonContainerView.backgroundColor    = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background
-        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        // Cell Background: Assign only if needed, for performance
+        let newBackgroundColor  = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        if backgroundColor != newBackgroundColor {
+            backgroundColor = newBackgroundColor
+        }
     }
     
     private func refreshNumberOfLines() {
