@@ -77,29 +77,31 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     return self;
 }
 
-#pragma mark -
+#pragma mark - Tab Bar Items
 
 - (UINavigationController *)blogListNavigationController
 {
-    if (!_blogListNavigationController) {
-        self.blogListViewController = [[BlogListViewController alloc] init];
-        _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-        _blogListNavigationController.navigationBar.translucent = NO;
-        _blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-mysites"];
-        _blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-mysites"];
-        _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-        self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
-        [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
-        _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
+    if (_blogListNavigationController) {
+        return _blogListNavigationController;
+    }
 
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
-        if (blogToOpen) {
-            BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-            blogDetailsViewController.blog = blogToOpen;
-            [_blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
-        }
+    self.blogListViewController = [[BlogListViewController alloc] init];
+    _blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
+    _blogListNavigationController.navigationBar.translucent = NO;
+    _blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-mysites"];
+    _blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-mysites"];
+    _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
+    self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
+    [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blogToOpen = [blogService lastUsedOrFirstBlog];
+    if (blogToOpen) {
+        BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
+        blogDetailsViewController.blog = blogToOpen;
+        [_blogListNavigationController pushViewController:blogDetailsViewController animated:NO];
     }
 
     return _blogListNavigationController;
@@ -107,67 +109,79 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (UINavigationController *)readerNavigationController
 {
-    if (!_readerNavigationController) {
-        self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
-        _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
-        _readerNavigationController.navigationBar.translucent = NO;
-        _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-        _readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
-        _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-        self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
-        [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    if (_readerNavigationController) {
+        return _readerNavigationController;
     }
+
+    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
+    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
+    _readerNavigationController.navigationBar.translucent = NO;
+    _readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
+    _readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
+    _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
+    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
+    [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+
     return _readerNavigationController;
 }
 
 - (UIViewController *)newPostViewController
 {
-    if (!_newPostViewController) {
-        UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
-        newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-        _newPostViewController = [[UIViewController alloc] init];
-        _newPostViewController.tabBarItem.image = newPostImage;
-        _newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5.0, 0);
-
-        /*
-         If title is used, the title will be visible. See #1158
-         If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
-
-         The only apparent solution is to have an actual title, and then move it out of view
-         non-VoiceOver users.
-         */
-        _newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-        _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+    if (_newPostViewController) {
+        return _newPostViewController;
     }
+
+    UIImage *newPostImage = [UIImage imageNamed:@"icon-tab-newpost"];
+    newPostImage = [newPostImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _newPostViewController = [[UIViewController alloc] init];
+    _newPostViewController.tabBarItem.image = newPostImage;
+    _newPostViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5.0, 0);
+
+    /*
+     If title is used, the title will be visible. See #1158
+     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
+
+     The only apparent solution is to have an actual title, and then move it out of view
+     non-VoiceOver users.
+     */
+    _newPostViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
+    _newPostViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
+
     return _newPostViewController;
 }
 
 - (UINavigationController *)meNavigationController
 {
-    if (!_meNavigationController) {
-        self.meViewController = [MeViewController new];
-        self.meViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
-        self.meViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
-        self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
-        self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
-        _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    if (_meNavigationController) {
+        return _meNavigationController;
     }
+
+    self.meViewController = [MeViewController new];
+    self.meViewController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-me"];
+    self.meViewController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-me-filled"];
+    self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
+    self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
+    _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    
     return _meNavigationController;
 }
 
 - (UINavigationController *)notificationsNavigationController
 {
-    if (!_notificationsNavigationController) {
-        UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
-        self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
-        _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
-        _notificationsNavigationController.navigationBar.translucent = NO;
-        _notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-        _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
-        _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-        self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
-        [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    if (_notificationsNavigationController) {
+        return _notificationsNavigationController;
     }
+
+    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
+    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
+    _notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
+    _notificationsNavigationController.navigationBar.translucent = NO;
+    _notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
+    _notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
+    _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
+    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
+    [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+
     return _notificationsNavigationController;
 }
 
