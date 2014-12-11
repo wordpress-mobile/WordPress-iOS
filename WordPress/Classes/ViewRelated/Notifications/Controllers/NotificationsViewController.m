@@ -349,8 +349,8 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
     UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
-    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
- 
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[WPTabNotifications];
+
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
 

@@ -28,12 +28,6 @@ NSString * const kWPNewPostURLParamContentKey = @"content";
 NSString * const kWPNewPostURLParamTagsKey = @"tags";
 NSString * const kWPNewPostURLParamImageKey = @"image";
 
-NSInteger const kMySitesTabIndex = 0;
-NSInteger const kReaderTabIndex = 1;
-NSInteger const kNewPostTabIndex = 2;
-NSInteger const kMeTabIndex = 3;
-NSInteger const kNotificationsTabIndex = 4;
-
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
 @property (nonatomic, strong, readonly) UIWindow *window;
@@ -186,12 +180,12 @@ NSInteger const kNotificationsTabIndex = 4;
 
 - (void)showMySitesTab
 {
-    [self showTabForIndex:kMySitesTabIndex];
+    [self showTabForIndex:WPTabMySites];
 }
 
 - (void)showReaderTab
 {
-    [self showTabForIndex:kReaderTabIndex];
+    [self showTabForIndex:WPTabReader];
 }
 
 - (void)showPostTab
@@ -201,7 +195,7 @@ NSInteger const kNotificationsTabIndex = 4;
 
 - (void)showNotificationsTab
 {
-    [self showTabForIndex:kNotificationsTabIndex];
+    [self showTabForIndex:WPTabNotifications];
 }
 
 - (void)showPostTabWithOptions:(NSDictionary *)options
@@ -251,7 +245,7 @@ NSInteger const kNotificationsTabIndex = 4;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     // Make sure the desired tab is selected.
-    [self showTabForIndex:kMySitesTabIndex];
+    [self showTabForIndex:WPTabMySites];
 
     // Check which VC is showing.
     UIViewController *topVC = self.blogListNavigationController.topViewController;
@@ -277,7 +271,7 @@ NSInteger const kNotificationsTabIndex = 4;
 - (void)switchMySitesTabToStatsViewForBlog:(Blog *)blog
 {
     // Make sure the desired tab is selected.
-    [self showTabForIndex:kMySitesTabIndex];
+    [self showTabForIndex:WPTabMySites];
 
     // Build and set the navigation heirarchy for the Me tab.
     BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
@@ -294,13 +288,13 @@ NSInteger const kNotificationsTabIndex = 4;
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
     switch (self.tabBarController.selectedIndex) {
-        case kMySitesTabIndex:
+        case WPTabMySites:
             currentlySelectedScreen = @"Blog List";
             break;
-        case kReaderTabIndex:
+        case WPTabReader:
             currentlySelectedScreen = @"Reader";
             break;
-        case kNotificationsTabIndex:
+        case WPTabNotifications:
             currentlySelectedScreen = @"Notifications";
             break;
         default:
@@ -313,7 +307,7 @@ NSInteger const kNotificationsTabIndex = 4;
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
 {
-    if ([tabBarController.viewControllers indexOfObject:viewController] == kNewPostTabIndex) {
+    if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabNewPost) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
@@ -324,14 +318,14 @@ NSInteger const kNotificationsTabIndex = 4;
             [self showPostTab];
         }
         return NO;
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == kMySitesTabIndex) {
+    } else if ([tabBarController.viewControllers indexOfObject:viewController] == WPTabMySites) {
         // If the user has one blog then we don't want to present them with the main "me"
         // screen where they can see all their blogs. In the case of only one blog just show
         // the main blog details screen
 
         // Don't kick of this auto selecting behavior if the user taps the the active tab as it
         // would break from standard iOS UX
-        if (tabBarController.selectedIndex != kNewPostTabIndex) {
+        if (tabBarController.selectedIndex != WPTabNewPost) {
             UINavigationController *navController = (UINavigationController *)viewController;
             BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
             if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
@@ -361,13 +355,13 @@ NSInteger const kNotificationsTabIndex = 4;
 
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID
 {
-    [self showTabForIndex:kNotificationsTabIndex];
+    [self showTabForIndex:WPTabNotifications];
     [self.notificationsViewController showDetailsForNoteWithID:notificationID];
 }
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.tabBarController.selectedIndex == kMySitesTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.tabBarController.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Helpers
