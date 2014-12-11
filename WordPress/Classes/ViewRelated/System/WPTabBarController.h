@@ -3,6 +3,14 @@
 extern NSString * const kWPNewPostURLParamContentKey;
 extern NSString * const kWPNewPostURLParamTagsKey;
 
+typedef NS_ENUM(NSUInteger, WPTabType) {
+    WPTabMySites,
+    WPTabReader,
+    WPTabNewPost,
+    WPTabMe,
+    WPTabNotifications
+};
+
 @class AbstractPost, Blog, BlogListViewController, MeViewController , NotificationsViewController, ReaderPostsViewController;
 
 @interface WPTabBarController : UITabBarController
