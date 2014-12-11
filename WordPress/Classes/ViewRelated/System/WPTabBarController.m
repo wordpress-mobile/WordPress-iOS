@@ -30,8 +30,6 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
-@property (nonatomic, strong, readonly) UIWindow *window;
-
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
@@ -162,7 +160,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
     self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
-    
+
     return _meNavigationController;
 }
 
@@ -214,9 +212,8 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showPostTabWithOptions:(NSDictionary *)options
 {
-    UIViewController *presenter = self.window.rootViewController;
-    if (presenter.presentedViewController) {
-        [presenter dismissViewControllerAnimated:NO completion:nil];
+    if (self.presentedViewController) {
+        [self dismissViewControllerAnimated:NO completion:nil];
     }
 
     UINavigationController *navController;
@@ -253,7 +250,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     navController.modalPresentationStyle = UIModalPresentationFullScreen;
     navController.navigationBar.translucent = NO;
     [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
@@ -382,11 +379,6 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (UIOffset)tabBarTitleOffset {
     return IS_IPHONE ? UIOffsetMake(0, -2) : UIOffsetZero;
-}
-
-- (UIWindow *)window
-{
-    return [[UIApplication sharedApplication] keyWindow];
 }
 
 @end
