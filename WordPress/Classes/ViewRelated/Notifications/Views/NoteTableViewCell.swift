@@ -54,7 +54,7 @@ import Foundation
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderName: nil)
+            iconImageView.downloadImage(scaledURL, placeholderImage: nil)
         }
         
         gravatarURL = url
