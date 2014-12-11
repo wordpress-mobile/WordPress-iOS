@@ -87,6 +87,7 @@ import Foundation
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
         
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url
@@ -252,7 +253,6 @@ import Foundation
     
     // MARK: - Private Constants
     private let gravatarImageSizePad                : CGSize    = CGSize(width: 37.0, height: 37.0)
-    private let placeholderImage                    : UIImage?  = UIImage(named: "gravatar")
     private let separatorHeight                     : CGFloat   = 1
     private let buttonWidth                         : CGFloat   = 55
     private let buttonSpacing                       : CGFloat   = 20
