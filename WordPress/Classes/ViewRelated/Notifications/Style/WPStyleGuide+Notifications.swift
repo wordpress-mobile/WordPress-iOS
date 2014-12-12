@@ -118,6 +118,7 @@ extension WPStyleGuide
         
         public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
+        public static let snippetLineSize           = subjectLineSize
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
         public static let maximumCellWidth          = CGFloat(600)
@@ -131,7 +132,7 @@ extension WPStyleGuide
             minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let snippetParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByTruncatingTail, alignment: .Left
+            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
