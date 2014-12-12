@@ -563,10 +563,6 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatLowMemoryWarning:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Received Low Memory Warning"];
             break;
-        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Performed Core Data Migration Fix for 4.5"];
-            [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
-            break;
         case WPAnalyticsStatAppReviewsSawPrompt:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Saw App Review Prompt"];
             [instructions addSuperPropertyToFlag:@"saw_app_review_prompt"];
