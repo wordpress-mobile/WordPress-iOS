@@ -1,3 +1,10 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
 
 /* Begin PBXAggregateTarget section */
 		A2795807198819DE0031C6A3 /* OCLint */ = {
