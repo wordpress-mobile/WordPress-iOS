@@ -600,12 +600,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
-    NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
-    NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
-    NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
-    
-    cell.attributedSubject                  = subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
+
+    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
+    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
