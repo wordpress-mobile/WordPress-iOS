@@ -644,6 +644,17 @@ NSString const *NotePostIdKey           = @"post_id";
     return nil;
 }
 
+- (NotificationBlock *)subjectBlock
+{
+    return self.subjectBlockGroup.blocks.firstObject;
+}
+
+- (NotificationBlock *)snippetBlock
+{
+    NSArray *subjectBlocks = self.subjectBlockGroup.blocks;
+    return (subjectBlocks.count > 1) ? subjectBlocks.lastObject : nil;
+}
+
 // Check if this note is a comment and in 'unapproved' status
 - (BOOL)isUnapprovedComment
 {
