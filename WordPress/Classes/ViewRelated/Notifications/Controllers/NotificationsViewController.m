@@ -104,7 +104,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -522,16 +521,19 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         return rowCacheValue.floatValue;
     }
     
-    // Setup the cell
-    NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
-    [self configureCell:layoutCell atIndexPath:indexPath];
+    // Load the Subject + Snippet
+    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
+    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
+    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
     
-    CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    // Old School Height Calculation
+    CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
+    CGFloat cellHeight          = [NoteTableViewCell layoutHeightWithWidth:tableWidth subject:subject snippet:snippet];
     
     // Cache
-    self.cachedRowHeights[indexPath.toString] = @(height);
+    self.cachedRowHeights[indexPath.toString] = @(cellHeight);
 
-    return height;
+    return cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
