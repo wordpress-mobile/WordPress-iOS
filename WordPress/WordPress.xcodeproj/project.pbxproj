@@ -2776,6 +2776,7 @@
 			buildConfigurationList = 93E5284D19A7741A003A1A9C /* Build configuration list for PBXNativeTarget "WordPressTodayWidget" */;
 			buildPhases = (
 				1433631E1B534FCE8E3401B1 /* Check Pods Manifest.lock */,
+				B500E3B71A3B18770071ABA8 /* ShellScript */,
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
@@ -3092,6 +3093,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../run-oclint.sh";
+		};
+		B500E3B71A3B18770071ABA8 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#\n# This is just a workaround for the \"App Installation Failed\" AlertView.\n# For more information, please, check issue #2917\n#\necho \"Running Cocoapods Workaround\"\ntouch \"${PROJECT_DIR}/WordPressTodayWidget/TodayViewController.swift\"\n";
 		};
 		BD568EA7006B338911997D59 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
