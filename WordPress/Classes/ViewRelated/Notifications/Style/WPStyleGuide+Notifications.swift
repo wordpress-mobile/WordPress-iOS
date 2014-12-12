@@ -113,14 +113,18 @@ extension WPStyleGuide
         }
 
         
-        // MARK: - Private Propreties
+        // MARK: - Constants
         //
         
-        // Constants
-        private static let subjectFontSize          = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        private static let subjectLineSize          = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
-        private static let blockFontSize            = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        private static let blockLineSize            = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
+        public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let maximumCellWidth          = CGFloat(600)
+
+
+        // MARK: - Private Propreties
+        //
 
         // ParagraphStyle's
         private static let subjectParagraph         = NSMutableParagraphStyle(
