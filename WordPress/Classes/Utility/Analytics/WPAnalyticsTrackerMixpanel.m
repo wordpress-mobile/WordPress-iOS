@@ -70,6 +70,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
     superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
+    superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 
     NSString *username = account.username;
