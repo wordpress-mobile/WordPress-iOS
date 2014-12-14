@@ -104,6 +104,11 @@
     return NO;
 }
 
+- (BOOL)isScheduled
+{
+    return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);
+}
+
 - (AbstractPostRemoteStatus)remoteStatus
 {
     return (AbstractPostRemoteStatus)[[self remoteStatusNumber] intValue];

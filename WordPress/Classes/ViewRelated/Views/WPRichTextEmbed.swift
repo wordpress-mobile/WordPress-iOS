@@ -17,15 +17,25 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     var success : successBlock?
     var linkURL : NSURL?
     var contentURL : NSURL?
-
     var webView : UIWebView
+
+    override var frame: CGRect {
+        didSet {
+            // If Voice Over is enabled, the OS will query for the accessibilityPath
+            // to know what region of the screen to highlight. If the path is nil
+            // the OS should fall back to computing based on the frame but this
+            // may be bugged. Setting the accessibilityPath avoids a crash.
+            accessibilityPath = UIBezierPath(rect: frame)
+        }
+    }
+
 
     // MARK: LifeCycle
 
     override init(frame: CGRect) {
         webView = UIWebView(frame: CGRectMake(0.0, 0.0, 100.0, 100.0)) // arbitrary frame
 
-        super.init(frame: frame);
+        super.init(frame: frame)
 
         clipsToBounds = true
         configureWebView()
@@ -105,6 +115,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         var htmlString = NSString(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
+
 
     // MARK: WebView delegate methods
 

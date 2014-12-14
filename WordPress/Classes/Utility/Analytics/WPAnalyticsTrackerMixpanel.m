@@ -70,6 +70,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
     superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
+    superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 
     NSString *username = account.username;
@@ -562,10 +563,6 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Received Low Memory Warning"];
-            break;
-        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Performed Core Data Migration Fix for 4.5"];
-            [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
             break;
         case WPAnalyticsStatAppReviewsSawPrompt:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Saw App Review Prompt"];
