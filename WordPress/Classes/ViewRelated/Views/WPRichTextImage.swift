@@ -8,6 +8,16 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     var linkURL : NSURL?
     private(set) var imageView : UIImageView
 
+    override var frame: CGRect {
+        didSet {
+            // If Voice Over is enabled, the OS will query for the accessibilityPath
+            // to know what region of the screen to highlight. If the path is nil
+            // the OS should fall back to computing based on the frame but this
+            // may be bugged. Setting the accessibilityPath avoids a crash.
+            accessibilityPath = UIBezierPath(rect: frame)
+        }
+    }
+
 
     // MARK: Lifecycle
 
@@ -16,7 +26,7 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
         imageView.autoresizingMask = .FlexibleWidth | .FlexibleHeight
         imageView.contentMode = .ScaleAspectFit
 
-        super.init(frame: frame);
+        super.init(frame: frame)
 
         addSubview(imageView)
     }

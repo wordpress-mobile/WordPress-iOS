@@ -1,0 +1,173 @@
+{
+    "sites": [
+        {
+            "ID": 1,
+            "URL": "http://dotcom1.wordpress.com",
+            "capabilities": {
+                "edit_pages": true,
+                "edit_posts": true,
+                "edit_theme_options": true,
+                "list_users": true,
+                "manage_options": true,
+                "publish_posts": true,
+                "upload_files": true,
+                "view_stats": true
+            },
+            "description": "",
+            "is_following": false,
+            "is_private": false,
+            "jetpack": false,
+            "lang": "en",
+            "logo": {
+                "id": 0,
+                "sizes": [],
+                "url": ""
+            },
+            "meta": {
+                "links": {
+                    "comments": "https://public-api.wordpress.com/rest/v1/sites/1/comments/",
+                    "help": "https://public-api.wordpress.com/rest/v1/sites/1/help",
+                    "posts": "https://public-api.wordpress.com/rest/v1/sites/1/posts/",
+                    "self": "https://public-api.wordpress.com/rest/v1/sites/1",
+                    "xmlrpc": "https://dotcom1.wordpress.com/xmlrpc.php"
+                }
+            },
+            "name": "dotcom1",
+            "options": {
+                "admin_url": "https://dotcom1.wordpress.com/wp-admin/",
+                "allowed_file_types": [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "pdf",
+                    "doc",
+                    "ppt",
+                    "odt",
+                    "pptx",
+                    "docx",
+                    "pps",
+                    "ppsx",
+                    "xls",
+                    "xlsx",
+                    "key"
+                ],
+                "background_color": false,
+                "created_at": "2014-07-15T09:34:00+00:00",
+                "default_comment_status": true,
+                "default_likes_enabled": true,
+                "default_ping_status": true,
+                "default_sharing_status": true,
+                "featured_images_enabled": false,
+                "gmt_offset": 0,
+                "header_image": false,
+                "image_default_link_type": "file",
+                "image_large_height": 1024,
+                "image_large_width": 1024,
+                "image_medium_height": 300,
+                "image_medium_width": 300,
+                "image_thumbnail_crop": 0,
+                "image_thumbnail_height": 150,
+                "image_thumbnail_width": 150,
+                "is_mapped_domain": false,
+                "login_url": "https://dotcom1.wordpress.com/wp-login.php",
+                "post_formats": [],
+                "show_on_front": "posts",
+                "software_version": "4.1-alpha-20141013",
+                "timezone": "",
+                "unmapped_url": "https://dotcom1.wordpress.com",
+                "videopress_enabled": false
+            },
+            "plan": 1,
+            "post_count": 1,
+            "subscribers_count": 0,
+            "user_can_manage": true,
+            "visible": true
+        },
+        {
+            "ID": 2,
+            "URL": "http://jetpack.example.com",
+            "capabilities": {
+                "edit_pages": true,
+                "edit_posts": true,
+                "edit_theme_options": true,
+                "list_users": true,
+                "manage_options": true,
+                "publish_posts": true,
+                "upload_files": true,
+                "view_stats": true
+            },
+            "description": "Just another Koke's Sites site",
+            "is_following": false,
+            "is_private": false,
+            "jetpack": true,
+            "lang": "en",
+            "logo": {
+                "id": 0,
+                "sizes": [],
+                "url": ""
+            },
+            "meta": {
+                "links": {
+                    "comments": "https://public-api.wordpress.com/rest/v1/sites/2/comments/",
+                    "help": "https://public-api.wordpress.com/rest/v1/sites/2/help",
+                    "posts": "https://public-api.wordpress.com/rest/v1/sites/2/posts/",
+                    "self": "https://public-api.wordpress.com/rest/v1/sites/2",
+                    "xmlrpc": "http://jetpack.example.com/xmlrpc.php"
+                }
+            },
+            "name": "Jetpack Test 1",
+            "options": {
+                "admin_url": "http://jetpack.example.com/wp-admin/",
+                "allowed_file_types": [
+                    "jpg",
+                    "jpeg",
+                    "png",
+                    "gif",
+                    "pdf",
+                    "doc",
+                    "ppt",
+                    "odt",
+                    "pptx",
+                    "docx",
+                    "pps",
+                    "ppsx",
+                    "xls",
+                    "xlsx",
+                    "key"
+                ],
+                "background_color": false,
+                "created_at": "2014-08-20T15:57:01+00:00",
+                "default_comment_status": true,
+                "default_likes_enabled": true,
+                "default_ping_status": true,
+                "default_sharing_status": false,
+                "featured_images_enabled": false,
+                "gmt_offset": 0,
+                "header_image": false,
+                "image_default_link_type": "file",
+                "image_large_height": 1024,
+                "image_large_width": 1024,
+                "image_medium_height": 300,
+                "image_medium_width": 300,
+                "image_thumbnail_crop": 0,
+                "image_thumbnail_height": 150,
+                "image_thumbnail_width": 150,
+                "is_mapped_domain": true,
+                "jetpack_version": "3.1",
+                "login_url": "http://jetpack.example.com/wp-login.php",
+                "post_formats": [],
+                "show_on_front": "posts",
+                "software_version": "4.1-alpha-20141013",
+                "timezone": "",
+                "unmapped_url": "http://jetpack.example.com",
+                "videopress_enabled": false
+            },
+            "plan": 1,
+            "post_count": 0,
+            "subscribers_count": 0,
+            "user_can_manage": true,
+            "visible": true
+        }
+    ]
+}
