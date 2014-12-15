@@ -2778,7 +2778,7 @@
 			buildConfigurationList = 93E5284D19A7741A003A1A9C /* Build configuration list for PBXNativeTarget "WordPressTodayWidget" */;
 			buildPhases = (
 				1433631E1B534FCE8E3401B1 /* Check Pods Manifest.lock */,
-				B500E3B71A3B18770071ABA8 /* ShellScript */,
+				B500E3B71A3B18770071ABA8 /* App Installation Failed Workaround */,
 				93E5283619A7741A003A1A9C /* Sources */,
 				93E5283719A7741A003A1A9C /* Frameworks */,
 				93E5283819A7741A003A1A9C /* Resources */,
@@ -3096,13 +3096,14 @@
 			shellPath = /bin/sh;
 			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../run-oclint.sh";
 		};
-		B500E3B71A3B18770071ABA8 /* ShellScript */ = {
+		B500E3B71A3B18770071ABA8 /* App Installation Failed Workaround */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
+			name = "App Installation Failed Workaround";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
