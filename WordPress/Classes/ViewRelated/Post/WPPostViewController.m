@@ -50,6 +50,7 @@ static NSString* const WPProgressImageId = @"WPProgressImageId";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+NSString* const kOnboardingWasShown = @"kOnboardingWasShown";
 
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
@@ -281,7 +282,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                         withAnimation:UIStatusBarAnimationSlide];
             }
         } else {
-            [self showOnboardingTips];
+            // Preview mode...show the onboarding hint the first time through only
+            if (!self.wasOnboardingShown) {
+                [self showOnboardingTips];
+                [self setOnboardingShown:YES];
+            }
         }
     }
 
@@ -515,21 +520,18 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [alertView show];
 }
 
-#pragma mark - Actions
+#pragma mark - Onboarding
 
-- (void)showBlogSelectorPrompt
+- (void)setOnboardingShown:(BOOL)wasShown
 {
-    if (![self.post hasSiteSpecificChanges]) {
-        [self showBlogSelector];
-        return;
-    }
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
-                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
-                                                       delegate:self
-                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
-                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
-    [alertView show];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:wasShown forKey:kOnboardingWasShown];
+    [defaults synchronize];
+}
+
+- (BOOL)wasOnboardingShown
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kOnboardingWasShown];
 }
 
 - (void)showOnboardingTips
@@ -552,6 +554,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
               inView:self.view
            fromFrame:targetFrame
             duration:3];
+}
+
+#pragma mark - Actions
+
+- (void)showBlogSelectorPrompt
+{
+    if (![self.post hasSiteSpecificChanges]) {
+        [self showBlogSelector];
+        return;
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Change Site", @"Title of an alert prompting the user that they are about to change the blog they are posting to.")
+                                                        message:NSLocalizedString(@"Choosing a different site will lose edits to site specific content like media and categories. Are you sure?", @"And alert message warning the user they will loose blog specific edits like categories, and media if they change the blog being posted to.")
+                                                       delegate:self
+                                              cancelButtonTitle:NSLocalizedString(@"Cancel",@"")
+                                              otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
+    alertView.tag = EditPostViewControllerAlertTagSwitchBlogs;
+    [alertView show];
 }
 
 - (void)showBlogSelector
