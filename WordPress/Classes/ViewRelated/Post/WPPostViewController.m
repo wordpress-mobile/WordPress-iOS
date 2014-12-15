@@ -46,6 +46,7 @@ static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostView
 static NSString* const WPPostViewControllerOwnsPostRestorationKey = @"WPPostViewControllerOwnsPostRestorationKey";
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
 static NSString* const WPProgressImageId = @"WPProgressImageId";
+static NSString* const WPProgressMedia = @"WPProgressMedia";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
@@ -1597,6 +1598,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
                 [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
+                [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
                 [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
                 [strongSelf.mediaGlobalProgress resignCurrent];
             }];
