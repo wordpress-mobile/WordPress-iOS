@@ -1533,8 +1533,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-- (void) addMediaAssets:(NSArray *)assets {
-    
+- (void)prepareMediaProgressForNumberOfAssets:(NSUInteger) count
+{
     if (self.mediaGlobalProgress.isCancelled ||
         self.mediaGlobalProgress.completedUnitCount >= self.mediaGlobalProgress.totalUnitCount){
         [self.mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
@@ -1544,16 +1544,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if (!self.mediaGlobalProgress){
         self.mediaGlobalProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
-                                                       userInfo:nil];
-        self.mediaGlobalProgress.totalUnitCount = assets.count;
+                                                             userInfo:nil];
+        self.mediaGlobalProgress.totalUnitCount = count;
         [self.mediaGlobalProgress addObserver:self
-                             forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
-                                options:NSKeyValueObservingOptionInitial
-                                context:ProgressObserverContext];
+                                   forKeyPath:NSStringFromSelector(@selector(fractionCompleted))
+                                      options:NSKeyValueObservingOptionInitial
+                                      context:ProgressObserverContext];
     } else {
-        self.mediaGlobalProgress.totalUnitCount += assets.count;
+        self.mediaGlobalProgress.totalUnitCount += count;
     }
+
+}
+
+- (void) addMediaAssets:(NSArray *)assets {
     
+    [self prepareMediaProgressForNumberOfAssets:assets.count];    
     
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
