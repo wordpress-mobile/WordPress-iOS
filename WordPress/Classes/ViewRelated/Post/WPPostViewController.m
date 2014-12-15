@@ -1472,6 +1472,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
 }
 
+- (void)cancelUploadOfMediaWithId:(NSString *)uniqueMediaId
+{
+    NSProgress * progress = self.mediaInProgress[uniqueMediaId];
+    if (!progress) {
+        return;
+    }
+    [progress cancel];
+}
+
 - (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
 {
     NSParameterAssert(uniqueMediaId != nil);
@@ -1586,7 +1595,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [strongSelf.editorView removeImage:imageUniqueId];
                         [media remove];
                     } else {
-                        [strongSelf refreshNavigationBarButtons:NO];
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }
                     [strongSelf refreshNavigationBarButtons:NO];
@@ -1731,7 +1739,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         } break;
         case (WPPostViewControllerActionSheetCancelUpload): {
             if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self.editorView removeImage:self.selectedImageId];
+                [self cancelUploadOfMediaWithId:self.selectedImageId];
             }
             self.selectedImageId = nil;
         } break;
