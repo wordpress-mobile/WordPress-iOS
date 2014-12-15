@@ -87,7 +87,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
-@property (nonatomic, strong) UIPopoverController *mediaProgressPopover;
 @property (nonatomic, strong) NSString * selectedImageId;
 
 #pragma mark - Bar Button Items
@@ -124,7 +123,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     _failedMediaAlertView.delegate = nil;
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-    _mediaProgressPopover.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
@@ -1471,17 +1469,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)isMediaUploading
 {
-//	BOOL mediaStillInProgress = NO;
-//	
-//    // First check to see if media is being uploaded
-//	NSSet *mediaFiles = self.post.media;
-//	for (Media *media in mediaFiles) {
-//		if(media.remoteStatus == MediaRemoteStatusPushing) {
-//			return YES;
-//			break;
-//		}
-//	}
-    
     return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
 }
 
@@ -1501,35 +1488,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
     
     self.mediaInProgress[uniqueMediaId] = progress;
-}
-
-- (void)showMediaProgress
-{
-    if (IS_IPAD && self.blogSelectorPopover.isPopoverVisible) {
-        [self.blogSelectorPopover dismissPopoverAnimated:YES];
-        self.blogSelectorPopover = nil;
-    }
-    
-    WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaGlobalProgress childrenProgress:[self.mediaInProgress allValues]];
-    
-    vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
-    
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
-    navController.navigationBar.translucent = NO;
-    navController.navigationBar.barStyle = UIBarStyleBlack;
-    
-    if (IS_IPAD) {
-        vc.preferredContentSize = CGSizeMake(320.0, 500);
-        self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
-        self.mediaProgressPopover.delegate = self;
-        [self.mediaProgressPopover presentPopoverFromBarButtonItem:self.secondaryLeftUIBarButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
-    } else {
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
-        [self presentViewController:navController animated:YES completion:nil];
-    }
 }
 
 - (void)prepareMediaProgressForNumberOfAssets:(NSUInteger) count
