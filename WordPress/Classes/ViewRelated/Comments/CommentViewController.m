@@ -542,10 +542,11 @@ static NSInteger const CVCNumberOfSections = 2;
 
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService replyToCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID content:content success:^(){
+    void (^successBlock)() = ^void() {
         [WPToast showToastWithMessage:successMessage andImage:successImage];
+    };
 
-    } failure:^(NSError *error) {
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
                  cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
@@ -555,7 +556,15 @@ static NSInteger const CVCNumberOfSections = 2;
                                   [weakSelf sendReplyWithNewContent:content];
                               }
                           }];
-    }];
+    };
+
+    if (self.comment.blog.isWPcom) {
+        [self.commentService replyToCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID content:content success:successBlock failure:failureBlock];
+    } else {
+        Comment *reply = [self.commentService createReplyForComment:self.comment];
+        reply.content = content;
+        [self.commentService uploadComment:reply success:successBlock failure:failureBlock];
+    }
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
