@@ -1570,8 +1570,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                             [strongSelf.editorView removeImage:imageUniqueId];
                             [media remove];
                         } else {
-                            [strongSelf.editorView markImageUploadFailed:imageUniqueId];
-                            [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+                            [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                         }
                         [strongSelf refreshNavigationBarButtons:NO];
                     }];
@@ -1812,6 +1811,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (imageId.length == 0){
         return;
     }
+    
+    self.selectedImageId= imageId;
+    
     if ([self.mediaInProgress containsObject:imageId]){
         UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                                   delegate:self
@@ -1819,7 +1821,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                     destructiveButtonTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")otherButtonTitles:nil];
         actionSheet.tag = WPPostViewControllerCancelUploadActionSheetTag;
         [actionSheet showInView:self.view];
-        self.selectedImageId= imageId;
     }
 }
 
