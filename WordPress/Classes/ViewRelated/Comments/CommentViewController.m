@@ -308,7 +308,11 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.isLikeOn = self.comment.isLiked;
 
     if (cell != self.bodyLayoutCell) {
-        [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+        if ([self.comment avatarURLForDisplay]) {
+            [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+        } else {
+            [cell downloadGravatarWithGravatarEmail:[self.comment gravatarEmailForDisplay]];
+        }
     }
 
     __weak __typeof(self) weakSelf = self;
