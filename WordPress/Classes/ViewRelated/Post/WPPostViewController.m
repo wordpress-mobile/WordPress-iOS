@@ -1509,7 +1509,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaInProgress[uniqueMediaId] = progress;
 }
 
-- (void)prepareMediaProgressForNumberOfAssets:(NSUInteger) count
+- (void)prepareMediaProgressForNumberOfAssets:(NSUInteger)count
 {
     if (self.mediaGlobalProgress.isCancelled ||
         self.mediaGlobalProgress.completedUnitCount >= self.mediaGlobalProgress.totalUnitCount){
