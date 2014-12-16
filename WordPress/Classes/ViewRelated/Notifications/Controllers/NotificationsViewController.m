@@ -104,7 +104,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -522,16 +521,19 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         return rowCacheValue.floatValue;
     }
     
-    // Setup the cell
-    NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
-    [self configureCell:layoutCell atIndexPath:indexPath];
+    // Load the Subject + Snippet
+    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
+    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
+    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
     
-    CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    // Old School Height Calculation
+    CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
+    CGFloat cellHeight          = [NoteTableViewCell layoutHeightWithWidth:tableWidth subject:subject snippet:snippet];
     
     // Cache
-    self.cachedRowHeights[indexPath.toString] = @(height);
+    self.cachedRowHeights[indexPath.toString] = @(cellHeight);
 
-    return height;
+    return cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -600,12 +602,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
-    NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
-    NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
-    NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
-    
-    cell.attributedSubject                  = subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
+
+    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
+    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
