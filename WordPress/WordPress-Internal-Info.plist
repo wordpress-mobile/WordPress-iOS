@@ -38,14 +38,14 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>wordpress-oauth-v2</string>
-				<string>wordpress</string>
+				<string>${WPCOM_SCHEME}</string>
 				<string>fb249643311490</string>
 				<string>pocketapp12013</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4.7</string>
+	<string>4700</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>

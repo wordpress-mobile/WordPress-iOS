@@ -141,10 +141,10 @@ DEPENDENCIES:
   - Reachability (= 3.1.1)
   - Simperium (= 0.7.5)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
-  - SVProgressHUD (~> 1.0)
+  - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `0912b7ceadd4cecb97a981e15c54475de98d4f8e`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `3ca5448e107e591414c41d7a68ddb144336576de`)
   - WordPress-iOS-Shared (= 0.1.4)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.0`)
   - WordPressCom-Analytics-iOS (= 0.0.13)
@@ -163,11 +163,14 @@ EXTERNAL SOURCES:
   SocketRocket:
     :branch: master
     :git: https://github.com/jleandroperez/SocketRocket.git
+  SVProgressHUD:
+    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
+    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 0912b7ceadd4cecb97a981e15c54475de98d4f8e
+    :commit: 3ca5448e107e591414c41d7a68ddb144336576de
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -181,13 +184,16 @@ CHECKOUT OPTIONS:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
-    :commit: 3244d812c52cf1b2aca7c4995e2be03f78faea97
+    :commit: 04b9c1d135d7791f6d8b2947b3c53ff3f3b1248d
     :git: https://github.com/jleandroperez/SocketRocket.git
+  SVProgressHUD:
+    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
+    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 0912b7ceadd4cecb97a981e15c54475de98d4f8e
+    :commit: 3ca5448e107e591414c41d7a68ddb144336576de
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -220,7 +226,7 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: 35c273129692d06fe0c3d384e4619ae7a96b9236
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
-  SVProgressHUD: 11ef69ab2582c097479e76905ea916470371fc58
+  SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
