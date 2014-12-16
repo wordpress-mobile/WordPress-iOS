@@ -4,7 +4,16 @@ import Foundation
 extension NotificationBlock
 {
     public func subjectAttributedText() -> NSAttributedString {
-        return textWithRangeStyles(isSubject: true)
+        let richSubjectCacheKey = "richSubject"
+        
+        if let cachedSubject = cacheValueForKey(richSubjectCacheKey) as? NSAttributedString {
+            return cachedSubject
+        }
+        
+        let richSubject = textWithRangeStyles(isSubject: true)
+        setCacheValue(richSubject, forKey: richSubjectCacheKey)
+        
+        return richSubject
     }
 
     public func snippetAttributedText() -> NSAttributedString {
@@ -12,7 +21,15 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
+        let richSnippetCacheKey = "richSnippet"
+        if let cachedSnippet = cacheValueForKey(richSnippetCacheKey) as? NSAttributedString {
+            return cachedSnippet
+        }
+        
+        let richSnippet = NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
+        setCacheValue(richSnippet, forKey: richSnippetCacheKey)
+        
+        return richSnippet
     }
 
     public func richAttributedText() -> NSAttributedString {
@@ -22,7 +39,15 @@ extension NotificationBlock
             return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
-        return textWithRangeStyles(isSubject: false)
+        let richTextCacheKey = "richText"
+        if let cachedText = cacheValueForKey(richTextCacheKey) as? NSAttributedString {
+            return cachedText
+        }
+        
+        let richText = textWithRangeStyles(isSubject: false)
+        setCacheValue(richText, forKey: richTextCacheKey)
+        
+        return richText
     }
     
     public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
@@ -85,4 +110,3 @@ extension NotificationBlock
     
     private typealias Styles = WPStyleGuide.Notifications
 }
-
