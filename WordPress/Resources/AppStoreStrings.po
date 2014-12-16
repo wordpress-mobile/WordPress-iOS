@@ -39,13 +39,6 @@ msgid ""
 "blog, wordpress\n"
 msgstr ""
 
-msgctxt "v4.6-whats-new"
-msgid ""
-"• Various bug fixes."
-"• Improvements to the handling of embeds inside the Reader."
-"• Can now like comments from within the Reader."
-msgstr ""
-
 msgctxt "v4.6.1-whats-new"
 msgid ""
 "• Various bug fixes."
