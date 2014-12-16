@@ -303,7 +303,7 @@ NSString const *NotePostIdKey           = @"post_id";
 
 - (id)cacheValueForKey:(NSString *)key
 {
-    return _dynamicAttributesCache[key];
+    return self.dynamicAttributesCache[key];
 }
 
 - (void)setCacheValue:(id)value forKey:(NSString *)key
@@ -312,7 +312,7 @@ NSString const *NotePostIdKey           = @"post_id";
         return;
     }
     
-    _dynamicAttributesCache[key] = value;
+    self.dynamicAttributesCache[key] = value;
 }
 
 + (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
