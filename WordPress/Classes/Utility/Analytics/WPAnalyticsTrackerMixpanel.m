@@ -9,11 +9,10 @@
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 
-@interface WPAnalyticsTrackerMixpanel() {
-    NSMutableDictionary *_aggregatedStatProperties;
-}
+@interface WPAnalyticsTrackerMixpanel()
 
 @property (nonatomic, strong) NSMutableDictionary *eventsBeingTimed; // <WPAnalyticsTrackerStat, BOOL>
+@property (nonatomic, strong) NSMutableDictionary *aggregatedStatProperties; // <WPAnalyticsTrackerStat, NSDictionary>
 
 @end
 
@@ -25,7 +24,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     self = [super init];
     if (self) {
-        _aggregatedStatProperties = [NSMutableDictionary new];
+        self.aggregatedStatProperties = [NSMutableDictionary new];
         self.eventsBeingTimed = [NSMutableDictionary new];
     }
     return self;
@@ -84,7 +83,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)endSession
 {
-    [_aggregatedStatProperties removeAllObjects];
+    [self.aggregatedStatProperties removeAllObjects];
 }
 
 - (void)refreshMetadata
@@ -653,16 +652,16 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (id)property:(NSString *)property forStat:(WPAnalyticsStat)stat
 {
-    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    NSMutableDictionary *properties = [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     return properties[property];
 }
 
 - (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPAnalyticsStat)stat
 {
-    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    NSMutableDictionary *properties = [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     if (properties == nil) {
         properties = [[NSMutableDictionary alloc] init];
-        [_aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
+        [self.aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
     }
 
     properties[property] = value;
@@ -670,7 +669,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (NSDictionary *)propertiesForStat:(WPAnalyticsStat)stat
 {
-    return [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    return [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
 }
 
 - (void)incrementProperty:(NSString *)property forStat:(WPAnalyticsStat)stat
