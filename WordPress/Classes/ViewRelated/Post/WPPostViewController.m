@@ -1550,12 +1550,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self stopTrackingProgressOfMediaWithId:imageUniqueId];
         [self refreshNavigationBarButtons:NO];
     } failure:^(NSError *error) {
-        self.mediaGlobalProgress.completedUnitCount++;
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:imageUniqueId];
             [self.editorView removeImage:imageUniqueId];
             [media remove];
         } else {
+            self.mediaGlobalProgress.completedUnitCount++;
             [self.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
         }        
     }];
@@ -1599,12 +1599,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                     [strongSelf refreshNavigationBarButtons:NO];
                 } failure:^(NSError *error) {
-                    strongSelf.mediaGlobalProgress.completedUnitCount++;
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                         [strongSelf.editorView removeImage:imageUniqueId];
                         [media remove];
                     } else {
+                        strongSelf.mediaGlobalProgress.completedUnitCount++;
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }
                     [strongSelf refreshNavigationBarButtons:NO];
