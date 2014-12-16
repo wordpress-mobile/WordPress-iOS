@@ -96,7 +96,7 @@
               failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(comment.commentID != nil);
-    __block NSNumber *commentID = comment.commentID;
+    NSNumber *commentID = comment.commentID;
     NSArray *extraParameters = @[
                                  comment.commentID,
                                  @{@"content": comment.content},
