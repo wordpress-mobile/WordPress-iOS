@@ -50,6 +50,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         _tableView.delegate = self;
         _tableView.dataSource = self;
         [_tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:DefaultCellIdentifier];
+        [_tableView reloadData];
     }
     return self;
 }
