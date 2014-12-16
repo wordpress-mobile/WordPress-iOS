@@ -164,8 +164,8 @@ import Foundation
         
         if let unwrappedSubject = snippet {
             let snippetRect         = unwrappedSubject.boundingRectWithSize(maxLabelSize,
-                options: .UsesLineFragmentOrigin,
-                context: nil)
+                                        options: .UsesLineFragmentOrigin,
+                                        context: nil)
             
             cellHeight              += min(snippetRect.height, Settings.snippetMaximumHeight())
         }
