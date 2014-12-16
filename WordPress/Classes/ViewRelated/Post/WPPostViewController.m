@@ -1712,24 +1712,24 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     switch(alertView.tag){
         case (EditPostViewControllerAlertTagFailedMedia): {
-            if (buttonIndex == 1) {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
                 DDLogInfo(@"Saving post even after some media failed to upload");
                 [self savePostAndDismissVC];
             }
             self.failedMediaAlertView = nil;
         } break;
         case (EditPostViewControllerAlertTagSwitchBlogs): {
-            if (buttonIndex == 1) {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self showBlogSelector];
             }
         } break;
         case (EditPostViewControllerAlertCancelMediaUpload): {
-            if (buttonIndex == 1) {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self cancelMediaUploads];
             }
         } break;
         case (EditPostViewControllerAlertTagFailedMediaBeforeEdit): {
-            if (buttonIndex == 1) {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self removeAllFailedMedia];
                 [self.editorView showHTMLSource];
             }
