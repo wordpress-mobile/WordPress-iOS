@@ -79,6 +79,10 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 // Helpers
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+
+- (NotificationBlock *)subjectBlock;
+- (NotificationBlock *)snippetBlock;
+
 - (BOOL)isUnapprovedComment;
 - (void)didChangeOverrides;
 
