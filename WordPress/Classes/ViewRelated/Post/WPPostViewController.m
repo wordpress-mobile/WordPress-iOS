@@ -1892,6 +1892,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         // The image is already uploaded so nothing to here, but in the future we could plug in image actions here
         return;
     }
+
+    //Are we showing another action sheet?
+    if (self.currentActionSheet != nil){
+        return;
+    }
+    
     // Is upload still going?
     if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
         UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
