@@ -1455,9 +1455,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void) refreshMediaProgress
 {
     self.mediaProgressView.hidden = ![self isMediaUploading];
-    self.mediaProgressView.progress = MIN((float)(self.mediaGlobalProgress.completedUnitCount+1)/(float)self.mediaGlobalProgress.totalUnitCount,self.mediaGlobalProgress.fractionCompleted);
+    float fractionOfUploadsCompleted = (float)(self.mediaGlobalProgress.completedUnitCount+1)/(float)self.mediaGlobalProgress.totalUnitCount;
+    self.mediaProgressView.progress = MIN(fractionOfUploadsCompleted ,self.mediaGlobalProgress.fractionCompleted);
     for(NSProgress * progress in [self.mediaInProgress allValues]){
-        if (!(progress.totalUnitCount == 0) && !progress.cancelled){
+        if (progress.totalUnitCount != 0 && !progress.cancelled){
             [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
         }
     }
