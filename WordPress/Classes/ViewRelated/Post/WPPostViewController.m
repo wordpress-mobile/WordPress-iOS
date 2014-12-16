@@ -1896,8 +1896,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                          cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
                                                     destructiveButtonTitle:NSLocalizedString(@"Remove Image", @"User action to remove image that failed upload")
                                                          otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the image"), nil];
-        [actionSheet showInView:self.editorView];
         actionSheet.tag = WPPostViewControllerActionSheetRetryUpload;
+        [actionSheet showInView:self.editorView];        
     }
 }
 
