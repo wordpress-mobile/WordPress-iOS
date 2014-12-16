@@ -123,6 +123,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     tableViewHandler.cacheRowHeights        = true;
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
+    
+    // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
+    [self.tableView reloadData];
+    
     // NOTE:
     // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
     // For that reason, we draw our own separators.
