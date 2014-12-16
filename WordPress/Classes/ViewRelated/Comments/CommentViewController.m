@@ -489,8 +489,16 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (void)updateCommentForNewContent:(NSString *)newContent
 {
-    __typeof(self) __weak weakSelf = self;
+    if (self.comment.blog.isWPcom) {
+        [self updateRESTCommentForNewContent:newContent];
+    } else {
+        [self updateBlogCommentForNewContent:newContent];
+    }
+}
 
+- (void)updateRESTCommentForNewContent:(NSString *)newContent
+{
+    __typeof(self) __weak weakSelf = self;
     [self.commentService updateCommentWithID:self.comment.commentID
                                       siteID:self.comment.blog.blogID
                                      content:newContent
@@ -512,6 +520,39 @@ static NSInteger const CVCNumberOfSections = 2;
                                                                }
                                                            }];
                                      }];
+}
+
+- (void)updateBlogCommentForNewContent:(NSString *)content
+{
+    // Set the new Content Data
+    self.comment.content = content;
+    [self.tableView reloadData];
+    // Hit the backend
+    __typeof(self) __weak weakSelf = self;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService uploadComment:self.comment
+                          success:^{
+                              // The comment might have changed its approval status!
+                              [weakSelf.tableView reloadData];
+                          } failure:^(NSError *error) {
+                              NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
+                                                                    @"Error displayed if a comment fails to get updated");
+                              [UIAlertView showWithTitle:nil
+                                                 message:message
+                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                       otherButtonTitles:@[ NSLocalizedString(@"Try Again", @"Retry an action that failed") ]
+                                                tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                                    if (buttonIndex == alertView.cancelButtonIndex) {
+                                                        [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
+                                                        [weakSelf.tableView reloadData];
+                                                    } else {
+                                                        [weakSelf updateBlogCommentForNewContent:content];
+                                                    }
+                                                }
+                               ];
+
+                          }];
 }
 
 #pragma mark - Replying Comments for iPad
