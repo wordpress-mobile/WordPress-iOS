@@ -31,6 +31,7 @@
 #import "PrivateSiteURLProtocol.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
+#import "WordPress-Swift.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -1494,8 +1495,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
 {
     NSParameterAssert(uniqueMediaId != nil);
-    if (uniqueMediaId && self.mediaInProgress.count > 0) {
-        [self.mediaInProgress removeObjectForKey:uniqueMediaId];
+    if (!uniqueMediaId) {
+        return;
+    }
+    NSProgress * progress = self.mediaInProgress[uniqueMediaId];
+    [self.mediaInProgress removeObjectForKey:uniqueMediaId];
+    if (progress.isCancelled){
+        //on iOS 7 cancelled sub progress don't update the parent progress properly so we need to do it
+        if ( ![UIDevice isOS8] ) {
+            self.mediaGlobalProgress.completedUnitCount++;
+        }
     }
 }
 
