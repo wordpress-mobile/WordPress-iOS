@@ -544,6 +544,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
     [[AMPopTip appearance] setArrowSize:CGSizeMake(12.0, 8.0)];
     [[AMPopTip appearance] setEdgeMargin:5.0];
+    [[AMPopTip appearance] setDelayIn:0.5];
     UIEdgeInsets insets = {6,5,6,5};
     [[AMPopTip appearance] setEdgeInsets:insets];
     popTip.shouldDismissOnTap = YES;
