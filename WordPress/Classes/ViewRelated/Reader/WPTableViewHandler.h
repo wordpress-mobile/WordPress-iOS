@@ -54,6 +54,7 @@
 @property (nonatomic) UITableViewRowAnimation moveRowAnimation;
 @property (nonatomic) UITableViewRowAnimation sectionRowAnimation;
 
+// Note: The tableView instance will be reloaded right during the handler initialization, in order to reset section and row caches.
 - (instancetype)initWithTableView:(UITableView *)tableView;
 - (void)updateTitleForSection:(NSUInteger)section;
 - (void)clearCachedRowHeights;
