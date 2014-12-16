@@ -487,42 +487,7 @@ static NSInteger const CVCNumberOfSections = 2;
     [self presentViewController:navController animated:true completion:nil];
 }
 
-- (void)updateCommentForNewContent:(NSString *)newContent
-{
-    if (self.comment.blog.isWPcom) {
-        [self updateRESTCommentForNewContent:newContent];
-    } else {
-        [self updateBlogCommentForNewContent:newContent];
-    }
-}
-
-- (void)updateRESTCommentForNewContent:(NSString *)newContent
-{
-    __typeof(self) __weak weakSelf = self;
-    [self.commentService updateCommentWithID:self.comment.commentID
-                                      siteID:self.comment.blog.blogID
-                                     content:newContent
-                                     success:^{
-                                         weakSelf.comment.content = newContent;
-                                         [weakSelf.tableView reloadData];
-                                         [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                                     }
-                                     failure:^(NSError *error) {
-                                         [UIAlertView showWithTitle:nil
-                                                            message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
-                                                  cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                               if (buttonIndex == alertView.cancelButtonIndex) {
-                                                                   [weakSelf.tableView reloadData];
-                                                               } else {
-                                                                   [weakSelf updateCommentForNewContent:newContent];
-                                                               }
-                                                           }];
-                                     }];
-}
-
-- (void)updateBlogCommentForNewContent:(NSString *)content
+- (void)updateCommentForNewContent:(NSString *)content
 {
     // Set the new Content Data
     self.comment.content = content;
@@ -547,7 +512,7 @@ static NSInteger const CVCNumberOfSections = 2;
                                                         [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
                                                         [weakSelf.tableView reloadData];
                                                     } else {
-                                                        [weakSelf updateBlogCommentForNewContent:content];
+                                                        [weakSelf updateCommentForNewContent:content];
                                                     }
                                                 }
                                ];
@@ -603,13 +568,9 @@ static NSInteger const CVCNumberOfSections = 2;
                           }];
     };
 
-    if (self.comment.blog.isWPcom) {
-        [self.commentService replyToCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID content:content success:successBlock failure:failureBlock];
-    } else {
-        Comment *reply = [self.commentService createReplyForComment:self.comment];
-        reply.content = content;
-        [self.commentService uploadComment:reply success:successBlock failure:failureBlock];
-    }
+    Comment *reply = [self.commentService createReplyForComment:self.comment];
+    reply.content = content;
+    [self.commentService uploadComment:reply success:successBlock failure:failureBlock];
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
