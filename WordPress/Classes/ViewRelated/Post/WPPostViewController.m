@@ -36,6 +36,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
     EditPostViewControllerAlertTagLinkHelper,
     EditPostViewControllerAlertTagFailedMedia,
+    EditPostViewControllerAlertTagFailedMediaBeforeEdit,
     EditPostViewControllerAlertTagSwitchBlogs,
     EditPostViewControllerAlertCancelMediaUpload,
 };
@@ -649,6 +650,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                         cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                         otherButtonTitles:nil];
     [blogIsCurrentlyBusy show];
+}
+
+- (void)showFailedMediaBeforeEditAlert
+{
+    UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
+                                                           message:NSLocalizedString(@"There are media items in this post that failed to upload to the server. Do you want to remove them?", @"")
+                                                          delegate:self
+                                                 cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                 otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
+    failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
+    [failedMediaBeforeEditAlertView show];
 }
 
 - (void)cancelMediaUploads
@@ -1453,18 +1465,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-	BOOL hasFailedMedia = NO;
-    
-	NSSet *mediaFiles = self.post.media;
-	for (Media *media in mediaFiles) {
-		if(media.remoteStatus == MediaRemoteStatusFailed) {
-			hasFailedMedia = YES;
-			break;
-		}
-	}
-	mediaFiles = nil;
-    
-	return hasFailedMedia;
+    return self.mediaInProgress.count > 0;
 }
 
 - (BOOL)isMediaUploading
@@ -1479,6 +1480,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
     [progress cancel];
+}
+
+- (void) removeAllFailedMedia
+{
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * obj, BOOL *stop) {
+        [self.editorView removeImage:key];
+    }];
+    [self.mediaInProgress removeAllObjects];
 }
 
 - (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
@@ -1700,20 +1709,30 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - AlertView Delegate Methods
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == EditPostViewControllerAlertTagFailedMedia) {
-        if (buttonIndex == 1) {
-            DDLogInfo(@"Saving post even after some media failed to upload");
-			[self savePostAndDismissVC];
-        }
-        self.failedMediaAlertView = nil;
-    } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
-        if (buttonIndex == 1) {
-            [self showBlogSelector];
-        }
-    } else if (alertView.tag == EditPostViewControllerAlertCancelMediaUpload) {
-        if (buttonIndex == 1) {
-            [self cancelMediaUploads];
-        }
+    switch(alertView.tag){
+        case (EditPostViewControllerAlertTagFailedMedia): {
+            if (buttonIndex == 1) {
+                DDLogInfo(@"Saving post even after some media failed to upload");
+                [self savePostAndDismissVC];
+            }
+            self.failedMediaAlertView = nil;
+        } break;
+        case (EditPostViewControllerAlertTagSwitchBlogs): {
+            if (buttonIndex == 1) {
+                [self showBlogSelector];
+            }
+        } break;
+        case (EditPostViewControllerAlertCancelMediaUpload): {
+            if (buttonIndex == 1) {
+                [self cancelMediaUploads];
+            }
+        } break;
+        case (EditPostViewControllerAlertTagFailedMediaBeforeEdit): {
+            if (buttonIndex == 1) {
+                [self removeAllFailedMedia];
+                [self.editorView showHTMLSource];
+            }
+        } break;
     }
     
     return;
@@ -1821,6 +1840,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self showMediaUploadingAlert];
         return NO;        
     }
+    
+    if ([self hasFailedMedia]) {
+        [self showFailedMediaBeforeEditAlert];
+        return NO;
+    }
+    
     return YES;
 }
 
