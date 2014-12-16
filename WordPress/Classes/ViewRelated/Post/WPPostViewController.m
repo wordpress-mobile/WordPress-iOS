@@ -50,7 +50,7 @@ static NSString* const WPProgressImageId = @"WPProgressImageId";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
-NSString* const kOnboardingWasShown = @"kOnboardingWasShown";
+NSString* const OnboardingWasShown = @"OnboardingWasShown";
 
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
@@ -525,13 +525,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)setOnboardingShown:(BOOL)wasShown
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:wasShown forKey:kOnboardingWasShown];
+    [defaults setBool:wasShown forKey:OnboardingWasShown];
     [defaults synchronize];
 }
 
 - (BOOL)wasOnboardingShown
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:kOnboardingWasShown];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:OnboardingWasShown];
 }
 
 - (void)showOnboardingTips
