@@ -80,12 +80,16 @@ import Foundation
         let success = { (image: UIImage) in
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
-        
+
         gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
         
         gravatarURL = url
     }
-    
+
+    public func downloadGravatarWithGravatarEmail(email: NSString?) {
+        gravatarImageView.setImageWithGravatarEmail(email)
+    }
+
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
