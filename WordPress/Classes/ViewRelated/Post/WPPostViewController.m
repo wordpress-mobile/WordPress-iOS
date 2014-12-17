@@ -1506,6 +1506,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.mediaGlobalProgress.completedUnitCount++;
         }
     }
+    [self dismissAssociatedActionSheetIfVisible:uniqueMediaId];
+}
+
+- (void)dismissAssociatedActionSheetIfVisible:(NSString *)uniqueMediaId {
+    // let's see if we where displaying an action sheet for this image
+    if (self.currentActionSheet && [uniqueMediaId isEqualToString:self.selectedImageId]){
+        if (self.currentActionSheet.tag == WPPostViewControllerActionSheetCancelUpload ||
+            self.currentActionSheet.tag == WPPostViewControllerActionSheetRetryUpload ) {
+            [self.currentActionSheet dismissWithClickedButtonIndex:self.currentActionSheet.cancelButtonIndex animated:YES];
+        }
+    }
 }
 
 - (void)trackMediaWithId:(NSString *)uniqueMediaId usingProgress:(NSProgress *)progress
@@ -1564,6 +1575,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [self.editorView removeImage:imageUniqueId];
             [media remove];
         } else {
+            [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             [self.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
         }        
@@ -1613,6 +1625,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [strongSelf.editorView removeImage:imageUniqueId];
                         [media remove];
                     } else {
+                        [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
                         strongSelf.mediaGlobalProgress.completedUnitCount++;
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }
