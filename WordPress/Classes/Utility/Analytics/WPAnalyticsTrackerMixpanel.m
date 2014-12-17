@@ -9,6 +9,13 @@
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 
+@interface WPAnalyticsTrackerMixpanel()
+
+@property (nonatomic, strong) NSMutableDictionary *eventsBeingTimed; // <WPAnalyticsTrackerStat, BOOL>
+@property (nonatomic, strong) NSMutableDictionary *aggregatedStatProperties; // <WPAnalyticsTrackerStat, NSDictionary>
+
+@end
+
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
@@ -17,9 +24,39 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     self = [super init];
     if (self) {
-        _aggregatedStatProperties = [[NSMutableDictionary alloc] init];
+        self.aggregatedStatProperties = [NSMutableDictionary new];
+        self.eventsBeingTimed = [NSMutableDictionary new];
     }
     return self;
+}
+
+- (void)beginTimerForStat:(WPAnalyticsStat)stat
+{
+    WPAnalyticsTrackerMixpanelInstructionsForStat *instructions = [self instructionsForStat:stat];
+    
+    if (instructions == WPAnalyticsStatNoStat) {
+        return;
+    }
+    
+    // Can't use Mixpanel's timer features without an event name
+    if ([instructions.mixpanelEventName length] == 0) {
+        return;
+    }
+    
+    if ([[self.eventsBeingTimed objectForKey:[self convertWPStatToString:stat]] boolValue]) {
+        DDLogWarn(@"Warning - attempted to time the stat(%@) more than once which will result in an incorrect 'Duration' property.", [self convertWPStatToString:stat]);
+    }
+    [self.eventsBeingTimed setObject:@(YES) forKey:[self convertWPStatToString:stat]];
+    [[Mixpanel sharedInstance] timeEvent:instructions.mixpanelEventName];
+}
+
+- (void)endTimerForStat:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
+{
+    if (![[self.eventsBeingTimed objectForKey:[self convertWPStatToString:stat]] boolValue]) {
+        DDLogWarn(@"Warning – attempted to time the stat(%@) without calling %@ – this will result in the event being tracked without a 'Duration' property.", [self convertWPStatToString:stat], NSStringFromSelector(@selector(beginTimerForStat:)));
+    }
+    [self.eventsBeingTimed removeObjectForKey:[self convertWPStatToString:stat]];
+    [self track:stat withProperties:properties];
 }
 
 - (void)beginSession
@@ -46,7 +83,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)endSession
 {
-    [_aggregatedStatProperties removeAllObjects];
+    [self.aggregatedStatProperties removeAllObjects];
 }
 
 - (void)refreshMetadata
@@ -615,16 +652,16 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (id)property:(NSString *)property forStat:(WPAnalyticsStat)stat
 {
-    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    NSMutableDictionary *properties = [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     return properties[property];
 }
 
 - (void)saveProperty:(NSString *)property withValue:(id)value forStat:(WPAnalyticsStat)stat
 {
-    NSMutableDictionary *properties = [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    NSMutableDictionary *properties = [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
     if (properties == nil) {
         properties = [[NSMutableDictionary alloc] init];
-        [_aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
+        [self.aggregatedStatProperties setValue:properties forKey:[self convertWPStatToString:stat]];
     }
 
     properties[property] = value;
@@ -632,7 +669,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (NSDictionary *)propertiesForStat:(WPAnalyticsStat)stat
 {
-    return [_aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
+    return [self.aggregatedStatProperties objectForKey:[self convertWPStatToString:stat]];
 }
 
 - (void)incrementProperty:(NSString *)property forStat:(WPAnalyticsStat)stat
