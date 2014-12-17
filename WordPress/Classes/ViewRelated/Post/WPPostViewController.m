@@ -8,6 +8,7 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <AMPopTip/AMPopTip.h>
 #import <SVProgressHUD.h>
 #import "ContextManager.h"
 #import "Post.h"
@@ -49,6 +50,7 @@ static NSString* const WPProgressImageId = @"WPProgressImageId";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+NSString* const OnboardingWasShown = @"OnboardingWasShown";
 
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
@@ -278,6 +280,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             if ([self shouldHideStatusBarWhileTyping]) {
                 [[UIApplication sharedApplication] setStatusBarHidden:YES
                                                         withAnimation:UIStatusBarAnimationSlide];
+            }
+        } else {
+            // Preview mode...show the onboarding hint the first time through only
+            if (!self.wasOnboardingShown) {
+                [self showOnboardingTips];
+                [self setOnboardingShown:YES];
             }
         }
     }
@@ -510,6 +518,43 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                               otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
     
     [alertView show];
+}
+
+#pragma mark - Onboarding
+
+- (void)setOnboardingShown:(BOOL)wasShown
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:wasShown forKey:OnboardingWasShown];
+    [defaults synchronize];
+}
+
+- (BOOL)wasOnboardingShown
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:OnboardingWasShown];
+}
+
+- (void)showOnboardingTips
+{
+    AMPopTip *popTip = [AMPopTip popTip];
+    CGFloat xValue = IS_IPAD ? CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-20.0 : CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-10.0;
+    CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+    [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
+    [[AMPopTip appearance] setTextColor:[UIColor whiteColor]];
+    [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
+    [[AMPopTip appearance] setArrowSize:CGSizeMake(12.0, 8.0)];
+    [[AMPopTip appearance] setEdgeMargin:5.0];
+    [[AMPopTip appearance] setDelayIn:0.5];
+    UIEdgeInsets insets = {6,5,6,5};
+    [[AMPopTip appearance] setEdgeInsets:insets];
+    popTip.shouldDismissOnTap = YES;
+    popTip.shouldDismissOnTapOutside = YES;
+    [popTip showText:NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.")
+           direction:AMPopTipDirectionDown
+            maxWidth:200
+              inView:self.view
+           fromFrame:targetFrame
+            duration:3];
 }
 
 #pragma mark - Actions
