@@ -13,6 +13,7 @@
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
     [AppRatingUtility initializeForVersion:@"1.0"];
+    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:1];
     [super setUp];
 }
 
