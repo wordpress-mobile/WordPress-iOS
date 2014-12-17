@@ -80,4 +80,26 @@
     XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
 }
 
+- (void)testUserIsntPromptedForAnAppReviewFor461IfPromptedIn46
+{
+    [AppRatingUtility initializeForVersion:@"4.6"];
+    [self createConditionsForPositiveAppReviewPrompt];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [AppRatingUtility ratedCurrentVersion];
+    [AppRatingUtility initializeForVersion:@"4.6.1"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [self createConditionsForPositiveAppReviewPrompt];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+}
+
+- (void)testUserIsPromptedForAnReviewIn461IfWasntPromptedin46
+{
+    [AppRatingUtility initializeForVersion:@"4.6"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [AppRatingUtility initializeForVersion:@"4.6.1"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [self createConditionsForPositiveAppReviewPrompt];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+}
+
 @end
