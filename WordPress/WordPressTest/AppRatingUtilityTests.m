@@ -9,6 +9,9 @@
 @implementation AppRatingUtilityTests
 
 - (void)setUp {
+    NSString *appDomain = [[NSBundle mainBundle] bundleIdentifier];
+    [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
+    
     [AppRatingUtility initializeForVersion:@"1.0"];
     [super setUp];
 }
