@@ -1453,7 +1453,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return [uuid UUIDString];
 }
 
-- (void) refreshMediaProgress
+- (void)refreshMediaProgress
 {
     self.mediaProgressView.hidden = ![self isMediaUploading];
     float fractionOfUploadsCompleted = (float)(self.mediaGlobalProgress.completedUnitCount+1)/(float)self.mediaGlobalProgress.totalUnitCount;
@@ -1484,7 +1484,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [progress cancel];
 }
 
-- (void) removeAllFailedMedia
+- (void)removeAllFailedMedia
 {
     [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * obj, BOOL *stop) {
         [self.editorView removeImage:key];
@@ -1586,7 +1586,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress resignCurrent];
 }
 
-- (void) addMediaAssets:(NSArray *)assets {
+- (void)addMediaAssets:(NSArray *)assets {
     
     [self prepareMediaProgressForNumberOfAssets:assets.count];
     
