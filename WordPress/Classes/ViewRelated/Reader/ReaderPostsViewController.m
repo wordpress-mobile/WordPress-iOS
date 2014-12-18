@@ -702,13 +702,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
     [context performBlock:^{
         ReaderTopic *topicInContext = [self currentTopicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
                 if (success) {
                     success(count, hasMore);
                 }
@@ -729,13 +728,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
     [context performBlock:^{
         ReaderTopic *topicInContext = [self currentTopicInContext:context];
         [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
                 if (success) {
                     success(count, hasMore);
                 }
