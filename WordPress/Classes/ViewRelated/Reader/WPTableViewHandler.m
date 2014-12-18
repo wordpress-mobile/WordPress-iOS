@@ -253,19 +253,20 @@ static CGFloat const DefaultCellHeight = 44.0;
         if ([self.rowsWithInvalidatedHeights containsObject:indexPath]) {
             // Recompute and return the real height.  It will end up in the cache automatically.
             [self.rowsWithInvalidatedHeights removeObject:indexPath];
-            return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+            height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+            return height;
         }
     }
 
     if (self.willRefreshTableViewPreservingOffset) {
         // when refreshing this way we need to calculate actual heights not estimated heights.
-        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+        height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+        return height;
     }
 
     if ([self.delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
         height = [self.delegate tableView:tableView estimatedHeightForRowAtIndexPath:indexPath];
     }
-
     return height;
 }
 
@@ -465,7 +466,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     if (self.willRefreshTableViewPreservingOffset) {
         [self refreshTableViewPreservingOffset];
-        self.willRefreshTableViewPreservingOffset = NO;
         return;
     }
 
@@ -648,9 +648,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     // preceeding rows. Add the delta and any adjustment.
     CGFloat rowHeights = [self totalHeightForRowsAboveIndexPath:newIndexPath];
     rowHeights += (offsetHeightDelta + heightAdjustment);
-
     // Set the tableview to the new offset
     CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
+
     [self.tableView setContentOffset:newOffset];
 
     // Notify the delegate that a refresh has occured. Allows the delegate
@@ -661,6 +661,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     // Clean up
+    self.willRefreshTableViewPreservingOffset = NO;
     [self discardPreservedRowInfo];
 }
 
