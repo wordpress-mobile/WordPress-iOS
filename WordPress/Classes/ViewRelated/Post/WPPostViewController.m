@@ -124,10 +124,11 @@ static NSDictionary *EnabledButtonBarStyle;
     NSAssert([post isKindOfClass:[AbstractPost class]],
              @"There should be no issues in creating a draft post.");
     
-    _ownsPost = YES;
+    if (self = [self initWithPost:post mode:kWPPostViewControllerModeEdit]) {
+        _ownsPost = YES;
+    }
     
-    return [self initWithPost:post
-                         mode:kWPPostViewControllerModeEdit];
+    return self;
 }
 
 - (id)initWithPost:(AbstractPost *)post
