@@ -200,6 +200,8 @@
 
 - (NSDictionary *)parametersWithRemotePost:(RemotePost *)post
 {
+    NSParameterAssert(post.title != nil);
+    NSParameterAssert(post.content != nil);
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"title"] = post.title;
     parameters[@"content"] = post.content;
