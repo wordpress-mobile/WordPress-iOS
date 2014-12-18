@@ -265,7 +265,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         } else {
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
         }
-        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
         NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
         NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
         [postsToDelete minusSet:postsToKeep];
