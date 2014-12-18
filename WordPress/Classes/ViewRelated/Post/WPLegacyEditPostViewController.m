@@ -153,6 +153,7 @@ static NSInteger const MaximumNumberOfPictures = 10;
 
 - (void)viewDidAppear:(BOOL)animated
 {
+    [super viewDidAppear:animated];
     [self refreshButtons];
 }
 
