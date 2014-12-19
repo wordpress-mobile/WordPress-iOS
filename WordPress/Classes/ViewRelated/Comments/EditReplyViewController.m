@@ -7,6 +7,7 @@
 @property (nonatomic, strong) NSNumber                       *siteID;
 @property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
 @property (nonatomic, strong) SuggestionsTableView           *suggestionsTableView;
+@property (nonatomic)         bool                           hasCachedContentOffset;
 @property (nonatomic)         CGPoint                        cachedContentOffset;
 @end
 
@@ -47,7 +48,8 @@
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    self.cachedContentOffset = CGPointMake(NAN,NAN);
+    self.hasCachedContentOffset = false;
+    self.cachedContentOffset = CGPointZero;
     
     if (self.siteID) {
         // attach the suggestions view
@@ -123,7 +125,8 @@
         CGPoint contentOffset = [self.textView contentOffset];
         
         // If we haven't cached the contentOffset already, do so now
-        if (isnan(self.cachedContentOffset.y)) {
+        if (!self.hasCachedContentOffset) {
+            self.hasCachedContentOffset = true;
             self.cachedContentOffset = contentOffset;
         }
         
@@ -137,9 +140,10 @@
         // if the table has collapsed to zero height, and we have a cached content offset
         // restore that offset now to avoid the scrolling jumping suddenly if they add
         // a carriage return after selecting a mention
-        if (! isnan(self.cachedContentOffset.y)) {
+        if (self.hasCachedContentOffset) {
             [self.textView setContentOffset:self.cachedContentOffset animated:YES];
-            self.cachedContentOffset = CGPointMake(NAN, NAN);
+            self.hasCachedContentOffset = false;
+            self.cachedContentOffset = CGPointZero;
         }
     }
 }
