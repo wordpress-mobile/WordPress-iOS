@@ -511,11 +511,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.comment.blog.blogID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
-    
+    BOOL shouldAddSuggestionView = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
     NSNumber *siteID = shouldAddSuggestionView ? self.comment.blog.blogID : nil;
     EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
 
@@ -652,7 +648,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+    return ([self shouldAttachReplyTextView] && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
 }
 
 // if the post is not set for the comment, we don't want to show an empty cell for the post details
