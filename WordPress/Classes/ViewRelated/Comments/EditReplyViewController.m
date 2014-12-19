@@ -23,11 +23,13 @@
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil siteID:(NSNumber *)siteID
 {
-    EditReplyViewController *viewController = [self initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (viewController && siteID) {
-        viewController.siteID = siteID;
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        if (siteID) {
+            _siteID = siteID;
+        }
     }
-    return viewController;
+    
+    return self;
 }
 
 - (void)viewDidLoad
