@@ -235,7 +235,7 @@ replacementString:(NSString *)string
 - (void)updateStringsForI18n
 {
     self.title = NSLocalizedString(@"Jetpack Manage", @"Title for the Jetpack Login view");
-    self.messageLabel.text = NSLocalizedString(@"Sign-in to this app with your WordPress.com account to enable Stats, Jetpack Manage and other great features", @"Main message on Jetpack Manage login screen");
+    self.messageLabel.text = NSLocalizedString(@"Sign in to WordPress.com to enable stats, notifications, and other great features", @"Main message on Jetpack Manage login screen");
     self.learnMoreLabel.text = NSLocalizedString(@"Learn More", @"Link to more information on Jetpack Manage login screen");
     self.lostPasswordLabel.text = NSLocalizedString(@"Lost your password?", nil);
     [self.skipButton setTitle:NSLocalizedString(@"Skip", @"Button to skip the Jetpack Login screen") forState:UIControlStateNormal];
