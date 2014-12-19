@@ -17,4 +17,6 @@ extern NSString *const ReaderTopicTypeTag;
 @property (nonatomic, strong) NSNumber *topicID;
 @property (nonatomic, strong) NSString *type;
 
+- (NSString *)titleForURL;
+
 @end
