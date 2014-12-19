@@ -265,13 +265,8 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    // Proceed only if needed!
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
 
-    if (!shouldAddSuggestionView) {
+    if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
     
@@ -947,11 +942,7 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
-    
+    BOOL shouldAddSuggestionView = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
     NSNumber *siteID = shouldAddSuggestionView ? self.note.metaSiteID : nil;
     EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
     
