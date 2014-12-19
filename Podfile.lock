@@ -20,6 +20,7 @@ PODS:
   - AFNetworking/UIKit (2.3.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - AMPopTip (0.7)
   - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
@@ -120,6 +121,7 @@ PODS:
 
 DEPENDENCIES:
   - AFNetworking (~> 2.3.1)
+  - AMPopTip (~> 0.7)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.7.0)
@@ -201,6 +203,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
+  AMPopTip: dc5bdb3a88bc2ed0a7ac9799e0a5d47c5211721f
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
   CrashlyticsLumberjack: 192a08e07648e4e09d44052356b53ab839cc8a1b
   CTAssetsPickerController: 319a91106b7b323446b39ab944a3f14db0a1ca46
