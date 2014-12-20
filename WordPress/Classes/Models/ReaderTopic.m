@@ -15,4 +15,14 @@ NSString *const ReaderTopicTypeTag = @"tag";
 @dynamic topicID;
 @dynamic type;
 
+- (NSString *)titleForURL
+{
+    NSString *title = self.title;
+    NSArray *components = [self.path componentsSeparatedByString:@"/"];
+    if ([components count] > 2 && [[components lastObject] isEqualToString:@"posts"]) {
+        title = [components objectAtIndex:[components count] - 2];
+    }
+    return title;
+}
+
 @end
