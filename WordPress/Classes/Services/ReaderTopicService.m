@@ -224,7 +224,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *topicName = [topic.title trim];
+    NSString *topicName = [topic titleForURL];
 
     BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
 

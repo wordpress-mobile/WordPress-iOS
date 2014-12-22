@@ -3,17 +3,12 @@ import Foundation
 
 extension UIImageView
 {
-    public func downloadImage(url: NSURL?, placeholderName: String?) {
+    public func downloadImage(url: NSURL?, placeholderImage: UIImage?) {
 
-        downloadImage(url, placeholderName: placeholderName, success: nil, failure: nil)
+        downloadImage(url, placeholderImage: placeholderImage, success: nil, failure: nil)
     }
         
-    public func downloadImage(url: NSURL?, placeholderName: String?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
-
-        // Placeholder, if possible
-        if let unwrappedPlaceholderName = placeholderName {
-            image = UIImage(named: unwrappedPlaceholderName)
-        }
+    public func downloadImage(url: NSURL?, placeholderImage: UIImage?, success: ((UIImage) -> ())?, failure: ((NSError!) -> ())?) {
 
         // Failsafe: Halt if the URL is empty
         if url == nil {
@@ -25,7 +20,7 @@ extension UIImageView
         request.addValue("image/*", forHTTPHeaderField: "Accept")
 
         setImageWithURLRequest(request,
-            placeholderImage: nil,
+            placeholderImage: placeholderImage,
             success: {
                 [weak self]
                 (request: NSURLRequest!, response: NSHTTPURLResponse!, image: UIImage!) -> Void in
