@@ -718,7 +718,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self hasChanges]) {
+    if ([self postHasChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -878,9 +878,20 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)hasChanges
+- (BOOL)canSavePost
 {
-    return [self.post hasChanged];
+    return (self.post.content.length > 0
+            && self.post.postTitle.length > 0
+            && [self postHasChanges]);
+}
+
+- (BOOL)postHasChanges
+{
+    // TODO: out of the scope of my current changes... but the second condition in this method
+    // feels like something that belongs inside [self.post hasChanged] - it doesn't seem to be
+    // logic that's specific to this VC.
+    //
+    return [self.post hasChanged] || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
 }
 
 #pragma mark - UI Manipulation
@@ -942,7 +953,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
-		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+		BOOL updateEnabled = [self canSavePost];
+        
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
 		NSArray* rightBarButtons = @[self.editBarButtonItem,
