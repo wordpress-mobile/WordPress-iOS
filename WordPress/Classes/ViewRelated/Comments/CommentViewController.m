@@ -33,7 +33,6 @@ static NSInteger const CVCNumberOfSections = 2;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
-@property (nonatomic, strong) CommentService *commentService;
 
 @end
 
@@ -382,16 +381,24 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService toggleLikeStatusForComment:self.comment siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
-    }];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService toggleLikeStatusForComment:self.comment
+                                        siteID:self.comment.blog.blogID
+                                       success:nil
+                                       failure:^(NSError *error) {
+                                           [weakSelf.tableView reloadData];
+                                       }];
 }
 
 - (void)approveComment
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService approveComment:self.comment success:nil failure:^(NSError *error) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService approveComment:self.comment success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
@@ -400,7 +407,9 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
@@ -415,7 +424,9 @@ static NSInteger const CVCNumberOfSections = 2;
             return;
         }
 
-        [weakSelf.commentService deleteComment:weakSelf.comment success:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
 
         // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
@@ -440,7 +451,9 @@ static NSInteger const CVCNumberOfSections = 2;
             return;
         }
 
-        [weakSelf.commentService spamComment:self.comment success:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+        [commentService spamComment:weakSelf.comment success:nil failure:nil];
     };
 
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
@@ -481,27 +494,29 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService updateCommentWithID:self.comment.commentID
-                                      siteID:self.comment.blog.blogID
-                                     content:newContent
-                                     success:^{
-                                         weakSelf.comment.content = newContent;
-                                         [weakSelf.tableView reloadData];
-                                         [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                                     }
-                                     failure:^(NSError *error) {
-                                         [UIAlertView showWithTitle:nil
-                                                            message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
-                                                  cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                               if (buttonIndex == alertView.cancelButtonIndex) {
-                                                                   [weakSelf.tableView reloadData];
-                                                               } else {
-                                                                   [weakSelf updateCommentForNewContent:newContent];
-                                                               }
-                                                           }];
-                                     }];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService updateCommentWithID:self.comment.commentID
+                                 siteID:self.comment.blog.blogID
+                                content:newContent
+                                success:^{
+                                    weakSelf.comment.content = newContent;
+                                    [weakSelf.tableView reloadData];
+                                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                                }
+                                failure:^(NSError *error) {
+                                    [UIAlertView showWithTitle:nil
+                                                       message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
+                                             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                                             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                                          if (buttonIndex == alertView.cancelButtonIndex) {
+                                                              [weakSelf.tableView reloadData];
+                                                          } else {
+                                                              [weakSelf updateCommentForNewContent:newContent];
+                                                          }
+                                                      }];
+                                }];
 }
 
 #pragma mark - Replying Comments for iPad
@@ -536,33 +551,27 @@ static NSInteger const CVCNumberOfSections = 2;
 
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService replyToCommentWithID:self.comment.commentID siteID:self.comment.blog.blogID content:content success:^(){
-        [WPToast showToastWithMessage:successMessage andImage:successImage];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService replyToCommentWithID:self.comment.commentID
+                                  siteID:self.comment.blog.blogID
+                                 content:content
+                                 success:^(){
+                                     [WPToast showToastWithMessage:successMessage andImage:successImage];
 
-    } failure:^(NSError *error) {
-        [UIAlertView showWithTitle:nil
-                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                              if (buttonIndex != alertView.cancelButtonIndex) {
-                                  [weakSelf sendReplyWithNewContent:content];
-                              }
-                          }];
-    }];
+                                 } failure:^(NSError *error) {
+                                     [UIAlertView showWithTitle:nil
+                                                        message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
+                                              cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                                              otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                                                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                                           if (buttonIndex != alertView.cancelButtonIndex) {
+                                                               [weakSelf sendReplyWithNewContent:content];
+                                                           }
+                                                       }];
+                                 }];
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
-}
-
-#pragma mark - Setter/Getters
-
-- (CommentService *)commentService
-{
-    if (!_commentService) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        _commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    }
-    return _commentService;
 }
 
 #pragma mark - Keyboard Management
