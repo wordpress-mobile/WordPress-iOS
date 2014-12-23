@@ -563,6 +563,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self setAuthenticating:NO withStatusMessage:nil];
     JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
     [jetpackLoginViewController setBlog:_blog];
+    jetpackLoginViewController.context = JetpackLoginContextNUX;
     jetpackLoginViewController.canBeSkipped = YES;
     jetpackLoginViewController.completionBlock = ^(WPAccount *account){
         if (account) {

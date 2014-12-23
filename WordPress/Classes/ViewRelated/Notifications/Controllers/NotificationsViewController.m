@@ -710,6 +710,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
 
         [jetpackLoginViewController setBlog:[self jetpackBlog]];
+        jetpackLoginViewController.context = JetpackLoginContextNotifications;
         jetpackLoginViewController.completionBlock = ^(WPAccount *account){
             [self.navigationController popToViewController:self animated:YES];
         };

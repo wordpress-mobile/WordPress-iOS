@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *messageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *learnMoreLabel;
 @property (weak, nonatomic) IBOutlet UILabel *lostPasswordLabel;
+
+@property (strong, nonatomic) NSNumber *siteCount;
 @end
 
 @implementation JetpackLoginViewController
@@ -43,6 +45,7 @@
     [self updateUserField];
     [self.skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
     [self updateSkipButton];
+    [self updateMessage];
     [self updateStringsForI18n];
 }
 
@@ -169,10 +172,19 @@ replacementString:(NSString *)string
     }
 }
 
+- (void)setSiteCount:(NSNumber *)siteCount
+{
+    _siteCount = siteCount;
+    if (self.isViewLoaded) {
+        [self updateMessage];
+    }
+}
+
 - (void)setBlog:(Blog *)blog
 {
     self.username = [blog getOptionValue:@"jetpack_user_login"];
     self.email = [blog getOptionValue:@"jetpack_user_email"];
+    self.siteCount = [blog getOptionValue:@"jetpack_site_count"];
     self.siteID = [blog jetpackBlogID];
 }
 
@@ -181,6 +193,14 @@ replacementString:(NSString *)string
     _canBeSkipped = canBeSkipped;
     if (self.isViewLoaded) {
         [self updateSkipButton];
+    }
+}
+
+- (void)setContext:(JetpackLoginContextType)context
+{
+    _context = context;
+    if (self.isViewLoaded) {
+        [self updateMessage];
     }
 }
 
@@ -235,10 +255,48 @@ replacementString:(NSString *)string
 - (void)updateStringsForI18n
 {
     self.title = NSLocalizedString(@"Jetpack Manage", @"Title for the Jetpack Login view");
-    self.messageLabel.text = NSLocalizedString(@"Sign in to WordPress.com to enable stats, notifications, and other great features", @"Main message on Jetpack Manage login screen");
     self.learnMoreLabel.text = NSLocalizedString(@"Learn More", @"Link to more information on Jetpack Manage login screen");
     self.lostPasswordLabel.text = NSLocalizedString(@"Lost your password?", nil);
     [self.skipButton setTitle:NSLocalizedString(@"Skip", @"Button to skip the Jetpack Login screen") forState:UIControlStateNormal];
+}
+
+- (void)updateMessage
+{
+    /*
+     If we don't know how many sites the user has, let's assume it's more than one
+     */
+    BOOL singleSiteVariant = [self.siteCount unsignedIntegerValue] == 1;
+
+    NSString *message;
+
+    switch (self.context) {
+        case JetpackLoginContextNotifications:
+            if (singleSiteVariant) {
+                message = NSLocalizedString(@"Get notifications, and view stats for your site anywhere, anytime", @"Jetpack Login message when launched for notifications");
+            } else {
+                message = NSLocalizedString(@"Get notifications, view stats, manage and publish content to all of your sites", @"Jetpack Login message when launched for notifications");
+            }
+            break;
+
+        case JetpackLoginContextStats:
+            if (singleSiteVariant) {
+                message = NSLocalizedString(@"View stats, and get notifications for your site anywhere, anytime", @"Jetpack Login message when launched for notifications");
+            } else {
+                message = NSLocalizedString(@"View stats, get notifications, manage and publish content to all of your sites", @"Jetpack Login message when launched for notifications");
+            }
+            break;
+
+        case JetpackLoginContextNUX:
+        default:
+            if (singleSiteVariant) {
+                message = NSLocalizedString(@"View stats, and get notifications for your site anywhere, anytime", @"Jetpack Login message when launched for notifications");
+            } else {
+                message = NSLocalizedString(@"Manage and publish content to all your sites, and view stats and notifications all in one place", @"Jetpack Login message when launched for notifications");
+            }
+            break;
+    }
+
+    self.messageLabel.text = message;
 }
 
 - (void)updateBottomLayoutConstraintWithNotification:(NSNotification *)notification
