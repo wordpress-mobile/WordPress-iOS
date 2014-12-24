@@ -14,14 +14,19 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "WPTabBarController.h"
+#import "WPFontManager.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
-CGFloat const blavatarImageSize = 50.f;
+// this height is selected to make sure 2 lines of text will fit in the header
+static CGFloat const BLVCHeaderViewHeight = 55.0;
+static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
+@property (nonatomic, strong) UIView *headerView;
+
 @end
 
 @implementation BlogListViewController
@@ -105,9 +110,12 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = @"Blogs";
-    self.editButtonItem.title = NSLocalizedString(@"Toggle Sites", @"");
+    // tableHeaderView set to nil here otherwise after edit the spacing gets messed up since we set headerView during edit
+    self.tableView.tableHeaderView = nil;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = NSLocalizedString(@"Toggle Sites", @"");
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"Edit";
+
+    [self setupHeaderView];
     
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
@@ -119,6 +127,32 @@ CGFloat const blavatarImageSize = 50.f;
 
         [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
+}
+
+- (void)setupHeaderView
+{
+    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BLVCHeaderViewHeight)];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 0;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    label.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+    [self.headerView addSubview:label];
+
+    // Layout
+    NSDictionary *views = NSDictionaryOfVariableBindings(label);
+    NSDictionary *metrics = @{@"padding": @(BLVCHeaderViewLabelPadding)};
+    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(padding)-[label]-(padding)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(padding)-[label]-(padding)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -423,6 +457,8 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
+
+    self.tableView.tableHeaderView = editing ? self.headerView : nil;
 
     // Animate view to editing mode
     __block UIView *snapshot;
