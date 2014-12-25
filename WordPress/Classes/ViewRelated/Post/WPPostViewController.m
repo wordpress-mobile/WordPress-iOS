@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagLinkHelper,
     EditPostViewControllerAlertTagFailedMedia,
     EditPostViewControllerAlertTagFailedMediaBeforeEdit,
+    EditPostViewControllerAlertTagFailedMediaBeforeSave,
     EditPostViewControllerAlertTagSwitchBlogs,
     EditPostViewControllerAlertCancelMediaUpload,
 };
@@ -653,10 +654,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [blogIsCurrentlyBusy show];
 }
 
+- (void)showFailedMediaAlert
+{
+    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
+                                                                              message:NSLocalizedString(@"Some media uploads failed. saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+                                                                             delegate:self
+                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
+    failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
+    [failedMediaAlertView show];
+
+    
+}
+
 - (void)showFailedMediaBeforeEditAlert
 {
     UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"There are media items in this post that failed to upload to the server. Do you want to remove them?", @"")
+                                                           message:NSLocalizedString(@"There are media items in this post that failed to upload to the server. Do you want to remove them?", @"Asks the user if they want to remove their failed media from the post before editing the html")
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"No", @"")
                                                  otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
@@ -727,6 +741,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     if ([self isMediaUploading]) {
         [self showMediaUploadingAlert];
+        return;
+    }
+    
+    if ([self hasFailedMedia]) {
+        [self showMediaFailedAlert];
         return;
     }
     
@@ -1762,6 +1781,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [self.editorView showHTMLSource];
             }
         } break;
+        case (EditPostViewControllerAlertTagFailedMediaBeforeSave): {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
+                [self removeAllFailedMedia];
+                [self stopEditing];
+                [self savePostAndDismissVC];
+            }
+        }
     }
     
     return;
