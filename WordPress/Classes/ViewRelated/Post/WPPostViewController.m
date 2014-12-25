@@ -1467,7 +1467,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-    return self.mediaInProgress.count > 0;
+    __block BOOL hasFailedMedia = NO;
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+        if (progress.totalUnitCount == 0){
+            hasFailedMedia = YES;
+        }
+    }];
+    return hasFailedMedia;
 }
 
 - (BOOL)isMediaUploading
