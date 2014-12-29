@@ -5,13 +5,19 @@ import Foundation
 {
     // MARK: - Public Properties
     public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+        set {
+            nameLabel.text  = newValue ?? String()
+        }
+        get {
+            return nameLabel.text
         }
     }
     public var snippet: String? {
-        didSet {
-            snippetLabel.text = snippet ?? String()
+        set {
+            snippetLabel.text = newValue ?? String()
+        }
+        get {
+            return snippetLabel.text
         }
     }
     
