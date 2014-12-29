@@ -21,18 +21,27 @@ import Foundation
         }
     }
     public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+        set {
+            nameLabel.text  = newValue
+        }
+        get {
+            return nameLabel.text
         }
     }
     public var timestamp: String? {
-        didSet {
-            timestampLabel.text  = timestamp ?? String()
+        set {
+            timestampLabel.text  = newValue
+        }
+        get {
+            return timestampLabel.text
         }
     }
     public var site: String? {
-        didSet {
-            siteLabel.text = site ?? String()
+        set {
+            siteLabel.text = newValue
+        }
+        get {
+            return siteLabel.text
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -65,15 +74,21 @@ import Foundation
             refreshBottomSpacing()
         }
     }
-    public var isLikeOn: Bool = false {
-        didSet {
-            btnLike.selected = isLikeOn
+    public var isLikeOn: Bool {
+        set {
+            btnLike.selected = newValue
+        }
+        get {
+            return btnLike.selected
         }
     }
-    public var isApproveOn: Bool = false {
-        didSet {
-            btnApprove.selected = isApproveOn
+    public var isApproveOn: Bool {
+        set {
+            btnApprove.selected = newValue
             refreshApprovalColors()
+        }
+        get {
+            return btnApprove.selected
         }
     }
 

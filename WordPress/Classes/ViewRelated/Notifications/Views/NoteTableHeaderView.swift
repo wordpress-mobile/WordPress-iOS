@@ -5,16 +5,22 @@ import Foundation
 {
     // MARK: - Public Properties
     public var title: String? {
-        didSet {
-            titleLabel.text = title?.uppercaseString ?? String()
+        set {
+            titleLabel.text = newValue?.uppercaseString
             setNeedsLayout()
+        }
+        get {
+            return titleLabel.text
         }
     }
     
     public var separatorColor: UIColor? {
-        didSet {
-            topSeparator.backgroundColor    = separatorColor ?? UIColor.clearColor()
-            bottomSeparator.backgroundColor = separatorColor ?? UIColor.clearColor()
+        set {
+            topSeparator.backgroundColor    = newValue
+            bottomSeparator.backgroundColor = newValue
+        }
+        get {
+            return topSeparator.backgroundColor
         }
     }
     
@@ -87,13 +93,13 @@ import Foundation
 
     
     // MARK: - Constants
-    private let imageOrigin     = CGPoint(x: 10, y: 5)
-    private let titleOrigin     = CGPoint(x: 30, y: 4)
-    private let titleHeight     = CGFloat(16)
-    private let imageName       = "reader-postaction-time"
+    private let imageOrigin         = CGPoint(x: 10, y: 5)
+    private let titleOrigin         = CGPoint(x: 30, y: 4)
+    private let titleHeight         = CGFloat(16)
+    private let imageName           = "reader-postaction-time"
     
-    private let separatorHeight = CGFloat(1) / UIScreen.mainScreen().scale
-    private let maximumWidth    = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
+    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
+    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
     // MARK: - Properties
     private var topSeparator:       UIView!
