@@ -18,27 +18,39 @@ import Foundation
             }
         }
     }
-    public var showsSeparator: Bool = false {
-        didSet {
-            separatorView.hidden = !showsSeparator
+    public var showsSeparator: Bool {
+        set {
+            separatorView.hidden = !newValue
+        }
+        get {
+            return separatorView.hidden == false
         }
     }
     public var attributedSubject: NSAttributedString? {
-        didSet {
-            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
+        set {
+            subjectLabel.attributedText = newValue
             setNeedsLayout()
+        }
+        get {
+            return subjectLabel.attributedText
         }
     }
     public var attributedSnippet: NSAttributedString? {
-        didSet {
-            snippetLabel.attributedText = attributedSnippet ?? NSAttributedString()
+        set {
+            snippetLabel.attributedText = newValue
             refreshNumberOfLines()
             setNeedsLayout()
         }
+        get {
+            return snippetLabel.attributedText
+        }
     }
     public var noticon: NSString? {
-        didSet {
-            noticonLabel.text = noticon ?? String()
+        set {
+            noticonLabel.text = newValue
+        }
+        get {
+            return noticonLabel.text
         }
     }
     
