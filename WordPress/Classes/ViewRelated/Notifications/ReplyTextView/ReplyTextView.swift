@@ -26,32 +26,47 @@ import Foundation
     public var onReply: ((String) -> ())?
     
     public var text: String! {
-        didSet {
-            textView.text = text
+        set {
+            textView.text = newValue ?? String()
             refreshInterface()
+        }
+        get {
+            return textView.text
         }
     }
     public var placeholder: String! {
-        didSet {
-            placeholderLabel.text = placeholder
+        set {
+            placeholderLabel.text = newValue ?? String()
+        }
+        get {
+            return placeholderLabel.text
         }
     }
 
     public var replyText: String! {
-        didSet {
-            replyButton.setTitle(replyText, forState: .Normal)
+        set {
+            replyButton.setTitle(newValue, forState: .Normal)
+        }
+        get {
+            return replyButton.titleForState(.Normal)
         }
     }
     
-    public var autocorrectionType: UITextAutocorrectionType = .Yes {
-        didSet {
-            textView.autocorrectionType = autocorrectionType
+    public var autocorrectionType: UITextAutocorrectionType {
+        set {
+            textView.autocorrectionType = newValue
+        }
+        get {
+            return textView.autocorrectionType
         }
     }
     
-    public var keyboardType: UIKeyboardType = .Default {
-        didSet {
-            textView.keyboardType = keyboardType
+    public var keyboardType: UIKeyboardType {
+        set {
+            textView.keyboardType = newValue
+        }
+        get {
+            return textView.keyboardType
         }
     }
     
