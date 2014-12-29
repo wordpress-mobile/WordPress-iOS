@@ -160,6 +160,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         _trackedViewDisplay = true;
     }
 
+    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+    [self.tableView deselectSelectedRowWithAnimation:true];
+    
     // Refresh the UI
     [self updateLastSeenTime];
     [self resetApplicationBadge];
