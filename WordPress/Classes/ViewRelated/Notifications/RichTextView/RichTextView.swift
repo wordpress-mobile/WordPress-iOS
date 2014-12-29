@@ -73,15 +73,21 @@ import Foundation
         }
     }
 
-    public var selectable: Bool = true {
-        didSet {
-            textView?.selectable = selectable
+    public var selectable: Bool {
+        set {
+            textView?.selectable = newValue
+        }
+        get {
+            return textView.selectable
         }
     }
     
-    public var dataDetectorTypes: UIDataDetectorTypes = .None {
-        didSet {
-            textView?.dataDetectorTypes = dataDetectorTypes
+    public var dataDetectorTypes: UIDataDetectorTypes {
+        set {
+            textView?.dataDetectorTypes = newValue
+        }
+        get {
+            return textView.dataDetectorTypes
         }
     }
     
