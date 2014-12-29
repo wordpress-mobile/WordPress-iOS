@@ -17,7 +17,7 @@ import Foundation
             attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.blockRegularStyle)
         }
         get {
-            return attributedCommentText?.string ?? String()
+            return attributedCommentText?.string
         }
     }
     
