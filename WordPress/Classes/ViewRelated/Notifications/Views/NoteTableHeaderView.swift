@@ -5,16 +5,23 @@ import Foundation
 {
     // MARK: - Public Properties
     public var title: String? {
-        didSet {
-            titleLabel.text = title?.uppercaseString ?? String()
+        set {
+            titleLabel.text = newValue?.uppercaseString ?? String()
             setNeedsLayout()
+        }
+        get {
+            return titleLabel.text
         }
     }
     
     public var separatorColor: UIColor? {
-        didSet {
-            topSeparator.backgroundColor    = separatorColor ?? UIColor.clearColor()
-            bottomSeparator.backgroundColor = separatorColor ?? UIColor.clearColor()
+        set {
+            let newColor                    = newValue ?? UIColor.clearColor()
+            topSeparator.backgroundColor    = newColor
+            bottomSeparator.backgroundColor = newColor
+        }
+        get {
+            return topSeparator.backgroundColor
         }
     }
     
