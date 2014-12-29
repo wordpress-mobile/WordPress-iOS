@@ -28,7 +28,7 @@ import Foundation
     
     public var name: String? {
         set {
-            nameLabel.text  = newValue ?? String()
+            nameLabel.text  = newValue
         }
         get {
             return nameLabel.text
@@ -36,7 +36,7 @@ import Foundation
     }
     public var blogTitle: String? {
         set {
-            blogLabel.text  = newValue ?? String()
+            blogLabel.text  = newValue
         }
         get {
             return blogLabel.text

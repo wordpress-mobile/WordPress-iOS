@@ -6,7 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var title: String? {
         set {
-            titleLabel.text = newValue?.uppercaseString ?? String()
+            titleLabel.text = newValue?.uppercaseString
             setNeedsLayout()
         }
         get {
@@ -94,13 +94,13 @@ import Foundation
 
     
     // MARK: - Constants
-    private let imageOrigin     = CGPoint(x: 10, y: 5)
-    private let titleOrigin     = CGPoint(x: 30, y: 4)
-    private let titleHeight     = CGFloat(16)
-    private let imageName       = "reader-postaction-time"
+    private let imageOrigin         = CGPoint(x: 10, y: 5)
+    private let titleOrigin         = CGPoint(x: 30, y: 4)
+    private let titleHeight         = CGFloat(16)
+    private let imageName           = "reader-postaction-time"
     
-    private let separatorHeight = CGFloat(1) / UIScreen.mainScreen().scale
-    private let maximumWidth    = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
+    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
+    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
     // MARK: - Properties
     private var topSeparator:       UIView!
