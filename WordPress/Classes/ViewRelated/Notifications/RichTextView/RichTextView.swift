@@ -38,7 +38,7 @@ import Foundation
     // MARK: - Properties    
     public var contentInset: UIEdgeInsets {
         set {
-            textView?.contentInset = newValue
+            textView.contentInset = newValue
         }
         get {
             return textView.contentInset
@@ -47,7 +47,7 @@ import Foundation
 
     public var textContainerInset: UIEdgeInsets {
         set {
-            textView?.textContainerInset = newValue
+            textView.textContainerInset = newValue
         }
         get {
             return textView.textContainerInset
@@ -66,7 +66,7 @@ import Foundation
     
     public var editable: Bool {
         set {
-            textView?.editable = newValue
+            textView.editable = newValue
         }
         get {
             return textView.editable
@@ -75,7 +75,7 @@ import Foundation
 
     public var selectable: Bool {
         set {
-            textView?.selectable = newValue
+            textView.selectable = newValue
         }
         get {
             return textView.selectable
@@ -84,7 +84,7 @@ import Foundation
     
     public var dataDetectorTypes: UIDataDetectorTypes {
         set {
-            textView?.dataDetectorTypes = newValue
+            textView.dataDetectorTypes = newValue
         }
         get {
             return textView.dataDetectorTypes
@@ -93,19 +93,19 @@ import Foundation
     
     public override var backgroundColor: UIColor? {
         set {
-            textView?.backgroundColor = newValue
+            textView.backgroundColor = newValue
         }
         get {
-            return textView?.backgroundColor
+            return textView.backgroundColor
         }
     }
     
     public var linkTextAttributes: [NSObject : AnyObject]! {
         set {
-            textView?.linkTextAttributes = newValue
+            textView.linkTextAttributes = newValue
         }
         get {
-            return textView?.linkTextAttributes
+            return textView.linkTextAttributes
         }
     }
     
