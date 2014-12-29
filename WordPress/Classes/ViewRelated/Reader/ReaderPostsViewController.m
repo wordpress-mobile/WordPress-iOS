@@ -682,6 +682,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
+    // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
+    // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
+    // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
+    // methods are called. However, check here just in case there is an unnexpected edgecase. 
+    if (self.contextForSync) {
+        return;
+    }
+
     if (!self.currentTopic) {
         __weak __typeof(self) weakSelf = self;
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
