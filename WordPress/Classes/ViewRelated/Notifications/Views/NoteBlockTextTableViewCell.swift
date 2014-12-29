@@ -7,7 +7,7 @@ import Foundation
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
         set {
-            textView.attributedText = newValue ?? NSAttributedString()
+            textView.attributedText = newValue
             setNeedsLayout()
         }
         get {
