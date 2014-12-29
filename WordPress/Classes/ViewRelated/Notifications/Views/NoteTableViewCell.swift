@@ -23,12 +23,12 @@ import Foundation
             separatorView.hidden = !newValue
         }
         get {
-            return !separatorView.hidden
+            return separatorView.hidden == false
         }
     }
     public var attributedSubject: NSAttributedString? {
         set {
-            subjectLabel.attributedText = newValue ?? NSAttributedString()
+            subjectLabel.attributedText = newValue
             setNeedsLayout()
         }
         get {
@@ -37,7 +37,7 @@ import Foundation
     }
     public var attributedSnippet: NSAttributedString? {
         set {
-            snippetLabel.attributedText = newValue ?? NSAttributedString()
+            snippetLabel.attributedText = newValue
             refreshNumberOfLines()
             setNeedsLayout()
         }
@@ -47,7 +47,7 @@ import Foundation
     }
     public var noticon: NSString? {
         set {
-            noticonLabel.text = newValue ?? String()
+            noticonLabel.text = newValue
         }
         get {
             return noticonLabel.text

@@ -22,7 +22,7 @@ import Foundation
     }
     public var name: String? {
         set {
-            nameLabel.text  = newValue ?? String()
+            nameLabel.text  = newValue
         }
         get {
             return nameLabel.text
@@ -30,7 +30,7 @@ import Foundation
     }
     public var timestamp: String? {
         set {
-            timestampLabel.text  = newValue ?? String()
+            timestampLabel.text  = newValue
         }
         get {
             return timestampLabel.text
@@ -38,7 +38,7 @@ import Foundation
     }
     public var site: String? {
         set {
-            siteLabel.text = newValue ?? String()
+            siteLabel.text = newValue
         }
         get {
             return siteLabel.text

@@ -6,7 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var name: String? {
         set {
-            nameLabel.text  = newValue ?? String()
+            nameLabel.text  = newValue
         }
         get {
             return nameLabel.text
@@ -14,7 +14,7 @@ import Foundation
     }
     public var snippet: String? {
         set {
-            snippetLabel.text = newValue ?? String()
+            snippetLabel.text = newValue
         }
         get {
             return snippetLabel.text
