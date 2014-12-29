@@ -16,9 +16,8 @@ import Foundation
     
     public var separatorColor: UIColor? {
         set {
-            let newColor                    = newValue ?? UIColor.clearColor()
-            topSeparator.backgroundColor    = newColor
-            bottomSeparator.backgroundColor = newColor
+            topSeparator.backgroundColor    = newValue
+            bottomSeparator.backgroundColor = newValue
         }
         get {
             return topSeparator.backgroundColor
