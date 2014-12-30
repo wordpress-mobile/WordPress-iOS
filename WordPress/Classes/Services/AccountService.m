@@ -229,5 +229,17 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return [results firstObject];
 }
 
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
+{
+    [[account restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSDictionary *responseDictionary = (NSDictionary *)responseObject;
+        account.email = responseDictionary[@"email"];
+        NSString *primaryBlogId = responseObject[@"primary_blog"];
+        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
+    }];
+}
 
 @end
