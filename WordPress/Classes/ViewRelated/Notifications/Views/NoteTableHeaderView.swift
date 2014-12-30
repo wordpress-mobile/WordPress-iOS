@@ -59,6 +59,7 @@ import Foundation
         let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
         let titleWidth              = frameWidth - (imageOriginX * 2) - imageView.frame.width
         let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
+        let bottomSeparatorY        = frameHeight - separatorHeight
         
         if frameWidth > maximumWidth {
             frame.origin.x          = (frameWidth - maximumWidth) * 0.5;
@@ -71,8 +72,8 @@ import Foundation
         titleLabel.frame.origin     = CGPoint(x: titleOriginX, y: titleOriginY)
         titleLabel.frame.size       = CGSize(width: titleWidth, height: titleHeight)
         
-        topSeparator.frame          = CGRect(x: 0, y: 0,           width: frameWidth, height: separatorHeight)
-        bottomSeparator.frame       = CGRect(x: 0, y: frameHeight, width: frameWidth, height: separatorHeight)
+        topSeparator.frame          = CGRect(x: 0, y: 0,                width: frameWidth, height: separatorHeight)
+        bottomSeparator.frame       = CGRect(x: 0, y: bottomSeparatorY, width: frameWidth, height: separatorHeight)
     }
     
     // MARK - Private Helpers
