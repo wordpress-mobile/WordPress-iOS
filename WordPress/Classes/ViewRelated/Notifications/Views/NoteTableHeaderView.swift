@@ -57,7 +57,7 @@ import Foundation
         let frameWidth              = frame.width
         let frameHeight             = NoteTableHeaderView.headerHeight()
         let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
-        let titleWidth              = frameWidth - imageOriginX * 2 - imageView.frame.width
+        let titleWidth              = frameWidth - (imageOriginX * 2) - imageView.frame.width
         let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
         
         if frameWidth > maximumWidth {
