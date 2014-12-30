@@ -4,6 +4,6 @@
 
 @interface AccountServiceRemoteREST : NSObject <AccountServiceRemote, ServiceRemoteREST>
 
-- (void)getUserDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure;
+- (void)getDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure;
 
 @end

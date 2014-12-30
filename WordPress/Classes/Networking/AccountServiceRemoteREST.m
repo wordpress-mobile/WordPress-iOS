@@ -34,7 +34,7 @@
           }];
 }
 
-- (void)getUserDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure
+- (void)getDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"me";
     [self.api GET:path
@@ -42,7 +42,7 @@
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
                   NSString *email = responseObject[@"email"];
-                  NSString *primaryBlogId = responseObject[@"primary_blog"];
+                  NSNumber *primaryBlogId = responseObject[@"primary_blog"];
                   NSMutableDictionary *userDetails = [NSMutableDictionary new];
                   if (email) {
                       userDetails[@"email"] = email;
