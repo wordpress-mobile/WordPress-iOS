@@ -101,7 +101,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     }
 
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:defaultAccount.restApi];
-    [remote getUserDetailsWithSuccess:^(NSDictionary *userDetails) {
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
         if ([[userDetails stringForKey:@"email"] length] > 0) {
             [[Mixpanel sharedInstance].people set:@"$email" to:[userDetails stringForKey:@"email"]];
             [userDefaults setBool:YES forKey:EmailAddressRetrievedKey];
