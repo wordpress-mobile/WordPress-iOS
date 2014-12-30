@@ -233,9 +233,9 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
 - (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
 {
     AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    [remote getUserDetailsWithSuccess:^(NSDictionary *userDetails) {
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
         account.email = userDetails[@"email"];
-        NSString *primaryBlogId = userDetails[@"primary_blog"];
+        NSNumber *primaryBlogId = userDetails[@"primary_blog"];
         account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     } failure:^(NSError *error) {
