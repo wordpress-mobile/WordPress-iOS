@@ -27,17 +27,3 @@
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text;
 
 @end
-
-@protocol SuggestableView
-
-@optional
-
-/*
- * Child views of a UIViewController should implement this method so the
- * view controller can prompt them to replace recently typed text with the
- * suggested text the user picked
- */
-- (void)replaceTextAtCaret:(NSString *)text withSuggestion:(NSString *)suggestion;
-
-@end
-
