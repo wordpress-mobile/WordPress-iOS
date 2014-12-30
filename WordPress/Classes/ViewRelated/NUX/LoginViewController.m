@@ -898,6 +898,11 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  _userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+
+                                 // once we create the WordPress.com account, we want to update account details for it
+                                 NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                                 [accountService updateEmailAndDefaultBlogForWordPressComAccount:[accountService defaultWordPressComAccount]];
                              } failure:^(NSError *error) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  [self displayRemoteError:error];
