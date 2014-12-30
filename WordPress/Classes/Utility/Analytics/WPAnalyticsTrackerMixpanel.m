@@ -8,6 +8,7 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
+#import "AccountServiceRemoteREST.h"
 
 @implementation WPAnalyticsTrackerMixpanel
 
@@ -99,14 +100,14 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         return;
     }
 
-    [[defaultAccount restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        if ([[response stringForKey:@"email"] length] > 0) {
-            [[Mixpanel sharedInstance].people set:@"$email" to:[response stringForKey:@"email"]];
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:defaultAccount.restApi];
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
+        if ([[userDetails stringForKey:@"email"] length] > 0) {
+            [[Mixpanel sharedInstance].people set:@"$email" to:[userDetails stringForKey:@"email"]];
             [userDefaults setBool:YES forKey:EmailAddressRetrievedKey];
             [userDefaults synchronize];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint");
     }];
 }
