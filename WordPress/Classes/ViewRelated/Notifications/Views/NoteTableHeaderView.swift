@@ -6,8 +6,11 @@ import Foundation
     // MARK: - Public Properties
     public var title: String? {
         set {
-            titleLabel.text = newValue?.uppercaseString
-            setNeedsLayout()
+            // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
+            if let unwrappedTitle = newValue?.uppercaseString {
+                titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: Style.headerRegularStyle)
+                setNeedsLayout()
+            }
         }
         get {
             return titleLabel.text
@@ -41,8 +44,8 @@ import Foundation
     public override var frame: CGRect {
         didSet {
             if frame.width > maximumWidth {
-                super.frame.origin.x = (frame.width - maximumWidth) * 0.5
-                super.frame.size.width = maximumWidth
+                super.frame.origin.x    = (frame.width - maximumWidth) * 0.5
+                super.frame.size.width  = maximumWidth
             }
         }
     }
@@ -50,31 +53,36 @@ import Foundation
     // MARK: - View Methods
     public override func layoutSubviews() {
         super.layoutSubviews()
-        let width = frame.width
-        if width > maximumWidth {
-            frame.origin.x  = (width - maximumWidth) * 0.5;
+        
+        let frameWidth              = frame.width
+        let frameHeight             = NoteTableHeaderView.headerHeight()
+        let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
+        let titleWidth              = frameWidth - imageOriginX * 2 - imageView.frame.width
+        let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
+        
+        if frameWidth > maximumWidth {
+            frame.origin.x          = (frameWidth - maximumWidth) * 0.5;
         }
         
-        frame.size.height           = NoteTableHeaderView.headerHeight()
-        imageView.frame.origin      = imageOrigin
+        frame.size.height           = frameHeight
         
-        titleLabel.frame.origin     = titleOrigin
-        titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
+        imageView.frame.origin      = CGPoint(x: imageOriginX, y: imageOriginY)
         
-        topSeparator.frame          = CGRect(x: 0, y: 0, width: bounds.width, height: separatorHeight)
-        bottomSeparator.frame       = CGRect(x: 0, y: bounds.height, width: bounds.width, height: separatorHeight)
+        titleLabel.frame.origin     = CGPoint(x: titleOriginX, y: titleOriginY)
+        titleLabel.frame.size       = CGSize(width: titleWidth, height: titleHeight)
+        
+        topSeparator.frame          = CGRect(x: 0, y: 0,           width: frameWidth, height: separatorHeight)
+        bottomSeparator.frame       = CGRect(x: 0, y: frameHeight, width: frameWidth, height: separatorHeight)
     }
     
     // MARK - Private Helpers
     private func setupSubviews() {
-        backgroundColor             = WPStyleGuide.Notifications.headerBackgroundColor
+        backgroundColor             = Style.headerBackgroundColor
         
         titleLabel                  = UILabel()
         titleLabel.textAlignment    = .Left
         titleLabel.numberOfLines    = 0;
         titleLabel.lineBreakMode    = .ByWordWrapping
-        titleLabel.font             = WPStyleGuide.Notifications.headerFont
-        titleLabel.textColor        = WPStyleGuide.Notifications.headerTextColor
         titleLabel.backgroundColor  = UIColor.clearColor()
         titleLabel.shadowOffset     = CGSizeZero
         addSubview(titleLabel)
@@ -84,26 +92,29 @@ import Foundation
         imageView.sizeToFit()
         addSubview(imageView)
 
-        topSeparator                = UIView(frame: CGRect(x: 0, y: 0, width: bounds.width, height: separatorHeight))
+        topSeparator                = UIView(frame: CGRectZero)
         addSubview(topSeparator)
         
-        bottomSeparator             = UIView(frame: CGRect(x: 0, y: bounds.height, width: bounds.width, height: separatorHeight))
+        bottomSeparator             = UIView(frame: CGRectZero)
         addSubview(bottomSeparator)
     }
 
     
     // MARK: - Constants
-    private let imageOrigin         = CGPoint(x: 10, y: 5)
-    private let titleOrigin         = CGPoint(x: 30, y: 4)
-    private let titleHeight         = CGFloat(16)
-    private let imageName           = "reader-postaction-time"
+    private let imageOriginX        : CGFloat   = 10
+    private let titleOriginX        : CGFloat   = 30
+    private let titleHeight         : CGFloat   = 16
+    private let imageName           : String    = "reader-postaction-time"
     
-    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
-    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
+    private let separatorHeight     : CGFloat   = 1 / UIScreen.mainScreen().scale
+    private let maximumWidth        : CGFloat   = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
     // MARK: - Properties
     private var topSeparator:       UIView!
     private var bottomSeparator:    UIView!
+    
+    // MARK: - Aliases
+    typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Outlets
     private var imageView:          UIImageView!
