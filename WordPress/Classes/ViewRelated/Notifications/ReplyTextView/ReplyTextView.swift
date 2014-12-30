@@ -1,13 +1,13 @@
 import Foundation
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate, SuggestableView
 @objc public protocol ReplyTextViewDelegate : UITextViewDelegate
 {
     optional func textView(textView: UITextView, didTypeWord word: String)
 }
 
 
+@objc public class ReplyTextView : UIView, UITextViewDelegate
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -76,6 +76,17 @@ import Foundation
         }
     }
     
+    
+    // MARK: - Public Methods
+    public func replaceTextAtCaret(text: String!, withText replacement: String!) {
+        let textToReplace: NSString = text ?? NSString();
+        var selectedRange: UITextRange = textView.selectedTextRange!
+        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        textView.replaceRange(newRange, withText: replacement)
+    }
+    
+    
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
@@ -119,14 +130,6 @@ import Foundation
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
-    // MARK: - SuggestableView methods
-    public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
-        let textToReplace: NSString = text;
-        var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
-        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
-        textView.replaceRange(newRange, withText: suggestion)
-    }
     
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {
