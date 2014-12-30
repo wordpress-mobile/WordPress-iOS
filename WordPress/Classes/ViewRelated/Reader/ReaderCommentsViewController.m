@@ -33,7 +33,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
                                             CommentContentViewDelegate,
-                                            UITextViewDelegate,
+                                            ReplyTextViewDelegate,
                                             WPContentSyncHelperDelegate,
                                             WPTableViewHandlerDelegate,
                                             SuggestionsTableViewDelegate>
@@ -938,18 +938,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     [self preventPendingMediaLayoutInCells:NO];
 }
-#pragma mark - SuggestionsTableViewDelegate
 
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
-{
-    if ([self.suggestionsTableView showSuggestionsForWord:word]) {
-        // we're showing suggestions, so allow them to tap on one
-        self.tapOffKeyboardGesture.enabled = NO;
-    } else {
-        // we're not showing any suggestions, enable tap off detection
-        self.tapOffKeyboardGesture.enabled = YES;
-    }    
-}
+
+#pragma mark - SuggestionsTableViewDelegate
 
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
@@ -958,7 +949,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.tapOffKeyboardGesture.enabled = YES;
 }
 
-#pragma mark - ReaderCommentCell Delegate methods
 
 #pragma mark - CommentContentView Delegate methods
 
@@ -1071,6 +1061,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     self.tapOffKeyboardGesture.enabled = YES;
     return YES;
+}
+
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
+{
+    if ([self.suggestionsTableView showSuggestionsForWord:word]) {
+        // we're showing suggestions, so allow them to tap on one
+        self.tapOffKeyboardGesture.enabled = NO;
+    } else {
+        // we're not showing any suggestions, enable tap off detection
+        self.tapOffKeyboardGesture.enabled = YES;
+    }
 }
 
 @end
