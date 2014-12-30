@@ -2,6 +2,12 @@ import Foundation
 
 
 @objc public class ReplyTextView : UIView, UITextViewDelegate, SuggestableView
+@objc public protocol ReplyTextViewDelegate : UITextViewDelegate
+{
+    optional func textView(textView: UITextView, didTypeWord word: String)
+}
+
+
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -21,7 +27,7 @@ import Foundation
     
     
     // MARK: - Public Properties
-    public weak var delegate: UITextViewDelegate?
+    public weak var delegate: ReplyTextViewDelegate?
     
     public var onReply: ((String) -> ())?
     
@@ -89,21 +95,16 @@ import Foundation
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
-                
-        if shouldChange {
-            if let suggestionsDelegate = delegate as? SuggestionsTableViewDelegate {
-                if suggestionsDelegate.respondsToSelector(Selector("view:didTypeInWord:")) {
-                    
-                    let textViewText: NSString = textView.text
-                    let prerange = NSMakeRange(0, range.location)
-                    let pretext: NSString = textViewText.substringWithRange(prerange) + text
-                    let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                    let lastWord: NSString = words.last as NSString
-                
-                    suggestionsDelegate.view?(textView, didTypeInWord: lastWord)
-                    
-                }
-            }
+        let respondsToDidType = delegate?.respondsToSelector(Selector("textView:didTypeWord:")) ?? false
+
+        if shouldChange && respondsToDidType {
+            let textViewText: NSString = textView.text
+            let prerange = NSMakeRange(0, range.location)
+            let pretext: NSString = textViewText.substringWithRange(prerange) + text
+            let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let lastWord: NSString = words.last as NSString
+            
+            delegate?.textView?(textView, didTypeWord: lastWord)
         }
         
         return shouldChange
