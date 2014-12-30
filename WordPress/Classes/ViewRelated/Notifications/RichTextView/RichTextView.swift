@@ -92,11 +92,8 @@ import Foundation
     }
     
     public override var backgroundColor: UIColor? {
-        set {
-            textView.backgroundColor = newValue
-        }
-        get {
-            return textView.backgroundColor
+        didSet {
+            textView?.backgroundColor = backgroundColor
         }
     }
     
