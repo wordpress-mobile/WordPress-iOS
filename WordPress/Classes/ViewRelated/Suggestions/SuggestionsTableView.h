@@ -20,12 +20,6 @@
 @optional
 
 /*
- * Child views (e.g. UITextView) of a UIViewController can call this method on the VC to have the
- * UIViewController update the SuggestionsTableView with appropriate suggestions (if any)
-*/
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word;
-
-/*
  * If the user picks a suggestion from the SuggestionsTableView, the SuggestionsTableView
  * will call this method to have the UIViewController prompt the appropriate child
  * to replace the search term with the suggestion (e.g. at the caret)
