@@ -38,6 +38,22 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     [DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
 }
 
++ (NSDictionary *)defaultDTCoreTextOptions
+{
+    NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 5px 10px 0;}";
+    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
+    return @{
+             DTDefaultFontFamily:@"Open Sans",
+             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
+             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
+             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+             DTDefaultLinkDecoration:@NO,
+             DTDefaultStyleSheet:cssStylesheet
+             };
+}
+
 - (void)dealloc
 {
     _delegate = nil;
@@ -56,7 +72,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
         _mediaArray = [NSMutableArray array];
         _mediaIndexPathsNeedingLayout = [NSMutableArray array];
         _mediaIndexPathsPendingDownload = [NSMutableArray array];
-        _textOptions = [WPStyleGuide defaultDTCoreTextOptions];
+        _textOptions = [[self class] defaultDTCoreTextOptions];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
