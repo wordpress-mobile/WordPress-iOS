@@ -101,13 +101,13 @@ import Foundation
 
     
     // MARK: - Constants
-    private let imageOriginX        : CGFloat   = 10
-    private let titleOriginX        : CGFloat   = 30
-    private let titleHeight         : CGFloat   = 16
-    private let imageName           : String    = "reader-postaction-time"
+    private let imageOriginX        = CGFloat(10)
+    private let titleOriginX        = CGFloat(30)
+    private let titleHeight         = CGFloat(16)
+    private let imageName           = "reader-postaction-time"
     
-    private let separatorHeight     : CGFloat   = 1 / UIScreen.mainScreen().scale
-    private let maximumWidth        : CGFloat   = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
+    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
+    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
     // MARK: - Properties
     private var topSeparator:       UIView!

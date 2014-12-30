@@ -267,12 +267,12 @@ import Foundation
 
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                : CGSize    = CGSize(width: 37.0, height: 37.0)
-    private let separatorHeight                     : CGFloat   = 1
-    private let buttonWidth                         : CGFloat   = 55
-    private let buttonSpacing                       : CGFloat   = 20
-    private let actionsHeight                       : CGFloat   = 34
-    private let actionsTop                          : CGFloat   = 11
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
+    private let separatorHeight                     = CGFloat(1)
+    private let buttonWidth                         = CGFloat(55)
+    private let buttonSpacing                       = CGFloat(20)
+    private let actionsHeight                       = CGFloat(34)
+    private let actionsTop                          = CGFloat(11)
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
