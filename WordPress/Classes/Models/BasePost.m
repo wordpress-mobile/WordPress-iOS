@@ -221,7 +221,7 @@
 
 #pragma mark - Unsaved Changes
 
-- (BOOL)hasLocalOrRemoteChanges
+- (BOOL)hasUnsavedChanges
 {
     return [self hasLocalChanges] || [self hasRemoteChanges];
 }

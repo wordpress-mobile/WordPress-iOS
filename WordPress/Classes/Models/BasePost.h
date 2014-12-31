@@ -67,7 +67,7 @@ typedef enum {
  *              methods hasLocalChanges and hasRemoteChanges instead.
  *  @returns    YES if there are unsaved changes, NO otherwise.
  */
-- (BOOL)hasLocalOrRemoteChanges;
+- (BOOL)hasUnsavedChanges;
 
 /**
  *  @brief      Call this method to know if the post has local changes.
