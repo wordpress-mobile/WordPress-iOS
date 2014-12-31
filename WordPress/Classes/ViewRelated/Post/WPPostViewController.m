@@ -718,7 +718,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self.post hasLocalOrRemoteChanges]) {
+    if ([self.post hasUnsavedChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -881,7 +881,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)canSavePost
 {
     return ((self.post.content.length > 0 || self.post.postTitle.length > 0)
-            && [self.post hasLocalOrRemoteChanges]);
+            && [self.post hasUnsavedChanges]);
 }
 
 #pragma mark - UI Manipulation
