@@ -32,7 +32,6 @@ typedef enum {
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
-@property (readonly) BOOL hasChanged;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 - (NSArray *)availableStatuses;
@@ -59,5 +58,27 @@ typedef enum {
 // Subclass methods
 - (NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
+
+#pragma mark - Unsaved Changes
+
+/**
+ *  @brief      Call this method to know if the post has either local or remote unsaved changes.
+ *  @details    There should be no need to override this method.  Consider overriding
+ *              methods hasLocalChanges and hasRemoteChanges instead.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
+ */
+- (BOOL)hasLocalOrRemoteChanges;
+
+/**
+ *  @brief      Call this method to know if the post has local changes.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
+ */
+- (BOOL)hasLocalChanges;
+
+/**
+ *  @brief      Call this method to know if the post has remote changes.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
+ */
+- (BOOL)hasRemoteChanges;
 
 @end

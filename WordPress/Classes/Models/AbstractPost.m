@@ -129,55 +129,6 @@
     return [self primitiveValueForKey:@"original"];
 }
 
-- (BOOL)hasChanged
-{
-    if (![self isRevision]) {
-        return NO;
-    }
-
-    if ([self hasSiteSpecificChanges]) {
-        return YES;
-    }
-
-    AbstractPost *original = (AbstractPost *)self.original;
-
-    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
-    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""])) {
-        return NO;
-    }
-
-    // We need the extra check since [nil isEqual:nil] returns NO
-    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
-        return YES;
-    }
-
-    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
-        return YES;
-    }
-
-    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
-        return YES;
-    }
-
-    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
-        return YES;
-    }
-
-    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
-        return YES;
-    }
-
-    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
-        return YES;
-    }
-
-    if (self.hasRemote == NO) {
-        return YES;
-    }
-
-    return NO;
-}
-
 - (BOOL)hasSiteSpecificChanges
 {
     if (![self isRevision]) {
@@ -254,7 +205,7 @@
 
 - (BOOL)hasUnsavedChanges
 {
-    return [self hasRevision] && [self.revision hasChanged];
+    return [self hasRevision] && [self.revision hasLocalOrRemoteChanges];
 }
 
 - (void)findComments
@@ -296,6 +247,59 @@
 - (NSURL *)avatarURLForDisplay
 {
     return [NSURL URLWithString:self.blog.blavatarUrl];
+}
+
+#pragma mark - Post
+
+- (BOOL)hasLocalChanges
+{
+    if (![self isRevision]) {
+        return NO;
+    }
+    
+    if ([self hasSiteSpecificChanges]) {
+        return YES;
+    }
+    
+    AbstractPost *original = (AbstractPost *)self.original;
+    
+    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
+    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""])) {
+        return NO;
+    }
+    
+    // We need the extra check since [nil isEqual:nil] returns NO
+    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
+        return YES;
+    }
+    
+    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
+        return YES;
+    }
+    
+    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
+        return YES;
+    }
+    
+    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
+        return YES;
+    }
+    
+    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
+        return YES;
+    }
+    
+    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)hasRemoteChanges
+{
+    return (self.hasRemote == NO
+            || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
 @end

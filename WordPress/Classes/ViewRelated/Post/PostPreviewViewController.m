@@ -243,7 +243,7 @@
 
 - (void)refreshWebView
 {
-    BOOL edited = [self.apost hasChanged];
+    BOOL edited = [self.apost hasLocalChanges];
     self.loadingView.hidden = NO;
 
     if (edited) {
