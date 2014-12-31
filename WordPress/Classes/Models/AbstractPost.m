@@ -203,11 +203,6 @@
     return self.revision != nil;
 }
 
-- (BOOL)hasUnsavedChanges
-{
-    return [self hasRevision] && [self.revision hasLocalOrRemoteChanges];
-}
-
 - (void)findComments
 {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
