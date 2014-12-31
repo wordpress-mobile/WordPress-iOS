@@ -201,7 +201,13 @@
 - (NSDictionary *)parametersWithRemotePost:(RemotePost *)post
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    parameters[@"title"] = post.title;
+    
+    if (post.title) {
+        parameters[@"title"] = post.title;
+    } else {
+        parameters[@"title"] = @"";
+    }
+    
     parameters[@"content"] = post.content;
     parameters[@"status"] = post.status;
     parameters[@"password"] = post.password ? post.password : @"";
