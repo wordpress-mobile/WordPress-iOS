@@ -718,7 +718,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self postHasChanges]) {
+    if ([self.post hasLocalOrRemoteChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -880,18 +880,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)canSavePost
 {
-    return (self.post.content.length > 0
-            && self.post.postTitle.length > 0
-            && [self postHasChanges]);
-}
-
-- (BOOL)postHasChanges
-{
-    // TODO: out of the scope of my current changes... but the second condition in this method
-    // feels like something that belongs inside [self.post hasChanged] - it doesn't seem to be
-    // logic that's specific to this VC.
-    //
-    return [self.post hasChanged] || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+    return ((self.post.content.length > 0 || self.post.postTitle.length > 0)
+            && [self.post hasLocalOrRemoteChanges]);
 }
 
 #pragma mark - UI Manipulation

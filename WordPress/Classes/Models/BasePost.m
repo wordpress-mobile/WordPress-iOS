@@ -99,11 +99,6 @@
     self.status = [BasePost statusForTitle:aTitle];
 }
 
-- (BOOL)hasChanged
-{
-    return NO;
-}
-
 - (BOOL)isScheduled
 {
     return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);
@@ -222,6 +217,23 @@
         return [NSString stringWithFormat:@"%@…", statusText];
     }
     return statusText;
+}
+
+#pragma mark - Unsaved Changes
+
+- (BOOL)hasLocalOrRemoteChanges
+{
+    return [self hasLocalChanges] || [self hasRemoteChanges];
+}
+
+- (BOOL)hasLocalChanges
+{
+    return NO;
+}
+
+- (BOOL)hasRemoteChanges
+{
+    return NO;
 }
 
 @end
