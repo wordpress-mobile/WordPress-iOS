@@ -92,10 +92,13 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
+    // we want to keep email and default blog information up to date, this is probably the best place to do it
+    [accountService updateEmailAndDefaultBlogForWordPressComAccount:defaultAccount];
+
     if (defaultAccount) {
         self.tableView.tableHeaderView = self.headerView;
         [self.headerView setUsername:defaultAccount.username];
-        [self.headerView setGravatarEmail:@"beau@automattic.com"];
+        [self.headerView setGravatarEmail:defaultAccount.email];
     }
     else {
         self.tableView.tableHeaderView = nil;
