@@ -919,6 +919,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                     [self dismiss];
                                     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
+
+                                    // once blogs for the accounts are synced, we want to update account details for it
+                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];

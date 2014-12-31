@@ -253,13 +253,15 @@ static CGFloat const DefaultCellHeight = 44.0;
         if ([self.rowsWithInvalidatedHeights containsObject:indexPath]) {
             // Recompute and return the real height.  It will end up in the cache automatically.
             [self.rowsWithInvalidatedHeights removeObject:indexPath];
-            return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+            height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+            return height;
         }
     }
 
     if (self.willRefreshTableViewPreservingOffset) {
         // when refreshing this way we need to calculate actual heights not estimated heights.
-        return [self tableView:tableView heightForRowAtIndexPath:indexPath];
+        height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+        return height;
     }
 
     if ([self.delegate respondsToSelector:@selector(tableView:estimatedHeightForRowAtIndexPath:)]) {
@@ -286,7 +288,6 @@ static CGFloat const DefaultCellHeight = 44.0;
             [self cacheRowHeight:height forIndexPath:indexPath];
         }
     }
-
     return height;
 }
 
@@ -344,7 +345,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableView:heightForFooterInSection:)]) {
         return [self.delegate tableView:tableView heightForFooterInSection:section];
     }
-    
+
     // Remove footer height for all but last section
     return section == [[self.resultsController sections] count] - 1 ? UITableViewAutomaticDimension : 1.0;
 }
@@ -355,7 +356,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableView:viewForFooterInSection:)]) {
         return [self.delegate tableView:tableView viewForFooterInSection:section];
     }
-    
+
     return nil;
 }
 
@@ -398,7 +399,6 @@ static CGFloat const DefaultCellHeight = 44.0;
         self.needsRefreshAfterScroll = NO;
         [self refreshTableViewPreservingOffset];
     }
-
     if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)]) {
         [self.delegate scrollViewDidEndDecelerating:scrollView];
     }
@@ -425,7 +425,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     if (!fetchRequest) {
         return nil;
     }
-    
+
     NSManagedObjectContext *moc = [self managedObjectContext];
     _resultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:[self fetchRequest]
                                                              managedObjectContext:moc
@@ -465,7 +465,6 @@ static CGFloat const DefaultCellHeight = 44.0;
 {
     if (self.willRefreshTableViewPreservingOffset) {
         [self refreshTableViewPreservingOffset];
-        self.willRefreshTableViewPreservingOffset = NO;
         return;
     }
 
@@ -583,7 +582,6 @@ static CGFloat const DefaultCellHeight = 44.0;
         self.needsRefreshAfterScroll = YES;
         return;
     }
-    self.shouldRefreshTableViewPreservingOffset = NO;
 
     // Make sure its necessary to account for previously existing rows.
     // We check here vs in `controllerWillChangeContent:` in order to reload
@@ -648,7 +646,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     // preceeding rows. Add the delta and any adjustment.
     CGFloat rowHeights = [self totalHeightForRowsAboveIndexPath:newIndexPath];
     rowHeights += (offsetHeightDelta + heightAdjustment);
-
     // Set the tableview to the new offset
     CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
     [self.tableView setContentOffset:newOffset];
@@ -661,6 +658,8 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     // Clean up
+    self.shouldRefreshTableViewPreservingOffset = NO;
+    self.willRefreshTableViewPreservingOffset = NO;
     [self discardPreservedRowInfo];
 }
 
