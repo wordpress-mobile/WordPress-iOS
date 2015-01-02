@@ -104,10 +104,6 @@ extension WPStyleGuide
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
 
-        public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockSeparatorColor : blockUnapprovedSideColor
-        }
-
         public static func blockTimestampColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedTextColor
         }
