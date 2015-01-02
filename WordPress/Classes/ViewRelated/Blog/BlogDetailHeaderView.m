@@ -13,6 +13,8 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
 
+@property (nonatomic, strong) NSLayoutConstraint *subtitleConstraint;
+
 @end
 
 @implementation BlogDetailHeaderView
@@ -42,6 +44,10 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     [self.blavatarImageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
     [self.titleLabel setText:blog.blogName];
     [self.subtitleLabel setText:blog.displayURL];
+
+    // If there is no blog name, we want to vertically align the subtitle
+    float spaceBetweenTitleAndSubtitle = blog.blogName ? BlogDetailHeaderViewLabelHeight : BlogDetailHeaderViewLabelHeight / 2.f;
+    self.subtitleConstraint.constant = spaceBetweenTitleAndSubtitle;
 }
 
 #pragma mark - Private Methods
@@ -64,10 +70,18 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(labelHeight)]-0-[_subtitleLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_titleLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
+    self.subtitleConstraint = [NSLayoutConstraint constraintWithItem:_subtitleLabel
+                                                           attribute:NSLayoutAttributeTop
+                                                           relatedBy:NSLayoutRelationEqual
+                                                              toItem:self
+                                                           attribute:NSLayoutAttributeTop
+                                                          multiplier:1
+                                                            constant:0];
+    [self addConstraint:self.subtitleConstraint];
     [super setNeedsUpdateConstraints];
 }
 
