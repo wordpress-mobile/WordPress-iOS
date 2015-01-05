@@ -258,11 +258,6 @@
     
     AbstractPost *original = (AbstractPost *)self.original;
     
-    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
-    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""])) {
-        return NO;
-    }
-    
     // We need the extra check since [nil isEqual:nil] returns NO
     if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
         return YES;

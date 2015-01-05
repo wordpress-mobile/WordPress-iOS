@@ -62,6 +62,13 @@ typedef enum {
 #pragma mark - Unsaved Changes
 
 /**
+ *  @brief      Wether the post can be saved or not.
+ *
+ *  @returns    YES if the post can be saved, NO otherwise.
+ */
+- (BOOL)canSave;
+
+/**
  *  @brief      Call this method to know if the post has either local or remote unsaved changes.
  *  @details    There should be no need to override this method.  Consider overriding
  *              methods hasLocalChanges and hasRemoteChanges instead.

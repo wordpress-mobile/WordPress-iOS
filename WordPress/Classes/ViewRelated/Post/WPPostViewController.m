@@ -878,12 +878,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)canSavePost
-{
-    return ((self.post.content.length > 0 || self.post.postTitle.length > 0)
-            && [self.post hasUnsavedChanges]);
-}
-
 #pragma mark - UI Manipulation
 
 /**
@@ -943,7 +937,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
-		BOOL updateEnabled = [self canSavePost];
+		BOOL updateEnabled = [self.post canSave];
         
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
