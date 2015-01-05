@@ -40,7 +40,9 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 - (void)setBlog:(Blog *)blog
 {
     [self.blavatarImageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-    [self.titleLabel setText:blog.blogName];
+
+    // if the blog name is missing, we want to show the blog displayURL instead
+    [self.titleLabel setText:(blog.blogName ? blog.blogName : blog.displayURL)];
     [self.subtitleLabel setText:blog.displayURL];
 }
 
