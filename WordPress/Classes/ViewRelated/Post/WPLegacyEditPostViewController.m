@@ -519,7 +519,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
     }
 
-    BOOL updateEnabled = [self canSavePost];
+    BOOL updateEnabled = [self.post canSave];
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 }
 
@@ -561,12 +561,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 # pragma mark - Model State Methods
-
-- (BOOL)canSavePost
-{
-    return ((self.post.content.length > 0 || self.post.postTitle.length > 0)
-            && [self.post hasUnsavedChanges]);
-}
 
 - (void)createRevisionOfPost
 {
