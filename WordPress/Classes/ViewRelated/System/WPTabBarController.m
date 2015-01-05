@@ -375,6 +375,11 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     return (self.tabBarController.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
+- (void)setBadgeValueForMeTab:(NSString *)badgeValue
+{
+    [self.tabBar.items[WPTabMe] setBadgeValue:badgeValue];
+}
+
 #pragma mark - Helpers
 
 - (UIOffset)tabBarTitleOffset {
