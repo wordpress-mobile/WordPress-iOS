@@ -654,7 +654,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [blogIsCurrentlyBusy show];
 }
 
-- (void)showFailedMediaAlert
+- (void)showMediaFailedRemovalAlert
 {
     UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
                                                                               message:NSLocalizedString(@"Some media uploads failed. saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
@@ -745,7 +745,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
     
     if ([self hasFailedMedia]) {
-        [self showMediaFailedAlert];
+        [self showMediaFailedRemovalAlert];
         return;
     }
     
