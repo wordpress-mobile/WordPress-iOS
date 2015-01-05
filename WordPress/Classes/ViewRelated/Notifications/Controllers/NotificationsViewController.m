@@ -136,7 +136,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -160,7 +160,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -429,7 +429,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
     }
     
-    // Don't push nested!
+    // Failsafe: Don't push nested!
     if (self.navigationController.visibleViewController != self) {
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
@@ -584,7 +584,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 
@@ -611,7 +611,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - No Results Helpers
 
-- (void)setupNoResultsView
+- (void)showNoResultsViewIfNeeded
 {
     // Remove If Needed
     if (self.tableViewHandler.resultsController.fetchedObjects.count) {
