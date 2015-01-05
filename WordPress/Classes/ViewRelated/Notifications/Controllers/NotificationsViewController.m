@@ -113,9 +113,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         self.tableView.tableFooterView = [UIView new];
     }
     
-
     // UITableView
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
@@ -126,11 +125,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
     [self.tableView reloadData];
-    
-    // NOTE:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     // UIRefreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
@@ -562,6 +556,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    // Note:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    
     Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
