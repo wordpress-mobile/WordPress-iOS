@@ -83,6 +83,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         // Watch for application badge number changes
         NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+
+        // Listen to Logout Notifications
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -271,6 +275,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)handleApplicationWillResignActiveNote:(NSNotification *)note
 {
     [self stopSyncTimeoutTimer];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)note
+{
+    [self resetApplicationBadge];
 }
 
 
