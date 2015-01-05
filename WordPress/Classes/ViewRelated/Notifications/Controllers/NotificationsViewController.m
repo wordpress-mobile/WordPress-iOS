@@ -143,18 +143,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     [super viewWillAppear:animated];
     
-    // Listen to appDidBecomeActive Note
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
-    
-    // Hit the Tracker
-    if(!_trackedViewDisplay) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-        _trackedViewDisplay = true;
-    }
-
-    // Refresh the UI
+    [self hookApplicationStateNotes];
+    [self trackAppearedIfNeeded];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self showManageButtonIfNeeded];
@@ -172,8 +162,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self unhookApplicationStateNotes];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -251,6 +240,20 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 
 #pragma mark - NSNotification Helpers
+
+- (void)hookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)unhookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
 
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
 {
@@ -414,6 +417,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
+- (void)trackAppearedIfNeeded
+{
+    if(_trackedViewDisplay) {
+        return;
+    }
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    _trackedViewDisplay = true;
 }
 
 
