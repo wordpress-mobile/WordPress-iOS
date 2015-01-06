@@ -753,7 +753,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self hasChanges]) {
+    if ([self.post hasUnsavedChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -913,11 +913,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)hasChanges
-{
-    return [self.post hasChanged];
-}
-
 #pragma mark - UI Manipulation
 
 /**
@@ -977,7 +972,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
-		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+		BOOL updateEnabled = [self.post canSave];
+        
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
 		NSArray* rightBarButtons = @[self.editBarButtonItem,
