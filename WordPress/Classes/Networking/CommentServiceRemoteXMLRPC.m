@@ -96,6 +96,7 @@
               failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(comment.commentID != nil);
+    NSNumber *commentID = comment.commentID;
     NSArray *extraParameters = @[
                                  comment.commentID,
                                  @{@"content": comment.content},
@@ -104,7 +105,6 @@
     [self.api callMethod:@"wp.editComment"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                     NSNumber *commentID = responseObject;
                      // TODO: validate response
                      [self getCommentWithID:commentID
                                     forBlog:blog
