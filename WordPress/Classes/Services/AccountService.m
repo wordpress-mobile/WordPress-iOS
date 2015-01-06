@@ -5,7 +5,6 @@
 #import "Blog.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "BlogService.h"
-#import "TodayExtensionService.h"
 
 #import "NSString+XMLExtensions.h"
 
