@@ -999,6 +999,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
+    // Disabling the crash manager as we're using new relic to track crashes
+    [BITHockeyManager sharedHockeyManager].disableCrashManager = YES;
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
