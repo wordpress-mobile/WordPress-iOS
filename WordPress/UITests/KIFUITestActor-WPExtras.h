@@ -6,8 +6,10 @@
 
 - (void) tapViewWithAccessibilityLabelStartingWith:(NSString *)label;
 
-- (BOOL)tryFindingViewWithAccessibilityIdentifier:(NSString *)identifier error:(out NSError **)error;
+- (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier inDirection:(KIFSwipeDirection)direction;
 
-- (void) tapViewWithAccessibilityIdentifier:(NSString *)identifier;
+- (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value inDirection:(KIFSwipeDirection)direction;
+
+- (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits inDirection:(KIFSwipeDirection)direction;
 
 @end
