@@ -11,7 +11,12 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabNotifications
 };
 
-@class AbstractPost, Blog, BlogListViewController, MeViewController , NotificationsViewController, ReaderPostsViewController;
+@class AbstractPost;
+@class Blog;
+@class BlogListViewController;
+@class MeViewController;
+@class NotificationsViewController;
+@class ReaderPostsViewController;
 
 @interface WPTabBarController : UITabBarController
 
