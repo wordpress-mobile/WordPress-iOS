@@ -86,4 +86,11 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  */
 - (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
 
+/**
+ Updates email and defaultBlog fields for a WordPress.com WPAccount using /me endpoint
+
+ @param account WordPress.com WPAccount desired to be updated
+ */
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
+
 @end

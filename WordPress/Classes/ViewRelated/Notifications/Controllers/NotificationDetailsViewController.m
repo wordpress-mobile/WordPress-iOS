@@ -56,7 +56,7 @@ static NSInteger NotificationSectionCount               = 1;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsTableViewDelegate>
+@interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -255,7 +255,7 @@ static NSInteger NotificationSectionCount               = 1;
     [self.view addSubview:self.replyTextView];
     [self.view pinSubviewAtBottom:self.replyTextView];
     [self.view pinSubview:self.tableView aboveSubview:self.replyTextView];
-    
+
     // Attach suggestionsView
     [self attachSuggestionsViewIfNeeded];
 }
@@ -1147,17 +1147,17 @@ static NSInteger NotificationSectionCount               = 1;
     self.tableGesturesRecognizer.enabled = false;
 }
 
-
-#pragma mark - SuggestionsTableViewDelegate
-
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+
+#pragma mark - SuggestionsTableViewDelegate
+
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
 
@@ -1167,6 +1167,7 @@ static NSInteger NotificationSectionCount               = 1;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
+    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 

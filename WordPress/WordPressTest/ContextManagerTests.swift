@@ -204,7 +204,65 @@ class ContextManagerTests: XCTestCase {
         let username = results?.first?.username
         XCTAssert(username! == "Right", "Invalid default account")
     }
-    
+
+    func testMigrate24to25AvatarURLtoBasePost() {
+        let model24Name = "WordPress 24"
+        let model25Name = "WordPress 25"
+
+        // Instantiate a Model 24 Stack
+        startupCoredataStack(model24Name)
+
+        let mainContext = contextManager.mainContext
+        let psc = contextManager.persistentStoreCoordinator
+
+        let account = newAccountInContext(mainContext)
+        let blog = newBlogInAccount(account)
+
+        let authorAvatarURL = "http://lorempixum.com/"
+
+        let post = NSEntityDescription.insertNewObjectForEntityForName("Post", inManagedObjectContext: mainContext) as Post
+        post.blog = blog
+        post.authorAvatarURL = authorAvatarURL
+
+        let readerPost = NSEntityDescription.insertNewObjectForEntityForName("ReaderPost", inManagedObjectContext: mainContext) as ReaderPost
+        readerPost.authorAvatarURL = authorAvatarURL
+
+        mainContext.save(nil)
+
+        // Initialize 24 > 25 Migration
+        let secondContext = performCoredataMigration(model25Name)
+
+        // Test the existence of Post object after migration
+        var error: NSError?
+        let allPostsRequest = NSFetchRequest(entityName: "Post")
+        let postsResults = secondContext.executeFetchRequest(allPostsRequest, error: &error)
+        XCTAssertEqual(1, postsResults!.count, "We should get one Post")
+
+        // Test authorAvatarURL integrity after migration
+        let existingPost = postsResults!.first! as Post
+        XCTAssertEqual(existingPost.authorAvatarURL, authorAvatarURL)
+
+        // Test the existence of ReaderPost object after migration
+        let allReaderPostsRequest = NSFetchRequest(entityName: "ReaderPost")
+        let readerPostsResults = secondContext.executeFetchRequest(allReaderPostsRequest, error: &error)
+        XCTAssertEqual(1, readerPostsResults!.count, "We should get one ReaderPost")
+
+        // Test authorAvatarURL integrity after migration
+        let existingReaderPost = readerPostsResults!.first! as ReaderPost
+        XCTAssertEqual(existingReaderPost.authorAvatarURL, authorAvatarURL)
+
+        // Test for existence of authorAvatarURL in the model
+        let secondAccount = newAccountInContext(secondContext)
+        let secondBlog = newBlogInAccount(secondAccount)
+        let page = NSEntityDescription.insertNewObjectForEntityForName("Page", inManagedObjectContext: secondContext) as Page
+        page.blog = secondBlog
+        page.authorAvatarURL = authorAvatarURL
+
+        error = nil
+        secondContext.save(&error)
+
+        XCTAssertNil(error, "Setting authorAvatarURL shouldn't throw an error")
+    }
 
     // MARK: - Helper Methods
     

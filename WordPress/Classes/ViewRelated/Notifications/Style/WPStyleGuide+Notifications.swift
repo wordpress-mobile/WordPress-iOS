@@ -9,15 +9,19 @@ extension WPStyleGuide
         //
 
         //  NoteTableViewCell
-        public static let noticonFont                   = UIFont(name: "Noticons", size: 16)
-        public static let noticonTextColor              = UIColor.whiteColor()
-        public static let noticonReadColor              = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnreadColor            = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
-        public static let noticonUnmoderatedColor       = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
+        public static let noticonFont               = UIFont(name: "Noticons", size: 16)
+        public static let noticonTextColor          = UIColor.whiteColor()
+        public static let noticonReadColor          = UIColor(red: 0xA4/255.0, green: 0xB9/255.0, blue: 0xC9/255.0, alpha: 0xFF/255.0)
+        public static let noticonUnreadColor        = UIColor(red: 0x25/255.0, green: 0x9C/255.0, blue: 0xCF/255.0, alpha: 0xFF/255.0)
+        public static let noticonUnmoderatedColor   = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
 
+        public static let noteSeparatorColor        = blockSeparatorColor
+
+        public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
+        
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
@@ -39,10 +43,14 @@ extension WPStyleGuide
         //
 
         //  Header
-        public static let headerFont                = WPStyleGuide.tableviewSectionHeaderFont()
+        public static let headerFont                = WPFontManager.openSansBoldFontOfSize(headerFontSize)
         public static let headerTextColor           = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue:0xFF/255.0, alpha: 0xEA/255.0)
+        public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
+        public static let headerRegularStyle        = [ NSParagraphStyleAttributeName:  headerParagraph,
+                                                        NSFontAttributeName:            headerFont,
+                                                        NSForegroundColorAttributeName: headerTextColor ]
+        
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansBoldFontOfSize(blockFontSize)
@@ -54,7 +62,7 @@ extension WPStyleGuide
         public static let blockLinkColor            = WPStyleGuide.baseLighterBlue()
         public static let blockSubtitleColor        = WPStyleGuide.baseDarkerBlue()
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
-        
+
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
@@ -109,21 +117,31 @@ extension WPStyleGuide
         }
 
         
+        // MARK: - Constants
+        //
+
+        public static let headerFontSize            = CGFloat(12)
+        public static let headerLineSize            = CGFloat(16)
+        public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
+        public static let snippetLineSize           = subjectLineSize
+        public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let maximumCellWidth          = CGFloat(600)
+
+
         // MARK: - Private Propreties
         //
-        
-        // Constants
-        private static let subjectFontSize          = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        private static let subjectLineSize          = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
-        private static let blockFontSize            = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        private static let blockLineSize            = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
 
         // ParagraphStyle's
+        private static let headerParagraph          = NSMutableParagraphStyle(
+            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
+        )
         private static let subjectParagraph         = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let snippetParagraph         = NSMutableParagraphStyle(
-            minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByTruncatingTail, alignment: .Left
+            minLineHeight: snippetLineSize, maxLineHeight: snippetLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
