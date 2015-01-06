@@ -82,7 +82,7 @@
 }
 
 - (void) testRemove {
-    [tester swipeViewWithAccessibilityLabel:@"PostCell" inDirection:KIFSwipeDirectionLeft];
+    [tester swipeViewWithAccessibilityIdentifier:@"PostCell" inDirection:KIFSwipeDirectionLeft];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Delete"];
@@ -93,10 +93,15 @@
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Categories"];
+    [tester tapViewWithAccessibilityIdentifier:@"Categories"];
     [tester waitForTimeInterval:2];
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"CategoriesList"];
@@ -116,10 +121,15 @@
 - (void) testSetTag {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester clearTextFromAndThenEnterText:[NSString stringWithFormat:@"iOS, KIF, %u", arc4random()] intoViewWithAccessibilityLabel:@"Tags Value"];
+    [tester clearTextFromAndThenEnterText:[NSString stringWithFormat:@"iOS, KIF, %u", arc4random()] intoViewWithAccessibilityIdentifier:@"Tags Value"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Back"];
@@ -132,6 +142,11 @@
 - (void) testSetSchedule {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
@@ -155,10 +170,15 @@
 - (void) testSetStatus {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Status"];
+    [tester tapViewWithAccessibilityIdentifier:@"Status"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Draft"];
@@ -172,10 +192,15 @@
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Status"];
+    [tester tapViewWithAccessibilityIdentifier:@"Status"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Published"];
@@ -192,10 +217,15 @@
 - (void) testSetVisibility {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Private"];
@@ -209,16 +239,21 @@
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Password protected"];
     [tester waitForTimeInterval:2];
     
-    [tester clearTextFromAndThenEnterText:@"Testing123" intoViewWithAccessibilityLabel:@"Password Value" ];
+    [tester clearTextFromAndThenEnterText:@"Testing123" intoViewWithAccessibilityIdentifier:@"Password Value" ];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Back"];
@@ -229,10 +264,15 @@
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Visibility"];
+    [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Public"];
@@ -252,6 +292,11 @@
     for (NSString * format in formats){
         [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
         
+        if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+            [tester tapViewWithAccessibilityLabel:@"Edit"];
+            [tester waitForTimeInterval:2];
+        }
+
         [tester tapViewWithAccessibilityLabel:@"Options"];
         [tester waitForTimeInterval:2];
         
@@ -272,6 +317,11 @@
 - (void) testSetFeaturedImage {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:2];
     
@@ -294,6 +344,11 @@
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+
     [tester tapViewWithAccessibilityLabel:@"Options"];
     [tester waitForTimeInterval:5];
     

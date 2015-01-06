@@ -21,10 +21,11 @@
     [tester tapViewWithAccessibilityLabel:@"Comment"];
     [tester waitForTimeInterval:2];
     
-    [tester enterTextIntoCurrentFirstResponder:@"Interesting"];
+    
+    [tester enterText:@"Interesting" intoViewWithAccessibilityIdentifier:@"ReplyText"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Post"];
+    [tester tapViewWithAccessibilityLabel:@"REPLY"];
     [tester waitForTimeInterval:2];
     [self logout];
 }
@@ -65,7 +66,7 @@
      [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Comments Table"];
      [tester waitForTimeInterval:2];
     
-     [tester enterText:@"What about it?" intoViewWithAccessibilityLabel:@"ReplyText"];
+     [tester enterText:@"What about it?" intoViewWithAccessibilityIdentifier:@"ReplyText"];
     
      [tester tapViewWithAccessibilityLabel:@"REPLY"];
      [tester waitForTimeInterval:2];
@@ -101,12 +102,9 @@
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Comments Table"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"More"];
+    [tester tapViewWithAccessibilityLabel:@"Spam"];
     [tester waitForTimeInterval:2];
-
-    [tester tapViewWithAccessibilityLabel:@"Mark as Spam"];
-    [tester waitForTimeInterval:2];
-
+    
     [tester tapViewWithAccessibilityLabel:@"Spam"];
     [tester waitForTimeInterval:2];
 
@@ -119,10 +117,7 @@
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Comments Table"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"More"];
-    [tester waitForTimeInterval:2];
-    
-    [tester tapViewWithAccessibilityLabel:@"Edit Comment"];
+    [tester tapViewWithAccessibilityLabel:@"Save"];
     [tester waitForTimeInterval:2];
     
     [tester enterTextIntoCurrentFirstResponder:[NSString stringWithFormat:@"Smashing comment %ld", random()]];

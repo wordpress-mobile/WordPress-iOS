@@ -51,11 +51,8 @@
     [tester tapViewWithAccessibilityLabel:@"Comment"];
     [tester waitForTimeInterval:2];
 
-    [tester tapViewWithAccessibilityLabel:@"ReplyText"];
-    
-    [tester waitForKeyboard];
-    
-    [tester enterTextIntoCurrentFirstResponder:@"Reply Text"];
+    [tester enterText:@"Reply Text" intoViewWithAccessibilityIdentifier:@"ReplyText"];
+    [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"REPLY"];
     [tester waitForTimeInterval:2];
@@ -107,16 +104,10 @@
     [tester tapViewWithAccessibilityLabel:@"Topics"];
     [tester waitForTimeInterval:2];
     
-    [tester enterText:@"Sport" intoViewWithAccessibilityLabel:@"Search"];
-    [tester waitForTimeInterval:2];
-    
-    [tester tapViewWithAccessibilityLabel:@"Search"];
+    [tester enterText:@"Sport\n" intoViewWithAccessibilityIdentifier:@"Search" expectedResult:@""];
     [tester waitForTimeInterval:2];
 
-    [tester tapViewWithAccessibilityLabel:@"Done"];
-    [tester waitForTimeInterval:2];
-    
-    [tester tapViewWithAccessibilityLabel:@"Sport"];
+    [tester tapViewWithAccessibilityLabel:@"Close"];
     [tester waitForTimeInterval:2];
 }
 
@@ -124,13 +115,13 @@
     [tester tapViewWithAccessibilityLabel:@"Topics"];
     [tester waitForTimeInterval:2];
     
-    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionLeft];
+    [tester swipeViewWithAccessibilityIdentifier:@"Pager View" inDirection:KIFSwipeDirectionLeft];
     [tester waitForTimeInterval:2];
-    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionLeft];
+    [tester swipeViewWithAccessibilityIdentifier:@"Pager View" inDirection:KIFSwipeDirectionLeft];
     [tester waitForTimeInterval:2];
-    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionRight];
+    [tester swipeViewWithAccessibilityIdentifier:@"Pager View" inDirection:KIFSwipeDirectionRight];
     [tester waitForTimeInterval:2];
-    [tester swipeViewWithAccessibilityLabel:@"Pager View" inDirection:KIFSwipeDirectionRight];
+    [tester swipeViewWithAccessibilityIdentifier:@"Pager View" inDirection:KIFSwipeDirectionRight];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Close"];
     [tester waitForTimeInterval:2];
