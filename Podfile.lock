@@ -80,10 +80,12 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - NSLogger (1.5)
+  - NSLogger (1.5.1):
+    - NSLogger/Standard (= 1.5.1)
   - NSLogger-CocoaLumberjack-connector (1.3):
     - CocoaLumberjack
     - NSLogger
+  - NSLogger/Standard (1.5.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
   - OCMock (3.1.1)
@@ -214,7 +216,7 @@ SPEC CHECKSUMS:
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
-  NSLogger: 84ed0bf00985df483153ce344d8171c9ec83be2b
+  NSLogger: 7421a0a60df62fb8ff548cd0388c302d3329a322
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: acf82a7fa47a8e2c8b644778e3efe7a56bd66aa8
