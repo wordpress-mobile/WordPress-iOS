@@ -203,7 +203,13 @@
     NSParameterAssert(post.title != nil);
     NSParameterAssert(post.content != nil);
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
-    parameters[@"title"] = post.title;
+    
+    if (post.title) {
+        parameters[@"title"] = post.title;
+    } else {
+        parameters[@"title"] = @"";
+    }
+    
     parameters[@"content"] = post.content;
     parameters[@"status"] = post.status;
     parameters[@"password"] = post.password ? post.password : @"";
