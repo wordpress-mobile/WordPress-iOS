@@ -109,11 +109,11 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = @"Blogs";
+    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
     // tableHeaderView set to nil here otherwise after edit the spacing gets messed up since we set headerView during edit
     self.tableView.tableHeaderView = nil;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"Edit";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self setupHeaderView];
     
