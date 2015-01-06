@@ -18,13 +18,13 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _avatarImageView = [self imageViewForAvatar];
+        _avatarImageView = [self newImageViewForAvatar];
         [self addSubview:_avatarImageView];
 
-        _titleLabel = [self labelForTitle];
+        _titleLabel = [self newLabelForTitle];
         [self addSubview:_titleLabel];
 
-        _subtitleLabel = [self labelForSubtitle];
+        _subtitleLabel = [self newLabelForSubtitle];
         [self addSubview:_subtitleLabel];
 
         [self configureConstraints];
@@ -87,7 +87,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForTitle
+- (UILabel *)newLabelForTitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -101,7 +101,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     return label;
 }
 
-- (UILabel *)labelForSubtitle
+- (UILabel *)newLabelForSubtitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,7 +115,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     return label;
 }
 
-- (CircularImageView *)imageViewForAvatar
+- (CircularImageView *)newImageViewForAvatar
 {
     CGRect avatarFrame = CGRectMake(0.0f, 0.0f, PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
     CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
