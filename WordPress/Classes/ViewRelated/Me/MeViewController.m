@@ -61,6 +61,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
     self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
 
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
     [self setupAutolayoutConstraints];
 }
 
@@ -134,10 +136,10 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [WPStyleGuide configureTableViewActionCell:cell];
 
     if (indexPath.section == MeSectionGeneralType) {
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         switch (indexPath.row) {
             case MeRowAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
@@ -156,6 +158,9 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
                 NSString *signOutString = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
