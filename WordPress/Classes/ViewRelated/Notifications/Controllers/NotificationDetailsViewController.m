@@ -56,7 +56,7 @@ static NSInteger NotificationSectionCount               = 1;
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsTableViewDelegate>
+@interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -1150,17 +1150,17 @@ static NSInteger NotificationSectionCount               = 1;
     self.tableGesturesRecognizer.enabled = false;
 }
 
-
-#pragma mark - SuggestionsTableViewDelegate
-
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+
+#pragma mark - SuggestionsTableViewDelegate
+
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
 
