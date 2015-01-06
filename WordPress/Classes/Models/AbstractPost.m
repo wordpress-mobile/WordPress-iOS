@@ -246,6 +246,24 @@
 
 #pragma mark - Post
 
+- (BOOL)canSave
+{
+    NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* contentWithoutSpaces = [self.content stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    BOOL isTitleEmpty = (titleWithoutSpaces == nil || titleWithoutSpaces.length == 0);
+    BOOL isContentEmpty = (contentWithoutSpaces == nil || contentWithoutSpaces.length == 0);
+    BOOL areBothTitleAndContentsEmpty = isTitleEmpty && isContentEmpty;
+    
+    return (!areBothTitleAndContentsEmpty && [self hasUnsavedChanges]);
+}
+
+- (BOOL)hasUnsavedChanges
+{
+    return [self hasLocalChanges] || [self hasRemoteChanges];
+}
+
+
 - (BOOL)hasLocalChanges
 {
     if (![self isRevision]) {
