@@ -26,7 +26,7 @@ static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
 static NSInteger const CVCNumberOfSections = 2;
 
-@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, SuggestionsTableViewDelegate>
+@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
@@ -622,16 +622,20 @@ static NSInteger const CVCNumberOfSections = 2;
     [UIView commitAnimations];
 }
 
-#pragma mark - SuggestionsTableViewDelegate
 
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+#pragma mark - ReplyTextViewDelegate
+
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+
+#pragma mark - SuggestionsTableViewDelegate
+
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
 
