@@ -152,7 +152,15 @@ print <<-EOF
 EOF
 end
 
-def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)
+def print_newrelic_application_token(newrelic_application_token)
+print <<-EOF
++ (NSString *)newRelicApplicationToken {
+  return @"#{newrelic_application_token}";
+}
+EOF
+end
+
+def print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key, newrelic_application_token)
   print <<-EOF
 #import "WordPressComApiCredentials.h"
 @implementation WordPressComApiCredentials
@@ -171,6 +179,7 @@ EOF
   print_debugging_key(debugging_key)
   print_lookback_token(lookback_token)
   print_appbotx_api_key(appbotx_api_key)
+  print_newrelic_application_token(newrelic_application_token)
   printf("@end\n")
 end
 
@@ -202,6 +211,7 @@ helpshift_app_id = nil
 debugging_key = nil
 lookback_token = nil
 appbotx_api_key = nil
+newrelic_application_token = nil
 File.open(path) do |f|
   f.each_line do |l|
     (k,v) = l.split("=")
@@ -237,6 +247,8 @@ File.open(path) do |f|
       lookback_token = v.chomp
     elsif k == "APPBOTX_API_KEY"
       appbotx_api_key = v.chomp
+    elsif k == "NEWRELIC_APPLICATION_TOKEN"
+      newrelic_application_token = v.chomp
     else
       $stderr.puts "warning: Unknown key #{k}"
     end
@@ -253,4 +265,4 @@ if secret.nil?
   exit 3
 end
 
-print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)
+print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key, newrelic_application_token)
