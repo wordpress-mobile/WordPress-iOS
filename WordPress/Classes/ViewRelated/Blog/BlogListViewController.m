@@ -110,8 +110,6 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
-    // tableHeaderView set to nil here otherwise after edit the spacing gets messed up since we set headerView during edit
-    self.tableView.tableHeaderView = nil;
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     self.navigationItem.leftBarButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
@@ -405,7 +403,8 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
     if (title.length > 0) {
         return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
     }
-    return IS_IPHONE ? 1.0 : 40.0;
+    // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
+    return (IS_IPHONE || self.tableView.isEditing) ? 1.0 : 40.0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -458,7 +457,8 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 {
     [super setEditing:editing animated:animated];
 
-    self.tableView.tableHeaderView = editing ? self.headerView : nil;
+    UIView *emptyHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
+    self.tableView.tableHeaderView = editing ? self.headerView : emptyHeaderView;
 
     // Animate view to editing mode
     __block UIView *snapshot;
