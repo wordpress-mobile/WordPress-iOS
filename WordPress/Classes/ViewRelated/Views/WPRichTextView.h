@@ -68,7 +68,7 @@
 
 /**
  A dictionary of text options to apply to the content when creating an attributed string.
- The default is `WPStyleGuide defaultDTCoreTextOptions`
+ The default is `WPRichTextView defaultDTCoreTextOptions`
 */
 @property (nonatomic, strong) NSDictionary *textOptions;
 
