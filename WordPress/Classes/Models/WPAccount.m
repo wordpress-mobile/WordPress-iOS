@@ -14,6 +14,7 @@
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
+@dynamic email;
 
 #pragma mark - NSManagedObject subclass methods
 
