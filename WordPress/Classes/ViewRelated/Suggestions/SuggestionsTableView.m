@@ -1,4 +1,5 @@
 #import "SuggestionsTableView.h"
+#import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
 #import "Suggestion.h"
 #import "SuggestionService.h"
@@ -53,7 +54,7 @@ CGFloat const RowHeight = 44.0f;
     if (_useTransparentHeader) {
         [self.headerView setBackgroundColor: [UIColor clearColor]];
     } else {
-        [self.headerView setBackgroundColor: [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3f]];
+        [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
     }
     
 }
@@ -66,7 +67,7 @@ CGFloat const RowHeight = 44.0f;
     
     _separatorView = [[UIView alloc] init];
     [_separatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_separatorView setBackgroundColor: [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.1f]];
+    [_separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
     [self addSubview:_separatorView];
 
     [self updateHeaderStyles];
