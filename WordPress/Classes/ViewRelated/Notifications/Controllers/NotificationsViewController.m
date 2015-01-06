@@ -430,12 +430,12 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)trackAppearedIfNeeded
 {
-    if(_trackedViewDisplay) {
+    if (self.trackedViewDisplay) {
         return;
     }
     
     [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    _trackedViewDisplay = true;
+    self.trackedViewDisplay = true;
 }
 
 
