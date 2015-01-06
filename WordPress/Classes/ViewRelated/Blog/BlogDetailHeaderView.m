@@ -21,13 +21,13 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _blavatarImageView = [self imageViewForBlavatar];
+        _blavatarImageView = [self newImageViewForBlavatar];
         [self addSubview:_blavatarImageView];
 
-        _titleLabel = [self labelForTitle];
+        _titleLabel = [self newLabelForTitle];
         [self addSubview:_titleLabel];
 
-        _subtitleLabel = [self labelForSubtitle];
+        _subtitleLabel = [self newLabelForSubtitle];
         [self addSubview:_subtitleLabel];
 
         [self configureConstraints];
@@ -75,7 +75,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForTitle
+- (UILabel *)newLabelForTitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -89,7 +89,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     return label;
 }
 
-- (UILabel *)labelForSubtitle
+- (UILabel *)newLabelForSubtitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -103,7 +103,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
     return label;
 }
 
-- (UIImageView *)imageViewForBlavatar
+- (UIImageView *)newImageViewForBlavatar
 {
     CGRect blavatarFrame = CGRectMake(0.0f, 0.0f, BlogDetailHeaderViewBlavatarSize, BlogDetailHeaderViewBlavatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
