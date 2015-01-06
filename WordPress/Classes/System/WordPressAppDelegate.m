@@ -11,7 +11,6 @@
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-AppbotX/ABX.h>
-#import <NewRelicAgent/NewRelic.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -56,6 +55,10 @@
 
 #ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
+#endif
+
+#ifdef INTERNAL_BUILD
+#import <NewRelicAgent/NewRelic.h>
 #endif
 
 #if DEBUG
@@ -1010,13 +1013,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)configureNewRelic
 {
-#ifndef INTERNAL_BUILD
-    return;
-#endif
+#ifdef INTERNAL_BUILD
     NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
     if (applicationToken.length != 0) {
         [NewRelicAgent startWithApplicationToken:applicationToken];
     }
+#endif
 }
 
 #pragma mark - BITCrashManagerDelegate
