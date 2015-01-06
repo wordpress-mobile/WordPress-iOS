@@ -34,7 +34,7 @@
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"GenericErrorMessage"];
+    [tester waitForViewWithAccessibilityIdentifier:@"GenericErrorMessage"];
     
     [tester tapViewWithAccessibilityLabel:@"OK"];
 }
@@ -65,17 +65,14 @@
     [self logout];
 }
 
-- (void)testSelfHostedLoginWithJetPack
+- (void)testSelfHostedLoginWithoutJetPack
 {
     [tester tapViewWithAccessibilityLabel:@"Add Self-Hosted Site"];
     [tester enterText:selfHostedUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
     [tester enterText:selfHostedPassword intoViewWithAccessibilityIdentifier:@"Password"];
     [tester enterText:selfHostedSiteURL intoViewWithAccessibilityIdentifier:@"Site Address (URL)"];
     [tester tapViewWithAccessibilityLabel:@"Add Site"];
-    
-    [tester waitForTimeInterval:3];
-    [tester tapViewWithAccessibilityLabel:@"Skip"];
-    
+        
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
     [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];

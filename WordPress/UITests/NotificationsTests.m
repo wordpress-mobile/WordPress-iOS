@@ -21,10 +21,10 @@
     [tester tapViewWithAccessibilityLabel:@"Comment"];
     [tester waitForTimeInterval:2];
     
-    [tester enterTextIntoCurrentFirstResponder:@"Interesting"];
+    [tester enterText:[NSString stringWithFormat:@"Interesting %ld", random()] intoViewWithAccessibilityIdentifier:@"ReplyText"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Post"];
+    [tester tapViewWithAccessibilityLabel:@"REPLY"];
     [tester waitForTimeInterval:2];
     [self logout];
 }
@@ -70,7 +70,7 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] inTableViewWithAccessibilityIdentifier:@"Notification Details Table"];
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Notification Details Table"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Back"];
@@ -97,12 +97,9 @@
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Notifications Table"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Reply Text"];
-
-    [tester waitForKeyboard];
+    [tester enterText:@"Reply Text" intoViewWithAccessibilityIdentifier:@"ReplyText"];
+    [tester waitForTimeInterval:2];
     
-    [tester enterTextIntoCurrentFirstResponder:@"Reply Text"];
-
     [tester tapViewWithAccessibilityLabel:@"REPLY"];
     [tester waitForTimeInterval:2];
 
