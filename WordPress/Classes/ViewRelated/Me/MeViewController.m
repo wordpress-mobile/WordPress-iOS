@@ -69,7 +69,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (void)setupAutolayoutConstraints
 {
     NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
