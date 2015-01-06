@@ -49,6 +49,7 @@
 		319D6E7E19E447C80013871C /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E7D19E447C80013871C /* SuggestionService.m */; };
 		319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8019E44C680013871C /* SuggestionsTableView.m */; };
 		319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */; };
+		31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */ = {isa = PBXBuildFile; fileRef = 31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		3716E401167296D30035F8C4 /* ToastView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3716E400167296D30035F8C4 /* ToastView.xib */; };
 		37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */; };
@@ -549,6 +550,8 @@
 		319D6E8019E44C680013871C /* SuggestionsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableView.m; path = Suggestions/SuggestionsTableView.m; sourceTree = "<group>"; };
 		319D6E8319E44F7F0013871C /* SuggestionsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SuggestionsTableViewCell.h; path = Suggestions/SuggestionsTableViewCell.h; sourceTree = "<group>"; };
 		319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewCell.m; path = Suggestions/SuggestionsTableViewCell.m; sourceTree = "<group>"; };
+		31EC15061A5B6675009FC8B3 /* WPStyleGuide+Suggestions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Suggestions.h"; sourceTree = "<group>"; };
+		31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Suggestions.m"; sourceTree = "<group>"; };
 		369D8993FF42F0A2D183A062 /* libPods-UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
@@ -2434,6 +2437,8 @@
 				B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */,
 				B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */,
 				B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */,
+				31EC15061A5B6675009FC8B3 /* WPStyleGuide+Suggestions.h */,
+				31EC15071A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3360,6 +3365,7 @@
 				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
+				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
