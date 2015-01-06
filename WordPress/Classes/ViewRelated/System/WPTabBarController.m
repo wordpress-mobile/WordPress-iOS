@@ -63,7 +63,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         self.restorationIdentifier = WPTabBarRestorationID;
         [self.tabBar setTranslucent:NO];
-        self.tabBar.accessibilityIdentifier = @"Main Navigation";
+        self.tabBar.accessibilityIdentifier = NSLocalizedString(@"Main Navigation", @"");
         // Create a background
         // (not strictly needed when white, but left here for possible customization)
         self.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
@@ -92,7 +92,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
     self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
     [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
-    _blogListNavigationController.tabBarItem.accessibilityIdentifier = @"My Sites";
+    _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
