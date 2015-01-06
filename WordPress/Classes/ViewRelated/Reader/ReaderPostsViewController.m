@@ -65,6 +65,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic) BOOL shouldSkipRowAnimation;
 @property (nonatomic) UIDeviceOrientation previousOrientation;
 
+@property (nonatomic, strong) NSManagedObjectContext *contextForSync;
+
 @end
 
 
@@ -680,6 +682,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
+    // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
+    // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
+    // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
+    // methods are called. However, check here just in case there is an unnexpected edgecase. 
+    if (self.contextForSync) {
+        return;
+    }
+
     if (!self.currentTopic) {
         __weak __typeof(self) weakSelf = self;
         ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
@@ -701,14 +711,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
     [context performBlock:^{
         ReaderTopic *topicInContext = [self currentTopicInContext:context];
-        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
                 if (success) {
                     success(count, hasMore);
                 }
@@ -728,14 +737,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
     [context performBlock:^{
         ReaderTopic *topicInContext = [self currentTopicInContext:context];
-        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
+        [service backfillPostsForTopic:topicInContext skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
                 if (success) {
                     success(count, hasMore);
                 }
@@ -780,7 +788,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSDate *earlierThan = post.sortDate;
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf = self;
@@ -808,14 +816,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncContentEnded
 {
-    if (self.tableViewHandler.shouldRefreshTableViewPreservingOffset) {
-        // This is tricky since the relevant delegate methods are not triggered
-        // if there are no changes in the data model. This can happen if the user
-        // pulls to refresh, then immedately pulls to refresh again.  To handle
-        // case, call clean up after a short delay just to be safe.
-        [self performSelector:@selector(cleanupAfterRefresh) withObject:self afterDelay:0.5];
+    if (!self.contextForSync) {
+        [self cleanupAfterRefresh];
         return;
     }
+    [self saveContextForSync];
+}
+
+- (void)saveContextForSync
+{
+    if (self.tableViewHandler.isScrolling) {
+        return;
+    }
+
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    [[ContextManager sharedInstance] saveContext:self.contextForSync];
+    self.contextForSync = nil;
+
     [self cleanupAfterRefresh];
 }
 
@@ -823,9 +840,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
-
-    // Always reset the flag after a refresh, just to be safe.
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
 
     [self.noResultsView removeFromSuperview];
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
@@ -862,7 +876,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.actionSheet dismissWithClickedButtonIndex:[self.actionSheet cancelButtonIndex] animated:YES];
     }
     [self.featuredImageSource invalidateIndexPaths];
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     [self configureNoResultsView];
 
@@ -871,7 +884,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.shouldSkipRowAnimation = NO;
         [self.tableView reloadData];
     }
-
 }
 
 - (NSPredicate *)predicateForFetchRequest
@@ -1221,6 +1233,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     if ([self.refreshControl isRefreshing]) {
         [self.refreshControl endRefreshing];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (decelerate) {
+        return;
+    }
+    if (self.contextForSync) {
+        [self saveContextForSync];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (self.contextForSync) {
+        [self saveContextForSync];
     }
 }
 
