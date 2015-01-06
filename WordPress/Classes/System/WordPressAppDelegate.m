@@ -11,6 +11,7 @@
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-AppbotX/ABX.h>
+#import <NewRelicAgent/NewRelic.h>
 
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
@@ -121,6 +122,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
+    [self configureNewRelic];
     [self configureCrashlytics];
 
     // Start Simperium
@@ -1004,6 +1006,17 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
+
+- (void)configureNewRelic
+{
+#ifndef INTERNAL_BUILD
+    return;
+#endif
+    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
+    if (applicationToken.length != 0) {
+        [NewRelicAgent startWithApplicationToken:applicationToken];
+    }
 }
 
 #pragma mark - BITCrashManagerDelegate
