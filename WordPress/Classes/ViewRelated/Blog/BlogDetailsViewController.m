@@ -53,6 +53,11 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
+NSInteger const BlogDetailsRowCountForSectionGeneralType = 2;
+NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
+NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
+NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
+
 @interface BlogDetailsViewController ()
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
@@ -168,13 +173,13 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == TableViewSectionGeneralType) {
-        return 2;
+        return BlogDetailsRowCountForSectionGeneralType;
     } else if (section == TableViewSectionPublishType) {
-        return 3;
+        return BlogDetailsRowCountForSectionPublishType;
     } else if (section == TableViewSectionConfigurationType) {
-        return 1;
+        return BlogDetailsRowCountForSectionConfigurationType;
     } else if (section == TableViewSectionAdmin) {
-        return 1;
+        return BlogDetailsRowCountForSectionAdmin;
     }
 
     return 0;
