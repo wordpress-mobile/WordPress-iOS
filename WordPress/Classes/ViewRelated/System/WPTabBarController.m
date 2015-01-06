@@ -59,16 +59,16 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 {
     self = [super init];
     if (self) {
-        self.delegate = self;
+        [self setDelegate:self];
 
-        self.restorationIdentifier = WPTabBarRestorationID;
-        [self.tabBar setTranslucent:NO];
-        self.tabBar.accessibilityIdentifier = NSLocalizedString(@"Main Navigation", @"");
+        [self setRestorationIdentifier:WPTabBarRestorationID];
+        [[self tabBar] setTranslucent:NO];
+        [[self tabBar] setAccessibilityIdentifier:NSLocalizedString(@"Main Navigation", @"")];
         // Create a background
         // (not strictly needed when white, but left here for possible customization)
-        self.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
+        [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
-        self.viewControllers = @[self.blogListNavigationController, self.readerNavigationController, self.newPostViewController, self.meNavigationController, self.notificationsNavigationController];
+        [self setViewControllers:@[self.blogListNavigationController, self.readerNavigationController, self.newPostViewController, self.meNavigationController, self.notificationsNavigationController]];
 
         [self setSelectedViewController:self.blogListNavigationController];
     }
