@@ -21,6 +21,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 // this height is selected to make sure 2 lines of text will fit in the header
 static CGFloat const BLVCHeaderViewHeight = 55.0;
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
+static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
@@ -404,7 +405,7 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
         return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
     }
     // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
-    return (IS_IPHONE || self.tableView.isEditing) ? 1.0 : 40.0;
+    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : BLVCSectionHeaderHeightForIPad;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -457,7 +458,7 @@ static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 {
     [super setEditing:editing animated:animated];
 
-    UIView *emptyHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, 1)];
+    UIView *emptyHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
     self.tableView.tableHeaderView = editing ? self.headerView : emptyHeaderView;
 
     // Animate view to editing mode
