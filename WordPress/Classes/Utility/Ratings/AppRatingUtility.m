@@ -12,13 +12,11 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
 
 + (BOOL)shouldPromptForAppReview
 {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:AppRatingRatedCurrentVersion]
-        || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion]
-        || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion]) {
+    if ([self interactedWithAppReviewPrompt]) {
         return NO;
     }
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSUInteger significantEventCount = [userDefaults integerForKey:AppRatingSignificantEventCount];
     NSUInteger numberOfSignificantEventsRequiredForPrompt = [userDefaults integerForKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
     
@@ -27,6 +25,12 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
     }
     
     return NO;
+}
+
++ (BOOL)interactedWithAppReviewPrompt
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion];
 }
 
 + (void)initializeForVersion:(NSString *)version
@@ -49,12 +53,20 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
     else
     {
         // Restarting tracking for new version of app
+        
+        BOOL interactedWithAppReviewPromptInPreviousVersion = [self interactedWithAppReviewPrompt];
+        
         [userDefaults setObject:version forKey:AppRatingCurrentVersion];
-        [userDefaults setInteger:1 forKey:AppRatingSignificantEventCount];
         [userDefaults setInteger:0 forKey:AppRatingSignificantEventCount];
         [userDefaults setBool:NO forKey:AppRatingRatedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDeclinedToRateCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
+        
+        // Note - this is a temporary fix for 4.6.1 so we don't double prompt users
+        // for a review within the span of a few days. Make sure to remove this for 4.7
+        if ([trackingVersion isEqualToString:@"4.6"] && interactedWithAppReviewPromptInPreviousVersion) {
+            [userDefaults setBool:YES forKey:AppRatingRatedCurrentVersion];
+        }
     }
 }
 
