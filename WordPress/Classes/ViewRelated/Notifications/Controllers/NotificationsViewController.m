@@ -84,6 +84,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         // Watch for application badge number changes
         NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+
+        // Listen to Logout Notifications
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -114,9 +118,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         self.tableView.tableFooterView = [UIView new];
     }
     
-
     // UITableView
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
@@ -128,11 +131,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
     [self.tableView reloadData];
     
-    // NOTE:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
     // UIRefreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
@@ -143,31 +141,21 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    // Listen to appDidBecomeActive Note
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
-    
-    // Hit the Tracker
-    if(!_trackedViewDisplay) {
-        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-        _trackedViewDisplay = true;
-    }
-
-    // Refresh the UI
+    [self hookApplicationStateNotes];
+    [self trackAppearedIfNeeded];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -179,8 +167,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self unhookApplicationStateNotes];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -259,6 +246,20 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - NSNotification Helpers
 
+- (void)hookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)unhookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
+
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
 {
     // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
@@ -275,6 +276,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)handleApplicationWillResignActiveNote:(NSNotification *)note
 {
     [self stopSyncTimeoutTimer];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)note
+{
+    [self resetApplicationBadge];
 }
 
 
@@ -423,6 +429,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
 }
 
+- (void)trackAppearedIfNeeded
+{
+    if (self.trackedViewDisplay) {
+        return;
+    }
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    self.trackedViewDisplay = true;
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -436,7 +452,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
     }
     
-    // Don't push nested!
+    // Failsafe: Don't push nested!
     if (self.navigationController.visibleViewController != self) {
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
@@ -563,6 +579,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
+    // Note:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    
     Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
@@ -587,7 +607,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self setupNoResultsView];
+    [self showNoResultsViewIfNeeded];
 }
 
 
@@ -614,7 +634,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - No Results Helpers
 
-- (void)setupNoResultsView
+- (void)showNoResultsViewIfNeeded
 {
     // Remove If Needed
     if (self.tableViewHandler.resultsController.fetchedObjects.count) {
