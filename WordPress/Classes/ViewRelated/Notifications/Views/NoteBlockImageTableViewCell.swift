@@ -6,11 +6,7 @@ import Foundation
     // MARK: - Public Properties
     public var isBadge: Bool = false {
         didSet {
-            if isBadge {
-                backgroundColor = WPStyleGuide.Notifications.badgeBackgroundColor
-            } else {
-                backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
-            }
+            backgroundColor = isBadge ? Styles.badgeBackgroundColor : Styles.blockBackgroundColor
         }
     }
     
@@ -24,7 +20,7 @@ import Foundation
             self.blockImageView.displayImageWithSpringAnimation(image)
         }
         
-        blockImageView.downloadImage(url, placeholderName: nil, success: success, failure: nil)
+        blockImageView.downloadImage(url, placeholderImage: nil, success: success, failure: nil)
         
         imageURL = url
     }
@@ -37,6 +33,9 @@ import Foundation
     
     // MARK: - Private
     private var imageURL:               NSURL?
+    
+    // MARK: - Helpers
+    private typealias Styles = WPStyleGuide.Notifications
     
     // MARK: - IBOutlets
     @IBOutlet weak var blockImageView:  UIImageView!
