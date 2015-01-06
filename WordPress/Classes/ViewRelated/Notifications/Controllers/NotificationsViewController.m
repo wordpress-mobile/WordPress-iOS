@@ -123,7 +123,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     // WPTableViewHandler
     WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights        = true;
+    tableViewHandler.cacheRowHeights        = YES;
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
     
@@ -148,7 +148,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [super viewWillAppear:animated];
     
     // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
-    [self.tableView deselectSelectedRowWithAnimation:true];
+    [self.tableView deselectSelectedRowWithAnimation:YES];
     
     // Refresh the UI
     [self hookApplicationStateNotes];
@@ -439,7 +439,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     }
     
     [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    self.trackedViewDisplay = true;
+    self.trackedViewDisplay = YES;
 }
 
 
