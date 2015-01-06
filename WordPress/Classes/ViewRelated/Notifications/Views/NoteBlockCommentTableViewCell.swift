@@ -21,18 +21,27 @@ import Foundation
         }
     }
     public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+        set {
+            nameLabel.text  = newValue
+        }
+        get {
+            return nameLabel.text
         }
     }
     public var timestamp: String? {
-        didSet {
-            timestampLabel.text  = timestamp ?? String()
+        set {
+            timestampLabel.text  = newValue
+        }
+        get {
+            return timestampLabel.text
         }
     }
     public var site: String? {
-        didSet {
-            siteLabel.text = site ?? String()
+        set {
+            siteLabel.text = newValue
+        }
+        get {
+            return siteLabel.text
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -65,15 +74,21 @@ import Foundation
             refreshBottomSpacing()
         }
     }
-    public var isLikeOn: Bool = false {
-        didSet {
-            btnLike.selected = isLikeOn
+    public var isLikeOn: Bool {
+        set {
+            btnLike.selected = newValue
+        }
+        get {
+            return btnLike.selected
         }
     }
-    public var isApproveOn: Bool = false {
-        didSet {
-            btnApprove.selected = isApproveOn
+    public var isApproveOn: Bool {
+        set {
+            btnApprove.selected = newValue
             refreshApprovalColors()
+        }
+        get {
+            return btnApprove.selected
         }
     }
 
@@ -87,7 +102,8 @@ import Foundation
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
         
-        gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url
     }
@@ -251,13 +267,12 @@ import Foundation
 
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                : CGSize    = CGSize(width: 37.0, height: 37.0)
-    private let placeholderName                     : String    = "gravatar"
-    private let separatorHeight                     : CGFloat   = 1
-    private let buttonWidth                         : CGFloat   = 55
-    private let buttonSpacing                       : CGFloat   = 20
-    private let actionsHeight                       : CGFloat   = 34
-    private let actionsTop                          : CGFloat   = 11
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
+    private let separatorHeight                     = CGFloat(1)
+    private let buttonWidth                         = CGFloat(55)
+    private let buttonSpacing                       = CGFloat(20)
+    private let actionsHeight                       = CGFloat(34)
+    private let actionsTop                          = CGFloat(11)
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?

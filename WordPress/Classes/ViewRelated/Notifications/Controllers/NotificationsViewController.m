@@ -45,7 +45,6 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
 
 #pragma mark ====================================================================================
@@ -102,7 +101,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -115,6 +113,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
         self.tableView.tableFooterView = [UIView new];
     }
     
+
     // UITableView
     self.tableView.accessibilityIdentifier = @"Notifications Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -125,11 +124,19 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
     
+    // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
+    [self.tableView reloadData];
+    
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // UIRefreshControl
     UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
     [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
-    
+
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
@@ -166,17 +173,6 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
-}
-
--(void)viewDidLayoutSubviews
-{
-    [super viewDidLayoutSubviews];
-
-    [self.tableView setSeparatorInset:NotificationBlockSeparatorInsets];
-
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:NotificationBlockSeparatorInsets];
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -415,6 +411,17 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
     self.lastReloadDate = [NSDate date];
 }
 
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -493,12 +500,16 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
-    [self configureCell:layoutCell atIndexPath:indexPath];
+    // Load the Subject + Snippet
+    Notification *note          = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
+    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
     
-    CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    // Old School Height Calculation
+    CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
+    CGFloat cellHeight          = [NoteTableViewCell layoutHeightWithWidth:tableWidth subject:subject snippet:snippet];
 
-    return height;
+    return cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -552,15 +563,13 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
-    NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
-    NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
-    
-    cell.attributedSubject                  = subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
+
+    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
+    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -587,6 +596,18 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
 {
     // Yes. This is dummy. Simperium handles sync for us!
     [self.refreshControl endRefreshing];
+}
+
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+    }
 }
 
 
@@ -663,6 +684,7 @@ static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0
  
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
+
 
 
 #pragma mark - ABXPromptViewDelegate

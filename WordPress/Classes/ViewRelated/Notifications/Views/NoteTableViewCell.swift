@@ -6,30 +6,51 @@ import Foundation
     // MARK: - Public Properties
     public var read: Bool = false {
         didSet {
-            refreshBackgrounds()
-        }
-    }
-    public var attributedSubject: NSAttributedString? {
-        didSet {
-            subjectLabel.attributedText = attributedSubject ?? NSAttributedString()
-            setNeedsLayout()
-        }
-    }
-    public var attributedSnippet: NSAttributedString? {
-        didSet {
-            snippetLabel.attributedText = attributedSnippet ?? NSAttributedString()
-            refreshNumberOfLines()
-            setNeedsLayout()
-        }
-    }
-    public var noticon: NSString? {
-        didSet {
-            noticonLabel.text = noticon ?? String()
+            if read != oldValue {
+                refreshBackgrounds()
+            }
         }
     }
     public var unapproved: Bool = false {
         didSet {
-            refreshBackgrounds()
+            if unapproved != oldValue {
+                refreshBackgrounds()
+            }
+        }
+    }
+    public var showsSeparator: Bool {
+        set {
+            separatorView.hidden = !newValue
+        }
+        get {
+            return separatorView.hidden == false
+        }
+    }
+    public var attributedSubject: NSAttributedString? {
+        set {
+            subjectLabel.attributedText = newValue
+            setNeedsLayout()
+        }
+        get {
+            return subjectLabel.attributedText
+        }
+    }
+    public var attributedSnippet: NSAttributedString? {
+        set {
+            snippetLabel.attributedText = newValue
+            refreshNumberOfLines()
+            setNeedsLayout()
+        }
+        get {
+            return snippetLabel.attributedText
+        }
+    }
+    public var noticon: NSString? {
+        set {
+            noticonLabel.text = newValue
+        }
+        get {
+            return noticonLabel.text
         }
     }
     
@@ -38,37 +59,45 @@ import Foundation
         if url == gravatarURL {
             return
         }
+
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
         
         // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
             let size                = iconImageView.frame.width * UIScreen.mainScreen().scale
             let scaledURL           = unrawppedURL.patchGravatarUrlWithSize(size)
-            iconImageView.downloadImage(scaledURL, placeholderName: placeholderName)
+            iconImageView.downloadImage(scaledURL, placeholderImage: placeholderImage)
         } else {
-            iconImageView.image = UIImage(named: placeholderName)
+            iconImageView.image     = placeholderImage
         }
         
         gravatarURL = url
     }
  
+    
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
 
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
 
-        iconImageView.image             = UIImage(named: placeholderName)
+        iconImageView.image             = WPStyleGuide.Notifications.gravatarPlaceholderImage
 
         noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
 
-        noticonView.layer.cornerRadius  = noticonRadius
+        noticonView.layer.cornerRadius  = Settings.noticonRadius
         noticonLabel.font               = Style.noticonFont
         noticonLabel.textColor          = Style.noticonTextColor
         
-        subjectLabel.numberOfLines      = subjectNumberOfLinesWithSnippet
+        subjectLabel.numberOfLines      = Settings.subjectNumberOfLinesWithSnippet
         subjectLabel.shadowOffset       = CGSizeZero
 
-        snippetLabel.numberOfLines      = snippetNumberOfLines
+        snippetLabel.numberOfLines      = Settings.snippetNumberOfLines
+        
+        // Separator: Make sure the height is 1pixel, not 1point
+        let separatorHeightInPixels     = Settings.separatorHeight / UIScreen.mainScreen().scale
+        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
+        separatorView.backgroundColor   = WPStyleGuide.Notifications.noteSeparatorColor
     }
     
     public override func layoutSubviews() {
@@ -92,7 +121,7 @@ import Foundation
     
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
-        let maxWidthLabel                    = frame.width - subjectPaddingRight - subjectLabel.frame.minX
+        let maxWidthLabel                    = frame.width - Settings.textInsets.right - subjectLabel.frame.minX
         subjectLabel.preferredMaxLayoutWidth = maxWidthLabel
         snippetLabel.preferredMaxLayoutWidth = maxWidthLabel
     }
@@ -100,37 +129,91 @@ import Foundation
     private func refreshBackgrounds() {
         // Noticon Background
         if unapproved {
-            noticonView.backgroundColor = Style.noticonUnmoderatedColor
-            noticonContainerView.backgroundColor = Style.noticonTextColor
+            noticonView.backgroundColor             = Style.noticonUnmoderatedColor
+            noticonContainerView.backgroundColor    = Style.noticonTextColor
         } else if read {
-            noticonView.backgroundColor = Style.noticonReadColor
-            noticonContainerView.backgroundColor = Style.noticonTextColor
+            noticonView.backgroundColor             = Style.noticonReadColor
+            noticonContainerView.backgroundColor    = Style.noticonTextColor
         } else {
-            noticonView.backgroundColor = Style.noticonUnreadColor
-            noticonContainerView.backgroundColor = Style.noteBackgroundUnreadColor
+            noticonView.backgroundColor             = Style.noticonUnreadColor
+            noticonContainerView.backgroundColor    = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background
-        backgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        // Cell Background: Assign only if needed, for performance
+        let newBackgroundColor  = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        if backgroundColor != newBackgroundColor {
+            backgroundColor = newBackgroundColor
+        }
     }
     
     private func refreshNumberOfLines() {
         // When the snippet is present, let's clip the number of lines in the subject
-        subjectLabel.numberOfLines = attributedSnippet != nil ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
+        let showsSnippet = attributedSnippet != nil
+        subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
     }
 
+    public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
+        
+        // Limit the width (iPad Devices)
+        let cellWidth               = min(width, Style.maximumCellWidth)
+        var cellHeight              = Settings.textInsets.top + Settings.textInsets.bottom
+        
+        // Calculate the maximum label size
+        let maxLabelWidth           = cellWidth - Settings.textInsets.left - Settings.textInsets.right
+        let maxLabelSize            = CGSize(width: maxLabelWidth, height: CGFloat.max)
+        
+        // Helpers
+        let showsSnippet            = snippet != nil
+        
+        // If we must render a snippet, the maximum subject height will change. Account for that please
+        if let unwrappedSubject = subject {
+            let subjectRect         = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                        options: .UsesLineFragmentOrigin,
+                                        context: nil)
+            
+            cellHeight              += min(subjectRect.height, Settings.subjectMaximumHeight(showsSnippet))
+        }
+        
+        if let unwrappedSubject = snippet {
+            let snippetRect         = unwrappedSubject.boundingRectWithSize(maxLabelSize,
+                                        options: .UsesLineFragmentOrigin,
+                                        context: nil)
+            
+            cellHeight              += min(snippetRect.height, Settings.snippetMaximumHeight())
+        }
+        
+        return max(cellHeight, Settings.minimumCellHeight)
+    }
+    
     
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
     
+    // MARK: - Private Settings
+    private struct Settings {
+        static let minimumCellHeight:                   CGFloat         = 70
+        static let separatorHeight:                     CGFloat         = 1
+        static let textInsets:                          UIEdgeInsets    = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
+        static let subjectNumberOfLinesWithoutSnippet:  Int             = 3
+        static let subjectNumberOfLinesWithSnippet:     Int             = 2
+        static let snippetNumberOfLines:                Int             = 2
+        static let noticonRadius:                       CGFloat         = 10
+        
+        static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
+            return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
+        }
+
+        static func subjectMaximumHeight(showsSnippet: Bool) -> CGFloat {
+            return CGFloat(Settings.subjectNumberOfLines(showsSnippet)) * Style.subjectLineSize
+        }
+        
+        static func snippetMaximumHeight() -> CGFloat {
+            return CGFloat(snippetNumberOfLines) * Style.snippetLineSize
+        }
+    }
+
     // MARK: - Private Properties
-    private let subjectPaddingRight:                CGFloat     = 12
-    private let subjectNumberOfLinesWithoutSnippet: Int         = 3
-    private let subjectNumberOfLinesWithSnippet:    Int         = 2
-    private let snippetNumberOfLines:               Int         = 2
-    private let noticonRadius:                      CGFloat     = 10
-    private var placeholderName:                    String      = "gravatar"
-    private var gravatarURL:                        NSURL?
+    private var gravatarURL:                            NSURL?
     
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!
@@ -140,4 +223,5 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
+    @IBOutlet private weak var separatorView:           UIView!
 }

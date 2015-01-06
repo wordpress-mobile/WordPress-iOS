@@ -6,6 +6,7 @@
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
+#import "AccountServiceRemoteREST.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -229,5 +230,17 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return [results firstObject];
 }
 
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
+{
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
+        account.email = userDetails[@"email"];
+        NSNumber *primaryBlogId = userDetails[@"primary_blog"];
+        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
+    }];
+}
 
 @end

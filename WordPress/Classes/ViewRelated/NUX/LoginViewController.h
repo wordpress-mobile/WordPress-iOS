@@ -4,5 +4,6 @@
 @property (nonatomic, assign) BOOL onlyDotComAllowed;
 @property (nonatomic, assign) BOOL prefersSelfHosted;
 @property (nonatomic, assign) BOOL showEditorAfterAddingSites;
+@property (nonatomic, assign) BOOL cancellable;
 @property (nonatomic, copy) void (^dismissBlock)();
 @end

@@ -5,15 +5,25 @@ import Foundation
 {
     // MARK: - Public Properties
     public var title: String? {
-        didSet {
-            titleLabel.text = title?.uppercaseString ?? String()
-            setNeedsLayout()
+        set {
+            // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
+            if let unwrappedTitle = newValue?.uppercaseString {
+                titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: Style.headerRegularStyle)
+                setNeedsLayout()
+            }
+        }
+        get {
+            return titleLabel.text
         }
     }
     
     public var separatorColor: UIColor? {
-        didSet {
-            setNeedsDisplay()
+        set {
+            topSeparator.backgroundColor    = newValue
+            bottomSeparator.backgroundColor = newValue
+        }
+        get {
+            return topSeparator.backgroundColor
         }
     }
     
@@ -34,8 +44,8 @@ import Foundation
     public override var frame: CGRect {
         didSet {
             if frame.width > maximumWidth {
-                super.frame.origin.x = (frame.width - maximumWidth) * 0.5
-                super.frame.size.width = maximumWidth
+                super.frame.origin.x    = (frame.width - maximumWidth) * 0.5
+                super.frame.size.width  = maximumWidth
             }
         }
     }
@@ -43,54 +53,37 @@ import Foundation
     // MARK: - View Methods
     public override func layoutSubviews() {
         super.layoutSubviews()
-        let width = frame.width
-        if width > maximumWidth {
-            frame.origin.x  = (width - maximumWidth) * 0.5;
+        
+        let frameWidth              = frame.width
+        let frameHeight             = NoteTableHeaderView.headerHeight()
+        let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
+        let titleWidth              = frameWidth - (imageOriginX * 2) - imageView.frame.width
+        let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
+        let bottomSeparatorY        = frameHeight - separatorHeight
+        
+        if frameWidth > maximumWidth {
+            frame.origin.x          = (frameWidth - maximumWidth) * 0.5;
         }
         
-        frame.size.height           = NoteTableHeaderView.headerHeight()
-        imageView.frame.origin      = imageOrigin
+        frame.size.height           = frameHeight
         
-        titleLabel.frame.origin     = titleOrigin
-        titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
-    }
-
-    public override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
+        imageView.frame.origin      = CGPoint(x: imageOriginX, y: imageOriginY)
         
-        // Draw Separators: proceed only if the color is set!
-        if separatorColor == nil {
-            return
-        }
+        titleLabel.frame.origin     = CGPoint(x: titleOriginX, y: titleOriginY)
+        titleLabel.frame.size       = CGSize(width: titleWidth, height: titleHeight)
         
-        let unwrappedSeparatorColor = separatorColor!
-        
-        let ctx = UIGraphicsGetCurrentContext()
-        
-        unwrappedSeparatorColor.set()
-        CGContextSetLineWidth(ctx, separatorHeight)
-
-        // Top Separator
-        CGContextMoveToPoint(ctx, 0, 0)
-        CGContextAddLineToPoint(ctx, bounds.width, 0)
-
-        // Bottom Separator
-        CGContextMoveToPoint(ctx, 0, bounds.height)
-        CGContextAddLineToPoint(ctx, bounds.width, bounds.height)
-        
-        CGContextStrokePath(ctx)
+        topSeparator.frame          = CGRect(x: 0, y: 0,                width: frameWidth, height: separatorHeight)
+        bottomSeparator.frame       = CGRect(x: 0, y: bottomSeparatorY, width: frameWidth, height: separatorHeight)
     }
     
     // MARK - Private Helpers
     private func setupSubviews() {
-        backgroundColor             = WPStyleGuide.Notifications.headerBackgroundColor
+        backgroundColor             = Style.headerBackgroundColor
         
         titleLabel                  = UILabel()
         titleLabel.textAlignment    = .Left
         titleLabel.numberOfLines    = 0;
         titleLabel.lineBreakMode    = .ByWordWrapping
-        titleLabel.font             = WPStyleGuide.Notifications.headerFont
-        titleLabel.textColor        = WPStyleGuide.Notifications.headerTextColor
         titleLabel.backgroundColor  = UIColor.clearColor()
         titleLabel.shadowOffset     = CGSizeZero
         addSubview(titleLabel)
@@ -99,19 +92,32 @@ import Foundation
         imageView                   = UIImageView(image: image)
         imageView.sizeToFit()
         addSubview(imageView)
+
+        topSeparator                = UIView(frame: CGRectZero)
+        addSubview(topSeparator)
+        
+        bottomSeparator             = UIView(frame: CGRectZero)
+        addSubview(bottomSeparator)
     }
 
     
-    // MARK - Constants
-    private let imageOrigin     = CGPoint(x: 10, y: 5)
-    private let titleOrigin     = CGPoint(x: 30, y: 4)
-    private let titleHeight     = CGFloat(16)
-    private let imageName       = "reader-postaction-time"
+    // MARK: - Constants
+    private let imageOriginX        = CGFloat(10)
+    private let titleOriginX        = CGFloat(30)
+    private let titleHeight         = CGFloat(16)
+    private let imageName           = "reader-postaction-time"
     
-    private let separatorHeight = CGFloat(1)
-    private let maximumWidth    = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
+    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
+    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
-    // MARK - Outlets
+    // MARK: - Properties
+    private var topSeparator:       UIView!
+    private var bottomSeparator:    UIView!
+    
+    // MARK: - Aliases
+    typealias Style = WPStyleGuide.Notifications
+    
+    // MARK: - Outlets
     private var imageView:          UIImageView!
     private var titleLabel:         UILabel!
 }

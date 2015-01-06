@@ -4,6 +4,7 @@
 #import <MGImageUtilities/UIImage+ProportionalFill.h>
 
 #import "Notification.h"
+#import "Notification+Internals.h"
 
 #import "DDLogSwift.h"
 #import "NSObject+Helpers.h"
