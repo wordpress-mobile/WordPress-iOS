@@ -419,7 +419,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.layer.masksToBounds = YES;
         _helpBadge.layer.cornerRadius = 6;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
-        _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
+        _helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
         _helpBadge.textColor = [UIColor whiteColor];
         _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
@@ -921,6 +921,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                     [self dismiss];
                                     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
+
+                                    // once blogs for the accounts are synced, we want to update account details for it
+                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];
