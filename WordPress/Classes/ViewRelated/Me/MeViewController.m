@@ -158,12 +158,14 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
             if (defaultAccount) {
-                cell.textLabel.text = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
-                cell.accessibilityIdentifier = @"Sign Out";
+                NSString *signOutString = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                cell.textLabel.text = signOutString;
+                cell.accessibilityIdentifier = signOutString;
             }
             else {
-                cell.textLabel.text = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
-                cell.accessibilityIdentifier = @"Sign In";
+                NSString *signInString = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+                cell.textLabel.text = signInString;
+                cell.accessibilityIdentifier = signInString;
             }
         }
     }
