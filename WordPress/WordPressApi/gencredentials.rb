@@ -249,8 +249,6 @@ File.open(path) do |f|
       appbotx_api_key = v.chomp
     elsif k == "NEWRELIC_APPLICATION_TOKEN"
       newrelic_application_token = v.chomp
-    else
-      $stderr.puts "warning: Unknown key #{k}"
     end
   end
 end
