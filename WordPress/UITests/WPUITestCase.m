@@ -29,15 +29,22 @@
 - (void) logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester waitForTimeInterval:3];
+    [tester waitForTimeInterval:1];
 }
+
+- (void) logoutIfNeeded {
+    if(![tester tryFindingViewWithAccessibilityIdentifier:@"Username / Email" error:nil]){
+        [self logout];
+    }
+}
+
 
 @end

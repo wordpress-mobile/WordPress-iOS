@@ -56,5 +56,11 @@
     [viewToSwipe dragFromPoint:swipeStart displacement:swipeDisplacement steps:kNumberOfPointsInSwipePath];
 }
 
+- (BOOL)tryFindingViewWithAccessibilityIdentifier:(NSString *)identifier error:(out NSError **)error
+{
+    UIAccessibilityElement * accessibilityElement = nil;
+    UIView * view = nil;
+    return ([self tryFindingAccessibilityElement:&accessibilityElement view:&view withElementMatchingPredicate:[NSPredicate predicateWithFormat:@"accessibilityIdentifier = %@", identifier] tappable:YES error:error]);
+}
 
 @end

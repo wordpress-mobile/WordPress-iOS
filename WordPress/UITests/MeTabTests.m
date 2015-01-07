@@ -13,6 +13,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self login];
 }
 
