@@ -90,6 +90,18 @@
     [tester waitForTimeInterval:2];
 }
 
+- (void) selectOptions {
+    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
+    
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Edit"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
+    [tester waitForTimeInterval:2];
+}
+
 - (void) testSetSchedule {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
@@ -244,6 +256,46 @@
     
     [tester tapViewWithAccessibilityLabel:@"Update"];
     [tester waitForTimeInterval:2];
+}
+
+- (void) testSetFeaturedImage {
+    for (int i = 0; i < 2 ; i++) {
+        [self selectOptions];
+        
+        if ( [tester tryFindingTappableViewWithAccessibilityLabel:@"Set Featured Image" error:nil]) {
+            [tester tapViewWithAccessibilityLabel:@"Set Featured Image"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
+            
+            [tester waitForTimeInterval:5];
+            
+            [tester tapViewWithAccessibilityLabelStartingWith:@"Photo, "];
+            
+            [tester waitForTimeInterval:15];
+            
+            [tester tapViewWithAccessibilityLabel:@"Back"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Update"];
+            [tester waitForTimeInterval:5];
+        } else {
+            [tester tapViewWithAccessibilityIdentifier:@"Current Featured Image"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Remove Featured Image"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Remove"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Back"];
+            [tester waitForTimeInterval:2];
+            
+            [tester tapViewWithAccessibilityLabel:@"Update"];
+            [tester waitForTimeInterval:5];
+        }
+    }
     
 }
 
