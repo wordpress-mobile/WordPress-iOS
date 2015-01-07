@@ -523,30 +523,7 @@ static NSInteger const CVCNumberOfSections = 2;
                                                     }
                                                 }
                                ];
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService updateCommentWithID:self.comment.commentID
-                                 siteID:self.comment.blog.blogID
-                                content:newContent
-                                success:^{
-                                    weakSelf.comment.content = newContent;
-                                    [weakSelf.tableView reloadData];
-                                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                                }
-                                failure:^(NSError *error) {
-                                    [UIAlertView showWithTitle:nil
-                                                       message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
-                                             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                          if (buttonIndex == alertView.cancelButtonIndex) {
-                                                              [weakSelf.tableView reloadData];
-                                                          } else {
-                                                              [weakSelf updateCommentForNewContent:newContent];
-                                                          }
-                                                      }];
-                                }];
+                          }];
 }
 
 #pragma mark - Replying Comments for iPad
@@ -581,27 +558,6 @@ static NSInteger const CVCNumberOfSections = 2;
 
     __typeof(self) __weak weakSelf = self;
 
-<<<<<<< HEAD
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService replyToCommentWithID:self.comment.commentID
-                                  siteID:self.comment.blog.blogID
-                                 content:content
-                                 success:^(){
-                                     [WPToast showToastWithMessage:successMessage andImage:successImage];
-
-                                 } failure:^(NSError *error) {
-                                     [UIAlertView showWithTitle:nil
-                                                        message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                                              cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                              otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                           if (buttonIndex != alertView.cancelButtonIndex) {
-                                                               [weakSelf sendReplyWithNewContent:content];
-                                                           }
-                                                       }];
-                                 }];
-=======
     void (^successBlock)() = ^void() {
         [WPToast showToastWithMessage:successMessage andImage:successImage];
     };
@@ -618,10 +574,11 @@ static NSInteger const CVCNumberOfSections = 2;
                           }];
     };
 
-    Comment *reply = [self.commentService createReplyForComment:self.comment];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    Comment *reply = [commentService createReplyForComment:self.comment];
     reply.content = content;
-    [self.commentService uploadComment:reply success:successBlock failure:failureBlock];
->>>>>>> release/4.7
+    [commentService uploadComment:reply success:successBlock failure:failureBlock];
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
