@@ -10,6 +10,11 @@
 
 @implementation LoginTests
 
+- (void)beforeAll
+{
+    [self logoutIfNeeded];
+}
+
 - (void)beforeEach
 {
     if([tester tryFindingViewWithAccessibilityLabel:@"OK" error:nil]){

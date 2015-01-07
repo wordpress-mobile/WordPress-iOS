@@ -9,5 +9,6 @@
 - (void) login;
 - (void) loginOther;
 - (void) logout;
+- (void) logoutIfNeeded;
 
 @end
