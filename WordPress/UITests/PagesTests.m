@@ -85,7 +85,7 @@
     [tester swipeViewWithAccessibilityIdentifier:@"PostCell" inDirection:KIFSwipeDirectionLeft];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Delete"];
+    [tester tapViewWithAccessibilityLabel:@"Trash"];
     [tester waitForTimeInterval:2];
 }
 
@@ -97,7 +97,7 @@
         [tester waitForTimeInterval:2];
     }
 
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"SettingsTable"];
@@ -125,7 +125,7 @@
         [tester waitForTimeInterval:2];
     }
 
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityIdentifier:@"Status"];
@@ -147,7 +147,7 @@
         [tester waitForTimeInterval:2];
     }
     
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityIdentifier:@"Status"];
@@ -159,7 +159,12 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Post"];
+    //depends of the editor version
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Post" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Post"];
+    } else if ([tester tryFindingViewWithAccessibilityLabel:@"Publish" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Publish"];
+    }
     [tester waitForTimeInterval:2];
     
 }
@@ -172,7 +177,7 @@
         [tester waitForTimeInterval:2];
     }
 
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
@@ -194,7 +199,7 @@
         [tester waitForTimeInterval:2];
     }
 
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
@@ -209,8 +214,13 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Post"];
-    [tester waitForTimeInterval:5];
+    //depends of the editor version
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Post" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Post"];
+    } else if ([tester tryFindingViewWithAccessibilityLabel:@"Publish" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Publish"];
+    }
+    [tester waitForTimeInterval:2];
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
@@ -219,7 +229,7 @@
         [tester waitForTimeInterval:2];
     }
 
-    [tester tapViewWithAccessibilityLabel:@"Options"];
+    [tester tapViewWithAccessibilityIdentifier:@"Options"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
