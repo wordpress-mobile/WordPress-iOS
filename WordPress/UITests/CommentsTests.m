@@ -32,6 +32,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self makeSureCommentExists];
     [self login];
 }

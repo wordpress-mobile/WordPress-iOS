@@ -12,4 +12,6 @@
 
 - (void)swipeViewWithAccessibilityIdentifier:(NSString *)identifier value:(NSString *)value traits:(UIAccessibilityTraits)traits inDirection:(KIFSwipeDirection)direction;
 
+- (BOOL)tryFindingViewWithAccessibilityIdentifier:(NSString *)identifier error:(out NSError **)error;
+
 @end

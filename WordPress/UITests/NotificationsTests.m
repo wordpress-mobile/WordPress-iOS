@@ -31,6 +31,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self makeSureNotificationExists];
     [self login];
 }
