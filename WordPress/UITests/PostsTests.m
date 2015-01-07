@@ -90,7 +90,7 @@
     [tester waitForTimeInterval:2];
 }
 
-- (void) selectPostOptions {
+- (void) selectOptions {
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     
     if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
@@ -104,7 +104,7 @@
 
 - (void) testSetCategory {
     
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Categories"];
     [tester waitForTimeInterval:2];
@@ -124,7 +124,7 @@
 }
 
 - (void) testSetTag {
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester clearTextFromAndThenEnterText:[NSString stringWithFormat:@"iOS, KIF, %u", arc4random()] intoViewWithAccessibilityIdentifier:@"Tags Value"];
     [tester waitForTimeInterval:2];
@@ -137,7 +137,7 @@
 }
 
 - (void) testSetSchedule {
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1] inTableViewWithAccessibilityIdentifier:@"SettingsTable"];
     [tester waitForTimeInterval:2];
@@ -157,7 +157,7 @@
 }
 
 - (void) testSetStatus {
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Status"];
     [tester waitForTimeInterval:2];
@@ -171,7 +171,7 @@
     [tester tapViewWithAccessibilityLabel:@"Save"];
     [tester waitForTimeInterval:2];
     
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Status"];
     [tester waitForTimeInterval:2];
@@ -188,7 +188,7 @@
 }
 
 - (void) testSetVisibility {
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
@@ -202,7 +202,7 @@
     [tester tapViewWithAccessibilityLabel:@"Save"];
     [tester waitForTimeInterval:5];
     
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
@@ -219,7 +219,7 @@
     [tester tapViewWithAccessibilityLabel:@"Publish"];
     [tester waitForTimeInterval:5];
     
-    [self selectPostOptions];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Visibility"];
     [tester waitForTimeInterval:2];
@@ -239,7 +239,7 @@
     NSArray * formats = @[@"Video", @"Aside", @"Image", @"Quote", @"Link", @"Standard"];
     
     for (NSString * format in formats){
-        [self selectPostOptions];
+        [self selectOptions];
         
         [tester tapViewWithAccessibilityIdentifier:@"Post Format"];
         [tester waitForTimeInterval:2];
@@ -257,7 +257,7 @@
 
 - (void) testSetFeaturedImage {
     for (int i = 0; i < 2 ; i++) {
-        [self selectPostOptions];
+        [self selectOptions];
         
         if ( [tester tryFindingTappableViewWithAccessibilityLabel:@"Set Featured Image" error:nil]) {
             [tester tapViewWithAccessibilityLabel:@"Set Featured Image"];
