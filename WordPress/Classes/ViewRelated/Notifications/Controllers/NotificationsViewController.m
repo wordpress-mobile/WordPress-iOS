@@ -609,9 +609,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     return NSStringFromClass([Notification class]);
 }
 
-- (void)tableViewDidChangeContent:(UITableView *)tableView
+- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
 {
     [self showNoResultsViewIfNeeded];
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
 }
 
 
