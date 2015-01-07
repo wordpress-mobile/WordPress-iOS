@@ -103,8 +103,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [super viewDidLoad];
     
     // Register the cells
-    NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
-    self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
+    NSString *cellNibName = [NoteTableViewCell classNameWithoutNamespaces];
+    self.tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -122,10 +122,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
-    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights        = YES;
-    tableViewHandler.delegate               = self;
-    self.tableViewHandler                   = tableViewHandler;
+    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights = YES;
+    tableViewHandler.delegate = self;
+    tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    self.tableViewHandler = tableViewHandler;
     
     // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
     [self.tableView reloadData];
