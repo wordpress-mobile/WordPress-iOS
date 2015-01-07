@@ -118,7 +118,7 @@
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Comments Table"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Save"];
+    [tester tapViewWithAccessibilityLabel:@"Edit"];
     [tester waitForTimeInterval:2];
     
     [tester enterTextIntoCurrentFirstResponder:[NSString stringWithFormat:@"Smashing comment %ld", random()]];
