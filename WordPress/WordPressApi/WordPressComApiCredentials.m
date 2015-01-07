@@ -61,4 +61,9 @@
    return @"";
 }
 
++ (NSString *)newRelicApplicationToken
+{
+   return @"";
+}
+
 @end
