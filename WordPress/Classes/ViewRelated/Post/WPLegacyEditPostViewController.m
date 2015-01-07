@@ -378,7 +378,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
 
-    if (![self hasChanges]) {
+    if (![self.post hasUnsavedChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
         [self discardChanges];
         [self dismissEditView];
@@ -479,11 +479,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)hasChanges
-{
-    return [self.post hasChanged];
-}
-
 #pragma mark - UI Manipulation
 
 - (void)refreshButtons
@@ -524,7 +519,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
     }
 
-    BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+    BOOL updateEnabled = [self.post canSave];
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 }
 

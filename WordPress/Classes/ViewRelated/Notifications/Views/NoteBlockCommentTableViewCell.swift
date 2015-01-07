@@ -107,7 +107,11 @@ import Foundation
         
         gravatarURL = url
     }
-    
+
+    public func downloadGravatarWithGravatarEmail(email: NSString?) {
+        gravatarImageView.setImageWithGravatarEmail(email)
+    }
+
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
