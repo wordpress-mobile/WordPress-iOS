@@ -17,6 +17,7 @@
 #import "StatsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPageViewController.h"
+#import "HelpshiftUtils.h"
 
 NSString * const WPTabBarRestorationID = @"WPTabBarID";
 NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -71,6 +72,12 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
         [self setViewControllers:@[self.blogListNavigationController, self.readerNavigationController, self.newPostViewController, self.meNavigationController, self.notificationsNavigationController]];
 
         [self setSelectedViewController:self.blogListNavigationController];
+
+        // since this is a singleton, it's ok to add the notification observer in the init
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(helpshiftUnreadCountUpdated:)
+                                                     name:HelpshiftUnreadCountUpdatedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -379,15 +386,24 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     return (self.tabBarController.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
-- (void)setBadgeValueForMeTab:(NSString *)badgeValue
-{
-    [self.tabBar.items[WPTabMe] setBadgeValue:badgeValue];
-}
-
 #pragma mark - Helpers
 
 - (UIOffset)tabBarTitleOffset {
     return IS_IPHONE ? UIOffsetMake(0, -2) : UIOffsetZero;
+}
+
+#pragma mark - Helpshift Notifications
+
+- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
+{
+    NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
+    UITabBarItem *meTabBarItem = self.tabBar.items[WPTabMe];
+    if (unreadCount == 0) {
+        [meTabBarItem setBadgeValue:nil];
+    }
+    else {
+        [meTabBarItem setBadgeValue:[NSString stringWithFormat:@"%ld", unreadCount]];
+    }
 }
 
 @end

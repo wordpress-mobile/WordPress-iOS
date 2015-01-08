@@ -17,6 +17,7 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import "HelpshiftUtils.h"
 
 const typedef enum {
     MeRowAccountSettings = 0,
@@ -37,6 +38,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MeHeaderView *headerView;
+@property (nonatomic, strong) UILabel *helpshiftBadgeLabel;
 
 @end
 
@@ -63,6 +65,13 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    self.helpshiftBadgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    self.helpshiftBadgeLabel.layer.masksToBounds = YES;
+    self.helpshiftBadgeLabel.layer.cornerRadius = 15;
+    self.helpshiftBadgeLabel.textAlignment = NSTextAlignmentCenter;
+    self.helpshiftBadgeLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    self.helpshiftBadgeLabel.textColor = [UIColor whiteColor];
+
     [self setupAutolayoutConstraints];
 }
 
@@ -83,7 +92,16 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 {
     [super viewDidLoad];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    // we want to observe for the account change notification even if the view is not visible
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(defaultAccountDidChange:)
+                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(helpshiftUnreadCountUpdated:)
+                                                 name:HelpshiftUnreadCountUpdatedNotification
+                                               object:nil];
 
     [self refreshDetails];
 }
@@ -113,6 +131,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
+
+    [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -139,15 +159,25 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [WPStyleGuide configureTableViewActionCell:cell];
 
     if (indexPath.section == MeSectionGeneralType) {
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         switch (indexPath.row) {
             case MeRowAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
                 cell.accessibilityLabel = @"Account Settings";
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case MeRowHelp:
                 cell.textLabel.text = NSLocalizedString(@"Help & Support", @"");
                 cell.accessibilityLabel = @"Help & Support";
+
+                NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
+                if ([HelpshiftUtils isHelpshiftEnabled] && unreadNotificationCount > 0) {
+                    self.helpshiftBadgeLabel.text = [NSString stringWithFormat:@"%ld", unreadNotificationCount];
+                    cell.accessoryView = self.helpshiftBadgeLabel;
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                } else {
+                    cell.accessoryView = nil;
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                }
                 break;
             default:
                 break;
@@ -272,6 +302,14 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
         // reload all table view to update the header as well
         [self.tableView reloadData];
     }
+}
+
+#pragma mark - Helpshift Notifications
+
+- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
+{
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:MeRowHelp inSection:MeSectionGeneralType];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

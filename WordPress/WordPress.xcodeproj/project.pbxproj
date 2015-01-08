@@ -42,6 +42,7 @@
 		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */; };
 		3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3101866A1A373B01008F7DF6 /* WPTabBarController.m */; };
+		313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 313692781A5D6F7900EBE645 /* HelpshiftUtils.m */; };
 		313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 313AE49C19E3F20400AAFABE /* CommentViewController.m */; };
 		313AE4A119E3F20400AAFABE /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313AE49D19E3F20400AAFABE /* CommentTableViewCell.swift */; };
 		313AE4A219E3F20400AAFABE /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 313AE49E19E3F20400AAFABE /* CommentTableViewCell.xib */; };
@@ -544,6 +545,8 @@
 		30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogTableViewCell.m; sourceTree = "<group>"; };
 		310186691A373B01008F7DF6 /* WPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTabBarController.h; sourceTree = "<group>"; };
 		3101866A1A373B01008F7DF6 /* WPTabBarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTabBarController.m; sourceTree = "<group>"; };
+		313692771A5D6F7900EBE645 /* HelpshiftUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpshiftUtils.h; sourceTree = "<group>"; };
+		313692781A5D6F7900EBE645 /* HelpshiftUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpshiftUtils.m; sourceTree = "<group>"; };
 		313AE49B19E3F20400AAFABE /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
 		313AE49C19E3F20400AAFABE /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		313AE49D19E3F20400AAFABE /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
@@ -561,9 +564,9 @@
 		319D6E8419E44F7F0013871C /* SuggestionsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SuggestionsTableViewCell.m; path = Suggestions/SuggestionsTableViewCell.m; sourceTree = "<group>"; };
 		31C9F82C1A2368A2008BB945 /* BlogDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogDetailHeaderView.h; sourceTree = "<group>"; };
 		31C9F82D1A2368A2008BB945 /* BlogDetailHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogDetailHeaderView.m; sourceTree = "<group>"; };
+		31CCB9FD1A52ED0A00BA0733 /* WordPress 26.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 26.xcdatamodel"; sourceTree = "<group>"; };
 		31F4F6651A1385BE00196A98 /* MeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeViewController.h; path = Me/MeViewController.h; sourceTree = "<group>"; };
 		31F4F6661A1385BE00196A98 /* MeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeViewController.m; path = Me/MeViewController.m; sourceTree = "<group>"; };
-		31CCB9FD1A52ED0A00BA0733 /* WordPress 26.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 26.xcdatamodel"; sourceTree = "<group>"; };
 		31FA16CC1A49B3C0003E1887 /* WordPress 25.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 25.xcdatamodel"; sourceTree = "<group>"; };
 		369D8993FF42F0A2D183A062 /* libPods-UITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
@@ -2040,10 +2043,13 @@
 				FD9A948B12FAEA2300438F94 /* DateUtils.m */,
 				93A379D919FE6D3000415023 /* DDLogSwift.h */,
 				93A379DA19FE6D3000415023 /* DDLogSwift.m */,
+				313692771A5D6F7900EBE645 /* HelpshiftUtils.h */,
+				313692781A5D6F7900EBE645 /* HelpshiftUtils.m */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
 				C57A31A2183D2111007745B9 /* NotificationsManager.h */,
 				C57A31A3183D2111007745B9 /* NotificationsManager.m */,
+				FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */,
 				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
 				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
 				5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */,
@@ -2076,7 +2082,6 @@
 				B5CC05FA196218E100975CAC /* XMLParserCollecter.h */,
 				B5CC05FB196218E100975CAC /* XMLParserCollecter.m */,
 				FFAB7CAF1A0BD83A00765942 /* WPAssetExporter.h */,
-				FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3283,6 +3288,7 @@
 				7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */,
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
 				E149D64E19349E69006A843D /* AccountServiceRemoteREST.m in Sources */,
+				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,
 				03958062100D6CFC00850742 /* WPLabel.m in Sources */,
 				46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */,
