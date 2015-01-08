@@ -46,9 +46,9 @@ PODS:
   - Helpshift (4.8.0)
   - HockeySDK (3.6.2)
   - JRSwizzle (1.0)
-  - KIF/IdentifierTests (3.1.0):
+  - KIF/IdentifierTests (3.1.1):
     - KIF/XCTest
-  - KIF/XCTest (3.1.0)
+  - KIF/XCTest (3.1.1)
   - Lookback (0.6.5)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.4)
@@ -210,7 +210,7 @@ SPEC CHECKSUMS:
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
-  KIF: de7c7f4aea08179c65d963a3c5ec438ee6408e8c
+  KIF: 0a3c7440a32612498a114012e822b9d39b6432f1
   Lookback: 59f217e51c1f2bcdf23d00522ef14b66be8557d1
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
