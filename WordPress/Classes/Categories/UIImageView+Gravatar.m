@@ -14,7 +14,8 @@ NSString *const GravatarDefault = @"gravatar.png";
 
 @implementation UIImageView (Gravatar)
 
-- (void)setImageWithGravatarEmail:(NSString *)emailAddress {
+- (void)setImageWithGravatarEmail:(NSString *)emailAddress
+{
     static UIImage *gravatarDefaultImage;
     if (gravatarDefaultImage == nil) {
         gravatarDefaultImage = [UIImage imageNamed:GravatarDefault];
@@ -27,19 +28,21 @@ NSString *const GravatarDefault = @"gravatar.png";
 {
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[self gravatarURLForEmail:emailAddress]];
     [request addValue:@"image/*" forHTTPHeaderField:@"Accept"];
-    
+
     __weak UIImageView *weakSelf = self;
     [self setImageWithURLRequest:request placeholderImage:fallbackImage success:nil failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error){
         weakSelf.image = fallbackImage;
     }];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl
+{
     BOOL wpcom = ([blavatarUrl rangeOfString:@".wordpress.com"].location != NSNotFound);
     [self setImageWithBlavatarUrl:blavatarUrl isWPcom:wpcom];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom {
+- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom
+{
     static UIImage *blavatarDefaultImageWPcom;
     static UIImage *blavatarDefaultImageWPorg;
     if (blavatarDefaultImageWPcom == nil) {
@@ -48,7 +51,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     if (blavatarDefaultImageWPorg == nil) {
         blavatarDefaultImageWPorg = [UIImage imageNamed:BlavatarDefaultWporg];
     }
-    
+
     UIImage *placeholderImage;
     if (wpcom) {
         placeholderImage = blavatarDefaultImageWPcom;
@@ -117,7 +120,7 @@ NSString *const GravatarDefault = @"gravatar.png";
     }
 
     size *= [[UIScreen mainScreen] scale];
-    
+
     return size;
 }
 

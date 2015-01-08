@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
-#import "EditPostViewController.h"
+#import "WPPostViewController.h"
 
-@interface EditPageViewController : EditPostViewController {
+@interface EditPageViewController : WPPostViewController {
 }
 
 @end

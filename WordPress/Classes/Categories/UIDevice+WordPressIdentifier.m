@@ -4,7 +4,8 @@ static NSString * const WordPressIdentifierDefaultsKey = @"WordPressIdentifier";
 
 @implementation UIDevice (WordPressIdentifier)
 
-- (NSString *)wordpressIdentifier {
+- (NSString *)wordpressIdentifier
+{
     NSString *uuid;
     if ([[UIDevice currentDevice] respondsToSelector:@selector(identifierForVendor)]) {
         uuid = [[[UIDevice currentDevice] identifierForVendor] UUIDString];
@@ -20,7 +21,8 @@ static NSString * const WordPressIdentifierDefaultsKey = @"WordPressIdentifier";
     return uuid;
 }
 
-- (NSString *)generateUUID {
+- (NSString *)generateUUID
+{
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);

@@ -1,5 +1,3 @@
-#import "AsyncTestHelper.h"
-#import "CoreDataTestHelper.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
 #import "ReaderTopic.h"
@@ -11,6 +9,7 @@
 #import "ReaderPostServiceRemote.h"
 #import "RemoteReaderPost.h"
 #import <XCTest/XCTest.h>
+#import "TestContextManager.h"
 
 @interface ReaderPostServiceRemote ()
 - (RemoteReaderPost *)formatPostDictionary:(NSDictionary *)dict;
@@ -30,9 +29,27 @@
 @end
 
 @interface ReaderPostServiceTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
+
 @end
 
 @implementation ReaderPostServiceTest
+
+- (void)setUp
+{
+    [super setUp];
+    
+    self.testContextManager = [[TestContextManager alloc] init];
+}
+
+- (void)tearDown
+{
+    // Put teardown code here; it will be run once, after the last test case.
+    [super tearDown];
+    
+    self.testContextManager = nil;
+}
 
 #pragma mark - Configuration
 
@@ -116,7 +133,7 @@
 
     NSString *path = @"path.to/image.jpg";
     NSString *uri = [NSString stringWithFormat:@"http://%@", path];
-    NSDictionary *dict = @{@"featured_media": @{@"type": @"image", @"uri":uri}};
+    NSDictionary *dict = @{@"featured_image": uri};
     NSString *imagePath = [remoteService featuredImageFromPostDictionary:dict];
     XCTAssertTrue([uri isEqualToString:imagePath], @"Failed to retrieve the uri for featured media.");
 
@@ -268,15 +285,16 @@
     remotePost.isBlogPrivate = YES;
     ReaderPost *post = [service createOrReplaceFromRemotePost:remotePost forTopic:nil];
 
-    ATHStart();
+    XCTestExpectation *expectation = [self expectationWithDescription:@"reblog expectation"];
     [service reblogPost:post toSite:0 note:nil success:^{
         XCTFail(@"Posts from private blogs should not be rebloggable.");
-        ATHNotify();
+        [expectation fulfill];
     } failure:^(NSError *error) {
         XCTAssertTrue([error.domain isEqualToString:ReaderPostServiceErrorDomain], @"Reblogging a private post failed but not for the expected reason.");
-        ATHNotify();
+        [expectation fulfill];
     }];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
 
 @end

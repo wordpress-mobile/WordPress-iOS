@@ -1,1 +1,0 @@
-../../CTAssetsPickerController/CTAssetsPickerController/CTAssetsViewController.h

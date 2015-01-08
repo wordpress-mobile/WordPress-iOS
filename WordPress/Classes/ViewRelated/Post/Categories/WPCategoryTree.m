@@ -2,7 +2,8 @@
 
 @implementation WPCategoryTree
 
-- (id)initWithParent:(Category *)parent {
+- (id)initWithParent:(Category *)parent
+{
     if (self = [super init]) {
         self.parent = parent;
         self.children = [NSMutableArray array];
@@ -11,7 +12,8 @@
     return self;
 }
 
-- (void)getChildrenFromObjects:(NSArray *)collection {
+- (void)getChildrenFromObjects:(NSArray *)collection
+{
     NSUInteger count = [collection count];
 
     for (NSUInteger i = 0; i < count; i++) {
@@ -26,15 +28,15 @@
     }
 }
 
-
-- (NSArray *)getAllObjects {
+- (NSArray *)getAllObjects
+{
     NSMutableArray *allObjects = [NSMutableArray array];
     NSUInteger count = [self.children count];
 
     if (self.parent) {
         [allObjects addObject:self.parent];
     }
-    
+
     for (NSUInteger i = 0; i < count; i++) {
         [allObjects addObjectsFromArray:[[self.children objectAtIndex:i] getAllObjects]];
     }

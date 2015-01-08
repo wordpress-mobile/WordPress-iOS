@@ -24,7 +24,7 @@
 - (void)sizeToFit
 {
     [super sizeToFit];
-    
+
     // Adjust frame to account for the edge insets
     CGRect frame = self.frame;
     frame.size.width += self.titleEdgeInsets.left + self.titleEdgeInsets.right;
@@ -48,6 +48,5 @@
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
 }
-
 
 @end

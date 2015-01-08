@@ -9,13 +9,14 @@
 
 @implementation WPMainTabBarController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    
+
     UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
     CGFloat x = CGRectGetWidth(self.view.frame) - (image.size.width + 20);
     CGFloat y = CGRectGetHeight(self.view.frame) - (image.size.height + 2);
-    
+
     self.postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _postButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     _postButton.frame = CGRectMake(x, y, image.size.width, image.size.height);
@@ -24,7 +25,7 @@
     _postButton.contentMode = UIViewContentModeCenter;
     _postButton.clipsToBounds = NO;
     [_postButton addTarget:self action:@selector(postButtonTapped) forControlEvents:UIControlEventTouchUpInside];
-    
+
     // iPad in landscape orientation will end up positioning the post button in the
     // wrong place the first time viewWillAppear: is called, but not subsequent times.
     // This seems to be because the layer transform due to rotation has not yet ben applied.
@@ -32,37 +33,41 @@
     [self.view addSubview:_postButton];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     // Make sure to reposition if we rotated while hidden by a modal.
     [self positionPostButton];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     [self positionPostButton];
     // The button should be in the correct location so its safe to show.
     self.postButton.hidden = NO;
 }
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+                                duration:(NSTimeInterval)duration
+{
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     // Hide before we rotate so the button doesn't appear momentarily out of place
     self.postButton.hidden = YES;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
     [self positionPostButton];
     self.postButton.hidden = NO;
 }
 
-
 // Position the post button over its respective tab.
 // For best alignment the target tab should have an image
 // that is the same size as the one used for the post button.
-- (void)positionPostButton {
-    
+- (void)positionPostButton
+{
     CGRect tabFrame = CGRectZero;
     CGFloat lastX = 0;
     // Find the right most UITabBarButtonItem
@@ -92,11 +97,12 @@
         tabFrame.size.width  = imageSize.width;
         tabFrame.origin.x -= ceilf(diff / 2.0f);
     }
-    
+
     _postButton.frame = tabFrame;
 }
 
-- (void)postButtonTapped {
+- (void)postButtonTapped
+{
     [[WordPressAppDelegate sharedWordPressApplicationDelegate] showPostTab];
 }
 

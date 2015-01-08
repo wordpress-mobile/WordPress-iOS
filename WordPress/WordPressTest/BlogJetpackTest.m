@@ -1,30 +1,31 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "BlogJetpackTest.h"
-#import "CoreDataTestHelper.h"
-#import "AsyncTestHelper.h"
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "TestContextManager.h"
+#import <XCTest/XCTest.h>
+
+@interface BlogJetpackTest : XCTestCase
+@end
 
 @interface BlogJetpackTest ()
 
 @property (nonatomic, strong) WPAccount *account;
 @property (nonatomic, strong) Blog *blog;
-
+@property (nonatomic, strong) TestContextManager *testContextManager;
 @end
 
 @implementation BlogJetpackTest
 
 - (void)setUp {
     [super setUp];
+    self.testContextManager = [[TestContextManager alloc] init];
     
-    ATHStart();
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     _account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
-    ATHEnd();
 
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     _blog.url = @"http://test.blog/";
     _blog.options = @{@"jetpack_version": @{
@@ -47,17 +48,21 @@
     _account = nil;
     _blog = nil;
     [OHHTTPStubs removeAllRequestHandlers];
-    
-    [[CoreDataTestHelper sharedHelper] reset];
+
+    self.testContextManager = nil;
 }
 
 - (void)testAssertionsOnWPcom {
-    ATHStart();
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
-    ATHEnd();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
 
-    _blog = (Blog *)[[CoreDataTestHelper sharedHelper] insertEntityIntoMainContextWithName:@"Blog"];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+
+    // Wait on the merge to be completed
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+
+    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
     _blog.url = @"http://test.wordpress.com/";
     _blog.account = wpComAccount;
@@ -114,25 +119,46 @@
         return [OHHTTPStubsResponse responseWithFile:@"authtoken.json" contentType:@"application/json" responseTime:OHHTTPStubsDownloadSpeedWifi];
     }];
     
-    ATHStart();
+    XCTestExpectation *validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
+    
     [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
         XCTFail(@"User test1 shouldn't have access to test.blog");
-        ATHNotify();
+        [validateJetpackExpectation fulfill];
     } failure:^(NSError *error) {
         XCTAssertEqual(error.domain, BlogJetpackErrorDomain);
         XCTAssertEqual(error.code, BlogJetpackErrorCodeNoRecordForBlog);
-        ATHNotify();
+        [validateJetpackExpectation fulfill];
     }];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
-    ATHStart();
+    validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
     [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
-        ATHNotify();
+        [validateJetpackExpectation fulfill];
     } failure:^(NSError *error) {
         XCTFail(@"User test2 should have access to test.blog");
-        ATHNotify();
+        [validateJetpackExpectation fulfill];
     }];
-    ATHEnd();
+
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+}
+
+- (void)testJetpackSetupDoesntReplaceDotcomAccount {
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
+    XCTAssertEqualObjects(wpComAccount, defaultAccount);
+
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+    [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" password:@"test1" authToken:@"token1"];
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    defaultAccount = [accountService defaultWordPressComAccount];
+    XCTAssertEqualObjects(wpComAccount, defaultAccount);
 }
 
 @end

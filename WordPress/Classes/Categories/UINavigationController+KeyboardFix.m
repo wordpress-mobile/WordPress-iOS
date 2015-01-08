@@ -6,7 +6,8 @@
 // http://stackoverflow.com/questions/3372333/ipad-keyboard-will-not-dismiss-if-modal-view-controller-presentation-style-is-ui/3386768#3386768
 // http://developer.apple.com/library/ios/#documentation/uikit/reference/UIViewController_Class/Reference/Reference.html
 
-- (BOOL)disablesAutomaticKeyboardDismissal {
+- (BOOL)disablesAutomaticKeyboardDismissal
+{
     return NO;
 }
 

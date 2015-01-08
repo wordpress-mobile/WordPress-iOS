@@ -2,7 +2,8 @@
 
 @implementation NSDate (StringFormatting)
 
-- (NSString *)shortString {
+- (NSString *)shortString
+{
     NSString *shortString;
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSDateComponents *dateComponents = [calendar components:NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit

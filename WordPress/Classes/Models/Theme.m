@@ -21,9 +21,12 @@ static NSDateFormatter *dateFormatter;
 @dynamic previewUrl;
 @dynamic blog;
 
-+ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo withBlog:(Blog*)blog withContext:(NSManagedObjectContext *)context {
++ (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo
+                                    withBlog:(Blog*)blog
+                                 withContext:(NSManagedObjectContext *)context
+{
     Blog *contextBlog = (Blog*)[context objectWithID:blog.objectID];
-    
+
     Theme *theme;
     NSSet *result = [contextBlog.themes filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"self.themeId == %@", themeInfo[@"id"]]];
     if (result.count > 1) {
@@ -44,21 +47,23 @@ static NSDateFormatter *dateFormatter;
     theme.premium = @([[themeInfo objectForKeyPath:@"cost.number"] integerValue] > 0);
     theme.tags = themeInfo[@"tags"];
     theme.previewUrl = themeInfo[@"preview_url"];
-    
+
     if (!dateFormatter) {
         dateFormatter = [[NSDateFormatter alloc] init];
         dateFormatter.dateFormat = @"YYYY-MM-dd";
     }
     theme.launchDate = [dateFormatter dateFromString:themeInfo[@"launch_date"]];
-    
+
     return theme;
 }
 
-- (BOOL)isCurrentTheme {
+- (BOOL)isCurrentTheme
+{
     return [self.blog.currentThemeId isEqualToString:self.themeId];
 }
 
-- (BOOL)isPremium {
+- (BOOL)isPremium
+{
     return [self.premium isEqualToNumber:@1];
 }
 
@@ -66,7 +71,8 @@ static NSDateFormatter *dateFormatter;
 
 @implementation Theme (PublicAPI)
 
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -79,22 +85,22 @@ static NSDateFormatter *dateFormatter;
                 Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog withContext:backgroundMOC];
                 [themesToKeep addObject:theme];
             }
-            
+
             NSSet *existingThemes = ((Blog *)[backgroundMOC objectWithID:blog.objectID]).themes;
             for (Theme *t in existingThemes) {
                 if (![themesToKeep containsObject:t]) {
                     [backgroundMOC deleteObject:t];
                 }
             }
-            
+
             [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
-            
+
             dateFormatter = nil;
-            
+
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), success);
             }
-            
+
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
@@ -103,7 +109,8 @@ static NSDateFormatter *dateFormatter;
     }];
 }
 
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure {
++ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
@@ -123,7 +130,8 @@ static NSDateFormatter *dateFormatter;
     }];
 }
 
-- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure {
+- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+{
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 

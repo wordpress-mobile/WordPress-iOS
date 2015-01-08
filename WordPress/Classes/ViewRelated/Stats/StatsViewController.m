@@ -7,16 +7,20 @@
 #import "ContextManager.h"
 #import "WPStatsViewController_Private.h"
 #import "BlogService.h"
+#import "SettingsViewController.h"
+#import "SFHFKeychainUtils.h"
+#import "TodayExtensionService.h"
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController ()
+@interface StatsViewController () <UIActionSheetDelegate>
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @end
 
 @implementation StatsViewController
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
         self.statsDelegate = self;
@@ -24,7 +28,22 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     return self;
 }
 
-- (void)setBlog:(Blog *)blog {
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.tableView.accessibilityIdentifier = @"Stats Table";
+    if (self.presentingViewController == nil && WIDGETS_EXIST) {
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    } else if (self.presentingViewController != nil) {
+        UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
+        self.navigationItem.rightBarButtonItem = doneButton;
+        self.title = self.blog.blogName;
+    }
+}
+
+- (void)setBlog:(Blog *)blog
+{
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
     
@@ -34,34 +53,45 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
-- (void)initStats {
+- (void)initStats
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
     self.siteTimeZone = [blogService timeZoneForBlog:self.blog];
-    
+
     if (self.blog.isWPcom) {
-        
+
         self.oauth2Token = self.blog.restApi.authToken;
         self.siteID = self.blog.blogID;
-        
+
         [super initStats];
         return;
     }
-    
+
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
         self.siteID = self.blog.jetpackBlogID;
         self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
-        
+
         [super initStats];
     } else {
         [self promptForJetpackCredentials];
     }
 }
 
-- (void)promptForJetpackCredentials {
+- (void)saveSiteDetailsForTodayWidget
+{
+    TodayExtensionService *service = [TodayExtensionService new];
+    [service configureTodayWidgetWithSiteID:self.siteID
+                                   blogName:self.blog.blogName
+                               siteTimeZone:self.siteTimeZone
+                             andOAuth2Token:self.oauth2Token];
+}
+
+- (void)promptForJetpackCredentials
+{
     if (self.showingJetpackLogin) {
         return;
     }
@@ -80,7 +110,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [self initStats];
         }
     }];
-    
+
     self.tableView.scrollEnabled = NO;
     [self addChildViewController:controller];
     [self.tableView addSubview:controller.view];
@@ -93,6 +123,36 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (IBAction)makeSiteTodayWidgetSite:(id)sender
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:NSLocalizedString(@"Use this site", @""), nil];
+    if (IS_IPAD) {
+        [actionSheet showFromBarButtonItem:sender animated:YES];
+    } else {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    }
+}
+
+- (IBAction)doneButtonTapped:(id)sender
+{
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
+}
+
+#pragma mark - UIActionSheetDelegate methods
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 0) {
+        [self saveSiteDetailsForTodayWidget];
+    }
+}
+
 #pragma mark - Restoration
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
@@ -102,7 +162,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super encodeRestorableStateWithCoder:coder];
 }
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder {
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
     NSURL *blogObjectURL = [coder decodeObjectForKey:StatsBlogObjectURLRestorationKey];
     if (!blogObjectURL) {
         return nil;

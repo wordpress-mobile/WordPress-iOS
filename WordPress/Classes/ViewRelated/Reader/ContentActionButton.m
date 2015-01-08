@@ -73,7 +73,8 @@ CGFloat const BackingLayerHorizontalPadding = 4.0f;
     }
 }
 
-- (CGRect)frameForLabelBubble {
+- (CGRect)frameForLabelBubble
+{
     NSString *str = [self titleForState:UIControlStateNormal];
     CGRect frame = self.titleLabel.frame;
 

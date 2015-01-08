@@ -41,7 +41,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-   
+
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
@@ -50,13 +50,13 @@
     // Configure the cell...
     NSDictionary *language = [_languages objectAtIndex:indexPath.row];
     cell.textLabel.text = [language objectForKey:@"name"];
-    
+
     if ([[language objectForKey:@"lang_id"] intValue] == _currentlySelectedLanguageId) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
-    
+
     return cell;
 }
 

@@ -8,38 +8,42 @@
 
     ALAsset *asset = ...; // Obtain asset
     WPImageOptimizer *optimizer = [WPImageOptimizer new];
-    NSData *assetData = [optimizer optimizedDataFromAsset:asset];
+    CGSize size = CGSize(1024, 1024);
+    NSData *assetData = [optimizer optimizedDataFromAsset:asset fittingSize:size];
 
  */
 @interface WPImageOptimizer : NSObject
-/**
- Returns a Boolean value that indicates if WPImageOptimizer will optimize images.
- 
- By default, it returns YES
-
- @return YES if optimization is enabled, NO otherwise
- @see setShouldOptimizeImages:
- */
-+ (BOOL)shouldOptimizeImages;
 
 /**
- Sets a flag indicating if WPImageOptimizer will optimize images.
+ Returns a resized image data from the provided asset.
  
- This value is stored in the application's NSUserDefaults with the key "WPDisableImageOptimization".
+ The image is read from the asset, scaled down and saved with a low quality factor (enough to considerably reduce file size without hurting perceived quality).
 
- @param optimize a Boolean value indicating if WPImageOptimizer should optimize images.
- @see shouldOptimizeImages
- */
-+ (void)setShouldOptimizeImages:(BOOL)optimize;
-
-/**
- Returns optimized image data from the provided asset.
- 
- If shouldOptimizeImages is YES, the image is read from the asset, scaled down and saved with a low quality factor (enough to considerably reduce file size without hurting perceived quality).
- If shouldOptimizeImages is NO, the image data is read from the asset and returned.
- 
  @param asset the ALAsset containing the image to optimize.
+ @param targetSize the size the image shoul be resized to.  Passing CGSizeZero will by pass resizing logic and return the raw asset. 
+ @param stripGeoLocation if YES the resulting data will be stripped of any GPS information from the original asset
+ 
  @return the optimized data
  */
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset;
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize stripGeoLocation:(BOOL) stripGeoLocation;
+
+/**
+ Returns a resized image data from the provided asset.
+
+ The image data is read from the asset and returned
+
+ @param asset the ALAsset containing the image to optimize.
+ @param stripGeoLocation if YES the resulting data will be stripped of any GPS information from the original asset
+ 
+ @return the raw data
+ */
+- (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation;
+
+/**
+ Returns the size of the image that is less than the fittinsSize and keeps the aspect ratio.
+ 
+ @return the size for the image
+ */
+- (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize;
+
 @end

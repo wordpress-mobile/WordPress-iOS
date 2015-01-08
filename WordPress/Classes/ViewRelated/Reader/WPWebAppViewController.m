@@ -11,7 +11,8 @@
 
 #pragma mark - View lifecycle
 
-- (void)dealloc {
+- (void)dealloc
+{
     DDLogMethod();
 
     [self.webView stopLoading];
@@ -20,16 +21,17 @@
     self.scrollView.delegate = nil;
 }
 
-
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     DDLogMethod();
     // Releases the view if it doesn't have a superview.
     [super didReceiveMemoryWarning];
-    
+
     // Release any cached data, images, etc that aren't in use.
 }
 
-- (void)loadView {
+- (void)loadView
+{
     UIView *view = [[UIView alloc] initWithFrame:CGRectZero];
     view.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.webView = [[UIWebView alloc] initWithFrame:CGRectZero];
@@ -39,36 +41,35 @@
     [self setView:view];
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     DDLogMethod();
     [super viewDidLoad];
-    
+
     if (!self.webBridge) {
         self.webBridge = [WPWebBridge bridge];
         self.webBridge.delegate = self;
     }
-    
+
     if (shouldEnablePullToRefresh) {
         [self enablePullToRefresh];
     }
 
     // setup the webview with a white background by default
     // prevents the default UIWebView shadow from showing on launch
-    [self setBackgroundColor:[NSDictionary dictionaryWithObjectsAndKeys:
-                              [NSNumber numberWithFloat:1.f], @"red",
-                              [NSNumber numberWithFloat:1.f], @"green",
-                              [NSNumber numberWithFloat:1.f], @"blue",
-                              [NSNumber numberWithFloat:1.f], @"alpha",
-                              nil]];
-    
+    [self setBackgroundColor:@{@"red": @1.0F,
+                               @"green": @1.0F,
+                               @"blue": @1.0F,
+                               @"alpha": @1.0F}];
+
     if (urlToLoad != nil) {
         [self loadURL:urlToLoad];
     }
 }
 
 // Find the Webview's UIScrollView backwards compatible
-- (UIScrollView *)scrollView {
-    
+- (UIScrollView *)scrollView
+{
     UIScrollView *scrollView = nil;
     if ([self.webView respondsToSelector:@selector(scrollView)]) {
         scrollView = self.webView.scrollView;
@@ -80,9 +81,9 @@
             }
         }
     }
-    
+
     return scrollView;
-    
+
 }
 
 #pragma mark - Hybrid Helper Methods
@@ -93,7 +94,7 @@
         urlToLoad = url;
         return;
     }
-    
+
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
@@ -116,7 +117,7 @@
             view.alpha = 0.0;
             view.hidden = YES;
         }
-    }   
+    }
 }
 
 - (void)setBackgroundColor:(NSDictionary *)colorWithRedGreenBlueAlpha
@@ -125,7 +126,7 @@
     NSNumber *red = [colorWithRedGreenBlueAlpha objectForKey:@"red"];
     NSNumber *green = [colorWithRedGreenBlueAlpha objectForKey:@"green"];
     NSNumber *blue = [colorWithRedGreenBlueAlpha objectForKey:@"blue"];
-    
+
     self.webView.backgroundColor = [UIColor colorWithRed:[red floatValue]
                                                    green:[green floatValue]
                                                     blue:[blue floatValue]
@@ -139,7 +140,7 @@
     NSNumber *red = [colorWithRedGreenBlueAlpha objectForKey:@"red"];
     NSNumber *green = [colorWithRedGreenBlueAlpha objectForKey:@"green"];
     NSNumber *blue = [colorWithRedGreenBlueAlpha objectForKey:@"blue"];
-    
+
     self.navigationController.navigationBar.tintColor = [UIColor colorWithRed:[red floatValue]
                                                                         green:[green floatValue]
                                                                          blue:[blue floatValue]
@@ -147,9 +148,10 @@
 
 }
 
-- (void)enableFastScrolling {
-    self.scrollView.decelerationRate = 0.994;        
-    
+- (void)enableFastScrolling
+{
+    self.scrollView.decelerationRate = 0.994;
+
 }
 
 - (void)enablePullToRefresh
@@ -157,18 +159,17 @@
     if (_refreshHeaderView == nil) {
         shouldEnablePullToRefresh = YES;
         self.scrollView.delegate = self;
-		_refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.scrollView.bounds.size.height, self.scrollView.frame.size.width, self.scrollView.bounds.size.height)];
-		_refreshHeaderView.delegate = self;
-		[self.scrollView addSubview:_refreshHeaderView];
-	}
+        _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.scrollView.bounds.size.height, self.scrollView.frame.size.width, self.scrollView.bounds.size.height)];
+        _refreshHeaderView.delegate = self;
+        [self.scrollView addSubview:_refreshHeaderView];
+    }
     self.lastWebViewRefreshDate = [NSDate date];
-	//  update the last update date
-	[_refreshHeaderView refreshLastUpdatedDate];
+    //  update the last update date
+    [_refreshHeaderView refreshLastUpdatedDate];
     if (!_pullToRefreshEnabled) {
         _pullToRefreshEnabled = YES;
     }
 }
-
 
 - (void)pullToRefreshComplete
 {
@@ -177,10 +178,11 @@
     didTriggerRefresh = NO;
 }
 
-
 #pragma mark - UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView
+        shouldStartLoadWithRequest:(NSURLRequest *)request
+ navigationType:(UIWebViewNavigationType)navigationType
 {
     if ([self.webBridge handlesRequest:request]) {
         return NO;
@@ -191,7 +193,8 @@
 #pragma mark -
 #pragma mark EGORefreshTableHeaderDelegate Methods
 
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view {
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView*)view
+{
     if (![ReachabilityUtils isInternetReachable]) {
         [ReachabilityUtils showAlertNoInternetConnection];
         [self performSelector:@selector(hideRefreshingState) withObject:nil afterDelay:0.3];
@@ -202,24 +205,28 @@
 
 }
 
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view {
-	return self.loading;
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView*)view
+{
+    return self.loading;
 }
 
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view {
-	return self.lastWebViewRefreshDate;
-    
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView*)view
+{
+    return self.lastWebViewRefreshDate;
+
 }
 
 // provide a way for web apps to show the native pull to refresh loading indicator
-- (void)showRefreshingState {
+- (void)showRefreshingState
+{
     CGPoint offset = self.scrollView.contentOffset;
     offset.y = - 65.0f;
     [self.scrollView setContentOffset:offset];
     [_refreshHeaderView egoRefreshScrollViewDidEndDragging:self.scrollView];
 }
 
-- (void)hideRefreshingState {
+- (void)hideRefreshingState
+{
     self.lastWebViewRefreshDate = [NSDate date];
     [_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:self.scrollView];
     didTriggerRefresh = NO;
@@ -228,13 +235,14 @@
 #pragma mark -
 #pragma mark UIScrollViewDelegate Methods
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-	[_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
 }
-
 
 @end

@@ -3,7 +3,7 @@
 
 @interface PostSettingsViewController : UITableViewController
 
-- (id)initWithPost:(AbstractPost *)aPost;
+- (instancetype)initWithPost:(AbstractPost *)aPost shouldHideStatusBar:(BOOL)shouldHideStatusBar;
 - (void)endEditingAction:(id)sender;
 
 @end
