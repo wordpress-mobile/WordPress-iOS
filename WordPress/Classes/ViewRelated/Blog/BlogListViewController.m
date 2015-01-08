@@ -458,8 +458,13 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [super setEditing:editing animated:animated];
 
-    UIView *emptyHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
-    self.tableView.tableHeaderView = editing ? self.headerView : emptyHeaderView;
+    if (editing) {
+        self.tableView.tableHeaderView = self.headerView;
+    }
+    else {
+        // setting the table header view to nil creates extra space, empty view is a way around that
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    }
 
     // Animate view to editing mode
     __block UIView *snapshot;
