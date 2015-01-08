@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -64,21 +64,25 @@
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yP-4I-eE8" customClass="RichTextView" customModule="WordPress">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5yP-4I-eE8" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
                         <rect key="frame" x="12" y="49" width="296" height="13"/>
                         <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="s8j-Dc-9fP"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1L-cY-9Q9" userLabel="Separator View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A1L-cY-9Q9" userLabel="Separator Small">
                         <rect key="frame" x="12" y="69.5" width="296" height="1"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="1" id="gvW-z2-Wpl"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mm0-gS-mGq" userLabel="Actions View">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0SD-ni-ddN" userLabel="Separator Big">
+                        <rect key="frame" x="0.0" y="70" width="320" height="1"/>
+                        <color key="backgroundColor" red="0.67000013589999996" green="0.080549971100000006" blue="0.002051902857" alpha="1" colorSpace="calibratedRGB"/>
+                    </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mm0-gS-mGq" userLabel="Actions">
                         <rect key="frame" x="50" y="81.5" width="220" height="34"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qa2-IF-bbl" userLabel="Reply" customClass="VerticallyStackedButton">
@@ -184,11 +188,14 @@
                     <constraint firstItem="5yP-4I-eE8" firstAttribute="leading" secondItem="2Xp-PH-GnZ" secondAttribute="leading" constant="12" id="3H1-Nc-6gc"/>
                     <constraint firstAttribute="bottomMargin" secondItem="Mm0-gS-mGq" secondAttribute="bottom" constant="3" id="4R4-gr-g3n"/>
                     <constraint firstItem="A9L-Md-Zdl" firstAttribute="top" secondItem="2Xp-PH-GnZ" secondAttribute="top" constant="12" id="Aur-Yb-sTe"/>
+                    <constraint firstItem="A1L-cY-9Q9" firstAttribute="height" secondItem="0SD-ni-ddN" secondAttribute="height" id="BAO-65-jhP"/>
                     <constraint firstAttribute="trailing" secondItem="cyu-0a-5fQ" secondAttribute="trailing" id="DOu-KJ-4qd"/>
                     <constraint firstItem="TJX-9v-udH" firstAttribute="bottom" secondItem="8Nl-Bp-Qtj" secondAttribute="bottom" id="FqA-li-hqZ"/>
                     <constraint firstItem="A1L-cY-9Q9" firstAttribute="leading" secondItem="5yP-4I-eE8" secondAttribute="leading" id="HrB-20-ILU"/>
+                    <constraint firstItem="A1L-cY-9Q9" firstAttribute="top" secondItem="0SD-ni-ddN" secondAttribute="top" id="Kh7-c0-09x"/>
                     <constraint firstItem="A1L-cY-9Q9" firstAttribute="top" secondItem="5yP-4I-eE8" secondAttribute="bottom" constant="8" id="LFG-ek-3T4"/>
                     <constraint firstItem="TJX-9v-udH" firstAttribute="leading" secondItem="8Nl-Bp-Qtj" secondAttribute="trailing" id="MBf-4Z-4KS"/>
+                    <constraint firstItem="0SD-ni-ddN" firstAttribute="leading" secondItem="2Xp-PH-GnZ" secondAttribute="leading" id="SZn-1o-RBd"/>
                     <constraint firstAttribute="centerX" secondItem="Mm0-gS-mGq" secondAttribute="centerX" id="Xuw-N4-Xz0"/>
                     <constraint firstItem="A1L-cY-9Q9" firstAttribute="top" secondItem="cyu-0a-5fQ" secondAttribute="bottom" id="ZqO-9B-Ury"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="TJX-9v-udH" secondAttribute="trailing" constant="12" id="fne-cx-aCq"/>
@@ -197,6 +204,7 @@
                     <constraint firstItem="A9L-Md-Zdl" firstAttribute="leading" secondItem="2Xp-PH-GnZ" secondAttribute="leading" constant="12" id="h9b-OS-dlT"/>
                     <constraint firstItem="8Nl-Bp-Qtj" firstAttribute="leading" secondItem="K1M-4r-CPP" secondAttribute="leading" id="jhf-tI-cPw"/>
                     <constraint firstItem="cyu-0a-5fQ" firstAttribute="top" secondItem="2Xp-PH-GnZ" secondAttribute="top" id="kmw-gO-J8l"/>
+                    <constraint firstAttribute="trailing" secondItem="0SD-ni-ddN" secondAttribute="trailing" id="qqf-hE-gLU"/>
                     <constraint firstItem="A9L-Md-Zdl" firstAttribute="top" secondItem="K1M-4r-CPP" secondAttribute="top" constant="4" id="rAp-XE-cu6"/>
                     <constraint firstItem="K1M-4r-CPP" firstAttribute="leading" secondItem="A9L-Md-Zdl" secondAttribute="trailing" constant="10" id="uPV-PX-OVa"/>
                     <constraint firstItem="5yP-4I-eE8" firstAttribute="top" secondItem="A9L-Md-Zdl" secondAttribute="bottom" constant="5" id="w4G-XO-V9s"/>
@@ -216,7 +224,8 @@
                 <outlet property="btnTrash" destination="8Gn-b8-hP8" id="RGl-dN-5CT"/>
                 <outlet property="gravatarImageView" destination="A9L-Md-Zdl" id="mNh-VN-zYW"/>
                 <outlet property="nameLabel" destination="K1M-4r-CPP" id="4Lz-aY-IPu"/>
-                <outlet property="separatorView" destination="A1L-cY-9Q9" id="gqR-x2-fy5"/>
+                <outlet property="separatorBigView" destination="0SD-ni-ddN" id="zD9-Uz-b61"/>
+                <outlet property="separatorSmallView" destination="A1L-cY-9Q9" id="vpk-td-rrN"/>
                 <outlet property="siteLabel" destination="TJX-9v-udH" id="rUm-xD-mcE"/>
                 <outlet property="textView" destination="5yP-4I-eE8" id="gjA-z8-1RA"/>
                 <outlet property="timestampLabel" destination="8Nl-Bp-Qtj" id="BxX-DC-pG7"/>
