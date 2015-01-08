@@ -129,9 +129,13 @@ import Foundation
         approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
         approvalSidebarView.backgroundColor = WPStyleGuide.Notifications.blockUnapprovedSideColor
         
-        // Separator Line should be 1px: Handle Retina!
+        // Separators
+        separatorSmallView.backgroundColor  = WPStyleGuide.Notifications.blockSeparatorColor
+        separatorBigView.backgroundColor    = WPStyleGuide.Notifications.blockUnapprovedSideColor
+
+        // Separator Line(s) should be 1px: Handle Retina!
         let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
-        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
+        separatorSmallView.updateConstraint(.Height, constant: separatorHeightInPixels)
 
         // Setup Action Buttons
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
@@ -248,7 +252,12 @@ import Foundation
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
-        separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
+        
+        // Unapproved: Show the big separator
+        separatorSmallView.hidden           = !isCommentApproved
+        separatorBigView.hidden             = isCommentApproved
+        
+        // Refresh Colors
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
         siteLabel.textColor                 = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
@@ -289,7 +298,8 @@ import Foundation
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var siteLabel            : UILabel!
-    @IBOutlet private weak var separatorView        : UIView!
+    @IBOutlet private weak var separatorSmallView   : UIView!
+    @IBOutlet private weak var separatorBigView     : UIView!
     @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
