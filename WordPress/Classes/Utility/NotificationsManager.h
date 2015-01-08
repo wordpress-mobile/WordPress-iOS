@@ -41,6 +41,12 @@ extern NSString *const NotificationsDeviceToken;
  */
 + (BOOL)deviceRegisteredForPushNotifications;
 
+/**
+ Retrieves and returns the last registered Device Token
+*/
++ (NSString *)registeredPushNotificationsToken;
+
+
 ///----------------------------
 /// @name Notification Handling
 ///----------------------------
