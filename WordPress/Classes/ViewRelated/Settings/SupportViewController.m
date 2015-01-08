@@ -13,14 +13,12 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import <Mixpanel/MPTweakInline.h>
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
 #import "WPTabBarController.h"
+#import "HelpshiftUtils.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
-static NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
@@ -34,8 +32,6 @@ static CGFloat const SupportRowHeight = 44.0f;
 @interface SupportViewController ()
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
-@property (nonatomic, assign) BOOL helpshiftEnabled;
-@property (nonatomic, assign) NSInteger helpshiftUnreadCount;
 
 @end
 
@@ -80,34 +76,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [operation start];
 }
 
-- (void)checkIfHelpshiftShouldBeEnabled
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
-    
-    BOOL userHasUsedHelpshift = [defaults boolForKey:UserDefaultsHelpshiftWasUsed];
-    
-    if (userHasUsedHelpshift) {
-        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
-        return;
-    }
-    
-    if (MPTweakValue(@"Helpshift Enabled", NO)) {
-        DDLogInfo(@"Helpshift Enabled");
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
-    } else {
-        DDLogInfo(@"Helpshift Disabled");
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setBool:NO forKey:UserDefaultsHelpshiftEnabled];
-        [defaults synchronize];
-    }
-}
-
 + (void)showFromTabBar
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -132,9 +100,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
         _feedbackEnabled = YES;
-        _helpshiftEnabled = NO;
-
-        _helpshiftUnreadCount = 0;
     }
 
     return self;
@@ -150,8 +115,6 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     } else {
         [self.tableView setRowHeight:SupportRowHeight];
     }
-
-    [self checkIfHelpshiftShouldBeEnabled];
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
@@ -169,16 +132,19 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 {
     [super viewWillAppear:animated];
 
-    _helpshiftEnabled = [[self class] isHelpshiftEnabled];
-    [[Helpshift sharedInstance] setDelegate:self];
-    _helpshiftUnreadCount = [[Helpshift sharedInstance] getNotificationCountFromRemote:NO];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(helpshiftUnreadCountUpdated:)
+                                                 name:HelpshiftUnreadCountUpdatedNotification
+                                               object:nil];
 
-    [self.tableView reloadData];
+    [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
-+ (BOOL)isHelpshiftEnabled
+- (void)viewWillDisappear:(BOOL)animated
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:UserDefaultsHelpshiftEnabled];
+    [super viewWillDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)showLoadingSpinner
@@ -330,17 +296,17 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.textLabel.text = NSLocalizedString(@"WordPress Help Center", @"");
             [WPStyleGuide configureTableViewActionCell:cell];
         } else if (indexPath.row == 1) {
-            if (self.helpshiftEnabled) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
                 cell.textLabel.text = NSLocalizedString(@"Contact Us", nil);
 
-                if (self.helpshiftUnreadCount > 0) {
+                if ([HelpshiftUtils unreadNotificationCount] > 0) {
                     UILabel *helpshiftUnreadCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
                     helpshiftUnreadCountLabel.layer.masksToBounds = YES;
                     helpshiftUnreadCountLabel.layer.cornerRadius = 15;
                     helpshiftUnreadCountLabel.textAlignment = NSTextAlignmentCenter;
                     helpshiftUnreadCountLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
                     helpshiftUnreadCountLabel.textColor = [UIColor whiteColor];
-                    helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%i", self.helpshiftUnreadCount];
+                    helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%ld", [HelpshiftUtils unreadNotificationCount]];
 
                     cell.accessoryView = helpshiftUnreadCountLabel;
                     cell.accessoryType = UITableViewCellAccessoryNone;
@@ -421,13 +387,13 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
     if (indexPath.section == SettingsSectionFAQForums) {
         if (indexPath.row == 0) {
-            if (self.helpshiftEnabled) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
             } else {
                 [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
             }
         } else if (indexPath.row == 1) {
-            if (self.helpshiftEnabled) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
@@ -532,16 +498,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-#pragma mark - Helpshift Delegate
+#pragma mark - Helpshift Notifications
 
-- (void)didReceiveNotificationCount:(NSInteger)count
+- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        self.helpshiftUnreadCount = count;
-
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:SettingsSectionFAQForums];
-        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    });
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:SettingsSectionFAQForums];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 @end

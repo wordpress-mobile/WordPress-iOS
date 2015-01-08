@@ -8,7 +8,6 @@
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
-#import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-AppbotX/ABX.h>
 
@@ -51,6 +50,7 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "AppRatingUtility.h"
+#import "HelpshiftUtils.h"
 
 #import "Reachability.h"
 #import "WordPress-Swift.h"
@@ -67,7 +67,7 @@
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
@@ -118,8 +118,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     // Stats and feedback    
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
-    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
-    [[Helpshift sharedInstance] setDelegate:self];
+    [HelpshiftUtils setup];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
@@ -1262,20 +1261,6 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 			}];
 		});
 	}];
-}
-
-#pragma mark - Helpshift Delegate
-
-- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
-{
-    if (count > 0) {
-        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
-    }
-}
-
-- (void)didReceiveNotificationCount:(NSInteger)count
-{
-    // Note: Empty method, just so silence compiler warning.
 }
 
 @end
