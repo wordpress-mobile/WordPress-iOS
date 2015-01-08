@@ -10,7 +10,8 @@
 
 @implementation BlogServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api {
+- (id)initWithApi:(WordPressComApi *)api
+{
     self = [super init];
     if (self) {
         _api = api;
@@ -22,7 +23,7 @@
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);
-    NSString *path = [NSString stringWithFormat:@"sites/%@", blog.dotComID];
+    NSString *path = [self pathForOptionsWithBlog:blog];
     [self.api GET:path
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -38,16 +39,48 @@
           }];
 }
 
+- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSString *path = [self pathForPostFormatsWithBlog:blog];
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSDictionary *formats = [self mapPostFormatsFromResponse:responseObject[@"formats"]];
+              if (success) {
+                  success(formats);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
+#pragma mark - API paths
+
+- (NSString *)pathForOptionsWithBlog:(Blog *)blog
+{
+    return [NSString stringWithFormat:@"sites/%@", blog.dotComID];
+}
+
+- (NSString *)pathForPostFormatsWithBlog:(Blog *)blog
+{
+    return [NSString stringWithFormat:@"sites/%@/post-formats", blog.dotComID];
+}
+
 #pragma mark - Mapping methods
 
-- (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response {
+- (NSDictionary *)mapOptionsFromResponse:(NSDictionary *)response
+{
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     options[@"home_url"] = response[@"URL"];
     options[@"post_thumbnail"] = [response valueForKeyPath:@"options.featured_images_enabled"];
     // We'd be better off saving this as a BOOL property on Blog, but let's do what XML-RPC does for now
     options[@"blog_public"] = [[response numberForKey:@"is_private"] boolValue] ? @"-1" : @"0";
-    if ([[options numberForKey:@"jetpack"] boolValue]) {
-        options[@"jetpack_client_id"] = [options numberForKey:@"ID"];
+    if ([[response numberForKey:@"jetpack"] boolValue]) {
+        options[@"jetpack_client_id"] = [response numberForKey:@"ID"];
     }
 
     NSArray *optionsDirectMapKeys = @[
@@ -57,6 +90,7 @@
                                 @"software_version",
                                 @"videopress_enabled",
                                 ];
+
     for (NSString *key in optionsDirectMapKeys) {
         NSString *sourceKeyPath = [NSString stringWithFormat:@"options.%@", key];
         options[key] = [response valueForKeyPath:sourceKeyPath];
@@ -68,6 +102,15 @@
     }];
 
     return [NSDictionary dictionaryWithDictionary:valueOptions ];
+}
+
+- (NSDictionary *)mapPostFormatsFromResponse:(id)response
+{
+    if ([response isKindOfClass:[NSDictionary class]]) {
+        return response;
+    } else {
+        return @{};
+    }
 }
 
 @end

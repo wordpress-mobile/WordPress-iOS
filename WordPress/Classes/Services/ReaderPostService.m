@@ -19,7 +19,6 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
-
 /**
  ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
  */
@@ -33,7 +32,6 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 @implementation ReaderPostServiceBackfillState
 @end
-
 
 @interface ReaderPostService()
 
@@ -55,7 +53,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 #pragma mark - Fetch Methods
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
@@ -71,7 +69,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
                                   }];
 }
 
-- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)fetchPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     [self fetchPostsForTopic:topic earlierThan:[NSDate date] success:success failure:failure];
 }
@@ -85,6 +83,13 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
 
         ReaderPost *post = [self createOrReplaceFromRemotePost:remotePost forTopic:nil];
+
+        NSError *error;
+        BOOL obtainedID = [self.managedObjectContext obtainPermanentIDsForObjects:@[post] error:&error];
+        if (!obtainedID) {
+            DDLogError(@"Error obtaining a permanent ID for post. %@, %@", post, error);
+        }
+
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         success(post);
 
@@ -95,7 +100,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
-- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(BOOL hasMore))success failure:(void (^)(NSError *error))failure
+- (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
@@ -223,7 +228,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (follow) {
             [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         } else {
-            [siteService followSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
+            [siteService unfollowSiteAtURL:post.blogURL success:successBlock failure:failureBlock];
         }
     } else {
         NSString *description = NSLocalizedString(@"Could not toggle Follow: missing blogURL attribute", @"An error description explaining that Follow could not be toggled due to a missing blogURL attribute.");
@@ -266,7 +271,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         [self.managedObjectContext performBlockAndWait:^{
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
-        if(failure) {
+        if (failure) {
             failure(error);
         }
     };
@@ -365,6 +370,55 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
+- (void)deletePostsFromSiteWithID:(NSNumber *)siteID
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+- (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"siteID = %@ AND isWPCom = YES", siteID];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting posts belonging to siteID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        post.isSiteBlocked = blocked;
+    }
+
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 
 #pragma mark - Private Methods
 
@@ -398,7 +452,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Retrieve the newest post for the specified topic
- 
+
  @param topicObjectID The `NSManagedObjectID` of the ReaderTopic for the post
  @return The newest post in Core Data for the topic, or nil.
  */
@@ -427,12 +481,12 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Private fetch method that is part of the backfill process. This is basically a 
+ Private fetch method that is part of the backfill process. This is basically a
  passthrough call to `fetchPostsFromEndpoint:count:before:success:failure:` that
  passes the results to `processBackfillPostsForTopic:posts:success:failure:`.
  This should only be called once the backfill date, array and batch count have
  been initialized as in `fetchPostsToBackfillTopic:success:failure:`.
- 
+
  @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param date The date to get posts earlier than.
  @param state The current `ReaderPostServiceBackfillState`
@@ -442,7 +496,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)fetchPostsToBackfillTopic:(NSManagedObjectID *)topicObjectID
                       earlierThan:(NSDate *)date
                     backfillState:(ReaderPostServiceBackfillState *)state
-                          success:(void (^)(BOOL hasMore))success
+                          success:(void (^)(NSInteger count, BOOL hasMore))success
                           failure:(void (^)(NSError *error))failure
 {
     NSError *error;
@@ -469,10 +523,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
- Processes a batch of backfilled posts. 
- When backfilling, the goal is to request up to three batches of post, or until 
+ Processes a batch of backfilled posts.
+ When backfilling, the goal is to request up to three batches of post, or until
  a fetched batch includes the newest posts currently in Core Data.
- 
+
  @param topicObjectID The NSManagedObjectID of the Topic for which to request posts.
  @param posts An array of fetched posts.
  @param state The current `ReaderPostServiceBackfillState`
@@ -482,7 +536,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)processBackfillPostsForTopic:(NSManagedObjectID *)topicObjectID
                                posts:(NSArray *)posts
                        backfillState:(ReaderPostServiceBackfillState *)state
-                             success:(void (^)(BOOL hasMore))success
+                             success:(void (^)(NSInteger count, BOOL hasMore))success
                              failure:(void (^)(NSError *error))failure
 {
     state.backfillBatchNumber++;
@@ -516,7 +570,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)mergePosts:(NSArray *)posts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
-    callingSuccess:(void (^)(BOOL hasMore))success
+    callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
@@ -526,7 +580,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         if (error || !readerTopic) {
             // if there was an error or the topic was deleted just bail.
             if (success) {
-                success(NO);
+                success(0, NO);
             }
             return;
         }
@@ -539,6 +593,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
             [self deletePostsForTopic:readerTopic missingFromBatch:newPosts withStartingDate:date];
         }
         [self deletePostsInExcessOfMaxAllowedForTopic:readerTopic];
+        [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
         // performBlockAndWait here so we know our objects are saved before we call success.
@@ -548,7 +603,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
         if (success) {
             BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
-            success(hasMore);
+            success(postsCount, hasMore);
         }
     }];
 }
@@ -567,7 +622,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     NSError *error;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
 
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate <= %@", topic, date];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate < %@", topic, date];
 
     [fetchRequest setPredicate:pred];
 
@@ -607,7 +662,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     NSDate *newestDate = startingDate;
     NSDate *oldestDate = ((ReaderPost *)[posts lastObject]).sortDate;
-    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate >= %@ AND sortDate <= %@", topic, oldestDate, newestDate];
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"topic == %@ AND sortDate > %@ AND sortDate < %@", topic, oldestDate, newestDate];
 
     [fetchRequest setPredicate:pred];
 
@@ -632,7 +687,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  Delete all `ReaderPosts` beyond the max number to be retained.
 
  The managed object context is not saved.
- 
+
  @param topic the `ReaderTopic` to delete posts from.
  */
 - (void)deletePostsInExcessOfMaxAllowedForTopic:(ReaderTopic *)topic
@@ -669,9 +724,35 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 }
 
 /**
+ Delete posts that are flagged as belonging to a blocked site.
+ 
+ The managed object context is not saved.
+ */
+- (void)deletePostsFromBlockedSites
+{
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSiteBlocked = YES"];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@, error deleting deleting posts from blocked sites: %@", NSStringFromSelector(_cmd), error);
+        return;
+    }
+
+    if ([results count] == 0) {
+        return;
+    }
+
+    for (ReaderPost *post in results) {
+        DDLogInfo(@"Deleting post: %@", post);
+        [self.managedObjectContext deleteObject:post];
+    }
+}
+
+/**
  Accepts an array of `RemoteReaderPost` objects and creates model objects
  for each one.
- 
+
  @param posts An array of `RemoteReaderPost` objects.
  @param topic The `ReaderTopic` to assign to the created posts.
  @return An array of `ReaderPost` objects
@@ -692,7 +773,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Create a `ReaderPost` model object from the specified dictionary.
- 
+
  @param dict A `RemoteReaderPost` object.
  @param topic The `ReaderTopic` to assign to the created post.
  @return A `ReaderPost` model object whose properties are populated with the values from the passed dictionary.
@@ -743,6 +824,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.tags = remotePost.tags;
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
+    post.isSiteBlocked = NO;
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];
@@ -765,10 +847,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 #pragma mark - Content Formatting and Sanitization
 
 /**
- Formats the post content.  
+ Formats the post content.
  Removes transforms videopress markup into video tags, strips inline styles and tidys up paragraphs.
- 
- @param content The post content as a string. 
+
+ @param content The post content as a string.
  @return The formatted content.
  */
 - (NSString *)formatContent:(NSString *)content
@@ -778,31 +860,37 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
     content = [self normalizeParagraphs:content];
     content = [self removeInlineStyles:content];
+    content = [content stringByReplacingHTMLEmoticonsWithEmoji];
 
     return content;
 }
 
-/** 
+/**
  Formats a post's summary.  The excerpts provided by the REST API contain HTML and have some extra content appened to the end.
  HTML is stripped and the extra bit is removed.
- 
- @param string The summary to format. 
+
+ @param string The summary to format.
  @return The formatted summary.
  */
 - (NSString *)formatSummary:(NSString *)summary
 {
     summary = [self makePlainText:summary];
-    NSRange rng = [summary rangeOfCharacterFromSet:[NSCharacterSet characterSetWithCharactersInString:@".?!"] options:NSBackwardsSearch];
-    if (rng.location == NSNotFound || rng.location < ReaderPostServiceSummaryLength) {
-        return summary;
+
+    NSString *continueReading = NSLocalizedString(@"Continue reading", @"Part of a prompt suggesting that there is more content for the user to read.");
+    continueReading = [NSString stringWithFormat:@"%@ →", continueReading];
+
+    NSRange rng = [summary rangeOfString:continueReading options:NSCaseInsensitiveSearch];
+    if (rng.location != NSNotFound) {
+        summary = [summary substringToIndex:rng.location];
     }
-    return [summary substringToIndex:(rng.location + 1)];
+
+    return summary;
 }
 
 /**
  Create a summary for the post based on the post's content.
- 
- @param string The post's content string. This should be the formatted content string. 
+
+ @param string The post's content string. This should be the formatted content string.
  @return A summary for the post.
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
@@ -814,18 +902,18 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
- 
+
  @param string The string to transform.
  @return The transformed string.
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByRemovingScriptsAndStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
 }
 
 /**
  Clean up paragraphs and in an HTML string. Removes duplicate paragraph tags and unnecessary DIVs.
- 
+
  @param string The string to normalize.
  @return A string with normalized paragraphs.
  */
@@ -884,7 +972,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 /**
  Check the specified string for occurances of videopress videos.
- 
+
  @param string The string to search.
  @return YES if a match was found, else returns NO.
  */
@@ -907,12 +995,14 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     static NSRegularExpression *regexVideoPress;
     static NSRegularExpression *regexMp4;
     static NSRegularExpression *regexSrc;
+    static NSRegularExpression *regexPoster;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
         regexVideoPress = [NSRegularExpression regularExpressionWithPattern:@"<div.*class=\"video-player[\\S\\s]+?<div.*class=\"videopress-placeholder[\\s\\S]*?</noscript>" options:NSRegularExpressionCaseInsensitive error:&error];
         regexMp4 = [NSRegularExpression regularExpressionWithPattern:@"mp4[\\s\\S]+?mp4" options:NSRegularExpressionCaseInsensitive error:&error];
         regexSrc = [NSRegularExpression regularExpressionWithPattern:@"http\\S+mp4" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPoster = [NSRegularExpression regularExpressionWithPattern:@"<img.*class=\"videopress-poster[\\s\\S]*?>" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     // Find instances of VideoPress markup.
@@ -940,9 +1030,25 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         NSString *src = [mp4 substringWithRange:srcMatch];
         src = [src stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
 
+        NSString *height = @"200"; // default
+        NSString *placeholder = @"";
+        NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
+        if (posterMatch.location != NSNotFound) {
+            NSString *poster = [string substringWithRange:posterMatch];
+            NSString *value = [self parseValueForAttriuteNamed:@"height" inElement:poster];
+            if (value) {
+                height = value;
+            }
+
+            value = [self parseValueForAttriuteNamed:@"src" inElement:poster];
+            if (value) {
+                placeholder = value;
+            }
+        }
+
         // Compose a video tag to replace the default markup.
-        NSString *fmt = @"<video src=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
-        NSString *vid = [NSString stringWithFormat:fmt, src, src];
+        NSString *fmt = @"<video src=\"%@\" controls width=\"100%%\" height=\"%@\" poster=\"%@\"><source src=\"%@\" type=\"video/mp4\"></video>";
+        NSString *vid = [NSString stringWithFormat:fmt, src, height, placeholder, src];
 
         [mstr replaceCharactersInRange:match.range withString:vid];
     }
@@ -950,9 +1056,23 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return mstr;
 }
 
+- (NSString *)parseValueForAttriuteNamed:(NSString *)attribute inElement:(NSString *)element
+{
+    NSString *value = @"";
+    NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
+    NSRange attrRange = [element rangeOfString:attrStr];
+    if (attrRange.location != NSNotFound) {
+        NSInteger location = attrRange.location + attrRange.length;
+        NSInteger length = [element length] - location;
+        NSRange ending = [element rangeOfString:@"\"" options:NSCaseInsensitiveSearch range:NSMakeRange(location, length)];
+        value = [element substringWithRange:NSMakeRange(location, ending.location - location)];
+    }
+    return value;
+}
+
 /**
  Creates a title for the post from the post's summary.
- 
+
  @param summary The already formatted post summary.
  @return A title for the post that is a snippet of the summary.
  */

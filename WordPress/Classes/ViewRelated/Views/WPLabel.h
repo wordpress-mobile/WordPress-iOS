@@ -9,7 +9,7 @@ typedef enum {
 
 @interface WPLabel : UILabel {
 @private
-	VerticalAlignment verticalAlignment;
+    VerticalAlignment verticalAlignment;
 }
 
 @property (nonatomic) VerticalAlignment verticalAlignment;

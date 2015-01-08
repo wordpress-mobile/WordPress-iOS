@@ -1,9 +1,12 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import <XCTest/XCTest.h>
 
 @interface CoreDataTestHelper : NSObject
 
-+ (id)sharedHelper;
+@property (nonatomic, strong) XCTestExpectation *testExpectation;
+
++ (instancetype)sharedHelper;
 
 - (void)reset;
 

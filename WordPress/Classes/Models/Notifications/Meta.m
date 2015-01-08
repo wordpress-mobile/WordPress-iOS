@@ -1,6 +1,5 @@
 #import "Meta.h"
 
-
 @implementation Meta
 
 @dynamic last_seen;

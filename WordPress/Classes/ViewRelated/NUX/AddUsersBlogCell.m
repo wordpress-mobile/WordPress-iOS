@@ -8,7 +8,7 @@
     UIImageView *_checkboxImage;
     UIImageView *_separator;
     UIImageView *_topSeparator;
-    
+
     NSString *_blavatarUrl;
 }
 
@@ -16,17 +16,17 @@
 
 @implementation AddUsersBlogCell
 
-CGFloat const AddUsersBlogCellMaxTextWidth = 208.0;
-CGFloat const AddUsersBlogCellBlavatarSide = 32.0;
-CGFloat const AddUsersBlogCellMinimumHeight = 48.0;
-CGFloat const AddUsersBlogCellStandardOffset = 16.0;
+CGFloat const cellMaxTextWidth = 208.0;
+CGFloat const cellBlavatarSide = 32.0;
+CGFloat const cellMinimumHeight = 48.0;
+CGFloat const cellStandardOffset = 16.0;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        
+
         _titleLabel = [[UILabel alloc] init];
         _titleLabel.backgroundColor = [UIColor clearColor];
         _titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
@@ -35,19 +35,27 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
         _titleLabel.textColor = [UIColor whiteColor];
         _titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
         [self addSubview:_titleLabel];
-        
-        _blavatarImage = [[UIImageView alloc] initWithFrame:CGRectMake(AddUsersBlogCellStandardOffset, 0.5*AddUsersBlogCellStandardOffset, AddUsersBlogCellBlavatarSide, AddUsersBlogCellBlavatarSide)];
+
+        _blavatarImage = [[UIImageView alloc] initWithFrame:CGRectMake(cellStandardOffset,
+                                                                       0.5*cellStandardOffset,
+                                                                       cellBlavatarSide,
+                                                                       cellBlavatarSide)];
         [self addSubview:_blavatarImage];
-        
+
         UIImage *image = [UIImage imageNamed:@"icon-check-small-blue"];
         _checkboxImage = [[UIImageView alloc] initWithImage:image];
-        _checkboxImage.frame = CGRectMake(CGRectGetWidth(self.bounds) - AddUsersBlogCellStandardOffset - CGRectGetWidth(_checkboxImage.frame), AddUsersBlogCellStandardOffset, image.size.width , image.size.height);
+
+        CGFloat checkboxImageX = self.bounds.size.width - cellStandardOffset - _checkboxImage.frame.size.width;
+        _checkboxImage.frame = CGRectMake(checkboxImageX,
+                                          cellStandardOffset,
+                                          image.size.width ,
+                                          image.size.height);
         [self addSubview:_checkboxImage];
-        
+
         _topSeparator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         _topSeparator.frame = CGRectZero;
         [self addSubview:_topSeparator];
-        
+
         _separator = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"ui-line"]];
         [self addSubview:_separator];
     }
@@ -57,28 +65,31 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    
+
     CGFloat x,y;
     CGFloat cellWidth = CGRectGetWidth(self.bounds);
     CGFloat cellHeight = CGRectGetHeight(self.bounds);
-    
+
     CGSize textSize = [[self class] sizeForText:_titleLabel.text];
     CGFloat rowHeight = [[self class] rowHeightForTextWithSize:textSize];
-    
+
     // Setup Blavatar
-    x = AddUsersBlogCellStandardOffset;
-    y = (rowHeight - AddUsersBlogCellBlavatarSide)/2.0;
-    _blavatarImage.frame = CGRectIntegral(CGRectMake(x, y, AddUsersBlogCellBlavatarSide, AddUsersBlogCellBlavatarSide));
+    x = cellStandardOffset;
+    y = (rowHeight - cellBlavatarSide)/2.0;
+    _blavatarImage.frame = CGRectIntegral(CGRectMake(x, y, cellBlavatarSide, cellBlavatarSide));
     NSURL *blogURL = [NSURL URLWithString:_blavatarUrl];
     [_blavatarImage setImageWithBlavatarUrl:[blogURL host] isWPcom:self.isWPCom];
-    
+
     // Setup Checkbox
-    x = cellWidth - AddUsersBlogCellStandardOffset - CGRectGetWidth(_checkboxImage.frame);
+    x = cellWidth - cellStandardOffset - CGRectGetWidth(_checkboxImage.frame);
     y = (rowHeight - _checkboxImage.image.size.height)/2.0;
-    _checkboxImage.frame = CGRectIntegral(CGRectMake(x, y, _checkboxImage.image.size.width, _checkboxImage.image.size.height));
-    
+    _checkboxImage.frame = CGRectIntegral(CGRectMake(x,
+                                                     y,
+                                                     _checkboxImage.image.size.width,
+                                                     _checkboxImage.image.size.height));
+
     // Setup Title
-    x = CGRectGetMaxX(_blavatarImage.frame) + AddUsersBlogCellStandardOffset;
+    x = CGRectGetMaxX(_blavatarImage.frame) + cellStandardOffset;
     y = (rowHeight - textSize.height)/2.0;
     if (self.selected) {
         _titleLabel.textColor = [UIColor whiteColor];
@@ -86,12 +97,18 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
         _titleLabel.textColor = [UIColor colorWithRed:188.0/255.0 green:221.0/255.0 blue:236.0/255.0 alpha:1.0];
     }
     _titleLabel.frame = CGRectIntegral(CGRectMake(x, y, textSize.width, textSize.height));
-    
+
     // Setup Separators
-    _separator.frame = CGRectMake(AddUsersBlogCellStandardOffset, cellHeight - 2, cellWidth - AddUsersBlogCellStandardOffset, 1);
-    
+    _separator.frame = CGRectMake(cellStandardOffset,
+                                  cellHeight - 2,
+                                  cellWidth - cellStandardOffset,
+                                  1);
+
     if (_showTopSeparator) {
-        _topSeparator.frame = CGRectMake(AddUsersBlogCellStandardOffset, 0, cellWidth - AddUsersBlogCellStandardOffset, 1);
+        _topSeparator.frame = CGRectMake(cellStandardOffset,
+                                         0,
+                                         cellWidth - cellStandardOffset,
+                                         1);
     } else {
         _topSeparator.frame = CGRectZero;
     }
@@ -125,7 +142,7 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 
 - (void)hideCheckmark:(BOOL)hide
 {
-	_checkboxImage.hidden = hide;
+    _checkboxImage.hidden = hide;
 }
 
 - (void)setSelected:(BOOL)selected
@@ -145,18 +162,18 @@ CGFloat const AddUsersBlogCellStandardOffset = 16.0;
 
 + (CGFloat)rowHeightForTextWithSize:(CGSize)size
 {
-    if (size.height > AddUsersBlogCellBlavatarSide) {
-        CGFloat blavatarStartY = 0.5*AddUsersBlogCellMinimumHeight;
+    if (size.height > cellBlavatarSide) {
+        CGFloat blavatarStartY = 0.5*cellMinimumHeight;
         return blavatarStartY + size.height;
-    } else {
-        return AddUsersBlogCellMinimumHeight;
     }
+
+    return cellMinimumHeight;
 }
 
 + (CGSize)sizeForText:(NSString *)text
 {
     UIFont *titleFont = [WPFontManager openSansRegularFontOfSize:15.0];
-    return [text suggestedSizeWithFont:titleFont width:AddUsersBlogCellMaxTextWidth];
+    return [text suggestedSizeWithFont:titleFont width:cellMaxTextWidth];
 }
 
 @end

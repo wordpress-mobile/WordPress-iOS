@@ -1,14 +1,15 @@
 #import <XCTest/XCTest.h>
-#import "CoreDataTestHelper.h"
 #import "WPAccount.h"
 #import "Blog.h"
 #import "NotificationsManager.h"
 #import "SettingsViewController.h"
-#import "AsyncTestHelper.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "TestContextManager.h"
 
 @interface SettingsViewControllerTest : XCTestCase
+
+@property (nonatomic, strong) TestContextManager *testContextManager;
 
 @end
 
@@ -17,27 +18,26 @@
 - (void)setUp
 {
     [super setUp];
+    self.testContextManager = [[TestContextManager alloc] init];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (defaultAccount) {
-        ATHStart();
         [accountService removeDefaultWordPressComAccount];
-        ATHEnd();
     }
 }
 
 - (void)tearDown
 {
     [super tearDown];
-    [[CoreDataTestHelper sharedHelper] reset];
+    self.testContextManager = nil;
 }
 
 - (void)testWpcomSection
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
@@ -56,13 +56,16 @@
      - Sign In
      */
     XCTAssertEqual(1, [table numberOfRowsInSection:0]);
-    XCTAssertEqualObjects(@"wpcom-sign-in", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign In", cell.accessibilityIdentifier);
 
 
     // Sign In
-    ATHStart();
+    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:@"jacksparrow" password:@"piratesobrave" authToken:@"token"];
-    ATHEnd();
+    
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     /*
      Signed In, Notifications disabled, 1 blog
@@ -72,9 +75,9 @@
      */
     XCTAssertEqual(2, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     [[NSUserDefaults standardUserDefaults] setObject:@"aFakeAPNSToken" forKey:NotificationsDeviceToken];
     [table reloadData];
@@ -88,13 +91,15 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
-    ATHStart();
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+    
     NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
     NSString *url = @"blog1.com";
     Blog *blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
@@ -104,7 +109,7 @@
         blog.url = url;
     }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     [table reloadData];
 
@@ -117,23 +122,27 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
     
-    ATHStart();
+    saveExpectation = [self expectationWithDescription:@"Context save expectation"];
+    self.testContextManager.testExpectation = saveExpectation;
+
     xmlrpc = @"http://blog2.com/xmlrpc.php";
     url = @"blog2.com";
     blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!blog) {
-        blog = [accountService createBlogWithAccount:defaultAccount];
+        blog = [accountService createBlogWithAccount:account];
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
     [[ContextManager sharedInstance] saveContext:account.managedObjectContext];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:^(NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 
     [table reloadData];
 
@@ -146,11 +155,11 @@
      */
     XCTAssertEqual(3, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-manage-notifications", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Manage Notifications", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:2];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
     [table reloadData];
@@ -163,9 +172,9 @@
      */
     XCTAssertEqual(2, [table numberOfRowsInSection:0]);
     cell = [self tableView:table cellForRow:0];
-    XCTAssertEqualObjects(@"wpcom-username", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Username", cell.accessibilityIdentifier);
     cell = [self tableView:table cellForRow:1];
-    XCTAssertEqualObjects(@"wpcom-sign-out", cell.accessibilityIdentifier);
+    XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 }
 
 - (SettingsViewController *)settingsViewController {

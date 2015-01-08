@@ -11,6 +11,10 @@
       "filename" : "link@2x.png"
     },
     {
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "link~ipad.png"

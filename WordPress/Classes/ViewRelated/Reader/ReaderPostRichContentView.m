@@ -8,7 +8,6 @@
 
 @end
 
-
 @implementation ReaderPostRichContentView
 
 #pragma mark - Life Cycle Methods
@@ -18,14 +17,12 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
-
 #pragma mark - Public Methods
 
 - (void)refreshMediaLayout
 {
     [self.richTextView refreshMediaLayout];
 }
-
 
 #pragma mark - Private Methods
 
@@ -48,13 +45,17 @@
     return richTextView;
 }
 
+- (UIImageView *)imageViewForFeaturedImage
+{
+    UIImageView *imageView = [super imageViewForFeaturedImage];
+    imageView.userInteractionEnabled = YES;
+    return imageView;
+}
+
 - (void)configureContentView
 {
     NSString *content = [self.contentProvider contentForDisplay];
-    NSData *data = [content dataUsingEncoding:NSUTF8StringEncoding];
-    self.richTextView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                              options:[WPStyleGuide defaultDTCoreTextOptions]
-                                                                   documentAttributes:nil];
+    self.richTextView.content = content;
     self.richTextView.privateContent = [self privateContent];
 }
 
@@ -73,7 +74,6 @@
     return 0;
 }
 
-
 #pragma mark - Action Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
@@ -83,17 +83,10 @@
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:richTextView didReceiveImageLinkAction:imageControl];
-    }
-}
-
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
-{
-    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:videoControl];
     }
 }
 

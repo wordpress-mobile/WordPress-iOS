@@ -7,18 +7,20 @@
 
 @implementation PageSettingsViewController
 
-- (void)addPostPropertiesObserver {
+- (void)addPostPropertiesObserver
+{
     // noop
     // No need to observe properties for page settings
 }
 
-- (void)removePostPropertiesObserver {
+- (void)removePostPropertiesObserver
+{
     // noop
     // No need to observe properties for page settings
 }
 
-
-- (void)configureSections {
+- (void)configureSections
+{
     self.sections = [NSMutableArray array];
     [self.sections addObject:[NSNumber numberWithInteger:PostSettingsSectionMeta]];
 }

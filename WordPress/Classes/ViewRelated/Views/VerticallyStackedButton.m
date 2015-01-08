@@ -20,13 +20,19 @@
     
     [self.titleLabel setFont:[WPStyleGuide labelFontNormal]];
     
-    CGSize imageSize = self.imageView.image.size;
-    CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeMake(self.frame.size.width, self.frame.size.height - (imageSize.height))];
-    self.imageView.frame = CGRectMake((self.frame.size.width - imageSize.width) / 2,
-                                      (self.frame.size.height - (imageSize.height + titleSize.height)) / 2, imageSize.width, imageSize.height);
+    CGSize imageSize    = self.imageView.image.size;
+    CGSize maxTitleSize = CGSizeMake(CGRectGetWidth(self.frame), CGRectGetHeight(self.frame) - (imageSize.height));
+    CGSize titleSize    = [self.titleLabel sizeThatFits:maxTitleSize];
     
-    self.titleLabel.frame = CGRectMake((self.frame.size.width - titleSize.width) / 2,
-                                       CGRectGetMaxY(self.imageView.frame), titleSize.width, titleSize.height);
+    self.imageView.frame = CGRectIntegral(CGRectMake((CGRectGetWidth(self.frame) - imageSize.width) * 0.5f,
+                                                     (CGRectGetHeight(self.frame) - (imageSize.height + titleSize.height)) * 0.5f,
+                                                     imageSize.width,
+                                                     imageSize.height));
+    
+    self.titleLabel.frame = CGRectIntegral(CGRectMake((CGRectGetWidth(self.frame) - titleSize.width) * 0.5f,
+                                                      CGRectGetMaxY(self.imageView.frame),
+                                                      titleSize.width,
+                                                      titleSize.height));
     
     self.contentEdgeInsets = UIEdgeInsetsMake(5.0f, 0.0f, 5.0f, 0.0f);
 }

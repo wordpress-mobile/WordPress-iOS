@@ -15,7 +15,7 @@
     PocketActivity *pocketActivity = [[PocketActivity alloc] init];
     GooglePlusActivity *googlePlusActivity = [[GooglePlusActivity alloc] init];
     WordPressActivity *wordPressActivity = [[WordPressActivity alloc] init];
-    
+
     return @[safariActivity, wordPressActivity, instapaperActivity, pocketActivity, googlePlusActivity];
 }
 
@@ -46,7 +46,7 @@
         [WPAnalytics track:WPAnalyticsStatSharedItem];
         return;
     }
-    
+
     if (stat != WPAnalyticsStatNoStat) {
         [WPAnalytics track:WPAnalyticsStatSharedItem];
         [WPAnalytics track:stat];

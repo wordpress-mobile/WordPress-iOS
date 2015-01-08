@@ -3,7 +3,7 @@
 
 const CGFloat WPContentActionViewButtonHeight = 48.0;
 const CGFloat WPContentActionViewBorderHeight = 1.0;
-const CGFloat WPContentActionViewButtonSpacing = 12.0;
+const CGFloat WPContentActionViewButtonSpacing = 32.0;
 
 @interface WPContentActionView()
 
@@ -15,7 +15,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 @property (nonatomic, strong) NSMutableArray *buttonConstraints;
 
 @end
-
 
 @implementation WPContentActionView
 
@@ -44,7 +43,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     }
     return self;
 }
-
 
 #pragma mark - Public Methods
 
@@ -143,15 +141,11 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
         NSDictionary *views;
         NSDictionary *metrics;
         if (previousButton) {
-            // Adjust button spacing to account for differences in width.
-            CGFloat previousButtonWidth = previousButton.intrinsicContentSize.width;
-            CGFloat width = button.intrinsicContentSize.width;
-            CGFloat diff = width - previousButtonWidth;
-            CGFloat buttonSpacing = WPContentActionViewButtonSpacing + diff;
-            metrics = @{@"buttonSpacing":@(buttonSpacing)};
-
-            views = NSDictionaryOfVariableBindings(button, previousButton);
-            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[button]-(buttonSpacing)-[previousButton]"
+            NSDictionary *metrics = @{@"buttonSpacing":@(WPContentActionViewButtonSpacing)};
+            UIImageView *buttonImageView = button.imageView;
+            UIImageView *previousButtonImageView = previousButton.imageView;
+            views = NSDictionaryOfVariableBindings(buttonImageView, previousButtonImageView);
+            [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[buttonImageView]-(buttonSpacing)-[previousButtonImageView]"
                                                                                      options:0
                                                                                      metrics:metrics
                                                                                        views:views]];
@@ -182,7 +176,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     [self setNeedsUpdateConstraints];
 }
 
-
 #pragma mark - Subview factories
 
 - (UIView *)viewForBorder
@@ -199,7 +192,7 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
     button.translatesAutoresizingMaskIntoConstraints = NO;
     button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     button.titleLabel.font = [WPStyleGuide subtitleFont];
-    [button setTitleEdgeInsets: UIEdgeInsetsMake(0, 2, 0, -2)];
+    [button setTitleEdgeInsets: UIEdgeInsetsMake(1, 2, -1, -2)];
 
     // Disable it for now (could be used for permalinks in the future)
     [button setImage:[UIImage imageNamed:@"reader-postaction-time"] forState:UIControlStateDisabled];
@@ -209,7 +202,6 @@ const CGFloat WPContentActionViewButtonSpacing = 12.0;
 
     return button;
 }
-
 
 #pragma mark - Timer Related
 

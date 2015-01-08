@@ -13,7 +13,6 @@
     return newSize;
 }
 
-
 #pragma mark - Private Methods
 
 - (void)configureConstraints

@@ -1,6 +1,5 @@
 #import <XCTest/XCTest.h>
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "AsyncTestHelper.h"
 #import <MGImageUtilities/UIImage+ProportionalFill.h>
 
 #import "WPAvatarSource.h"
@@ -41,13 +40,13 @@
     UIImage *image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNil(image, @"cache should be empty");
 
-    ATHStart();
+    XCTestExpectation *fetchExpectation = [self expectationWithDescription:@"fetch and download"];
     [_source fetchImageForGravatarEmail:email withSize:size success:^(UIImage *image) {
         XCTAssertNotNil(image, @"avatar should be downloaded");
         XCTAssertEqual(image.size.width, 48.f, @"avatar should be resized");
-        ATHNotify();
+        [fetchExpectation fulfill];
     }];
-    ATHEnd();
+    [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     image = [_source cachedImageForGravatarEmail:email withSize:size];
     XCTAssertNotNil(image, @"avatar should be in cache");

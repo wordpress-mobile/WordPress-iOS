@@ -24,7 +24,7 @@
 - (void)sizeToFit
 {
     [super sizeToFit];
-    
+
     // Adjust frame to account for the edge insets
     CGRect frame = self.frame;
     frame.size.width += self.titleEdgeInsets.left + self.titleEdgeInsets.right;

@@ -32,7 +32,6 @@
     return self;
 }
 
-
 #pragma mark - Image fetching
 
 - (UIImage *)imageForURL:(NSURL *)url withSize:(CGSize)size
@@ -87,6 +86,13 @@
             _receiver = dict;
         }
 
+        // NOTE: Due to memory issues related to animated gifs, just use the
+        // first image of a gif until we have a better solution.
+        // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/2105
+        if ([image.images count] > 0) {
+            image = [image.images firstObject];
+        }
+
         [self setCachedImage:image forURL:url withSize:_maxSize];
         [self processImage:image forURL:url receiver:_receiver];
     };
@@ -117,7 +123,6 @@
     _lastInvalidationOfIndexPaths = [NSDate date];
 }
 
-
 #pragma mark - Private methods
 
 - (void)handleImageDownloadFailedForReceiver:(NSDictionary *)receiver error:(NSError *)error
@@ -136,12 +141,11 @@
     });
 }
 
-
 #pragma mark - Image processing
 
 /**
  Processes a downloaded image
- 
+
  If necessary, the image is resized to the requested sizes in a background queue.
  */
 - (void)processImage:(UIImage *)image forURL:(NSURL *)url receiver:(NSDictionary *)receiver
@@ -156,15 +160,15 @@
 
         UIImage *resizedImage = [self cachedImageForURL:url withSize:size];
 
-		if (!resizedImage) {
+        if (!resizedImage) {
             resizedImage = image;
 
-			if (!CGSizeEqualToSize(resizedImage.size, size)) {
-				resizedImage = [self resizeImage:image toSize:size];
-			}
+            if (!CGSizeEqualToSize(resizedImage.size, size)) {
+                resizedImage = [self resizeImage:image toSize:size];
+            }
 
-			[self setCachedImage:resizedImage forURL:url withSize:size];
-		}
+            [self setCachedImage:resizedImage forURL:url withSize:size];
+        }
 
         dispatch_sync(dispatch_get_main_queue(), ^{
             if (_lastInvalidationOfIndexPaths
@@ -193,7 +197,6 @@
     return [image imageCroppedToFitSize:size ignoreAlpha:NO];
 }
 
-
 #pragma mark - Cache handling
 
 - (void)setCachedImage:(UIImage *)image forURL:(NSURL *)url withSize:(CGSize)size
@@ -201,7 +204,7 @@
     // Force rounding and only cache based on width
     size.width = ceilf(size.width);
     size.height = 0;
-    
+
     [_imageCache setObject:image forKey:[self cacheKeyForURL:url withSize:size]];
 }
 
@@ -209,7 +212,7 @@
 {
     size.width = ceilf(size.width);
     size.height = 0;
-    
+
     return [_imageCache objectForKey:[self cacheKeyForURL:url withSize:size]];
 }
 
@@ -217,7 +220,6 @@
 {
     return [NSString stringWithFormat:@"%@|%@", [url absoluteString], NSStringFromCGSize(size)];
 }
-
 
 #pragma mark - Photon URL Construction
 

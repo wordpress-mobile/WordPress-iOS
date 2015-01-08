@@ -11,6 +11,10 @@
       "filename" : "WordPress-share@2x.png"
     },
     {
+      "idiom" : "universal",
+      "scale" : "3x"
+    },
+    {
       "idiom" : "ipad",
       "scale" : "1x",
       "filename" : "WordPress-share~ipad.png"

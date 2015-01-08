@@ -75,29 +75,15 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
                                                 username:(NSString *)username
                                              andPassword:(NSString *)password;
 
-///--------------------
-/// @name Blog creation
-///--------------------
-
-/**
- Searches for a `Blog` object for this account with the given XML-RPC endpoint
-
- @param xmlrpc the XML-RPC endpoint URL as a string
- @param account the account the blog belongs to
- @return the blog if one was found, otherwise it returns nil
- */
-- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account;
-
-/**
- Creates a blank `Blog` object for this account
-
- @param account the account the blog belongs to
- @return the newly created blog
- */
-- (Blog *)createBlogWithAccount:(WPAccount *)account;
-
-- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 - (NSUInteger)numberOfAccounts;
+
+/**
+ Returns a WordPress.com account with the specified username, if it exists
+
+ @param username the account's username
+ @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
+ */
+- (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
 
 @end

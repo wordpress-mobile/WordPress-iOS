@@ -1,1 +1,0 @@
-NSString * const SPAuthenticationDidFail = @"SPAuthenticationDidFail";

@@ -11,23 +11,23 @@ typedef NS_ENUM(NSUInteger, MediaRemoteStatus) {
 };
 
 typedef NS_ENUM(NSUInteger, MediaType) {
-	MediaTypeImage,
+    MediaTypeImage,
     MediaTypeFeatured,
-	MediaTypeVideo,
+    MediaTypeVideo,
     MediaTypeDocument,
     MediaTypePowerpoint
 };
 
 typedef NS_ENUM(NSUInteger, MediaResize) {
-	MediaResizeSmall,
-	MediaResizeMedium,
-	MediaResizeLarge,
-	MediaResizeOriginal
+    MediaResizeSmall,
+    MediaResizeMedium,
+    MediaResizeLarge,
+    MediaResizeOriginal
 };
 
 typedef NS_ENUM(NSUInteger, MediaOrientation) {
-	MediaOrientationPortrait,
-	MediaOrientationLandscape
+    MediaOrientationPortrait,
+    MediaOrientationLandscape
 };
 
 @interface Media :  NSManagedObject
@@ -63,6 +63,8 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 + (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
 
+- (void)mediaTypeFromUrl:(NSString *)ext;
+
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
 + (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure;
 + (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog;
@@ -74,6 +76,3 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 - (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
-
-
-

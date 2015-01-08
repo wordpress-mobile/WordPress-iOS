@@ -53,8 +53,12 @@
     return @"";
 }
 
-+ (NSString *)taplyticsAPIKey {
-    return @"";
++ (NSString *)lookbackToken {
+   return @"";
+}
+
++ (NSString *)appbotXAPIKey {
+   return @"";
 }
 
 @end

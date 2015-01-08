@@ -1,8 +1,0 @@
-<?xml version='1.0'?>
-<methodResponse>
-  <params>
-    <param>
-      <value>Hello World!</value>
-    </param>
-  </params>
-</methodResponse>

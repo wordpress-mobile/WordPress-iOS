@@ -17,7 +17,6 @@
     ((WPRichTextView *)self.contentView).delegate = nil;
 }
 
-
 #pragma mark - Private Methods
 
 - (UIView *)viewForContent
@@ -32,10 +31,7 @@
 
 - (void)configureContent
 {
-    NSData *data = [[self.contentProvider contentForDisplay] dataUsingEncoding:NSUTF8StringEncoding];
-    self.richTextView.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                              options:[WPStyleGuide defaultDTCoreTextOptions]
-                                                                   documentAttributes:nil];
+    self.richTextView.content = [self.contentProvider contentForDisplay];
 }
 
 - (WPRichTextView *)richTextView
@@ -53,7 +49,6 @@
     return 0;
 }
 
-
 #pragma mark - WPRichText View Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
@@ -63,17 +58,10 @@
     }
 }
 
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImageControl *)imageControl
+- (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
     if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveImageLinkAction:)]) {
         [self.delegate richTextView:richTextView didReceiveImageLinkAction:imageControl];
-    }
-}
-
-- (void)richTextView:(WPRichTextView *)richTextView didReceiveVideoLinkAction:(WPRichTextVideoControl *)videoControl
-{
-    if ([self.delegate respondsToSelector:@selector(richTextView:didReceiveVideoLinkAction:)]) {
-        [self.delegate richTextView:richTextView didReceiveVideoLinkAction:videoControl];
     }
 }
 

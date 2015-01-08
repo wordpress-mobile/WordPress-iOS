@@ -1,13 +1,23 @@
 #import "EditPageViewController.h"
-#import "EditPostViewController_Internal.h"
 #import "AbstractPost.h"
+#import "ContextManager.h"
+#import "PostService.h"
+#import "Page.h"
+#import "Blog.h"
 #import "PageSettingsViewController.h"
 
 @implementation EditPageViewController
 
-- (NSString *)editorTitle {
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.titlePlaceholderText = NSLocalizedString(@"Page title", @"Placeholder text for the title field on Pages screen.");
+}
+
+- (NSString *)editorTitle
+{
     NSString *title = @"";
-    if (self.editMode == EditPostViewControllerModeNewPost) {
+    if (self.ownsPost) {
         title = NSLocalizedString(@"New Page", @"New Page Editor screen title.");
     } else {
         if ([self.post.postTitle length] > 0) {
@@ -20,17 +30,24 @@
     return title;
 }
 
-- (void)didSaveNewPost {
+- (void)didSaveNewPost
+{
     // Noop.
     // The superclass triggers a tab switch with this method which we don't want for pages.
 }
 
-- (Class)classForSettingsViewController {
+- (Class)classForSettingsViewController
+{
     return [PageSettingsViewController class];
 }
 
-- (void)geotagNewPost {
+- (void)geotagNewPost
+{
     // Noop. Pages do not support geolocation.
+}
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
+    return [PostService createDraftPageInMainContextForBlog:blog];
 }
 
 @end
