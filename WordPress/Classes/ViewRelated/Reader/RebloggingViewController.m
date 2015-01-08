@@ -24,7 +24,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) ReaderPostSimpleContentView *postView;
 @property (nonatomic, strong) UIView *postViewWrapper;
-@property (nonatomic, strong) CALayer *postViewBackingLayer;
 @property (nonatomic, strong) UITextView *textView;
 @property (nonatomic, strong) UIImage *avatarImage;
 @property (nonatomic, strong) UIImage *featuredImage;
@@ -92,7 +91,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self layoutViews];
 }
 
-
 #pragma mark - Appearance and Layout
 
 - (void)configureNavbar
@@ -144,18 +142,8 @@ CGFloat const ReblogViewTextBottomInset = 30;
     if (_titleBarButton) {
         return _titleBarButton;
     }
-    UIButton *titleButton = [WPBlogSelectorButton buttonWithType:UIButtonTypeSystem];
-    titleButton.frame = CGRectMake(0.0f, 0.0f, 200.0f, 33.0f);
-    titleButton.titleLabel.numberOfLines = 2;
-    titleButton.titleLabel.textColor = [UIColor whiteColor];
-    titleButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    titleButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin;
-    [titleButton setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    UIButton *titleButton = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 200.0f, 33.0f) buttonStyle:WPBlogSelectorButtonTypeStacked];
     [titleButton addTarget:self action:@selector(handleTitleButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-    [titleButton setImageEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 10)];
-    [titleButton setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 0)];
-    [titleButton setAccessibilityHint:NSLocalizedString(@"Tap to select which site to publish to", nil)];
-
     _titleBarButton = titleButton;
 
     return _titleBarButton;
@@ -183,7 +171,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     _textView.font = [WPStyleGuide regularTextFont];
     _textView.textColor = [WPStyleGuide darkAsNightGrey];
     _textView.accessibilityLabel = NSLocalizedString(@"Optional note", @"Optional note to include with the reblogged post");
-
+    _textView.accessibilityIdentifier = @"Optional note";
     return _textView;
 }
 
@@ -195,12 +183,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     _postViewWrapper = [[UIView alloc] initWithFrame:self.view.bounds];
     _postViewWrapper.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-    CALayer *layer = [[CALayer alloc] init];
-    layer.zPosition = -1;
-    layer.backgroundColor = [[WPStyleGuide itsEverywhereGrey] CGColor];
-    self.postViewBackingLayer = layer;
-    [_postViewWrapper.layer addSublayer:layer];
-
+    _postViewWrapper.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     return _postViewWrapper;
 }
 
@@ -250,14 +233,14 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     CGFloat width = CGRectGetWidth(self.view.bounds) - (horizontalMargin * 2);
     CGSize size = [self.postView sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
-
     CGFloat height = size.height;
+
+    self.postViewWrapper.frame = CGRectMake(self.view.bounds.origin.x, self.view.bounds.origin.y, self.view.bounds.size.width, height+ verticleMargin * 2);
 
     CGRect frame = CGRectMake(horizontalMargin, verticleMargin, width, height);
     CGFloat top = CGRectGetMaxY(frame) + (verticleMargin * 2);
-    self.postViewWrapper.frame = frame;
-    self.postView.frame = self.postViewWrapper.bounds;
-
+    self.postView.frame = frame;
+    
     self.textView.textContainerInset = UIEdgeInsetsMake(top, ReblogViewPostMargin, ReblogViewTextBottomInset, ReblogViewPostMargin);
 
     frame = CGRectZero;
@@ -266,13 +249,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     frame.size.width = CGRectGetWidth(self.textView.bounds) - (horizontalMargin * 2);
     frame.size.height = 26.0f;
     self.textPromptLabel.frame = frame;
-
-    frame = self.postViewWrapper.bounds;
-    CGFloat x = CGRectGetMinX(frame) - horizontalMargin;
-    CGFloat y = CGRectGetMinY(frame) - verticleMargin;
-    CGFloat w = CGRectGetWidth(frame) + horizontalMargin * 2.0f;
-    CGFloat h = CGRectGetHeight(frame) + verticleMargin * 2.0f;
-    self.postViewBackingLayer.frame = CGRectMake(x, y, w, h);
 
     // Refresh the contentSize to account for changes to textContainerInset
     // by calling sizeToFit and then resetting the frame.
@@ -332,7 +308,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
     CGSize size = CGSizeMake(width, height);
 
     UIImage *image = [self.featuredImageSource imageForURL:imageURL withSize:size];
-    if(image) {
+    if (image) {
         [self.postView setFeaturedImage:image];
     } else {
         [self.featuredImageSource fetchImageForURL:imageURL
@@ -362,7 +338,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
 
     [service reblogPost:self.post toSite:[self.blog.blogID integerValue] note:[self.textView.text trim] success:^{
         [WPToast showToastWithMessage:NSLocalizedString(@"Reblogged", @"User reblogged a post.")
-                             andImage:[UIImage imageNamed:@"action_icon_replied"]];
+                             andImage:[UIImage imageNamed:@"action-icon-replied"]];
 
         if ([self.delegate respondsToSelector:@selector(postWasReblogged:)]) {
             [self.delegate postWasReblogged:self.post];
@@ -443,14 +419,12 @@ CGFloat const ReblogViewTextBottomInset = 30;
     }
 }
 
-
 #pragma mark Gesture Recognizer
 
 - (void)handlePostViewTapped:(id)sender
 {
     [self.view endEditing:YES];
 }
-
 
 #pragma mark Keyboard Notifications
 
@@ -467,7 +441,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
     [self resizeTextView:notification];
 }
 
-
 #pragma mark UITextView Delegate Methods
 
 - (void)textViewDidBeginEditing:(UITextView *)textView
@@ -481,7 +454,6 @@ CGFloat const ReblogViewTextBottomInset = 30;
         self.textPromptLabel.hidden = NO;
     }
 }
-
 
 #pragma mark - WPTableImageSource Delegate
 

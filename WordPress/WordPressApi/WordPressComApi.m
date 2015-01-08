@@ -69,6 +69,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	if (self)
 	{
         _authToken = authToken;
+        self.requestSerializer = [AFJSONRequestSerializer serializer];
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
@@ -92,10 +93,10 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [operation setCompletionBlockWithSuccess:success failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         NSError *newError = error;
         if (operation.response.statusCode >= 400) {
-            NSString *errorMessage = [operation.responseObject objectForKey:@"message"];
+            NSString *errorMessage = [operation.responseObject stringForKey:@"message"];
             NSUInteger errorCode = WordPressComApiErrorJSON;
             if ([operation.responseObject objectForKey:@"error"] && errorMessage) {
-                NSString *errorString = [operation.responseObject objectForKey:@"error"];
+                NSString *errorString = [operation.responseObject stringForKey:@"error"];
                 if ([errorString isEqualToString:@"invalid_token"]) {
                     errorCode = WordPressComApiErrorInvalidToken;
                 } else if ([errorString isEqualToString:@"authorization_required"]) {
@@ -474,8 +475,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 - (void)fetchNotificationsWithParameters:(NSDictionary *)parameters success:(void (^)(NSArray *notes))success failure:(WordPressComApiRestSuccessFailureBlock)failure {
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:parameters];
     [requestParameters setObject:WordPressComApiNotificationFields forKey:@"fields"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"number"];
-    [requestParameters setObject:[NSNumber numberWithInt:20] forKey:@"num_note_items"];
+    [requestParameters setObject:@20 forKey:@"number"];
+    [requestParameters setObject:@20 forKey:@"num_note_items"];
     
     [self GET:@"notifications/" parameters:requestParameters success:^(AFHTTPRequestOperation *operation, id responseObject){
         if (success) {
@@ -650,7 +651,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     } else if ([errorCode isEqualToString:@"blog_name_reserved_but_may_be_available"]) {
         return NSLocalizedString(@"That site is currently reserved but may be available in a couple days.", nil);
     } else if ([errorCode isEqualToString:@"password_invalid"]) {
-        return NSLocalizedString(@"Your password is invalid because it does not meet our security guidelines. Please try a more complex password.", @"");
+        return NSLocalizedString(@"Sorry, that password does not meet our security guidelines. Please choose a password with a mix of uppercase letters, lowercase letters, numbers and symbols.", @"This error message occurs when a user tries to create an account with a weak password.");
     } else if ([errorCode isEqualToString:@"blog_title_invalid"]) {
         return NSLocalizedString(@"Invalid Site Title", @"");
     } else if ([errorCode isEqualToString:@"username_illegal_wpcom"]) {
@@ -679,17 +680,17 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     if ([ambiguousErrors.allKeys containsObject:errorCode]) {
         if (errorMessage != nil) {
             return errorMessage;
-        } else {
-            return [ambiguousErrors objectForKey:errorCode];
         }
+
+        return [ambiguousErrors objectForKey:errorCode];
     }
     
     // Return an error message if there's one included rather than the unhelpful "Unknown Error"
     if (errorMessage != nil) {
         return errorMessage;
-    } else {
-        return NSLocalizedString(@"Unknown error", nil);
     }
+
+    return NSLocalizedString(@"Unknown error", nil);
 }
 
 @end

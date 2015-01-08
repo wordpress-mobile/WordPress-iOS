@@ -1,7 +1,6 @@
 #import "ReachabilityUtils.h"
 #import "WordPressAppDelegate.h"
 
-
 @interface ReachabilityAlert : NSObject <UIAlertViewDelegate>
 @property(nonatomic, copy) void (^retryBlock)();
 
@@ -14,7 +13,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 @implementation ReachabilityAlert
 
-- (id)initWithRetryBlock:(void (^)())retryBlock {
+- (id)initWithRetryBlock:(void (^)())retryBlock
+{
     self = [super init];
     if (self) {
         self.retryBlock = retryBlock;
@@ -22,7 +22,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     return self;
 }
 
-- (void)show {
+- (void)show
+{
     if (__currentReachabilityAlert) {
         return;
     }
@@ -38,7 +39,8 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
     __currentReachabilityAlert = self;
 }
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     __currentReachabilityAlert = nil;
     if (buttonIndex == 1 && self.retryBlock) {
         self.retryBlock();
@@ -49,17 +51,20 @@ static ReachabilityAlert *__currentReachabilityAlert = nil;
 
 @implementation ReachabilityUtils
 
-+ (BOOL)isInternetReachable {
++ (BOOL)isInternetReachable
+{
     WordPressAppDelegate *appDelegate = (WordPressAppDelegate *) [[UIApplication sharedApplication] delegate];
     return appDelegate.connectionAvailable;
 }
 
-+ (void)showAlertNoInternetConnection {
++ (void)showAlertNoInternetConnection
+{
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:nil];
     [alert show];
 }
 
-+ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock {
++ (void)showAlertNoInternetConnectionWithRetryBlock:(void (^)())retryBlock
+{
     ReachabilityAlert *alert = [[ReachabilityAlert alloc] initWithRetryBlock:retryBlock];
     [alert show];
 }

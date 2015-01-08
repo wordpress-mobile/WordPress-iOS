@@ -2,9 +2,11 @@
 
 @class ReaderPost;
 
-@interface ReaderPostDetailViewController : UITableViewController
+@interface ReaderPostDetailViewController : UIViewController
 
 @property (nonatomic, strong, readonly) ReaderPost *post;
+
+- (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
 + (instancetype)detailControllerWithPost:(ReaderPost *)post;
 + (instancetype)detailControllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;

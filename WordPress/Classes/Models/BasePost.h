@@ -17,6 +17,7 @@ typedef enum {
 // Attributes
 @property (nonatomic, strong) NSNumber * postID;
 @property (nonatomic, strong) NSString * author;
+@property (nonatomic, strong) NSString * authorAvatarURL;
 @property (nonatomic, strong) NSDate * date_created_gmt;
 @property (nonatomic, strong) NSString * postTitle;
 @property (nonatomic, strong) NSString * content;
@@ -52,9 +53,5 @@ typedef enum {
 // Subclass methods
 - (NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
-
-#pragma mark     Data Management
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)deletePostWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end

@@ -1,5 +1,7 @@
 #import "AccountServiceRemoteREST.h"
 #import "WordPressComApi.h"
+#import "RemoteBlog.h"
+#import "Constants.h"
 
 @interface AccountServiceRemoteREST ()
 @property (nonatomic, strong) WordPressComApi *api;
@@ -39,7 +41,7 @@
     NSMutableArray *remoteBlogs = [NSMutableArray arrayWithCapacity:[jsonBlogs count]];
     for (NSDictionary *jsonBlog in jsonBlogs) {
         BOOL isJetpack = [jsonBlog[@"jetpack"] boolValue];
-        if (!isJetpack) {
+        if (!isJetpack || WPJetpackRESTEnabled) {
             [remoteBlogs addObject:[self remoteBlogFromJSONDictionary:jsonBlog]];
         }
     }
@@ -49,10 +51,10 @@
 - (RemoteBlog *)remoteBlogFromJSONDictionary:(NSDictionary *)jsonBlog
 {
     RemoteBlog *blog = [RemoteBlog new];
-    blog.ID = jsonBlog[@"ID"];
-    blog.title = jsonBlog[@"name"];
-    blog.url = jsonBlog[@"URL"];
-    blog.xmlrpc = jsonBlog[@"meta"][@"links"][@"xmlrpc"];
+    blog.ID =  [jsonBlog numberForKey:@"ID"];
+    blog.title = [jsonBlog stringForKey:@"name"];
+    blog.url = [jsonBlog stringForKey:@"URL"];
+    blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     return blog;
 }
 

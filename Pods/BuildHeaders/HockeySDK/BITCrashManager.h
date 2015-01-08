@@ -1,1 +1,0 @@
-../../HockeySDK/Classes/BITCrashManager.h

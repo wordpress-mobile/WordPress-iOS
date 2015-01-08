@@ -4,6 +4,7 @@
 #import "WPAccount.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
+#import "Constants.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -11,8 +12,6 @@ static NSInteger const ImageSizeMediumWidth = 480;
 static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
-
-static BOOL const JetpackRESTSupported = NO;
 
 @implementation Blog {
     WPXMLRPCClient *_api;
@@ -52,49 +51,48 @@ static BOOL const JetpackRESTSupported = NO;
 
 #pragma mark - NSManagedObject subclass methods
 
-- (void)didTurnIntoFault {
+- (void)didTurnIntoFault
+{
     [super didTurnIntoFault];
-    
+
     // Clean up instance variables
     _blavatarUrl = nil;
     _api = nil;
-    
+
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 #pragma mark -
 
 - (BOOL)geolocationEnabled
 {
     BOOL tmpValue;
-    
+
     [self willAccessValueForKey:@"geolocationEnabled"];
     tmpValue = [[self primitiveValueForKey:@"geolocationEnabled"] boolValue];
     [self didAccessValueForKey:@"geolocationEnabled"];
-    
+
     return tmpValue;
 }
 
-- (void)setGeolocationEnabled:(BOOL)value 
+- (void)setGeolocationEnabled:(BOOL)value
 {
     [self willChangeValueForKey:@"geolocationEnabled"];
     [self setPrimitiveValue:[NSNumber numberWithBool:value] forKey:@"geolocationEnabled"];
     [self didChangeValueForKey:@"geolocationEnabled"];
 }
 
-
 #pragma mark -
 #pragma mark Custom methods
 
 - (NSString *)blavatarUrl
 {
-	if (_blavatarUrl == nil) {
+    if (_blavatarUrl == nil) {
         NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
         if (hostUrl == nil) {
             hostUrl = self.xmlrpc;
         }
-		
+
         _blavatarUrl = hostUrl;
     }
 
@@ -113,10 +111,11 @@ static BOOL const JetpackRESTSupported = NO;
     NSError *error = nil;
     NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"http(s?)://" options:NSRegularExpressionCaseInsensitive error:&error];
     NSString *result = [NSString stringWithFormat:@"%@", [protocol stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""]];
-    
-    if([result hasSuffix:@"/"])
+
+    if ([result hasSuffix:@"/"]) {
         result = [result substringToIndex:[result length] - 1];
-    
+    }
+
     return result;
 }
 
@@ -147,10 +146,10 @@ static BOOL const JetpackRESTSupported = NO;
     // This can break reachibility (among other things) for the blog.
     // As a saftey net, make sure we drop any path component before returning the hostname.
     NSArray *parts = [hostname componentsSeparatedByString:@"/"];
-    if(parts.count) {
+    if (parts.count) {
         hostname = [parts firstObject];
     }
-    
+
     return hostname;
 }
 
@@ -193,28 +192,29 @@ static BOOL const JetpackRESTSupported = NO;
         pendingComments = [self.managedObjectContext countForFetchRequest:request error:&error];
     } else {
         for (Comment *element in self.comments) {
-            if ( [@"hold" isEqualToString: element.status] )
+            if ( [@"hold" isEqualToString: element.status] ) {
                 pendingComments++;
+            }
         }
     }
-    
+
     return pendingComments;
 }
 
--(NSArray *)sortedCategories
+- (NSArray *)sortedCategories
 {
-	NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName" 
-																		ascending:YES 
-																		 selector:@selector(caseInsensitiveCompare:)];
-	NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
-	
-	return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
+    NSSortDescriptor *sortNameDescriptor = [[NSSortDescriptor alloc] initWithKey:@"categoryName"
+                                                                        ascending:YES
+                                                                         selector:@selector(caseInsensitiveCompare:)];
+    NSArray *sortDescriptors = [[NSArray alloc] initWithObjects:sortNameDescriptor, nil];
+
+    return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
 - (NSArray *)sortedPostFormatNames
 {
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
-    
+
     if ([self.postFormats count] != 0) {
         id standardPostFormat = [self.postFormats objectForKey:@"standard"];
         if (standardPostFormat) {
@@ -226,7 +226,7 @@ static BOOL const JetpackRESTSupported = NO;
             }
         }];
     }
-    
+
     return [NSArray arrayWithArray:sortedNames];
 }
 
@@ -250,16 +250,15 @@ static BOOL const JetpackRESTSupported = NO;
     CGFloat mediumSizeHeight = [[self getOptionValue:@"medium_size_h"] floatValue] > 0 ? [[self getOptionValue:@"medium_size_h"] floatValue] : ImageSizeMediumHeight;
     CGFloat largeSizeWidth = [[self getOptionValue:@"large_size_w"] floatValue] > 0 ? [[self getOptionValue:@"large_size_w"] floatValue] : ImageSizeLargeWidth;
     CGFloat largeSizeHeight = [[self getOptionValue:@"large_size_h"] floatValue] > 0 ? [[self getOptionValue:@"large_size_h"] floatValue] : ImageSizeLargeHeight;
-    
+
     smallSize = CGSizeMake(smallSizeWidth, smallSizeHeight);
     mediumSize = CGSizeMake(mediumSizeWidth, mediumSizeHeight);
     largeSize = CGSizeMake(largeSizeWidth, largeSizeHeight);
-    
+
     return @{@"smallSize": [NSValue valueWithCGSize:smallSize],
              @"mediumSize": [NSValue valueWithCGSize:mediumSize],
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
-
 
 - (void)dataSave
 {
@@ -307,13 +306,13 @@ static BOOL const JetpackRESTSupported = NO;
     [result addObject:self.blogID];
     [result addObject:self.username];
     [result addObject:password];
-    
+
     if ([extra isKindOfClass:[NSArray class]]) {
         [result addObjectsFromArray:extra];
     } else if (extra != nil) {
         [result addObject:extra];
     }
-    
+
     return [NSArray arrayWithArray:result];
 }
 
@@ -325,11 +324,11 @@ static BOOL const JetpackRESTSupported = NO;
 - (NSString *)username
 {
     [self willAccessValueForKey:@"username"];
-    
+
     NSString *username = self.account.username ?: @"";
-    
+
     [self didAccessValueForKey:@"username"];
-    
+
     return username;
 }
 
@@ -337,7 +336,7 @@ static BOOL const JetpackRESTSupported = NO;
 {
     WPAccount *account = self.account;
     NSString *password = account.password ?: @"";
-    
+
     return password;
 }
 
@@ -347,7 +346,7 @@ static BOOL const JetpackRESTSupported = NO;
     if (hasSupport) {
         return [hasSupport boolValue];
     }
-    
+
     return NO;
 }
 
@@ -375,10 +374,15 @@ static BOOL const JetpackRESTSupported = NO;
 {
     if (self.isWPcom) {
         return self.account.restApi;
-    } else if (JetpackRESTSupported && self.jetpackAccount) {
+    } else if ([self jetpackRESTSupported]) {
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+- (BOOL)jetpackRESTSupported
+{
+    return WPJetpackRESTEnabled && self.jetpackAccount && self.dotComID;
 }
 
 #pragma mark - Private Methods
@@ -393,7 +397,7 @@ static BOOL const JetpackRESTSupported = NO;
         NSDictionary *currentOption = [self.options objectForKey:name];
         optionValue = currentOption[@"value"];
     }];
-	return optionValue;
+    return optionValue;
 }
 
 @end

@@ -1,5 +1,6 @@
 #import "AccountServiceRemoteXMLRPC.h"
 #import <WordPressApi/WordPressXMLRPCApi.h>
+#import "RemoteBlog.h"
 
 @interface AccountServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WordPressXMLRPCApi *api;
@@ -40,9 +41,9 @@
 - (RemoteBlog *)remoteBlogFromXMLRPCDictionary:(NSDictionary *)xmlrpcBlog
 {
     RemoteBlog *blog = [RemoteBlog new];
-    blog.ID = xmlrpcBlog[@"blogid"];
-    blog.title = xmlrpcBlog[@"blogName"];
-    blog.url = xmlrpcBlog[@"url"];
+    blog.ID = [xmlrpcBlog numberForKey:@"blogid"];
+    blog.title = [xmlrpcBlog stringForKey:@"blogName"];
+    blog.url = [xmlrpcBlog stringForKey:@"url"];
     blog.xmlrpc = [self.api.xmlrpc absoluteString];
     return blog;
 }
