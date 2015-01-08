@@ -171,10 +171,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSAssert([post isKindOfClass:[AbstractPost class]],
              @"There should be no issues in creating a draft post.");
     
-    _ownsPost = YES;
+    if (self = [self initWithPost:post mode:kWPPostViewControllerModeEdit]) {
+        _ownsPost = YES;
+    }
     
-    return [self initWithPost:post
-                         mode:kWPPostViewControllerModeEdit];
+    return self;
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
@@ -797,7 +798,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self hasChanges]) {
+    if ([self.post hasUnsavedChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -957,11 +958,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)hasChanges
-{
-    return [self.post hasChanged];
-}
-
 #pragma mark - UI Manipulation
 
 /**
@@ -1021,7 +1017,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
-		BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+		BOOL updateEnabled = [self.post canSave];
+        
 		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
 	} else {
 		NSArray* rightBarButtons = @[self.editBarButtonItem,

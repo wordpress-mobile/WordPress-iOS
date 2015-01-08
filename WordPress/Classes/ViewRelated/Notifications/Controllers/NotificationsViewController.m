@@ -386,6 +386,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         return;
     }
     
+    // Don't overwork, please
+    if (self.navigationItem.rightBarButtonItem) {
+        return;
+    }
+    
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
