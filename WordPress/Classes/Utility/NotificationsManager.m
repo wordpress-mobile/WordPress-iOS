@@ -123,8 +123,14 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 
 + (BOOL)deviceRegisteredForPushNotifications
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
+    return [self registeredPushNotificationsToken] != nil;
 }
+
++ (NSString *)registeredPushNotificationsToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+}
+
 
 #pragma mark - Notification handling
 
