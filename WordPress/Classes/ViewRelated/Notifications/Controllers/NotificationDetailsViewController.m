@@ -15,6 +15,7 @@
 
 #import "WPWebViewController.h"
 #import "ReaderPostDetailViewController.h"
+#import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
@@ -511,7 +512,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
 
-        [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        if (self.note.isComment) {
+            [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        } else {
+            [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        }
     }
 }
 
@@ -756,6 +761,20 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         };
         
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
+    }
+    return success;
+}
+
+- (BOOL)displayCommentsWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    BOOL success = postID && siteID;
+    if (success) {
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID,
+        };
+        
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderCommentsViewController class]) sender:parameters];
     }
     return success;
 }
@@ -1068,6 +1087,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSURL class]]);
         
         WPWebViewController *webViewController          = segue.destinationViewController;
         webViewController.url                           = (NSURL *)sender;
@@ -1077,6 +1097,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         StatsViewController *statsViewController        = segue.destinationViewController;
         statsViewController.blog                        = (Blog *)sender;
+        
+    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderCommentsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
+        
+        ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
+        [commentsViewController setupWithPostID:postID siteID:siteID];        
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
         NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
