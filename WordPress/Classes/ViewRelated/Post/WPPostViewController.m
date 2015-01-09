@@ -657,8 +657,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showMediaFailedRemovalAlert
 {
-    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to save post with failed media items")
+                                                                              message:NSLocalizedString(@"Some media uploads failed. Saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
                                                                              delegate:self
                                                                     cancelButtonTitle:NSLocalizedString(@"No", @"")
                                                                     otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
@@ -671,7 +671,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showFailedMediaBeforeEditAlert
 {
     UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"There are media items in this post that failed to upload to the server. Do you want to remove them?", @"Asks the user if they want to remove their failed media from the post before editing the html")
+                                                           message:NSLocalizedString(@"Some media uploads failed. Manual HTML editing  this post will remove them from the post. Edit anyway?", @"Confirms with the user if they manul edit the post html all media that failed to upload will be removed from it.")
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"No", @"")
                                                  otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
