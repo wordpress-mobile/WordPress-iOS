@@ -1474,7 +1474,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)cancelMediaUploads
 {
     [self.mediaGlobalProgress cancel];
-    [self.mediaInProgress removeAllObjects];
+    NSMutableArray * keys = [NSMutableArray array];
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+        if (progress.isCancelled){
+            [self.editorView removeImage:key];
+            [keys addObject:key];
+        }
+    }];
+    [self.mediaInProgress removeObjectsForKeys:keys];
+    [self autosaveContent];
     [self refreshNavigationBarButtons:NO];
 }
 
