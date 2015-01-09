@@ -103,7 +103,7 @@
 {
     [AppRatingUtility initializeForVersion:@"4.7"];
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility doesntLikeCurrentVersion];
+    [AppRatingUtility dislikedCurrentVersion];
     
     [AppRatingUtility initializeForVersion:@"4.8"];
     [AppRatingUtility incrementSignificantEvent];
@@ -130,7 +130,7 @@
     XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
     
     [AppRatingUtility initializeForVersion:@"4.9"];
-    [AppRatingUtility doesntLikeCurrentVersion];
+    [AppRatingUtility dislikedCurrentVersion];
     XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
 }
 
@@ -142,7 +142,7 @@
     
     [AppRatingUtility initializeForVersion:@"4.8"];
     XCTAssertFalse([AppRatingUtility hasUserEverDislikedApp]);
-    [AppRatingUtility doesntLikeCurrentVersion];
+    [AppRatingUtility dislikedCurrentVersion];
     XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
     
     [AppRatingUtility initializeForVersion:@"4.9"];

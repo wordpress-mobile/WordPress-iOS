@@ -11,8 +11,8 @@ NSString *const AppRatingNumberOfVersionsToSkipPrompting = @"AppRatingsNumberOfV
 NSString *const AppRatingRatedCurrentVersion = @"AppRatingRatedCurrentVersion";
 NSString *const AppRatingDeclinedToRateCurrentVersion = @"AppRatingDeclinedToRateCurrentVersion";
 NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedbackForCurrentVersion";
-NSString *const AppRatingDidntLikeCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
-NSString *const AppRatingLikedCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
+NSString *const AppRatingDislikedCurrentVersion = @"AppRatingDislikedCurrentVersion";
+NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 
@@ -36,7 +36,7 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 + (BOOL)interactedWithAppReviewPrompt
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDidntLikeCurrentVersion];
+    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDislikedCurrentVersion];
 }
 
 + (void)initializeForVersion:(NSString *)version
@@ -67,7 +67,7 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
         [userDefaults setBool:NO forKey:AppRatingRatedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDeclinedToRateCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
-        [userDefaults setBool:NO forKey:AppRatingDidntLikeCurrentVersion];
+        [userDefaults setBool:NO forKey:AppRatingDislikedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingLikedCurrentVersion];
         
         if (interactedWithAppReviewPromptInPreviousVersion) {
@@ -128,13 +128,13 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     [userDefaults synchronize];
 }
 
-+ (void)doesntLikeCurrentVersion
++ (void)dislikedCurrentVersion
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSUInteger userDislikeCount = [userDefaults integerForKey:AppRatingUserDislikeCount];
     userDislikeCount++;
     [userDefaults setInteger:userDislikeCount forKey:AppRatingUserDislikeCount];
-    [userDefaults setBool:YES forKey:AppRatingDidntLikeCurrentVersion];
+    [userDefaults setBool:YES forKey:AppRatingDislikedCurrentVersion];
     [userDefaults setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
     [userDefaults synchronize];
 }
