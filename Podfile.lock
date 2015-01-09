@@ -91,7 +91,7 @@ PODS:
   - OCMock (3.1.1)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.7.5):
+  - Simperium (0.7.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -142,7 +142,7 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.7.5)
+  - Simperium (= 0.7.6)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
@@ -228,7 +228,7 @@ SPEC CHECKSUMS:
   OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: 35c273129692d06fe0c3d384e4619ae7a96b9236
+  Simperium: 872853054cc283d4dbd7f93d223050b5015f6f71
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
