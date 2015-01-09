@@ -13,6 +13,8 @@ NSString *const AppRatingDeclinedToRateCurrentVersion = @"AppRatingDeclinedToRat
 NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedbackForCurrentVersion";
 NSString *const AppRatingDidntLikeCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
 NSString *const AppRatingLikedCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
+NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
+NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 
 + (BOOL)shouldPromptForAppReview
 {
@@ -99,41 +101,64 @@ NSString *const AppRatingLikedCurrentVersion = @"AppRatingDidntLikeCurrentVersio
 
 + (void)setNumberOfSignificantEventsRequiredForPrompt:(NSUInteger)numberOfEvents
 {
-    [[NSUserDefaults standardUserDefaults] setInteger:numberOfEvents forKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setInteger:numberOfEvents forKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
+    [userDefaults synchronize];
 }
 
 + (void)declinedToRateCurrentVersion
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingDeclinedToRateCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:AppRatingDeclinedToRateCurrentVersion];
+    [userDefaults setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
+    [userDefaults synchronize];
 }
 
 + (void)gaveFeedbackForCurrentVersion
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingGaveFeedbackForCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:AppRatingGaveFeedbackForCurrentVersion];
+    [userDefaults synchronize];
 }
 
 + (void)ratedCurrentVersion
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingRatedCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setBool:YES forKey:AppRatingRatedCurrentVersion];
+    [userDefaults synchronize];
 }
 
 + (void)doesntLikeCurrentVersion
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingDidntLikeCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSUInteger userDislikeCount = [userDefaults integerForKey:AppRatingUserDislikeCount];
+    userDislikeCount++;
+    [userDefaults setInteger:userDislikeCount forKey:AppRatingUserDislikeCount];
+    [userDefaults setBool:YES forKey:AppRatingDidntLikeCurrentVersion];
+    [userDefaults setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
+    [userDefaults synchronize];
 }
 
 + (void)likedCurrentVersion
 {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingLikedCurrentVersion];
-    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:AppRatingNumberOfVersionsToSkipPrompting];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    
+    NSUInteger userLikeCount = [userDefaults integerForKey:AppRatingUserLikeCount];
+    userLikeCount++;
+    [userDefaults setInteger:userLikeCount forKey:AppRatingUserLikeCount];
+    [userDefaults setBool:YES forKey:AppRatingLikedCurrentVersion];
+    [userDefaults setInteger:1 forKey:AppRatingNumberOfVersionsToSkipPrompting];
+    [userDefaults synchronize];
+}
+
++ (BOOL)hasUserEverLikedApp
+{
+    return [[NSUserDefaults standardUserDefaults] integerForKey:AppRatingUserLikeCount] > 0;
+}
+
++ (BOOL)hasUserEverDislikedApp
+{
+    return [[NSUserDefaults standardUserDefaults] integerForKey:AppRatingUserDislikeCount] > 0;
 }
 
 @end
