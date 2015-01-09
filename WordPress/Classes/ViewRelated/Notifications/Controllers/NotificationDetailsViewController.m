@@ -51,6 +51,10 @@ static NSString *NotificationSuccessToastImage          = @"action-icon-success"
 
 static NSInteger NotificationSectionCount               = 1;
 
+static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
+static NSString *NotificationsPostIdKey                 = @"NotificationsPostIdKey";
+static NSString *NotificationsCommentIdKey              = @"NotificationsCommentIdKey";
+
 
 #pragma mark ==========================================================================================
 #pragma mark Private
@@ -746,7 +750,11 @@ static NSInteger NotificationSectionCount               = 1;
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSArray *parameters = @[ siteID, postID ];
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID
+        };
+        
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
     }
     return success;
@@ -1060,17 +1068,22 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
+        
         WPWebViewController *webViewController          = segue.destinationViewController;
         webViewController.url                           = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[Blog class]]);
+        
         StatsViewController *statsViewController        = segue.destinationViewController;
         statsViewController.blog                        = (Blog *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
-        NSArray *parameters                             = (NSArray *)sender;
-        NSNumber *siteID                                = parameters.firstObject;
-        NSNumber *postID                                = parameters.lastObject;
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
