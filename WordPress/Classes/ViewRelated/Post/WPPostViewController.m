@@ -631,19 +631,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [alertView show];
 }
 
-- (void)showFailedMediaAlert
-{
-    if (self.failedMediaAlertView)
-        return;
-    self.failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
-                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
-    self.failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
-    [self.failedMediaAlertView show];
-}
-
 - (void)showMediaUploadingAlert
 {
     //the post is using the network connection and cannot be stoped, show a message to the user
@@ -655,7 +642,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [blogIsCurrentlyBusy show];
 }
 
-- (void)showMediaFailedRemovalAlert
+- (void)showFailedMediaRemovalAlert
 {
     UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to save post with failed media items")
                                                                               message:NSLocalizedString(@"Some media uploads failed. Saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
@@ -742,11 +729,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     if ([self isMediaUploading]) {
         [self showMediaUploadingAlert];
-        return;
-    }
-    
-    if ([self hasFailedMedia]) {
-        [self showMediaFailedRemovalAlert];
         return;
     }
     
@@ -1316,11 +1298,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 		return;
 	}
     
-    if ([self hasFailedMedia]) {
-        [self showFailedMediaAlert];
-        return;
-    }
-    
     [self stopEditing];
 	[self savePostAndDismissVC];
 }
@@ -1330,7 +1307,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
  */
 - (void)savePostAndDismissVC
 {
-	[self savePost];
+    if ([self hasFailedMedia]) {
+        [self showFailedMediaRemovalAlert];
+        return;
+    }
+    [self savePost];
     [self dismissEditView];
 }
 
@@ -1784,7 +1765,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [self stopEditing];
                 [self savePostAndDismissVC];
             }
-        }
+        } break;
     }
     
     return;
