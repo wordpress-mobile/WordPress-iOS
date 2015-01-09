@@ -645,9 +645,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showFailedMediaRemovalAlert
 {
     UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to save post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. Saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
                                                                              delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                                     otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
     [failedMediaAlertView show];
@@ -658,9 +658,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showFailedMediaBeforeEditAlert
 {
     UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"Some media uploads failed. Manual HTML editing  this post will remove them from the post. Edit anyway?", @"Confirms with the user if they manul edit the post html all media that failed to upload will be removed from it.")
+                                                           message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
                                                           delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                  otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
     [failedMediaBeforeEditAlertView show];
