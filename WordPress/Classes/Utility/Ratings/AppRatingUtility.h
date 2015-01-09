@@ -11,7 +11,7 @@
 + (void)declinedToRateCurrentVersion;
 + (void)gaveFeedbackForCurrentVersion;
 + (void)ratedCurrentVersion;
-+ (void)doesntLikeCurrentVersion;
++ (void)dislikedCurrentVersion;
 + (void)likedCurrentVersion;
 + (BOOL)hasUserEverLikedApp;
 + (BOOL)hasUserEverDislikedApp;
