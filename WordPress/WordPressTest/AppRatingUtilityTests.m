@@ -118,4 +118,36 @@
     XCTAssertTrue([AppRatingUtility shouldPromptForAppReview], @"should prompt for a review two versions later");
 }
 
+- (void)testHasUserEverLikedApp
+{
+    [AppRatingUtility initializeForVersion:@"4.7"];
+    XCTAssertFalse([AppRatingUtility hasUserEverLikedApp]);
+    [AppRatingUtility declinedToRateCurrentVersion];
+    
+    [AppRatingUtility initializeForVersion:@"4.8"];
+    XCTAssertFalse([AppRatingUtility hasUserEverLikedApp]);
+    [AppRatingUtility likedCurrentVersion];
+    XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
+    
+    [AppRatingUtility initializeForVersion:@"4.9"];
+    [AppRatingUtility doesntLikeCurrentVersion];
+    XCTAssertTrue([AppRatingUtility hasUserEverLikedApp]);
+}
+
+- (void)testHasUserEverDislikedTheApp
+{
+    [AppRatingUtility initializeForVersion:@"4.7"];
+    XCTAssertFalse([AppRatingUtility hasUserEverDislikedApp]);
+    [AppRatingUtility declinedToRateCurrentVersion];
+    
+    [AppRatingUtility initializeForVersion:@"4.8"];
+    XCTAssertFalse([AppRatingUtility hasUserEverDislikedApp]);
+    [AppRatingUtility doesntLikeCurrentVersion];
+    XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
+    
+    [AppRatingUtility initializeForVersion:@"4.9"];
+    [AppRatingUtility likedCurrentVersion];
+    XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
+}
+
 @end

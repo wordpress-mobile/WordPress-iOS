@@ -13,5 +13,7 @@
 + (void)ratedCurrentVersion;
 + (void)doesntLikeCurrentVersion;
 + (void)likedCurrentVersion;
++ (BOOL)hasUserEverLikedApp;
++ (BOOL)hasUserEverDislikedApp;
 
 @end
