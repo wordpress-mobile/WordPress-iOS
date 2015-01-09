@@ -1627,6 +1627,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                         [strongSelf.editorView removeImage:imageUniqueId];
+                        [strongSelf autosaveContent];
                         [media remove];
                     } else {
                         [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
