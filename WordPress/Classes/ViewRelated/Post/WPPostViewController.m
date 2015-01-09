@@ -1493,6 +1493,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self.editorView removeImage:key];
     }];
     [self.mediaInProgress removeAllObjects];
+    [self autosaveContent];
 }
 
 - (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
