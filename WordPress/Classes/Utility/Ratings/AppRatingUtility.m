@@ -6,9 +6,13 @@ NSString *const AppRatingCurrentVersion = @"AppRatingCurrentVersion";
 NSString *const AppRatingNumberOfSignificantEventsRequiredForPrompt = @"AppRatingNumberOfSignificantEventsRequiredForPrompt";
 NSString *const AppRatingSignificantEventCount = @"AppRatingSignificantEventCount";
 NSString *const AppRatingUseCount = @"AppRatingUseCount";
+NSString *const AppRatingNumberOfVersionsSkippedPrompting = @"AppRatingsNumberOfVersionsSkippedPrompt";
+NSString *const AppRatingNumberOfVersionsToSkipPrompting = @"AppRatingsNumberOfVersionsToSkipPrompting";
 NSString *const AppRatingRatedCurrentVersion = @"AppRatingRatedCurrentVersion";
 NSString *const AppRatingDeclinedToRateCurrentVersion = @"AppRatingDeclinedToRateCurrentVersion";
 NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedbackForCurrentVersion";
+NSString *const AppRatingDidntLikeCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
+NSString *const AppRatingLikedCurrentVersion = @"AppRatingDidntLikeCurrentVersion";
 
 + (BOOL)shouldPromptForAppReview
 {
@@ -30,7 +34,7 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
 + (BOOL)interactedWithAppReviewPrompt
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion];
+    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDidntLikeCurrentVersion];
 }
 
 + (void)initializeForVersion:(NSString *)version
@@ -61,11 +65,25 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
         [userDefaults setBool:NO forKey:AppRatingRatedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDeclinedToRateCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
+        [userDefaults setBool:NO forKey:AppRatingDidntLikeCurrentVersion];
+        [userDefaults setBool:NO forKey:AppRatingLikedCurrentVersion];
         
-        // Note - this is a temporary fix for 4.6.1 so we don't double prompt users
-        // for a review within the span of a few days. Make sure to remove this for 4.7
-        if ([trackingVersion isEqualToString:@"4.6"] && interactedWithAppReviewPromptInPreviousVersion) {
-            [userDefaults setBool:YES forKey:AppRatingRatedCurrentVersion];
+        if (interactedWithAppReviewPromptInPreviousVersion) {
+            NSInteger numberOfVersionsSkippedPrompting = [userDefaults integerForKey:AppRatingNumberOfVersionsSkippedPrompting];
+            NSInteger numberOfVersionsToSkipPrompting = [userDefaults integerForKey:AppRatingNumberOfVersionsToSkipPrompting];
+            
+            if (numberOfVersionsToSkipPrompting > 0) {
+                if (numberOfVersionsSkippedPrompting < numberOfVersionsToSkipPrompting) {
+                    // We haven't skipped enough versions, skip this one
+                    numberOfVersionsSkippedPrompting++;
+                    [userDefaults setInteger:numberOfVersionsSkippedPrompting forKey:AppRatingNumberOfVersionsSkippedPrompting];
+                    [userDefaults setBool:YES forKey:AppRatingRatedCurrentVersion];
+                } else {
+                    // We have skipped enough, reset data
+                    [userDefaults setInteger:0 forKey:AppRatingNumberOfVersionsSkippedPrompting];
+                    [userDefaults setInteger:0 forKey:AppRatingNumberOfVersionsToSkipPrompting];
+                }
+            }
         }
     }
 }
@@ -88,6 +106,7 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
 + (void)declinedToRateCurrentVersion
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingDeclinedToRateCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
@@ -100,6 +119,20 @@ NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedback
 + (void)ratedCurrentVersion
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingRatedCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)doesntLikeCurrentVersion
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingDidntLikeCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] setInteger:2 forKey:AppRatingNumberOfVersionsToSkipPrompting];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
++ (void)likedCurrentVersion
+{
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:AppRatingLikedCurrentVersion];
+    [[NSUserDefaults standardUserDefaults] setInteger:1 forKey:AppRatingNumberOfVersionsToSkipPrompting];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

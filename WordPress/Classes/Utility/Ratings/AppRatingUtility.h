@@ -11,5 +11,7 @@
 + (void)declinedToRateCurrentVersion;
 + (void)gaveFeedbackForCurrentVersion;
 + (void)ratedCurrentVersion;
++ (void)doesntLikeCurrentVersion;
++ (void)likedCurrentVersion;
 
 @end

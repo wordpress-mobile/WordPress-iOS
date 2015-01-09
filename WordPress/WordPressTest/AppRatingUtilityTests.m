@@ -84,26 +84,38 @@
     XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
 }
 
-- (void)testUserIsntPromptedForAnAppReviewFor461IfPromptedIn46
+- (void)testUserIsNotPromptedForAReviewForOneVersionIfTheyLikedTheApp;
 {
-    [AppRatingUtility initializeForVersion:@"4.6"];
-    [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility ratedCurrentVersion];
-    [AppRatingUtility initializeForVersion:@"4.6.1"];
+    [AppRatingUtility initializeForVersion:@"4.7"];
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    [AppRatingUtility likedCurrentVersion];
+    
+    [AppRatingUtility initializeForVersion:@"4.8"];
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after liking last version");
+    
+    [AppRatingUtility initializeForVersion:@"4.9"];
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview], @"should prompt for a review after skipping a version");
 }
 
-- (void)testUserIsPromptedForAnReviewIn461IfWasntPromptedin46
+- (void)testUserIsNotPromptedForAReviewForTwoVersionsIfTheyDeclineToRate
 {
-    [AppRatingUtility initializeForVersion:@"4.6"];
+    [AppRatingUtility initializeForVersion:@"4.7"];
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [AppRatingUtility initializeForVersion:@"4.6.1"];
-    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
-    [self createConditionsForPositiveAppReviewPrompt];
-    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+    [AppRatingUtility doesntLikeCurrentVersion];
+    
+    [AppRatingUtility initializeForVersion:@"4.8"];
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after declining on this first upgrade");
+    
+    [AppRatingUtility initializeForVersion:@"4.9"];
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview], @"should not prompt for a review after declining on this second upgrade");
+    
+    [AppRatingUtility initializeForVersion:@"5.0"];
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview], @"should prompt for a review two versions later");
 }
 
 @end
