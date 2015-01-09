@@ -68,6 +68,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return controller;
 }
 
++ (instancetype)controllerWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    ReaderCommentsViewController *controller = [[self alloc] init];
+    [controller setupWithPostID:postID siteID:siteID];
+    return controller;
+}
+
 
 #pragma mark - LifeCycle Methods
 
@@ -780,6 +787,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [self.activityFooter stopAnimating];
     [self configureNoResultsView];
+}
+
+
+#pragma mark - Async Loading Helpers
+
+- (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
 }
 
 
