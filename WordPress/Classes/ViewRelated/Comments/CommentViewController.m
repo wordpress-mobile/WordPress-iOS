@@ -526,9 +526,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
     
-    BOOL shouldAddSuggestionView = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
-    NSNumber *siteID = shouldAddSuggestionView ? self.comment.blog.blogID : nil;
-    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
