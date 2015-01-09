@@ -666,13 +666,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [failedMediaBeforeEditAlertView show];
 }
 
-- (void)cancelMediaUploads
-{
-    [self.mediaGlobalProgress cancel];
-    [self.mediaInProgress removeAllObjects];
-    [self refreshNavigationBarButtons:NO];
-}
-
 - (void)showSettings
 {
     if ([self isMediaUploading]) {
@@ -1476,6 +1469,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)isMediaUploading
 {
     return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+}
+
+- (void)cancelMediaUploads
+{
+    [self.mediaGlobalProgress cancel];
+    [self.mediaInProgress removeAllObjects];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)cancelUploadOfMediaWithId:(NSString *)uniqueMediaId
