@@ -942,9 +942,7 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    BOOL shouldAddSuggestionView = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
-    NSNumber *siteID = shouldAddSuggestionView ? self.note.metaSiteID : nil;
-    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:siteID];
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:self.note.metaSiteID];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{

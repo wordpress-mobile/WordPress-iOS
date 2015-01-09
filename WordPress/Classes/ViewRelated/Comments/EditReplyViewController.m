@@ -1,6 +1,7 @@
 #import "EditReplyViewController.h"
 #import "IOS7CorrectedTextView.h"
 #import "SuggestionsTableView.h"
+#import "SuggestionService.h"
 #import "math.h"
 
 @interface EditReplyViewController() <UITextViewDelegate, SuggestionsTableViewDelegate>
@@ -49,7 +50,7 @@
     self.hasCachedContentOffset = false;
     self.cachedContentOffset = CGPointZero;
     
-    if (self.siteID) {
+    if ([[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.siteID]) {        
         // attach the suggestions view
         self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.siteID];
         self.suggestionsTableView.suggestionsDelegate = self;
