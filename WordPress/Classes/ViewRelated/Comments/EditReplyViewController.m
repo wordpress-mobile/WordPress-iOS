@@ -25,9 +25,7 @@
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil siteID:(NSNumber *)siteID
 {
     if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
-        if (siteID) {
-            _siteID = siteID;
-        }
+        _siteID = siteID;
     }
     
     return self;
