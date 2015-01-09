@@ -128,28 +128,54 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 {
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize + BlogDetailHeaderViewVerticalMargin * 2)];
-
+    self.tableView.tableHeaderView = headerWrapper;
+    
     // Blog detail header view
     self.headerView = [[BlogDetailHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BlogDetailHeaderViewBlavatarSize)];
     self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
     [headerWrapper addSubview:self.headerView];
-
-    float horizontalMargin = IS_IPAD ? (CGRectGetWidth(self.view.bounds) - WPTableViewFixedWidth) / 2.f : BlogDetailHeaderViewHorizontalMarginiPhone;
-
-    // Layout
-    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView);
-    NSDictionary *metrics = @{@"horizontalMargin": @(horizontalMargin),
+    
+    NSDictionary *views = NSDictionaryOfVariableBindings(_headerView, headerWrapper);
+    NSDictionary *metrics = @{@"horizontalMargin": @(BlogDetailHeaderViewHorizontalMarginiPhone),
                               @"verticalMargin": @(BlogDetailHeaderViewVerticalMargin)};
-    [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
+
+    if (IS_IPAD) {
+        // Set the header width
+        float headerWidth = WPTableViewFixedWidth;
+        [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
+                                                                  attribute:NSLayoutAttributeWidth
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:nil
+                                                                  attribute:NSLayoutAttributeNotAnAttribute
+                                                                 multiplier:1.f
+                                                                   constant:headerWidth]];
+        // Center the headerView inside the wrapper
+        [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:headerWrapper
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                 multiplier:1.f
+                                                                   constant:0.f]];
+        // Then, horizontally constrain the headerWrapper
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[headerWrapper]-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
+        
+    } else {
+        // Pin the headerWrapper to its superview AND wrap the headerView in horizontal margins
+        [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
+                                                                              options:0
+                                                                              metrics:metrics
+                                                                                views:views]];
+    }
+
+    // Constrain the headerWrapper and headerView vertically
     [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin)-[_headerView]-(verticalMargin)-|"
                                                                           options:0
                                                                           metrics:metrics
                                                                             views:views]];
-
-    self.tableView.tableHeaderView = headerWrapper;
 }
 
 - (void)viewWillAppear:(BOOL)animated
