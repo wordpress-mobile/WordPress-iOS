@@ -1763,7 +1763,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         case (EditPostViewControllerAlertTagFailedMediaBeforeSave): {
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self removeAllFailedMedia];
-                [self stopEditing];
                 [self savePostAndDismissVC];
             }
         } break;
@@ -1826,8 +1825,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    [self stopEditing];
-    
     if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
         self.post.status = @"draft";
     }
