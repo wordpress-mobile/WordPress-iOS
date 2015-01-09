@@ -1497,10 +1497,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)removeAllFailedMedia
 {
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * obj, BOOL *stop) {
-        [self.editorView removeImage:key];
+    NSMutableArray * keys = [NSMutableArray array];
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+        if (progress.totalUnitCount == 0){
+            [self.editorView removeImage:key];
+            [keys addObject:key];
+        }
     }];
-    [self.mediaInProgress removeAllObjects];
+    [self.mediaInProgress removeObjectsForKeys:keys];
     [self autosaveContent];
 }
 
