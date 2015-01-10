@@ -33,7 +33,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
         _searchResults = [[NSMutableArray alloc] init];
-        [self setUseTransparentHeader:NO];
+        _useTransparentHeader = NO;
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
