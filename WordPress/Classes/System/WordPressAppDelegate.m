@@ -634,8 +634,9 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 - (void)initializeAppTracking
 {
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [AppRatingUtility registerSection:@"Notifications" withSignificantEventCount:5];
+    [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
 }
 
 - (void)trackLowMemory
