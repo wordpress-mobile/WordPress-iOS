@@ -4,6 +4,8 @@
 #import "SuggestionService.h"
 #import "math.h"
 
+static CGFloat const ERVCContentScrollMargin = 10.;
+
 @interface EditReplyViewController() <UITextViewDelegate, SuggestionsTableViewDelegate>
 @property (nonatomic, strong) NSNumber                       *siteID;
 @property (nonatomic,   weak) IBOutlet IOS7CorrectedTextView *textView;
@@ -132,7 +134,7 @@
         CGFloat caretBottom = caretRect.origin.y + caretRect.size.height - contentOffset.y;        
         CGFloat gapBottom = textViewBounds.size.height - bounds.size.height;
         if (caretBottom > gapBottom) {
-            contentOffset.y += (caretBottom - gapBottom) + 10.; // plus a little more
+            contentOffset.y += (caretBottom - gapBottom) + ERVCContentScrollMargin; // plus a little more
             [self.textView setContentOffset:contentOffset animated:YES];
         }
     } else {
