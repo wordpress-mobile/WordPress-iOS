@@ -184,7 +184,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showRatingViewIfApplicable
 {
-    if ([AppRatingUtility shouldPromptForAppReview]) {
+    if ([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]) {
         if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
             // Rating View is already visible, don't bother to do anything
             return;

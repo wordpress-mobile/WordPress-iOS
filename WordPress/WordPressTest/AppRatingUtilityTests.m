@@ -2,6 +2,12 @@
 #import <XCTest/XCTest.h>
 #import "AppRatingUtility.h"
 
+@interface AppRatingUtility(Tests)
+
++ (void)unregisterAllSections;
+
+@end
+
 @interface AppRatingUtilityTests : XCTestCase
 
 @end
@@ -13,32 +19,33 @@
     [[NSUserDefaults standardUserDefaults] removePersistentDomainForName:appDomain];
     
     [AppRatingUtility initializeForVersion:@"1.0"];
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:1];
+    [AppRatingUtility setSystemWideSignificantEventsCount:1];
     [super setUp];
 }
 
 - (void)tearDown {
     // A hack to reset everything
     [AppRatingUtility initializeForVersion:@"10.0"];
+    [AppRatingUtility unregisterAllSections];
     [super tearDown];
 }
 
 - (void)testCheckForPromptReturnsFalseWithoutEnoughSignificantEvents
 {
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:1];
+    [AppRatingUtility setSystemWideSignificantEventsCount:1];
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
 }
 
 - (void)testCheckForPromptReturnsTrueWithEnoughSignificantEvents
 {
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:1];
+    [AppRatingUtility setSystemWideSignificantEventsCount:1];
     [AppRatingUtility incrementSignificantEvent];
     XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
 }
 
 - (void)createConditionsForPositiveAppReviewPrompt
 {
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:1];
+    [AppRatingUtility setSystemWideSignificantEventsCount:1];
     [AppRatingUtility incrementSignificantEvent];
 }
 
@@ -148,6 +155,55 @@
     [AppRatingUtility initializeForVersion:@"4.9"];
     [AppRatingUtility likedCurrentVersion];
     XCTAssertTrue([AppRatingUtility hasUserEverDislikedApp]);
+}
+
+- (void)testShouldPromptForAppReviewForSection
+{
+    [AppRatingUtility registerSection:@"Notifications" withSignificantEventCount:2];
+    [AppRatingUtility initializeForVersion:@"4.7"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]);
+    [AppRatingUtility incrementSignificantEventForSection:@"Notifications"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]);
+    [AppRatingUtility incrementSignificantEventForSection:@"Notifications"];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]);
+}
+
+- (void)testShouldPromptAppReviewSystemWideWithEnoughSmallerSignficantEvents
+{
+    [AppRatingUtility registerSection:@"Notifications" withSignificantEventCount:2];
+    [AppRatingUtility registerSection:@"Editor" withSignificantEventCount:2];
+    [AppRatingUtility setSystemWideSignificantEventsCount:3];
+    [AppRatingUtility initializeForVersion:@"4.7"];
+    
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]);
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Editor"]);
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    
+    [AppRatingUtility incrementSignificantEventForSection:@"Notifications"];
+    [AppRatingUtility incrementSignificantEventForSection:@"Editor"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    
+    [AppRatingUtility incrementSignificantEventForSection:@"Editor"];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
+}
+
+- (void)testShouldPromptForAppReviewSystemWideWithEnoughSmallerSignificantEventsIncludingNonSectionedEvents
+{
+    [AppRatingUtility registerSection:@"Notifications" withSignificantEventCount:2];
+    [AppRatingUtility registerSection:@"Editor" withSignificantEventCount:2];
+    [AppRatingUtility setSystemWideSignificantEventsCount:3];
+    [AppRatingUtility initializeForVersion:@"4.7"];
+    
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Notifications"]);
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"Editor"]);
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    
+    [AppRatingUtility incrementSignificantEventForSection:@"Notifications"];
+    [AppRatingUtility incrementSignificantEventForSection:@"Editor"];
+    XCTAssertFalse([AppRatingUtility shouldPromptForAppReview]);
+    
+    [AppRatingUtility incrementSignificantEvent];
+    XCTAssertTrue([AppRatingUtility shouldPromptForAppReview]);
 }
 
 @end

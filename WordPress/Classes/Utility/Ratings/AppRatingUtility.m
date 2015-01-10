@@ -1,9 +1,16 @@
+
 #import "AppRatingUtility.h"
+
+@interface AppRatingUtility ()
+
+@property (nonatomic, assign) NSUInteger systemWideSignificantEventCountRequiredForPrompt;
+@property (nonatomic, strong) NSMutableDictionary *sections;
+
+@end
 
 @implementation AppRatingUtility
 
 NSString *const AppRatingCurrentVersion = @"AppRatingCurrentVersion";
-NSString *const AppRatingNumberOfSignificantEventsRequiredForPrompt = @"AppRatingNumberOfSignificantEventsRequiredForPrompt";
 NSString *const AppRatingSignificantEventCount = @"AppRatingSignificantEventCount";
 NSString *const AppRatingUseCount = @"AppRatingUseCount";
 NSString *const AppRatingNumberOfVersionsSkippedPrompting = @"AppRatingsNumberOfVersionsSkippedPrompt";
@@ -16,28 +23,25 @@ NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 
-+ (BOOL)shouldPromptForAppReview
+- (instancetype)init
 {
-    if ([self interactedWithAppReviewPrompt]) {
-        return NO;
+    self = [super init];
+    if (self) {
+        _sections = [NSMutableDictionary dictionary];
     }
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSUInteger significantEventCount = [userDefaults integerForKey:AppRatingSignificantEventCount];
-    NSUInteger numberOfSignificantEventsRequiredForPrompt = [userDefaults integerForKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
-    
-    if (significantEventCount >= numberOfSignificantEventsRequiredForPrompt) {
-        return YES;
-    }
-    
-    return NO;
+    return self;
 }
 
-+ (BOOL)interactedWithAppReviewPrompt
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDislikedCurrentVersion];
++ (instancetype)sharedInstance {
+    static AppRatingUtility *_sharedAppRatingUtility = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedAppRatingUtility = [self new];
+    });
+    
+    return _sharedAppRatingUtility;
 }
+
 
 + (void)initializeForVersion:(NSString *)version
 {
@@ -64,6 +68,9 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
         
         [userDefaults setObject:version forKey:AppRatingCurrentVersion];
         [userDefaults setInteger:0 forKey:AppRatingSignificantEventCount];
+        for (NSString *section in [AppRatingUtility sharedInstance].sections.allKeys) {
+            [userDefaults setInteger:0 forKey:[self significantEventCountKeyForSection:section]];
+        }
         [userDefaults setBool:NO forKey:AppRatingRatedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDeclinedToRateCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
@@ -90,6 +97,16 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     }
 }
 
++ (void)registerSection:(NSString *)section withSignificantEventCount:(NSUInteger)significantEventCount
+{
+    [[AppRatingUtility sharedInstance].sections setObject:@(significantEventCount) forKey:section];
+}
+
++ (void)unregisterAllSections
+{
+    [[AppRatingUtility sharedInstance].sections removeAllObjects];
+}
+
 + (void)incrementSignificantEvent
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -99,11 +116,20 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     [userDefaults synchronize];
 }
 
-+ (void)setNumberOfSignificantEventsRequiredForPrompt:(NSUInteger)numberOfEvents
++ (void)incrementSignificantEventForSection:(NSString *)section
 {
+    [self assertValidSection:section];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setInteger:numberOfEvents forKey:AppRatingNumberOfSignificantEventsRequiredForPrompt];
+    NSString *key = [self significantEventCountKeyForSection:section];
+    NSInteger numberOfSignificantEvents = [userDefaults integerForKey:[self significantEventCountKeyForSection:section]];
+    numberOfSignificantEvents++;
+    [userDefaults setInteger:numberOfSignificantEvents forKey:key];
     [userDefaults synchronize];
+}
+
++ (void)setSystemWideSignificantEventsCount:(NSUInteger)numberOfEvents
+{
+    [AppRatingUtility sharedInstance].systemWideSignificantEventCountRequiredForPrompt = numberOfEvents;
 }
 
 + (void)declinedToRateCurrentVersion
@@ -151,6 +177,62 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     [userDefaults synchronize];
 }
 
+
++ (BOOL)shouldPromptForAppReview
+{
+    if ([self interactedWithAppReviewPrompt]) {
+        return NO;
+    }
+    
+    NSUInteger significantEventCount = [self systemWideSignificantEventCount];
+    NSUInteger numberOfSignificantEventsRequiredForPrompt = [AppRatingUtility sharedInstance].systemWideSignificantEventCountRequiredForPrompt;
+    
+    if (significantEventCount >= numberOfSignificantEventsRequiredForPrompt) {
+        return YES;
+    }
+    
+    return NO;
+}
+
++ (NSUInteger)systemWideSignificantEventCount
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    __block NSUInteger total = [userDefaults integerForKey:AppRatingSignificantEventCount];
+    [[AppRatingUtility sharedInstance].sections.allKeys enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        NSString *section = (NSString *)obj;
+        total += [userDefaults integerForKey:[self significantEventCountKeyForSection:section]];
+    }];
+    return total;
+}
+
++ (BOOL)shouldPromptForAppReviewForSection:(NSString *)section
+{
+    [self assertValidSection:section];
+    
+    if ([self interactedWithAppReviewPrompt]) {
+        return NO;
+    }
+    
+    NSUInteger numberOfSignificantEventsForSection = [[NSUserDefaults standardUserDefaults] integerForKey:[self significantEventCountKeyForSection:section]];
+    NSUInteger requiredNumberOfSignificantEventsForSection = [[[AppRatingUtility sharedInstance].sections valueForKey:section] unsignedIntegerValue];
+    if (numberOfSignificantEventsForSection >= requiredNumberOfSignificantEventsForSection) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
++ (NSString *)significantEventCountKeyForSection:(NSString *)section
+{
+    return [NSString stringWithFormat:@"%@_%@", AppRatingSignificantEventCount, section];
+}
+
++ (BOOL)interactedWithAppReviewPrompt
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDislikedCurrentVersion];
+}
+
 + (BOOL)hasUserEverLikedApp
 {
     return [[NSUserDefaults standardUserDefaults] integerForKey:AppRatingUserLikeCount] > 0;
@@ -159,6 +241,11 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 + (BOOL)hasUserEverDislikedApp
 {
     return [[NSUserDefaults standardUserDefaults] integerForKey:AppRatingUserDislikeCount] > 0;
+}
+
++ (void)assertValidSection:(NSString *)section
+{
+    NSAssert([[AppRatingUtility sharedInstance].sections.allKeys containsObject:section], @"Invalid section");
 }
 
 @end
