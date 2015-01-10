@@ -5,7 +5,8 @@
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
-CGFloat const RowHeight = 44.0f;
+CGFloat const STVRowHeight = 44.f;
+CGFloat const STVSeparatorHeight = 1.f;
 
 @interface SuggestionsTableView ()
 
@@ -80,7 +81,7 @@ CGFloat const RowHeight = 44.0f;
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_tableView setRowHeight:RowHeight];
+    [_tableView setRowHeight:STVRowHeight];
     // Table separator insets defined to match left edge of username in cell.
     [_tableView setSeparatorInset:UIEdgeInsetsMake(0.f, 47.f, 0.f, 0.f)];
     // iOS8 added and requires the following in order for that separator inset to be used
@@ -96,6 +97,7 @@ CGFloat const RowHeight = 44.0f;
     NSDictionary *views = @{@"headerview": self.headerView,
                         @"separatorview" : self.separatorView,
                              @"tableview": self.tableView };
+    NSDictionary *metrics = @{@"separatorheight" : @(STVSeparatorHeight)};
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[headerview]|"
                                                                  options:0
                                                                  metrics:nil
@@ -112,9 +114,9 @@ CGFloat const RowHeight = 44.0f;
                                                                    views:views]];
         
     // Vertically arrange the header and table
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][separatorview(1)][tableview]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][separatorview(separatorheight)][tableview]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
 
     // Add a height constraint to the table view
@@ -166,16 +168,16 @@ CGFloat const RowHeight = 44.0f;
 - (void)updateConstraints
 {
     // Take the height of the table frame and make it so only whole results are displayed
-    NSUInteger maxRows = floor(self.frame.size.height / RowHeight);
+    NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
     
     if (maxRows < 1) {
         maxRows = 1;
     }    
     
     if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = maxRows * RowHeight;        
+        self.heightConstraint.constant = maxRows * STVRowHeight;        
     } else {
-        self.heightConstraint.constant = self.searchResults.count * RowHeight;
+        self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
     
     [super updateConstraints];
