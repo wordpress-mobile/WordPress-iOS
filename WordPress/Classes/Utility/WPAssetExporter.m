@@ -2,7 +2,7 @@
 #import "WPImageOptimizer.h"
 
 NSString * const WPAssetExportErrorDomain = @"org.wordpress.assetexporter";
-const NSInteger WPAssetExportMissingAsset = 1;
+const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
 
 @interface WPAssetExporter ()
 
