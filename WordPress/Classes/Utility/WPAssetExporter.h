@@ -2,7 +2,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 extern NSString * const WPAssetExportErrorDomain;
-extern const NSInteger WPAssetExportMissingAsset;
+extern const NSInteger WPAssetExportErrorCodeMissingAsset;
 
 /**
  WPAssetExporter handles a queue for exporting ALAsset to files.
