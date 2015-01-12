@@ -9,6 +9,7 @@
 #import "CustomHighlightButton.h"
 #import "ReaderCommentCell.h"
 #import "ReaderPost.h"
+#import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
 #import "UIAlertView+Blocks.h"
 #import "UIView+Subviews.h"
@@ -19,6 +20,7 @@
 #import "WPTableViewHandler.h"
 #import "WPToast.h"
 #import "WPWebViewController.h"
+#import "WPNoResultsView+AnimatedBox.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "WordPress-Swift.h"
@@ -794,6 +796,28 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
+    [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Comments...", @"Text displayed while loading comments.")
+                                         message:nil
+                                            view:self.view];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    __weak __typeof(self) weakSelf  = self;
+    
+    [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
+        
+        [WPNoResultsView removeFromView:weakSelf.view];
+        [weakSelf setPost:post];
+        [weakSelf refreshAndSync];
+        
+    } failure:^(NSError *error) {
+        DDLogError(@"[RestAPI] %@", error);
+        
+        [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Error Loading Comments", @"Text displayed when load comments fail.")
+                                             message:nil
+                                                view:weakSelf.view];
+        
+    }];
 }
 
 
