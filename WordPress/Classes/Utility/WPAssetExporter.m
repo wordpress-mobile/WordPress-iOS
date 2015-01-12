@@ -60,10 +60,12 @@ const NSInteger WPAssetExportMissingAsset = 1;
         NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
         if (!data && handler) {
             handler(NO, newSize, thumbnailJPEGData, nil);
+            return;
         }
         NSError *error;
         if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error] && handler) {
             handler(NO, newSize, thumbnailJPEGData, error);
+            return;
         }
         
         if (handler){
