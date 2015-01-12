@@ -1963,6 +1963,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        // If the image is from a shared photo stream it may not be available locally to be used
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This image is currently not available locally to be used in your post. Please try again later.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")];
+            return NO;
+        }
         return picker.selectedAssets.count < MaximumNumberOfPictures;
     } else {
         return YES;
