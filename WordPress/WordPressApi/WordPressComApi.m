@@ -578,12 +578,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma mark - User Details
 
-- (void)getUserDetailsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = @"me";
-    [self GET:path parameters:nil success:success failure:failure];
-}
-
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
 	[self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token]
 				  forHTTPHeaderField:@"Authorization"];

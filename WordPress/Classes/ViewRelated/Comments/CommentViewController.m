@@ -13,6 +13,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
+#import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
@@ -26,14 +27,13 @@ static NSInteger const CVCHeaderSectionIndex = 0;
 static NSInteger const CVCNumberOfRows = 1;
 static NSInteger const CVCNumberOfSections = 2;
 
-@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, SuggestionsTableViewDelegate>
+@interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
 @property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
-@property (nonatomic, strong) CommentService *commentService;
 
 @end
 
@@ -386,16 +386,24 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService toggleLikeStatusForComment:self.comment siteID:self.comment.blog.blogID success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
-    }];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService toggleLikeStatusForComment:self.comment
+                                        siteID:self.comment.blog.blogID
+                                       success:nil
+                                       failure:^(NSError *error) {
+                                           [weakSelf.tableView reloadData];
+                                       }];
 }
 
 - (void)approveComment
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService approveComment:self.comment success:nil failure:^(NSError *error) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService approveComment:self.comment success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
@@ -404,7 +412,9 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     __typeof(self) __weak weakSelf = self;
 
-    [self.commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
         [weakSelf.tableView reloadData];
     }];
 }
@@ -419,7 +429,9 @@ static NSInteger const CVCNumberOfSections = 2;
             return;
         }
 
-        [weakSelf.commentService deleteComment:weakSelf.comment success:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
 
         // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
@@ -444,7 +456,9 @@ static NSInteger const CVCNumberOfSections = 2;
             return;
         }
 
-        [weakSelf.commentService spamComment:self.comment success:nil failure:nil];
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+        [commentService spamComment:weakSelf.comment success:nil failure:nil];
     };
 
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
@@ -510,7 +524,6 @@ static NSInteger const CVCNumberOfSections = 2;
                                                     }
                                                 }
                                ];
-
                           }];
 }
 
@@ -519,8 +532,8 @@ static NSInteger const CVCNumberOfSections = 2;
 - (void)editReply
 {
     __typeof(self) __weak weakSelf = self;
-
-    EditReplyViewController *editViewController = [EditReplyViewController newEditViewController];
+    
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -562,22 +575,13 @@ static NSInteger const CVCNumberOfSections = 2;
                           }];
     };
 
-    Comment *reply = [self.commentService createReplyForComment:self.comment];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    Comment *reply = [commentService createReplyForComment:self.comment];
     reply.content = content;
-    [self.commentService uploadComment:reply success:successBlock failure:failureBlock];
+    [commentService uploadComment:reply success:successBlock failure:failureBlock];
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
-}
-
-#pragma mark - Setter/Getters
-
-- (CommentService *)commentService
-{
-    if (!_commentService) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        _commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    }
-    return _commentService;
 }
 
 #pragma mark - Keyboard Management
@@ -628,16 +632,20 @@ static NSInteger const CVCNumberOfSections = 2;
     [UIView commitAnimations];
 }
 
-#pragma mark - SuggestionsTableViewDelegate
 
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+#pragma mark - ReplyTextViewDelegate
+
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+
+#pragma mark - SuggestionsTableViewDelegate
+
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
 
@@ -660,7 +668,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+    return ([self shouldAttachReplyTextView] && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
 }
 
 // if the post is not set for the comment, we don't want to show an empty cell for the post details

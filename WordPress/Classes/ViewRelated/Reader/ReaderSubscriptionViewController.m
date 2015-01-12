@@ -37,7 +37,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 @property (nonatomic, strong) UIView *titleView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIPageControl *pageControl;
-@property (nonatomic, strong) UIPageViewController *pageViewController;
+@property (nonatomic, weak) UIPageViewController *pageViewController;
 @property (nonatomic, strong) UIBarButtonItem *cancelButton;
 @property (nonatomic, strong) UIBarButtonItem *friendButton;
 @property (nonatomic, assign) NSUInteger currentIndex;
@@ -60,7 +60,9 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 {
     self = [super init];
     if (self) {
-        [self configureControllers];
+        // While referencing self is normally something we try to avoid, these
+        // two sync method contain no self references and should be fine to call
+        // from within init.
         [self syncTopics];
         [self syncSites];
     }
@@ -71,6 +73,7 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 {
     [super viewDidLoad];
 
+    [self configureControllers];
     [self configureSearchBar];
     [self configureToolBar];
     [self.view addSubview:self.contentView];
@@ -176,9 +179,10 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 
     // Lazy load controllers.
     if ([placeholder.identifier isEqualToString:SubscribedTopicsPageIdentifier]) {
+        __weak __typeof(self) weakSelf  = self;
         SubscribedTopicsViewController *topicsViewController = [[SubscribedTopicsViewController alloc] init];
         topicsViewController.topicListChangedBlock = ^{
-            [self configureNavbar];
+            [weakSelf configureNavbar];
         };
         placeholder.controller = topicsViewController;
 
@@ -237,9 +241,10 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 
 - (void)followSite:(NSURL *)site
 {
+    __weak __typeof(self) weakSelf  = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service followSiteByURL:site success:^{
-        [self syncSites];
+        [weakSelf syncSites];
         [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
                              andImage:[UIImage imageNamed:@"action-icon-followed"]];
         [service syncPostsForFollowedSites];
@@ -326,7 +331,6 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
 - (void)configurePageViewController
 {
     [self addChildViewController:self.pageViewController];
-    [self.pageViewController willMoveToParentViewController:self];
     UIView *childView = self.pageViewController.view;
     childView.frame = self.contentView.bounds;
     childView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
