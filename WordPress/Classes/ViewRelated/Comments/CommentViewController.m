@@ -13,6 +13,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
+#import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
@@ -531,8 +532,8 @@ static NSInteger const CVCNumberOfSections = 2;
 - (void)editReply
 {
     __typeof(self) __weak weakSelf = self;
-
-    EditReplyViewController *editViewController = [EditReplyViewController newEditViewController];
+    
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -667,7 +668,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+    return ([self shouldAttachReplyTextView] && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
 }
 
 // if the post is not set for the comment, we don't want to show an empty cell for the post details
