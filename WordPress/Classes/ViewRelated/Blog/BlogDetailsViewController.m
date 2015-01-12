@@ -141,7 +141,7 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     if (IS_IPAD) {
         // Set the header width
-        float headerWidth = WPTableViewFixedWidth;
+        CGFloat headerWidth = WPTableViewFixedWidth;
         [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
                                                                   attribute:NSLayoutAttributeWidth
                                                                   relatedBy:NSLayoutRelationEqual
