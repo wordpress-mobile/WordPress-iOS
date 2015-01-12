@@ -58,18 +58,23 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
         WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
         NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
-        if (!data && handler) {
-            handler(NO, newSize, thumbnailJPEGData, nil);
+        if (!data) {
+            if (handler) {
+                handler(NO, newSize, thumbnailJPEGData, nil);
+            }
             return;
         }
         NSError *error;
-        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error] && handler) {
-            handler(NO, newSize, thumbnailJPEGData, error);
+        if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
+            if (handler){
+                handler(NO, newSize, thumbnailJPEGData, error);
+            }
             return;
         }
         
         if (handler){
             handler(YES, newSize, thumbnailJPEGData, nil);
+            return;
         }
     }];
 }
