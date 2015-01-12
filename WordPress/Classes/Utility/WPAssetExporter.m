@@ -45,7 +45,7 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
         if (handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"The media you are trying to use is not available locally at the moment. If it belongs to a photo stream please try again later.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a media that belogns to a photostream that needs to be downloaded locally first.")};
             NSError * error = [NSError errorWithDomain:WPAssetExportErrorDomain
-                                                  code:WPAssetExportMissingAsset
+                                                  code:WPAssetExportErrorCodeMissingAsset
                                               userInfo:userInfo];
             handler(NO, CGSizeZero, nil, error);
         }
