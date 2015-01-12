@@ -280,7 +280,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         returnValue = YES;
     }
 
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
@@ -572,12 +572,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    if (thenEditor) {
-        loginViewController.dismissBlock = ^{
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        };
-        loginViewController.showEditorAfterAddingSites = YES;
-    }
+    loginViewController.showEditorAfterAddingSites = thenEditor;
+    loginViewController.cancellable = NO;
+    loginViewController.dismissBlock = ^{
+        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+    };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;
@@ -614,7 +613,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor UIColorFromHex:0x007eb1]]];
 
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];

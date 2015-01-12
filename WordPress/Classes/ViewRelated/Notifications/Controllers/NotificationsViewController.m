@@ -5,9 +5,10 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewControllerSubclass.h"
+#import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
+#import "WPNoResultsView.h"
+
 #import "Notification.h"
 #import "Meta.h"
 
@@ -22,6 +23,8 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostDetailViewController.h"
+
+#import "UIView+Subviews.h"
 
 #import "AppRatingUtility.h"
 
@@ -48,11 +51,13 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
-@interface NotificationsViewController () <SPBucketDelegate, ABXPromptViewDelegate, ABXFeedbackViewControllerDelegate>
-@property (nonatomic, assign) dispatch_once_t       trackedViewDisplay;
+@interface NotificationsViewController () <SPBucketDelegate, WPTableViewHandlerDelegate, ABXPromptViewDelegate,
+                                            ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
+@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
+@property (nonatomic, strong) WPNoResultsView       *noResultsView;
+@property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) NSMutableDictionary   *cachedRowHeights;
 @property (nonatomic, strong) UINib                 *tableViewCellNib;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
 @end
@@ -65,7 +70,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)dealloc
 {
-    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
@@ -79,9 +83,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         // Watch for application badge number changes
         NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
         [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
-        
-        // Cache Row Heights!
-        self.cachedRowHeights = [NSMutableDictionary dictionary];
+
+        // Listen to Logout Notifications
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -96,11 +101,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    self.infiniteScrollEnabled = NO;
-
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
@@ -116,39 +117,48 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         self.tableView.tableFooterView = [UIView new];
     }
     
-    // NOTE:
-    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
-    // For that reason, we draw our own separators.
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    // UITableView
+    self.tableView.accessibilityIdentifier  = @"Notifications Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
+    // WPTableViewHandler
+    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights        = YES;
+    tableViewHandler.delegate               = self;
+    self.tableViewHandler                   = tableViewHandler;
+    
+    // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
+    [self.tableView reloadData];
+    
+    // UIRefreshControl
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
-    // Listen to appDidBecomeActive Note
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
+    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+    [self.tableView deselectSelectedRowWithAnimation:YES];
     
-    // Hit the Tracker
-    dispatch_once(&_trackedViewDisplay, ^{
-        [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
-    });
-
     // Refresh the UI
+    [self hookApplicationStateNotes];
+    [self trackAppearedIfNeeded];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -160,13 +170,12 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self unhookApplicationStateNotes];
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [self invalidateAllRowHeights];
+    [self.tableViewHandler clearCachedRowHeights];
 }
 
 
@@ -240,6 +249,20 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - NSNotification Helpers
 
+- (void)hookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleApplicationDidBecomeActiveNote:) name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc addObserver:self selector:@selector(handleApplicationWillResignActiveNote:) name:UIApplicationWillResignActiveNotification object:nil];
+}
+
+- (void)unhookApplicationStateNotes
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [nc removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+}
+
 - (void)handleApplicationDidBecomeActiveNote:(NSNotification *)note
 {
     // Let's reset the badge, whenever the app comes back to FG, and this view was upfront!
@@ -256,6 +279,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)handleApplicationWillResignActiveNote:(NSNotification *)note
 {
     [self stopSyncTimeoutTimer];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)note
+{
+    [self resetApplicationBadge];
 }
 
 
@@ -336,7 +364,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)updateLastSeenTime
 {
-    Notification *note      = [self.resultsController.fetchedObjects firstObject];
+    Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
     if (!note) {
         return;
     }
@@ -355,6 +383,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)showManageButtonIfNeeded
 {
     if (![NotificationsManager deviceRegisteredForPushNotifications]) {
+        return;
+    }
+    
+    // Don't overwork, please
+    if (self.navigationItem.rightBarButtonItem) {
         return;
     }
     
@@ -388,7 +421,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         return;
     }
     
-    [self.resultsController performFetch:nil];
+    [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     self.lastReloadDate = [NSDate date];
 }
@@ -396,12 +429,22 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
 {
     // Failsafe!
-    if (indexPath.section >= self.resultsController.sections.count) {
+    if (indexPath.section >= self.tableViewHandler.resultsController.sections.count) {
         return false;
     }
     
-    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
+- (void)trackAppearedIfNeeded
+{
+    if (self.trackedViewDisplay) {
+        return;
+    }
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    self.trackedViewDisplay = YES;
 }
 
 
@@ -417,7 +460,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         [[ContextManager sharedInstance] saveContext:note.managedObjectContext];
     }
     
-    // Don't push nested!
+    // Failsafe: Don't push nested!
     if (self.navigationController.visibleViewController != self) {
         [self.navigationController popToRootViewControllerAnimated:NO];
     }
@@ -427,34 +470,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     } else {
         [self performSegueWithIdentifier:NSStringFromClass([NotificationDetailsViewController class]) sender:note];
     }
-}
-
-
-#pragma mark - Row Height Cache
-
-- (void)invalidateAllRowHeights
-{
-    [self.cachedRowHeights removeAllObjects];
-}
-
-- (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
-{
-    [self.cachedRowHeights removeObjectForKey:indexPath.toString];
-}
-
-- (void)invalidateRowHeightsBelowIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *nukedPathKey = indexPath.toString;
-    NSMutableArray *invalidKeys = [NSMutableArray array];
-    
-    for (NSString *key in self.cachedRowHeights.allKeys) {
-        if ([key compare:nukedPathKey] == NSOrderedDescending) {
-            [invalidKeys addObject:key];
-        }
-    }
-    
-    [self.cachedRowHeights removeObjectForKey:nukedPathKey];
-    [self.cachedRowHeights removeObjectsForKeys:invalidKeys];
 }
 
 
@@ -472,7 +487,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    id <NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
     NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
@@ -505,40 +520,26 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-
     return NoteEstimatedHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Hit the cache first
-    NSNumber *rowCacheValue = self.cachedRowHeights[indexPath.toString];
-    if (rowCacheValue) {
-        return rowCacheValue.floatValue;
-    }
-    
     // Load the Subject + Snippet
-    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note          = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
     NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
     
     // Old School Height Calculation
     CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
     CGFloat cellHeight          = [NoteTableViewCell layoutHeightWithWidth:tableWidth subject:subject snippet:snippet];
-    
-    // Cache
-    self.cachedRowHeights[indexPath.toString] = @(cellHeight);
 
     return cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.resultsController objectAtIndexPath:indexPath];
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if (!note) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
         return;
@@ -551,7 +552,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - Storyboard Helpers
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
     NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
@@ -568,21 +569,11 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 }
 
 
-#pragma mark - WPTableViewController subclass methods
+#pragma mark - WPTableViewHandlerDelegate methods
 
-- (NSString *)entityName
+- (NSManagedObjectContext *)managedObjectContext
 {
-    return NSStringFromClass([Notification class]);
-}
-
-- (NSString *)sectionNameKeyPath
-{
-    return NSStringFromSelector(@selector(sectionIdentifier));
-}
-
-- (NSDate *)lastSyncDate
-{
-    return [NSDate date];
+    return [[ContextManager sharedInstance] mainContext];
 }
 
 - (NSFetchRequest *)fetchRequest
@@ -594,14 +585,13 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     return fetchRequest;
 }
 
-- (Class)cellClass
-{
-    return [NoteTableViewCell class];
-}
-
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
+    // Note:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    
+    Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
     cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
@@ -613,15 +603,28 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
-- (void)syncItems
+- (NSString *)sectionNameKeyPath
 {
-    // No-Op. Handled by Simperium!
+    return NSStringFromSelector(@selector(sectionIdentifier));
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction success:(void (^)())success failure:(void (^)(NSError *))failure
+- (NSString *)entityName
 {
-    // No-Op. Handled by Simperium!
-    success();
+    return NSStringFromClass([Notification class]);
+}
+
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self showNoResultsViewIfNeeded];
+}
+
+
+#pragma mark - UIRefreshControl Methods
+
+- (void)refresh
+{
+    // Yes. This is dummy. Simperium handles sync for us!
+    [self.refreshControl endRefreshing];
 }
 
 - (void)didChangeContent
@@ -639,59 +642,78 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 #pragma mark - No Results Helpers
 
+- (void)showNoResultsViewIfNeeded
+{
+    // Remove If Needed
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+    
+    // Attach the view
+    WPNoResultsView *noResultsView  = self.noResultsView;
+    if (!noResultsView.superview) {
+        [self.tableView addSubviewWithFadeAnimation:noResultsView];
+    }
+    
+    // Refresh its properties: The user may have signed into WordPress.com
+    noResultsView.titleText         = self.noResultsTitleText;
+    noResultsView.messageText       = self.noResultsMessageText;
+    noResultsView.accessoryView     = self.noResultsAccessoryView;
+    noResultsView.buttonTitle       = self.noResultsButtonText;
+}
+
+- (WPNoResultsView *)noResultsView
+{
+    if (!_noResultsView) {
+        _noResultsView          = [WPNoResultsView new];
+        _noResultsView.delegate = self;
+    }
+    return _noResultsView;
+}
+
 - (NSString *)noResultsTitleText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Connect to Jetpack", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Connect to Jetpack", @"Notifications title displayed when a self-hosted user is not connected to Jetpack");
+    NSString *emptyMessage      = NSLocalizedString(@"No notifications yet", @"Displayed when the user pulls up the notifications view and they have no items");
+    return self.showsJetpackMessage ? jetapackMessage : emptyMessage;
 }
 
 - (NSString *)noResultsMessageText
 {
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Displayed in the notifications view when a self-hosted user is not connected to Jetpack");
-    } else {
-        return nil;
-    }
-}
-
-- (NSString *)noResultsButtonText
-{
-    if (self.showJetpackConnectMessage) {
-        return NSLocalizedString(@"Learn more", @"");
-    } else {
-        return nil;
-    }
+    NSString *jetapackMessage   = NSLocalizedString(@"Jetpack supercharges your self-hosted WordPress site.", @"Notifications message displayed when a self-hosted user is not connected to Jetpack");
+    return self.showsJetpackMessage ? jetapackMessage : nil;
 }
 
 - (UIView *)noResultsAccessoryView
 {
-    if (self.showJetpackConnectMessage) {
-        return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-    } else {
-        return nil;
-    }
+    return self.showsJetpackMessage ? [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]] : nil;
+}
+ 
+- (NSString *)noResultsButtonText
+{
+    return self.showsJetpackMessage ? NSLocalizedString(@"Learn more", @"") : nil;
+}
+ 
+- (BOOL)showsJetpackMessage
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    BOOL showsJetpackMessage        = ![accountService defaultWordPressComAccount];
+    
+    return showsJetpackMessage;
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
 	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
-    
+ 
     [self.navigationController pushViewController:webViewController animated:YES];
-    
+ 
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
 
-- (BOOL)showJetpackConnectMessage
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
-    
-    return ![accountService defaultWordPressComAccount];
-}
 
 
 #pragma mark - ABXPromptViewDelegate

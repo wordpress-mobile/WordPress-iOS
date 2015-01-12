@@ -5,8 +5,14 @@
 @interface SuggestionsTableView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
+@property (nonatomic) BOOL useTransparentHeader;
 
 - (instancetype)initWithSiteID:(NSNumber *)siteID;
+
+/*
+ * Whether the SuggestionsTableView header subview should have a clear background
+ */
+- (void)setUseTransparentHeader:(BOOL)useTransparentHeader;
 
 /*
  * Show suggestions for the given word - returns YES if at least one suggestion is being shown
@@ -20,30 +26,16 @@
 @optional
 
 /*
- * Child views (e.g. UITextView) of a UIViewController can call this method on the VC to have the
- * UIViewController update the SuggestionsTableView with appropriate suggestions (if any)
-*/
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word;
-
-/*
  * If the user picks a suggestion from the SuggestionsTableView, the SuggestionsTableView
  * will call this method to have the UIViewController prompt the appropriate child
  * to replace the search term with the suggestion (e.g. at the caret)
 */
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text;
 
-@end
-
-@protocol SuggestableView
-
-@optional
-
 /*
- * Child views of a UIViewController should implement this method so the
- * view controller can prompt them to replace recently typed text with the
- * suggested text the user picked
+ * When the suggestionsTableView has completed subview layout, the SuggestionsTableView
+ * will call this method to let the UIViewController know
  */
-- (void)replaceTextAtCaret:(NSString *)text withSuggestion:(NSString *)suggestion;
+- (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didChangeTableBounds:(CGRect)bounds;
 
 @end
-

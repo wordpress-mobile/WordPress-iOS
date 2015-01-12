@@ -12,13 +12,14 @@ import Foundation
     }
 
     public var commentText: String? {
-        didSet {
-            if commentText == nil {
-                return
-            }
-
-            let style = WPStyleGuide.Notifications.blockRegularStyle
-            super.attributedCommentText = NSMutableAttributedString(string: commentText!, attributes: style)
+        set {
+            let text = newValue ?? String()
+            attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.blockRegularStyle)
+        }
+        get {
+            return attributedCommentText?.string
         }
     }
+    
+    typealias Style = WPStyleGuide.Notifications
 }
