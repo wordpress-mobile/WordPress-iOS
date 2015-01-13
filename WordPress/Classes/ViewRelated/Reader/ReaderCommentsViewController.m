@@ -99,9 +99,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableViewHandler];
     [self configureCellForLayout];
     [self configureInfiniteScroll];
-    [self configureSuggestionsTableViewIfNeeded];
-    [self configureTextReplyView];
     [self configureKeyboardGestureRecognizer];
+    [self configureSuggestionsTableViewIfNeeded];
+    [self configureReplyTextViewIfNeeded];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -146,7 +146,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         return;
     }
 
@@ -319,9 +319,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 }
 
-- (void)configureTextReplyView
+- (void)configureReplyTextViewIfNeeded
 {
-    if (!self.post.commentsOpen) {
+    if (!self.shouldAttachReplyTextView) {
+        [self.replyTextView removeFromSuperview];
+        self.replyTextView = nil;
         return;
     }
 
@@ -334,16 +336,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
-    [self configureTextReplyViewPlaceholder];
+    
+    [self configureReplyTextViewPlaceholder];
 
     [self.view addSubview:self.replyTextView];
     [self.view bringSubviewToFront:self.replyTextView];
     [self.view setNeedsUpdateConstraints];
 }
 
-- (void)configureTextReplyViewPlaceholder
+- (void)configureReplyTextViewPlaceholder
 {
-    if ([self.tableView indexPathForSelectedRow]) {
+    if (self.tableView.indexPathForSelectedRow) {
         self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
     } else {
         self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
@@ -352,7 +355,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureSuggestionsTableViewIfNeeded
 {
-    if (![self shouldAttachSuggestionsTableView]) {
+    if (!self.shouldAttachSuggestionsTableView) {
+        [self.suggestionsTableView removeFromSuperview];
+        self.suggestionsTableView = nil;
         return;
     }
 
@@ -522,9 +527,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Helpers
 
+- (BOOL)shouldAttachReplyTextView
+{
+    return !self.isLoadingPost || !self.post.commentsOpen;
+}
+
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return (self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
+    return !self.isLoadingPost && self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
 }
 
 - (NSString *)noResultsTitleText
@@ -583,6 +593,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
+
 #pragma mark - Accessor methods
 
 - (void)setPost:(ReaderPost *)post
@@ -598,7 +609,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.syncHelper.delegate = self;
     }
 
-    if([self isViewLoaded]) {
+    if (self.isViewLoaded) {
+        [self configureReplyTextViewIfNeeded];
+        [self configureSuggestionsTableViewIfNeeded];
         [self configureInfiniteScroll];
     }
 }
@@ -706,7 +719,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
-    [self configureTextReplyViewPlaceholder];
+    [self configureReplyTextViewPlaceholder];
 }
 
 - (void)sendReplyWithNewContent:(NSString *)content
@@ -715,7 +728,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     void (^successBlock)() = ^void() {
         [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-        [weakSelf configureTextReplyViewPlaceholder];
+        [weakSelf configureReplyTextViewPlaceholder];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -1000,7 +1013,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
     [self.replyTextView resignFirstResponder];
-    [self configureTextReplyViewPlaceholder];
+    [self configureReplyTextViewPlaceholder];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -1068,7 +1081,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     Comment *comment = (Comment *)contentProvider;
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self configureTextReplyViewPlaceholder];
+    [self configureReplyTextViewPlaceholder];
 }
 
 - (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
