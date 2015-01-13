@@ -667,8 +667,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel Media Uploads", "Dialog box title for when the user is cancelling an upload.")
-                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel images uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                        message:NSLocalizedString(@"You are currently uploading images. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop images uploads in the post editor.")
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
                                               otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
@@ -676,36 +676,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [alertView show];
 }
 
-- (void)showFailedMediaAlert
-{
-    if (self.failedMediaAlertView)
-        return;
-    self.failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Pending media", @"Title for alert when trying to publish a post with failed media items")
-                                                       message:NSLocalizedString(@"There are media items in this post that aren't uploaded to the server. Do you want to continue?", @"")
-                                                      delegate:self
-                                             cancelButtonTitle:NSLocalizedString(@"No", @"")
-                                             otherButtonTitles:NSLocalizedString(@"Post anyway", @""), nil];
-    self.failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMedia;
-    [self.failedMediaAlertView show];
-}
-
 - (void)showMediaUploadingAlert
 {
     //the post is using the network connection and cannot be stoped, show a message to the user
-    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
-                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
+    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading images", @"Title for alert when trying to save/exit a post before image upload process is complete.")
+                                                                  message:NSLocalizedString(@"You are currently uploading images. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the image upload process is complete.")
                                                                  delegate:nil
                                                         cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                         otherButtonTitles:nil];
     [blogIsCurrentlyBusy show];
 }
 
-- (void)showMediaFailedRemovalAlert
+- (void)showFailedMediaRemovalAlert
 {
-    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. saving this post will remove them from the post. Save anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+    UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
+                                                                              message:NSLocalizedString(@"Some images uploads failed. This action will remove all failed images from the post.\nSave anyway?", @"Confirms with the user if they save the post all images that failed to upload will be removed from it.")
                                                                              delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                                     otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
     [failedMediaAlertView show];
@@ -715,20 +702,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showFailedMediaBeforeEditAlert
 {
-    UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Failed media", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"There are media items in this post that failed to upload to the server. Do you want to remove them?", @"Asks the user if they want to remove their failed media from the post before editing the html")
+    UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
+                                                           message:NSLocalizedString(@"Some images uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all images that failed to upload will be removed from it.")
                                                           delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"No", @"")
+                                                 cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                  otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
     [failedMediaBeforeEditAlertView show];
-}
-
-- (void)cancelMediaUploads
-{
-    [self.mediaGlobalProgress cancel];
-    [self.mediaInProgress removeAllObjects];
-    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)showSettings
@@ -787,11 +767,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     if ([self isMediaUploading]) {
         [self showMediaUploadingAlert];
-        return;
-    }
-    
-    if ([self hasFailedMedia]) {
-        [self showMediaFailedRemovalAlert];
         return;
     }
     
@@ -1361,11 +1336,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 		return;
 	}
     
-    if ([self hasFailedMedia]) {
-        [self showFailedMediaAlert];
-        return;
-    }
-    
     [self stopEditing];
 	[self savePostAndDismissVC];
 }
@@ -1375,7 +1345,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
  */
 - (void)savePostAndDismissVC
 {
-	[self savePost];
+    if ([self hasFailedMedia]) {
+        [self showFailedMediaRemovalAlert];
+        return;
+    }
+    [self savePost];
     [self dismissEditView];
 }
 
@@ -1542,6 +1516,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
 }
 
+- (void)cancelMediaUploads
+{
+    [self.mediaGlobalProgress cancel];
+    NSMutableArray * keys = [NSMutableArray array];
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+        if (progress.isCancelled){
+            [self.editorView removeImage:key];
+            [keys addObject:key];
+        }
+    }];
+    [self.mediaInProgress removeObjectsForKeys:keys];
+    [self autosaveContent];
+    [self refreshNavigationBarButtons:NO];
+}
+
 - (void)cancelUploadOfMediaWithId:(NSString *)uniqueMediaId
 {
     NSProgress * progress = self.mediaInProgress[uniqueMediaId];
@@ -1553,10 +1542,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)removeAllFailedMedia
 {
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * obj, BOOL *stop) {
-        [self.editorView removeImage:key];
+    NSMutableArray * keys = [NSMutableArray array];
+    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+        if (progress.totalUnitCount == 0){
+            [self.editorView removeImage:key];
+            [keys addObject:key];
+        }
     }];
-    [self.mediaInProgress removeAllObjects];
+    [self.mediaInProgress removeObjectsForKeys:keys];
+    [self autosaveContent];
 }
 
 - (void)stopTrackingProgressOfMediaWithId:(NSString *)uniqueMediaId
@@ -1690,6 +1684,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                         [strongSelf.editorView removeImage:imageUniqueId];
+                        [strongSelf autosaveContent];
                         [media remove];
                     } else {
                         [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
@@ -1826,10 +1821,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         case (EditPostViewControllerAlertTagFailedMediaBeforeSave): {
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self removeAllFailedMedia];
-                [self stopEditing];
                 [self savePostAndDismissVC];
             }
-        }
+        } break;
     }
     
     return;
@@ -1889,8 +1883,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    [self stopEditing];
-    
     if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
         self.post.status = @"draft";
     }
@@ -2016,6 +2008,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+        // If the image is from a shared photo stream it may not be available locally to be used
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This image is currently not available locally to be used in your post. Please try again later.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")];
+            return NO;
+        }
         return picker.selectedAssets.count < MaximumNumberOfPictures;
     } else {
         return YES;
