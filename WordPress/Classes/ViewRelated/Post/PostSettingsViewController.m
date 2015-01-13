@@ -890,10 +890,10 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 - (void)showFeaturedImageSelector
 {
-    if (self.post.post_thumbnail) {
+    if (self.apost.post_thumbnail) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
-            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.post];
+            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
             [self.navigationController pushViewController:featuredImageVC animated:YES];
         }
     } else {
@@ -1073,7 +1073,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
         weakSelf.featuredImageProgress = convertingProgress;
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
             weakSelf.featuredImageProgress.completedUnitCount++;
             if (error) {
                 DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
