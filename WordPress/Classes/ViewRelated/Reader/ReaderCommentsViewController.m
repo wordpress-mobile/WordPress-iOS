@@ -51,7 +51,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) ReplyTextView *replyTextView;
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
-@property (nonatomic, strong) UIView *postHeader;
+@property (nonatomic, strong) UIView *postHeaderWrapper;
+@property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
@@ -89,8 +90,20 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super viewDidLoad];
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
-
-    [self configureUserInterface];
+    
+    [self configureNavbar];
+    [self configurePostHeader];
+    [self configureTableView];
+    [self configureTableViewHandler];
+    [self configureCellForLayout];
+    [self configureInfiniteScroll];
+    [self configureSuggestionsTableViewIfNeeded];
+    [self configureTextReplyView];
+    [self configureConstraints];
+    [self configureKeyboardGestureRecognizer];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
     [self refreshAndSync];
 }
 
@@ -198,22 +211,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Configuration
 
-- (void)configureUserInterface
-{
-    [self configureNavbar];
-    [self configurePostHeader];
-    [self configureTableView];
-    [self configureTableViewHandler];
-    [self configureCellForLayout];
-    [self configureInfiniteScroll];
-    [self configureSuggestionsTableViewIfNeeded];
-    [self configureTextReplyView];
-    [self configureConstraints];
-    [self configureKeyboardGestureRecognizer];
-    
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-}
-
 - (void)configureNavbar
 {
     // Don't show 'Reader' in the next-view back button
@@ -274,8 +271,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                           metrics:metrics
                                                                             views:views]];
 
-    self.postHeader = headerWrapper;;
-    [self.view addSubview:self.postHeader];
+    self.postHeaderView = headerView;
+    self.postHeaderWrapper = headerWrapper;;
+    [self.view addSubview:self.postHeaderWrapper];
 }
 
 - (void)configureTableView
@@ -400,12 +398,12 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configureConstraints
 {
     NSMutableDictionary *views = [@{@"tableView": self.tableView,
-                                    @"postHeader": self.postHeader,
+                                    @"postHeader": self.postHeaderWrapper,
                                     @"mainView": self.view} mutableCopy];
 
     NSDictionary *metrics = @{@"WPTableViewWidth": @(WPTableViewFixedWidth), @"headerHeight":@(PostHeaderHeight)};
 
-    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postHeader
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postHeaderWrapper
                                                           attribute:NSLayoutAttributeCenterX
                                                           relatedBy:NSLayoutRelationEqual
                                                              toItem:self.view
@@ -597,7 +595,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)isLoadingPost
 {
-    return self.post != nil;
+    return self.post == nil;
 }
 
 
