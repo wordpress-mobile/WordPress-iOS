@@ -169,7 +169,9 @@
                                                              withTemplate:@""];
 
     // reduce double dashes potentially added above
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
+    while ([topicName rangeOfString:@"--"].location != NSNotFound) {
+        topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
+    }
 
     return topicName;
 }
