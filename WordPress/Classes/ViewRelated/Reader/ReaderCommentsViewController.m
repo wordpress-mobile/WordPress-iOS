@@ -407,6 +407,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (NSArray *)constraintsForView
 {
+    BOOL showsReplyTextView = self.replyTextView != nil;
+    BOOL showsSuggestionsTableView = self.suggestionsTableView != nil;
+    
     NSMutableArray *constraints = [NSMutableArray array];
     NSMutableDictionary *views = [NSMutableDictionary dictionary];
 
@@ -421,7 +424,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         @"headerHeight"     : @(PostHeaderHeight)
     };
     
-    // PostHeader + TableView Constraints
+    // PostHeader Constraints
     [constraints addObject:[NSLayoutConstraint constraintWithItem:self.postHeaderWrapper
                                                         attribute:NSLayoutAttributeCenterX
                                                         relatedBy:NSLayoutRelationEqual
@@ -441,8 +444,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                                  metrics:metrics
                                                                                    views:views]];
     }
-
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView]"
+    
+    // TableView Contraints
+    NSString *verticalConstraints = @"V:|[postHeader(headerHeight)][tableView]";
+    if (!showsReplyTextView) {
+        verticalConstraints = @"V:|[postHeader(headerHeight)][tableView]|";
+    }
+    
+    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:verticalConstraints
                                                                              options:0
                                                                              metrics:metrics
                                                                                views:views]];
@@ -452,11 +461,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                              metrics:nil
                                                                                views:views]];
 
-    // ReplyTextView Constraints
-    if (!self.replyTextView) {
+    if (!showsReplyTextView) {
         return constraints;
     }
-    
+
+    // ReplyTextView Constraints
     [constraints addObject:[NSLayoutConstraint constraintWithItem:self.replyTextView
                                                         attribute:NSLayoutAttributeCenterX
                                                         relatedBy:NSLayoutRelationEqual
@@ -484,7 +493,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
-    if (!self.suggestionsTableView) {
+    if (!showsSuggestionsTableView) {
         return constraints;
     }
     
