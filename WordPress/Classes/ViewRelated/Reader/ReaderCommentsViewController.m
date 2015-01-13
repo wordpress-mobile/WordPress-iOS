@@ -370,11 +370,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
 }
 
-- (BOOL)shouldAttachSuggestionsTableView
-{
-    return (self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
-}
-
 - (void)configureNoResultsView
 {
     if (!self.isViewLoaded) {
@@ -385,7 +380,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.noResultsView = [[WPNoResultsView alloc] init];
     }
 
-    if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
+    if (self.tableViewHandler.resultsController.fetchedObjects.count > 0) {
         [self.noResultsView removeFromSuperview];
         return;
     }
@@ -393,24 +388,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     // Refresh the NoResultsView Properties
     self.noResultsView.titleText = self.noResultsTitleText;
 
-    // Only add and animate no results view if it isn't already
-    // in the table view
-    if (![self.noResultsView isDescendantOfView:self.tableView]) {
-        [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+    // Only add and animate no results view if it isn't already in the table view
+    if (![self.noResultsView isDescendantOfView:self.view]) {
+        [self.view addSubviewWithFadeAnimation:self.noResultsView];
     } else {
         [self.noResultsView centerInSuperview];
     }
 
-    [self.tableView sendSubviewToBack:self.noResultsView];
-}
-
-- (NSString *)noResultsTitleText
-{
-    if (self.syncHelper.isSyncing) {
-        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
-    }
-
-    return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    [self.view bringSubviewToFront:self.noResultsView];
 }
 
 - (void)configureConstraints
@@ -504,6 +489,23 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                                 views:views]];
         }
     }
+}
+
+
+#pragma mark - Helpers
+
+- (BOOL)shouldAttachSuggestionsTableView
+{
+    return (self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
+}
+
+- (NSString *)noResultsTitleText
+{
+    if (self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    }
+    
+    return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
 - (void)updateCellForLayoutWidthConstraint:(CGFloat)width
