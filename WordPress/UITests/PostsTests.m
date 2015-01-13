@@ -270,9 +270,13 @@
             [tester tapViewWithAccessibilityLabel:@"Set Featured Image"];
             [tester waitForTimeInterval:2];
             
-            [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
+            if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Camera Roll" error:nil]){
+                [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
+            } else {
+                [tester tapViewWithAccessibilityLabel:@"Saved Photos"];
+            }
             
-            [tester waitForTimeInterval:5];
+            [tester waitForTimeInterval:1];
             
             [tester tapViewWithAccessibilityLabelStartingWith:@"Photo, "];
             
