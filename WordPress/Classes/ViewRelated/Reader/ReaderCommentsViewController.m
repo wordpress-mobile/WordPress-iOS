@@ -809,27 +809,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-    [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Comments...", @"Text displayed while loading comments.")
-                                         message:nil
-                                            view:self.view];
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf  = self;
     
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
-        
-        [WPNoResultsView removeFromView:weakSelf.view];
+
         [weakSelf setPost:post];
         [weakSelf refreshAndSync];
         
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
-        
-        [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Error Loading Comments", @"Text displayed when load comments fail.")
-                                             message:nil
-                                                view:weakSelf.view];
-        
     }];
 }
 
