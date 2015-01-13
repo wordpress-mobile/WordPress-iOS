@@ -364,7 +364,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return (self.post.commentsOpen && self.post.isWPCom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
+    return (self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
 }
 
 - (void)configureNoResultsView
