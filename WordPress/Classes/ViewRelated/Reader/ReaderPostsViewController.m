@@ -534,6 +534,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else {
+        [cell.postView setFeaturedImage:nil];
         [self.featuredImageSource fetchImageForURL:imageURL
                                           withSize:[self sizeForFeaturedImage]
                                          indexPath:indexPath
