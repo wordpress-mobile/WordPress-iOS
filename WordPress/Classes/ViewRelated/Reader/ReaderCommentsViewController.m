@@ -453,7 +453,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                                views:views]];
 
     // ReplyTextView Constraints
-    if (self.post.commentsOpen == NO) {
+    if (!self.replyTextView) {
         return constraints;
     }
     
@@ -484,7 +484,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
-    if (self.shouldAttachSuggestionsTableView == NO) {
+    if (!self.suggestionsTableView) {
         return constraints;
     }
     
@@ -517,7 +517,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)shouldAttachReplyTextView
 {
-    return !self.isLoadingPost || !self.post.commentsOpen;
+    return !self.isLoadingPost && self.post.commentsOpen;
 }
 
 - (BOOL)shouldAttachSuggestionsTableView
@@ -635,9 +635,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
-    [self refreshPostView];
     [self.tableView reloadData];
     [self.syncHelper syncContent];
+    
+    [self refreshPostView];
     [self configureNoResultsView];
 }
 
