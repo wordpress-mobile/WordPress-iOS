@@ -270,13 +270,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    // Proceed only if needed!
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
 
-    if (!shouldAddSuggestionView) {
+    if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
     
@@ -974,7 +969,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:self.note.metaSiteID];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
