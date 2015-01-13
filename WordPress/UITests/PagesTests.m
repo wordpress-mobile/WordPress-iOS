@@ -68,17 +68,25 @@
     [tester tapViewWithAccessibilityLabel:@"New Page"];
     [tester waitForTimeInterval:2];
     
-    [tester enterText:@"KIF Test Page" intoViewWithAccessibilityLabel:@"Title"];
-    [tester waitForTimeInterval:2];
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Title" error:nil]) {
+        [tester enterText:@"KIF Test Page" intoViewWithAccessibilityLabel:@"Title"];
+        [tester waitForTimeInterval:2];
+        [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
+        [tester enterTextIntoCurrentFirstResponder:@"KIF Test Page Content" ];
+        [tester waitForTimeInterval:2];
+        
+        [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
+
+    } else {
+        [tester enterTextIntoCurrentFirstResponder:@"KIF Test Page\t"];
+        [tester waitForTimeInterval:2];
+    }
     
-    [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
-    
-    [tester enterTextIntoCurrentFirstResponder:@"KIF Test Page Content" ];
-    [tester waitForTimeInterval:2];
-    
-    [[[[UIApplication sharedApplication] keyWindow] firstResponder] resignFirstResponder];
-    
-    [tester tapViewWithAccessibilityLabel:@"Publish"];
+    if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Publish" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Publish"];
+    } else {
+        [tester tapViewWithAccessibilityLabel:@"Post"];
+    }
     [tester waitForTimeInterval:2];
 }
 
