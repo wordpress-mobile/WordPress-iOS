@@ -379,7 +379,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.noResultsView = [[WPNoResultsView alloc] init];
     }
 
-    if (self.tableViewHandler.resultsController.fetchedObjects.count > 0) {
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
         [self.noResultsView removeFromSuperview];
         return;
     }
@@ -500,7 +500,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (NSString *)noResultsTitleText
 {
-    if (self.syncHelper.isSyncing) {
+    // Let's just display the same message, for consistency's sake
+    if (self.isLoadingPost || self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
     
@@ -592,6 +593,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (BOOL)canComment
 {
     return self.post.commentsOpen;
+}
+
+- (BOOL)isLoadingPost
+{
+    return self.post != nil;
 }
 
 
