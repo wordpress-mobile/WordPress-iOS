@@ -732,9 +732,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [cell preventPendingMediaLayout:YES];
         cell.delegate = self;
         [self.mediaCellCache setObject:cell forKey:[comment.commentID stringValue]];
-        [self configureCell:cell atIndexPath:indexPath];
     }
-
+    [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
 
