@@ -1111,13 +1111,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
-    if ([self.suggestionsTableView showSuggestionsForWord:word]) {
-        // we're showing suggestions, so allow them to tap on one
-        self.tapOffKeyboardGesture.enabled = NO;
-    } else {
-        // we're not showing any suggestions, enable tap off detection
-        self.tapOffKeyboardGesture.enabled = YES;
-    }
+    // Disable the gestures recognizer when showing suggestions
+    BOOL showsSuggestions = [self.suggestionsTableView showSuggestionsForWord:word];
+    self.tapOffKeyboardGesture.enabled = !showsSuggestions;
 }
 
 @end
