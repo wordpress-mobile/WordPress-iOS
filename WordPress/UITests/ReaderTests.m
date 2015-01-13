@@ -27,6 +27,13 @@
 {
     [tester tapViewWithAccessibilityLabel:@"Reader"];
     [tester waitForTimeInterval:5];
+    
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Blogs I Follow"];
+    [tester waitForTimeInterval:5];
+    
 }
 
 
