@@ -226,6 +226,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     return _layoutCellMap;
 }
 
+- (BOOL)isLayoutCell:(UITableViewCell *)cell
+{
+    return [self.layoutCellMap.allValues containsObject:cell];
+}
 
 #pragma mark - Reply View Helpers
 
@@ -576,6 +580,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.name                           = gravatarBlock.text;
     cell.snippet                        = snippetBlock.text;
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+    
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -602,6 +610,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [weakSelf unfollowSiteWithBlock:userBlock];
     };
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -683,6 +695,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         }
     };
 
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -694,6 +710,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationMedia *media        = imageBlock.media.firstObject;
     cell.isBadge                    = media.isBadge;
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadImageWithURL:media.mediaURL];
 }
 
