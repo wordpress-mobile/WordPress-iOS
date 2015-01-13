@@ -94,7 +94,7 @@
     [tester swipeViewWithAccessibilityIdentifier:@"PostCell" inDirection:KIFSwipeDirectionLeft];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Trash"];
+    [tester tapViewWithAccessibilityLabelStartingWith:@"Trash"];
     [tester waitForTimeInterval:2];
 }
 
