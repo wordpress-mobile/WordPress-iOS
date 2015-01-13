@@ -338,6 +338,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self.view addSubview:self.replyTextView];
     [self.view bringSubviewToFront:self.replyTextView];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)configureTextReplyViewPlaceholder
@@ -358,7 +359,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.post.siteID];
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [self.view addSubview:self.suggestionsTableView];        
+    [self.view addSubview:self.suggestionsTableView];
+    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)configureKeyboardGestureRecognizer
