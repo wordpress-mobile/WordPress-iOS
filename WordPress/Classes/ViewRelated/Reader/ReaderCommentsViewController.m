@@ -53,9 +53,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) UIView *postHeader;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
-@property (nonatomic) UIDeviceOrientation previousOrientation;
-@property (nonatomic) NSIndexPath *indexPathForCommentRepliedTo;
-
+@property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
+@property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @end
 
 
