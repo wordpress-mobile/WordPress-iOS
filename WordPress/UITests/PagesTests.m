@@ -234,12 +234,15 @@
             [tester tapViewWithAccessibilityLabel:@"Set Featured Image"];
             [tester waitForTimeInterval:2];
             
-            [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
-            
-            [tester waitForTimeInterval:5];
+            if ([tester tryFindingTappableViewWithAccessibilityLabel:@"Camera Roll" error:nil]){
+                [tester tapViewWithAccessibilityLabel:@"Camera Roll"];
+            } else {
+                [tester tapViewWithAccessibilityLabel:@"Saved Photos"];
+            }
+            [tester waitForTimeInterval:2];
             
             [tester tapViewWithAccessibilityLabelStartingWith:@"Photo, "];
-            
+            //Wait for upload to happen.
             [tester waitForTimeInterval:15];
             
             [tester tapViewWithAccessibilityLabel:@"Back"];
