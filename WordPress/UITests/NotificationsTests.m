@@ -18,10 +18,17 @@
     [tester tapViewWithAccessibilityLabel:@"Reader"];
     [tester waitForTimeInterval:5];
     
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Blogs I Follow"];
+    [tester waitForTimeInterval:5];
+    
     [tester tapViewWithAccessibilityLabel:@"Comment"];
     [tester waitForTimeInterval:2];
     
-    [tester enterText:[NSString stringWithFormat:@"Interesting %ld", random()] intoViewWithAccessibilityIdentifier:@"ReplyText"];
+    
+    [tester enterText:[NSString stringWithFormat:@"Interesting %@",[NSDate date]] intoViewWithAccessibilityIdentifier:@"ReplyText"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"REPLY"];
