@@ -94,6 +94,10 @@
 
     [tester tapViewWithAccessibilityLabel:@"Follow"];
     [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Following"];
+    [tester waitForTimeInterval:2];
+
 }
 
 - (void) testViewAlternateFeeds {
