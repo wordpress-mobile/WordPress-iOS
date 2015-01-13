@@ -89,24 +89,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [super viewDidLoad];
 
-    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
-    self.tapOffKeyboardGesture.enabled = NO;    
-    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-
     self.mediaCellCache = [NSMutableDictionary dictionary];
 
-    [self configureNavbar];
-    [self configurePostHeader];
-    [self configureTableView];
-    [self configureTableViewHandler];
-    [self configureCellForLayout];
-    [self configureInfiniteScroll];
-    [self configureSuggestionsTableViewIfNeeded];
-    [self configureTextReplyView];
-    [self configureConstraints];
-
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
+    [self configureUserInterface];
     [self refreshAndSync];
 }
 
@@ -213,6 +198,22 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 
 #pragma mark - Configuration
+
+- (void)configureUserInterface
+{
+    [self configureNavbar];
+    [self configurePostHeader];
+    [self configureTableView];
+    [self configureTableViewHandler];
+    [self configureCellForLayout];
+    [self configureInfiniteScroll];
+    [self configureSuggestionsTableViewIfNeeded];
+    [self configureTextReplyView];
+    [self configureConstraints];
+    [self configureKeyboardGestureRecognizer];
+    
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
 
 - (void)configureNavbar
 {
@@ -362,6 +363,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.view addSubview:self.suggestionsTableView];        
 }
 
+- (void)configureKeyboardGestureRecognizer
+{
+    self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
+    self.tapOffKeyboardGesture.enabled = NO;
+    [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
+}
+
 - (BOOL)shouldAttachSuggestionsTableView
 {
     return (self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID]);
@@ -420,7 +428,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                           attribute:NSLayoutAttributeCenterX
                                                          multiplier:1.0
                                                            constant:0.0]];
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
                                                                           options:0
                                                                           metrics:metrics
