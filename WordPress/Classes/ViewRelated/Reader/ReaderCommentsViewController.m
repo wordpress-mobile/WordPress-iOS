@@ -233,20 +233,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.backgroundColor = [UIColor whiteColor];
-    [headerView setTitle:[self.post titleForDisplay]];
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
     [headerWrapper addSubview:headerView];
-
-    // Fetch the avatar
-    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
-    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [headerView setAvatarImage:image];
-    } else {
-        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            [headerView setAvatarImage:image];
-        }];
-    }
 
     // Border
     CGSize borderSize = CGSizeMake(CGRectGetWidth(self.view.bounds), 1.0);
@@ -647,12 +635,33 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
-    // Refresh incase the post needed to be fetched.
+    [self refreshPostView];
     [self.tableView reloadData];
-
     [self.syncHelper syncContent];
-
     [self configureNoResultsView];
+}
+
+- (void)refreshPostView
+{
+    NSParameterAssert(self.postHeaderView);
+    NSParameterAssert(self.postHeaderWrapper);
+    
+    self.postHeaderWrapper.hidden = self.isLoadingPost;
+    if (self.isLoadingPost) {
+        return;
+    }
+
+    [self.postHeaderView setTitle:self.post.titleForDisplay];
+    
+    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [self.postHeaderView setAvatarImage:image];
+    } else {
+        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            [self.postHeaderView setAvatarImage:image];
+        }];
+    }
 }
 
 
