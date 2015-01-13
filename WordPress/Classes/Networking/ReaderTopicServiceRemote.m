@@ -126,6 +126,7 @@
  Formats the specified string for use as part of the URL path for the tags endpoints
  in the REST API. Spaces and periods are converted to dashes, ampersands and hashes are
  removed.
+ See https://github.com/WordPress/WordPress/blob/master/wp-includes/formatting.php#L1258
 
  @param topicName The string to be formatted.
  @return The formatted string.
@@ -135,17 +136,40 @@
     if (!topicName || [topicName length] == 0) {
         return @"";
     }
+
+    static NSRegularExpression *regexHtmlEntities;
+    static NSRegularExpression *regexPeriodsWhitespace;
+    static NSRegularExpression *regexNonAlphaNumNonDash;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexHtmlEntities = [NSRegularExpression regularExpressionWithPattern:@"&[^\\s]*;" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPeriodsWhitespace = [NSRegularExpression regularExpressionWithPattern:@"[\\.\\s]+" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexNonAlphaNumNonDash = [NSRegularExpression regularExpressionWithPattern:@"[^A-Za-z0-9\\-]" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
     topicName = [[topicName lowercaseString] trim];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"&" withString:@""];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"." withString:@"-"];
 
-    while ([topicName rangeOfString:@"--"].location != NSNotFound) {
-        topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
-    }
+    // remove html entities
+    topicName = [regexHtmlEntities stringByReplacingMatchesInString:topicName
+                                                            options:NSMatchingReportProgress
+                                                              range:NSMakeRange(0, [topicName length])
+                                                       withTemplate:@""];
 
-    topicName = [topicName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+    // replace periods and whitespace with a dash
+    topicName = [regexPeriodsWhitespace stringByReplacingMatchesInString:topicName
+                                                                 options:NSMatchingReportProgress
+                                                                   range:NSMakeRange(0, [topicName length])
+                                                            withTemplate:@"-"];
+
+    // remove remaining non-alphanum/non-dash chars
+    topicName = [regexNonAlphaNumNonDash stringByReplacingMatchesInString:topicName
+                                                                  options:NSMatchingReportProgress
+                                                                    range:NSMakeRange(0, [topicName length])
+                                                             withTemplate:@""];
+
+    // reduce double dashes potentially added above
+    topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
 
     return topicName;
 }
