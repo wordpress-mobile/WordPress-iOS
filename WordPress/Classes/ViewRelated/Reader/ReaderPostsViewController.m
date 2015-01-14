@@ -440,7 +440,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)updateTitle
 {
     if (self.currentTopic) {
-        self.title = [self.currentTopic.title capitalizedString];
+        self.title = self.currentTopic.title;
     } else {
         self.title = NSLocalizedString(@"Reader", @"Default title for the reader before topics are loaded the first time.");
     }
