@@ -6,6 +6,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
 
 @interface ReaderPostHeaderView()
 
+@property (nonatomic, strong) UITapGestureRecognizer *tapsRegoznier;
 @property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UILabel *subtitleLabel;
@@ -18,15 +19,18 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _avatarImageView = [self imageViewForAvatar];
+        _avatarImageView = [self newImageViewForAvatar];
         [self addSubview:_avatarImageView];
 
-        _titleLabel = [self labelForTitle];
+        _titleLabel = [self newLabelForTitle];
         [self addSubview:_titleLabel];
 
-        _subtitleLabel = [self labelForSubtitle];
+        _subtitleLabel = [self newLabelForSubtitle];
         [self addSubview:_subtitleLabel];
 
+        _tapsRegoznier = [self newTapGestureRecognizer];
+        [self addGestureRecognizer:_tapsRegoznier];
+        
         [self configureConstraints];
     }
     return self;
@@ -87,7 +91,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
 
 #pragma mark - Subview factories
 
-- (UILabel *)labelForTitle
+- (UILabel *)newLabelForTitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -101,7 +105,7 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     return label;
 }
 
-- (UILabel *)labelForSubtitle
+- (UILabel *)newLabelForSubtitle
 {
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
     label.translatesAutoresizingMaskIntoConstraints = NO;
@@ -115,12 +119,30 @@ const CGFloat PostHeaderViewLabelHeight = 18.0;
     return label;
 }
 
-- (CircularImageView *)imageViewForAvatar
+- (CircularImageView *)newImageViewForAvatar
 {
     CGRect avatarFrame = CGRectMake(0.0f, 0.0f, PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
     CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
+}
+
+- (UITapGestureRecognizer *)newTapGestureRecognizer
+{
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped:)];
+    tapGesture.numberOfTouchesRequired = 1;
+    tapGesture.numberOfTapsRequired = 1;
+    return tapGesture;
+}
+
+
+#pragma mark - Recognizer Helpers
+
+- (void)handleViewTapped:(UITapGestureRecognizer *)recognizer
+{
+    if (self.onClick) {
+        self.onClick();
+    }
 }
 
 @end
