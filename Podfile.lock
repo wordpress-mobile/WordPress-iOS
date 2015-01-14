@@ -80,6 +80,7 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
+  - NewRelicAgent (4.155)
   - NSLogger (1.5.1):
     - NSLogger/Standard (= 1.5.1)
   - NSLogger-CocoaLumberjack-connector (1.3):
@@ -88,10 +89,10 @@ PODS:
   - NSLogger/Standard (1.5.1)
   - NSObject-SafeExpectations (0.0.2)
   - NSURL+IDN (0.3)
-  - OCMock (3.1.1)
+  - OCMock (3.1.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.7.5):
+  - Simperium (0.7.6):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -136,19 +137,20 @@ DEPENDENCIES:
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.5.4)
   - MRProgress (~> 0.7.0)
+  - NewRelicAgent (~> 4.152)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.7.5)
+  - Simperium (= 0.7.6)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `8803e99cc9b38ee0e465928d05179aa7cde1ca99`)
-  - WordPress-iOS-Shared (~> 0.1.6)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `378e71c96bfa9d078a2658b6a5b9475966654351`)
+  - WordPress-iOS-Shared (= 0.1.6)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.1`)
   - WordPressCom-Analytics-iOS (= 0.0.13)
   - WordPressCom-Stats-iOS (= 0.1.6)
@@ -173,7 +175,7 @@ EXTERNAL SOURCES:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 8803e99cc9b38ee0e465928d05179aa7cde1ca99
+    :commit: 378e71c96bfa9d078a2658b6a5b9475966654351
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -196,7 +198,7 @@ CHECKOUT OPTIONS:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 8803e99cc9b38ee0e465928d05179aa7cde1ca99
+    :commit: 378e71c96bfa9d078a2658b6a5b9475966654351
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
@@ -221,14 +223,15 @@ SPEC CHECKSUMS:
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
+  NewRelicAgent: 4b148cc1ded2ed52a567ae64f78d658a16f1ed63
   NSLogger: 7421a0a60df62fb8ff548cd0388c302d3329a322
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
   NSURL+IDN: acf82a7fa47a8e2c8b644778e3efe7a56bd66aa8
-  OCMock: f6cb8c162ab9d5620dddf411282c7b2c0ee78854
+  OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: 35c273129692d06fe0c3d384e4619ae7a96b9236
+  Simperium: 872853054cc283d4dbd7f93d223050b5015f6f71
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2

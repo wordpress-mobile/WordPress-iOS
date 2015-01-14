@@ -323,7 +323,7 @@ class ContextManagerTests: XCTestCase {
         let directoryUrl = storeURL.URLByDeletingLastPathComponent
         let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
         for file in files {
-            let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent, options: nil, range: nil, locale: nil)
+            let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent!, options: nil, range: nil, locale: nil)
             if range?.startIndex != range?.endIndex {
                 fileManager.removeItemAtURL(file, error: nil)
             }
