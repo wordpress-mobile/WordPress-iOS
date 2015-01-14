@@ -30,6 +30,11 @@
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:5];
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester waitForTimeInterval:2];
+    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Pages"];
     [tester waitForTimeInterval:10];
 
@@ -126,8 +131,18 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Update"];
+// new editor
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Cancel" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Cancel"];
+        [tester waitForTimeInterval:2];
+    } else if ([tester tryFindingViewWithAccessibilityLabel:@"Close" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Close"];
+        [tester waitForTimeInterval:2];
+    }
+    
+    [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
+
 }
 
 - (void) testSetStatus {
