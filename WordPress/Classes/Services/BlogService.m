@@ -217,6 +217,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
+    if ([self shouldBatchRequestsForBlog:blog]) {
+        [self batchSyncBlog:blog];
+        return;
+    }
+
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
         DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
@@ -242,6 +247,60 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:nil failure:nil];
         [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:nil failure:nil];
     }
+}
+
+- (void)batchSyncBlog:(Blog *)blog
+{
+    __weak __typeof(self) weakSelf = self;
+
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
+    [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:^{
+
+        [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
+
+            id<BlogServiceRemote> remote = [weakSelf remoteForBlog:blog];
+            [remote syncOptionsForBlog:blog success:[weakSelf optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+                DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+            }];
+            [remote syncPostFormatsForBlog:blog success:[weakSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+                DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+            }];
+
+            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:weakSelf.managedObjectContext];
+            // Right now, none of the callers care about the results of the sync
+            // We're ignoring the callbacks here but this needs refactoring
+            [commentService syncCommentsForBlog:blog success:nil failure:nil];
+
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:weakSelf.managedObjectContext];
+            [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
+
+        } failure:nil];
+
+    } failure:nil];
+
+}
+
+// Batch requests to sites using basic http auth to avoid auth failures in certain cases.
+// See: https://github.com/wordpress-mobile/WordPress-iOS/issues/3016
+- (BOOL)shouldBatchRequestsForBlog:(Blog *)blog
+{
+    if (blog.account.isWpcom || blog.jetpackAccount) {
+        return NO;
+    }
+
+    __block BOOL batch = NO;
+    NSURL *url = [NSURL URLWithString:blog.url];
+    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+            DDLogVerbose(@"Removing credential %@ for %@", [credential user], [ps host]);
+            if ([[ps host] isEqualToString:[url host]]) {
+                batch = YES;
+                stop = YES;
+            }
+        }];
+    }];
+    return batch;
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
