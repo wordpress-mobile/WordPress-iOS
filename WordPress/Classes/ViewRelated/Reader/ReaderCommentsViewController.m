@@ -11,6 +11,7 @@
 #import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostHeaderView.h"
+#import "ReaderPostDetailViewController.h"
 #import "UIAlertView+Blocks.h"
 #import "UIView+Subviews.h"
 #import "WPAvatarSource.h"
@@ -223,6 +224,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configurePostHeader
 {
+    __typeof(self) __weak weakSelf = self;
+    
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
@@ -231,6 +234,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     // Post header view
     ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
+    headerView.onClick = ^{
+        [weakSelf handleHeaderTapped];
+    };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.backgroundColor = [UIColor whiteColor];
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
@@ -1163,6 +1169,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
+
+
+#pragma mark - PostHeaderView helpers
+
+- (void)handleHeaderTapped
+{
+    ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
+    [self.navigationController pushViewController:detailsViewController animated:YES];
+}
+
 
 #pragma mark - UITextViewDelegate methods
 
