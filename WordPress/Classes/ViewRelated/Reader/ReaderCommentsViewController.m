@@ -99,11 +99,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureCellForLayout];
-    [self configureInfiniteScroll];
     [self configureKeyboardGestureRecognizer];
-    [self configureSuggestionsTableViewIfNeeded];
-    [self configureReplyTextViewIfNeeded];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self refreshAndSync];
@@ -239,6 +236,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
     headerView.translatesAutoresizingMaskIntoConstraints = NO;
     headerView.backgroundColor = [UIColor whiteColor];
+    headerView.showsDisclosureIndicator = self.allowsPushingPostDetails;
     [headerView setSubtitle:NSLocalizedString(@"Comments on", @"Sentence fragment. The full phrase is 'Comments on' followed by the title of a post on a separate line.")];
     [headerWrapper addSubview:headerView];
 
@@ -269,6 +267,29 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.postHeaderView = headerView;
     self.postHeaderWrapper = headerWrapper;;
     [self.view addSubview:self.postHeaderWrapper];
+}
+
+- (void)configurePostHeaderDetails
+{
+    NSParameterAssert(self.postHeaderView);
+    NSParameterAssert(self.postHeaderWrapper);
+    
+    self.postHeaderWrapper.hidden = self.isLoadingPost;
+    if (self.isLoadingPost) {
+        return;
+    }
+    
+    [self.postHeaderView setTitle:self.post.titleForDisplay];
+    
+    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [self.postHeaderView setAvatarImage:image];
+    } else {
+        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            [self.postHeaderView setAvatarImage:image];
+        }];
+    }
 }
 
 - (void)configureTableView
@@ -315,9 +336,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureReplyTextViewIfNeeded
 {
+    [self.replyTextView removeFromSuperview];
+    self.replyTextView = nil;
+    
     if (!self.shouldAttachReplyTextView) {
-        [self.replyTextView removeFromSuperview];
-        self.replyTextView = nil;
         return;
     }
 
@@ -349,9 +371,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureSuggestionsTableViewIfNeeded
 {
+    [self.suggestionsTableView removeFromSuperview];
+    self.suggestionsTableView = nil;
+    
     if (!self.shouldAttachSuggestionsTableView) {
-        [self.suggestionsTableView removeFromSuperview];
-        self.suggestionsTableView = nil;
         return;
     }
 
@@ -611,12 +634,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
-
-    if (self.isViewLoaded) {
-        [self configureReplyTextViewIfNeeded];
-        [self configureSuggestionsTableViewIfNeeded];
-        [self configureInfiniteScroll];
-    }
 }
 
 - (UIActivityIndicatorView *)activityFooter
@@ -650,35 +667,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
+    [self configurePostHeaderDetails];
+    [self configureReplyTextViewIfNeeded];
+    [self configureSuggestionsTableViewIfNeeded];
+    [self configureInfiniteScroll];
+    [self configureNoResultsView];
+
     [self.tableView reloadData];
     [self.syncHelper syncContent];
-    
-    [self refreshPostView];
-    [self configureNoResultsView];
-}
-
-- (void)refreshPostView
-{
-    NSParameterAssert(self.postHeaderView);
-    NSParameterAssert(self.postHeaderWrapper);
-    
-    self.postHeaderWrapper.hidden = self.isLoadingPost;
-    if (self.isLoadingPost) {
-        return;
-    }
-
-    [self.postHeaderView setTitle:self.post.titleForDisplay];
-    [self.postHeaderView setShowsDisclosureIndicator:self.allowsPushingPostDetails];
-    
-    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
-    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [self.postHeaderView setAvatarImage:image];
-    } else {
-        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            [self.postHeaderView setAvatarImage:image];
-        }];
-    }
 }
 
 
