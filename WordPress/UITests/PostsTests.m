@@ -203,7 +203,11 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Publish"];
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Post" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Post"];
+    } else if ([tester tryFindingViewWithAccessibilityLabel:@"Publish" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Publish"];
+    }
     [tester waitForTimeInterval:2];
     
 }
@@ -237,7 +241,11 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Publish"];
+    if ([tester tryFindingViewWithAccessibilityLabel:@"Post" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Post"];
+    } else if ([tester tryFindingViewWithAccessibilityLabel:@"Publish" error:nil]) {
+        [tester tapViewWithAccessibilityLabel:@"Publish"];
+    }
     [tester waitForTimeInterval:5];
     
     [self selectOptions];
