@@ -668,6 +668,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self.postHeaderView setTitle:self.post.titleForDisplay];
+    [self.postHeaderView setShowsDisclosureIndicator:self.allowsPushingPostDetails];
     
     CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
     UIImage *image = [self.post cachedAvatarWithSize:imageSize];
