@@ -61,7 +61,7 @@
 /**
  A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
  */
-@property (nonatomic) BOOL shouldDisableComments;
+@property (nonatomic) BOOL shouldHideComments;
 
 /**
  Configures the view to display the contents of the specified `ReaderPost`.

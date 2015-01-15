@@ -93,7 +93,7 @@
         [actionButtons addObject:self.likeButton];
     }
 
-    if (self.post.commentsOpen && !self.shouldDisableComments) {
+    if (self.post.commentsOpen && !self.shouldHideComments) {
         [actionButtons addObject:self.commentButton];
     }
 
