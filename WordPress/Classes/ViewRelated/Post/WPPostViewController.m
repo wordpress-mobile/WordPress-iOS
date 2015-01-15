@@ -1069,6 +1069,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelButton = button;
     return _cancelButton;
 }
@@ -1085,6 +1086,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
 	return _cancelButton;
 }
 
@@ -1142,6 +1144,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         button.removeDefaultLeftSpacing = YES;
         button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
 	
 	return _previewBarButtonItem;
