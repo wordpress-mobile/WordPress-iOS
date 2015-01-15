@@ -1174,7 +1174,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)handleHeaderTapped
 {
+    if (!self.allowsPushingPostDetails) {
+        return;
+    }
+    
+    // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
     ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
+    [detailsViewController setShouldDisableComments:YES];
     [self.navigationController pushViewController:detailsViewController animated:YES];
 }
 
