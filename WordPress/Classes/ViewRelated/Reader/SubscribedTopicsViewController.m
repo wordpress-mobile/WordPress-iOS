@@ -167,7 +167,7 @@
         [WPStyleGuide configureTableViewCell:cell];
     }
     ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [topic.title capitalizedString];
+    cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;

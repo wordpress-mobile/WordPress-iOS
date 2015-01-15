@@ -40,10 +40,6 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (void)setContentProvider:(id<WPCommentContentViewProvider>)contentProvider
 {
-    if (_contentProvider == contentProvider) {
-        return;
-    }
-
     _contentProvider = contentProvider;
     [self configureView];
 }
