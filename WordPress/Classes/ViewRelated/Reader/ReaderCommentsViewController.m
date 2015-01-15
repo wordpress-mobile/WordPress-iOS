@@ -932,7 +932,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         }
     }
 
-    if (indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section] - 1) {
+    NSInteger rowsInSection = [self.tableViewHandler tableView:self.tableView numberOfRowsInSection:indexPath.section];
+    if (indexPath.row < rowsInSection - 1) {
         NSIndexPath *nextPath = [NSIndexPath indexPathForRow:indexPath.row + 1 inSection:indexPath.section];
         Comment *nextComment = [self.tableViewHandler.resultsController objectAtIndexPath:nextPath];
         if ([nextComment.depth integerValue] == 0) {
