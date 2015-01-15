@@ -59,6 +59,11 @@
 @property (nonatomic) BOOL shouldShowAttributionMenu;
 
 /**
+ A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
+ */
+@property (nonatomic) BOOL shouldDisableComments;
+
+/**
  Configures the view to display the contents of the specified `ReaderPost`.
  This method automatically set the `contentProvider`
  */

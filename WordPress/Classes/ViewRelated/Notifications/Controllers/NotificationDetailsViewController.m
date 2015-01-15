@@ -1121,6 +1121,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
         ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
+        [commentsViewController setAllowsPushingPostDetails:YES];
         [commentsViewController setupWithPostID:postID siteID:siteID];        
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
