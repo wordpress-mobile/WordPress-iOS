@@ -160,15 +160,7 @@
     [tester tapViewWithAccessibilityLabel:@"Save"];
     [tester waitForTimeInterval:2];
     
-    [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
-    
-    if ([tester tryFindingViewWithAccessibilityLabel:@"Edit" error:nil]) {
-        [tester tapViewWithAccessibilityLabel:@"Edit"];
-        [tester waitForTimeInterval:2];
-    }
-    
-    [tester tapViewWithAccessibilityIdentifier:@"Options"];
-    [tester waitForTimeInterval:2];
+    [self selectOptions];
     
     [tester tapViewWithAccessibilityIdentifier:@"Status"];
     [tester waitForTimeInterval:2];
