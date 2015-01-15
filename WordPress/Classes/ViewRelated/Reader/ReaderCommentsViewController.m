@@ -21,7 +21,6 @@
 #import "WPTableViewHandler.h"
 #import "WPToast.h"
 #import "WPWebViewController.h"
-#import "WPNoResultsView+AnimatedBox.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 #import "NSMutableDictionary+Helpers.h"
@@ -963,7 +962,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
@@ -1178,7 +1177,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
     ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
-    [detailsViewController setShouldDisableComments:YES];
+    [detailsViewController setShouldHideComments:YES];
     [self.navigationController pushViewController:detailsViewController animated:YES];
 }
 

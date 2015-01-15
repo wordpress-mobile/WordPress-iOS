@@ -122,7 +122,7 @@ static CGFloat const VerticalMargin = 40;
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
-    self.postView.shouldDisableComments = self.shouldDisableComments;
+    self.postView.shouldHideComments = self.shouldHideComments;
     
     [self.scrollView addSubview:self.postView];
 }
