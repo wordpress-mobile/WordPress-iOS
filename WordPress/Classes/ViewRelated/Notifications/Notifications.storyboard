@@ -30,6 +30,16 @@
             </objects>
             <point key="canvasLocation" x="236" y="-556"/>
         </scene>
+        <!--Reader Comments View Controller-->
+        <scene sceneID="RLS-eH-qVH">
+            <objects>
+                <viewController id="kOE-dH-qnb" customClass="ReaderCommentsViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="eaw-kn-CXc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573" y="-1877"/>
+        </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
             <objects>
@@ -470,6 +480,7 @@
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
+                        <segue destination="kOE-dH-qnb" kind="push" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -480,7 +491,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="843" y="-558"/>
+            <point key="canvasLocation" x="925" y="-601"/>
         </scene>
         <!--StatsView-->
         <scene sceneID="iWL-VB-TOS">
@@ -511,6 +522,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="4ec-Ni-5a5"/>
+        <segue reference="ODX-zz-S1G"/>
     </inferredMetricsTieBreakers>
 </document>

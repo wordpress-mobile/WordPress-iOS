@@ -122,7 +122,8 @@ static CGFloat const VerticalMargin = 40;
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
-
+    self.postView.shouldHideComments = self.shouldHideComments;
+    
     [self.scrollView addSubview:self.postView];
 }
 
@@ -208,7 +209,6 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
