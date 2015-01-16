@@ -2017,9 +2017,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 message:NSLocalizedString(@"This image is currently not available locally to be used in your post. Please try again later.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")];
             return NO;
         }
-        return picker.selectedAssets.count < MaximumNumberOfPictures;
-    } else {
+        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
+            [WPError showAlertWithTitle:nil
+                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]];
+            return NO;
+        }
         return YES;
+    } else {
+        return NO;
     }
 }
 
