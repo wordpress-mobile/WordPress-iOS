@@ -274,29 +274,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.view addSubview:self.postHeaderWrapper];
 }
 
-- (void)configurePostHeaderDetails
-{
-    NSParameterAssert(self.postHeaderView);
-    NSParameterAssert(self.postHeaderWrapper);
-    
-    self.postHeaderWrapper.hidden = self.isLoadingPost;
-    if (self.isLoadingPost) {
-        return;
-    }
-    
-    [self.postHeaderView setTitle:self.post.titleForDisplay];
-    
-    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
-    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
-    if (image) {
-        [self.postHeaderView setAvatarImage:image];
-    } else {
-        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
-            [self.postHeaderView setAvatarImage:image];
-        }];
-    }
-}
-
 - (void)configureTableView
 {
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStylePlain];
@@ -324,20 +301,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
 }
 
-- (void)configureInfiniteScroll
-{
-    if (self.syncHelper.hasMoreContent) {
-        CGFloat width = CGRectGetWidth(self.tableView.bounds);
-        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
-        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
-        [footerView addSubview:self.activityFooter];
-        self.tableView.tableFooterView = footerView;
-
-    } else {
-        self.tableView.tableFooterView = nil;
-        self.activityFooter = nil;
-    }
-}
 
 - (void)configureReplyTextViewIfNeeded
 {
@@ -358,7 +321,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
     
-    [self configureReplyTextViewPlaceholder];
+    [self refreshReplyTextViewPlaceholder];
 
     [self.view addSubview:self.replyTextView];
     [self.view bringSubviewToFront:self.replyTextView];
@@ -395,34 +358,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.tapOffKeyboardGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapRecognized:)];
     self.tapOffKeyboardGesture.enabled = NO;
     [self.view addGestureRecognizer:self.tapOffKeyboardGesture];
-}
-
-- (void)configureNoResultsView
-{
-    if (!self.isViewLoaded) {
-        return;
-    }
-
-    if (!self.noResultsView) {
-        self.noResultsView = [[WPNoResultsView alloc] init];
-    }
-
-    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
-        [self.noResultsView removeFromSuperview];
-        return;
-    }
-
-    // Refresh the NoResultsView Properties
-    self.noResultsView.titleText = self.noResultsTitleText;
-
-    // Only add and animate no results view if it isn't already in the table view
-    if (![self.noResultsView isDescendantOfView:self.view]) {
-        [self.view addSubviewWithFadeAnimation:self.noResultsView];
-    } else {
-        [self.noResultsView centerInSuperview];
-    }
-
-    [self.view bringSubviewToFront:self.noResultsView];
 }
 
 
@@ -672,14 +607,89 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
-    [self configurePostHeaderDetails];
     [self configureReplyTextViewIfNeeded];
     [self configureSuggestionsTableViewIfNeeded];
-    [self configureInfiniteScroll];
-    [self configureNoResultsView];
-
+    [self refreshPostHeaderView];
+    [self refreshInfiniteScroll];
+    [self refreshNoResultsView];
+    
     [self.tableView reloadData];
     [self.syncHelper syncContent];
+}
+
+- (void)refreshPostHeaderView
+{
+    NSParameterAssert(self.postHeaderView);
+    NSParameterAssert(self.postHeaderWrapper);
+    
+    self.postHeaderWrapper.hidden = self.isLoadingPost;
+    if (self.isLoadingPost) {
+        return;
+    }
+    
+    [self.postHeaderView setTitle:self.post.titleForDisplay];
+    
+    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    UIImage *image = [self.post cachedAvatarWithSize:imageSize];
+    if (image) {
+        [self.postHeaderView setAvatarImage:image];
+    } else {
+        [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
+            [self.postHeaderView setAvatarImage:image];
+        }];
+    }
+}
+
+- (void)refreshReplyTextViewPlaceholder
+{
+    if (self.tableView.indexPathForSelectedRow) {
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
+    } else {
+        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
+    }
+}
+
+- (void)refreshInfiniteScroll
+{
+    if (self.syncHelper.hasMoreContent) {
+        CGFloat width = CGRectGetWidth(self.tableView.bounds);
+        UIView *footerView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, width, 50.0f)];
+        footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+        [footerView addSubview:self.activityFooter];
+        self.tableView.tableFooterView = footerView;
+        
+    } else {
+        self.tableView.tableFooterView = nil;
+        self.activityFooter = nil;
+    }
+}
+
+- (void)refreshNoResultsView
+{
+    if (!self.isViewLoaded) {
+        return;
+    }
+    
+    if (!self.noResultsView) {
+        self.noResultsView = [[WPNoResultsView alloc] init];
+    }
+    
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+    
+    // Refresh the NoResultsView Properties
+    self.noResultsView.titleText = self.noResultsTitleText;
+    
+    // Only add and animate no results view if it isn't already in the table view
+    if (![self.noResultsView isDescendantOfView:self.view]) {
+        [self.view addSubviewWithFadeAnimation:self.noResultsView];
+    } else {
+        [self.noResultsView centerInSuperview];
+    }
+    
+    [self.view bringSubviewToFront:self.noResultsView];
 }
 
 
@@ -746,7 +756,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.indexPathForCommentRepliedTo = nil;
     [self.tableView deselectSelectedRowWithAnimation:YES];
     [self.replyTextView resignFirstResponder];
-    [self configureReplyTextViewPlaceholder];
+    [self refreshReplyTextViewPlaceholder];
 }
 
 - (void)sendReplyWithNewContent:(NSString *)content
@@ -755,7 +765,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     void (^successBlock)() = ^void() {
         [WPAnalytics track:WPAnalyticsStatReaderCommentedOnArticle];
         [weakSelf.tableView deselectSelectedRowWithAnimation:YES];
-        [weakSelf configureReplyTextViewPlaceholder];
+        [weakSelf refreshReplyTextViewPlaceholder];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
@@ -856,7 +866,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:success failure:failure];
-    [self configureNoResultsView];
+    [self refreshNoResultsView];
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
@@ -871,7 +881,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)syncContentEnded
 {
     [self.activityFooter stopAnimating];
-    [self configureNoResultsView];
+    [self refreshNoResultsView];
 }
 
 
@@ -1022,7 +1032,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self configureNoResultsView];
+    [self refreshNoResultsView];
 }
 
 
@@ -1040,7 +1050,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSArray *selectedRows = [self.tableView indexPathsForSelectedRows];
     [self.tableView deselectRowAtIndexPath:[selectedRows objectAtIndex:0] animated:YES];
     [self.replyTextView resignFirstResponder];
-    [self configureReplyTextViewPlaceholder];
+    [self refreshReplyTextViewPlaceholder];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
@@ -1108,7 +1118,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     Comment *comment = (Comment *)contentProvider;
     self.indexPathForCommentRepliedTo = [self.tableViewHandler.resultsController indexPathForObject:comment];
     [self.tableView selectRowAtIndexPath:self.indexPathForCommentRepliedTo animated:YES scrollPosition:UITableViewScrollPositionTop];
-    [self configureReplyTextViewPlaceholder];
+    [self refreshReplyTextViewPlaceholder];
 }
 
 - (void)toggleLikeStatus:(id<WPContentViewProvider>)contentProvider
