@@ -104,6 +104,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureCellForLayout];
+    [self configureReplyTextView];
+    [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -301,16 +303,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
 }
 
-
-- (void)configureReplyTextViewIfNeeded
+- (void)configureReplyTextView
 {
-    [self.replyTextView removeFromSuperview];
-    self.replyTextView = nil;
-    
-    if (!self.shouldAttachReplyTextView) {
-        return;
-    }
-
     __typeof(self) __weak weakSelf = self;
 
     ReplyTextView *replyTextView = [[ReplyTextView alloc] initWithWidth:CGRectGetWidth(self.view.frame)];
@@ -325,32 +319,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
     [self.view addSubview:self.replyTextView];
     [self.view bringSubviewToFront:self.replyTextView];
-    [self.view setNeedsUpdateConstraints];
 }
 
-- (void)configureReplyTextViewPlaceholder
+- (void)configureSuggestionsTableView
 {
-    if (self.tableView.indexPathForSelectedRow) {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to comment…", @"Placeholder text for replying to a comment");
-    } else {
-        self.replyTextView.placeholder = NSLocalizedString(@"Reply to post…", @"Placeholder text for replying to a post");
-    }
-}
-
-- (void)configureSuggestionsTableViewIfNeeded
-{
-    [self.suggestionsTableView removeFromSuperview];
-    self.suggestionsTableView = nil;
+    NSNumber *siteID = self.post.siteID ?: self.siteID;
+    NSParameterAssert(siteID);
     
-    if (!self.shouldAttachSuggestionsTableView) {
-        return;
-    }
-
-    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.post.siteID];
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:siteID];
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self.view addSubview:self.suggestionsTableView];
-    [self.view setNeedsUpdateConstraints];
 }
 
 - (void)configureKeyboardGestureRecognizer
@@ -607,8 +586,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)refreshAndSync
 {
-    [self configureReplyTextViewIfNeeded];
-    [self configureSuggestionsTableViewIfNeeded];
     [self refreshPostHeaderView];
     [self refreshInfiniteScroll];
     [self refreshNoResultsView];
