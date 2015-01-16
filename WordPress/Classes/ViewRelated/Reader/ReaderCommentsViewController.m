@@ -454,11 +454,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Helpers
 
-- (BOOL)shouldAttachReplyTextView
-{
-    return !self.isLoadingPost && self.post.commentsOpen;
-}
-
 - (BOOL)shouldAttachSuggestionsTableView
 {
     return !self.isLoadingPost && self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
@@ -569,12 +564,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return self.post == nil;
 }
 
+- (BOOL)shouldDisplayReplyTextView
+{
+    return self.post.commentsOpen;
+}
+
 
 #pragma mark - View Refresh Helpers
 
 - (void)refreshAndSync
 {
     [self refreshPostHeaderView];
+    [self refreshReplyTextView];
     [self refreshInfiniteScroll];
     [self refreshNoResultsView];
     
@@ -602,6 +603,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [self.post fetchAvatarWithSize:imageSize success:^(UIImage *image) {
             [self.postHeaderView setAvatarImage:image];
         }];
+    }
+}
+
+- (void)refreshReplyTextView
+{
+    BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
+    self.replyTextView.hidden = !showsReplyTextView;
+        
+    if (showsReplyTextView) {
+        [self.view removeConstraint:self.replyTextViewHeightConstraint];
+    } else {
+        [self.view addConstraint:self.replyTextViewHeightConstraint];
     }
 }
 
