@@ -211,7 +211,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         [self.tableView selectRowAtIndexPath:selectedIndexPath animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
 
-    [self configureNoResultsView];
+    [self refreshNoResultsView];
 }
 
 
