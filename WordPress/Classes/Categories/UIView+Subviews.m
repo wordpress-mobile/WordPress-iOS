@@ -4,12 +4,17 @@
 
 - (void)addSubviewWithFadeAnimation:(UIView *)subview
 {
-    CGFloat finalAlpha = subview.alpha;
-
-    subview.alpha = 0.0;
     [self addSubview:subview];
+    [subview fadeInWithAnimation];
+}
+
+- (void)fadeInWithAnimation
+{
+    CGFloat finalAlpha = self.alpha;
+    
+    self.alpha = 0.0;
     [UIView animateWithDuration:0.2 animations:^{
-        subview.alpha = finalAlpha;
+        self.alpha = finalAlpha;
     }];
 }
 
