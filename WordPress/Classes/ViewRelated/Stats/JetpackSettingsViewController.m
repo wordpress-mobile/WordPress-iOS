@@ -103,7 +103,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             _skipButton.accessibilityIdentifier = @"Skip";
             [self.view addSubview:_skipButton];
         } else {
-            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skip:)];
+            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skipAction:)];
             self.navigationItem.rightBarButtonItem = skipButton;
         }
 
