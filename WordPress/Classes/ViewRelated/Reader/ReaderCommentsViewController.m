@@ -104,6 +104,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureCellForLayout];
+    [self configureNoResultsView];
     [self configureReplyTextView];
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
@@ -187,7 +188,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     // Remove the no results view or else the position will abruptly adjust after rotation
     // due to the table view sizing for image preloading
-    [self.noResultsView removeFromSuperview];
+    [self refreshNoResultsView];
 
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 }
@@ -302,6 +303,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableView registerClass:[ReaderCommentCell class] forCellReuseIdentifier:CommentLayoutCellIdentifier];
     self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CommentLayoutCellIdentifier];
     [self updateCellForLayoutWidthConstraint:CGRectGetWidth(self.tableView.bounds)];
+}
+
+- (void)configureNoResultsView
+{
+    self.noResultsView = [[WPNoResultsView alloc] init];
+    self.noResultsView.hidden = YES;
+    self.noResultsView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.view addSubview:self.noResultsView];
 }
 
 - (void)configureReplyTextView
@@ -454,11 +463,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Helpers
 
-- (BOOL)shouldAttachSuggestionsTableView
-{
-    return !self.isLoadingPost && self.post.commentsOpen && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
-}
-
 - (NSString *)noResultsTitleText
 {
     // Let's just display the same message, for consistency's sake
@@ -569,6 +573,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return self.post.commentsOpen;
 }
 
+- (BOOL)shouldDisplaySuggestionsTableView
+{
+    return self.shouldDisplayReplyTextView && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.post.siteID];
+}
+
 
 #pragma mark - View Refresh Helpers
 
@@ -576,9 +585,10 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     [self refreshPostHeaderView];
     [self refreshReplyTextView];
+    [self refreshSuggestionsTableView];
     [self refreshInfiniteScroll];
     [self refreshNoResultsView];
-    
+
     [self.tableView reloadData];
     [self.syncHelper syncContent];
 }
@@ -610,12 +620,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
     self.replyTextView.hidden = !showsReplyTextView;
-        
+    
     if (showsReplyTextView) {
         [self.view removeConstraint:self.replyTextViewHeightConstraint];
     } else {
         [self.view addConstraint:self.replyTextViewHeightConstraint];
     }
+}
+
+- (void)refreshSuggestionsTableView
+{
+    self.suggestionsTableView.enabled = self.shouldDisplaySuggestionsTableView;
 }
 
 - (void)refreshReplyTextViewPlaceholder
@@ -642,32 +657,25 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 }
 
+
 - (void)refreshNoResultsView
 {
-    if (!self.isViewLoaded) {
-        return;
-    }
+    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL shouldPerformAnimation = self.noResultsView.hidden;
     
-    if (!self.noResultsView) {
-        self.noResultsView = [[WPNoResultsView alloc] init];
-    }
+    self.noResultsView.hidden = !isTableViewEmpty;
     
-    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
-        [self.noResultsView removeFromSuperview];
+    if (!isTableViewEmpty) {
         return;
     }
     
     // Refresh the NoResultsView Properties
     self.noResultsView.titleText = self.noResultsTitleText;
+    [self.noResultsView centerInSuperview];
     
-    // Only add and animate no results view if it isn't already in the table view
-    if (![self.noResultsView isDescendantOfView:self.view]) {
-        [self.view addSubviewWithFadeAnimation:self.noResultsView];
-    } else {
-        [self.noResultsView centerInSuperview];
+    if (shouldPerformAnimation) {
+        [self.noResultsView fadeInWithAnimation];
     }
-    
-    [self.view bringSubviewToFront:self.noResultsView];
 }
 
 
