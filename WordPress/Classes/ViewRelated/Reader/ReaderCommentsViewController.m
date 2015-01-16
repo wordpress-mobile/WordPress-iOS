@@ -47,6 +47,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                             SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
+@property (nonatomic, strong) NSNumber *postSiteID;
 @property (nonatomic, strong) UIGestureRecognizer *tapOffKeyboardGesture;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
@@ -323,7 +324,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)configureSuggestionsTableView
 {
-    NSNumber *siteID = self.post.siteID ?: self.siteID;
+    NSNumber *siteID = self.siteID;
     NSParameterAssert(siteID);
     
     self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:siteID];
@@ -534,6 +535,12 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         self.syncHelper = [[WPContentSyncHelper alloc] init];
         self.syncHelper.delegate = self;
     }
+}
+
+- (NSNumber *)siteID
+{
+    // If the post isn't loaded yet, maybe we're asynchronously retrieving it?
+    return self.post.siteID ?: self.postSiteID;
 }
 
 - (UIActivityIndicatorView *)activityFooter
@@ -850,6 +857,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf  = self;
+    
+    self.postSiteID = siteID;
     
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
 
