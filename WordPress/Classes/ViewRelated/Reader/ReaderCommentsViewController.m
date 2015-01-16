@@ -23,7 +23,6 @@
 #import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
-#import "NSMutableDictionary+Helpers.h"
 #import "WordPress-Swift.h"
 
 
@@ -62,8 +61,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) ReaderPostHeaderView *postHeaderView;
 @property (nonatomic, strong) NSMutableDictionary *mediaCellCache;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
-@property (nonatomic, strong) NSArray *autolayoutConstraints;
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
+@property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @end
 
 
@@ -107,7 +106,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureReplyTextView];
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
-
+    [self configureViewConstraints];
+    
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     [self refreshAndSync];
@@ -342,30 +342,15 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Autolayout Helpers
 
-- (void)updateViewConstraints
+- (void)configureViewConstraints
 {
-    [self.view removeConstraints:self.autolayoutConstraints];
-    [super updateViewConstraints];
- 
-    NSArray *newConstraints = [self constraintsForView];
-    [self.view addConstraints:newConstraints];
-    self.autolayoutConstraints = newConstraints;
-}
-
-
-- (NSArray *)constraintsForView
-{
-    BOOL showsReplyTextView = self.replyTextView != nil;
-    BOOL showsSuggestionsTableView = self.suggestionsTableView != nil;
-    
-    NSMutableArray *constraints = [NSMutableArray array];
-    NSMutableDictionary *views = [NSMutableDictionary dictionary];
-
-    [views setValueIfNotNil:self.tableView forKey:@"tableView"];
-    [views setValueIfNotNil:self.postHeaderWrapper forKey:@"postHeader"];
-    [views setValueIfNotNil:self.view forKey:@"mainView"];
-    [views setValueIfNotNil:self.suggestionsTableView forKey:@"suggestionsview"];
-    [views setValueIfNotNil:self.replyTextView forKey:@"replyTextView"];
+    NSDictionary *views         = @{
+        @"tableView"        : self.tableView,
+        @"postHeader"       : self.postHeaderWrapper,
+        @"mainView"         : self.view,
+        @"suggestionsview"  : self.suggestionsTableView,
+        @"replyTextView"    : self.replyTextView
+    };
     
     NSDictionary *metrics = @{
         @"WPTableViewWidth" : @(WPTableViewFixedWidth),
@@ -373,100 +358,96 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
     
     // PostHeader Constraints
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.postHeaderWrapper
-                                                        attribute:NSLayoutAttributeCenterX
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:self.view
-                                                        attribute:NSLayoutAttributeCenterX
-                                                       multiplier:1.0
-                                                         constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postHeaderWrapper
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0.0]];
 
     if ([UIDevice isPad]) {
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(WPTableViewWidth)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
     } else {
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(==mainView)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[postHeader(==mainView)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
     }
     
     // TableView Contraints
-    NSString *verticalConstraints = @"V:|[postHeader(headerHeight)][tableView]";
-    if (!showsReplyTextView) {
-        verticalConstraints = @"V:|[postHeader(headerHeight)][tableView]|";
-    }
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView]"
+                                                                      options:0
+                                                                      metrics:metrics
+                                                                        views:views]];
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:verticalConstraints
-                                                                             options:0
-                                                                             metrics:metrics
-                                                                               views:views]];
-    
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
-
-    if (!showsReplyTextView) {
-        return constraints;
-    }
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
 
     // ReplyTextView Constraints
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.replyTextView
-                                                        attribute:NSLayoutAttributeCenterX
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:self.view
-                                                        attribute:NSLayoutAttributeCenterX
-                                                       multiplier:1.0
-                                                         constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.replyTextView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0.0]];
     
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[tableView][replyTextView]|"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[tableView][replyTextView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
 
     if ([UIDevice isPad]) {
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
     } else {
-        [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(==mainView)]"
-                                                                                 options:0
-                                                                                 metrics:metrics
-                                                                                   views:views]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(==mainView)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
     }
     
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
-    if (!showsSuggestionsTableView) {
-        return constraints;
-    }
-    
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                        attribute:NSLayoutAttributeLeft
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:self.replyTextView
-                                                        attribute:NSLayoutAttributeLeft
-                                                       multiplier:1.0
-                                                         constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                          attribute:NSLayoutAttributeLeft
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.replyTextView
+                                                          attribute:NSLayoutAttributeLeft
+                                                         multiplier:1.0
+                                                           constant:0.0]];
 
-    [constraints addObject:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
-                                                        attribute:NSLayoutAttributeRight
-                                                        relatedBy:NSLayoutRelationEqual
-                                                           toItem:self.replyTextView
-                                                        attribute:NSLayoutAttributeRight
-                                                       multiplier:1.0
-                                                         constant:0.0]];
+    [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
+                                                          attribute:NSLayoutAttributeRight
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:self.replyTextView
+                                                          attribute:NSLayoutAttributeRight
+                                                         multiplier:1.0
+                                                           constant:0.0]];
 
-    [constraints addObjectsFromArray:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview][replyTextView]"
-                                                                             options:0
-                                                                             metrics:nil
-                                                                               views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[suggestionsview][replyTextView]"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
     
-    return constraints;
+    // TODO:
+    // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
+    // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
+    self.replyTextViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.replyTextView
+                                                                      attribute:NSLayoutAttributeHeight
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:nil
+                                                                      attribute:nil
+                                                                     multiplier:1
+                                                                       constant:0];
 }
 
 
