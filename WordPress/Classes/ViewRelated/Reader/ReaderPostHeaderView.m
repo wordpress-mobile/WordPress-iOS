@@ -91,7 +91,7 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0f;
 
 - (void)refreshDisclosureButton
 {
-    // Note: iOS 7 doesn't allow us to simply disable a constraint. Let's improve this once the deploymentTarget is updated!
+    // TODO: iOS 7 doesn't allow us to simply disable a constraint. Let's improve this once the deploymentTarget is updated!
     CGFloat targetWidth = self.showsDisclosureIndicator ? PostHeaderDisclosureButtonWidth : 0.0f;
     [self.disclosureButton updateConstraint:NSLayoutAttributeWidth constant:targetWidth];
     self.disclosureButton.hidden = !self.showsDisclosureIndicator;

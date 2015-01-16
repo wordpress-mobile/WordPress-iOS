@@ -26,6 +26,12 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "WordPress-Swift.h"
 
+
+
+// Note:
+// Due to a UITableView bug on iOS 8, let's keep the estimated height to the bare minimum.
+// If the estimated is bigger than needed, UITableView might actually use that size, and shrink using an undesired animation.
+
 static CGFloat const EstimatedCommentRowHeight = 100.0;
 static CGFloat const CommentAvatarSize = 32.0;
 static CGFloat const PostHeaderHeight = 54.0;
@@ -952,11 +958,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Note:
-    // Due to a UITableView bug on iOS 8, let's keep the estimated height to the bare minimum.
-    // If the estimated is bigger than needed, UITableView might actually use that size,
-    // and shrink using an undesired animation.
-    
     return EstimatedCommentRowHeight;
 }
 
