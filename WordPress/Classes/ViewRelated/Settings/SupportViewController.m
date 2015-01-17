@@ -14,6 +14,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import <Mixpanel/MPTweakInline.h>
+#import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
@@ -362,7 +363,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         if (indexPath.row == 0) {
             // App Version
             cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            NSString *appversion = [[NSBundle mainBundle] detailedVersionNumber];
 #if DEBUG
             appversion = [appversion stringByAppendingString:@" (DEV)"];
 #endif
@@ -465,7 +466,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (MFMailComposeViewController *)feedbackMailViewController
 {
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
     NSString *device = [UIDeviceHardware platformString];
     NSString *locale = [[NSLocale currentLocale] localeIdentifier];
     NSString *iosVersion = [[UIDevice currentDevice] systemVersion];

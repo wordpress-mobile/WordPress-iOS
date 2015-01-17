@@ -44,6 +44,7 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 #import "UIImage+Util.h"
+#import "NSBundle+VersionNumberHelper.h"
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -1104,7 +1105,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
 
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
                        appVersion,
@@ -1319,7 +1320,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     NSArray *blogs = [blogService blogsForAllAccounts];
 
     DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] detailedVersionNumber]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
