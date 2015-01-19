@@ -66,6 +66,8 @@
 		46F8714F1838C41600BC149B /* NSDate+StringFormatting.m in Sources */ = {isa = PBXBuildFile; fileRef = 46F8714E1838C41600BC149B /* NSDate+StringFormatting.m */; };
 		46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E1634518183B733B005E967F /* WordPressComOAuthClient.m */; };
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
+		591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */; };
+		591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
 		595B02221A6C4ECD00415A30 /* WPWhatsNewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */; };
 		595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 595B02261A6C504400415A30 /* WPWhatsNewView.xib */; };
 		5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */; };
@@ -586,6 +588,10 @@
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
 		591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayWidgetPrefix.pch; sourceTree = "<group>"; };
+		591A428A1A6DC1B0003807A6 /* WPBackgroundDimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBackgroundDimmerView.h; sourceTree = "<group>"; };
+		591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBackgroundDimmerView.m; sourceTree = "<group>"; };
+		591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPGUIConstants.h; sourceTree = "<group>"; };
+		591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPGUIConstants.m; sourceTree = "<group>"; };
 		595B02201A6C4ECD00415A30 /* WPWhatsNewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNewView.h; path = WhatsNew/WPWhatsNewView.h; sourceTree = "<group>"; };
 		595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNewView.m; path = WhatsNew/WPWhatsNewView.m; sourceTree = "<group>"; };
 		595B02261A6C504400415A30 /* WPWhatsNewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPWhatsNewView.xib; path = Resources/WhatsNew/WPWhatsNewView.xib; sourceTree = "<group>"; };
@@ -1421,6 +1427,8 @@
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
+				591A428A1A6DC1B0003807A6 /* WPBackgroundDimmerView.h */,
+				591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2106,6 +2114,8 @@
 				B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
+				591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */,
+				591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */,
 			);
 			path = System;
 			sourceTree = "<group>";
@@ -3327,6 +3337,7 @@
 				ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */,
 				B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */,
 				2906F812110CDA8900169D56 /* EditCommentViewController.m in Sources */,
+				591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				5DA5BF4018E32DCF005F11F9 /* MediaBrowserCell.m in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
@@ -3541,6 +3552,7 @@
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
+				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
 				857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
 				E1D086E2194214C600F0CC19 /* NSDate+WordPressJSON.m in Sources */,
