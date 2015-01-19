@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "icon-tab-blogs.png"
+      "filename" : "icon-tab-mysites.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "icon-tab-blogs@2x.png"
+      "filename" : "icon-tab-mysites@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "icon-tab-mysites@3x.png"
     }
   ],
   "info" : {
