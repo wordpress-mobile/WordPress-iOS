@@ -59,6 +59,10 @@
 #import <Lookback/Lookback.h>
 #endif
 
+#ifdef INTERNAL_BUILD
+#import <NewRelicAgent/NewRelic.h>
+#endif
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -105,6 +109,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
+    [self configureNewRelic];
     [self configureCrashlytics];
 
     // Start Simperium
@@ -628,7 +633,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 
 - (void)initializeAppTracking
 {
-    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [AppRatingUtility initializeForVersion:version];
     [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
 }
@@ -733,9 +738,21 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
+    // Disabling the crash manager as we're using new relic to track crashes
+    [BITHockeyManager sharedHockeyManager].disableCrashManager = YES;
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
+
+- (void)configureNewRelic
+{
+#ifdef INTERNAL_BUILD
+    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
+    if (applicationToken.length != 0) {
+        [NewRelicAgent startWithApplicationToken:applicationToken];
+    }
+#endif
 }
 
 #pragma mark - BITCrashManagerDelegate

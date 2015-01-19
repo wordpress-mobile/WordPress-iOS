@@ -13,6 +13,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "PostService.h"
 #import "Post.h"
+#import "BlogService.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
@@ -293,7 +294,7 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.name = self.comment.post.author;
     cell.snippet = postTitle;
 
-    if (cell != self.headerLayoutCell) {
+    if (cell != self.headerLayoutCell && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
 }
@@ -319,7 +320,11 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.site = self.comment.authorUrlForDisplay;
 
     if (cell != self.bodyLayoutCell) {
-        [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+        if ([self.comment avatarURLForDisplay]) {
+            [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
+        } else {
+            [cell downloadGravatarWithGravatarEmail:[self.comment gravatarEmailForDisplay]];
+        }
     }
 
     __weak __typeof(self) weakSelf = self;
@@ -490,33 +495,36 @@ static NSInteger const CVCNumberOfSections = 2;
     [self presentViewController:navController animated:true completion:nil];
 }
 
-- (void)updateCommentForNewContent:(NSString *)newContent
+- (void)updateCommentForNewContent:(NSString *)content
 {
+    // Set the new Content Data
+    self.comment.content = content;
+    [self.tableView reloadData];
+    // Hit the backend
     __typeof(self) __weak weakSelf = self;
-
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService updateCommentWithID:self.comment.commentID
-                                 siteID:self.comment.blog.blogID
-                                content:newContent
-                                success:^{
-                                    weakSelf.comment.content = newContent;
-                                    [weakSelf.tableView reloadData];
-                                    [weakSelf dismissViewControllerAnimated:YES completion:nil];
-                                }
-                                failure:^(NSError *error) {
-                                    [UIAlertView showWithTitle:nil
-                                                       message:NSLocalizedString(@"There has been an unexpected error while updating your comment", nil)
-                                             cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                             otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                          if (buttonIndex == alertView.cancelButtonIndex) {
-                                                              [weakSelf.tableView reloadData];
-                                                          } else {
-                                                              [weakSelf updateCommentForNewContent:newContent];
-                                                          }
-                                                      }];
-                                }];
+    [commentService uploadComment:self.comment
+                          success:^{
+                              // The comment might have changed its approval status!
+                              [weakSelf.tableView reloadData];
+                          } failure:^(NSError *error) {
+                              NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
+                                                                    @"Error displayed if a comment fails to get updated");
+                              [UIAlertView showWithTitle:nil
+                                                 message:message
+                                       cancelButtonTitle:NSLocalizedString(@"Cancel", @"Verb, Cancel an action")
+                                       otherButtonTitles:@[ NSLocalizedString(@"Try Again", @"Retry an action that failed") ]
+                                                tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                                                    if (buttonIndex == alertView.cancelButtonIndex) {
+                                                        [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
+                                                        [weakSelf.tableView reloadData];
+                                                    } else {
+                                                        [weakSelf updateCommentForNewContent:content];
+                                                    }
+                                                }
+                               ];
+                          }];
 }
 
 #pragma mark - Replying Comments for iPad
@@ -524,8 +532,8 @@ static NSInteger const CVCNumberOfSections = 2;
 - (void)editReply
 {
     __typeof(self) __weak weakSelf = self;
-
-    EditReplyViewController *editViewController = [EditReplyViewController newEditViewController];
+    
+    EditReplyViewController *editViewController = [EditReplyViewController newReplyViewControllerForSiteID:self.comment.blog.blogID];
 
     editViewController.onCompletion = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -551,25 +559,27 @@ static NSInteger const CVCNumberOfSections = 2;
 
     __typeof(self) __weak weakSelf = self;
 
+    void (^successBlock)() = ^void() {
+        [WPToast showToastWithMessage:successMessage andImage:successImage];
+    };
+
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        [UIAlertView showWithTitle:nil
+                           message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
+                          tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                              if (buttonIndex != alertView.cancelButtonIndex) {
+                                  [weakSelf sendReplyWithNewContent:content];
+                              }
+                          }];
+    };
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService replyToCommentWithID:self.comment.commentID
-                                  siteID:self.comment.blog.blogID
-                                 content:content
-                                 success:^(){
-                                     [WPToast showToastWithMessage:successMessage andImage:successImage];
-
-                                 } failure:^(NSError *error) {
-                                     [UIAlertView showWithTitle:nil
-                                                        message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                                              cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
-                                              otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
-                                                       tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                                                           if (buttonIndex != alertView.cancelButtonIndex) {
-                                                               [weakSelf sendReplyWithNewContent:content];
-                                                           }
-                                                       }];
-                                 }];
+    Comment *reply = [commentService createReplyForComment:self.comment];
+    reply.content = content;
+    [commentService uploadComment:reply success:successBlock failure:failureBlock];
 
     [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
@@ -658,7 +668,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return ([self shouldAttachReplyTextView] && self.comment.blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+    return ([self shouldAttachReplyTextView] && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
 }
 
 // if the post is not set for the comment, we don't want to show an empty cell for the post details
