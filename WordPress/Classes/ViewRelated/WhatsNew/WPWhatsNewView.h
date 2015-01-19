@@ -4,7 +4,7 @@
  *  @class      WhatsNewView
  *  @brief      Shows the user what's new in WP iOS.
  */
-@interface WhatsNewView : UIView
+@interface WPWhatsNewView : UIView
 
 #pragma mark - Properties: Outlets
 
@@ -40,5 +40,23 @@
                         image:(UIImage*)image
                         title:(NSString*)title
                       details:(NSString*)details;
+
+#pragma mark - Showing & hiding
+
+/**
+ *  @brief      Hides the view.
+ *
+ *  @param      animated    YES means the transition will be animated.  NO means it will be
+ *                          instantaneous.
+ */
+- (void)hideAnimated:(BOOL)animated;
+
+/**
+ *  @brief      Shows the view.
+ *
+ *  @param      animated    YES means the transition will be animated.  NO means it will be
+ *                          instantaneous.
+ */
+- (void)showAnimated:(BOOL)animated;
 
 @end

@@ -1,7 +1,7 @@
-#import "WhatsNewView.h"
+#import "WPWhatsNewView.h"
 #import <QuartzCore/QuartzCore.h>
 
-@interface WhatsNewView ()
+@interface WPWhatsNewView ()
 #pragma mark - Properties: Outlets
 
 /**
@@ -20,7 +20,7 @@
 @property (nonatomic, copy, readwrite) IBOutlet UITextView* title;
 @end
 
-@implementation WhatsNewView
+@implementation WPWhatsNewView
 
 #pragma mark - Initializers
 
@@ -50,6 +50,14 @@
 
 #pragma mark - Init helpers
 
+/**
+ *  @brief      Initial set-up of the outlets for this view.
+ *  @details    This method requires the outlets to be already wired before it's called.
+ *
+ *  @param      image       The image to show.  Cannot be nil.
+ *  @param      title       The title to show.  Cannot be nil.
+ *  @param      details     The details to describe what's new.  Cannot be nil.
+ */
 - (void)setupOutletsWithImage:(UIImage*)image
                         title:(NSString*)title
                       details:(NSString*)details
@@ -71,6 +79,18 @@
     _details.text = details;
     _image.image = image;
     _title.text = title;
+}
+
+#pragma mark - Showing & hiding
+
+- (void)hideAnimated:(BOOL)animated
+{
+    // Hides the view in the superView... does not remove it...
+}
+
+- (void)showAnimated:(BOOL)animated
+{
+    // Shows the view in the superView... does not remove it...
 }
 
 @end
