@@ -21,7 +21,7 @@ echo "[*] cleaning up generated files"
 
 echo "[*] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
-    # we're running the script from the CLI
+    echo "[*] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
     pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
@@ -44,6 +44,7 @@ echo "[*] Building project"
 xcodebuild build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
+           -derivedDataPath=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
            | tee ${xcodebuild_log_path}
