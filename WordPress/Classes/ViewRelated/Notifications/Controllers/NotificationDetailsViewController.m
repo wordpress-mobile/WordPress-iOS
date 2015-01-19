@@ -15,6 +15,7 @@
 
 #import "WPWebViewController.h"
 #import "ReaderPostDetailViewController.h"
+#import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
@@ -50,6 +51,10 @@ static NSString *NotificationReplyToastImage            = @"action-icon-replied"
 static NSString *NotificationSuccessToastImage          = @"action-icon-success";
 
 static NSInteger NotificationSectionCount               = 1;
+
+static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
+static NSString *NotificationsPostIdKey                 = @"NotificationsPostIdKey";
+static NSString *NotificationsCommentIdKey              = @"NotificationsCommentIdKey";
 
 
 #pragma mark ==========================================================================================
@@ -221,6 +226,10 @@ static NSInteger NotificationSectionCount               = 1;
     return _layoutCellMap;
 }
 
+- (BOOL)isLayoutCell:(UITableViewCell *)cell
+{
+    return [self.layoutCellMap.allValues containsObject:cell];
+}
 
 #pragma mark - Reply View Helpers
 
@@ -265,13 +274,8 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    // Proceed only if needed!
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
 
-    if (!shouldAddSuggestionView) {
+    if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
     
@@ -507,7 +511,11 @@ static NSInteger NotificationSectionCount               = 1;
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
 
-        [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        if (self.note.isComment) {
+            [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        } else {
+            [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        }
     }
 }
 
@@ -572,6 +580,10 @@ static NSInteger NotificationSectionCount               = 1;
     cell.name                           = gravatarBlock.text;
     cell.snippet                        = snippetBlock.text;
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+    
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -598,6 +610,10 @@ static NSInteger NotificationSectionCount               = 1;
         [weakSelf unfollowSiteWithBlock:userBlock];
     };
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -679,6 +695,10 @@ static NSInteger NotificationSectionCount               = 1;
         }
     };
 
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
@@ -690,6 +710,10 @@ static NSInteger NotificationSectionCount               = 1;
     NotificationMedia *media        = imageBlock.media.firstObject;
     cell.isBadge                    = media.isBadge;
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadImageWithURL:media.mediaURL];
 }
 
@@ -746,8 +770,26 @@ static NSInteger NotificationSectionCount               = 1;
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSArray *parameters = @[ siteID, postID ];
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID
+        };
+        
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
+    }
+    return success;
+}
+
+- (BOOL)displayCommentsWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    BOOL success = postID && siteID;
+    if (success) {
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID,
+        };
+        
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderCommentsViewController class]) sender:parameters];
     }
     return success;
 }
@@ -947,7 +989,7 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:self.note.metaSiteID];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -1060,17 +1102,34 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSURL class]]);
+        
         WPWebViewController *webViewController          = segue.destinationViewController;
         webViewController.url                           = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[Blog class]]);
+        
         StatsViewController *statsViewController        = segue.destinationViewController;
         statsViewController.blog                        = (Blog *)sender;
         
+    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderCommentsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
+        
+        ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
+        [commentsViewController setAllowsPushingPostDetails:YES];
+        [commentsViewController setupWithPostID:postID siteID:siteID];        
+        
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
-        NSArray *parameters                             = (NSArray *)sender;
-        NSNumber *siteID                                = parameters.firstObject;
-        NSNumber *postID                                = parameters.lastObject;
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
@@ -1170,7 +1229,6 @@ static NSInteger NotificationSectionCount               = 1;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
-    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 
