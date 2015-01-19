@@ -1,6 +1,25 @@
 #import "WhatsNewView.h"
 #import <QuartzCore/QuartzCore.h>
 
+@interface WhatsNewView ()
+#pragma mark - Properties: Outlets
+
+/**
+ *  @brief      The details to show below the title.
+ */
+@property (nonatomic, copy, readwrite) IBOutlet UITextView* details;
+
+/**
+ *  @brief      The image to show on top of the view.
+ */
+@property (nonatomic, copy, readwrite) IBOutlet UIImageView* image;
+
+/**
+ *  @title      The title for the new features.
+ */
+@property (nonatomic, copy, readwrite) IBOutlet UITextView* title;
+@end
+
 @implementation WhatsNewView
 
 #pragma mark - Initializers
@@ -31,9 +50,9 @@
 
 #pragma mark - Init helpers
 
-- (void)setupOutletsWithImage:image
-                        title:title
-                      details:details
+- (void)setupOutletsWithImage:(UIImage*)image
+                        title:(NSString*)title
+                      details:(NSString*)details
 {
     NSAssert([details isKindOfClass:[UIImage class]],
              @"The WhatsNewView needs details to show.");
@@ -42,9 +61,16 @@
     NSAssert([title isKindOfClass:[NSString class]],
              @"The WhatsNewView needs an title to show.");
     
-    _details = details;
-    _image = image;
-    _title = title;
+    NSAssert([_details isKindOfClass:[UITextView class]],
+             @"Details outlet not wired.");
+    NSAssert([_image isKindOfClass:[UIImageView class]],
+             @"Image outlet not wired.");
+    NSAssert([_details isKindOfClass:[UITextView class]],
+             @"Details outlet not wired.");
+    
+    _details.text = details;
+    _image.image = image;
+    _title.text = title;
 }
 
 @end
