@@ -6,22 +6,22 @@
  */
 @interface WhatsNewView : UIView
 
-#pragma mark - Properties: on screen
+#pragma mark - Properties: Outlets
 
 /**
  *  @brief      The details to show below the title.
  */
-@property (nonatomic, copy, readonly) NSString* details;
+@property (nonatomic, copy, readonly) IBOutlet UITextView* details;
 
 /**
  *  @brief      The image to show on top of the view.
  */
-@property (nonatomic, copy, readonly) UIImage* image;
+@property (nonatomic, copy, readonly) IBOutlet UIImageView* image;
 
 /**
  *  @title      The title for the new features.
  */
-@property (nonatomic, copy, readonly) NSString* title;
+@property (nonatomic, copy, readonly) IBOutlet UITextView* title;
 
 #pragma mark - Initialization
 
