@@ -12,17 +12,8 @@
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
-    },
-    {
-      "idiom" : "ipad",
-      "scale" : "1x",
-      "filename" : "icon-tab-newpost~ipad.png"
-    },
-    {
-      "idiom" : "ipad",
-      "scale" : "2x",
-      "filename" : "icon-tab-newpost@2x~ipad.png"
+      "scale" : "3x",
+      "filename" : "icon-tab-newpost@3x.png"
     }
   ],
   "info" : {

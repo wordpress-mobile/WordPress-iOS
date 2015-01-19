@@ -13,7 +13,7 @@
 #import "MediaService.h"
 #import "WPMediaUploader.h"
 #import "WPUploadStatusButton.h"
-#import "WordPressAppDelegate.h"
+#import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
@@ -204,7 +204,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         if (self.navigationItem.titleView != titleButton){
             self.navigationItem.titleView = titleButton;
         }
-    } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if (blogCount <= 1 || self.editMode == EditPostViewControllerModeEditPost || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
         self.navigationItem.titleView = nil;
         self.navigationItem.title = [self editorTitle];
     } else {
@@ -666,7 +666,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)didSaveNewPost
 {
     if (_editMode == EditPostViewControllerModeNewPost) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+        [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
 
