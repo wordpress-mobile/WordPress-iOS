@@ -378,7 +378,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
 
-    if (![self hasChanges]) {
+    if (![self.post hasUnsavedChanges]) {
         [WPAnalytics track:WPAnalyticsStatEditorClosed];
         [self discardChanges];
         [self dismissEditView];
@@ -479,11 +479,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
-- (BOOL)hasChanges
-{
-    return [self.post hasChanged];
-}
-
 #pragma mark - UI Manipulation
 
 - (void)refreshButtons
@@ -524,7 +519,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         self.navigationItem.rightBarButtonItem.title = buttonTitle;
     }
 
-    BOOL updateEnabled = self.hasChanges || self.post.remoteStatus == AbstractPostRemoteStatusFailed;
+    BOOL updateEnabled = [self.post canSave];
     [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
 }
 
@@ -1076,7 +1071,18 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-        return picker.selectedAssets.count < MaximumNumberOfPictures;
+        // If the image is from a shared photo stream it may not be available locally to be used
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.") withSupportButton:NO];
+            return NO;
+        }
+        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
+            [WPError showAlertWithTitle:nil
+                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]  withSupportButton:NO];
+            return NO;
+        }
+        return YES;
     }
 
     return YES;
