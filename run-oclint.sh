@@ -2,7 +2,7 @@
 source ~/.bash_profile
 
 check_file="$1"
-oclint_args="-rc LONG_LINE=120 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75"
+oclint_args="-rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 
 hash oclint &> /dev/null
 if [ $? -eq 1 ]; then
