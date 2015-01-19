@@ -25,7 +25,7 @@ if [ -d WordPress.xcworkspace ]; then
     xcode_workspace="WordPress.xcworkspace"
     pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
-    # we're running the script from Xcode
+    echo "[*] we're running the script from Xcode"
     xcode_workspace="../WordPress.xcworkspace"
     pipe_command="| sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'"
 else
@@ -34,9 +34,17 @@ else
     exit 1
 fi
 
-xcodebuild -sdk "iphonesimulator7.1" \
+echo "[*] Cleaning project"
+xcodebuild clean \
+           -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
-           -workspace $xcode_workspace -configuration Debug -scheme WordPress clean build \
+           -workspace $xcode_workspace -configuration Debug -scheme WordPress
+
+echo "[*] Building project"
+xcodebuild build \
+           -sdk "iphonesimulator8.1" \
+           CONFIGURATION_BUILD_DIR=$build_dir \
+           -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
            | tee ${xcodebuild_log_path}
 
