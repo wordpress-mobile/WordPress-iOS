@@ -593,8 +593,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationMedia *media        = [userBlock.media firstObject];
     BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
     BOOL hasHomeTitle               = (userBlock.metaTitlesHome.length > 0);
-    
-    NSAssert(userBlock, nil);
+
+    NSAssert(userBlock, @"Missing User Block for Notification %@", self.note.simperiumKey);
     
     __weak __typeof(self) weakSelf  = self;
     
@@ -622,8 +622,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
-    NSAssert(commentBlock, nil);
-    NSAssert(userBlock, nil);
+    NSAssert(commentBlock, @"Missing Comment Block for Notification %@", self.note.simperiumKey);
+    NSAssert(userBlock,    @"Missing User Block for Notification %@",    self.note.simperiumKey);
     
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
@@ -705,7 +705,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *imageBlock   = blockGroup.blocks.firstObject;
-    NSAssert(imageBlock, nil);
+    NSAssert(imageBlock, @"Missing Image Block for Notification %@", self.note.simperiumKey);
     
     NotificationMedia *media        = imageBlock.media.firstObject;
     cell.isBadge                    = media.isBadge;
@@ -720,7 +720,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
-    NSAssert(textBlock, nil);
+    NSAssert(textBlock, @"Missing Text Block for Notification %@", self.note.simperiumKey);
     
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
