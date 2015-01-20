@@ -896,6 +896,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)insertMedia:(Media *)media
 {
+    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+    
     NSString *prefix = @"<br /><br />";
 
     if (self.post.content == nil || [self.post.content isEqualToString:@""]) {
