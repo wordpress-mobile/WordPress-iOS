@@ -5,10 +5,9 @@ xcode_scheme: WordPress
 xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
-before_install:
-  - gem install cocoapods && pod install
 install:
-- gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+  - gem install cocoapods && pod install
+  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 script:
-- set -o pipefail && xcodebuild build -workspace "$TRAVIS_XCODE_WORKSPACE" -scheme "$TRAVIS_XCODE_SCHEME" -sdk "$TRAVIS_XCODE_SDK" ONLY_ACTIVE_ARCH=NO | xcpretty -c
-- ./Scripts/run-oclint.sh
+  - ./Scripts/build.sh
+  - ./Scripts/run-oclint.sh
