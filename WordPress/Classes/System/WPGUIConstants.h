@@ -1,5 +1,10 @@
 #import <Foundation/Foundation.h>
 
-@interface WPGUIConstants : NSObject
+extern const CGFloat WPAlphaFull;
+extern const CGFloat WPAlphaZero;
 
-@end
+extern const CGFloat WPColorFull;
+extern const CGFloat WPColorZero;
+
+extern const CGFloat WPAnimationDurationDefault;
+extern const CGFloat WPAnimationDurationFast;

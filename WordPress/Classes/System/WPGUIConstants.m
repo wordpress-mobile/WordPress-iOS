@@ -1,5 +1,10 @@
 #import "WPGUIConstants.h"
 
-@implementation WPGUIConstants
+const CGFloat WPAlphaFull = 1.0f;
+const CGFloat WPAlphaZero = 0.0f;
 
-@end
+const CGFloat WPColorFull = 1.0f;
+const CGFloat WPColorZero = 0.0f;
+
+const CGFloat WPAnimationDurationDefault = 0.33f;
+const CGFloat WPAnimationDurationFast = 0.15f;
