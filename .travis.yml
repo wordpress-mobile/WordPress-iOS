@@ -5,6 +5,9 @@ xcode_scheme: WordPress
 xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
+before_install:
+  - brew update
+  - brew outdated xctool || brew upgrade xctool
 install:
   - gem install cocoapods && pod install
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet

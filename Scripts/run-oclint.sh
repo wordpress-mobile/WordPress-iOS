@@ -26,6 +26,7 @@ if [ $? -eq 1 ]; then
 fi
 
 oclint --version
+xctool --version
 
 echo "[*] cleaning up generated files"
 [[ -f $compile_commands_path ]] && rm ${compile_commands_path}
