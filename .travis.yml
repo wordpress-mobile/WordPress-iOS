@@ -6,7 +6,7 @@ xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
 before_install:
-  - gem install cocoapods
+  - gem install cocoapods && pod install
 install:
 - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 script:
