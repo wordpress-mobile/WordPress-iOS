@@ -10,5 +10,5 @@ before_install:
 install:
 - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 script:
-- set -o pipefail && xcodebuild build -workspace "$XCWORKSPACE" -scheme "$scheme" -sdk "$XCSDK" ONLY_ACTIVE_ARCH=NO | xcpretty -c
+- set -o pipefail && xcodebuild build -workspace "$TRAVIS_XCODE_WORKSPACE" -scheme "$TRAVIS_XCODE_SCHEME" -sdk "$TRAVIS_XCODE_SDK" ONLY_ACTIVE_ARCH=NO | xcpretty -c
 - ./Scripts/run-oclint.sh
