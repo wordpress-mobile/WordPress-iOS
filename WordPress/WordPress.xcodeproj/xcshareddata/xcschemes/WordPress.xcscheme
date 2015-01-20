@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
-               BuildableName = "WordPress.app"
-               BlueprintName = "WordPress"
+               BlueprintIdentifier = "93E5283919A7741A003A1A9C"
+               BuildableName = "WordPressTodayWidget.appex"
+               BlueprintName = "WordPressTodayWidget"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,9 +28,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "93E5283919A7741A003A1A9C"
-               BuildableName = "WordPressTodayWidget.appex"
-               BlueprintName = "WordPressTodayWidget"
+               BlueprintIdentifier = "1D6058900D05DD3D006BFB54"
+               BuildableName = "WordPress.app"
+               BlueprintName = "WordPress"
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
