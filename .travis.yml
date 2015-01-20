@@ -12,5 +12,5 @@ install:
   - gem install cocoapods && pod install
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 script:
-  - .Scripts/build.sh
+  - ./Scripts/build.sh
   - ./Scripts/run-oclint.sh
