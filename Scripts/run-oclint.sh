@@ -2,7 +2,7 @@
 source ~/.bash_profile
 
 check_file="$1"
-oclint_args="-rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
+oclint_args="-list-enabled-rules -disable-rule=ShortVariableName -disable-rule=LongLine -rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
 compile_commands_path=${temp_dir}/compile_commands.json
@@ -73,7 +73,7 @@ if [ $check_file ]; then
     exclude_files="-e *"
 else
     include_files=""
-    exclude_files="-e Pods/ -e Vendor/"
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/"
 fi
 
 eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
