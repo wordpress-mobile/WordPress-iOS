@@ -58,7 +58,6 @@ echo "[*] Building project"
 xctool build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
-           -derivedDataPath=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
            -reporter json-compilation-database:$compile_commands_path
