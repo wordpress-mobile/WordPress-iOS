@@ -35,8 +35,10 @@
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
 #import "PostsViewController.h"
+#import "WPBackgroundDimmerView.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPostViewController.h"
+#import "WPWhatsNewView.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
@@ -444,6 +446,19 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
     [self initializeAppTracking];
+    
+    //TODO: complete this
+    if (![self noBlogsAndNoWordPressDotComAccount]) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            
+            WPBackgroundDimmerView* dimmerView = [[WPBackgroundDimmerView alloc] init];
+            
+            [self.window addSubview:dimmerView];
+            
+            [dimmerView showAnimated:YES completion:nil];
+        });
+    }
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder

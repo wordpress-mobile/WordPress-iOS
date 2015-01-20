@@ -1,6 +1,9 @@
 #import "WPBackgroundDimmerView.h"
+#import "WPGUIConstants.h"
 
 typedef void(^AnimatableTransitionBlock)();
+
+const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.8f;
 
 @implementation WPBackgroundDimmerView
 
@@ -13,6 +16,7 @@ typedef void(^AnimatableTransitionBlock)();
                  @"We're expecting the superview to be an object of class UIView.");
         
         self.frame = newSuperview.bounds;
+        self.backgroundColor = [UIColor clearColor];
     }
 }
 
@@ -22,11 +26,11 @@ typedef void(^AnimatableTransitionBlock)();
           completion:(WPBackgroundDimmerCompletionBlock)completion
 {
     AnimatableTransitionBlock hideTransitionBlock = ^void() {
-        self.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.0f];
+        self.backgroundColor = [UIColor clearColor];
     };
     
     [self transitionWithBlock:hideTransitionBlock
-                     duration:1.0f
+                     duration:WPAnimationDurationFast
                    completion:completion
                      animated:animated];
 }
@@ -35,11 +39,12 @@ typedef void(^AnimatableTransitionBlock)();
           completion:(WPBackgroundDimmerCompletionBlock)completion
 {
     AnimatableTransitionBlock showTransitionBlock = ^void() {
-        self.backgroundColor = [UIColor colorWithWhite:1.0f alpha:0.5f];
+        self.backgroundColor = [UIColor colorWithWhite:WPColorZero
+                                                 alpha:WPBackgroundDimmerViewAlphaVisible];
     };
     
     [self transitionWithBlock:showTransitionBlock
-                     duration:1.0f
+                     duration:WPAnimationDurationFast
                    completion:completion
                      animated:animated];
 }
