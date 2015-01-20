@@ -2,7 +2,7 @@
 source ~/.bash_profile
 
 check_file="$1"
-oclint_args="-list-enabled-rules -disable-rule=ShortVariableName -disable-rule=LongLine -rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
+oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
 compile_commands_path=${temp_dir}/compile_commands.json
@@ -69,9 +69,11 @@ cd ${temp_dir}
 echo "[*] starting analyzing"
 
 if [ $check_file ]; then
+    echo "[*] Single Files $check_file";
     include_files="-i $check_file"
     exclude_files="-e *"
 else
+    echo "[*] All project files";
     include_files=""
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/"
 fi
