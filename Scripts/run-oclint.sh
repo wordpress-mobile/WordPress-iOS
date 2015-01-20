@@ -75,7 +75,7 @@ if [ $check_file ]; then
 else
     echo "[*] All project files";
     include_files=""
-    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m"
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
 
 eval "oclint-json-compilation-database -v $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
