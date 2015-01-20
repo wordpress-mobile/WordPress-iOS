@@ -11,6 +11,9 @@ before_install:
 install:
   - gem install cocoapods && pod install
   - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+before_script:
+  - oclint --version
+  - xctool --version
+  - xcodebuild -version 
 script:
-  - ./Scripts/build.sh
   - ./Scripts/run-oclint.sh

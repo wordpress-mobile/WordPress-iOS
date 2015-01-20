@@ -1,6 +1,6 @@
 #!/bin/sh
 source ~/.bash_profile
-
+printenv
 check_file="$1"
 oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=UnusedMethodParameter -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 temp_dir="/tmp"

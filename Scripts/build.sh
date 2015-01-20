@@ -1,7 +1,2 @@
-#show version of tools available
-oclint --version
-xctool --version
-xcodebuild -version
-
 echo "xcodebuild build -workspace $TRAVIS_XCODE_WORKSPACE -scheme $TRAVIS_XCODE_SCHEME -sdk $TRAVIS_XCODE_SDK"
 xctool build test -workspace "$TRAVIS_XCODE_WORKSPACE" -scheme "$TRAVIS_XCODE_SCHEME" -sdk "$TRAVIS_XCODE_SDK"
