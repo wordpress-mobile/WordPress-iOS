@@ -3,16 +3,20 @@ source ~/.bash_profile
 
 check_file="$1"
 oclint_args="-rc LONG_LINE=300 -rc SHORT_VARIABLE_NAME=1 -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
+temp_dir="/tmp"
+build_dir="${temp_dir}/WPiOS_linting"
+compile_commands_path=${temp_dir}/compile_commands.json
+xcodebuild_log_path=${temp_dir}/xcodebuild.log
 
 if [ "${TRAVIS}" = "true" ]; then
   echo "[*] installing travis"
   pushd .
-  cd /tmp
+  cd ${temp_dir}
   curl http://archives.oclint.org/releases/0.8/oclint-0.8.1-x86_64-darwin-14.0.0.tar.gz > oclint.tar.gz
   tar -zxvf oclint.tar.gz
-  OCLINT_HOME=/tmp/oclint-0.8.1
+  OCLINT_HOME=${temp_dir}/oclint-0.8.1
   export PATH=$OCLINT_HOME/bin:$PATH
-  popd .
+  popd
 fi
 
 hash oclint &> /dev/null
@@ -22,11 +26,6 @@ if [ $? -eq 1 ]; then
 fi
 
 oclint --version
-
-temp_dir="/tmp"
-build_dir="${temp_dir}/WPiOS_linting"
-compile_commands_path=${temp_dir}/compile_commands.json
-xcodebuild_log_path=${temp_dir}/xcodebuild.log
 
 echo "[*] cleaning up generated files"
 [[ -f $compile_commands_path ]] && rm ${compile_commands_path}
