@@ -1582,6 +1582,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
         [self stopTrackingProgressOfMediaWithId:imageUniqueId];
         [self refreshNavigationBarButtons:NO];
@@ -1632,6 +1633,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
                 NSProgress *uploadProgress = nil;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
                     [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
                     [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                     [strongSelf refreshNavigationBarButtons:NO];
