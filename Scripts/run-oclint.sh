@@ -27,6 +27,7 @@ fi
 
 oclint --version
 xctool --version
+xcodebuild -version
 
 echo "[*] cleaning up generated files"
 [[ -f $compile_commands_path ]] && rm ${compile_commands_path}
@@ -78,5 +79,5 @@ else
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/"
 fi
 
-eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
+eval "oclint-json-compilation-database -v $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
 exit 0
