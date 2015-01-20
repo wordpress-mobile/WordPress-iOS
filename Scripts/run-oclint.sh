@@ -35,23 +35,23 @@ else
 fi
 
 echo "[*] Cleaning project"
-xcodebuild clean \
+xctool clean \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress
 
 echo "[*] Building project"
-xcodebuild build \
+xctool build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
            -derivedDataPath=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
-           | tee ${xcodebuild_log_path}
+           -reporter json-compilation-database:$compile_commands_path
 
-echo "[*] transforming xcodebuild.log into compile_commands.json..."
+#echo "[*] transforming xcodebuild.log into compile_commands.json..."
 cd ${temp_dir}
-oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
+#oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
 
 echo "[*] starting analyzing"
 
