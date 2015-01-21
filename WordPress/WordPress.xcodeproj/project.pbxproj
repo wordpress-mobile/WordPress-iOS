@@ -3183,7 +3183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../run-oclint.sh";
+			shellScript = "# sh ../run-oclint.sh <optional: filename to lint>\nsh ../Scripts/run-oclint.sh";
 		};
 		B500E3B71A3B18770071ABA8 /* App Installation Failed Workaround */ = {
 			isa = PBXShellScriptBuildPhase;
