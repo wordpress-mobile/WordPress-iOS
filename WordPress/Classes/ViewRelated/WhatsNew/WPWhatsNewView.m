@@ -3,6 +3,7 @@
 #import "WPGUIConstants.h"
 
 static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
+static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
 
 @interface WPWhatsNewView ()
 #pragma mark - Properties: Outlets
@@ -54,19 +55,22 @@ static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
 #pragma mark - Showing & hiding
 
 - (void)hideAnimated:(BOOL)animated
+          completion:(WPWhatsNewAnimationCompleteBlock)completion
 {
     [UIView animateWithDuration:WPAnimationDurationFast
                           delay:0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         self.transform = CGAffineTransformMakeScale(0.01, 0.01);
                          self.alpha = WPAlphaZero;
-                     } completion:nil];
+                     } completion:completion];
 }
 
 - (void)showAnimated:(BOOL)animated
+          completion:(WPWhatsNewAnimationCompleteBlock)completion
 {
-    self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+    self.transform = CGAffineTransformScale(CGAffineTransformIdentity,
+                                            WPWhatsNewShowAnimationMagnificationScale,
+                                            WPWhatsNewShowAnimationMagnificationScale);
     self.alpha = WPAlphaZero;
     
     [UIView animateWithDuration:WPAnimationDurationFaster
@@ -76,7 +80,31 @@ static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
     {
         self.transform = CGAffineTransformIdentity;
         self.alpha = WPAlphaFull;
-    } completion:nil];
+    } completion:completion];
+}
+
+#pragma mark - IBActions
+
+/**
+ *  @brief      Action to dismiss the popup.
+ *
+ *  @param      sender      The outlet that called this action.
+ */
+- (IBAction)dismissPopup:(id)sender
+{
+    __weak __typeof(self) weakSelf = self;
+    
+    [self hideAnimated:YES
+            completion:^(BOOL finished)
+    {
+        __strong __typeof(weakSelf) strongSelf = weakSelf;
+        
+        [strongSelf removeFromSuperview];
+        
+        if (strongSelf.dismissBlock) {
+            strongSelf.dismissBlock();
+        }
+    }];
 }
 
 @end

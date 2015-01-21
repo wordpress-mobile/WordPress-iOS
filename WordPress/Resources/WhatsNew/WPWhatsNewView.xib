@@ -52,6 +52,9 @@
                         <color key="titleColor" red="0.054901960784313725" green="0.45098039215686275" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
+                    <connections>
+                        <action selector="dismissPopup:" destination="iN0-l3-epB" eventType="touchUpInside" id="9jl-7L-b7m"/>
+                    </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rZt-IM-vJ7">
                     <rect key="frame" x="20" y="8" width="220" height="64"/>
