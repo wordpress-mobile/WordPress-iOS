@@ -564,14 +564,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (buttonIndex == 1) {
         // Remove items from post only, in attached media state
         if ([self showAttachedMedia]) {
-            [_selectedMedia enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            [self.selectedMedia enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ShouldRemoveMedia" object:obj];
                 [self.post.media removeObject:obj];
             }];
-            _allMedia = self.post.media.allObjects;
+            self.allMedia = self.post.media.allObjects;
             self.filteredMedia = _allMedia;
             [self toggleNoMediaView:(self.post.media.count == 0)];
-            [_selectedMedia removeAllObjects];
+            [self.selectedMedia removeAllObjects];
             [self showMultiselectOptions];
             return;
         }
@@ -609,14 +609,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             [self.loadingView removeFromSuperview];
         }];
 
-        [_selectedMedia removeAllObjects];
+        [self.selectedMedia removeAllObjects];
         [self showMultiselectOptions];
     }
 }
 
 - (void)showMultiselectOptions
 {
-    if (_selectedMedia.count == 0) {
+    if (self.selectedMedia.count == 0) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
             self.multiselectToolbar.frame = (CGRect) {
                 .origin = CGPointMake(self.multiselectToolbar.frame.origin.x, CGRectGetMaxY(self.collectionView.frame)),
