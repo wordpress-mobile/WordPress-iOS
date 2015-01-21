@@ -10,17 +10,17 @@ static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
 /**
  *  @brief      The details to show below the title.
  */
-@property (nonatomic, copy, readwrite) IBOutlet UITextView* details;
+@property (nonatomic, weak, readwrite) IBOutlet UITextView* details;
 
 /**
  *  @brief      The image to show on top of the view.
  */
-@property (nonatomic, copy, readwrite) IBOutlet UIImageView* imageView;
+@property (nonatomic, weak, readwrite) IBOutlet UIImageView* imageView;
 
 /**
  *  @title      The title for the new features.
  */
-@property (nonatomic, copy, readwrite) IBOutlet UITextView* title;
+@property (nonatomic, weak, readwrite) IBOutlet UITextView* title;
 @end
 
 @implementation WPWhatsNewView
