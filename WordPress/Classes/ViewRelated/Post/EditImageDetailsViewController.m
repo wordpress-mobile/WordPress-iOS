@@ -418,7 +418,7 @@ typedef enum {
         [WPStyleGuide configureTableViewCell:cell];
 
     } else if (indexPath.row == 1) {
-        return [self linkCellForIndexPath:indexPath];
+        cell = [self linkCellForIndexPath:indexPath];
         cell.tag = ImageDetailsRowLink;
         ((UITableViewTextFieldCell *)cell).textField.tag = ImageDetailsTextFieldLink;
 
