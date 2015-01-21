@@ -523,10 +523,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         _selectedMedia = [NSMutableDictionary dictionary];
     }
 
-    if (!_selectedMedia[media.mediaID]) {
-        if (media.mediaID) {
-            [_selectedMedia setObject:media forKey:media.mediaID];
-        }
+    if (!_selectedMedia[media.mediaID] && media.mediaID) {
+        [_selectedMedia setObject:media forKey:media.mediaID];
     }
 
     [self showMultiselectOptions];
@@ -1089,125 +1087,129 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 {
     [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
 
-     if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
+     if ([info[@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
         self.currentVideo = [info mutableCopy];
         if (!self.selectingDeviceFromLibrary) {
             [self processRecordedVideo];
         } else {
         [self performSelectorOnMainThread:@selector(processLibraryVideo) withObject:nil waitUntilDone:NO];
         }
-    } else if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]) {
-        UIImage *image = [info valueForKey:@"UIImagePickerControllerOriginalImage"];
+         return;
+    } else if ([info [@"UIImagePickerControllerMediaType"] isEqualToString:@"public.image"]){
+        UIImage *image = info[@"UIImagePickerControllerOriginalImage"];
         if (picker.sourceType == UIImagePickerControllerSourceTypeCamera) {
             UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
         }
-        _currentImage = image;
-
-        //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
-        NSURL *assetURL = info[UIImagePickerControllerReferenceURL];
-        
-        if (assetURL) {
-            [self getMetadataFromAssetForURL:assetURL];
-        } else {
-            NSDictionary *metadata = nil;
-            if (&UIImagePickerControllerMediaMetadata != NULL) {
-                metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-            }
-            if (metadata) {
-                NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
-                NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
-                if ([self.post isKindOfClass:[Post class]]) {
-                    Post *post = (Post *)self.post;
-                    if (!gpsData && post.geolocation) {
-                        /*
-                         Sample GPS data dictionary
-                         "{GPS}" =     {
-                         Altitude = 188;
-                         AltitudeRef = 0;
-                         ImgDirection = "84.19556";
-                         ImgDirectionRef = T;
-                         Latitude = "41.01333333333333";
-                         LatitudeRef = N;
-                         Longitude = "0.01666666666666";
-                         LongitudeRef = W;
-                         TimeStamp = "10:34:04.00";
-                         };
-                         */
-                        CLLocationDegrees latitude = post.geolocation.latitude;
-                        CLLocationDegrees longitude = post.geolocation.longitude;
-                        NSDictionary *gps = @{@"Latitude": [NSNumber numberWithDouble:fabs(latitude)],
-                                              @"LatitudeRef": (latitude < 0.0) ? @"S" : @"N",
-                                              @"Longitude": [NSNumber numberWithDouble:fabs(longitude)],
-                                              @"LongitudeRef": (longitude < 0.0) ? @"W" : @"E"};
-                        [mutableMetadata setObject:gps forKey:@"{GPS}"];
-                    }
-                    [mutableMetadata removeObjectForKey:@"Orientation"];
-                    [mutableMetadata removeObjectForKey:@"{TIFF}"];
-                    self.currentImageMetadata = mutableMetadata;
-                }
-            }
-        }
-
-        NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
-        [nf setNumberStyle:NSNumberFormatterDecimalStyle];
-        NSNumber *resizePreference = [NSNumber numberWithInt:-1];
-        if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil) {
-            resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
-        }
-        BOOL showResizeActionSheet = NO;
-        switch ([resizePreference intValue]) {
-            case 0:
-            {
-                showResizeActionSheet = YES;
-                break;
-            }
-            case 1:
-            {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
-                break;
-            }
-            case 2:
-            {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
-                break;
-            }
-            case 3:
-            {
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
-                break;
-            }
-            case 4:
-            {
-                //[self useImage:currentImage];
-                [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
-                break;
-            }
-            default:
-            {
-                showResizeActionSheet = YES;
-                break;
-            }
-        }
-
-        if (_addPopover) {
-            [_addPopover dismissPopoverAnimated:YES];
-            _addPopover = nil;
-            [self showResizeActionSheet];
-        } else {
-            [self.navigationController dismissViewControllerAnimated:YES completion:^{
-                if (showResizeActionSheet) {
-                    [self showResizeActionSheet];
-                }
-            }];
-        }
-
-        if (IS_IPAD){
-            [_addPopover dismissPopoverAnimated:YES];
-            _addPopover = nil;
-        }
-
-        [self refresh];
+        self.currentImage = image;
+        [self processImage:info];
     }
+}
+
+- (void)processImage:(NSDictionary *)info
+{
+    
+    //UIImagePickerControllerReferenceURL = "assets-library://asset/asset.JPG?id=1000000050&ext=JPG").
+    NSURL *assetURL = info[UIImagePickerControllerReferenceURL];
+    
+    if (assetURL) {
+        [self getMetadataFromAssetForURL:assetURL];
+    } else {
+        NSDictionary *metadata = info[UIImagePickerControllerMediaMetadata];
+        
+        if (metadata) {
+            NSMutableDictionary *mutableMetadata = [metadata mutableCopy];
+            NSDictionary *gpsData = [mutableMetadata objectForKey:@"{GPS}"];
+            if ([self.post isKindOfClass:[Post class]]) {
+                Post *post = (Post *)self.post;
+                if (!gpsData && post.geolocation) {
+                    /*
+                     Sample GPS data dictionary
+                     "{GPS}" =     {
+                     Altitude = 188;
+                     AltitudeRef = 0;
+                     ImgDirection = "84.19556";
+                     ImgDirectionRef = T;
+                     Latitude = "41.01333333333333";
+                     LatitudeRef = N;
+                     Longitude = "0.01666666666666";
+                     LongitudeRef = W;
+                     TimeStamp = "10:34:04.00";
+                     };
+                     */
+                    CLLocationDegrees latitude = post.geolocation.latitude;
+                    CLLocationDegrees longitude = post.geolocation.longitude;
+                    NSDictionary *gps = @{@"Latitude": [NSNumber numberWithDouble:fabs(latitude)],
+                                          @"LatitudeRef": (latitude < 0.0) ? @"S" : @"N",
+                                          @"Longitude": [NSNumber numberWithDouble:fabs(longitude)],
+                                          @"LongitudeRef": (longitude < 0.0) ? @"W" : @"E"};
+                    [mutableMetadata setObject:gps forKey:@"{GPS}"];
+                }
+                [mutableMetadata removeObjectForKey:@"Orientation"];
+                [mutableMetadata removeObjectForKey:@"{TIFF}"];
+                self.currentImageMetadata = mutableMetadata;
+            }
+        }
+    }
+    
+    NSNumberFormatter *nf = [[NSNumberFormatter alloc] init];
+    [nf setNumberStyle:NSNumberFormatterDecimalStyle];
+    NSNumber *resizePreference = [NSNumber numberWithInt:-1];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"] != nil) {
+        resizePreference = [nf numberFromString:[[NSUserDefaults standardUserDefaults] objectForKey:@"media_resize_preference"]];
+    }
+    BOOL showResizeActionSheet = NO;
+    switch ([resizePreference intValue]) {
+        case 0:
+        {
+            showResizeActionSheet = YES;
+            break;
+        }
+        case 1:
+        {
+            [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeSmall]];
+            break;
+        }
+        case 2:
+        {
+            [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeMedium]];
+            break;
+        }
+        case 3:
+        {
+            [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeLarge]];
+            break;
+        }
+        case 4:
+        {
+            //[self useImage:currentImage];
+            [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeOriginal]];
+            break;
+        }
+        default:
+        {
+            showResizeActionSheet = YES;
+            break;
+        }
+    }
+    
+    if (self.addPopover) {
+        [self.addPopover dismissPopoverAnimated:YES];
+        self.addPopover = nil;
+        [self showResizeActionSheet];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:^{
+            if (showResizeActionSheet) {
+                [self showResizeActionSheet];
+            }
+        }];
+    }
+    
+    if (IS_IPAD){
+        [self.addPopover dismissPopoverAnimated:YES];
+        self.addPopover = nil;
+    }
+    
+    [self refresh];
 }
 
 - (void)processLibraryVideo
@@ -1393,43 +1395,43 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (videoURL != nil) {
         // Copy the video from temp to blog directory
         NSError *error = nil;
-        if ((attributes = [fileManager attributesOfItemAtPath:videoURL error:nil]) != nil) {
-            if ([fileManager isReadableFileAtPath:videoURL]) {
-                copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
-            }
+        attributes = [fileManager attributesOfItemAtPath:videoURL error:nil];
+        if (attributes && [fileManager isReadableFileAtPath:videoURL]) {
+            copySuccess = [fileManager copyItemAtPath:videoURL toPath:filepath error:&error];
         }
     }
 
-    if (copySuccess) {
-        videoMedia = [Media newMediaForBlog:self.blog];
-
-        videoMedia.creationDate = [NSDate date];
-        [videoMedia setFilename:filename];
-        [videoMedia setLocalURL:filepath];
-
-        videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
-        videoMedia.mediaType = MediaTypeVideo;
-        videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
-        videoMedia.length = [NSNumber numberWithFloat:duration];
-        CGImageRef cgVideoThumbnail = thumbnail.CGImage;
-        NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
-        NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
-        videoMedia.width = @(videoWidth);
-        videoMedia.height = @(videoHeight);
-
-        [videoMedia uploadWithSuccess:^{
-            if ([videoMedia isDeleted]) {
-                NSLog(@"Media deleted while uploading (%@)", videoMedia);
-                return;
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:videoMedia];
-            [videoMedia save];
-        } failure:^(NSError *error) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
-        }];
-    } else {
+    if (!copySuccess) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error Copying Video", nil) message:NSLocalizedString(@"There was an error copying the video for upload. Please try again.", nil)];
+        return;
     }
+    
+    videoMedia = [Media newMediaForBlog:self.blog];
+
+    videoMedia.creationDate = [NSDate date];
+    [videoMedia setFilename:filename];
+    [videoMedia setLocalURL:filepath];
+
+    videoMedia.filesize = [NSNumber numberWithInt:([[attributes objectForKey: NSFileSize] intValue]/1024)];
+    videoMedia.mediaType = MediaTypeVideo;
+    videoMedia.thumbnail = UIImageJPEGRepresentation(videoThumbnail, 1.0);
+    videoMedia.length = [NSNumber numberWithFloat:duration];
+    CGImageRef cgVideoThumbnail = thumbnail.CGImage;
+    NSUInteger videoWidth = CGImageGetWidth(cgVideoThumbnail);
+    NSUInteger videoHeight = CGImageGetHeight(cgVideoThumbnail);
+    videoMedia.width = @(videoWidth);
+    videoMedia.height = @(videoHeight);
+
+    [videoMedia uploadWithSuccess:^{
+        if ([videoMedia isDeleted]) {
+            NSLog(@"Media deleted while uploading (%@)", videoMedia);
+            return;
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:MediaShouldInsertBelowNotification object:videoMedia];
+        [videoMedia save];
+    } failure:^(NSError *error) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Upload failed", nil) message:error.localizedDescription];
+    }];
 }
 
 /*
