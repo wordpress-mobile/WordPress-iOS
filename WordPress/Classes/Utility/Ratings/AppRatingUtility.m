@@ -5,6 +5,8 @@
 
 @property (nonatomic, assign) NSUInteger systemWideSignificantEventCountRequiredForPrompt;
 @property (nonatomic, strong) NSMutableDictionary *sections;
+@property (nonatomic, strong) NSMutableDictionary *disabledSections;
+@property (nonatomic, assign) BOOL allPromptingDisabled;
 
 @end
 
@@ -23,11 +25,14 @@ NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 
+NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
+
 - (instancetype)init
 {
     self = [super init];
     if (self) {
         _sections = [NSMutableDictionary dictionary];
+        _disabledSections = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -40,6 +45,50 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     });
     
     return _sharedAppRatingUtility;
+}
+
++ (void)resetReviewPromptDisabledStatus
+{
+    AppRatingUtility *appRatingUtility = [AppRatingUtility sharedInstance];
+    appRatingUtility.allPromptingDisabled = NO;
+    [appRatingUtility.disabledSections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        appRatingUtility.disabledSections[key] = @(NO);
+    }];
+}
+
++ (void)checkIfAppReviewPromptsHaveBeenDisabled:(void (^)(void))success failure:(void (^)(void))failure;
+{
+    NSURL *url = [NSURL URLWithString:AppReviewPromptDisabledUrl];
+    NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];
+    AFHTTPRequestOperation* operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        DDLogVerbose(@"App Review Prompt Throttling Response Received : %@", responseObject);
+        
+        NSDictionary *responseDictionary = (NSDictionary *)responseObject;
+        AppRatingUtility *appRatingUtility = [AppRatingUtility sharedInstance];
+        appRatingUtility.allPromptingDisabled = [responseDictionary[@"all-disabled"] boolValue];
+        
+        [appRatingUtility.disabledSections enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+            NSString *disabledKey = [NSString stringWithFormat:@"%@-disabled", key];
+            BOOL disableSection = [responseDictionary[disabledKey] boolValue];
+            appRatingUtility.disabledSections[key] = @(disableSection);
+        }];
+        
+        if (success) {
+            success();
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        // Let's be optimistic and turn off throttling by default if this call doesn't work
+        [self resetReviewPromptDisabledStatus];
+        
+        if (failure) {
+            failure();
+        }
+    }];
+
+    [operation start];
 }
 
 
@@ -63,7 +112,6 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     else
     {
         // Restarting tracking for new version of app
-        
         BOOL interactedWithAppReviewPromptInPreviousVersion = [self interactedWithAppReviewPrompt];
         
         [userDefaults setObject:version forKey:AppRatingCurrentVersion];
@@ -76,6 +124,8 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDislikedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingLikedCurrentVersion];
+        
+        [self resetReviewPromptDisabledStatus];
         
         if (interactedWithAppReviewPromptInPreviousVersion) {
             NSInteger numberOfVersionsSkippedPrompting = [userDefaults integerForKey:AppRatingNumberOfVersionsSkippedPrompting];
@@ -100,7 +150,13 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 + (void)registerSection:(NSString *)section withSignificantEventCount:(NSUInteger)significantEventCount
 {
     [[AppRatingUtility sharedInstance].sections setObject:@(significantEventCount) forKey:section];
+    
+    // Lets setup a entry for the section in the `disabledSections` dictionary
+    if ([[AppRatingUtility sharedInstance].disabledSections objectForKey:section] == nil) {
+        [[AppRatingUtility sharedInstance].disabledSections setObject:@(NO) forKey:section];
+    }
 }
+
 
 + (void)unregisterAllSections
 {
@@ -184,6 +240,10 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
         return NO;
     }
     
+    if ([AppRatingUtility sharedInstance].allPromptingDisabled) {
+        return NO;
+    }
+    
     NSUInteger significantEventCount = [self systemWideSignificantEventCount];
     NSUInteger numberOfSignificantEventsRequiredForPrompt = [AppRatingUtility sharedInstance].systemWideSignificantEventCountRequiredForPrompt;
     
@@ -210,6 +270,11 @@ NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
     [self assertValidSection:section];
     
     if ([self interactedWithAppReviewPrompt]) {
+        return NO;
+    }
+    
+    AppRatingUtility *appRatingUtility = [AppRatingUtility sharedInstance];
+    if (appRatingUtility.allPromptingDisabled || [appRatingUtility.disabledSections[section] boolValue]) {
         return NO;
     }
     

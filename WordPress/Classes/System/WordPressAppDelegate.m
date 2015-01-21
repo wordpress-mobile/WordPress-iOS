@@ -634,9 +634,14 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 - (void)initializeAppTracking
 {
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [AppRatingUtility registerSection:@"Notifications" withSignificantEventCount:5];
+    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
+    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+        DDLogVerbose(@"Was able to successfully retrieve data about whether to disable the app review prompts");
+    } failure:^{
+        DDLogError(@"Was unable to retrieve data about whether to disable the app review prompts");
+    }];
 }
 
 - (void)trackLowMemory
