@@ -1,8 +1,14 @@
 #import "WPBackgroundDimmerView.h"
 #import "WPGUIConstants.h"
 
+/**
+ *  @brief      A block that contains an animatable (as in UIView animations) set of instructions.
+ */
 typedef void(^AnimatableTransitionBlock)();
 
+/**
+ *  @brief      The alpha value for when this view is visible.
+ */
 const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.8f;
 
 @implementation WPBackgroundDimmerView
