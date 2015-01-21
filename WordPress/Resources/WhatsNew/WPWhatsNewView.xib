@@ -5,11 +5,13 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <customFonts key="customFonts">
+        <mutableArray key="OpenSans-Bold.ttf">
+            <string>OpenSans-Bold</string>
+        </mutableArray>
         <mutableArray key="OpenSans-Light.ttf">
             <string>OpenSans-Light</string>
         </mutableArray>
         <mutableArray key="OpenSans-Semibold.ttf">
-            <string>OpenSans-Semibold</string>
             <string>OpenSans-Semibold</string>
         </mutableArray>
     </customFonts>
@@ -22,30 +24,30 @@
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Share your Story!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-xg-ets" userLabel="Title Text View">
                     <rect key="frame" x="20" y="80" width="220" height="35"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="35" id="sug-n5-6nx"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="18"/>
+                    <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Yo-lx-1UL" userLabel="Details Text View">
-                    <rect key="frame" x="20" y="123" width="220" height="113"/>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="20" y="123" width="220" height="119"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcP-jy-MXs" userLabel="Separator Line View">
-                    <rect key="frame" x="0.0" y="244" width="260" height="1"/>
-                    <color key="backgroundColor" red="0.83921568627450982" green="0.88235294117647056" blue="0.9137254901960784" alpha="1" colorSpace="calibratedRGB"/>
+                    <rect key="frame" x="0.0" y="250" width="260" height="1"/>
+                    <color key="backgroundColor" red="0.57024998383178827" green="0.5725490196078431" blue="0.56380973514078536" alpha="0.5" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="WRy-k8-iUa"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JiN-6m-R2d">
-                    <rect key="frame" x="0.0" y="244" width="260" height="67"/>
+                    <rect key="frame" x="0.0" y="251" width="260" height="60"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="67" id="q6a-Ez-UNQ"/>
+                        <constraint firstAttribute="height" constant="60" id="q6a-Ez-UNQ"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans-Semibold" family="Open Sans" pointSize="15"/>
                     <state key="normal" title="Great, thanks!">
@@ -70,7 +72,7 @@
                     </variation>
                 </imageView>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="5qs-xg-ets" firstAttribute="top" secondItem="rZt-IM-vJ7" secondAttribute="bottom" constant="8" symbolic="YES" id="22A-It-gGX"/>
                 <constraint firstAttribute="trailing" secondItem="JiN-6m-R2d" secondAttribute="trailing" id="2cB-rS-7Kj"/>
@@ -78,7 +80,7 @@
                 <constraint firstAttribute="bottom" secondItem="vcP-jy-MXs" secondAttribute="bottom" id="5Ov-Tj-6cg"/>
                 <constraint firstItem="5qs-xg-ets" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="9Vw-We-JJv"/>
                 <constraint firstAttribute="centerX" secondItem="5qs-xg-ets" secondAttribute="centerX" id="BvM-yd-760"/>
-                <constraint firstAttribute="bottom" secondItem="vcP-jy-MXs" secondAttribute="bottom" constant="66" id="EAH-d0-Irz"/>
+                <constraint firstAttribute="bottom" secondItem="vcP-jy-MXs" secondAttribute="bottom" constant="60" id="EAH-d0-Irz"/>
                 <constraint firstAttribute="trailing" secondItem="vcP-jy-MXs" secondAttribute="trailing" id="KLq-ha-GMZ"/>
                 <constraint firstItem="7Yo-lx-1UL" firstAttribute="top" secondItem="rZt-IM-vJ7" secondAttribute="bottom" constant="8" symbolic="YES" id="Ohw-Ee-36q"/>
                 <constraint firstAttribute="centerX" secondItem="rZt-IM-vJ7" secondAttribute="centerX" id="R0J-rh-FVe"/>
