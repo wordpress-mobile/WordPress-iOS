@@ -39,10 +39,15 @@ typedef void(^WPWhatsNewDismissBlock)();
 #pragma mark - Properties: Blocks
 
 /**
+ *  @brief      This block will be called right before the popup is dismissed.  Can be nil.
+ */
+@property (nonatomic, copy, readwrite) WPWhatsNewDismissBlock willDismissBlock;
+
+/**
  *  @brief      This block will be called after the popup is dismissed and removed from the
  *              superview.  Can be nil.
  */
-@property (nonatomic, copy, readwrite) WPWhatsNewDismissBlock dismissBlock;
+@property (nonatomic, copy, readwrite) WPWhatsNewDismissBlock didDismissBlock;
 
 #pragma mark - Showing & hiding
 
@@ -53,7 +58,8 @@ typedef void(^WPWhatsNewDismissBlock)();
  *                          instantaneous.
  *  @param      completion  The block that will be executed after the view is hidden.  Can be nil.
  */
-- (void)hide;
+- (void)hideAnimated:(BOOL)animated
+          completion:(WPWhatsNewAnimationCompleteBlock)completion;
 
 /**
  *  @brief      Shows the view.
