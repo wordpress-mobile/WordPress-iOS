@@ -93,10 +93,11 @@ if [ $TRAVIS ]; then
     echo
     echo --------------------------
     echo The following warnings seem to be introduced by your branch:
-    diff -u baseLint.log currentLint.log > /tmp/checkstyle.diff
-    cat /tmp/checkstyle.diff | grep "^+" | grep -v "^+++" || echo Yay no new style errors!!
-    echo Style errors removed:
-    cat /tmp/checkstyle.diff | grep "^-" | wc -l
+    diff -u baseLint.log currentLint.log 
+    #> /tmp/checkstyle.diff
+    #cat /tmp/checkstyle.diff | grep "^+" | grep -v "^+++" || echo Yay no new style errors!!
+    #echo Style errors removed:
+    #cat /tmp/checkstyle.diff | grep "^-" | wc -l
 else 
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
     exit $?

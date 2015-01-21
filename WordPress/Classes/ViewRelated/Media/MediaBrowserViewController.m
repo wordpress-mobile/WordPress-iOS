@@ -32,7 +32,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 @property (nonatomic, strong) NSArray *filteredMedia, *allMedia;
 @property (nonatomic, strong) NSArray *mediaTypeFilterOptions, *dateFilteringOptions;
 @property (nonatomic, strong) NSMutableDictionary *selectedMedia;
-@property (nonatomic, weak) UIRefreshControl *refreshHeaderView;
+@property (nonatomic, strong) UIRefreshControl *refreshHeaderView;
 @property (nonatomic, weak) UIActionSheet *currentActionSheet, *changeOrientationActionSheet, *resizeActionSheet;
 @property (nonatomic, strong) UIImagePickerController *picker;
 @property (nonatomic, strong) UIPopoverController *addPopover;
@@ -109,11 +109,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [self.collectionView addSubview:_filterHeaderView];
     _filterHeaderView.delegate = self;
 
-    UIRefreshControl *refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
-    _refreshHeaderView = refreshHeaderView;
-    [_refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
-    _refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
-    [self.collectionView addSubview:_refreshHeaderView];
+    self.refreshHeaderView = [[UIRefreshControl alloc] initWithFrame:CGRectMake(0.0f, 0.0f - self.collectionView.bounds.size.height, self.collectionView.frame.size.width, self.collectionView.bounds.size.height)];
+    [self.refreshHeaderView addTarget:self action:@selector(refreshControlTriggered:) forControlEvents:UIControlEventValueChanged];
+    self.refreshHeaderView.tintColor = [WPStyleGuide whisperGrey];
+    [self.collectionView addSubview:self.refreshHeaderView];
 
     UIBarButtonItem *addMediaButton;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
@@ -214,7 +213,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     [blogService syncMediaLibraryForBlog:self.blog success:^{
-        [_refreshHeaderView endRefreshing];
+        [self.refreshHeaderView endRefreshing];
         [self setUploadButtonEnabled:YES];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to refresh media library %@", error);
@@ -222,7 +221,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         if (error.code == 401) {
             [self setUploadButtonEnabled:NO];
         }
-        [_refreshHeaderView endRefreshing];
+        [self.refreshHeaderView endRefreshing];
     }];
 #endif
 }
