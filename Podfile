@@ -47,5 +47,5 @@ target :WordPressTest, :exclusive => true do
 end
 
 target 'UITests', :exclusive => true do
-    pod 'KIF', :git => 'https://github.com/SergioEstevao/KIF.git', :branch => 'issue/470-AccessibilityIdentifier'
+    pod 'KIF/IdentifierTests', '~>3.1'
 end

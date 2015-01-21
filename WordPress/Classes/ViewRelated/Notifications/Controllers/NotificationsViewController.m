@@ -8,6 +8,7 @@
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "WPNoResultsView.h"
+#import "WPTabBarController.h"
 
 #import "Notification.h"
 #import "Meta.h"
@@ -353,9 +354,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)updateTabBarBadgeNumber
 {
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
-    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
-    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
- 
+    UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[WPTabNotifications];
+
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
 
