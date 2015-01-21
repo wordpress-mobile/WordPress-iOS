@@ -63,7 +63,7 @@ xctool build \
 if [ $TRAVIS ]; then
     echo "[*] Only files changed on push";    
     include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`    
-    if [!-z $include_files]; then
+    if [! -z "$include_files" ]; then
       include_files = "-i "$include_files
     fi
     echo "[*] $include_files"
