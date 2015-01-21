@@ -5,24 +5,29 @@ extern const CGFloat PostHeaderViewAvatarSize;
 @interface ReaderPostHeaderView : UIView
 
 /**
- Set's the image to display as the avatar.
-
- @param image A UIImage with a width and height equal to `WPContentAttributionViewAvatarSize`
+ A ReaderPostHeaderCallback block to be executed whenever the user pressed this view.
  */
-- (void)setAvatarImage:(UIImage *)image;
+typedef void (^ReaderPostHeaderCallback)(void);
+@property (nonatomic, copy) ReaderPostHeaderCallback onClick;
 
 /**
- Set's the title to display.
-
- @param image A UIImage with a width and height equal to `WPContentAttributionViewAvatarSize`
+ A BOOL indicating whether if this view should display a disclosure indicator, or not.
  */
-- (void)setTitle:(NSString *)title;
+@property (nonatomic, assign) BOOL showsDisclosureIndicator;
 
 /**
- Set's the title to display.
-
- @param image A UIImage with a width and height equal to `WPContentAttributionViewAvatarSize`
+ A UIImage instance to be displayed as the User's avatar.
  */
-- (void)setSubtitle:(NSString *)title;
+@property (nonatomic, strong) UIImage *avatarImage;
+
+/**
+ A NSString representing the header's title.
+ */
+@property (nonatomic, strong) NSString *title;
+
+/**
+ A NSString representing the header's subtitle.
+ */
+@property (nonatomic, strong) NSString *subtitle;
 
 @end

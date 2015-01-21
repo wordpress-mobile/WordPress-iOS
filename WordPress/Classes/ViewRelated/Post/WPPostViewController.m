@@ -28,10 +28,12 @@
 #import "WordPressAppDelegate.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPBlogSelectorButton.h"
+#import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
 #import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
 #import "WPTableViewCell.h"
+#import "WPTabBarController.h"
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 
@@ -1070,6 +1072,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelButton = button;
     return _cancelButton;
 }
@@ -1086,6 +1089,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
 	return _cancelButton;
 }
 
@@ -1143,6 +1147,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         button.removeDefaultLeftSpacing = YES;
         button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
 	
 	return _previewBarButtonItem;
@@ -1199,7 +1204,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if(blogCount <= 1 || ![self isPostLocal] || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
         aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
@@ -1405,7 +1410,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)didSaveNewPost
 {
     if ([self isPostLocal]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+        [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
 
@@ -1628,6 +1633,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
         [self stopTrackingProgressOfMediaWithId:imageUniqueId];
         [self refreshNavigationBarButtons:NO];
@@ -1678,6 +1684,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
                 NSProgress *uploadProgress = nil;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
                     [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
                     [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                     [strongSelf refreshNavigationBarButtons:NO];
@@ -2033,12 +2040,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         // If the image is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This image is currently not available locally to be used in your post. Please try again later.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")];
+                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
-        return picker.selectedAssets.count < MaximumNumberOfPictures;
-    } else {
+        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
+            [WPError showAlertWithTitle:nil
+                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures] withSupportButton:NO];
+            return NO;
+        }
         return YES;
+    } else {
+        return NO;
     }
 }
 
