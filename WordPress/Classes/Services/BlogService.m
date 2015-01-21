@@ -217,8 +217,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    if ([self shouldBatchRequestsForBlog:blog]) {
-        [self batchSyncBlog:blog];
+    if ([self shouldStaggerRequestsForBlog:blog]) {
+        [self syncBlogStaggeringRequests:blog];
         return;
     }
 
@@ -249,7 +249,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
 }
 
-- (void)batchSyncBlog:(Blog *)blog
+- (void)syncBlogStaggeringRequests:(Blog *)blog
 {
     __weak __typeof(self) weakSelf = self;
 
@@ -283,23 +283,23 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 // Batch requests to sites using basic http auth to avoid auth failures in certain cases.
 // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/3016
-- (BOOL)shouldBatchRequestsForBlog:(Blog *)blog
+- (BOOL)shouldStaggerRequestsForBlog:(Blog *)blog
 {
     if (blog.account.isWpcom || blog.jetpackAccount) {
         return NO;
     }
 
-    __block BOOL batch = NO;
+    __block BOOL stagger = NO;
     NSURL *url = [NSURL URLWithString:blog.url];
     [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
         [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
             if ([[ps host] isEqualToString:[url host]]) {
-                batch = YES;
+                stagger = YES;
                 stop = YES;
             }
         }];
     }];
-    return batch;
+    return stagger;
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
