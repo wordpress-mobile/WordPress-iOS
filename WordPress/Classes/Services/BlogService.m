@@ -293,7 +293,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     NSURL *url = [NSURL URLWithString:blog.url];
     [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
         [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
-            DDLogVerbose(@"Removing credential %@ for %@", [credential user], [ps host]);
             if ([[ps host] isEqualToString:[url host]]) {
                 batch = YES;
                 stop = YES;
