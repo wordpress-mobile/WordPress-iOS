@@ -65,6 +65,9 @@ if [ $TRAVIS ]; then
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
     base_commit+="^"
+    sha=`$TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
+    full_sha=`git rev-parse $sha`
+    echo $full_sha
     if [ ! -z "$include_files" ]; then
       include_files="-i "$include_files      
     else
@@ -116,10 +119,7 @@ if [ $TRAVIS ]; then
     done
     # sending message to github
     travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
-    echo $travis_url
-    sha=`$TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
-    full_sha=`git rev-parse $sha`
-    echo $full_sha
+    echo $travis_url    
     if [[ $errors -eq 0 ]]; then
       state="success"
       message="OCLinted OK!"

@@ -677,10 +677,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 {
     // Apply the filters IFF we didn't insert. Having a filter selected for
     // a month other than the current, results in no visual for the upload
-    if (_shouldUpdateFromContextChange) {
-        _allMedia = controller.fetchedObjects;
-        self.filteredMedia = _allMedia;
-        if (_mediaInserted) {
+    if (self.shouldUpdateFromContextChange) {
+        self.allMedia = controller.fetchedObjects;
+        self.filteredMedia = self.allMedia;
+        if (self.mediaInserted) {
             [self clearMonthFilter];
             [self clearSearchFilter];
         } else {
