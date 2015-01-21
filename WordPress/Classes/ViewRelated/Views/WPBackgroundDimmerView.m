@@ -9,7 +9,7 @@ typedef void(^AnimatableTransitionBlock)();
 /**
  *  @brief      The alpha value for when this view is visible.
  */
-const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.8f;
+const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.4f;
 
 @implementation WPBackgroundDimmerView
 
