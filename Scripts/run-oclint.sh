@@ -107,15 +107,29 @@ if [ $TRAVIS ]; then
       if [[ currentTotalSummary[$i] -gt baseTotalSummary[$i] ]]; then
         amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
         errors+=$amount
-        echo "Your changes introduced "$amount "P"$(($i+1))" error(s)"        
+        echo "Your changes introduced "$amount "P"$(($i+1))" issue(s)"        
       else
         amount=$((${baseTotalSummary[$i]} - ${currentTotalSummary[$i]}))
-        echo "Your changes removed "$amount "P"$(($i+1))" error(s)"
+        echo "Your changes removed "$amount "P"$(($i+1))" issue(s)"
       fi
       let i++
     done
+    # sending message to github
+    travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
+    sha=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
+    if [[ $errors -eq 0]]; then
+      state="success"
+      message="OCLinted OK!"
+    else
+      state="failure"
+      message="OCLint detected new issues!"
+    fi
+    curl -i -H "Content-Type: application/json" \
+      -H "Authorization: token ${giHubToken}" \
+      -d '{"state": "${state}","target_url": "${travis_url}","description": "${message}","context": "continuous-integration/oclint"}' \
+      https://api.github.com/repos/${TRAVIS_REPO_SLUG}/statuses/$sha
 
-    exit $errors      
+    exit 0      
 else 
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
     exit $?

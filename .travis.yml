@@ -6,13 +6,16 @@ xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
 before_install:
-  - brew update
-  - brew outdated xctool || brew upgrade xctool
+- brew update
+- brew outdated xctool || brew upgrade xctool
 install:
-  - gem install cocoapods && pod install
-  - gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+- gem install cocoapods && pod install
+- gem install xcpretty --no-rdoc --no-ri --no-document --quiet
 before_script:
-  - xctool --version
-  - xcodebuild -version 
+- xctool --version
+- xcodebuild -version
 script:
-  - ./Scripts/run-oclint.sh
+- ./Scripts/run-oclint.sh
+env:
+  global:
+    secure: Sw3dwkuh9QjVYvvxcVnVN/wHGlhGjAsJjmEfGfqKMJZusdbNCU6tIZ7nmU2cVHDhozoPG4bHK62FgOmc1PhANyEQLe7eICh+G9djr0VP6Rd4/LLbv052dqpSrshwzFLDHCUvjTfEiJsTbQeuQYX2zQqFqvxV5eOnFkMoG4vK7rQ=
