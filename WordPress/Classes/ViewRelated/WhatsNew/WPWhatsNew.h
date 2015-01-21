@@ -6,6 +6,9 @@
  *              popup.
  *  @details    This class was added to remove the What's New code from the app delegate by
  *              modularizing the componet.
+ *  @todo       Analyze the possibility of making this a UIViewController subclass.  Right now it's
+ *              difficult to tell if that's needed as this class has no use after showing the
+ *              What's New dialog.
  */
 @interface WPWhatsNew : NSObject
 

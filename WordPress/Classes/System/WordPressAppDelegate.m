@@ -446,16 +446,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self trackApplicationOpened];
     [self initializeAppTracking];
     
-    if (![self noBlogsAndNoWordPressDotComAccount]) {
-        // TODO: reduce delayed dispatch time before releasing...
-        //
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            
-            WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
-            
-            [whatsNew show];
-        });
-    }
+    [self showWhatsNewIfNeeded];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -583,11 +574,17 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
+    __weak __typeof(self) weakSelf = self;
+    
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
     loginViewController.cancellable = NO;
     loginViewController.dismissBlock = ^{
-        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        __strong __typeof(weakSelf) strongSelf = self;
+        
+        [strongSelf.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        [strongSelf showWhatsNewIfNeeded];
     };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
@@ -1569,6 +1566,40 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)didReceiveNotificationCount:(NSInteger)count
 {
     // Note: Empty method, just so silence compiler warning.
+}
+
+#pragma mark - What's new
+
+/**
+ *  @brief      Shows the What's New popup if needed.
+ *  @details    Takes care of saving the user defaults that signal that What's New was already
+ *              shown.  Also adds a slight delay before showing anything.  Also does nothing if
+ *              the user is not logged in.
+ */
+- (void)showWhatsNewIfNeeded
+{
+    if (![self noBlogsAndNoWordPressDotComAccount]) {
+        
+        static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+        static const CGFloat WhatsNewShowDelay = 1.0f;
+        
+        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+        
+        BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+        
+        if (!whatsNewAlreadyShown) {
+            // TODO: reduce delayed dispatch time before releasing...
+            //
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                
+                WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                
+                [whatsNew show];
+                
+                [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+            });
+        }
+    }
 }
 
 @end
