@@ -136,7 +136,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (![self showAttachedMedia]) {
         self.resultsController.delegate = self;
         [self.resultsController performFetch:nil];
-        self.filteredMedia = _allMedia = _resultsController.fetchedObjects;
+        self.filteredMedia = self.allMedia = self.resultsController.fetchedObjects;
     }
 
     [self refresh];
@@ -147,8 +147,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    if (_currentActionSheet) {
-        [_currentActionSheet dismissWithClickedButtonIndex:_currentActionSheet.cancelButtonIndex animated:YES];
+    if (self.currentActionSheet) {
+        [self.currentActionSheet dismissWithClickedButtonIndex:self.currentActionSheet.cancelButtonIndex animated:YES];
     }
     if (_addPopover) {
         [_addPopover dismissPopoverAnimated:YES];

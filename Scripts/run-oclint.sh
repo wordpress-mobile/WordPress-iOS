@@ -85,19 +85,35 @@ cd ${temp_dir}
 echo "[*] starting analyzing"
 
 if [ $TRAVIS ]; then
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | sed s/:[0-9]*:[0-9]*://g > currentLint.log
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > currentLint.log
     cd ${TRAVIS_BUILD_DIR}
     git checkout $base_commit
     cd ${temp_dir}
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | sed s/:[0-9]*:[0-9]*://g > baseLint.log
-    echo
-    echo --------------------------
-    echo The following warnings seem to be introduced by your branch:
-    diff -u baseLint.log currentLint.log 
-    #> /tmp/checkstyle.diff
-    #cat /tmp/checkstyle.diff | grep "^+" | grep -v "^+++" || echo Yay no new style errors!!
-    #echo Style errors removed:
-    #cat /tmp/checkstyle.diff | grep "^-" | wc -l
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > baseLint.log
+    currentSummary=`cat currentLint.log | grep "Summary: "`
+    baseSummary=`cat baseLint.log | grep "Summary: "`
+    regex='P1=([[:digit:]]*) P2=([[:digit:]]*) P3=([[:digit:]]*)' 
+    if [[ $currentSummary =~ $regex ]]; then
+       currentTotalSummary=( ${BASH_REMATCH[1]} ${BASH_REMATCH[2]} ${BASH_REMATCH[3]})   
+    fi
+    if [[ $baseSummary =~ $regex ]]; then
+       baseTotalSummary=( ${BASH_REMATCH[1]} ${BASH_REMATCH[2]} ${BASH_REMATCH[3]})
+    fi
+    diff=0;
+    i=0
+    n=3
+    while [[ $i -lt $n ]]
+    do
+      if [[ currentTotalSummary[$i] -gt baseTotalSummary[$i] ]]; then
+        amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
+        diff+=$amount
+        echo "Your changes introduced "$amount "P"$(($i+1))" error(s)"
+      else
+        echo "Your changes removed "$amount "P"$(($i+1))" error(s)"
+      fi
+      let i++
+    done
+    exit $diff      
 else 
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
     exit $?
