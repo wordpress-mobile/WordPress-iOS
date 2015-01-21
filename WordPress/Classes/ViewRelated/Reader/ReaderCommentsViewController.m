@@ -64,6 +64,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @end
 
 
@@ -389,7 +390,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
     
     // TableView Contraints
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
@@ -408,6 +409,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                          multiplier:1.0
                                                            constant:0.0]];
 
+    self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:self.replyTextView
+                                                                      attribute:NSLayoutAttributeBottom
+                                                                     multiplier:1.0
+                                                                       constant:0.0];
+    
+    [self.view addConstraint:self.replyTextViewBottomConstraint];
+    
     if ([UIDevice isPad]) {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
                                                                           options:0
@@ -692,12 +703,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:bottomInset];
-
+    self.replyTextViewBottomConstraint.constant = bottomInset;
     [self.view layoutIfNeeded];
 
     [UIView commitAnimations];
@@ -717,12 +723,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [UIView setAnimationDuration:[userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue]];
     [UIView setAnimationCurve:[userInfo[UIKeyboardAnimationCurveUserInfoKey] intValue]];
 
-    [self.view updateConstraintWithFirstItem:self.view
-                                  secondItem:self.replyTextView
-                          firstItemAttribute:NSLayoutAttributeBottom
-                         secondItemAttribute:NSLayoutAttributeBottom
-                                    constant:0];
-
+    self.replyTextViewBottomConstraint.constant = 0;
     [self.view layoutIfNeeded];
 
     [UIView commitAnimations];
