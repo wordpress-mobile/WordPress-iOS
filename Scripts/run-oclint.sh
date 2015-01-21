@@ -62,12 +62,14 @@ xctool build \
 
 if [ $TRAVIS ]; then
     echo "[*] Only files changed on push";    
-    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`    
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"    
     if [ ! -z "$include_files" ]; then
-      include_files= "-i "$include_files
+      include_files="-i "$include_files      
+    else
+      exclude_files="*"
     fi
     echo "[*] $include_files"
-    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 else
     echo "[*] All project files";
     include_files=""
