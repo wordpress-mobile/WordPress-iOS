@@ -3,16 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "icon-tab-blogs.png"
+      "filename" : "disclosure-chevron.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "icon-tab-blogs@2x.png"
+      "filename" : "disclosure-chevron@2x.png"
     },
     {
       "idiom" : "universal",
-      "scale" : "3x"
+      "scale" : "3x",
+      "filename" : "disclosure-chevron@3x.png"
     }
   ],
   "info" : {

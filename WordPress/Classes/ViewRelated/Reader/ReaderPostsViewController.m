@@ -25,6 +25,7 @@
 #import "WPAnimatedBox.h"
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
+#import "WPTabBarController.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -74,7 +75,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController];
+    return [[WPTabBarController sharedInstance] readerPostsViewController];
 }
 
 
@@ -534,6 +535,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else {
+        [cell.postView setFeaturedImage:nil];
         [self.featuredImageSource fetchImageForURL:imageURL
                                           withSize:[self sizeForFeaturedImage]
                                          indexPath:indexPath
