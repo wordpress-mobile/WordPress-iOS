@@ -57,7 +57,7 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
     }];
 }
 
-+ (void)checkIfAppReviewPromptsHaveBeenDisabled:(void (^)(void))success failure:(void (^)(void))failure;
++ (void)checkIfAppReviewPromptsHaveBeenDisabled:(AppRatingCompletionBlock)success failure:(AppRatingCompletionBlock)failure;
 {
     NSURL *url = [NSURL URLWithString:AppReviewPromptDisabledUrl];
     NSURLRequest *request = [[NSURLRequest alloc] initWithURL:url];

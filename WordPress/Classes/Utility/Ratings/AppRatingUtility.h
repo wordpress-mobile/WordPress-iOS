@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+typedef void (^AppRatingCompletionBlock)();
+
 /**
  This class will help track whether or not a user should be prompted for an app 
  review. This class is loosely based on Appirater 
@@ -22,7 +24,7 @@
  *  @param success called on successfully retrieving the details
  *  @param failure called when we were unable to retrieve the details
  */
-+ (void)checkIfAppReviewPromptsHaveBeenDisabled:(void (^)(void))success failure:(void (^)(void))failure;
++ (void)checkIfAppReviewPromptsHaveBeenDisabled:(AppRatingCompletionBlock)success failure:(AppRatingCompletionBlock)failure;
 
 /**
  *  Registers a granular section to be tracked.
