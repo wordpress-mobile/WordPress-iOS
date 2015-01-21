@@ -684,8 +684,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             [self clearMonthFilter];
             [self clearSearchFilter];
         } else {
-            [self applyFilterWithSearchText:_currentSearchText];
-            [self applyMonthFilterForMonth:_currentFilterMonth];
+            [self applyFilterWithSearchText:self.currentSearchText];
+            [self applyMonthFilterForMonth:self.currentFilterMonth];
         }
     }
 }
@@ -730,7 +730,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        if (_currentActionSheet) {
+        if (self.currentActionSheet) {
             return;
         }
 
@@ -746,16 +746,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             addMediaActionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", nil) destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"Add Photo From Library", nil), nil];
         }
 
-        _currentActionSheet = addMediaActionSheet;
+        self.currentActionSheet = addMediaActionSheet;
 
         if (IS_IPAD) {
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
-            [_currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
+            [self.currentActionSheet showFromBarButtonItem:barButtonItem animated:YES];
         } else {
             if (self.presentingViewController) {
-                [_currentActionSheet showInView:self.view];
+                [self.currentActionSheet showInView:self.view];
             } else {
-                [_currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+                [self.currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
             }
         }
     }
@@ -763,9 +763,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (_resizeActionSheet) {
+    if (self.resizeActionSheet) {
         [self processResizeSelection:buttonIndex actionSheet:actionSheet];
-        _resizeActionSheet = nil;
+        self.resizeActionSheet = nil;
         return;
     }
 

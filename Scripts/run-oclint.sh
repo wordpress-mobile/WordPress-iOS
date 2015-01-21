@@ -65,7 +65,7 @@ if [ $TRAVIS ]; then
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
     base_commit+="^"
-    sha=`$TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
+    sha=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
     full_sha=`git rev-parse $sha`
     echo $full_sha
     if [ ! -z "$include_files" ]; then
