@@ -13,6 +13,7 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "Blog.h"
+#import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
 #import "WPTabBarController.h"
@@ -330,11 +331,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         if (indexPath.row == 0) {
             // App Version
             cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appversion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+            NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
 #if DEBUG
-            appversion = [appversion stringByAppendingString:@" (DEV)"];
+            appVersion = [appVersion stringByAppendingString:@" (DEV)"];
 #endif
-            cell.detailTextLabel.text = appversion;
+            cell.detailTextLabel.text = appVersion;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == 1) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -441,7 +442,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (MFMailComposeViewController *)feedbackMailViewController
 {
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:(NSString*)kCFBundleVersionKey];
+    NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
     NSString *device = [UIDeviceHardware platformString];
     NSString *locale = [[NSLocale currentLocale] localeIdentifier];
     NSString *iosVersion = [[UIDevice currentDevice] systemVersion];
