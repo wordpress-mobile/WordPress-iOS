@@ -26,21 +26,25 @@
 - (void)show
 {
     //TODO: complete this
-    /*
-     if (![self noBlogsAndNoWordPressDotComAccount]) {
+/*
+    UIWindow* keyWindow = [[UIApplication sharedApplication] keyWindow];
+    NSAssert([keyWindow isKindOfClass:[UIWindow class]],
+             @"We're expecting the application window to exist when this method is called.");
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Title"
+                                                                                 message:@"Message"
+                                                                          preferredStyle:UIAlertControllerStyleAlert];
      
-     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-     UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Title"
-     message:@"Message"
-     preferredStyle:UIAlertControllerStyleAlert];
+        [alertController addAction:[UIAlertAction actionWithTitle:@"Great, thanks!"
+                                                            style:UIActionSheetStyleAutomatic
+                                                          handler:^(UIAlertAction *action)
+        {
+            [keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        }]];
      
-     [alertController addAction:[UIAlertAction actionWithTitle:@"Great, thanks!" style:UIActionSheetStyleAutomatic handler:^(UIAlertAction *action) {
-     [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-     }]];
-     
-     [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
-     });
-     }*/
+        [keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
+     });*/
 
     NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSAssert(versionString,
@@ -54,13 +58,14 @@
     // TEMPORARY: remove before final commit...
     if (!appHasWhatsNewInfo) {
         whatsNewTitle = @"Share your story.";
-        whatsNewDetails = @"Share your story.";
+        whatsNewDetails = (@"We have exciting new updates to the WordPress editor. If you"
+                           "haven't blogged in a while, try it out by creating a new post.");
         appHasWhatsNewInfo = YES;
     }
     
     if (appHasWhatsNewInfo) {
         
-        UIImage* image = [UIImage imageNamed:@"attachment"];
+        UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
         
         [self showWithTitle:whatsNewTitle details:whatsNewDetails image:image];
     }
