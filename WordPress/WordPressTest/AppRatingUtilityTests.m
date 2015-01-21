@@ -221,7 +221,7 @@
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
     }];
-    [self waitForExpectationsWithTimeout:0.1 handler:nil];
+    [self waitForExpectationsWithTimeout:0.5 handler:nil];
     
     // We shouldn't disable the check when the remote check indicates everything is enabled
     XCTAssertTrue([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
@@ -241,7 +241,7 @@
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
     }];
-    [self waitForExpectationsWithTimeout:0.1 handler:nil];
+    [self waitForExpectationsWithTimeout:0.5 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
@@ -261,7 +261,7 @@
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
     }];
-    [self waitForExpectationsWithTimeout:0.1 handler:nil];
+    [self waitForExpectationsWithTimeout:0.5 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
@@ -283,7 +283,7 @@
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
     }];
-    [self waitForExpectationsWithTimeout:0.1 handler:nil];
+    [self waitForExpectationsWithTimeout:0.5 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);
