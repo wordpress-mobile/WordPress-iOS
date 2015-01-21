@@ -646,7 +646,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    _isScrollingFast = NO;
+    self.isScrollingFast = NO;
     [self.collectionView.visibleCells enumerateObjectsUsingBlock:^(MediaBrowserCell *obj, NSUInteger idx, BOOL *stop) {
         [obj loadThumbnail];
     }];
@@ -654,8 +654,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    _isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
-    _lastScrollOffset = self.collectionView.contentOffset.y;
+    self.isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
+    self.lastScrollOffset = self.collectionView.contentOffset.y;
 }
 
 #pragma mark - FetchedResultsController
@@ -666,11 +666,11 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
      forChangeType:(NSFetchedResultsChangeType)type
       newIndexPath:(NSIndexPath *)newIndexPath
 {
-    _shouldUpdateFromContextChange = (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove);
+    self.shouldUpdateFromContextChange = (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert || type == NSFetchedResultsChangeMove);
     if (type == NSFetchedResultsChangeDelete || type == NSFetchedResultsChangeInsert) {
         [self clearGeneratedMonthFilters];
     }
-    _mediaInserted = (type == NSFetchedResultsChangeInsert);
+    self.mediaInserted = (type == NSFetchedResultsChangeInsert);
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller

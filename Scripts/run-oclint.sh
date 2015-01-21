@@ -116,7 +116,10 @@ if [ $TRAVIS ]; then
     done
     # sending message to github
     travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
-    sha=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
+    echo $travis_url
+    sha=`$TRAVIS_COMMIT_RANGE | cut -d '.' -f 4`
+    full_sha=`git rev-parse $sha`
+    echo $full_sha
     if [[ $errors -eq 0 ]]; then
       state="success"
       message="OCLinted OK!"
@@ -126,8 +129,8 @@ if [ $TRAVIS ]; then
     fi
     curl -i -H "Content-Type: application/json" \
       -H "Authorization: token ${TRAVIS_OCLINT_GITHUB_TOKEN}" \
-      -d '{"state": "${state}","target_url": "${travis_url}","description": "${message}","context": "continuous-integration/oclint"}' \
-      https://api.github.com/repos/${TRAVIS_REPO_SLUG}/statuses/$sha
+      -d "{\"state\": \"${state}\",\"target_url\": \"${travis_url}\",\"description\": \"${message}\",\"context\": \"continuous-integration/oclint\"}" \
+      https://api.github.com/repos/${TRAVIS_REPO_SLUG}/statuses/$full_sha
 
     exit 0      
 else 
