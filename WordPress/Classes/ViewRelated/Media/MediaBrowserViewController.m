@@ -1544,7 +1544,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
     CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
     CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
-    switch (_currentImage.imageOrientation) {
+    switch (self.currentImage.imageOrientation) {
         case UIImageOrientationLeft:
         case UIImageOrientationLeftMirrored:
         case UIImageOrientationRight:
@@ -1557,17 +1557,17 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             break;
     }
 
-    CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height);
+    CGSize originalSize = CGSizeMake(self.currentImage.size.width, self.currentImage.size.height);
 
     // Resize the image using the selected dimensions
     UIImage *resizedImage = original;
     CGSize resizeToBounds = originalSize;
 
     if (resize == MediaResizeSmall &&
-        (_currentImage.size.width > smallSize.width  || _currentImage.size.height > smallSize.height)) {
+        (_currentImage.size.width > smallSize.width  || self.currentImage.size.height > smallSize.height)) {
         resizeToBounds = smallSize;
     } else if (resize == MediaResizeMedium &&
-               (_currentImage.size.width > mediumSize.width || _currentImage.size.height > mediumSize.height)) {
+               (_currentImage.size.width > mediumSize.width || self.currentImage.size.height > mediumSize.height)) {
         resizeToBounds = mediumSize;
     } else if (resize == MediaResizeLarge &&
                (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {

@@ -63,7 +63,9 @@ xctool build \
 if [ $TRAVIS ]; then
     echo "[*] Only files changed on push";    
     include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
-    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"    
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
+    base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
+    base_commit+="^"
     if [ ! -z "$include_files" ]; then
       include_files="-i "$include_files      
     else
@@ -81,5 +83,21 @@ cd ${temp_dir}
 #oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
 
 echo "[*] starting analyzing"
-eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
-exit $?
+
+if [ $TRAVIS ]; then
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files | "s/:[0-9]*:[0-9]*://g" > currentLint.log"
+    cd ${TRAVIS_BUILD_DIR}
+    git checkout $base_commit
+    cd ${temp_dir}
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files | "s/:[0-9]*:[0-9]*://g" > baseLint.log"
+    echo
+    echo --------------------------
+    echo The following warnings seem to be introduced by your branch:
+    diff -u baseLint.log currentLint.log > /tmp/checkstyle.diff
+    cat /tmp/checkstyle.diff | grep "^+" | grep -v "^+++" || echo Yay no new style errors!!
+    echo Style errors removed:
+    cat /tmp/checkstyle.diff | grep "^-" | wc -l
+else 
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
+    exit $?
+fi
