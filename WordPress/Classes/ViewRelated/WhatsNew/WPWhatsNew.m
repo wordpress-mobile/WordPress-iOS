@@ -59,7 +59,7 @@
     if (!appHasWhatsNewInfo) {
         whatsNewTitle = @"Share your story.";
         whatsNewDetails = (@"We have exciting new updates to the WordPress editor. If you"
-                           "haven't blogged in a while, try it out by creating a new post.");
+                           " haven't blogged in a while, try it out by creating a new post.");
         appHasWhatsNewInfo = YES;
     }
     
