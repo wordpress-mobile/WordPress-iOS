@@ -1,7 +1,7 @@
 #!/bin/sh
 source ~/.bash_profile
 printenv  
-check_file="$1"
+
 oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=UnusedMethodParameter -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
@@ -66,10 +66,10 @@ cd ${temp_dir}
 
 echo "[*] starting analyzing"
 
-if [ $check_file ]; then
-    echo "[*] Single Files $check_file";
-    include_files="-i $check_file"
-    exclude_files="-e *"
+if [ $TRAVIS ]; then
+    echo "[*] Only files changed on push";
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.sh' | tr '\n' ' -i '`
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 else
     echo "[*] All project files";
     include_files=""
