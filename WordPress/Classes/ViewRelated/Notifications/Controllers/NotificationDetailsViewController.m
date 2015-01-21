@@ -135,7 +135,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
 
-    [AppRatingUtility incrementSignificantEventForSection:@"Notifications"];
+    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
