@@ -17,6 +17,7 @@ NSString *const AppRatingSignificantEventCount = @"AppRatingSignificantEventCoun
 NSString *const AppRatingUseCount = @"AppRatingUseCount";
 NSString *const AppRatingNumberOfVersionsSkippedPrompting = @"AppRatingsNumberOfVersionsSkippedPrompt";
 NSString *const AppRatingNumberOfVersionsToSkipPrompting = @"AppRatingsNumberOfVersionsToSkipPrompting";
+NSString *const AppRatingSkipRatingCurrentVersion = @"AppRatingsSkipRatingCurrentVersion";
 NSString *const AppRatingRatedCurrentVersion = @"AppRatingRatedCurrentVersion";
 NSString *const AppRatingDeclinedToRateCurrentVersion = @"AppRatingDeclinedToRateCurrentVersion";
 NSString *const AppRatingGaveFeedbackForCurrentVersion = @"AppRatingGaveFeedbackForCurrentVersion";
@@ -113,6 +114,7 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
     {
         // Restarting tracking for new version of app
         BOOL interactedWithAppReviewPromptInPreviousVersion = [self interactedWithAppReviewPrompt];
+        BOOL skippedRatingPreviousVersion = [self skipRatingCurrentVersion];
         
         [userDefaults setObject:version forKey:AppRatingCurrentVersion];
         [userDefaults setInteger:0 forKey:AppRatingSignificantEventCount];
@@ -124,10 +126,11 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
         [userDefaults setBool:NO forKey:AppRatingGaveFeedbackForCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingDislikedCurrentVersion];
         [userDefaults setBool:NO forKey:AppRatingLikedCurrentVersion];
+        [userDefaults setBool:NO forKey:AppRatingSkipRatingCurrentVersion];
         
         [self resetReviewPromptDisabledStatus];
         
-        if (interactedWithAppReviewPromptInPreviousVersion) {
+        if (interactedWithAppReviewPromptInPreviousVersion || skippedRatingPreviousVersion) {
             NSInteger numberOfVersionsSkippedPrompting = [userDefaults integerForKey:AppRatingNumberOfVersionsSkippedPrompting];
             NSInteger numberOfVersionsToSkipPrompting = [userDefaults integerForKey:AppRatingNumberOfVersionsToSkipPrompting];
             
@@ -136,7 +139,7 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
                     // We haven't skipped enough versions, skip this one
                     numberOfVersionsSkippedPrompting++;
                     [userDefaults setInteger:numberOfVersionsSkippedPrompting forKey:AppRatingNumberOfVersionsSkippedPrompting];
-                    [userDefaults setBool:YES forKey:AppRatingRatedCurrentVersion];
+                    [userDefaults setBool:YES forKey:AppRatingSkipRatingCurrentVersion];
                 } else {
                     // We have skipped enough, reset data
                     [userDefaults setInteger:0 forKey:AppRatingNumberOfVersionsSkippedPrompting];
@@ -236,7 +239,7 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
 
 + (BOOL)shouldPromptForAppReview
 {
-    if ([self interactedWithAppReviewPrompt]) {
+    if ([self interactedWithAppReviewPrompt] || [self skipRatingCurrentVersion]) {
         return NO;
     }
     
@@ -269,7 +272,7 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
 {
     [self assertValidSection:section];
     
-    if ([self interactedWithAppReviewPrompt]) {
+    if ([self interactedWithAppReviewPrompt] || [self skipRatingCurrentVersion]) {
         return NO;
     }
     
@@ -296,6 +299,11 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     return [userDefaults boolForKey:AppRatingRatedCurrentVersion] || [userDefaults boolForKey:AppRatingDeclinedToRateCurrentVersion] || [userDefaults boolForKey:AppRatingGaveFeedbackForCurrentVersion] || [userDefaults boolForKey:AppRatingLikedCurrentVersion] || [userDefaults boolForKey:AppRatingDislikedCurrentVersion];
+}
+
++ (BOOL)skipRatingCurrentVersion
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:AppRatingSkipRatingCurrentVersion];
 }
 
 + (BOOL)hasUserEverLikedApp
