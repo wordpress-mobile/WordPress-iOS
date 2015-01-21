@@ -1570,7 +1570,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                (self.currentImage.size.width > mediumSize.width || self.currentImage.size.height > mediumSize.height)) {
         resizeToBounds = mediumSize;
     } else if (resize == MediaResizeLarge &&
-               (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {
+               (self.currentImage.size.width > largeSize.width || self.currentImage.size.height > largeSize.height)) {
         resizeToBounds = largeSize;
     }
 

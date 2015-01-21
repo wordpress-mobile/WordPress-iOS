@@ -85,11 +85,11 @@ cd ${temp_dir}
 echo "[*] starting analyzing"
 
 if [ $TRAVIS ]; then
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | s/:[0-9]*:[0-9]*://g > currentLint.log
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | sed s/:[0-9]*:[0-9]*://g > currentLint.log
     cd ${TRAVIS_BUILD_DIR}
     git checkout $base_commit
     cd ${temp_dir}
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | s/:[0-9]*:[0-9]*://g > baseLint.log
+    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" | sed s/:[0-9]*:[0-9]*://g > baseLint.log
     echo
     echo --------------------------
     echo The following warnings seem to be introduced by your branch:
