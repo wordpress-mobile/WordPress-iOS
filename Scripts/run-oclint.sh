@@ -68,7 +68,7 @@ echo "[*] starting analyzing"
 
 if [ $TRAVIS ]; then
     echo "[*] Only files changed on push";
-    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.sh' | tr '\n' ' -i '`
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 else
     echo "[*] All project files";
