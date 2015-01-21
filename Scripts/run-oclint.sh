@@ -1,6 +1,6 @@
 #!/bin/sh
 source ~/.bash_profile
-printenv
+printenv  
 check_file="$1"
 oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=UnusedMethodParameter -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
 temp_dir="/tmp"
@@ -24,6 +24,8 @@ if [ $? -eq 1 ]; then
     echo >&2 "oclint not found, analyzing stopped"
     exit 1
 fi
+
+oclint --version
 
 echo "[*] cleaning up generated files"
 [[ -f $compile_commands_path ]] && rm ${compile_commands_path}
