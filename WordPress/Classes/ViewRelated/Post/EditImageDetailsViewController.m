@@ -14,28 +14,28 @@ static NSString *const CellIdentifier = @"CellIdentifier";
 static NSString *const ThumbCellIdentifier = @"ThumbCellIdentifier";
 static CGFloat CellHeight = 44.0f;
 
-typedef enum {
-    ImageDetailsSectionThumb = 0,
+typedef NS_ENUM(NSUInteger, ImageDetailsSection) {
+    ImageDetailsSectionThumb,
     ImageDetailsSectionDetails,
-    ImageDetailsSectionDisplay
-} ImageDetailsSection;
+    ImageDetailsSectionDisplay,
+};
 
-typedef enum {
-    ImageDetailsRowThumb = 0,
+typedef NS_ENUM(NSUInteger, ImageDetailsRow) {
+    ImageDetailsRowThumb,
     ImageDetailsRowTitle,
     ImageDetailsRowCaption,
     ImageDetailsRowAlt,
     ImageDetailsRowAlign,
     ImageDetailsRowLink,
     ImageDetailsRowSize
-} ImageDetailsRow;
+};
 
-typedef enum {
-    ImageDetailsTextFieldTitle = 0,
+typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
+    ImageDetailsTextFieldTitle,
     ImageDetailsTextFieldCaption,
     ImageDetailsTextFieldAlt,
     ImageDetailsTextFieldLink
-} ImageDetailsTextField;
+};
 
 @interface EditImageDetailsViewController ()<UITextFieldDelegate>
 @property (nonatomic, strong) NSMutableArray *sections;
