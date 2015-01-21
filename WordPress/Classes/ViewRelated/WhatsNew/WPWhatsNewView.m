@@ -92,6 +92,10 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
  */
 - (IBAction)dismissPopup:(id)sender
 {
+    if (self.willDismissBlock) {
+        self.willDismissBlock();
+    }
+    
     __weak __typeof(self) weakSelf = self;
     
     [self hideAnimated:YES
@@ -101,8 +105,8 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
         
         [strongSelf removeFromSuperview];
         
-        if (strongSelf.dismissBlock) {
-            strongSelf.dismissBlock();
+        if (strongSelf.didDismissBlock) {
+            strongSelf.didDismissBlock();
         }
     }];
 }

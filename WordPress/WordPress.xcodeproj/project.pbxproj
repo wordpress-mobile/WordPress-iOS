@@ -70,6 +70,7 @@
 		591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
 		595B02221A6C4ECD00415A30 /* WPWhatsNewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */; };
 		595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 595B02261A6C504400415A30 /* WPWhatsNewView.xib */; };
+		598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */; };
 		5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */; };
 		5D0C2CB819AB932C002DF1E5 /* WPContentSyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D0C2CB719AB932C002DF1E5 /* WPContentSyncHelper.swift */; };
 		5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D119DA2176FBE040073D83A /* UIImageView+AFNetworkingExtra.m */; };
@@ -595,6 +596,8 @@
 		595B02201A6C4ECD00415A30 /* WPWhatsNewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNewView.h; path = WhatsNew/WPWhatsNewView.h; sourceTree = "<group>"; };
 		595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNewView.m; path = WhatsNew/WPWhatsNewView.m; sourceTree = "<group>"; };
 		595B02261A6C504400415A30 /* WPWhatsNewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPWhatsNewView.xib; path = Resources/WhatsNew/WPWhatsNewView.xib; sourceTree = "<group>"; };
+		598351AC1A704E7A00B6DD4F /* WPWhatsNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNew.h; path = WhatsNew/WPWhatsNew.h; sourceTree = "<group>"; };
+		598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNew.m; path = WhatsNew/WPWhatsNew.m; sourceTree = "<group>"; };
 		5D08B90219648C3400D5B381 /* ReaderSubscriptionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSubscriptionViewController.h; sourceTree = "<group>"; };
 		5D08B90319648C3400D5B381 /* ReaderSubscriptionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSubscriptionViewController.m; sourceTree = "<group>"; };
 		5D0C2CB719AB932C002DF1E5 /* WPContentSyncHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WPContentSyncHelper.swift; sourceTree = "<group>"; };
@@ -1652,6 +1655,8 @@
 		595B021F1A6C4E4F00415A30 /* WhatsNew */ = {
 			isa = PBXGroup;
 			children = (
+				598351AC1A704E7A00B6DD4F /* WPWhatsNew.h */,
+				598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */,
 				595B02201A6C4ECD00415A30 /* WPWhatsNewView.h */,
 				595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */,
 			);
@@ -3363,6 +3368,7 @@
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* Category.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
+				598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
 				FD9A948C12FAEA2300438F94 /* DateUtils.m in Sources */,
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
