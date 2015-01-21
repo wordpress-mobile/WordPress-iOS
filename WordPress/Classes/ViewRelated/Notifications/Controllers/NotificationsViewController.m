@@ -184,7 +184,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showRatingViewIfApplicable
 {
-    if ([AppRatingUtility shouldPromptForAppReview]) {
+    if ([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
         if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
             // Rating View is already visible, don't bother to do anything
             return;
@@ -744,11 +744,13 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)appbotPromptLiked
 {
+    [AppRatingUtility likedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
 }
 
 - (void)appbotPromptDidntLike
 {
+    [AppRatingUtility dislikedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
 }
 
