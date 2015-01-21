@@ -60,16 +60,12 @@ xctool build \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
            -reporter json-compilation-database:$compile_commands_path
 
-#echo "[*] transforming xcodebuild.log into compile_commands.json..."
-cd ${temp_dir}
-#oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
-
-echo "[*] starting analyzing"
-
 if [ $TRAVIS ]; then
-    echo "[*] Only files changed on push";
-    git fetch
-    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
+    echo "[*] Only files changed on push";    
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`    
+    if [!-z $include_files]; then
+      include_files = "-i "$include_files
+    fi
     echo "[*] $include_files"
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 else
@@ -78,5 +74,10 @@ else
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
 
+#echo "[*] transforming xcodebuild.log into compile_commands.json..."
+cd ${temp_dir}
+#oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
+
+echo "[*] starting analyzing"
 eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
 exit $?
