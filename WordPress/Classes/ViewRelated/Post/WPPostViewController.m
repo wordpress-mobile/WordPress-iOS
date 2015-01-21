@@ -1983,7 +1983,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
