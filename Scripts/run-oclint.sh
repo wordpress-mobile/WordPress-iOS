@@ -1,8 +1,7 @@
 #!/bin/sh
 source ~/.bash_profile
-printenv  
 
-oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=UnusedMethodParameter -rc LONG_METHOD=75 -rc LONG_VARIABLE_NAME=40"
+oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=LongClass -disable-rule=LongMethod -disable-rule=UnusedMethodParameter"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
 compile_commands_path=${temp_dir}/compile_commands.json
@@ -86,6 +85,7 @@ echo "[*] starting analyzing"
 
 if [ $TRAVIS ]; then
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > currentLint.log
+    cat currentLint.log
     cd ${TRAVIS_BUILD_DIR}
     git checkout $base_commit
     cd ${temp_dir}
@@ -99,21 +99,23 @@ if [ $TRAVIS ]; then
     if [[ $baseSummary =~ $regex ]]; then
        baseTotalSummary=( ${BASH_REMATCH[1]} ${BASH_REMATCH[2]} ${BASH_REMATCH[3]})
     fi
-    diff=0;
+    errors=0;
     i=0
     n=3
     while [[ $i -lt $n ]]
     do
       if [[ currentTotalSummary[$i] -gt baseTotalSummary[$i] ]]; then
         amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
-        diff+=$amount
-        echo "Your changes introduced "$amount "P"$(($i+1))" error(s)"
+        errors+=$amount
+        echo "Your changes introduced "$amount "P"$(($i+1))" error(s)"        
       else
+        amount=$((${baseTotalSummary[$i]} - ${currentTotalSummary[$i]}))
         echo "Your changes removed "$amount "P"$(($i+1))" error(s)"
       fi
       let i++
     done
-    exit $diff      
+
+    exit $errors      
 else 
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
     exit $?

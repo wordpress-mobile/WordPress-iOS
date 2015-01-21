@@ -150,8 +150,8 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if (self.currentActionSheet) {
         [self.currentActionSheet dismissWithClickedButtonIndex:self.currentActionSheet.cancelButtonIndex animated:YES];
     }
-    if (_addPopover) {
-        [_addPopover dismissPopoverAnimated:YES];
+    if (self.addPopover) {
+        [self.addPopover dismissPopoverAnimated:YES];
     }
 }
 
@@ -160,12 +160,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     [super viewWillAppear:animated];
 
     if ([self showAttachedMedia]) {
-        _allMedia = self.post.media.allObjects;
-        self.filteredMedia = _allMedia;
+        self.allMedia = self.post.media.allObjects;
+        self.filteredMedia = self.allMedia;
     }
 
-    [self applyMonthFilterForMonth:_currentFilterMonth];
-    [self applyFilterWithSearchText:_currentSearchText];
+    [self applyMonthFilterForMonth:self.currentFilterMonth];
+    [self applyFilterWithSearchText:self.currentSearchText];
 }
 
 - (void)viewDidDisappear:(BOOL)animated
@@ -182,7 +182,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 {
     [super didReceiveMemoryWarning];
 
-    _selectedMedia = nil;
+    self.selectedMedia = nil;
 }
 
 - (void)updateTitle
@@ -193,13 +193,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         self.title = NSLocalizedString(@"Media Library", @"");
     }
 
-    NSString *count = [NSString stringWithFormat:@" (%d)", _filteredMedia.count];
+    NSString *count = [NSString stringWithFormat:@" (%d)", self.filteredMedia.count];
     self.title = [self.title stringByAppendingString:count];
 }
 
 - (BOOL)showAttachedMedia
 {
-    return self.post && !_selectingFeaturedImage && !_selectingMediaForPost;
+    return self.post && !self.selectingFeaturedImage && !self.selectingMediaForPost;
 }
 
 - (void)refresh
@@ -274,9 +274,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)toggleNoMediaView:(BOOL)show
 {
     if (!show) {
-        [_noMediaView removeFromSuperview];
+        [self.noMediaView removeFromSuperview];
     }
-    if (!_noMediaView && show) {
+    if (!self.noMediaView && show) {
         NSString *title = NSLocalizedString(@"No media has been added to your library", nil);
         if ([self showAttachedMedia]) {
             title = NSLocalizedString(@"No media has been attached to your post", nil);
@@ -285,9 +285,9 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         }
         UIImageView *mediaThumbnail = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"media_image"]];
         WPNoResultsView *noMediaView = [WPNoResultsView noResultsViewWithTitle:title message:nil accessoryView:mediaThumbnail buttonTitle:NSLocalizedString(@"Add Media", nil)];
-        _noMediaView = noMediaView;
-        _noMediaView.delegate = self;
-        [self.collectionView addSubview:_noMediaView];
+        self.noMediaView = noMediaView;
+        self.noMediaView.delegate = self;
+        [self.collectionView addSubview:self.noMediaView];
     }
 }
 
@@ -351,27 +351,27 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)clearSearchFilter
 {
-    _currentSearchText = nil;
-    self.filteredMedia = _allMedia;
-    if (_currentFilterMonth) {
+    self.currentSearchText = nil;
+    self.filteredMedia = self.allMedia;
+    if (self.currentFilterMonth) {
         [self applyMonthFilterForMonth:_currentFilterMonth];
     }
 }
 
 - (void)clearMonthFilter
 {
-    _currentFilterMonth = nil;
+    self.currentFilterMonth = nil;
     [self.filterHeaderView resetFilters];
     self.filteredMedia = _allMedia;
-    if (_currentSearchText) {
-        [self applyFilterWithSearchText:_currentSearchText];
+    if (self.currentSearchText) {
+        [self applyFilterWithSearchText:self.currentSearchText];
     }
 }
 
 - (NSArray *)possibleMonthsAndYears
 {
-    if (_generatedMonthFilters) {
-        return _generatedMonthFilters;
+    if (self.generatedMonthFilters) {
+        return self.generatedMonthFilters;
     }
 
     NSMutableOrderedSet *monthsYearsSet = [NSMutableOrderedSet orderedSet];
@@ -382,13 +382,13 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         NSString *monthYear = [NSString stringWithFormat:@"%@ %d", monthNames[components.month-1], components.year];
         [monthsYearsSet addObject:monthYear];
     }];
-    _generatedMonthFilters = monthsYearsSet.array;
-    return _generatedMonthFilters;
+    self.generatedMonthFilters = monthsYearsSet.array;
+    return self.generatedMonthFilters;
 }
 
 - (void)clearGeneratedMonthFilters
 {
-    _generatedMonthFilters = nil;
+    self.generatedMonthFilters = nil;
 }
 
 - (void)selectedMonthPickerIndex:(NSInteger)index
@@ -408,7 +408,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return _filteredMedia.count;
+    return self.filteredMedia.count;
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView
@@ -438,7 +438,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     cell.isSelected = ([_selectedMedia objectForKey:cell.media.mediaID] != nil);
     cell.delegate = self;
 
-    if (!_isScrollingFast) {
+    if (!self.isScrollingFast) {
         [cell loadThumbnail];
     }
 
@@ -555,7 +555,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (IBAction)multiselectDeselectAllPressed:(id)sender
 {
-    [_selectedMedia removeAllObjects];
+    [self.selectedMedia removeAllObjects];
     [self showMultiselectOptions];
 }
 
