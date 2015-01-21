@@ -1564,10 +1564,10 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     CGSize resizeToBounds = originalSize;
 
     if (resize == MediaResizeSmall &&
-        (_currentImage.size.width > smallSize.width  || self.currentImage.size.height > smallSize.height)) {
+        (self.currentImage.size.width > smallSize.width  || self.currentImage.size.height > smallSize.height)) {
         resizeToBounds = smallSize;
     } else if (resize == MediaResizeMedium &&
-               (_currentImage.size.width > mediumSize.width || self.currentImage.size.height > mediumSize.height)) {
+               (self.currentImage.size.width > mediumSize.width || self.currentImage.size.height > mediumSize.height)) {
         resizeToBounds = mediumSize;
     } else if (resize == MediaResizeLarge &&
                (_currentImage.size.width > largeSize.width || _currentImage.size.height > largeSize.height)) {
