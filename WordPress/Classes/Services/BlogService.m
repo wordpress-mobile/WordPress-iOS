@@ -259,20 +259,21 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
         [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
 
-            id<BlogServiceRemote> remote = [weakSelf remoteForBlog:blog];
-            [remote syncOptionsForBlog:blog success:[weakSelf optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            id<BlogServiceRemote> remote = [strongSelf remoteForBlog:blog];
+            [remote syncOptionsForBlog:blog success:[strongSelf optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
                 DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
             }];
-            [remote syncPostFormatsForBlog:blog success:[weakSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+            [remote syncPostFormatsForBlog:blog success:[strongSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
                 DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
             }];
 
-            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:weakSelf.managedObjectContext];
+            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             // Right now, none of the callers care about the results of the sync
             // We're ignoring the callbacks here but this needs refactoring
             [commentService syncCommentsForBlog:blog success:nil failure:nil];
 
-            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:weakSelf.managedObjectContext];
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
 
         } failure:nil];
