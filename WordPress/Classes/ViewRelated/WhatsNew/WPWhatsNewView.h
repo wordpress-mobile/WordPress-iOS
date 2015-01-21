@@ -11,17 +11,17 @@
 /**
  *  @brief      The details to show below the title.
  */
-@property (nonatomic, copy, readonly) IBOutlet UITextView* details;
+@property (nonatomic, weak, readonly) IBOutlet UITextView* details;
 
 /**
  *  @brief      The image to show on top of the view.
  */
-@property (nonatomic, copy, readonly) IBOutlet UIImageView* imageView;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView* imageView;
 
 /**
  *  @title      The title for the new features.
  */
-@property (nonatomic, copy, readonly) IBOutlet UITextView* title;
+@property (nonatomic, weak, readonly) IBOutlet UITextView* title;
 
 #pragma mark - Showing & hiding
 
