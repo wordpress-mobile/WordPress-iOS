@@ -448,6 +448,21 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self initializeAppTracking];
     
     //TODO: complete this
+    
+    /*
+    if (![self noBlogsAndNoWordPressDotComAccount]) {
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Title"
+                                                                                     message:@"Message"
+                                                                              preferredStyle:UIAlertControllerStyleAlert];
+            
+            [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
+        });
+    }
+     */
+    
+    /*
     if (![self noBlogsAndNoWordPressDotComAccount]) {
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
@@ -456,9 +471,36 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             
             [self.window addSubview:dimmerView];
             
-            [dimmerView showAnimated:YES completion:nil];
+            [dimmerView showAnimated:YES
+                          completion:^(BOOL finished) {
+                              
+                              UIImage* image = [UIImage imageNamed:@"attachment"];
+                              
+                              NSArray* views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([WPWhatsNewView class])
+                                                                             owner:self
+                                                                           options:nil];
+                              NSAssert([views count] > 0,
+                                       @"We expect to have at least one view in the nib we loaded.");
+                              
+                              WPWhatsNewView* whatsNewView = views[0];
+                              NSAssert([whatsNewView isKindOfClass:[WPWhatsNewView class]],
+                                       @"We expect the whatsNewView to be of class WPWhatsNewView.");
+                              
+                              whatsNewView.title.text = @"Title";
+                              whatsNewView.details.text = @"Description";
+                              whatsNewView.imageView.image = image;
+                              
+                              CGRect frame = whatsNewView.frame;
+                              frame.origin = CGPointMake(round((dimmerView.frame.size.width / 2) - (whatsNewView.frame.size.width / 2)),
+                                                         round((dimmerView.frame.size.height / 2) - (whatsNewView.frame.size.height / 2)));
+                              whatsNewView.frame = frame;
+                              
+                              [dimmerView addSubview:whatsNewView];
+                              [whatsNewView showAnimated:YES];
+                          }];
         });
     }
+     */
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder

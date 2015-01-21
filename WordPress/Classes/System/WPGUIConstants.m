@@ -8,3 +8,4 @@ const CGFloat WPColorZero = 0.0f;
 
 const CGFloat WPAnimationDurationDefault = 0.33f;
 const CGFloat WPAnimationDurationFast = 0.15f;
+const CGFloat WPAnimationDurationFaster = 0.07f;
