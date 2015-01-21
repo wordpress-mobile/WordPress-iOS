@@ -448,7 +448,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [self initializeAppTracking];
     
     //TODO: complete this
-    
     /*
     if (![self noBlogsAndNoWordPressDotComAccount]) {
         
@@ -459,13 +458,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             
             [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
         });
-    }
-     */
-    
-    /*
+    }*/
+
     if (![self noBlogsAndNoWordPressDotComAccount]) {
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
             WPBackgroundDimmerView* dimmerView = [[WPBackgroundDimmerView alloc] init];
             
@@ -500,7 +497,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                           }];
         });
     }
-     */
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder

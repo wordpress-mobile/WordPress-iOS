@@ -2,6 +2,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WPGUIConstants.h"
 
+static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
+
 @interface WPWhatsNewView ()
 #pragma mark - Properties: Outlets
 
@@ -30,7 +32,7 @@
     self = [super initWithCoder:aDecoder];
 
     if (self) {
-        self.layer.cornerRadius = 10;
+        self.layer.cornerRadius = WPWhatsNewCornerRadiusDefault;
         self.layer.masksToBounds = YES;
     }
 
@@ -41,14 +43,12 @@
 
 - (void)awakeFromNib
 {
-    /*
     NSAssert([_details isKindOfClass:[UITextView class]],
              @"Details outlet not wired.");
     NSAssert([_imageView isKindOfClass:[UIImageView class]],
              @"ImageView outlet not wired.");
     NSAssert([_title isKindOfClass:[UITextView class]],
              @"Title outlet not wired.");
-     */
 }
 
 #pragma mark - Showing & hiding
@@ -66,7 +66,7 @@
 
 - (void)showAnimated:(BOOL)animated
 {
-    self.transform = CGAffineTransformMakeScale(0.01, 0.01);
+    self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
     self.alpha = WPAlphaZero;
     
     [UIView animateWithDuration:WPAnimationDurationFaster
@@ -74,28 +74,9 @@
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^void()
     {
-        self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 1.1, 1.1);
+        self.transform = CGAffineTransformIdentity;
         self.alpha = WPAlphaFull;
-    } completion:^(BOOL finished) {
-        [UIView animateWithDuration:WPAnimationDurationFaster
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseOut
-                         animations:^void()
-         {
-             self.transform = CGAffineTransformScale(CGAffineTransformIdentity, 0.9, 0.9);
-             self.alpha = WPAlphaFull;
-         } completion:^(BOOL finished) {
-             [UIView animateWithDuration:WPAnimationDurationFaster
-                                   delay:0
-                                 options:UIViewAnimationOptionCurveEaseOut
-                              animations:^void()
-              {
-                  self.transform = CGAffineTransformIdentity;
-                  self.alpha = WPAlphaFull;
-              } completion:nil];
-         }];
-    }];
-    
+    } completion:nil];
 }
 
 @end
