@@ -13,6 +13,14 @@
 + (void)initializeForVersion:(NSString *)version;
 
 /**
+ *  This checks if we've disabled app review prompts for a feature or at a global level
+ *
+ *  @param success called on successfully retrieving the details
+ *  @param failure called when we were unable to retrieve the details
+ */
++ (void)checkIfAppReviewPromptsHaveBeenDisabled:(void (^)(void))success failure:(void (^)(void))failure;
+
+/**
  *  Registers a granular section to be tracked.
  *
  *  @param section               section name, e.g. "Notifications"
