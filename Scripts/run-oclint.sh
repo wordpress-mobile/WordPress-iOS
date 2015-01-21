@@ -67,7 +67,7 @@ if [ $TRAVIS ]; then
     if [ ! -z "$include_files" ]; then
       include_files="-i "$include_files      
     else
-      exclude_files="*"
+      exclude_files="-e *"
     fi
     echo "[*] $include_files"
 else
