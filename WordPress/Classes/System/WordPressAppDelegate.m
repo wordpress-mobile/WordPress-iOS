@@ -456,6 +456,10 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                                                                                      message:@"Message"
                                                                               preferredStyle:UIAlertControllerStyleAlert];
             
+            [alertController addAction:[UIAlertAction actionWithTitle:@"Great, thanks!" style:UIActionSheetStyleAutomatic handler:^(UIAlertAction *action) {
+                [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+            }]];
+            
             [self.window.rootViewController presentViewController:alertController animated:YES completion:nil];
         });
     }*/
@@ -464,37 +468,39 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             
+            // IMPORTANT: since loading the nib can take some time, we do it before the animations
+            // start.  This will help us ensure the animations will flow and not have weird delays
+            // while they're executing.
+            //
+            NSArray* views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([WPWhatsNewView class])
+                                                           owner:nil
+                                                         options:nil];
+            NSAssert([views count] > 0,
+                     @"We expect to have at least one view in the nib we loaded.");
+            
+            WPWhatsNewView* whatsNewView = views[0];
+            NSAssert([whatsNewView isKindOfClass:[WPWhatsNewView class]],
+                     @"We expect the whatsNewView to be of class WPWhatsNewView.");
+            
             WPBackgroundDimmerView* dimmerView = [[WPBackgroundDimmerView alloc] init];
             
             [self.window addSubview:dimmerView];
             
-            [dimmerView showAnimated:YES
-                          completion:^(BOOL finished) {
-                              
-                              UIImage* image = [UIImage imageNamed:@"attachment"];
-                              
-                              NSArray* views = [[NSBundle mainBundle] loadNibNamed:NSStringFromClass([WPWhatsNewView class])
-                                                                             owner:self
-                                                                           options:nil];
-                              NSAssert([views count] > 0,
-                                       @"We expect to have at least one view in the nib we loaded.");
-                              
-                              WPWhatsNewView* whatsNewView = views[0];
-                              NSAssert([whatsNewView isKindOfClass:[WPWhatsNewView class]],
-                                       @"We expect the whatsNewView to be of class WPWhatsNewView.");
-                              
-                              whatsNewView.title.text = @"Title";
-                              whatsNewView.details.text = @"Description";
-                              whatsNewView.imageView.image = image;
-                              
-                              CGRect frame = whatsNewView.frame;
-                              frame.origin = CGPointMake(round((dimmerView.frame.size.width / 2) - (whatsNewView.frame.size.width / 2)),
-                                                         round((dimmerView.frame.size.height / 2) - (whatsNewView.frame.size.height / 2)));
-                              whatsNewView.frame = frame;
-                              
-                              [dimmerView addSubview:whatsNewView];
-                              [whatsNewView showAnimated:YES];
-                          }];
+            UIImage* image = [UIImage imageNamed:@"attachment"];
+            
+            whatsNewView.title.text = @"Title";
+            whatsNewView.details.text = @"Description";
+            whatsNewView.imageView.image = image;
+            
+            CGRect frame = whatsNewView.frame;
+            frame.origin = CGPointMake(round((dimmerView.frame.size.width / 2) - (whatsNewView.frame.size.width / 2)),
+                                       round((dimmerView.frame.size.height / 2) - (whatsNewView.frame.size.height / 2)));
+            whatsNewView.frame = frame;
+            
+            [dimmerView addSubview:whatsNewView];
+            
+            [dimmerView showAnimated:YES completion:nil];
+            [whatsNewView showAnimated:YES completion:nil];
         });
     }
 }

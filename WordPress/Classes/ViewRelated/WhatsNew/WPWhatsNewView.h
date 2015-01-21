@@ -1,6 +1,19 @@
 #import <Foundation/Foundation.h>
 
 /**
+ *  @brief      This block type is used for animation completion calls.
+ *
+ *  @param      finished        YES means the animation was able to finish, NO means it was
+ *                              interrupted, probably by the view being dismissed.
+ */
+typedef void(^WPWhatsNewAnimationCompleteBlock)(BOOL finished);
+
+/**
+ *  @brief      This block type is used for the dismissal of this view.
+ */
+typedef void(^WPWhatsNewDismissBlock)();
+
+/**
  *  @class      WhatsNewView
  *  @brief      Shows the user what's new in WP iOS.
  */
@@ -23,6 +36,14 @@
  */
 @property (nonatomic, weak, readonly) IBOutlet UITextView* title;
 
+#pragma mark - Properties: Blocks
+
+/**
+ *  @brief      This block will be called after the popup is dismissed and removed from the
+ *              superview.  Can be nil.
+ */
+@property (nonatomic, copy, readwrite) WPWhatsNewDismissBlock dismissBlock;
+
 #pragma mark - Showing & hiding
 
 /**
@@ -30,15 +51,27 @@
  *
  *  @param      animated    YES means the transition will be animated.  NO means it will be
  *                          instantaneous.
+ *  @param      completion  The block that will be executed after the view is hidden.  Can be nil.
  */
-- (void)hideAnimated:(BOOL)animated;
+- (void)hide;
 
 /**
  *  @brief      Shows the view.
  *
  *  @param      animated    YES means the transition will be animated.  NO means it will be
  *                          instantaneous.
+ *  @param      completion  The block that will be executed after the view is shown.  Can be nil.
  */
-- (void)showAnimated:(BOOL)animated;
+- (void)showAnimated:(BOOL)animated
+          completion:(WPWhatsNewAnimationCompleteBlock)completion;
+
+#pragma mark - IBActions
+
+/**
+ *  @brief      Action to dismiss the popup.
+ *
+ *  @param      sender      The outlet that called this action.
+ */
+- (IBAction)dismissPopup:(id)sender;
 
 @end
