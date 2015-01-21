@@ -77,4 +77,4 @@ else
 fi
 
 eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
-exit 0
+exit $?
