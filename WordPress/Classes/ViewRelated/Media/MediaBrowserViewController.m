@@ -331,7 +331,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     }
 
     NSArray *mediaToFilter = _currentFilterMonth ? _filteredMedia : _allMedia;
-    _currentSearchText = searchText;
+    self.currentSearchText = searchText;
     self.filteredMedia = [mediaToFilter filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"self.title CONTAINS[cd] %@ OR self.caption CONTAINS[cd] %@ OR self.desc CONTAINS[cd] %@", searchText, searchText, searchText]];
 }
 
@@ -518,12 +518,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)mediaCellSelected:(Media *)media
 {
-    if (!_selectedMedia) {
-        _selectedMedia = [NSMutableDictionary dictionary];
+    if (!self.selectedMedia) {
+        self.selectedMedia = [NSMutableDictionary dictionary];
     }
 
-    if (!_selectedMedia[media.mediaID] && media.mediaID) {
-        [_selectedMedia setObject:media forKey:media.mediaID];
+    if (!self.selectedMedia[media.mediaID] && media.mediaID) {
+        [self.selectedMedia setObject:media forKey:media.mediaID];
     }
 
     [self showMultiselectOptions];
@@ -532,7 +532,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 - (void)mediaCellDeselected:(Media *)media
 {
     if (media.mediaID) {
-        [_selectedMedia removeObjectForKey:media.mediaID];
+        [self.selectedMedia removeObjectForKey:media.mediaID];
     }
     [self showMultiselectOptions];
 }
@@ -951,7 +951,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
                                                    otherButtonTitles: originalSizeStr, NSLocalizedString(@"Custom", @""), nil];
         }
 
-        _resizeActionSheet = resizeActionSheet;
+        self.resizeActionSheet = resizeActionSheet;
 
         if (IS_IPAD) {
             [resizeActionSheet showFromBarButtonItem:[self.navigationItem.rightBarButtonItems objectAtIndex:1] animated:YES];
@@ -967,12 +967,12 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (UIImagePickerController *)resetImagePicker
 {
-    _picker = [[UIImagePickerController alloc] init];
-    _picker.delegate = nil;
-    _picker.navigationBar.translucent = NO;
-    _picker.delegate = self;
-    _picker.allowsEditing = NO;
-    return _picker;
+    self.picker = [[UIImagePickerController alloc] init];
+    self.picker.delegate = nil;
+    self.picker.navigationBar.translucent = NO;
+    self.picker.delegate = self;
+    self.picker.allowsEditing = NO;
+    return self.picker;
 }
 
 - (UIImagePickerControllerQualityType)videoQualityPreference
@@ -1004,28 +1004,28 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         [self resetImagePicker];
-        _picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        self.picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
         if (self.videoPressEnabled || ![self.blog isWPcom]) {
-            _picker.mediaTypes = @[(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage];
+            self.picker.mediaTypes = @[(NSString *)kUTTypeMovie, (NSString *)kUTTypeImage];
         } else {
-            _picker.mediaTypes = @[(NSString *)kUTTypeImage];
+            self.picker.mediaTypes = @[(NSString *)kUTTypeImage];
         }
         _picker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        _selectingDeviceFromLibrary = YES;
+        self.selectingDeviceFromLibrary = YES;
 
         if ([(UIView *)sender tag] == MediaTypeActionSheetVideo) {
-            _picker.mediaTypes = @[(NSString *)kUTTypeMovie];
-            _picker.videoQuality = [self videoQualityPreference];
-            _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
+            self.picker.mediaTypes = @[(NSString *)kUTTypeMovie];
+            self.picker.videoQuality = [self videoQualityPreference];
+            self.picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         }
 
         if (IS_IPAD) {
-            _picker.navigationBar.barStyle = UIBarStyleBlack;
-            if (!_addPopover) {
-                _addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
+            self.picker.navigationBar.barStyle = UIBarStyleBlack;
+            if (!self.addPopover) {
+                self.addPopover = [[UIPopoverController alloc] initWithContentViewController:_picker];
             }
             UIBarButtonItem *barButtonItem = self.navigationItem.rightBarButtonItems[1];
-            [_addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+            [self.addPopover presentPopoverFromBarButtonItem:barButtonItem permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
         } else {
             [self.navigationController presentViewController:_picker animated:YES completion:nil];
         }
@@ -1247,7 +1247,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo:(NSString *)contextInfo
 {
-    _currentVideo = nil;
+    self.currentVideo = nil;
     [self useVideo:videoPath];
 }
 

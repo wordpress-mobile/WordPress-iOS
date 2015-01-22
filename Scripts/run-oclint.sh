@@ -97,7 +97,7 @@ if [ $TRAVIS ]; then
     message="OCLint"
     while [[ $i -lt $n ]]
     do
-      if [[ currentTotalSummary[$i] -gt baseTotalSummary[$i] ]]; then
+      if [[ currentTotalSummary[$i] -ge baseTotalSummary[$i] ]]; then
         amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
         errors+=$amount
         message+=" P"$(($i+1))"=+"$amount
