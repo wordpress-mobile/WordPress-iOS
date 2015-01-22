@@ -24,17 +24,23 @@ typedef void(^WPWhatsNewDismissBlock)();
 /**
  *  @brief      The details to show below the title.
  */
-@property (nonatomic, weak, readonly) IBOutlet UITextView* details;
+@property (nonatomic, weak, readonly) IBOutlet UITextView *details;
+
+/**
+ *  @brief      The details height constraint.
+ *  @details    The outlet is useful for updating the height of the details text view.
+ */
+@property (nonatomic, weak, readonly) IBOutlet NSLayoutConstraint *detailsHeightConstraint;
 
 /**
  *  @brief      The image to show on top of the view.
  */
-@property (nonatomic, weak, readonly) IBOutlet UIImageView* imageView;
+@property (nonatomic, weak, readonly) IBOutlet UIImageView *imageView;
 
 /**
  *  @title      The title for the new features.
  */
-@property (nonatomic, weak, readonly) IBOutlet UITextView* title;
+@property (nonatomic, weak, readonly) IBOutlet UITextView *title;
 
 #pragma mark - Properties: Blocks
 
