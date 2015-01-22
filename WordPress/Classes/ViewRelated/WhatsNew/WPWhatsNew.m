@@ -34,11 +34,15 @@
     
     BOOL appHasWhatsNewInfo = [whatsNewTitle length] > 0 && [whatsNewDetails length] > 0;
     
-    // TEMPORARY: remove before final commit...
+    // WORKAROUND: hard coding these for v4.8 until I can figure out a good translation solution.
+    //  I'm opening a new ticket to fix this issue separately.
+    //
+    // -- Diego Rey Mendez
+    //
     if (!appHasWhatsNewInfo) {
         whatsNewTitle = @"Share your story.";
-        whatsNewDetails = (@"We have exciting new updates to the WordPress editor. If you"
-                           " haven't blogged in a while, try it out by creating a new post.");
+        whatsNewDetails = (@"We have exciting new updates to the WordPress editor."
+                           @" If you haven't blogged in a while, try it out by creating a new post.");
         appHasWhatsNewInfo = YES;
     }
     
@@ -132,11 +136,18 @@
     
     NSString *key = [NSString stringWithFormat:@"v%@-whats-new-inapp-details", appVersion];
     
-    NSString *details = NSLocalizedString(key,
-                                          @"The details for the \"What's New\" dailog");
+    // IMPORTANT: this will trigger an alert when running localize.py.
+    // The error is expected since localize.py can't figure out what key to add to the strings file.
+    // It's also acceptable because this feature was devised so that we have to manually add these
+    // entries into glotpress _only_ for versions where we want the Whats New dialog to come up.
+    //
+    // Example key for v4.7: v4.7-whats-new-inapp-details
+    //
+    NSString *details = NSLocalizedString(([NSString stringWithFormat:@"v%@-whats-new-inapp-details", appVersion]),
+                                          @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
-    // wasn't found, as NSLocalizedString(...) does not return nil (it returns the key you used).
+    // wasn't found, as NSLocalizedString does not return nil (it returns the key you used).
     //
     BOOL stringNotFound = (key == details);
     
@@ -161,11 +172,19 @@
     NSParameterAssert([appVersion length] > 0);
     
     NSString *key = [NSString stringWithFormat:@"v%@-whats-new-inapp-title", appVersion];
+    
+    // IMPORTANT: this will trigger an alert when running localize.py.
+    // The error is expected since localize.py can't figure out what key to add to the strings file.
+    // It's also acceptable because this feature was devised so that we have to manually add these
+    // entries into glotpress _only_ for versions where we want the Whats New dialog to come up.
+    //
+    // Example key for v4.7: v4.7-whats-new-inapp-title
+    //
     NSString *title = NSLocalizedString(key,
-                                        @"The title for the \"What's New\" dailog");
+                                        @"The title for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
-    // wasn't found, as NSLocalizedString(...) does not return nil (it returns the key you used).
+    // wasn't found, as NSLocalizedString does not return nil (it returns the key you used).
     //
     BOOL stringNotFound = (key == title);
     
