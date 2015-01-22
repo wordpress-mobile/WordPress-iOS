@@ -654,7 +654,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    self.isScrollingFast = fabsf(self.collectionView.contentOffset.y - _lastScrollOffset) > ScrollingVelocityThreshold;
+    self.isScrollingFast = fabsf(self.collectionView.contentOffset.y - self.lastScrollOffset) > ScrollingVelocityThreshold;
     self.lastScrollOffset = self.collectionView.contentOffset.y;
 }
 
@@ -802,16 +802,16 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [self showCustomSizeAlert];
     } else if (buttonIndex == actionSheet.numberOfButtons - 3) {
         // original
-        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeOriginal]];
+        [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeOriginal]];
     } else if (buttonIndex == 0) {
         // small
-        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeSmall]];
+        [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeSmall]];
     } else if (buttonIndex == 1) {
         // medium
-        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeMedium]];
+        [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeMedium]];
     } else if (buttonIndex == 2) {
         // large
-        [self useImage:[self resizeImage:_currentImage toSize:MediaResizeLarge]];
+        [self useImage:[self resizeImage:self.currentImage toSize:MediaResizeLarge]];
     }
 }
 

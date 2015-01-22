@@ -7,16 +7,16 @@ build_dir="${temp_dir}/WPiOS_linting"
 compile_commands_path=${temp_dir}/compile_commands.json
 xcodebuild_log_path=${temp_dir}/xcodebuild.log
 
-if [ "${TRAVIS}" = "true" ]; then
-  echo "[*] installing oclint 0.8.1"
-  pushd .
-  cd ${temp_dir}
-  curl http://archives.oclint.org/releases/0.8/oclint-0.8.1-x86_64-darwin-14.0.0.tar.gz > oclint.tar.gz
-  tar -zxvf oclint.tar.gz
-  OCLINT_HOME=${temp_dir}/oclint-0.8.1
-  export PATH=$OCLINT_HOME/bin:$PATH
-  popd
-fi
+# if [ "${TRAVIS}" = "true" ]; then
+#   echo "[*] installing oclint 0.8.1"
+#   pushd .
+#   cd ${temp_dir}
+#   curl http://archives.oclint.org/releases/0.8/oclint-0.8.1-x86_64-darwin-14.0.0.tar.gz > oclint.tar.gz
+#   tar -zxvf oclint.tar.gz
+#   OCLINT_HOME=${temp_dir}/oclint-0.8.1
+#   export PATH=$OCLINT_HOME/bin:$PATH
+#   popd
+# fi
 
 hash oclint &> /dev/null
 if [ $? -eq 1 ]; then
@@ -105,14 +105,17 @@ if [ $TRAVIS ]; then
     errors=0;
     i=0
     n=3
+    message="OCLint"
     while [[ $i -lt $n ]]
     do
       if [[ currentTotalSummary[$i] -gt baseTotalSummary[$i] ]]; then
         amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
         errors+=$amount
+        message+=" P"$(($i+1))"=+"$amount
         echo "Your changes introduced "$amount "P"$(($i+1))" issue(s)"        
       else
         amount=$((${baseTotalSummary[$i]} - ${currentTotalSummary[$i]}))
+        message+=" P"$(($i+1))"=-"$amount
         echo "Your changes removed "$amount "P"$(($i+1))" issue(s)"
       fi
       let i++
@@ -121,11 +124,9 @@ if [ $TRAVIS ]; then
     travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
     echo $travis_url    
     if [[ $errors -eq 0 ]]; then
-      state="success"
-      message="OCLinted OK!"
+      state="success"      
     else
-      state="failure"
-      message="OCLint detected new issues!"
+      state="failure"      
     fi
     curl -i -H "Content-Type: application/json" \
       -H "Authorization: token ${TRAVIS_OCLINT_GITHUB_TOKEN}" \
