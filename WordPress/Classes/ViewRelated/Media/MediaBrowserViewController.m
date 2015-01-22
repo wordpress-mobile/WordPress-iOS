@@ -827,14 +827,14 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"] != nil) {
         widthText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageWidth"];
     } else {
-        widthText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.width];
+        widthText = [NSString stringWithFormat:@"%d", (int)self.currentImage.size.width];
     }
 
     NSString *heightText = nil;
     if ([[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"] != nil) {
         heightText = [[NSUserDefaults standardUserDefaults] objectForKey:@"prefCustomImageHeight"];
     } else {
-        heightText = [NSString stringWithFormat:@"%d", (int)_currentImage.size.height];
+        heightText = [NSString stringWithFormat:@"%d", (int)self.currentImage.size.height];
     }
 
     WPAlertView *alertView = [[WPAlertView alloc] initWithFrame:self.view.bounds andOverlayMode:WPAlertViewOverlayModeTwoTextFieldsSideBySideTwoButtonMode];
@@ -880,7 +880,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         [[NSUserDefaults standardUserDefaults] setObject:overlayView.firstTextField.text forKey:@"prefCustomImageWidth"];
         [[NSUserDefaults standardUserDefaults] setObject:overlayView.secondTextField.text forKey:@"prefCustomImageHeight"];
 
-        [self useImage:[self resizeImage:_currentImage width:[width floatValue] height:[height floatValue]]];
+        [self useImage:[self resizeImage:self.currentImage width:[width floatValue] height:[height floatValue]]];
     };
 
     alertView.alpha = 0.0;
@@ -902,7 +902,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         CGSize smallSize =  [[predefDim objectForKey: @"smallSize"] CGSizeValue];
         CGSize mediumSize = [[predefDim objectForKey: @"mediumSize"] CGSizeValue];
         CGSize largeSize =  [[predefDim objectForKey: @"largeSize"] CGSizeValue];
-        CGSize originalSize = CGSizeMake(_currentImage.size.width, _currentImage.size.height); //The dimensions of the image, taking orientation into account.
+        CGSize originalSize = CGSizeMake(self.currentImage.size.width, self.currentImage.size.height); //The dimensions of the image, taking orientation into account.
 
         switch (_currentImage.imageOrientation) {
             case UIImageOrientationLeft:
