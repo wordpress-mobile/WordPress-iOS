@@ -34,18 +34,6 @@
     
     BOOL appHasWhatsNewInfo = [whatsNewTitle length] > 0 && [whatsNewDetails length] > 0;
     
-    // WORKAROUND: hard coding these for v4.8 until I can figure out a good translation solution.
-    //  I'm opening a new ticket to fix this issue separately.
-    //
-    // -- Diego Rey Mendez
-    //
-    if (!appHasWhatsNewInfo) {
-        whatsNewTitle = @"Share your story.";
-        whatsNewDetails = (@"We have exciting new updates to the WordPress editor."
-                           @" If you haven't blogged in a while, try it out by creating a new post.");
-        appHasWhatsNewInfo = YES;
-    }
-    
     if (appHasWhatsNewInfo) {
         
         UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
@@ -134,22 +122,28 @@
     NSParameterAssert([appVersion isKindOfClass:[NSString class]]);
     NSParameterAssert([appVersion length] > 0);
     
-    NSString *key = [NSString stringWithFormat:@"v%@-whats-new-inapp-details", appVersion];
+    // IMPORTANT: enable the following line if you don't want to show any what's new dialog in the
+    // upcoming version of the app.
+    //
+    // return nil;
     
-    // IMPORTANT: this will trigger an alert when running localize.py.
-    // The error is expected since localize.py can't figure out what key to add to the strings file.
-    // It's also acceptable because this feature was devised so that we have to manually add these
-    // entries into glotpress _only_ for versions where we want the Whats New dialog to come up.
+    // IMPORTANT: since we don't have a default EN(US) translation, but instead rely on the default
+    // values for that, we'll have to modify the default value below, whenever the details need
+    // to change for a version of the app.
     //
-    // Example key for v4.7: v4.7-whats-new-inapp-details
+    // Really ugly, but there's no easy way around this at this time.
     //
-    NSString *details = NSLocalizedString(([NSString stringWithFormat:@"v%@-whats-new-inapp-details", appVersion]),
-                                          @"The details for the \"What's New\" dialog");
+    NSString *details = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-details",
+                                                          nil,
+                                                          [NSBundle mainBundle],
+                                                          @"We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post.",
+                                                          @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
-    // wasn't found, as NSLocalizedString does not return nil (it returns the key you used).
+    // wasn't found, as NS-LocalizedString (slash added to avoid breaking localize.py) does not
+    // return nil (it returns the key you used).
     //
-    BOOL stringNotFound = (key == details);
+    BOOL stringNotFound = [details isEqualToString:@"whats-new-inapp-details"];
     
     if (stringNotFound) {
         details = nil;
@@ -171,22 +165,28 @@
     NSParameterAssert([appVersion isKindOfClass:[NSString class]]);
     NSParameterAssert([appVersion length] > 0);
     
-    NSString *key = [NSString stringWithFormat:@"v%@-whats-new-inapp-title", appVersion];
+    // IMPORTANT: enable the following line if you don't want to show any what's new dialog in the
+    // upcoming version of the app.
+    //
+    // return nil;
     
-    // IMPORTANT: this will trigger an alert when running localize.py.
-    // The error is expected since localize.py can't figure out what key to add to the strings file.
-    // It's also acceptable because this feature was devised so that we have to manually add these
-    // entries into glotpress _only_ for versions where we want the Whats New dialog to come up.
+    // IMPORTANT: since we don't have a default EN(US) translation, but instead rely on the default
+    // values for that, we'll have to modify the default value below, whenever the details need
+    // to change for a version of the app.
     //
-    // Example key for v4.7: v4.7-whats-new-inapp-title
+    // Really ugly, but there's no easy way around this at this time.
     //
-    NSString *title = NSLocalizedString(key,
-                                        @"The title for the \"What's New\" dialog");
+    NSString *title = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-title",
+                                                        nil,
+                                                        [NSBundle mainBundle],
+                                                        @"Share your story.",
+                                                        @"The title for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
-    // wasn't found, as NSLocalizedString does not return nil (it returns the key you used).
+    // wasn't found, as NS-LocalizedString (slash added to avoid breaking localize.py) does not
+    // return nil (it returns the key you used).
     //
-    BOOL stringNotFound = (key == title);
+    BOOL stringNotFound = [title isEqualToString:@"whats-new-inapp-title"];
     
     if (stringNotFound) {
         title = nil;
