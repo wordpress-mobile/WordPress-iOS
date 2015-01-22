@@ -1,26 +1,20 @@
 #import "WPWhatsNewView.h"
+
+// System & libraries
 #import <QuartzCore/QuartzCore.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
+
+// Internal
 #import "WPGUIConstants.h"
 
 static const CGFloat WPWhatsNewCornerRadiusDefault = 7.0f;
 static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
 
-@interface WPWhatsNewView ()
+@interface WPWhatsNewView () <UITextViewDelegate>
 #pragma mark - Properties: Outlets
-
-/**
- *  @brief      The details to show below the title.
- */
 @property (nonatomic, weak, readwrite) IBOutlet UITextView* details;
-
-/**
- *  @brief      The image to show on top of the view.
- */
+@property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint *detailsHeightConstraint;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView* imageView;
-
-/**
- *  @title      The title for the new features.
- */
 @property (nonatomic, weak, readwrite) IBOutlet UITextView* title;
 @end
 
@@ -50,6 +44,15 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
              @"ImageView outlet not wired.");
     NSAssert([_title isKindOfClass:[UITextView class]],
              @"Title outlet not wired.");
+    
+    self.details.scrollEnabled = NO;
+    [self setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    UIFont *titleFont = [WPFontManager openSansBoldFontOfSize:18.0f];
+    UIFont *detailsFont = [WPFontManager openSansLightFontOfSize:15.0f];
+    
+    self.title.font = titleFont;
+    self.details.font = detailsFont;
 }
 
 #pragma mark - Showing & hiding
@@ -109,6 +112,34 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
             strongSelf.didDismissBlock();
         }
     }];
+}
+
+#pragma mark - Constraints
+
+- (void)updateConstraints
+{
+    [super updateConstraints];
+    
+    [self updateDetailsHeightConstraint];
+    [self updateSize];
+}
+
+- (void)updateDetailsHeightConstraint
+{
+    CGSize maxSize = CGSizeMake(self.details.frame.size.width, CGFLOAT_MAX);
+    
+    CGSize size = [self.details sizeThatFits:maxSize];
+
+    self.detailsHeightConstraint.constant = size.height;
+}
+
+#pragma mark - Sizing
+
+- (void)updateSize
+{
+    CGRect frame = self.frame;
+    frame.size = [self systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    self.frame = frame;
 }
 
 @end

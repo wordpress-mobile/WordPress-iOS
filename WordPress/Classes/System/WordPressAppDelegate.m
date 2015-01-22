@@ -1585,11 +1585,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         
         NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
         
-        BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+        BOOL whatsNewAlreadyShown = NO && [userDefaults boolForKey:WhatsNewUserDefaultsKey];
         
         if (!whatsNewAlreadyShown) {
-            // TODO: reduce delayed dispatch time before releasing...
-            //
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 
                 WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];

@@ -25,27 +25,6 @@
 
 - (void)show
 {
-    //TODO: complete this
-/*
-    UIWindow* keyWindow = [[UIApplication sharedApplication] keyWindow];
-    NSAssert([keyWindow isKindOfClass:[UIWindow class]],
-             @"We're expecting the application window to exist when this method is called.");
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(5.0f * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        UIAlertController* alertController = [UIAlertController alertControllerWithTitle:@"Title"
-                                                                                 message:@"Message"
-                                                                          preferredStyle:UIAlertControllerStyleAlert];
-     
-        [alertController addAction:[UIAlertAction actionWithTitle:@"Great, thanks!"
-                                                            style:UIActionSheetStyleAutomatic
-                                                          handler:^(UIAlertAction *action)
-        {
-            [keyWindow.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        }]];
-     
-        [keyWindow.rootViewController presentViewController:alertController animated:YES completion:nil];
-     });*/
-
     NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSAssert(versionString,
              @"We expect the version number to be set.");
@@ -104,11 +83,29 @@
     [keyWindow addSubview:dimmerView];
     [dimmerView addSubview:whatsNewView];
     
+    NSLayoutConstraint* xAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:whatsNewView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    NSLayoutConstraint* yAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:whatsNewView
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    [dimmerView addConstraints:@[xAlignment, yAlignment]];
+    
+    whatsNewView.center = dimmerView.center;
+    
     whatsNewView.title.text = title;
     whatsNewView.details.text = details;
     whatsNewView.imageView.image = image;
-    
-    whatsNewView.center = dimmerView.center;
 
     whatsNewView.willDismissBlock = ^void() {
         [dimmerView hideAnimated:YES completion:nil];
