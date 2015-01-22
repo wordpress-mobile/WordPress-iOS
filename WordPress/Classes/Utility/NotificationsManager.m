@@ -21,19 +21,31 @@
 
 
 
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+NSString *const NotificationsManagerDidRegisterDeviceToken          = @"NotificationsManagerDidRegisterDeviceToken";
+NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
+
 static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey                  = @"notification_preferences";
-NSString *const NotificationsDeviceToken                            = @"apnsDeviceToken";
+static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
 
 // These correspond to the 'category' data WP.com will send with a push notification
-NSString *const NotificationCategoryCommentApprove                  = @"approve-comment";
-NSString *const NotificationCategoryCommentLike                     = @"like-comment";
-NSString *const NotificationCategoryCommentReply                    = @"replyto-comment";
-NSString *const NotificationCategoryCommentReplyWithLike            = @"replyto-like-comment";
+static NSString *const NotificationCategoryCommentApprove           = @"approve-comment";
+static NSString *const NotificationCategoryCommentLike              = @"like-comment";
+static NSString *const NotificationCategoryCommentReply             = @"replyto-comment";
+static NSString *const NotificationCategoryCommentReplyWithLike     = @"replyto-like-comment";
 
-NSString *const NotificationActionCommentReply                      = @"COMMENT_REPLY";
-NSString *const NotificationActionCommentLike                       = @"COMMENT_LIKE";
-NSString *const NotificationActionCommentApprove                    = @"COMMENT_MODERATE_APPROVE";
+static NSString *const NotificationActionCommentReply               = @"COMMENT_REPLY";
+static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
+static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
+
+
+#pragma mark ====================================================================================
+#pragma mark NotificationsManager
+#pragma mark ====================================================================================
 
 @implementation NotificationsManager
 
@@ -93,6 +105,9 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         [userDefaults setObject:newToken forKey:NotificationsDeviceToken];
         [userDefaults synchronize];
     }
+    
+    // Notify Listeners
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationsManagerDidRegisterDeviceToken object:newToken];
 
     [self syncPushNotificationInfo];
 }
@@ -109,23 +124,35 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
+
+    void (^successBlock)(void) = ^{
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:NotificationsDeviceToken];
+        [defaults removeObjectForKey:NotificationsDeviceIdKey];
+        [defaults removeObjectForKey:NotificationsPreferencesKey];
+        [defaults synchronize];
+        
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc postNotificationName:NotificationsManagerDidUnregisterDeviceToken object:nil];
+    };
     
-    [[defaultAccount restApi] unregisterForPushNotificationsWithDeviceId:deviceId
-                                                                 success:^{
-                                                                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                                     [defaults removeObjectForKey:NotificationsDeviceToken];
-                                                                     [defaults removeObjectForKey:NotificationsDeviceIdKey];
-                                                                     [defaults removeObjectForKey:NotificationsPreferencesKey];
-                                                                     [defaults synchronize];
-                                                                 } failure:^(NSError *error){
-                                                                     DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
-                                                                 }];
+    void (^failureBlock)(NSError *error) = ^(NSError *error){
+        DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
+    };
+    
+    [defaultAccount.restApi unregisterForPushNotificationsWithDeviceId:deviceId success:successBlock failure:failureBlock];
 }
 
 + (BOOL)deviceRegisteredForPushNotifications
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
+    return [self registeredPushNotificationsToken] != nil;
 }
+
++ (NSString *)registeredPushNotificationsToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+}
+
 
 #pragma mark - Notification handling
 
