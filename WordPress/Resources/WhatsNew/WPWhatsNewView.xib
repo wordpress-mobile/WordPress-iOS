@@ -19,10 +19,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="WPWhatsNewView">
-            <rect key="frame" x="0.0" y="0.0" width="260" height="311"/>
+            <rect key="frame" x="0.0" y="0.0" width="260" height="292"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Share your Story!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-xg-ets" userLabel="Title Text View">
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Share your Story!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-xg-ets" userLabel="Title Text View">
                     <rect key="frame" x="20" y="80" width="220" height="35"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
@@ -31,21 +31,15 @@
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Yo-lx-1UL" userLabel="Details Text View">
-                    <rect key="frame" x="20" y="123" width="220" height="119"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                    <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcP-jy-MXs" userLabel="Separator Line View">
-                    <rect key="frame" x="0.0" y="250" width="260" height="1"/>
+                    <rect key="frame" x="0.0" y="231" width="260" height="1"/>
                     <color key="backgroundColor" red="0.57024998383178827" green="0.5725490196078431" blue="0.56380973514078536" alpha="0.5" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="WRy-k8-iUa"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JiN-6m-R2d">
-                    <rect key="frame" x="0.0" y="251" width="260" height="60"/>
+                    <rect key="frame" x="0.0" y="232" width="260" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="q6a-Ez-UNQ"/>
                     </constraints>
@@ -71,6 +65,19 @@
                         </mask>
                     </variation>
                 </imageView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Yo-lx-1UL" userLabel="Details Text View">
+                    <rect key="frame" x="20" y="123" width="220" height="100"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="100" id="d06-w8-7sQ"/>
+                        <constraint firstAttribute="width" constant="220" id="qKj-0j-rfx"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <connections>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="vib-OP-dB5"/>
+                    </connections>
+                </textView>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
@@ -115,10 +122,11 @@
             </variation>
             <connections>
                 <outlet property="details" destination="7Yo-lx-1UL" id="eEq-ir-BGX"/>
+                <outlet property="detailsHeightConstraint" destination="d06-w8-7sQ" id="buX-Kv-Rll"/>
                 <outlet property="imageView" destination="rZt-IM-vJ7" id="JGZ-vj-KV2"/>
                 <outlet property="title" destination="5qs-xg-ets" id="L7h-42-tzM"/>
             </connections>
-            <point key="canvasLocation" x="-24" y="75.5"/>
+            <point key="canvasLocation" x="-16" y="136"/>
         </view>
     </objects>
 </document>
