@@ -100,7 +100,9 @@
     whatsNewView.imageView.image = image;
 
     whatsNewView.willDismissBlock = ^void() {
-        [dimmerView hideAnimated:YES completion:nil];
+        [dimmerView hideAnimated:YES completion:^(BOOL finished) {
+            [dimmerView removeFromSuperview];
+        }];
     };
     
     [dimmerView showAnimated:YES completion:nil];
