@@ -34,13 +34,13 @@ else
     exit 1
 fi
 
-echo "[*] Cleaning project"
+echo "[*] cleaning project"
 xctool clean \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress > ${temp_dir}/clean.log
 
-echo "[*] Building project"
+echo "[*] building project"
 xctool build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
@@ -50,7 +50,7 @@ xctool build \
            #| tee $xcodebuild_log_path
 
 if [ $TRAVIS ]; then
-    echo "[*] Only files changed on push";    
+    echo "[*] only files changed on push";    
     include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
