@@ -1,6 +1,6 @@
 #!/bin/sh
 source ~/.bash_profile
-
+check_file="$1"
 oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=LongClass -disable-rule=LongMethod -disable-rule=UnusedMethodParameter"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
@@ -64,8 +64,12 @@ if [ $TRAVIS ]; then
       exclude_files="-e *"
     fi
     echo "[*] $include_files"
+elif [ $1 ]; then
+    include_files="-i ${check_file}"
+    exclude_files="-e *"
 else
-    echo "[*] All project files";
+  #statements
+    echo "[*] all project files";
     include_files=""
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
