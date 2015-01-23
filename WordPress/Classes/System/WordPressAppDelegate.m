@@ -638,10 +638,8 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
-        DDLogVerbose(@"Was able to successfully retrieve data about whether to disable the app review prompts");
-    } failure:^{
-        DDLogError(@"Was unable to retrieve data about whether to disable the app review prompts");
+    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:nil failure:^{
+        DDLogError(@"Was unable to retrieve data about throttling");
     }];
 }
 
