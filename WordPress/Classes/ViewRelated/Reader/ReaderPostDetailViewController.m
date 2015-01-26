@@ -125,7 +125,9 @@ static CGFloat const VerticalMargin = 40;
     self.postView.shouldHideComments = self.shouldHideComments;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    self.postView.canShowActionButtons = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    self.postView.canShowActionButtons = isLoggedIn;
+    self.postView.shouldShowAttributionButton = isLoggedIn;
     
     [self.scrollView addSubview:self.postView];
 }
