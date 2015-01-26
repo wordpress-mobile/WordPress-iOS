@@ -76,6 +76,10 @@ import Foundation
         }
     }
     
+    public override func isFirstResponder() -> Bool {
+        return textView.isFirstResponder()
+    }
+    
     
     // MARK: - Public Methods
     public func replaceTextAtCaret(text: String!, withText replacement: String!) {

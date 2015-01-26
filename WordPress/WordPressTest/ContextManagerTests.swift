@@ -319,6 +319,10 @@ class ContextManagerTests: XCTestCase {
     }
     
     private func removeStoresBasedOnStoreURL(storeURL: NSURL) {
+        if storeURL.lastPathComponent == nil {
+            return
+        }
+        
         let fileManager = NSFileManager.defaultManager()
         let directoryUrl = storeURL.URLByDeletingLastPathComponent
         let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
