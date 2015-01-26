@@ -59,6 +59,11 @@
 @property (nonatomic) BOOL shouldShowAttributionMenu;
 
 /**
+ A Boolean value specifying whether the view should display the attribution link button. 
+ */
+@property (nonatomic) BOOL shouldShowAttributionButton;
+
+/**
  A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
  */
 @property (nonatomic) BOOL shouldHideComments;
