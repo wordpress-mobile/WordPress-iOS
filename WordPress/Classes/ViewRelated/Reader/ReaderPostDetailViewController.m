@@ -15,6 +15,7 @@
 #import "WordPress-Swift.h"
 
 static CGFloat const VerticalMargin = 40;
+static NSInteger const ReaderPostDetailImageQuality = 65;
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
@@ -327,6 +328,7 @@ static CGFloat const VerticalMargin = 40;
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
+        self.featuredImageSource.photonQuality = ReaderPostDetailImageQuality;
     }
     
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);

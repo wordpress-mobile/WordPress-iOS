@@ -9,6 +9,7 @@
 static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 static CGSize const WPRichTextMinimumSize = {1, 1};
 static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
+static NSInteger const WPRichTextImageQuality = 65;
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -192,6 +193,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     self.imageSource = [[WPTableImageSource alloc] initWithMaxSize:[self maxImageDisplaySize]];
     _imageSource.forceLargerSizeWhenFetching = NO;
     _imageSource.delegate = self;
+    _imageSource.photonQuality = WPRichTextImageQuality;
 
     return _imageSource;
 }
