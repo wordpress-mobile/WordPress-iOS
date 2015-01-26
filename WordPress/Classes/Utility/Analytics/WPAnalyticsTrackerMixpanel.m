@@ -294,6 +294,16 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_scrolled_to_bottom_of_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_scrolled_to_bottom_of_stats"];
             break;
+        case WPAnalyticsStatEditorUploadMediaFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Upload Media Failed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_upload_media_failed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_editor_upload_media_failed"];
+            break;
+        case WPAnalyticsStatEditorUploadMediaRetried:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Retried Uploading Media"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_retried_uploading_media"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_editor_retried_uploading_media"];
+            break;
         case WPAnalyticsStatEditorCreatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Created Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_created_post"];

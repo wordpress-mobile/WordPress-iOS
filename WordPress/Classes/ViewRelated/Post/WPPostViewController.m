@@ -1619,6 +1619,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
+    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
+    
     NSProgress * progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
         return;
@@ -1696,6 +1698,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [media remove];
                     } else {
                         [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
+                        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
                         strongSelf.mediaGlobalProgress.completedUnitCount++;
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }

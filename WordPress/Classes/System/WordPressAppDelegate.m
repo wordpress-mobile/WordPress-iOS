@@ -45,6 +45,7 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 #import "UIImage+Util.h"
+#import "NSBundle+VersionNumberHelper.h"
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -634,8 +635,14 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 - (void)initializeAppTracking
 {
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
+    [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
+    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
+        DDLogVerbose(@"Was able to successfully retrieve data about whether to disable the app review prompts");
+    } failure:^{
+        DDLogError(@"Was unable to retrieve data about whether to disable the app review prompts");
+    }];
 }
 
 - (void)trackLowMemory
@@ -839,7 +846,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
 
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
                        appVersion,
@@ -1054,7 +1061,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     NSArray *blogs = [blogService blogsForAllAccounts];
 
     DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] detailedVersionNumber]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -1066,7 +1073,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
 
     if (blogs.count > 0) {
