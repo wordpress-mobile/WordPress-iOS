@@ -9,9 +9,50 @@ typedef void(^AnimatableTransitionBlock)();
 /**
  *  @brief      The alpha value for when this view is visible.
  */
-const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.4f;
+const CGFloat WPBackgroundDimmerViewAlphaVisibleDefault = 0.4f;
 
 @implementation WPBackgroundDimmerView
+
+- (instancetype)init
+{
+    self = [super init];
+    
+    if (self) {
+        [self commonInit];
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    
+    if (self) {
+        [self commonInit];
+    }
+    
+    return self;
+}
+
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    
+    if (self) {
+        [self commonInit];
+    }
+    
+    return self;
+}
+
+#pragma mark - Init helpers
+
+- (void)commonInit
+{
+    _alphaWhenVisible = WPBackgroundDimmerViewAlphaVisibleDefault;
+}
 
 #pragma mark - UIView
 
@@ -46,7 +87,7 @@ const CGFloat WPBackgroundDimmerViewAlphaVisible = 0.4f;
 {
     AnimatableTransitionBlock showTransitionBlock = ^void() {
         self.backgroundColor = [UIColor colorWithWhite:WPColorZero
-                                                 alpha:WPBackgroundDimmerViewAlphaVisible];
+                                                 alpha:self.alphaWhenVisible];
     };
     
     [self transitionWithBlock:showTransitionBlock
