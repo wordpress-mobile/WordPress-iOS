@@ -75,23 +75,11 @@
     [keyWindow addSubview:dimmerView];
     [dimmerView addSubview:whatsNewView];
     
-    NSLayoutConstraint* xAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:whatsNewView
-                                                                  attribute:NSLayoutAttributeCenterX
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f];
+    [self configureConstraintsBetweenKeyWindow:keyWindow
+                                 andDimmerView:dimmerView];
     
-    NSLayoutConstraint* yAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
-                                                                  attribute:NSLayoutAttributeCenterY
-                                                                  relatedBy:NSLayoutRelationEqual
-                                                                     toItem:whatsNewView
-                                                                  attribute:NSLayoutAttributeCenterY
-                                                                 multiplier:1.0f
-                                                                   constant:0.0f];
-    
-    [dimmerView addConstraints:@[xAlignment, yAlignment]];
+    [self configureConstraintsBetweenDimmerView:dimmerView
+                                andWhatsNewView:whatsNewView];
     
     whatsNewView.center = dimmerView.center;
     
@@ -195,6 +183,80 @@
     }
     
     return title;
+}
+
+#pragma mark - Constraints
+
+- (void)configureConstraintsBetweenDimmerView:(WPBackgroundDimmerView*)dimmerView
+                              andWhatsNewView:(WPWhatsNewView*)whatsNewView
+{
+    NSParameterAssert([dimmerView isKindOfClass:[WPBackgroundDimmerView class]]);
+    NSParameterAssert([whatsNewView isKindOfClass:[WPWhatsNewView class]]);
+    NSAssert([dimmerView.subviews containsObject:whatsNewView],
+             @"The whatsNew view should already be a child of dimmerView here.");
+    
+    NSLayoutConstraint* xAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:whatsNewView
+                                                                  attribute:NSLayoutAttributeCenterX
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    NSLayoutConstraint* yAlignment = [NSLayoutConstraint constraintWithItem:dimmerView
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:whatsNewView
+                                                                  attribute:NSLayoutAttributeCenterY
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    [dimmerView addConstraints:@[xAlignment, yAlignment]];
+}
+
+- (void)configureConstraintsBetweenKeyWindow:(UIWindow*)keyWindow
+                               andDimmerView:(WPBackgroundDimmerView*)dimmerView
+{
+    NSParameterAssert([keyWindow isKindOfClass:[UIWindow class]]);
+    NSParameterAssert([dimmerView isKindOfClass:[WPBackgroundDimmerView class]]);
+    NSAssert([keyWindow.subviews containsObject:dimmerView],
+             @"The key window should already contain the dimmer view at this point.");
+    
+    [dimmerView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    
+    NSLayoutConstraint* dimmerLeft = [NSLayoutConstraint constraintWithItem:keyWindow
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:dimmerView
+                                                                  attribute:NSLayoutAttributeLeft
+                                                                 multiplier:1.0f
+                                                                   constant:0.0f];
+    
+    NSLayoutConstraint* dimmerRight = [NSLayoutConstraint constraintWithItem:keyWindow
+                                                                   attribute:NSLayoutAttributeRight
+                                                                   relatedBy:NSLayoutRelationEqual
+                                                                      toItem:dimmerView
+                                                                   attribute:NSLayoutAttributeRight
+                                                                  multiplier:1.0f
+                                                                    constant:0.0f];
+    
+    NSLayoutConstraint* dimmerTop = [NSLayoutConstraint constraintWithItem:keyWindow
+                                                                 attribute:NSLayoutAttributeTop
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:dimmerView
+                                                                 attribute:NSLayoutAttributeTop
+                                                                multiplier:1.0f
+                                                                  constant:0.0f];
+    
+    NSLayoutConstraint* dimmerBottom = [NSLayoutConstraint constraintWithItem:keyWindow
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:dimmerView
+                                                                    attribute:NSLayoutAttributeBottom
+                                                                   multiplier:1.0f
+                                                                     constant:0.0f];
+
+    [keyWindow addConstraints:@[dimmerLeft, dimmerRight, dimmerTop, dimmerBottom]];
 }
 
 @end
