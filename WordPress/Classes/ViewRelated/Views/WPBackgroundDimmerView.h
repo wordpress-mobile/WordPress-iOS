@@ -11,6 +11,13 @@ typedef void(^WPBackgroundDimmerCompletionBlock)(BOOL finished);
  */
 @interface WPBackgroundDimmerView : UIView
 
+#pragma mark - Visual Customization
+
+/**
+ *  @brief      The alpha value used for creating the background dim effect.  Defaults to 0.4f.
+ */
+@property (nonatomic, assign, readwrite) CGFloat alphaWhenVisible;
+
 #pragma mark - Showing and hiding
 
 - (void)hideAnimated:(BOOL)animated
