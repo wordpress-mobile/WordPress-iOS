@@ -10,28 +10,31 @@
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <AMPopTip/AMPopTip.h>
 #import <SVProgressHUD.h>
-#import "ContextManager.h"
-#import "Post.h"
-#import "Coordinate.h"
-#import "Media.h"
-#import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
-#import "WPBlogSelectorButton.h"
-#import "LocationService.h"
 #import "BlogService.h"
+#import "ContextManager.h"
+#import "Coordinate.h"
+#import "EditImageDetailsViewController.h"
+#import "LocationService.h"
+#import "Media.h"
 #import "MediaBrowserViewController.h"
 #import "MediaService.h"
+#import "NSString+Helpers.h"
+#import "Post.h"
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostSettingsViewController.h"
-#import "NSString+Helpers.h"
-#import "WPMediaUploader.h"
-#import "WPButtonForNavigationBar.h"
-#import "WPUploadStatusButton.h"
-#import "WordPressAppDelegate.h"
 #import "PrivateSiteURLProtocol.h"
+#import "WordPressAppDelegate.h"
+#import "WPButtonForNavigationBar.h"
+#import "WPBlogSelectorButton.h"
+#import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
+#import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
+#import "WPTableViewCell.h"
+#import "WPTabBarController.h"
+#import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
@@ -81,7 +84,7 @@ static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, EditImageDetailsViewControllerDelegate>
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
@@ -1201,7 +1204,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
+    } else if(blogCount <= 1 || ![self isPostLocal] || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
         aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
@@ -1407,7 +1410,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)didSaveNewPost
 {
     if ([self isPostLocal]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+        [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
 
@@ -1616,6 +1619,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
+    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
+    
     NSProgress * progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
         return;
@@ -1630,6 +1635,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
         [self stopTrackingProgressOfMediaWithId:imageUniqueId];
         [self refreshNavigationBarButtons:NO];
@@ -1680,6 +1686,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
                 NSProgress *uploadProgress = nil;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
                     [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
                     [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
                     [strongSelf refreshNavigationBarButtons:NO];
@@ -1691,6 +1698,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [media remove];
                     } else {
                         [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
+                        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
                         strongSelf.mediaGlobalProgress.completedUnitCount++;
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }
@@ -1961,7 +1969,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self refreshUIForCurrentPost];
 }
 
-- (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url
+- (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url imageMeta:(WPImageMeta *)imageMeta
+{
+    // Note: imageId is an editor specified data attribute, not the image's ID attribute.
+    if (imageId.length == 0) {
+        [self displayImageDetailsForMeta:imageMeta];
+    } else {
+        [self promptForActionForTappedImage:imageId url:url];
+    }
+}
+
+- (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
+{
+    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
+    controller.delegate = self;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)promptForActionForTappedImage:(NSString *)imageId url:(NSURL *)url
 {
     if (imageId.length == 0) {
         return;
@@ -2038,6 +2066,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark - EditImageDetailsViewControllerDelegate
+
+- (void)editImageDetailsViewController:(EditImageDetailsViewController *)controller didFinishEditingImageDetails:(WPImageMeta *)imageMeta
+{
+    [self.editorView updateCurrentImageMeta:imageMeta];
 }
 
 @end
