@@ -74,6 +74,11 @@
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="d06-w8-7sQ"/>
+                        </mask>
+                    </variation>
                     <connections>
                         <outlet property="delegate" destination="iN0-l3-epB" id="vib-OP-dB5"/>
                     </connections>
@@ -126,7 +131,7 @@
                 <outlet property="imageView" destination="rZt-IM-vJ7" id="JGZ-vj-KV2"/>
                 <outlet property="title" destination="5qs-xg-ets" id="L7h-42-tzM"/>
             </connections>
-            <point key="canvasLocation" x="-16" y="136"/>
+            <point key="canvasLocation" x="-175" y="62"/>
         </view>
     </objects>
 </document>
