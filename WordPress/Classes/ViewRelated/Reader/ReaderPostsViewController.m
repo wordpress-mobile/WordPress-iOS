@@ -37,7 +37,7 @@ static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 static NSInteger RPVCRefreshInterval = 300; // 5 minutes
 static CGRect RPVCTableHeaderFrame = {0.0f, 0.0f, 0.0f, 40.0f};
-
+static NSInteger const RPVCImageQuality = 65;
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
@@ -267,6 +267,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
     self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     self.featuredImageSource.delegate = self;
+    self.featuredImageSource.photonQuality = RPVCImageQuality;
 }
 
 - (void)configureInfiniteScroll
