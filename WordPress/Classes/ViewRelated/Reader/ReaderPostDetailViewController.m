@@ -123,6 +123,9 @@ static CGFloat const VerticalMargin = 40;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
     self.postView.shouldHideComments = self.shouldHideComments;
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.postView.canShowActionButtons = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
     
     [self.scrollView addSubview:self.postView];
 }
