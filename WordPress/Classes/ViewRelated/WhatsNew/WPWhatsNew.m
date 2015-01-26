@@ -126,7 +126,7 @@
     NSString *details = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-details",
                                                           nil,
                                                           [NSBundle mainBundle],
-                                                          @"We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post.",
+                                                          @"This version of the WordPress app includes a beautiful new visual editor. Try it out by creating a new post.",
                                                           @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
@@ -169,7 +169,7 @@
     NSString *title = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-title",
                                                         nil,
                                                         [NSBundle mainBundle],
-                                                        @"Share your story.",
+                                                        @"Brand new editor",
                                                         @"The title for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
