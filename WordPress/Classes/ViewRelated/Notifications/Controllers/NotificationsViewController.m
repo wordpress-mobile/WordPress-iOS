@@ -87,7 +87,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:)   name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(handleRegisteredDeviceTokenNote:)   name:NotificationsManagerDidRegisterDeviceToken object:nil];
+        [nc addObserver:self selector:@selector(handleUnregisteredDeviceTokenNote:) name:NotificationsManagerDidUnregisterDeviceToken object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -142,6 +144,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     [self updateTabBarBadgeNumber];
     [self showNoResultsViewIfNeeded];
+    [self showManageButtonIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -156,7 +159,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self trackAppearedIfNeeded];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
-    [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
     [self showNoResultsViewIfNeeded];
@@ -184,7 +186,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showRatingViewIfApplicable
 {
-    if ([AppRatingUtility shouldPromptForAppReview]) {
+    if ([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
         if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
             // Rating View is already visible, don't bother to do anything
             return;
@@ -287,6 +289,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self resetApplicationBadge];
 }
 
+- (void)handleRegisteredDeviceTokenNote:(NSNotification *)note
+{
+    [self showManageButtonIfNeeded];
+}
+
+- (void)handleUnregisteredDeviceTokenNote:(NSNotification *)note
+{
+    [self removeManageButton];
+}
+
 
 #pragma mark - Public Methods
 
@@ -386,16 +398,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     if (![NotificationsManager deviceRegisteredForPushNotifications]) {
         return;
     }
-    
-    // Don't overwork, please
-    if (self.navigationItem.rightBarButtonItem) {
-        return;
-    }
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(showNotificationSettings)];
+}
+
+- (void)removeManageButton
+{
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)showNotificationSettings
@@ -744,11 +756,13 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)appbotPromptLiked
 {
+    [AppRatingUtility likedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
 }
 
 - (void)appbotPromptDidntLike
 {
+    [AppRatingUtility dislikedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
 }
 
