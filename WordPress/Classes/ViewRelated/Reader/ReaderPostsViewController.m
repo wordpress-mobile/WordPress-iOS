@@ -957,6 +957,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
     cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.canShowActionButtons = self.hasWPComAccount;
+    cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];

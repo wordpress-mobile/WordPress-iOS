@@ -22,6 +22,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         _canShowActionButtons = YES;
+        _shouldShowAttributionButton = YES;
 
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
@@ -152,6 +153,8 @@
 {
     [super configureAttributionView];
     [self.attributionView selectAttributionButton:self.post.isFollowing];
+
+    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
 
     BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
     [self.attributionView hideAttributionMenu:hide];
