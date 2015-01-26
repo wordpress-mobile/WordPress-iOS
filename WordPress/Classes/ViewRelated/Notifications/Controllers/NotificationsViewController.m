@@ -8,6 +8,7 @@
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
 #import "WPNoResultsView.h"
+#import "WPTabBarController.h"
 
 #import "Notification.h"
 #import "Meta.h"
@@ -86,7 +87,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:)   name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+        [nc addObserver:self selector:@selector(handleRegisteredDeviceTokenNote:)   name:NotificationsManagerDidRegisterDeviceToken object:nil];
+        [nc addObserver:self selector:@selector(handleUnregisteredDeviceTokenNote:) name:NotificationsManagerDidUnregisterDeviceToken object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -141,6 +144,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     [self updateTabBarBadgeNumber];
     [self showNoResultsViewIfNeeded];
+    [self showManageButtonIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -155,7 +159,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self trackAppearedIfNeeded];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
-    [self showManageButtonIfNeeded];
     [self setupNotificationsBucketDelegate];
     [self reloadResultsControllerIfNeeded];
     [self showNoResultsViewIfNeeded];
@@ -183,7 +186,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showRatingViewIfApplicable
 {
-    if ([AppRatingUtility shouldPromptForAppReview]) {
+    if ([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
         if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
             // Rating View is already visible, don't bother to do anything
             return;
@@ -286,6 +289,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self resetApplicationBadge];
 }
 
+- (void)handleRegisteredDeviceTokenNote:(NSNotification *)note
+{
+    [self showManageButtonIfNeeded];
+}
+
+- (void)handleUnregisteredDeviceTokenNote:(NSNotification *)note
+{
+    [self removeManageButton];
+}
+
 
 #pragma mark - Public Methods
 
@@ -353,9 +366,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)updateTabBarBadgeNumber
 {
     // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
-    UITabBarController *tabBarController    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] tabBarController];
-    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[kNotificationsTabIndex];
- 
+    UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
+    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[WPTabNotifications];
+
     NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
     NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
 
@@ -385,16 +398,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     if (![NotificationsManager deviceRegisteredForPushNotifications]) {
         return;
     }
-    
-    // Don't overwork, please
-    if (self.navigationItem.rightBarButtonItem) {
-        return;
-    }
-    
+
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(showNotificationSettings)];
+}
+
+- (void)removeManageButton
+{
+    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)showNotificationSettings
@@ -743,11 +756,13 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)appbotPromptLiked
 {
+    [AppRatingUtility likedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsLikedApp];
 }
 
 - (void)appbotPromptDidntLike
 {
+    [AppRatingUtility dislikedCurrentVersion];
     [WPAnalytics track:WPAnalyticsStatAppReviewsDidntLikeApp];
 }
 
