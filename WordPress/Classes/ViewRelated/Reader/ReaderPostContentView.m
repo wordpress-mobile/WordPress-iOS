@@ -9,6 +9,7 @@
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
+@property (nonatomic) BOOL shouldShowActionButtons;
 
 @end
 
@@ -20,6 +21,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _canShowActionButtons = YES;
+
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
         [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -47,7 +50,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
-    self.shouldShowActions = post.isWPCom;
+    self.shouldShowActionButtons = (post.isWPCom && self.canShowActionButtons);
     self.contentProvider = post;
 }
 
@@ -82,7 +85,7 @@
 
 - (void)configureActionButtons
 {
-    if (!self.shouldShowActions) {
+    if (!self.shouldShowActionButtons) {
         self.actionButtons = @[];
         return;
     }
@@ -109,7 +112,7 @@
 
 - (void)updateActionButtons
 {
-    if (!self.shouldShowActions) {
+    if (!self.shouldShowActionButtons) {
         return;
     }
 
