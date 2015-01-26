@@ -51,7 +51,7 @@
 /**
  A Boolean value specifying whether the view should display any action buttons.
  */
-@property (nonatomic) BOOL shouldShowActions;
+@property (nonatomic) BOOL canShowActionButtons;
 
 /**
  A Boolean value specifying whether the view should display the attribution menu.
