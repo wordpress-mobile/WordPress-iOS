@@ -1342,7 +1342,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 		return;
 	}
     
-    [self stopEditing];
 	[self savePostAndDismissVC];
 }
 
@@ -1355,6 +1354,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self showFailedMediaRemovalAlert];
         return;
     }
+    [self stopEditing];
     [self savePost];
     [self dismissEditView];
 }
