@@ -362,11 +362,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (ReaderTopic *)topic:(ReaderTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    NSError *error;
-    ReaderTopic *topicInContext = (ReaderTopic *)[context existingObjectWithID:topic.objectID error:&error];
-    if (error) {
-        DDLogError(@"Error retriving topic in context: %@", error);
-    }
+    ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
     return topicInContext;
 }
 
