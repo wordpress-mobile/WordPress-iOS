@@ -23,7 +23,7 @@ echo "[*] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
     echo "[*] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
-    pipe_command="| sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'"
+    pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
     echo "[*] we're running the script from Xcode"
     xcode_workspace="../WordPress.xcworkspace"
@@ -37,8 +37,10 @@ fi
 echo "[*] cleaning project"
 xctool clean \
            -sdk "iphonesimulator8.1" \
+           -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            CONFIGURATION_BUILD_DIR=$build_dir \
-           -workspace $xcode_workspace -configuration Debug -scheme WordPress > ${temp_dir}/clean.log
+           DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
+           > ${temp_dir}/clean.log
 
 echo "[*] building project"
 xctool build \
