@@ -1055,6 +1055,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         if (buttonIndex == 1) {
             DDLogInfo(@"Saving post even after some media failed to upload");
             [self savePost:YES];
+            [self dismissEditView];
         }
         _failedMediaAlertView = nil;
     } else if (alertView.tag == EditPostViewControllerAlertTagSwitchBlogs) {
