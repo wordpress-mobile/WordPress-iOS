@@ -124,6 +124,11 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
     self.postView.shouldHideComments = self.shouldHideComments;
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    self.postView.canShowActionButtons = isLoggedIn;
+    self.postView.shouldShowAttributionButton = isLoggedIn;
     
     [self.scrollView addSubview:self.postView];
 }

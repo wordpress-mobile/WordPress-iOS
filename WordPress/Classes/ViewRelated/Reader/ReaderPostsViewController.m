@@ -65,6 +65,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic) BOOL shouldSkipRowAnimation;
 @property (nonatomic) UIDeviceOrientation previousOrientation;
+@property (nonatomic) BOOL hasWPComAccount;
 
 @property (nonatomic, strong) NSManagedObjectContext *contextForSync;
 
@@ -109,6 +110,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewDidLoad];
 
+    [self checkWPComAccountExists];
     [self configureRefreshControl];
     [self configureTableView];
     [self configureTableViewHandler];
@@ -213,6 +215,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 
 #pragma mark - Configuration
+
+- (void)checkWPComAccountExists
+{
+    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext] defaultWordPressComAccount] != nil);
+}
 
 - (void)configureRefreshControl
 {
@@ -644,6 +651,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)didChangeAccount:(NSNotification *)notification
 {
+    [self checkWPComAccountExists];
     NSManagedObjectContext *context = [self managedObjectContext];
     [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
     [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
@@ -948,7 +956,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
-    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
+    cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
+    cell.postView.canShowActionButtons = self.hasWPComAccount;
+    cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
