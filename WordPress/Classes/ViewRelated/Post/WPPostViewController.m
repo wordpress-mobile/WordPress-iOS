@@ -1981,6 +1981,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
+    [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
+    
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
 
