@@ -1198,14 +1198,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     UIBarButtonItem *aUIButtonBarItem;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || ![self isPostLocal] || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
-        aUIButtonBarItem = nil;
     } else {
         UIButton *blogButton = self.blogPickerButton;
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
