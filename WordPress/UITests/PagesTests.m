@@ -258,6 +258,7 @@
             [tester tapViewWithAccessibilityLabel:@"Update"];
             [tester waitForTimeInterval:5];
         } else {
+            [tester waitForViewWithAccessibilityIdentifier:@"Current Featured Image"];
             [tester tapViewWithAccessibilityIdentifier:@"Current Featured Image"];
             [tester waitForTimeInterval:2];
             
