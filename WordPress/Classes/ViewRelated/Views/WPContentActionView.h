@@ -18,16 +18,4 @@
  */
 @property (nonatomic, strong) NSArray *actionButtons;
 
-///**
-// Adds the specified button to the group of "action" buttons.
-// 
-// @param actionButton A `UIButton` to display.
-// */
-//- (void)addActionButton:(UIButton *)actionButton;
-//
-///**
-// Removes all the buttons previously added.
-// */
-//- (void)removeAllActionButtons;
-
 @end
