@@ -1,6 +1,6 @@
 #!/bin/sh
 source ~/.bash_profile
-
+check_file="$1"
 oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=LongClass -disable-rule=LongMethod -disable-rule=UnusedMethodParameter"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
@@ -23,7 +23,7 @@ echo "[*] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
     echo "[*] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
-    pipe_command="| sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'"
+    pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
     echo "[*] we're running the script from Xcode"
     xcode_workspace="../WordPress.xcworkspace"
@@ -34,13 +34,15 @@ else
     exit 1
 fi
 
-echo "[*] Cleaning project"
+echo "[*] cleaning project"
 xctool clean \
            -sdk "iphonesimulator8.1" \
+           -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            CONFIGURATION_BUILD_DIR=$build_dir \
-           -workspace $xcode_workspace -configuration Debug -scheme WordPress > ${temp_dir}/clean.log
+           DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
+           > ${temp_dir}/clean.log
 
-echo "[*] Building project"
+echo "[*] building project"
 xctool build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
@@ -50,7 +52,7 @@ xctool build \
            #| tee $xcodebuild_log_path
 
 if [ $TRAVIS ]; then
-    echo "[*] Only files changed on push";    
+    echo "[*] only files changed on push";    
     include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' ' -i '`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
@@ -64,8 +66,12 @@ if [ $TRAVIS ]; then
       exclude_files="-e *"
     fi
     echo "[*] $include_files"
+elif [ $1 ]; then
+    include_files="-i ${check_file}"
+    exclude_files="-e *"
 else
-    echo "[*] All project files";
+  #statements
+    echo "[*] all project files";
     include_files=""
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
