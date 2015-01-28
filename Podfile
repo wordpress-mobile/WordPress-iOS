@@ -28,11 +28,11 @@ pod 'CTAssetsPickerController', '~> 2.7.0'
 pod 'WordPress-iOS-Shared', '0.1.6'
 pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => '63e5b670820bc4fede001d33e6c1bb63a88c1835'
 pod 'WordPressCom-Stats-iOS', '0.1.6'
-pod 'WordPressCom-Analytics-iOS', '0.0.18'
+pod 'WordPressCom-Analytics-iOS', '0.0.19'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
 pod 'Simperium', '0.7.6'
-pod 'Lookback', '0.9.0', :configurations => ['Release-Internal']
+pod 'Lookback', '0.9.1', :configurations => ['Release-Internal']
 pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "a0273598d22aac982bec5807e638050b0032a9c9"
 pod 'MRProgress', '~>0.7.0'
 pod 'NewRelicAgent', '~> 4.152', :configurations => ['Release-Internal']
