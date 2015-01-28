@@ -1,7 +1,7 @@
 #!/bin/sh
 source ~/.bash_profile
 check_file="$1"
-oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=LongClass -disable-rule=LongMethod -disable-rule=UnusedMethodParameter"
+oclint_args="-disable-rule=ShortVariableName -disable-rule=LongLine -disable-rule=LongClass -disable-rule=LongMethod -disable-rule=UnusedMethodParameter -disable-rule=LongVariableName"
 temp_dir="/tmp"
 build_dir="${temp_dir}/WPiOS_linting"
 compile_commands_path=${temp_dir}/compile_commands.json
