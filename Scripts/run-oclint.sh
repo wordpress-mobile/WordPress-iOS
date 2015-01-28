@@ -41,6 +41,7 @@ xctool clean \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            CONFIGURATION_BUILD_DIR=$build_dir \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
+           reporter pretty \
            > ${temp_dir}/clean.log
 
 echo "[*] building project"
