@@ -633,16 +633,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
 }
 
-
-#pragma mark - UIRefreshControl Methods
-
-- (void)refresh
-{
-    // Yes. This is dummy. Simperium handles sync for us!
-    [self.refreshControl endRefreshing];
-}
-
-- (void)didChangeContent
+- (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     // Update Separators:
     // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
@@ -652,6 +643,15 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
     }
+}
+
+
+#pragma mark - UIRefreshControl Methods
+
+- (void)refresh
+{
+    // Yes. This is dummy. Simperium handles sync for us!
+    [self.refreshControl endRefreshing];
 }
 
 
