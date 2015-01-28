@@ -936,6 +936,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
+- (NSInteger)currentBlogCount
+{
+    NSInteger blogCount = 0;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    blogCount = [blogService blogCountForAllAccounts];
+    
+    return blogCount;
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -955,30 +965,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
+    NSArray* leftBarButtons;
     
     if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
+        // Previewing a post (no edit)
         [self.navigationItem setLeftBarButtonItems:nil];
-        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:NO];
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons];
 	}
 }
 
@@ -1201,7 +1204,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
     } else {
-        UIButton *blogButton = self.blogPickerButton;
+        WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
@@ -1210,6 +1213,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         if (IS_IPAD) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
+        }
+        
+        // If there is only one blog or the editor is in preview mode, set the
+        // blog picker button to read only
+        if (self.currentBlogCount <= 1 || !self.isEditing) {
+            blogButton.isReadOnly = YES;
+        } else {
+            blogButton.isReadOnly = NO;
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
