@@ -842,6 +842,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [defaults synchronize];
 }
 
++ (BOOL)makeNewEditorAvailable
+{
+    BOOL result = NO;
+    BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
+    
+    if (newVisualEditorNotAvailable) {
+        
+        result = YES;
+        [WPPostViewController setNewEditorAvailable:YES];
+        [WPPostViewController setNewEditorEnabled:YES];
+    }
+    
+    return result;
+}
+
 + (BOOL)isNewEditorAvailable
 {
 	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorAvailable];
