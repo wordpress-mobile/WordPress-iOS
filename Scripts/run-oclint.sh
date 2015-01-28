@@ -55,7 +55,7 @@ xctool build \
 
 if [ $TRAVIS ]; then
     echo "[OCLint] only files changed on push";    
-    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' '|' | sed 's/|/ \-i /g'`
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | sed 's/^/ -i /g' | tr '\n' ' '`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
     base_commit+="^"
@@ -63,7 +63,7 @@ if [ $TRAVIS ]; then
     full_sha=`git rev-parse $sha`
     echo $full_sha
     if [ ! -z "$include_files" ]; then
-      include_files="-i "$include_files      
+      include_files=$include_files      
     else
       exclude_files="-e *"
     fi
