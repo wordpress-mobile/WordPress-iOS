@@ -49,7 +49,7 @@ PODS:
   - KIF/IdentifierTests (3.1.2):
     - KIF/XCTest
   - KIF/XCTest (3.1.2)
-  - Lookback (0.9.0)
+  - Lookback (0.9.1)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.4)
   - MRProgress (0.7.0):
@@ -134,7 +134,7 @@ DEPENDENCIES:
   - Helpshift (~> 4.8.0)
   - HockeySDK (~> 3.6.0)
   - KIF/IdentifierTests (~> 3.1)
-  - Lookback (= 0.9.0)
+  - Lookback (= 0.9.1)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.5.4)
   - MRProgress (~> 0.7.0)
@@ -214,7 +214,7 @@ SPEC CHECKSUMS:
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
-  Lookback: 172684e39761983df644201cc71eb70c65b2097f
+  Lookback: 7dee055a4696765e6c4615da079a884cedb4b4a6
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
