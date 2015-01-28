@@ -1215,9 +1215,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [blogButton sizeToFit];
         }
         
-        // If there is only one blog or the editor is in preview mode, set the
-        // blog picker button to read only
-        if (self.currentBlogCount <= 1 || !self.isEditing) {
+        // The blog picker is read-only if one of the following is true:
+        // editor screen is in preview mode, there is only 1 blog, or the user
+        // is editing an existing post
+        if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
             blogButton.isReadOnly = YES;
         } else {
             blogButton.isReadOnly = NO;
