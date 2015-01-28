@@ -23,6 +23,7 @@ echo "[*] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
     echo "[*] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
+    oclint_args+=" -report-type=html -o=oclint_result.html"
     pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
     echo "[*] we're running the script from Xcode"
@@ -130,8 +131,9 @@ if [ $TRAVIS ]; then
       https://api.github.com/repos/${TRAVIS_REPO_SLUG}/statuses/$full_sha
 
     exit 0      
-else 
-    echo "[*] showing results"
+else     
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
+    echo "[*] showing results"
+    open oclint_result.html 
     exit $?
 fi
