@@ -9,33 +9,33 @@ xcodebuild_log_path=${temp_dir}/xcodebuild.log
 
 hash oclint &> /dev/null
 if [ $? -eq 1 ]; then
-    echo >&2 "oclint not found, analyzing stopped"
+    echo >&2 "[OCLint] oclint not found, analyzing stopped"
     exit 1
 fi
 
 oclint --version
 
-echo "[*] cleaning up generated files"
+echo "[OCLint] cleaning up generated files"
 [[ -f $compile_commands_path ]] && rm ${compile_commands_path}
 [[ -f $xcodebuild_log_path ]] && rm ${xcodebuild_log_path}
 
-echo "[*] starting xcodebuild to build the project.."
+echo "[OCLint] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
-    echo "[*] we're running the script from the CLI"
+    echo "[OCLint] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
     oclint_args+=" -report-type=html -o=oclint_result.html"
     pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
-    echo "[*] we're running the script from Xcode"
+    echo "[OCLint] we're running the script from Xcode"
     xcode_workspace="../WordPress.xcworkspace"
     pipe_command="| sed 's/\\(.*\\.\\m\\{1,2\\}:[0-9]*:[0-9]*:\\)/\\1 warning:/'"
 else
     # error!
-    echo >&2 "workspace not found, analyzing stopped"
+    echo >&2 "[OCLint] workspace not found, analyzing stopped"
     exit 1
 fi
 
-echo "[*] cleaning project"
+echo "[OCLint] cleaning project"
 xctool clean \
            -sdk "iphonesimulator8.1" \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
@@ -44,7 +44,7 @@ xctool clean \
            reporter pretty \
            > ${temp_dir}/clean.log
 
-echo "[*] building project"
+echo "[OCLint] building project"
 xctool build \
            -sdk "iphonesimulator8.1" \
            CONFIGURATION_BUILD_DIR=$build_dir \
@@ -54,7 +54,7 @@ xctool build \
            #| tee $xcodebuild_log_path
 
 if [ $TRAVIS ]; then
-    echo "[*] only files changed on push";    
+    echo "[OCLint] only files changed on push";    
     include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' '|' | sed 's/|/ \-i /g'`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
@@ -67,13 +67,13 @@ if [ $TRAVIS ]; then
     else
       exclude_files="-e *"
     fi
-    echo "[*] $include_files"
+    echo "[OCLint] analyzing these files: $include_files"
 elif [ $1 ]; then
     include_files="-i ${check_file}"
     exclude_files="-e *"
 else
   #statements
-    echo "[*] all project files";
+    echo "[OCLint] all project files";
     include_files=""
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
@@ -82,7 +82,7 @@ fi
 cd ${temp_dir}
 #oclint-xcodebuild -e Pods/ -o ${compile_commands_path}
 
-echo "[*] starting analyzing"
+echo "[OCLint] starting analyzing"
 
 if [ $TRAVIS ]; then
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > currentLint.log
@@ -110,11 +110,11 @@ if [ $TRAVIS ]; then
         amount=$((${currentTotalSummary[$i]} - ${baseTotalSummary[$i]}))
         errors+=$amount
         message+=" P"$(($i+1))"=+"$amount
-        echo "Your changes introduced "$amount "P"$(($i+1))" issue(s)"        
+        echo "[OCLint] Your changes introduced "$amount "P"$(($i+1))" issue(s)"        
       else
         amount=$((${baseTotalSummary[$i]} - ${currentTotalSummary[$i]}))
         message+=" P"$(($i+1))"=-"$amount
-        echo "Your changes removed "$amount "P"$(($i+1))" issue(s)"
+        echo "[OCLint] Your changes removed "$amount "P"$(($i+1))" issue(s)"
       fi
       let i++
     done
@@ -134,7 +134,7 @@ if [ $TRAVIS ]; then
     exit 0      
 else     
     eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
-    echo "[*] showing results"
+    echo "[OCLint] showing results"
     open oclint_result.html 
     exit $?
 fi
