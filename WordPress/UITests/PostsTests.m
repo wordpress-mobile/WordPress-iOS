@@ -25,9 +25,9 @@
 
 - (void)beforeEach
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     [tester waitForTimeInterval:2];
@@ -35,7 +35,7 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester tapViewWithAccessibilityLabel:@"Blog Posts"];
     [tester waitForTimeInterval:5];
 
 }
@@ -165,7 +165,7 @@
     [tester waitForTimeInterval:2];
     
     if ([tester tryFindingViewWithAccessibilityLabel:@"Cancel" error:nil]) {
-        [tester tapViewWithAccessibilityLabel:@"Cancel"];
+        [tester tapViewWithAccessibilityLabel:@"Update"];
         [tester waitForTimeInterval:2];
     } else if ([tester tryFindingViewWithAccessibilityLabel:@"Close" error:nil]) {
         [tester tapViewWithAccessibilityLabel:@"Close"];
@@ -310,6 +310,7 @@
             [tester tapViewWithAccessibilityLabel:@"Update"];
             [tester waitForTimeInterval:5];
         } else {
+            [tester waitForViewWithAccessibilityIdentifier:@"Current Featured Image"];
             [tester tapViewWithAccessibilityIdentifier:@"Current Featured Image"];
             [tester waitForTimeInterval:2];
             
@@ -333,7 +334,7 @@
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"PostsTable"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Preview"];
+    [tester tapViewWithAccessibilityLabelStartingWith:@"Preview"];
     [tester waitForTimeInterval:2];
     
     [tester tapViewWithAccessibilityLabel:@"Back"];

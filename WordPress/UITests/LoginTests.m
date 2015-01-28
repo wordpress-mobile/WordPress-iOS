@@ -82,6 +82,10 @@
     // Verify that the login succeeded
     [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
     
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
+    [tester waitForTimeInterval:1];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
     [tester tapViewWithAccessibilityLabel:[NSString stringWithFormat:@"Delete %@, %@", selfHostedSiteName, selfHostedSiteURL]];
