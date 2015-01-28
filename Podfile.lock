@@ -92,7 +92,7 @@ PODS:
   - OCMock (3.1.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.7.6):
+  - Simperium (0.7.7):
     - Google-Diff-Match-Patch
     - JRSwizzle
     - SocketRocket
@@ -145,8 +145,8 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.7.6)
-  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, branch `master`)
+  - Simperium (= 0.7.7)
+  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
@@ -164,7 +164,7 @@ EXTERNAL SOURCES:
     :branch: gifsupport
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
-    :branch: master
+    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
     :git: https://github.com/jleandroperez/SocketRocket.git
   SVProgressHUD:
     :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
@@ -184,7 +184,7 @@ CHECKOUT OPTIONS:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
-    :commit: 04b9c1d135d7791f6d8b2947b3c53ff3f3b1248d
+    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
     :git: https://github.com/jleandroperez/SocketRocket.git
   SVProgressHUD:
     :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
@@ -226,7 +226,7 @@ SPEC CHECKSUMS:
   OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: 872853054cc283d4dbd7f93d223050b5015f6f71
+  Simperium: 2c45e3ac26fa699f05174fcb1a15e4cc2e3b2f11
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
