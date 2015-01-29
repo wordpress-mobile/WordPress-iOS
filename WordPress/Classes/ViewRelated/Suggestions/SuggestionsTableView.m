@@ -32,6 +32,7 @@ CGFloat const STVSeparatorHeight = 1.f;
         _siteID = siteID;
         _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
+        _enabled = YES;
         _searchResults = [[NSMutableArray alloc] init];
         _useTransparentHeader = NO;
         [self setupHeaderView];
@@ -47,6 +48,7 @@ CGFloat const STVSeparatorHeight = 1.f;
     _useTransparentHeader = useTransparentHeader;
     [self updateHeaderStyles];
 }
+
 
 #pragma mark Private methods
 
@@ -204,6 +206,10 @@ CGFloat const STVSeparatorHeight = 1.f;
 
 - (BOOL)showSuggestionsForWord:(NSString *)word
 {
+    if (!self.enabled) {
+        return NO;
+    }
+    
     if ([word hasPrefix:@"@"]) {
         self.searchText = [word substringFromIndex:1];
         if (self.searchText.length > 0) {

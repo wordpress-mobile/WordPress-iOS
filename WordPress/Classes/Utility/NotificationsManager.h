@@ -1,7 +1,11 @@
+#import <Foundation/Foundation.h>
+
 /**
- The persisted device token
+ These notifications are sent when the user Registers / Unregisters for Push Notifications
  */
-extern NSString *const NotificationsDeviceToken;
+extern NSString *const NotificationsManagerDidRegisterDeviceToken;
+extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
+
 
 @interface NotificationsManager : NSObject
 
@@ -40,6 +44,12 @@ extern NSString *const NotificationsDeviceToken;
  @return NO if not
  */
 + (BOOL)deviceRegisteredForPushNotifications;
+
+/**
+ Retrieves and returns the last registered Device Token
+*/
++ (NSString *)registeredPushNotificationsToken;
+
 
 ///----------------------------
 /// @name Notification Handling

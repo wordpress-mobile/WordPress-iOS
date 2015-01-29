@@ -2,7 +2,6 @@
 #import "WordPressAppDelegate.h"
 #import "UIImageView+Gravatar.h"
 #import "WordPressComApi.h"
-#import "SettingsViewController.h"
 #import "LoginViewController.h"
 #import "BlogDetailsViewController.h"
 #import "WPTableViewCell.h"
@@ -14,22 +13,28 @@
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
+#import "WPTabBarController.h"
+#import "WPFontManager.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
-CGFloat const blavatarImageSize = 50.f;
+// this height is selected to make sure 2 lines of text will fit in the header
+static CGFloat const BLVCHeaderViewHeight = 55.0;
+static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
+static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
-@property (nonatomic, strong) UIBarButtonItem *settingsButton;
+@property (nonatomic, strong) UIView *headerView;
+
 @end
 
 @implementation BlogListViewController
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] blogListViewController];
+    return [[WPTabBarController sharedInstance] blogListViewController];
 }
 
 - (void)dealloc
@@ -43,6 +48,13 @@ CGFloat const blavatarImageSize = 50.f;
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
+
+        // show 'Switch Site' for the next page's back button
+        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Switch Site", @"")
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:nil
+                                                                      action:nil];
+        [self.navigationItem setBackBarButtonItem:backButton];
     }
     return self;
 }
@@ -85,13 +97,7 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Settings", nil)
-                                                           style:UIBarButtonItemStylePlain
-                                                          target:self
-                                                          action:@selector(showSettings:)];
-    
-    self.navigationItem.rightBarButtonItem = self.settingsButton;
-    self.navigationItem.rightBarButtonItem.accessibilityIdentifier = @"Settings";
+
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -104,9 +110,11 @@ CGFloat const blavatarImageSize = 50.f;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = @"Blogs";
+    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = @"Edit";
+    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
+
+    [self setupHeaderView];
     
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
@@ -118,6 +126,32 @@ CGFloat const blavatarImageSize = 50.f;
 
         [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
+}
+
+- (void)setupHeaderView
+{
+    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BLVCHeaderViewHeight)];
+
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 0;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.textColor = [WPStyleGuide allTAllShadeGrey];
+    label.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    label.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+    [self.headerView addSubview:label];
+
+    // Layout
+    NSDictionary *views = NSDictionaryOfVariableBindings(label);
+    NSDictionary *metrics = @{@"padding": @(BLVCHeaderViewLabelPadding)};
+    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(padding)-[label]-(padding)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(padding)-[label]-(padding)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -176,20 +210,6 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)wordPressComApiDidLogout:(NSNotification *)notification
 {
     [self.tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-#pragma mark - Actions
-
-- (void)showSettings:(id)sender
-{
-    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
-
-    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    UINavigationController *aNavigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
-    aNavigationController.navigationBar.translucent = NO;
-    aNavigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-
-    [self.navigationController presentViewController:aNavigationController animated:YES completion:nil];
 }
 
 #pragma mark - Table view data source
@@ -384,7 +404,8 @@ CGFloat const blavatarImageSize = 50.f;
     if (title.length > 0) {
         return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
     }
-    return IS_IPHONE ? 1.0 : 40.0;
+    // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
+    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : BLVCSectionHeaderHeightForIPad;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -436,6 +457,14 @@ CGFloat const blavatarImageSize = 50.f;
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
+
+    if (editing) {
+        self.tableView.tableHeaderView = self.headerView;
+    }
+    else {
+        // setting the table header view to nil creates extra space, empty view is a way around that
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 0, CGFLOAT_MIN)];
+    }
 
     // Animate view to editing mode
     __block UIView *snapshot;
