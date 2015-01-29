@@ -376,12 +376,36 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     topic.topicID = remoteTopic.topicID;
     topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
-    topic.title = [title stringByDecodingXMLCharacters];
+    topic.title = [self formatTitle:title];
     topic.path = [path lowercaseString];
     topic.isSubscribed = remoteTopic.isSubscribed;
     topic.isRecommended = remoteTopic.isRecommended;
 
     return topic;
+}
+
+- (NSString *)formatTitle:(NSString *)str
+{
+    NSString *title = [str stringByDecodingXMLCharacters];
+
+    // Failsafe
+    if ([title length] == 0) {
+        return title;
+    }
+
+    // If already capitalized, assume the title was returned as it should be displayed.
+    if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:0]]) {
+        return title;
+    }
+
+    // iPhone, ePaper, etc. assume correctly formatted
+    if ([title length] > 1 &&
+        [[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:0]] &&
+        [[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:1]]) {
+        return title;
+    }
+
+    return [title capitalizedStringWithLocale:[NSLocale currentLocale]];
 }
 
 /**

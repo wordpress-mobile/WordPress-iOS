@@ -51,12 +51,22 @@
 /**
  A Boolean value specifying whether the view should display any action buttons.
  */
-@property (nonatomic) BOOL shouldShowActions;
+@property (nonatomic) BOOL canShowActionButtons;
 
 /**
  A Boolean value specifying whether the view should display the attribution menu.
  */
 @property (nonatomic) BOOL shouldShowAttributionMenu;
+
+/**
+ A Boolean value specifying whether the view should display the attribution link button. 
+ */
+@property (nonatomic) BOOL shouldShowAttributionButton;
+
+/**
+ A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
+ */
+@property (nonatomic) BOOL shouldHideComments;
 
 /**
  Configures the view to display the contents of the specified `ReaderPost`.

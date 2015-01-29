@@ -13,6 +13,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self login];
 }
 
@@ -23,42 +24,42 @@
 
 - (void)testMeTab
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester waitForViewWithAccessibilityLabel:@"Blogs"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Blogs"];
 }
 
 - (void)testHideBlog
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
-    [tester setOn:NO forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    [tester setOn:NO forSwitchWithAccessibilityIdentifier:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    
+    [tester tapViewWithAccessibilityLabel:@"Done"];
     
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
-    [tester tapViewWithAccessibilityLabel:@"Edit"];
-    
-    [tester setOn:YES forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    [tester setOn:YES forSwitchWithAccessibilityIdentifier:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
 
-    [tester tapViewWithAccessibilityLabel:@"Edit"];
+    [tester tapViewWithAccessibilityLabel:@"Done"];
 }
 
 - (void)testMeNavigation
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
 
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     
-    [tester tapViewWithAccessibilityLabel:@"Posts"];
+    [tester tapViewWithAccessibilityLabel:@"Blog Posts"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Back"];
     
@@ -82,7 +83,7 @@
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
     
-    [tester tapViewWithAccessibilityLabel:@"Edit Site"];
+    [tester tapViewWithAccessibilityLabel:@"Settings"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
@@ -92,9 +93,7 @@
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Settings"];
+    [tester tapViewWithAccessibilityLabel:@"Help & Support"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"About"];
     [tester waitForTimeInterval:2];
@@ -106,9 +105,9 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Back"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester tapViewWithAccessibilityLabel:@"Support"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Done"];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
 
 }
@@ -119,23 +118,19 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Support"];
+    [tester tapViewWithAccessibilityLabel:@"Help & Support"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Activity Logs"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Current"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester tapViewWithAccessibilityLabel:@"Logs"];
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Clear Old Activity Logs"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Back"];
+    [tester tapViewWithAccessibilityLabel:@"Support"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Back"];
-    [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Done"];
+    [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
 }
 

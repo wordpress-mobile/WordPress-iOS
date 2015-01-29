@@ -15,6 +15,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self login];
 }
 
@@ -25,9 +26,9 @@
 
 - (void)beforeEach
 {
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
     [tester waitForTimeInterval:2];
     [tester tapRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] inTableViewWithAccessibilityIdentifier:@"Blogs"];
     [tester tapViewWithAccessibilityLabel:@"Stats"];

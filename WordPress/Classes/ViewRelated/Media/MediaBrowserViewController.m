@@ -6,7 +6,7 @@
 #import "MediaSearchFilterHeaderView.h"
 #import "EditMediaViewController.h"
 #import "UIImage+Resize.h"
-#import "WordPressAppDelegate.h"
+#import "WPTabBarController.h"
 #import "WPLoadingView.h"
 #import "WPNoResultsView.h"
 #import "Post.h"
@@ -17,6 +17,7 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "CustomHighlightButton.h"
+#import "WPError.h"
 
 static NSString *const MediaCellIdentifier = @"media_cell";
 static NSUInteger const MediaTypeActionSheetVideo = 1;
@@ -758,7 +759,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             if (self.presentingViewController) {
                 [_currentActionSheet showInView:self.view];
             } else {
-                [_currentActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+                [_currentActionSheet showFromTabBar:[WPTabBarController sharedInstance].tabBar];
             }
         }
     }
@@ -962,7 +963,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
             if (self.presentingViewController) {
                 [resizeActionSheet showInView:self.view];
             } else {
-                [resizeActionSheet showFromTabBar:[WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar];
+                [resizeActionSheet showFromTabBar:[WPTabBarController sharedInstance].tabBar];
             }
         }
     }
@@ -1044,7 +1045,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         _picker.mediaTypes = @[(NSString *)kUTTypeImage];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         if (IS_IPAD) {
-            [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = YES;
+            [WPTabBarController sharedInstance].tabBar.hidden = YES;
         }
         [self.navigationController presentViewController:_picker animated:YES completion:nil];
     }
@@ -1060,7 +1061,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         _picker.videoQuality = [self videoQualityPreference];
         _picker.modalPresentationStyle = UIModalPresentationCurrentContext;
         if (IS_IPAD) {
-            [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = YES;
+            [WPTabBarController sharedInstance].tabBar.hidden = YES;
         }
         [self.navigationController presentViewController:_picker animated:YES completion:nil];
     }
@@ -1068,7 +1069,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
+    [WPTabBarController sharedInstance].tabBar.hidden = NO;
     if (_addPopover) {
         [_addPopover dismissPopoverAnimated:YES];
     } else {
@@ -1087,7 +1088,7 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [WordPressAppDelegate sharedWordPressApplicationDelegate].tabBarController.tabBar.hidden = NO;
+    [WPTabBarController sharedInstance].tabBar.hidden = NO;
 
      if ([[info valueForKey:@"UIImagePickerControllerMediaType"] isEqualToString:@"public.movie"]) {
         self.currentVideo = [info mutableCopy];
