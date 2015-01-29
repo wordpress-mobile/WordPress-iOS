@@ -16,5 +16,6 @@ set -o pipefail && xcodebuild test \
 	-destination "platform=iOS Simulator,name=iPhone 4s,OS=8.1" \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
+	-configuration Debug \
 	-sdk "$TRAVIS_XCODE_SDK" | ${pretty}
 	
