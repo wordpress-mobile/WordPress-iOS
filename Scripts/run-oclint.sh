@@ -51,11 +51,11 @@ xctool build \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
            -reporter json-compilation-database:$compile_commands_path
-           #| tee $xcodebuild_log_path
+           
 
 if [ $TRAVIS ]; then
     echo "[OCLint] only files changed on push";    
-    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | sed 's/^/ -i /g' | tr '\n' ' '`
+    include_files=`git diff $TRAVIS_COMMIT_RANGE --name-only | grep '\.m' | tr '\n' '|' | sed 's/|*$/"/g'`
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
     base_commit=`echo $TRAVIS_COMMIT_RANGE | cut -d '.' -f 1`
     base_commit+="^"
@@ -63,18 +63,22 @@ if [ $TRAVIS ]; then
     full_sha=`git rev-parse $sha`
     echo $full_sha
     if [ ! -z "$include_files" ]; then
-      include_files=$include_files      
+      include_files=' -i "'$include_files      
     else
       exclude_files="-e *"
     fi
     echo "[OCLint] analyzing these files: $include_files"
-elif [ $1 ]; then
+elif [ $1 == "DIFF" ]; then
+    include_files=`git diff HEAD^ --name-only | grep '\.m' | tr '\n' '|' | sed 's/|*$/"/g'`    
+    include_files=' -i "'$include_files
+    echo "[OCLint] only looking at this files: $include_files"
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
+elif [ $1 ]; then  
     include_files="-i ${check_file}"
-    exclude_files="-e *"
+    exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 else
-  #statements
-    echo "[OCLint] all project files";
-    include_files=""
+    echo "[OCLint] Looking at all files"     
+    include_files=""        
     exclude_files="-e Pods/ -e Vendor/ -e WordPressTodayWidget/ -e SFHFKeychainUtils.m -e Constants.m"
 fi
 
@@ -85,12 +89,12 @@ cd ${temp_dir}
 echo "[OCLint] starting analyzing"
 
 if [ $TRAVIS ]; then
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > currentLint.log
+    eval "oclint-json-compilation-database $exclude_files $include_files oclint_args \"$oclint_args\" " > currentLint.log
     cat currentLint.log
     cd ${TRAVIS_BUILD_DIR}
     git checkout $base_commit
     cd ${temp_dir}
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files" > baseLint.log
+    eval "oclint-json-compilation-database $exclude_files $include_files oclint_args \"$oclint_args\" " > baseLint.log
     currentSummary=`cat currentLint.log | grep "Summary: "`
     baseSummary=`cat baseLint.log | grep "Summary: "`
     regex='P1=([[:digit:]]*) P2=([[:digit:]]*) P3=([[:digit:]]*)' 
@@ -133,7 +137,7 @@ if [ $TRAVIS ]; then
 
     exit 0      
 else     
-    eval "oclint-json-compilation-database $exclude_files oclint_args \"$oclint_args\" $include_files $pipe_command"
+    eval "oclint-json-compilation-database $exclude_files $include_files oclint_args \"$oclint_args\" $pipe_command"
     echo "[OCLint] showing results"
     open oclint_result.html 
     exit $?
