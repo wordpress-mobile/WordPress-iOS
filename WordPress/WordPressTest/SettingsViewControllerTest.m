@@ -1,11 +1,14 @@
 #import <XCTest/XCTest.h>
 #import "WPAccount.h"
 #import "Blog.h"
-#import "NotificationsManager.h"
+#import "NotificationsManager+TestHelper.h"
 #import "SettingsViewController.h"
 #import "ContextManager.h"
 #import "AccountService.h"
+#import "BlogService.h"
 #import "TestContextManager.h"
+
+
 
 @interface SettingsViewControllerTest : XCTestCase
 
@@ -39,11 +42,12 @@
 {
     NSManagedObjectContext *context = [self.testContextManager mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     XCTAssertNil(defaultAccount, @"There should be no default account");
     
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
+    [NotificationsManager removeDummyDeviceToken];
     SettingsViewController *controller = [self settingsViewController];
     [self present:controller];
 
@@ -79,7 +83,7 @@
     cell = [self tableView:table cellForRow:1];
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
-    [[NSUserDefaults standardUserDefaults] setObject:@"aFakeAPNSToken" forKey:NotificationsDeviceToken];
+    [NotificationsManager setDummyDeviceToken];
     [table reloadData];
 
     /*
@@ -102,9 +106,9 @@
     
     NSString *xmlrpc = @"http://blog1.com/xmlrpc.php";
     NSString *url = @"blog1.com";
-    Blog *blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!blog) {
-        blog = [accountService createBlogWithAccount:account];
+        blog = [blogService createBlogWithAccount:account];
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
@@ -133,9 +137,9 @@
 
     xmlrpc = @"http://blog2.com/xmlrpc.php";
     url = @"blog2.com";
-    blog = [accountService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
     if (!blog) {
-        blog = [accountService createBlogWithAccount:account];
+        blog = [blogService createBlogWithAccount:account];
         blog.xmlrpc = xmlrpc;
         blog.url = url;
     }
@@ -161,7 +165,7 @@
     cell = [self tableView:table cellForRow:2];
     XCTAssertEqualObjects(@"Sign Out", cell.accessibilityIdentifier);
 
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:NotificationsDeviceToken];
+    [NotificationsManager removeDummyDeviceToken];
     [table reloadData];
 
     /*

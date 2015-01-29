@@ -6,7 +6,7 @@
 @interface FeaturedImageViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *deleteButton;
-@property (nonatomic, strong) Post *post;
+@property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, strong) UIBarButtonItem *activityItem;
 
 @end
@@ -20,7 +20,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithPost:(Post *)post
+- (id)initWithPost:(AbstractPost *)post
 {
     self = [super init];
     if (self) {

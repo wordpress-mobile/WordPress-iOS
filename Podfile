@@ -25,16 +25,17 @@ pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.8.0'
 pod 'CTAssetsPickerController', '~> 2.7.0'
-pod 'WordPress-iOS-Shared', '~>0.1.6'
-pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => 'a02bfc7e40ea03140fc553ad257d1583ac3638ca'
+pod 'WordPress-iOS-Shared', '0.1.6'
+pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => '63e5b670820bc4fede001d33e6c1bb63a88c1835'
 pod 'WordPressCom-Stats-iOS', '0.1.6'
-pod 'WordPressCom-Analytics-iOS', '0.0.13'
+pod 'WordPressCom-Analytics-iOS', '0.0.19'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :branch => 'master'
-pod 'Simperium', '0.7.5'
-pod 'Lookback', '0.6.5', :configurations => ['Release-Internal']
+pod 'Simperium', '0.7.6'
+pod 'Lookback', '0.9.1', :configurations => ['Release-Internal']
 pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "a0273598d22aac982bec5807e638050b0032a9c9"
 pod 'MRProgress', '~>0.7.0'
+pod 'NewRelicAgent', '~> 4.152', :configurations => ['Release-Internal']
 
 target 'WordPressTodayWidget', :exclusive => true do
     pod 'WordPressCom-Stats-iOS', '0.1.6'
@@ -46,5 +47,5 @@ target :WordPressTest, :exclusive => true do
 end
 
 target 'UITests', :exclusive => true do
-    pod 'KIF', :git => 'https://github.com/SergioEstevao/KIF.git', :branch => 'issue/470-AccessibilityIdentifier'
+    pod 'KIF/IdentifierTests', '~>3.1'
 end
