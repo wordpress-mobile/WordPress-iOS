@@ -21,7 +21,7 @@
 - (void)prepareForDeletion
 {
     // Only do these deletions in the primary context (no parent)
-    if (self.managedObjectContext.parentContext) {
+    if (self.managedObjectContext.concurrencyType != NSMainQueueConcurrencyType) {
         return;
     }
 
