@@ -11,6 +11,8 @@ install:
 - ./Scripts/install-oclint.sh
 before_script:
 - xctool --version
+script:
+- ./Scripts/build.sh
 after_success:
 - ./Scripts/run-oclint.sh
 
