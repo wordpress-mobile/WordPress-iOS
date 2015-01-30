@@ -212,6 +212,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
             break;
+        case WPAnalyticsStatAppInstalled:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Installed"];
+            [instructions setCurrentDateForPeopleProperty:@"application_installed"];
+            break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_theme_browser"];
@@ -412,6 +416,14 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Edited Image"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_edited_image"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_edited_image"];
+            break;
+        case WPAnalyticsStatEditorToggledOn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor On"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(YES)];
+            break;
+        case WPAnalyticsStatEditorToggledOff:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor Off"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(NO)];
             break;
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
@@ -667,6 +679,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
     sessionCount++;
+    
+    if (sessionCount == 1) {
+        [WPAnalytics track:WPAnalyticsStatAppInstalled];
+    }
 
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
