@@ -141,6 +141,8 @@ if [ $TRAVIS ]; then
 else     
     eval "oclint-json-compilation-database $exclude_files $include_files oclint_args \"$oclint_args\" $pipe_command"
     echo "[OCLint] showing results"
-    open oclint_result.html 
+    if [ -d oclint_result.html ]; then
+      open oclint_result.html 
+    fi
     exit $?
 fi
