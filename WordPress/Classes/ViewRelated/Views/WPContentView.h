@@ -26,6 +26,11 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 @optional
 
 /**
+ Tells the delegate the user has tapped on the attribution avatar.
+ */
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView;
+
+/**
  Tells the delegate the user has tapped on the featured image.
  
  @param contentView The content view informing the delegate of the event.

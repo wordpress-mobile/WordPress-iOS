@@ -513,4 +513,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     }
 }
 
+- (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
+{
+    if ([self.delegate respondsToSelector:@selector(contentViewDidReceiveAvatarAction:)]) {
+        [self.delegate contentViewDidReceiveAvatarAction:self];
+    }
+}
+
 @end
