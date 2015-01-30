@@ -32,7 +32,7 @@ pod 'WordPressCom-Analytics-iOS', '0.0.19'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'Simperium', '0.7.7'
-pod 'Lookback', '0.9.1', :configurations => ['Release-Internal']
+pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.git", :commit => "a0273598d22aac982bec5807e638050b0032a9c9"
 pod 'MRProgress', '~>0.7.0'
 pod 'NewRelicAgent', '~> 4.152', :configurations => ['Release-Internal']
