@@ -128,7 +128,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     tableViewHandler.cacheRowHeights = YES;
     tableViewHandler.delegate = self;
-    tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
     self.tableViewHandler = tableViewHandler;
     
     // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
@@ -627,22 +626,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     return NSStringFromClass([Notification class]);
 }
 
-- (void)tableViewHandlerDidRefreshTableViewPreservingOffset:(WPTableViewHandler *)tableViewHandler
-{
-    [self showNoResultsViewIfNeeded];
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
-}
-
-
-#pragma mark - UIRefreshControl Methods
-
-- (void)refresh
-{
-    // Yes. This is dummy. Simperium handles sync for us!
-    [self.refreshControl endRefreshing];
-}
-
-- (void)didChangeContent
+- (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     // Update Separators:
     // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
@@ -652,6 +636,18 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
         cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
     }
+    
+    // Update NoResults View
+    [self showNoResultsViewIfNeeded];
+}
+
+
+#pragma mark - UIRefreshControl Methods
+
+- (void)refresh
+{
+    // Yes. This is dummy. Simperium handles sync for us!
+    [self.refreshControl endRefreshing];
 }
 
 
