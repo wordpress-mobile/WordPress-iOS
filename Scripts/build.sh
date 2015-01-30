@@ -17,5 +17,5 @@ xcodebuild build test \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-configuration Debug \
-	-sdk "$TRAVIS_XCODE_SDK"
+	-sdk "$TRAVIS_XCODE_SDK" | xcpretty -c
 	
