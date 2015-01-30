@@ -68,7 +68,7 @@ if [ $TRAVIS ]; then
       exclude_files="-e *"
     fi
     echo "[OCLint] analyzing these files: $include_files"
-elif [ $1 == "DIFF" ]; then
+elif [[ $1 == "DIFF" ]]; then
     include_files=`git diff HEAD^ --name-only | grep '\.m' | tr '\n' '|' | sed 's/|*$/"/g'`    
     include_files=' -i "'$include_files
     echo "[OCLint] only looking at this files: $include_files"
