@@ -72,7 +72,7 @@
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
-static NSString * const MustShowWhatsNewPopup = @"MustShowWhatsNewPopup";
+static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
