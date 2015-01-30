@@ -961,7 +961,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 - (void)configureSimperium
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : WPNotificationsBucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
