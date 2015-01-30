@@ -23,7 +23,6 @@
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
-#import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
