@@ -113,6 +113,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [self configureHockeySDK];
     [self configureNewRelic];
     [self configureCrashlytics];
+    [self initializeAppTracking];
 
     // Start Simperium
     [self loginSimperium];
@@ -412,7 +413,6 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
-    [self initializeAppTracking];
     
     [self showWhatsNewIfNeeded];
 }
