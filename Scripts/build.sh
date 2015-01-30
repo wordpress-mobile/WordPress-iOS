@@ -1,9 +1,8 @@
 #checking if xcpretty is available to use
-pretty="xcpretty -c"
 command -v xcpretty >/dev/null
 if [ $? -eq 1 ]; then
 echo >&2 "xcpretty not found don't use it."
-pretty="&>";
+exit 0
 fi
 
 if [ ! $TRAVIS ]; then
@@ -17,5 +16,5 @@ xcodebuild build test \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-configuration Debug \
-	-sdk "$TRAVIS_XCODE_SDK" | xcpretty -c
+	-sdk "$TRAVIS_XCODE_SDK" | xcpretty -c && exit ${PIPESTATUS[0]}
 	
