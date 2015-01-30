@@ -416,7 +416,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         return;
     }
 
-    self.navigationItem.prompt = [NSString stringWithFormat:@"Syncing notifications from [%@]", name];
+    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
 - (void)removeManageButton
