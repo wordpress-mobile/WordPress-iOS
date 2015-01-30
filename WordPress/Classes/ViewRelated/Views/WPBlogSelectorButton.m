@@ -63,4 +63,20 @@
     return frame;
 }
 
+- (void)setIsReadOnly:(BOOL)isReadOnly
+{
+    self.enabled = !isReadOnly;
+    self.userInteractionEnabled = !isReadOnly;
+    if (isReadOnly) {
+        [self setImage:nil forState:UIControlStateNormal];
+    } else {
+        [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    }
+}
+
+- (BOOL)isReadOnly
+{
+    return !self.enabled;
+}
+
 @end
