@@ -23,7 +23,9 @@ echo "[OCLint] starting xcodebuild to build the project.."
 if [ -d WordPress.xcworkspace ]; then
     echo "[OCLint] we're running the script from the CLI"
     xcode_workspace="WordPress.xcworkspace"
-    oclint_args+=" -report-type=html -o=oclint_result.html"
+    if [ ! $TRAVIS ]; then
+      oclint_args+=" -report-type=html -o=oclint_result.html"
+    fi
     pipe_command=""
 elif [ -d ../WordPress.xcworkspace ]; then
     echo "[OCLint] we're running the script from Xcode"
@@ -122,6 +124,11 @@ if [ $TRAVIS ]; then
       fi
       let i++
     done
+
+    # going back to original push commit.
+    cd ${TRAVIS_BUILD_DIR}
+    git checkout $TRAVIS_COMMIT
+
     # sending message to github
     travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
     echo $travis_url    
