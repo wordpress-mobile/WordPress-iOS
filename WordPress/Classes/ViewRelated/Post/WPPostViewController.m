@@ -840,6 +840,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+    
+    if (isEnabled) {
+        [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatEditorDisabledNewVersion];
+    }
 }
 
 + (BOOL)makeNewEditorAvailable
