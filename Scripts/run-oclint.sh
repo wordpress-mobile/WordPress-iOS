@@ -107,7 +107,7 @@ if [ $TRAVIS ]; then
     errors=0;
     i=0
     n=3
-    message="OCLint"
+    message=""
     while [[ $i -lt $n ]]
     do
       if [[ currentTotalSummary[$i] -ge baseTotalSummary[$i] ]]; then
@@ -126,13 +126,15 @@ if [ $TRAVIS ]; then
     travis_url="https://travis-ci.org/${TRAVIS_REPO_SLUG}/builds/${TRAVIS_BUILD_ID}/"
     echo $travis_url    
     if [[ $errors -eq 0 ]]; then
-      state="success"      
+      state="success"
+      message="OK "$message      
     else
       state="failure"      
+      message="Failed "$message
     fi
     curl -i -H "Content-Type: application/json" \
       -H "Authorization: token ${TRAVIS_OCLINT_GITHUB_TOKEN}" \
-      -d "{\"state\": \"${state}\",\"target_url\": \"${travis_url}\",\"description\": \"${message}\",\"context\": \"continuous-integration/oclint\"}" \
+      -d "{\"state\": \"${state}\",\"target_url\": \"${travis_url}\",\"description\": \"${message}\",\"context\": \"oclint\"}" \
       https://api.github.com/repos/${TRAVIS_REPO_SLUG}/statuses/$full_sha
 
     exit 0      
