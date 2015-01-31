@@ -840,6 +840,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+    
+    if (isEnabled) {
+        [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatEditorDisabledNewVersion];
+    }
+}
+
++ (BOOL)makeNewEditorAvailable
+{
+    BOOL result = NO;
+    BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
+    
+    if (newVisualEditorNotAvailable) {
+        
+        result = YES;
+        [WPPostViewController setNewEditorAvailable:YES];
+        [WPPostViewController setNewEditorEnabled:YES];
+    }
+    
+    return result;
 }
 
 + (BOOL)isNewEditorAvailable
