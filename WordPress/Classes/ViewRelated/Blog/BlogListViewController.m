@@ -128,28 +128,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     }];
 }
 
-- (void)setupHeaderView
-{
-    self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
-
-    self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.headerLabel.numberOfLines = 0;
-    self.headerLabel.textAlignment = NSTextAlignmentCenter;
-    self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
-    self.headerLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
-    self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-    [self.headerView addSubview:self.headerLabel];
-}
-
-- (void)updateHeaderSize
-{
-    float labelWidth = CGRectGetWidth(self.view.bounds) - 2 * BLVCHeaderViewLabelPadding;
-
-    CGSize labelSize = [self.headerLabel suggestSizeForString:self.headerLabel.text width:labelWidth];
-    self.headerLabel.frame = CGRectMake(BLVCHeaderViewLabelPadding, BLVCHeaderViewLabelPadding, labelWidth, labelSize.height);
-    self.headerView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), labelSize.height + 2 * BLVCHeaderViewLabelPadding);
-}
-
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -166,9 +144,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     self.resultsController.delegate = nil;
 }
 
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     if (self.tableView.tableHeaderView == self.headerView) {
         [self updateHeaderSize];
 
@@ -185,6 +163,30 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (BOOL)hasDotComAndSelfHosted
 {
     return ([[self.resultsController sections] count] > 1);
+}
+
+#pragma mark - Header methods
+
+- (void)setupHeaderView
+{
+    self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
+
+    self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.headerLabel.numberOfLines = 0;
+    self.headerLabel.textAlignment = NSTextAlignmentCenter;
+    self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    self.headerLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+    [self.headerView addSubview:self.headerLabel];
+}
+
+- (void)updateHeaderSize
+{
+    CGFloat labelWidth = CGRectGetWidth(self.view.bounds) - 2 * BLVCHeaderViewLabelPadding;
+
+    CGSize labelSize = [self.headerLabel suggestSizeForString:self.headerLabel.text width:labelWidth];
+    self.headerLabel.frame = CGRectMake(BLVCHeaderViewLabelPadding, BLVCHeaderViewLabelPadding, labelWidth, labelSize.height);
+    self.headerView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), labelSize.height + (2 * BLVCHeaderViewLabelPadding));
 }
 
 #pragma mark - Public methods
