@@ -15,11 +15,10 @@
 #import "TodayExtensionService.h"
 #import "WPTabBarController.h"
 #import "WPFontManager.h"
+#import "UILabel+SuggestSize.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
-// this height is selected to make sure 2 lines of text will fit in the header
-static CGFloat const BLVCHeaderViewHeight = 55.0;
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
@@ -27,6 +26,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UILabel *headerLabel;
 
 @end
 
@@ -130,28 +130,24 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (void)setupHeaderView
 {
-    self.headerView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), BLVCHeaderViewHeight)];
+    self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
 
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
-    label.translatesAutoresizingMaskIntoConstraints = NO;
-    label.numberOfLines = 0;
-    label.textAlignment = NSTextAlignmentCenter;
-    label.textColor = [WPStyleGuide allTAllShadeGrey];
-    label.font = [WPFontManager openSansRegularFontOfSize:14.0];
-    label.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
-    [self.headerView addSubview:label];
+    self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+    self.headerLabel.numberOfLines = 0;
+    self.headerLabel.textAlignment = NSTextAlignmentCenter;
+    self.headerLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    self.headerLabel.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    self.headerLabel.text = NSLocalizedString(@"Select which sites will be shown in the site picker.", @"Blog list page edit mode header label");
+    [self.headerView addSubview:self.headerLabel];
+}
 
-    // Layout
-    NSDictionary *views = NSDictionaryOfVariableBindings(label);
-    NSDictionary *metrics = @{@"padding": @(BLVCHeaderViewLabelPadding)};
-    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(padding)-[label]-(padding)-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
-    [self.headerView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(padding)-[label]-(padding)-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
+- (void)updateHeaderSize
+{
+    float labelWidth = CGRectGetWidth(self.view.bounds) - 2 * BLVCHeaderViewLabelPadding;
+
+    CGSize labelSize = [self.headerLabel suggestSizeForString:self.headerLabel.text width:labelWidth];
+    self.headerLabel.frame = CGRectMake(BLVCHeaderViewLabelPadding, BLVCHeaderViewLabelPadding, labelWidth, labelSize.height);
+    self.headerView.frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), labelSize.height + 2 * BLVCHeaderViewLabelPadding);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -168,6 +164,17 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [super viewWillDisappear:animated];
     self.resultsController.delegate = nil;
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+    if (self.tableView.tableHeaderView == self.headerView) {
+        [self updateHeaderSize];
+
+        // this forces the tableHeaderView to resize
+        self.tableView.tableHeaderView = self.headerView;
+    }
 }
 
 - (NSUInteger)numSites
@@ -459,6 +466,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [super setEditing:editing animated:animated];
 
     if (editing) {
+        [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
     }
     else {
