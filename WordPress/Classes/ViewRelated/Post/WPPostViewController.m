@@ -840,6 +840,34 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+    
+    if (isEnabled) {
+        [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+    } else {
+        // TODO: (Diego Rey Mendez) re-enable the following line once this issue is fixed
+        //
+        //  https://github.com/wordpress-mobile/WordPress-iOS/issues/3165
+        //
+        // IMPORTANT: the reason this code was changed without a proper PR is that it was breaking
+        // builds.
+        //
+        //[WPAnalytics track:WPAnalyticsStatEditorDisabledNewVersion];
+    }
+}
+
++ (BOOL)makeNewEditorAvailable
+{
+    BOOL result = NO;
+    BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
+    
+    if (newVisualEditorNotAvailable) {
+        
+        result = YES;
+        [WPPostViewController setNewEditorAvailable:YES];
+        [WPPostViewController setNewEditorEnabled:YES];
+    }
+    
+    return result;
 }
 
 + (BOOL)isNewEditorAvailable

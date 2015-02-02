@@ -72,6 +72,7 @@
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -170,6 +171,10 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
+    if ([WPPostViewController makeNewEditorAvailable]) {
+        [self setMustShowWhatsNewPopup:YES];
+    }
+    
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
@@ -330,23 +335,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
                     }
                 }
             }
-		} else if ([[url host] isEqualToString:@"editor"]) {
-			NSDictionary* params = [[url query] dictionaryFromQueryString];
-			
-			if (params.count > 0) {
-				BOOL available = [[params objectForKey:kWPEditorConfigURLParamAvailable] boolValue];
-				BOOL enabled = [[params objectForKey:kWPEditorConfigURLParamEnabled] boolValue];
-				
-				[WPPostViewController setNewEditorAvailable:available];
-				[WPPostViewController setNewEditorEnabled:enabled];
-                
-                if (available) {
-                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
-                }
-				
-				[self showVisualEditorAvailableInSettingsAnimation:available];
-			}
-        }
+		}
     }
 
     return returnValue;
@@ -1259,40 +1248,6 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [service removeTodayWidgetConfiguration];
 }
 
-#pragma mark - GUI animations
-
-- (void)showVisualEditorAvailableInSettingsAnimation:(BOOL)available
-{
-	UIView* notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	notificationView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-	notificationView.alpha = 0.0f;
-	
-	[self.window addSubview:notificationView];
-	
-	[UIView animateWithDuration:0.2f animations:^{
-		notificationView.alpha = 1.0f;
-	} completion:^(BOOL finished) {
-		
-		NSString* statusString = nil;
-		
-		if (available) {
-			statusString = NSLocalizedString(@"Visual Editor added to Settings", nil);
-		} else {
-			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
-		}
-        
-        [SVProgressHUD showSuccessWithStatus:statusString maskType:SVProgressHUDMaskTypeNone];
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			[UIView animateWithDuration:0.2f animations:^{
-				notificationView.alpha = 0.0f;
-			} completion:^(BOOL finished) {
-				[notificationView removeFromSuperview];
-			}];
-		});
-	}];
-}
-
 #pragma mark - What's new
 
 /**
@@ -1303,26 +1258,40 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
  */
 - (void)showWhatsNewIfNeeded
 {
-    if (![self noBlogsAndNoWordPressDotComAccount]) {
-        
-        static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
-        static const CGFloat WhatsNewShowDelay = 1.0f;
-        
-        NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-        
-        BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
-        
-        if (!whatsNewAlreadyShown) {
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                
-                WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
-                
-                [whatsNew show];
-                
-                [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
-            });
+    BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
+    
+    if (userIsLoggedIn) {
+        if ([self mustShowWhatsNewPopup]) {
+            
+            static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+            static const CGFloat WhatsNewShowDelay = 1.0f;
+            
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            
+            BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+            
+            if (!whatsNewAlreadyShown) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                    
+                    [whatsNew show];
+                    
+                    [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                });
+            }
         }
     }
+}
+
+- (BOOL)mustShowWhatsNewPopup
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:MustShowWhatsNewPopup];
+}
+
+- (void)setMustShowWhatsNewPopup:(BOOL)mustShow
+{
+    [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
 }
 
 @end
