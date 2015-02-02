@@ -99,21 +99,40 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(accountEmailUpdated:)
+                                                 name:WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(helpshiftUnreadCountUpdated:)
                                                  name:HelpshiftUnreadCountUpdatedNotification
                                                object:nil];
 
-    [self refreshDetails];
-}
-
-- (void)refreshDetails
-{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     // we want to keep email and default blog information up to date, this is probably the best place to do it
     [accountService updateEmailAndDefaultBlogForWordPressComAccount:defaultAccount];
+
+    [self refreshHeaderView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+
+    [HelpshiftUtils refreshUnreadNotificationCount];
+}
+
+#pragma mark - Header methods
+
+- (void)refreshHeaderView
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (defaultAccount) {
         self.tableView.tableHeaderView = self.headerView;
@@ -125,14 +144,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     }
 
     [self.tableView reloadData];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-
-    [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -284,7 +295,19 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
-    [self refreshDetails];
+    [self refreshHeaderView];
+}
+
+- (void)accountEmailUpdated:(NSNotification *)notification
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    // check if the updated account is the default WordPress.com account
+    if (defaultAccount == [notification object]) {
+        [self.headerView setGravatarEmail:defaultAccount.email];
+    }
 }
 
 #pragma mark -

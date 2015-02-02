@@ -4,6 +4,7 @@
 @class WPAccount, Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
+extern NSString *const WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : NSObject <LocalCoreDataService>
 
