@@ -261,7 +261,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     headerWrapper.clipsToBounds = YES;
 
     // Post header view
-    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderViewAvatarSize)];
+    ReaderPostHeaderView *headerView = [[ReaderPostHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), ReaderHeaderViewAvatarSize)];
     headerView.onClick = ^{
         [weakSelf handleHeaderTapped];
     };
@@ -632,7 +632,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     
     [self.postHeaderView setTitle:self.post.titleForDisplay];
     
-    CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
+    CGSize imageSize = CGSizeMake(ReaderHeaderViewAvatarSize, ReaderHeaderViewAvatarSize);
     UIImage *image = [self.post cachedAvatarWithSize:imageSize];
     if (image) {
         [self.postHeaderView setAvatarImage:image];
