@@ -11,7 +11,6 @@
 #import "BlogService.h"
 #import "PostService.h"
 #import "MediaService.h"
-#import "WPMediaUploader.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
