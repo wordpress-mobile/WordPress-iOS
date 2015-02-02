@@ -165,6 +165,10 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
+    if ([self.tableView numberOfSections] > 1 && section == 0) {
+        return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
+    }
+
     return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 
