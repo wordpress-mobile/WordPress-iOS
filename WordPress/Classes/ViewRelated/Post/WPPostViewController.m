@@ -30,7 +30,6 @@
 #import "WPBlogSelectorButton.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
-#import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
 #import "WPTableViewCell.h"
 #import "WPTabBarController.h"
