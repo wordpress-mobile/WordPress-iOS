@@ -961,7 +961,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 - (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSString *bucketName            = [self notificationsBucketnameFromLaunchOptions:launchOptions];
+    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
     NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
@@ -1001,7 +1001,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
 
-- (NSString *)notificationsBucketnameFromLaunchOptions:(NSDictionary *)launchOptions
+- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
 {
     NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
     NSString *name = nil;
