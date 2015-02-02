@@ -465,17 +465,6 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
             [instructions addSuperPropertyToFlag:@"enabled_new_editor"];
             break;
-            // TODO: (Diego Rey Mendez) re-enable the following lines once this issue is fixed
-            //
-            //  https://github.com/wordpress-mobile/WordPress-iOS/issues/3165
-            //
-            // IMPORTANT: the reason this code was changed without a proper PR is that it was breaking
-            // builds.
-            //
-            //case WPAnalyticsStatEditorDisabledNewVersion:
-            //  instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Disabled New Version"];
-            //  [instructions addSuperPropertyToFlag:@"disabled_new_editor"];
-            //  break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_item_via_email"];
