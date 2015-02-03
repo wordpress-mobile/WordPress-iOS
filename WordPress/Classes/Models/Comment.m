@@ -101,6 +101,14 @@ NSString * const CommentStatusDraft = @"draft";
 
 #pragma mark - WPContentViewProvider protocol
 
+- (BOOL)isPrivateContent
+{
+    if ([self.post respondsToSelector:@selector(isPrivate)]) {
+        return (BOOL)[self.post performSelector:@selector(isPrivate)];
+    }
+    return NO;
+}
+
 - (NSString *)titleForDisplay
 {
     return [self.postTitle stringByDecodingXMLCharacters];
@@ -123,6 +131,15 @@ NSString * const CommentStatusDraft = @"draft";
         status = nil;
     }
     return status;
+}
+
+- (NSString *)authorUrlForDisplay
+{
+    return self.author_url.hostname;
+}
+
+- (BOOL)hasAuthorUrl {
+    return self.author_url && ![self.author_url isEqualToString:@""];
 }
 
 - (NSString *)contentForDisplay
@@ -166,5 +183,14 @@ NSString * const CommentStatusDraft = @"draft";
     return nil;
 }
 
+- (BOOL)authorIsPostAuthor
+{
+    return [[self authorURL] isEqual:[self.post authorURL]];
+}
+
+- (NSNumber *)numberOfLikes
+{
+    return self.likeCount;
+}
 
 @end

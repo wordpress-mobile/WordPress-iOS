@@ -78,12 +78,10 @@ static NSInteger const CVCNumberOfSections = 2;
         return;
     }
     
-    if ([self shouldAttachSuggestionsTableView]) {
-        self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
-        self.suggestionsTableView.suggestionsDelegate = self;
-        [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-        [self.view addSubview:self.suggestionsTableView];        
-    }
+    self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:self.comment.blog.blogID];
+    self.suggestionsTableView.suggestionsDelegate = self;
+    [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [self.view addSubview:self.suggestionsTableView];
 }
 
 - (void)attachReplyViewIfNeeded
@@ -103,10 +101,16 @@ static NSInteger const CVCNumberOfSections = 2;
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
     [self.view addSubview:self.replyTextView];
+}
+
+- (void)attachEditActionButton
+{
+    UIBarButtonItem *editBarButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Edit", @"Verb, start editing")
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(editComment)];
     
-    if ([self shouldAttachSuggestionsTableView]) {
-        [replyTextView setKeyboardType:UIKeyboardTypeTwitter];
-    }
+    self.navigationItem.rightBarButtonItem = editBarButton;
 }
 
 - (void)setupAutolayoutConstraints
@@ -163,6 +167,7 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [super viewDidLoad];
 
+    [self attachEditActionButton];
     [self fetchPostIfNecessary];
 }
 
@@ -183,6 +188,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
 
 #pragma mark - Fetching Post
 
@@ -299,13 +305,19 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.isLikeEnabled = self.comment.blog.isWPcom;
     cell.isApproveEnabled = YES;
     cell.isTrashEnabled = YES;
-    cell.isMoreEnabled = YES;
+    cell.isSpamEnabled = YES;
 
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
+
+    cell.timestamp = self.comment.hasAuthorUrl ?
+                            [[self.comment.dateCreated shortString] stringByAppendingString:@" • "]
+                            : [self.comment.dateCreated shortString];
+
     cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
     cell.commentText = [self.comment contentForDisplay];
     cell.isLikeOn = self.comment.isLiked;
+    cell.site = self.comment.authorUrlForDisplay;
 
     if (cell != self.bodyLayoutCell) {
         if ([self.comment avatarURLForDisplay]) {
@@ -345,8 +357,19 @@ static NSInteger const CVCNumberOfSections = 2;
         [weakSelf trashComment];
     };
 
-    cell.onMoreClick = ^(UIButton *sender){
-        [weakSelf displayMoreActionsForSender:sender];
+    cell.onSpamClick = ^(UIButton *sender){
+        [weakSelf spamComment];
+    };
+
+    cell.onSiteClick = ^(UIButton *sender){
+        if (!self.comment.hasAuthorUrl) {
+            return;
+        }
+
+        NSURL *url = [[NSURL alloc] initWithString:self.comment.author_url];
+        if (url) {
+            [weakSelf openWebViewWithURL:url];
+        }
     };
 }
 
@@ -410,35 +433,6 @@ static NSInteger const CVCNumberOfSections = 2;
              cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel")
              otherButtonTitles:@[NSLocalizedString(@"Delete", @"Delete")]
                       tapBlock:completion];
-}
-
-- (void)displayMoreActionsForSender:(UIButton *)sender
-{
-    NSString *editTitle = NSLocalizedString(@"Edit Comment", @"Edit a comment");
-    NSString *spamTitle = NSLocalizedString(@"Mark as Spam", @"Mark a comment as spam");
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
-
-    NSArray *otherButtonTitles = @[editTitle, spamTitle];
-
-    // Render the actionSheet
-    __typeof(self) __weak weakSelf = self;
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                    cancelButtonTitle:cancelTitle
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:otherButtonTitles
-                                                           completion:^(NSString *buttonTitle) {
-                                                               if ([buttonTitle isEqualToString:editTitle]) {
-                                                                   [weakSelf editComment];
-                                                               } else if ([buttonTitle isEqualToString:spamTitle]) {
-                                                                   [weakSelf spamComment];
-                                                               }
-                                                           }];
-
-    if ([UIDevice isPad]) {
-        [actionSheet showFromRect:sender.bounds inView:sender animated:true];
-    } else {
-        [actionSheet showInView:self.view.window];
-    }
 }
 
 - (void)spamComment

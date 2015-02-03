@@ -19,7 +19,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     self = [super initWithFrame:frame];
     if (self) {
         _avatarImageView = [self imageViewForAvatar];
-        [self addSubview:self.avatarImageView];
+        [self addSubview:_avatarImageView];
 
         _attributionNameLabel = [self labelForAttributionName];
         [self addSubview:self.attributionNameLabel];
@@ -138,9 +138,10 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     return label;
 }
 
-- (UIImageView *)imageViewForAvatar
+- (CircularImageView *)imageViewForAvatar
 {
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectZero];
+    CGRect avatarFrame = CGRectMake(0.0f, 0.0f, WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize);
+    CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }

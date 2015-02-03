@@ -481,11 +481,6 @@ static CGFloat const VerticalMargin = 40;
     }
 }
 
-- (void)richTextViewDidLoadMediaBatch:(WPRichTextView *)richTextView
-{
-    [self.postView layoutIfNeeded];
-}
-
 
 #pragma mark - WPTableImageSource Delegate
 

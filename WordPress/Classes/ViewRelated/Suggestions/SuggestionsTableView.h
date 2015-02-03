@@ -7,7 +7,11 @@
 @property (nonatomic, weak) id <SuggestionsTableViewDelegate> suggestionsDelegate;
 
 - (instancetype)initWithSiteID:(NSNumber *)siteID;
-- (void)showSuggestionsForWord:(NSString *)word;
+
+/*
+ * Show suggestions for the given word - returns YES if at least one suggestion is being shown
+*/
+- (BOOL)showSuggestionsForWord:(NSString *)word;
 
 @end
 

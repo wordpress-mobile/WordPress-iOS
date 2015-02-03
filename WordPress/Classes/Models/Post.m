@@ -74,32 +74,6 @@
     }
 }
 
-- (BOOL)hasChanged
-{
-    if ([super hasChanged]) {
-        return YES;
-    }
-
-    Post *original = (Post *)self.original;
-    if (!original) {
-        return NO;
-    }
-
-    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
-        return YES;
-    }
-
-    if (self.hasRemote) {
-        CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
-        CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
-        if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
 - (BOOL)hasSiteSpecificChanges
 {
     if ([super hasSiteSpecificChanges]) {
@@ -137,35 +111,34 @@
     return false;
 }
 
-- (Media *)featuredImage
+#pragma mark - Unsaved changes
+
+- (BOOL)hasLocalChanges
 {
-    if (!self.post_thumbnail) {
-        return nil;
-    }
-
-    NSArray *arr = [self.blog.media allObjects];
-    if ([arr count] == 0) {
-        return nil;
-    }
-
-    NSUInteger index = [arr indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-        if ([((Media *)obj).mediaID isEqualToNumber:self.post_thumbnail] ){
-            *stop = YES;
-            return YES;
-        }
+    if (![self isRevision]) {
         return NO;
-    }];
-
-    if (index == NSNotFound) {
-        return nil;
     }
-
-    return [arr objectAtIndex:index];
-}
-
-- (void)setFeaturedImage:(Media *)featuredImage
-{
-    self.post_thumbnail = featuredImage.mediaID;
+    
+    if ([super hasLocalChanges]) {
+        return YES;
+    }
+    
+    Post *original = (Post *)self.original;
+    if (!original) {
+        return NO;
+    }
+    
+    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
+        return YES;
+    }
+    
+    CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
+    CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
+    if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

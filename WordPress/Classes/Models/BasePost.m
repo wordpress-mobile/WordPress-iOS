@@ -99,9 +99,9 @@
     self.status = [BasePost statusForTitle:aTitle];
 }
 
-- (BOOL)hasChanged
+- (BOOL)isScheduled
 {
-    return NO;
+    return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);
 }
 
 - (AbstractPostRemoteStatus)remoteStatus

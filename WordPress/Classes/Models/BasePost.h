@@ -32,10 +32,15 @@ typedef enum {
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
-@property (readonly) BOOL hasChanged;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 - (NSArray *)availableStatuses;
+
+/**
+ Returns YES if the post is scheduled to be published on a specific date in the future.
+ */
+- (BOOL)isScheduled;
+
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 // Deletes post locally

@@ -11,7 +11,7 @@ import Foundation
     
     public var isFollowEnabled: Bool = false {
         didSet {
-            btnFollow.enabled = isFollowEnabled
+            btnFollow.hidden  = !isFollowEnabled
         }
     }
     public var isFollowOn: Bool = false {
@@ -41,7 +41,8 @@ import Foundation
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
         
-        gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url
     }
@@ -80,13 +81,12 @@ import Foundation
     }
     
     // MARK: - Private
-    private let gravatarImageSizePad                = CGSize(width: 54.0, height: 54.0)
-    private let placeholderName                     = String("gravatar")
+    private let gravatarImageSizePad:               CGSize = CGSize(width: 54.0, height: 54.0)
     private var gravatarURL:                        NSURL?
     
     // MARK: - IBOutlets
     @IBOutlet private weak var nameLabel:           UILabel!
     @IBOutlet private weak var blogLabel:           UILabel!
     @IBOutlet private weak var btnFollow:           UIButton!
-    @IBOutlet private weak var gravatarImageView:   UIImageView!
+    @IBOutlet private weak var gravatarImageView:   CircularImageView!
 }

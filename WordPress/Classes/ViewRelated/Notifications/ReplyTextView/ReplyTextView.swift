@@ -43,6 +43,17 @@ import Foundation
         }
     }
     
+    public var autocorrectionType: UITextAutocorrectionType = .Yes {
+        didSet {
+            textView.autocorrectionType = autocorrectionType
+        }
+    }
+    
+    public var keyboardType: UIKeyboardType = .Default {
+        didSet {
+            textView.keyboardType = keyboardType
+        }
+    }
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
@@ -139,9 +150,6 @@ import Foundation
         super.layoutSubviews()
     }
     
-    public func setKeyboardType(keyboardType: Int) {
-        textView.keyboardType = UIKeyboardType(rawValue: keyboardType)!
-    }
     
     // MARK: - Autolayout Helpers
     public override func intrinsicContentSize() -> CGSize {
@@ -186,8 +194,9 @@ import Foundation
         textView.textContainer.lineFragmentPadding  = 0
         textView.layoutManager.allowsNonContiguousLayout = false
         textView.accessibilityIdentifier = "ReplyText"
-        // Disable QuickType
-        textView.autocorrectionType     = .No
+        
+        // Enable QuickType
+        textView.autocorrectionType     = .Yes
         
         // Placeholder
         placeholderLabel.font           = WPStyleGuide.Reply.textFont
