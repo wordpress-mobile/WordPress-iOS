@@ -405,9 +405,11 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     topic.topicID = remoteTopic.topicID;
-    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
+    topic.type = remoteTopic.type;
     topic.title = [self formatTitle:title];
     topic.path = [path lowercaseString];
+    topic.topicDescription = remoteTopic.topicDescription;
+    topic.isMenuItem = remoteTopic.isMenuItem;
     topic.isSubscribed = remoteTopic.isSubscribed;
     topic.isRecommended = remoteTopic.isRecommended;
 
