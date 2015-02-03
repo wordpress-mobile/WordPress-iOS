@@ -61,10 +61,6 @@
 #import <Lookback/Lookback.h>
 #endif
 
-#ifdef INTERNAL_BUILD
-#import <NewRelicAgent/NewRelic.h>
-#endif
-
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -107,12 +103,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [WordPressAppDelegate fixKeychainAccess];
 
     // Simperium: Wire CoreData Stack
-    [self configureSimperium];
+    [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
-    [self configureNewRelic];
     [self configureCrashlytics];
     [self initializeAppTracking];
 
@@ -746,17 +741,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
 }
 
-- (void)configureNewRelic
-{
-#ifdef INTERNAL_BUILD
-    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
-    if (applicationToken.length != 0) {
-        [NewRelicAgent enableCrashReporting:NO];
-        [NewRelicAgent startWithApplicationToken:applicationToken];
-    }
-#endif
-}
-
 #pragma mark - BITCrashManagerDelegate
 
 - (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
@@ -947,10 +931,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Simperium
 
-- (void)configureSimperium
+- (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -962,7 +947,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
-    
+
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -988,6 +973,19 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
+
+- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
+{
+    NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSString *name = nil;
+    
+    if ([launchURL.host isEqualToString:@"notifications"]) {
+        name = [[launchURL.query dictionaryFromQueryString] stringForKey:@"bucket_name"];
+    }
+    
+    return name ?: WPNotificationsBucketName;
+}
+
 
 #pragma mark - Keychain
 

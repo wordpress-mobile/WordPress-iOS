@@ -49,7 +49,7 @@ PODS:
   - KIF/IdentifierTests (3.1.2):
     - KIF/XCTest
   - KIF/XCTest (3.1.2)
-  - Lookback (0.9.1)
+  - Lookback (0.9.2)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.4)
   - MRProgress (0.7.0):
@@ -80,7 +80,6 @@ PODS:
   - MRProgress/ProgressBaseClass (0.7.0)
   - MRProgress/Stopable (0.7.0):
     - MRProgress/Helper
-  - NewRelicAgent (4.186)
   - NSLogger (1.5.1):
     - NSLogger/Standard (= 1.5.1)
   - NSLogger-CocoaLumberjack-connector (1.3):
@@ -134,11 +133,10 @@ DEPENDENCIES:
   - Helpshift (~> 4.8.0)
   - HockeySDK (~> 3.6.0)
   - KIF/IdentifierTests (~> 3.1)
-  - Lookback (= 0.9.1)
+  - Lookback (= 0.9.2)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`, branch `gifsupport`)
   - Mixpanel (= 2.5.4)
   - MRProgress (~> 0.7.0)
-  - NewRelicAgent (~> 4.152)
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
@@ -150,7 +148,7 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `a0273598d22aac982bec5807e638050b0032a9c9`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `ab6005aecc427398d833d2b40856def8c147bec0`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `fac90a14bcf14440f7c80eee603e04e631f08a16`)
   - WordPress-iOS-Shared (= 0.1.6)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, branch `master`)
   - WordPressCom-Analytics-iOS (= 0.0.19)
@@ -173,7 +171,7 @@ EXTERNAL SOURCES:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: ab6005aecc427398d833d2b40856def8c147bec0
+    :commit: fac90a14bcf14440f7c80eee603e04e631f08a16
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :branch: master
@@ -193,7 +191,7 @@ CHECKOUT OPTIONS:
     :commit: a0273598d22aac982bec5807e638050b0032a9c9
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: ab6005aecc427398d833d2b40856def8c147bec0
+    :commit: fac90a14bcf14440f7c80eee603e04e631f08a16
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
   WordPressApi:
     :commit: 4383a6d2c77fa908b3edc794c66790570e92bf9d
@@ -214,11 +212,10 @@ SPEC CHECKSUMS:
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
-  Lookback: 7dee055a4696765e6c4615da079a884cedb4b4a6
+  Lookback: 1c2f89df8d08440460c93ad180f47c8608ad4cea
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
-  NewRelicAgent: 3ad10d9fe34dc0bffa1f2a1d50793d607b62823a
   NSLogger: 7421a0a60df62fb8ff548cd0388c302d3329a322
   NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
   NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
