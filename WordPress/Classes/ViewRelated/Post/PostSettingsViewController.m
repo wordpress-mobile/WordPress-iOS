@@ -24,6 +24,7 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPMediaUploader.h"
+#import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
@@ -36,6 +37,7 @@ typedef enum {
     PostSettingsRowFormat,
     PostSettingsRowFeaturedImage,
     PostSettingsRowFeaturedImageAdd,
+    PostSettingsRowFeaturedLoading,
     PostSettingsRowGeolocationAdd,
     PostSettingsRowGeolocationMap
 } PostSettingsRow;
@@ -44,6 +46,7 @@ static CGFloat CellHeight = 44.0f;
 static NSInteger RowIndexForDatePicker = 0;
 
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
+static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
 }
@@ -61,6 +64,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
+@property (nonatomic, strong) NSProgress * featuredImageProgress;
 
 @end
 
@@ -108,6 +112,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     [self.tableView addGestureRecognizer:gestureRecognizer];
 
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
+
+    [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
 
@@ -585,13 +591,22 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     UITableViewCell *cell;
 
-    if (!self.post.post_thumbnail && !self.isUploadingMedia) {
+    if (!self.apost.post_thumbnail && !self.isUploadingMedia) {
         WPTableViewActivityCell *activityCell = [self getWPActivityTableViewCell];
         activityCell.textLabel.text = NSLocalizedString(@"Set Featured Image", @"");
         activityCell.tag = PostSettingsRowFeaturedImageAdd;
 
         cell = activityCell;
 
+    } else if (self.isUploadingMedia){
+        WPProgressTableViewCell * progressCell = [self.tableView dequeueReusableCellWithIdentifier:TableViewProgressCellIdentifier forIndexPath:indexPath];
+        [progressCell setProgress:self.featuredImageProgress];
+        [progressCell.imageView setImage:self.featuredImageProgress.userInfo[WPProgressImageThumbnailKey]];
+        progressCell.textLabel.text = self.featuredImageProgress.localizedDescription;
+        progressCell.detailTextLabel.text = self.featuredImageProgress.localizedAdditionalDescription;
+        progressCell.tag = PostSettingsRowFeaturedLoading;
+        [WPStyleGuide configureTableViewCell:progressCell];
+        cell = progressCell;
     } else {
         static NSString *FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
         PostFeaturedImageCell *featuredImageCell = [self.tableView dequeueReusableCellWithIdentifier:FeaturedImageCellIdentifier];
@@ -875,10 +890,10 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 
 - (void)showFeaturedImageSelector
 {
-    if (self.post.post_thumbnail) {
+    if (self.apost.post_thumbnail) {
         // Check if the featured image is set, otherwise we don't want to do anything while it's still loading.
         if (self.featuredImage) {
-            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.post];
+            FeaturedImageViewController *featuredImageVC = [[FeaturedImageViewController alloc] initWithPost:self.apost];
             [self.navigationController pushViewController:featuredImageVC animated:YES];
         }
     } else {
@@ -925,7 +940,7 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     MediaService * mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
-    Media * media = [mediaService findMediaWithID:self.post.post_thumbnail inBlog:self.post.blog];
+    Media * media = [mediaService findMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog];
     void (^successBlock)(Media * media) = ^(Media *featuredMedia) {
         NSURL *url = [NSURL URLWithString:featuredMedia.remoteURL];
         CGFloat width = CGRectGetWidth(self.view.frame);
@@ -939,14 +954,14 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
-                                 isPrivate:self.post.blog.isPrivate];
+                                 isPrivate:self.apost.blog.isPrivate];
     };
     if (media){
         successBlock(media);
         return;
     }
     
-    [mediaService getMediaWithID:self.post.post_thumbnail inBlog:self.post.blog withSuccess:successBlock failure:^(NSError *error) {
+    [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
         [self featuredImageFailedLoading:indexPath withError:error];
     }];
 }
@@ -1053,24 +1068,38 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
+        NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
+        [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
+        convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
+        weakSelf.featuredImageProgress = convertingProgress;
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
+            weakSelf.featuredImageProgress.completedUnitCount++;
             if (error) {
                 DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
                 weakSelf.isUploadingMedia = NO;
                 return;
             }
             media.mediaType = MediaTypeFeatured;
-            [mediaService uploadMedia:media success:^{
+            NSProgress * progress = nil;
+            [mediaService uploadMedia:media
+                             progress:&progress
+                              success:^{
                 weakSelf.isUploadingMedia = NO;
                 Post *post = (Post *)weakSelf.apost;
                 post.featuredImage = media;
                 [weakSelf.tableView reloadData];
             } failure:^(NSError *error) {
                 weakSelf.isUploadingMedia = NO;
+                [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
                 DDLogError(@"Couldn't upload featured image %@: %@", assetURL, [error localizedDescription]);
                 [weakSelf.tableView reloadData];
             }];
+            [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
+            progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+            weakSelf.featuredImageProgress = progress;
+            [weakSelf.tableView reloadData];
         }];
 
         if (IS_IPAD) {
@@ -1078,8 +1107,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
         } else {
             [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
         }
-        // Reload the featured image row so that way the activity indicator will be displayed.
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]] withRowAnimation:UITableViewRowAnimationFade];
+        // Reload the featured image row so that way the activity indicator will be displayed.        
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
     } failureBlock:^(NSError *error){
         DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
         weakSelf.isUploadingMedia = NO;

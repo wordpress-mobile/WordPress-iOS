@@ -350,6 +350,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     [self configureNoResultsView];
+    [self didChangeContent];
 }
 
 - (void)controller:(NSFetchedResultsController *)controller
@@ -432,7 +433,6 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     _didTriggerRefresh = YES;
-    [self.noResultsView removeFromSuperview];
     [self syncItemsViaUserInteraction];
 }
 
@@ -539,12 +539,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     if (!self.isViewLoaded) {
         return;
     }
-
-    [self.noResultsView removeFromSuperview];
     [self.noResultsActivityIndicator stopAnimating];
     [self.noResultsActivityIndicator removeFromSuperview];
 
     if (self.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
         return;
     }
 
@@ -764,6 +763,11 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 }
 
 - (void)invalidateRowHeightAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Optional: Override if needed
+}
+
+- (void)didChangeContent
 {
     // Optional: Override if needed
 }

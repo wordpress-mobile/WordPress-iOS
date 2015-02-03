@@ -32,7 +32,12 @@
     }
 
     self.password = nil;
-    self.authToken = nil;
+    
+    // Fix: Let's make sure we only nuke the authToken when needed. That is, if the deleted account is dotcom.
+    // Otherwise, removing a self hosted account with the same username as a dotcom account might end up nuking the token.
+    if (self.isWpcom) {
+        self.authToken = nil;
+    }
 }
 
 - (void)didTurnIntoFault

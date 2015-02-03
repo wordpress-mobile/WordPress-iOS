@@ -13,7 +13,8 @@ import Foundation
     
     public var separatorColor: UIColor? {
         didSet {
-            setNeedsDisplay()
+            topSeparator.backgroundColor    = separatorColor ?? UIColor.clearColor()
+            bottomSeparator.backgroundColor = separatorColor ?? UIColor.clearColor()
         }
     }
     
@@ -53,32 +54,9 @@ import Foundation
         
         titleLabel.frame.origin     = titleOrigin
         titleLabel.frame.size       = CGSize(width: bounds.width - imageOrigin.x * 2 - imageView.frame.width, height: titleHeight)
-    }
-
-    public override func drawRect(rect: CGRect) {
-        super.drawRect(rect)
         
-        // Draw Separators: proceed only if the color is set!
-        if separatorColor == nil {
-            return
-        }
-        
-        let unwrappedSeparatorColor = separatorColor!
-        
-        let ctx = UIGraphicsGetCurrentContext()
-        
-        unwrappedSeparatorColor.set()
-        CGContextSetLineWidth(ctx, separatorHeight)
-
-        // Top Separator
-        CGContextMoveToPoint(ctx, 0, 0)
-        CGContextAddLineToPoint(ctx, bounds.width, 0)
-
-        // Bottom Separator
-        CGContextMoveToPoint(ctx, 0, bounds.height)
-        CGContextAddLineToPoint(ctx, bounds.width, bounds.height)
-        
-        CGContextStrokePath(ctx)
+        topSeparator.frame          = CGRect(x: 0, y: 0, width: bounds.width, height: separatorHeight)
+        bottomSeparator.frame       = CGRect(x: 0, y: bounds.height, width: bounds.width, height: separatorHeight)
     }
     
     // MARK - Private Helpers
@@ -99,19 +77,29 @@ import Foundation
         imageView                   = UIImageView(image: image)
         imageView.sizeToFit()
         addSubview(imageView)
+
+        topSeparator                = UIView(frame: CGRect(x: 0, y: 0, width: bounds.width, height: separatorHeight))
+        addSubview(topSeparator)
+        
+        bottomSeparator             = UIView(frame: CGRect(x: 0, y: bounds.height, width: bounds.width, height: separatorHeight))
+        addSubview(bottomSeparator)
     }
 
     
-    // MARK - Constants
+    // MARK: - Constants
     private let imageOrigin     = CGPoint(x: 10, y: 5)
     private let titleOrigin     = CGPoint(x: 30, y: 4)
     private let titleHeight     = CGFloat(16)
     private let imageName       = "reader-postaction-time"
     
-    private let separatorHeight = CGFloat(1)
+    private let separatorHeight = CGFloat(1) / UIScreen.mainScreen().scale
     private let maximumWidth    = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
     
-    // MARK - Outlets
+    // MARK: - Properties
+    private var topSeparator:       UIView!
+    private var bottomSeparator:    UIView!
+    
+    // MARK: - Outlets
     private var imageView:          UIImageView!
     private var titleLabel:         UILabel!
 }

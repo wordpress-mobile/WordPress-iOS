@@ -37,11 +37,11 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSTimeInterval const NotificationPushMaxWait = 1;
-static CGFloat const NoteEstimatedHeight            = 70;
-static CGRect NotificationsTableHeaderFrame         = {0.0f, 0.0f, 0.0f, 40.0f};
-static CGRect NotificationsTableFooterFrame         = {0.0f, 0.0f, 0.0f, 48.0f};
-static NSTimeInterval NotificationsSyncTimeout      = 10;
+static NSTimeInterval const NotificationPushMaxWait     = 1;
+static CGFloat const NoteEstimatedHeight                = 70;
+static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
+static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
+static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 
 #pragma mark ====================================================================================
@@ -104,7 +104,6 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     // Register the cells
     NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
     self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell layoutIdentifier]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -117,12 +116,17 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
         self.tableView.tableFooterView = [UIView new];
     }
     
+    // NOTE:
+    // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
+    // For that reason, we draw our own separators.
+    self.tableView.accessibilityIdentifier = @"Notifications Table";
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
     [self updateTabBarBadgeNumber];
-    self.tableView.accessibilityIdentifier = @"Notifications Table";
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,6 +156,21 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     [super viewDidAppear:animated];
     [self showRatingViewIfApplicable];
 }
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self invalidateAllRowHeights];
+}
+
+
+#pragma mark - AppBotX Helpers
 
 - (void)showRatingViewIfApplicable
 {
@@ -186,17 +205,6 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     } completion:nil];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self invalidateAllRowHeights];
-}
 
 #pragma mark - NSObject(NSKeyValueObserving) Helpers
 
@@ -385,6 +393,17 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     self.lastReloadDate = [NSDate date];
 }
 
+- (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
+{
+    // Failsafe!
+    if (indexPath.section >= self.resultsController.sections.count) {
+        return false;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = [self.resultsController.sections objectAtIndex:indexPath.section];
+    return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -502,16 +521,19 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
         return rowCacheValue.floatValue;
     }
     
-    // Setup the cell
-    NoteTableViewCell *layoutCell = [tableView dequeueReusableCellWithIdentifier:[NoteTableViewCell layoutIdentifier]];
-    [self configureCell:layoutCell atIndexPath:indexPath];
+    // Load the Subject + Snippet
+    Notification *note          = [self.resultsController objectAtIndexPath:indexPath];
+    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
+    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
     
-    CGFloat height = [layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+    // Old School Height Calculation
+    CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
+    CGFloat cellHeight          = [NoteTableViewCell layoutHeightWithWidth:tableWidth subject:subject snippet:snippet];
     
     // Cache
-    self.cachedRowHeights[indexPath.toString] = @(height);
+    self.cachedRowHeights[indexPath.toString] = @(cellHeight);
 
-    return height;
+    return cellHeight;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -580,14 +602,13 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 - (void)configureCell:(NoteTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     Notification *note                      = [self.resultsController objectAtIndexPath:indexPath];
-    NotificationBlockGroup *blockGroup      = note.subjectBlockGroup;
-    NotificationBlock *subjectBlock         = blockGroup.blocks.firstObject;
-    NotificationBlock *snippetBlock         = (blockGroup.blocks.count > 1) ? blockGroup.blocks.lastObject : nil;
-    
-    cell.attributedSubject                  = subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = snippetBlock.snippetAttributedText;
+
+    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
+    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
+    cell.unapproved                         = note.isUnapprovedComment;
+    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
     
     [cell downloadGravatarWithURL:note.iconURL];
 }
@@ -601,6 +622,18 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
 {
     // No-Op. Handled by Simperium!
     success();
+}
+
+- (void)didChangeContent
+{
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+    }
 }
 
 
@@ -659,6 +692,7 @@ static NSTimeInterval NotificationsSyncTimeout      = 10;
     
     return ![accountService defaultWordPressComAccount];
 }
+
 
 #pragma mark - ABXPromptViewDelegate
 

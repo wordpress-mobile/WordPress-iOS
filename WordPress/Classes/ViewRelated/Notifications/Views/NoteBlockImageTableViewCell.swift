@@ -24,7 +24,7 @@ import Foundation
             self.blockImageView.displayImageWithSpringAnimation(image)
         }
         
-        blockImageView.downloadImage(url, placeholderName: nil, success: success, failure: nil)
+        blockImageView.downloadImage(url, placeholderImage: nil, success: success, failure: nil)
         
         imageURL = url
     }
@@ -34,9 +34,6 @@ import Foundation
         super.awakeFromNib()
         selectionStyle  = .None
     }
-    
-    // MARK: - Private Methods
-
     
     // MARK: - Private
     private var imageURL:               NSURL?

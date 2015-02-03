@@ -103,7 +103,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
             _skipButton.accessibilityIdentifier = @"Skip";
             [self.view addSubview:_skipButton];
         } else {
-            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skip:)];
+            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skipAction:)];
             self.navigationItem.rightBarButtonItem = skipButton;
         }
 
@@ -184,6 +184,7 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
         _passwordField.font = [WPNUXUtility textFieldFont];
         _passwordField.delegate = self;
         _passwordField.secureTextEntry = YES;
+        _passwordField.showSecureTextEntryToggle = YES;
         _passwordField.text = _blog.jetpackPassword;
         _passwordField.clearsOnBeginEditing = YES;
         _passwordField.showTopLineSeparator = YES;

@@ -1,7 +1,8 @@
-
 #import "WPAssetExporter.h"
-
 #import "WPImageOptimizer.h"
+
+NSString * const WPAssetExportErrorDomain = @"org.wordpress.assetexporter";
+const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
 
 @interface WPAssetExporter ()
 
@@ -40,7 +41,16 @@
    stripGeoLocation:(BOOL)stripGeoLocation
   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
-    
+    if (!asset.defaultRepresentation) {
+        if (handler) {
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a media that belogns to a photostream that needs to be downloaded locally first.")};
+            NSError * error = [NSError errorWithDomain:WPAssetExportErrorDomain
+                                                  code:WPAssetExportErrorCodeMissingAsset
+                                              userInfo:userInfo];
+            handler(NO, CGSizeZero, nil, error);
+        }
+        return;
+    }
     [self.operationQueue addOperationWithBlock:^{
         UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
         NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
@@ -49,20 +59,23 @@
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
         NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
         if (!data) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                handler(YES, newSize, thumbnailJPEGData, nil);
-            }];
+            if (handler) {
+                handler(NO, newSize, thumbnailJPEGData, nil);
+            }
+            return;
         }
         NSError *error;
         if (![data writeToFile:filePath options:NSDataWritingAtomic error:&error]) {
-            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                handler(YES, newSize, thumbnailJPEGData, nil);
-            }];
+            if (handler){
+                handler(NO, newSize, thumbnailJPEGData, error);
+            }
+            return;
         }
         
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+        if (handler){
             handler(YES, newSize, thumbnailJPEGData, nil);
-        }];
+            return;
+        }
     }];
 }
 

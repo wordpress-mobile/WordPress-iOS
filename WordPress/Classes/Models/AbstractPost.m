@@ -129,55 +129,6 @@
     return [self primitiveValueForKey:@"original"];
 }
 
-- (BOOL)hasChanged
-{
-    if (![self isRevision]) {
-        return NO;
-    }
-
-    if ([self hasSiteSpecificChanges]) {
-        return YES;
-    }
-
-    AbstractPost *original = (AbstractPost *)self.original;
-
-    //first let's check if there's no post title or content (in case a cheeky user deleted them both)
-    if ((self.postTitle == nil || [self.postTitle isEqualToString:@""]) && (self.content == nil || [self.content isEqualToString:@""])) {
-        return NO;
-    }
-
-    // We need the extra check since [nil isEqual:nil] returns NO
-    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
-        return YES;
-    }
-
-    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
-        return YES;
-    }
-
-    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
-        return YES;
-    }
-
-    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
-        return YES;
-    }
-
-    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
-        return YES;
-    }
-
-    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
-        return YES;
-    }
-
-    if (self.hasRemote == NO) {
-        return YES;
-    }
-
-    return NO;
-}
-
 - (BOOL)hasSiteSpecificChanges
 {
     if (![self isRevision]) {
@@ -247,6 +198,11 @@
     return NO;
 }
 
+- (BOOL)hasRevision
+{
+    return self.revision != nil;
+}
+
 - (void)findComments
 {
     NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
@@ -258,13 +214,22 @@
 
 - (void)setFeaturedImage:(Media *)featuredImage
 {
-    // Implement in subclasses.
+    self.post_thumbnail = featuredImage.mediaID;
 }
 
 - (Media *)featuredImage
 {
-    // Imlplement in subclasses
-    return nil;
+    if (!self.post_thumbnail) {
+        return nil;
+    }
+    
+    Media *featuredMedia = [[self.blog.media objectsPassingTest:^BOOL(id obj, BOOL *stop) {
+        Media *media = (Media *)obj;
+        *stop = [self.post_thumbnail isEqualToNumber:media.mediaID];
+        return *stop;
+    }] anyObject];
+
+    return featuredMedia;
 }
 
 #pragma mark - WPContentViewProvider protocol
@@ -277,6 +242,72 @@
 - (NSURL *)avatarURLForDisplay
 {
     return [NSURL URLWithString:self.blog.blavatarUrl];
+}
+
+#pragma mark - Post
+
+- (BOOL)canSave
+{
+    NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSString* contentWithoutSpaces = [self.content stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    BOOL isTitleEmpty = (titleWithoutSpaces == nil || titleWithoutSpaces.length == 0);
+    BOOL isContentEmpty = (contentWithoutSpaces == nil || contentWithoutSpaces.length == 0);
+    BOOL areBothTitleAndContentsEmpty = isTitleEmpty && isContentEmpty;
+    
+    return (!areBothTitleAndContentsEmpty && [self hasUnsavedChanges]);
+}
+
+- (BOOL)hasUnsavedChanges
+{
+    return [self hasLocalChanges] || [self hasRemoteChanges];
+}
+
+
+- (BOOL)hasLocalChanges
+{
+    if (![self isRevision]) {
+        return NO;
+    }
+    
+    if ([self hasSiteSpecificChanges]) {
+        return YES;
+    }
+    
+    AbstractPost *original = (AbstractPost *)self.original;
+    
+    // We need the extra check since [nil isEqual:nil] returns NO
+    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
+        return YES;
+    }
+    
+    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
+        return YES;
+    }
+    
+    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
+        return YES;
+    }
+    
+    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
+        return YES;
+    }
+    
+    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
+        return YES;
+    }
+    
+    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
+        return YES;
+    }
+    
+    return NO;
+}
+
+- (BOOL)hasRemoteChanges
+{
+    return (self.hasRemote == NO
+            || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
 @end
