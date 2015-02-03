@@ -145,6 +145,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self updateTabBarBadgeNumber];
     [self showNoResultsViewIfNeeded];
     [self showManageButtonIfNeeded];
+    [self showBucketNameIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -403,6 +404,19 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
                                                                               style:UIBarButtonItemStylePlain
                                                                              target:self
                                                                              action:@selector(showNotificationSettings)];
+}
+
+- (void)showBucketNameIfNeeded
+{
+    // This is only required for debugging:
+    // If we're sync'ing against a custom bucket, we should let the user know about it!
+    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
+    if ([name isEqualToString:WPNotificationsBucketName]) {
+        return;
+    }
+
+    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
 - (void)removeManageButton
