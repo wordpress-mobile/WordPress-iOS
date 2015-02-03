@@ -7,6 +7,7 @@
 #import "RemoteReaderTopic.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
+#import "ReaderPost.h"
 #import "ReaderSite.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
@@ -297,14 +298,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderTopic *)[results firstObject];
 }
 
-- (ReaderTopic *)topicForSite:(ReaderSite *)site {
-
-    NSString *path;
+- (ReaderTopic *)siteTopicForSite:(ReaderSite *)site
+{
+    // Feeds are not supported yet.
     if (site.isFeed) {
-        path = [NSString stringWithFormat:@"%@read/feed/%@", WordPressRestApiEndpointURL, site.path];
-    } else {
-        path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];
+        return nil;
     }
+
+    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];;
 
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
@@ -325,9 +326,44 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                      insertIntoManagedObjectContext:self.managedObjectContext];
     }
 
-    topic.topicID = (site.isFeed) ? site.feedID : site.siteID;
+    topic.topicID = site.siteID;
     topic.type = ReaderTopicTypeSite;
     topic.title = site.name;
+    topic.path = path;
+
+    return topic;
+}
+
+- (ReaderTopic *)siteTopicForPost:(ReaderPost *)post
+{
+    // Feed posts are not supported yet.
+    if (!post.isWPCom) {
+        return nil;
+    }
+    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", path];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for site: %@", error);
+        return nil;
+    }
+    ReaderTopic *topic = nil;
+    if (results.count > 0) {
+        topic = (ReaderTopic *)[results firstObject];
+    } else {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"ReaderTopic"
+                                                  inManagedObjectContext:self.managedObjectContext];
+        topic = [[ReaderTopic alloc] initWithEntity:entity
+                     insertIntoManagedObjectContext:self.managedObjectContext];
+    }
+
+    topic.topicID = post.siteID;
+    topic.type = ReaderTopicTypeSite;
+    topic.title = post.blogName;
+    topic.topicDescription = (post.blogDescription) ? post.blogDescription : post.blogURL;
     topic.path = path;
 
     return topic;
