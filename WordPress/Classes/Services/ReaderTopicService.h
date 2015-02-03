@@ -7,6 +7,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 
 @class ReaderTopic;
 @class ReaderSite;
+@class ReaderPost;
 
 @interface ReaderTopicService : NSObject <LocalCoreDataService>
 
@@ -24,14 +25,12 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (void)fetchReaderMenuWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
-
 /**
  Counts the number of ReaderTopics of type `ReaderTopicTypeTag` the user has subscribed to.
  
  @return The number of ReaderTopics whose `isSubscribed` property is set to `YES`
  */
 - (NSUInteger)numberOfSubscribedTopics;
-
 
 /**
  Deletes all topics from core data and saves the context. Call when switching accounts.
@@ -54,7 +53,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
-
 /**
  Follow the topic with the specified name
  
@@ -65,6 +63,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
+
  Fetch the topic for 'sites I follow' if it exists.
 
  @return A `ReaderTopic` instance or nil.
@@ -72,11 +71,19 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (ReaderTopic *)topicForFollowedSites;
 
 /**
- Fetch the topic for a single followed site.
+ Compose the topic for a single followed site.
 
  @param site The ReaderSite of the topic to return.
  @return A `ReaderTopic` instance.
  */
-- (ReaderTopic *)topicForSite:(ReaderSite *)site;
+- (ReaderTopic *)siteTopicForSite:(ReaderSite *)site;
+
+/**
+ Compose the topic for a posts site.
+
+ @param post The ReaderPost whose site we want to compose into a topic
+ @return A `ReaderTopic` instance.
+ */
+- (ReaderTopic *)siteTopicForPost:(ReaderPost *)post;
 
 @end
