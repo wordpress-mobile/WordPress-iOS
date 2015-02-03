@@ -816,6 +816,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
     post.blogName = [self makePlainText:remotePost.blogName];
+    post.blogDescription = [self makePlainText:remotePost.blogDescription];
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
