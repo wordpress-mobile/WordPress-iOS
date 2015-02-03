@@ -25,13 +25,17 @@ extension WPStyleGuide
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectRegularFont,
-                                                        NSForegroundColorAttributeName: subjectColor ]
+                                                        NSForegroundColorAttributeName: subjectTextColor ]
         
         public static let subjectBoldStyle          = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectBoldFont ]
         
         public static let subjectItalicsStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
                                                         NSFontAttributeName:            subjectItalicsFont ]
+
+        public static let subjectNoticonStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
+                                                        NSFontAttributeName:            subjectNoticonFont!,
+                                                        NSForegroundColorAttributeName: subjectNoticonColor ]
         
         //  Subject Snippet
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
@@ -119,6 +123,7 @@ extension WPStyleGuide
         public static let headerFontSize            = CGFloat(12)
         public static let headerLineSize            = CGFloat(16)
         public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
+        public static let subjectNoticonSize        = UIDevice.isPad() ? CGFloat(15) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
@@ -145,14 +150,16 @@ extension WPStyleGuide
         private static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Center
         )
-
+        
         // Colors
-        private static let subjectColor             = WPStyleGuide.littleEddieGrey()
+        private static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
+        private static let subjectNoticonColor      = noticonReadColor
         
         // Fonts
         private static let subjectRegularFont       = WPFontManager.openSansRegularFontOfSize(subjectFontSize)
         private static let subjectBoldFont          = WPFontManager.openSansBoldFontOfSize(subjectFontSize)
         private static let subjectItalicsFont       = WPFontManager.openSansItalicFontOfSize(subjectFontSize)
+        private static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)
     }
     
     // MARK: - ObjectiveC Helpers: Nuke me once NotificationDetailsViewController is Swifted!
