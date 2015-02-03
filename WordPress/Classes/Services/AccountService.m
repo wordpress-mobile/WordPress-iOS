@@ -20,7 +20,7 @@ static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDo
 
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
-NSString * const WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification";
+NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
 
@@ -244,7 +244,7 @@ NSString * const WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotificat
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification object:account];
+            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:account];
         });
     } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
