@@ -12,7 +12,8 @@ import Foundation
     public var onApproveClick:      EventHandler?
     public var onUnapproveClick:    EventHandler?
     public var onTrashClick:        EventHandler?
-    public var onMoreClick:         EventHandler?
+    public var onSpamClick:         EventHandler?
+    public var onSiteClick:         EventHandler?
 
     public var attributedCommentText: NSAttributedString? {
         didSet {
@@ -27,6 +28,11 @@ import Foundation
     public var timestamp: String? {
         didSet {
             timestampLabel.text  = timestamp ?? String()
+        }
+    }
+    public var site: String? {
+        didSet {
+            siteLabel.text = site ?? String()
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -53,9 +59,9 @@ import Foundation
             refreshBottomSpacing()
         }
     }
-    public var isMoreEnabled: Bool = false {
+    public var isSpamEnabled: Bool = false {
         didSet {
-            refreshButtonSize(btnMore, isVisible: isMoreEnabled)
+            refreshButtonSize(btnSpam, isVisible: isSpamEnabled)
             refreshBottomSpacing()
         }
     }
@@ -80,8 +86,9 @@ import Foundation
         let success = { (image: UIImage) in
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
-
-        gravatarImageView.downloadImage(url, placeholderName: placeholderName, success: success, failure: nil)
+        
+        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url
     }
@@ -97,6 +104,11 @@ import Foundation
         // Setup Labels
         nameLabel.font                      = WPStyleGuide.Notifications.blockBoldFont
         timestampLabel.font                 = WPStyleGuide.Notifications.blockRegularFont
+        siteLabel.font                      = WPStyleGuide.Notifications.blockRegularFont
+
+        // Setup Recognizers
+        siteLabel.gestureRecognizers        = [ UITapGestureRecognizer(target: self, action: "siteWasPressed:") ]
+        siteLabel.userInteractionEnabled    = true
         
         // Background
         approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
@@ -105,20 +117,20 @@ import Foundation
         // Separator Line should be 1px: Handle Retina!
         let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
         separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        
+
         // Setup Action Buttons
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor               = WPStyleGuide.Notifications.blockActionEnabledColor
         
-        let likeNormalTitle                 = NSLocalizedString("Like", comment: "Like a comment")
-        let likeSelectedTitle               = NSLocalizedString("Liked", comment: "A comment has been liked")
+        let likeNormalTitle                 = NSLocalizedString("Like",     comment: "Like a comment")
+        let likeSelectedTitle               = NSLocalizedString("Liked",    comment: "A comment has been liked")
 
-        let approveNormalTitle              = NSLocalizedString("Approve", comment: "Approve a comment")
+        let approveNormalTitle              = NSLocalizedString("Approve",  comment: "Approve a comment")
         let approveSelectedTitle            = NSLocalizedString("Approved", comment: "Unapprove a comment")
 
-        let replyTitle                      = NSLocalizedString("Reply",  comment: "Verb, reply to a comment")
-        let moreTitle                       = NSLocalizedString("More",  comment: "Verb, display More actions for a comment")
-        let trashTitle                      = NSLocalizedString("Trash", comment: "Move a comment to the trash")
+        let replyTitle                      = NSLocalizedString("Reply",    comment: "Verb, reply to a comment")
+        let spamTitle                       = NSLocalizedString("Spam",     comment: "Verb, spam a comment")
+        let trashTitle                      = NSLocalizedString("Trash",    comment: "Move a comment to the trash")
         
         btnReply.setTitle(replyTitle, forState: .Normal)
         btnReply.setTitleColor(textNormalColor, forState: .Normal)
@@ -140,9 +152,9 @@ import Foundation
         btnApprove.setTitleColor(textSelectedColor, forState: .Selected)
         btnApprove.accessibilityLabel = approveNormalTitle
         
-        btnMore.setTitle(moreTitle, forState: .Normal)
-        btnMore.setTitleColor(textNormalColor, forState: .Normal)
-        btnMore.accessibilityLabel = moreTitle
+        btnSpam.setTitle(spamTitle, forState: .Normal)
+        btnSpam.setTitleColor(textNormalColor, forState: .Normal)
+        btnSpam.accessibilityLabel = spamTitle
         
         btnTrash.setTitle(trashTitle, forState: .Normal)
         btnTrash.setTitleColor(textNormalColor, forState: .Normal)
@@ -176,11 +188,14 @@ import Foundation
         hitEventHandler(onTrashClick, sender: sender)
     }
     
-    @IBAction public func moreWasPressed(sender: AnyObject) {
-        hitEventHandler(onMoreClick, sender: sender)
+    @IBAction public func spamWasPressed(sender: AnyObject) {
+        hitEventHandler(onSpamClick, sender: sender)
     }
-    
-    
+
+    @IBAction public func siteWasPressed(sender: AnyObject) {
+        hitEventHandler(onSiteClick, sender: sender)
+    }
+
     // MARK: - Private Methods
     private func hitEventHandler(handler: EventHandler?, sender: AnyObject) {
         if let listener = handler {
@@ -190,29 +205,27 @@ import Foundation
     
     private func refreshButtonSize(button: UIButton, isVisible: Bool) {
         // When disabled, let's hide the button by shrinking it's width
-        let width    : CGFloat  = isVisible ? buttonWidth     : CGFloat.min
-        let trailing : CGFloat  = isVisible ? buttonTrailing  : CGFloat.min
+        let newWidth   = isVisible ? buttonWidth   : CGFloat.min
+        let newSpacing = isVisible ? buttonSpacing : CGFloat.min
         
-        button.updateConstraint(.Width, constant: width)
+        button.updateConstraint(.Width, constant: newWidth)
         
-        contentView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: trailing)
-        contentView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: trailing)
+        actionsView.updateConstraintWithFirstItem(button, attribute: .Trailing, constant: newSpacing)
+        actionsView.updateConstraintWithFirstItem(button, attribute: .Leading,  constant: newSpacing)
         
         button.hidden   = !isVisible
         button.enabled  = isVisible
     }
 
     private func refreshBottomSpacing() {
-        //  Note:
-        //  When all of the buttons are disabled, let's remove the bottom space.
-        //  Every button is linked to btnMore: We can do this in just one shot!
-        //
-        let hasButtonsEnabled   = isLikeEnabled || isTrashEnabled || isApproveEnabled || isMoreEnabled
-        let moreTop             = hasButtonsEnabled ? buttonTop     : CGFloat.min
-        let moreHeight          = hasButtonsEnabled ? buttonHeight  : CGFloat.min
+        //  Let's remove the bottom space when every action button is disabled
+        let hasActions   = isReplyEnabled || isLikeEnabled || isTrashEnabled || isApproveEnabled || isSpamEnabled
+        let newTop       = hasActions ? actionsTop    : CGFloat.min
+        let newHeight    = hasActions ? actionsHeight : CGFloat.min
         
-        contentView.updateConstraintWithFirstItem(btnMore, attribute: .Top, constant: moreTop)
-        btnMore.updateConstraint(.Height, constant: moreHeight)
+        contentView.updateConstraintWithFirstItem(actionsView, attribute: .Top, constant: newTop)
+        actionsView.updateConstraint(.Height, constant: newHeight)
+        actionsView.hidden = !hasActions
         setNeedsLayout()
     }
     
@@ -223,32 +236,17 @@ import Foundation
         separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
+        siteLabel.textColor                 = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
         super.linkColor                     = WPStyleGuide.Notifications.blockLinkColorForComment(isApproved: isCommentApproved)
-        super.attributedText                = isCommentApproved ? attributedCommentApprovedText : attributedCommentUnapprovedText
-    }
-    
-    
-    // MARK: - Private Calculated Properties
-    private var attributedCommentApprovedText : NSAttributedString? {
-        if attributedCommentText == nil {
-            return nil
-        }
-        
-        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
-        let range                   = NSRange(location: 0, length: min(1, unwrappedMutableString.length))
-        let paragraph               = WPStyleGuide.Notifications.blockParagraphStyleWithIndentation(firstLineHeadIndent)
-        unwrappedMutableString.addAttribute(NSParagraphStyleAttributeName, value: paragraph, range: range)
-        
-        return unwrappedMutableString
+        super.attributedText                = isCommentApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
-        let text = attributedCommentApprovedText
-        if text == nil {
+        if attributedCommentText == nil {
             return nil
         }
-            
-        let unwrappedMutableString  = text!.mutableCopy() as NSMutableAttributedString
+
+        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
         let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
         let textColor               = WPStyleGuide.Notifications.blockUnapprovedTextColor
         unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)
@@ -258,14 +256,12 @@ import Foundation
 
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
-    private let separatorHeight                     = CGFloat(1)
-    private let buttonWidth                         = CGFloat(55)
-    private let buttonHeight                        = CGFloat(30)
-    private let buttonTop                           = CGFloat(20)
-    private let buttonTrailing                      = CGFloat(20)
-    private let firstLineHeadIndent                 = UIDevice.isPad() ? CGFloat(47) : CGFloat(43)
-    private let placeholderName                     = String("gravatar")
+    private let gravatarImageSizePad                : CGSize    = CGSize(width: 37.0, height: 37.0)
+    private let separatorHeight                     : CGFloat   = 1
+    private let buttonWidth                         : CGFloat   = 55
+    private let buttonSpacing                       : CGFloat   = 20
+    private let actionsHeight                       : CGFloat   = 34
+    private let actionsTop                          : CGFloat   = 11
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
@@ -273,13 +269,15 @@ import Foundation
     // MARK: - IBOutlets
     @IBOutlet private weak var approvalStatusView   : UIView!
     @IBOutlet private weak var approvalSidebarView  : UIView!
-    @IBOutlet private weak var gravatarImageView    : UIImageView!
+    @IBOutlet private weak var actionsView          : UIView!
+    @IBOutlet private weak var gravatarImageView    : CircularImageView!
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
+    @IBOutlet private weak var siteLabel            : UILabel!
     @IBOutlet private weak var separatorView        : UIView!
     @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!
     @IBOutlet private weak var btnTrash             : UIButton!
-    @IBOutlet private weak var btnMore              : UIButton!
+    @IBOutlet private weak var btnSpam              : UIButton!
 }

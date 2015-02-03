@@ -57,6 +57,10 @@
 #import <Lookback/Lookback.h>
 #endif
 
+#ifdef INTERNAL_BUILD
+#import <NewRelicAgent/NewRelic.h>
+#endif
+
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -121,6 +125,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
+    [self configureNewRelic];
     [self configureCrashlytics];
 
     // Start Simperium
@@ -627,6 +632,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearanceWhenContainedIn:[WPEditorViewController class], nil] setBarTintColor:[UIColor whiteColor]];
 
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide littleEddieGrey]]];
+    
+    // SVProgressHUD styles    
+    [SVProgressHUD setBackgroundColor:[[WPStyleGuide littleEddieGrey] colorWithAlphaComponent:0.95]];
+    [SVProgressHUD setForegroundColor:[UIColor whiteColor]];
+    [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
+    [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
+    [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
 }
 
 #pragma mark - Tracking methods
@@ -992,9 +1004,21 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
+    // Disabling the crash manager as we're using new relic to track crashes
+    [BITHockeyManager sharedHockeyManager].disableCrashManager = YES;
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
+}
+
+- (void)configureNewRelic
+{
+#ifdef INTERNAL_BUILD
+    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
+    if (applicationToken.length != 0) {
+        [NewRelicAgent startWithApplicationToken:applicationToken];
+    }
+#endif
 }
 
 #pragma mark - BITCrashManagerDelegate
@@ -1509,8 +1533,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 		} else {
 			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
 		}
-		
-		[SVProgressHUD showSuccessWithStatus:statusString];
+        
+        [SVProgressHUD showSuccessWithStatus:statusString maskType:SVProgressHUDMaskTypeNone];
 		
 		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
 			[UIView animateWithDuration:0.2f animations:^{

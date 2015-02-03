@@ -21,6 +21,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 @property (nonatomic, strong) NSDate *dateOfLastMediaRefresh;
 @property (nonatomic) BOOL needsCheckPendingDownloadsAfterDelay;
 @property (nonatomic, strong, readwrite) NSAttributedString *attributedString;
+@property (nonatomic) BOOL shouldPreventPendingMediaLayout;
 
 @end
 
@@ -35,6 +36,22 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
     // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
     // for the detail view, and avoid a perceived lag.
     [DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+}
+
++ (NSDictionary *)defaultDTCoreTextOptions
+{
+    NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 5px 10px 0;}";
+    DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
+    return @{
+             DTDefaultFontFamily:@"Open Sans",
+             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
+             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
+             DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
+             DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
+             DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],
+             DTDefaultLinkDecoration:@NO,
+             DTDefaultStyleSheet:cssStylesheet
+             };
 }
 
 - (void)dealloc
@@ -55,6 +72,7 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
         _mediaArray = [NSMutableArray array];
         _mediaIndexPathsNeedingLayout = [NSMutableArray array];
         _mediaIndexPathsPendingDownload = [NSMutableArray array];
+        _textOptions = [[self class] defaultDTCoreTextOptions];
         _textContentView = [self buildTextContentView];
         [self addSubview:self.textContentView];
         [self configureConstraints];
@@ -75,6 +93,12 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 - (CGSize)intrinsicContentSize
 {
     CGSize size = self.textContentView.intrinsicContentSize;
+    return size;
+}
+
+- (CGSize)sizeThatFits:(CGSize)sizeToFit
+{
+    CGSize size = [self.textContentView suggestedFrameSizeToFitEntireStringConstraintedToWidth:sizeToFit.width];
     return size;
 }
 
@@ -109,9 +133,16 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 
     NSData *data = [_content dataUsingEncoding:NSUTF8StringEncoding];
     self.attributedString = [[NSAttributedString alloc] initWithHTMLData:data
-                                                                 options:[WPStyleGuide defaultDTCoreTextOptions]
+                                                                 options:self.textOptions
                                                       documentAttributes:nil];
 }
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.textContentView.backgroundColor = backgroundColor;
+}
+
 
 #pragma mark - Private Methods
 
@@ -368,10 +399,22 @@ static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 }
 
 
+- (void)preventPendingMediaLayout:(BOOL)prevent
+{
+    self.shouldPreventPendingMediaLayout = prevent;
+    if (!prevent) {
+        [self checkPendingMediaDownloads];
+    }
+}
+
 #pragma mark - Pending Download / Layout 
 
 - (void)checkPendingMediaDownloads
 {
+    if (self.shouldPreventPendingMediaLayout) {
+        return;
+    }
+
     if (!self.dateOfLastMediaRefresh) {
         self.dateOfLastMediaRefresh = [NSDate distantPast];
     }

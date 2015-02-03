@@ -143,9 +143,12 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
-        NSSet *postsWithDate = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"date_created_gmt != NULL"]];
+        NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL"];
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
-        Post *oldestPost = [[postsWithDate sortedArrayUsingDescriptors:@[sortDescriptor]] firstObject];
+        request.sortDescriptors = @[sortDescriptor];
+        Post *oldestPost = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
         if (oldestPost.date_created_gmt) {
             options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
         }

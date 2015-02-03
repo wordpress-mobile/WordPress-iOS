@@ -19,10 +19,12 @@ extern NSString * NoteActionReplyKey;
 extern NSString * NoteActionApproveKey;
 extern NSString * NoteActionEditKey;
 
+extern NSString * NoteMediaTypeImage;
+
 typedef NS_ENUM(NSInteger, NoteBlockType)
 {
     NoteBlockTypeText,
-    NoteBlockTypeImage,                                    // BlockTypesImage: Includes Badges and Images
+    NoteBlockTypeImage,                                     // BlockTypesImage: Includes Badges and Images
     NoteBlockTypeUser,
     NoteBlockTypeComment
 };
@@ -32,9 +34,9 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
     NoteBlockGroupTypeText     = NoteBlockTypeText,
     NoteBlockGroupTypeImage    = NoteBlockTypeImage,
     NoteBlockGroupTypeUser     = NoteBlockTypeUser,
-    NoteBlockGroupTypeComment  = NoteBlockTypeComment,    // Contains a User + Comment Block
-    NoteBlockGroupTypeSubject  = 20,                       // Contains a User + Text Block
-    NoteBlockGroupTypeHeader   = 30                        // Contains a User + Text Block
+    NoteBlockGroupTypeComment  = NoteBlockTypeComment,      // Contains a User + Comment Block
+    NoteBlockGroupTypeSubject  = 20,                        // Contains a User + Text Block
+    NoteBlockGroupTypeHeader   = 30                         // Contains a User + Text Block
 };
 
 
@@ -78,6 +80,12 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
 
+- (NotificationBlock *)subjectBlock;
+- (NotificationBlock *)snippetBlock;
+
+- (BOOL)isUnapprovedComment;
+- (void)didChangeOverrides;
+
 @end
 
 
@@ -92,6 +100,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign, readonly) NoteBlockGroupType type;
 
 - (NotificationBlock *)blockOfType:(NoteBlockType)type;
+- (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types;
 
 @end
 
@@ -109,7 +118,8 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readonly) NSDictionary        *actions;
 
 // Derived Properties
-@property (nonatomic, assign, readonly) NoteBlockType      type;
+@property (nonatomic, assign, readonly) NoteBlockType       type;
+@property (nonatomic, assign, readonly) BOOL                isBadge;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
@@ -119,6 +129,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+- (NSArray *)imageUrls;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;

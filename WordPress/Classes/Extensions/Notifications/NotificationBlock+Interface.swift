@@ -4,30 +4,16 @@ import Foundation
 extension NotificationBlock
 {
     public func subjectAttributedText() -> NSAttributedString {
-        if text == nil {
-            return NSAttributedString()
+        let richSubjectCacheKey = "richSubject"
+        
+        if let cachedSubject = cacheValueForKey(richSubjectCacheKey) as? NSAttributedString {
+            return cachedSubject
         }
         
-        let theString = NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.subjectRegularStyle)
-
-        theString.applyAttributesToQuotes(WPStyleGuide.Notifications.subjectItalicsStyle)
-
-        for notificationRange in ranges as [NotificationRange] {
-            
-            // Make sure this range is not of bounds!
-            let range = notificationRange.range
-            if range.location + range.length > theString.length {
-                continue
-            }
-            
-            if notificationRange.isUser {
-                theString.addAttributes(WPStyleGuide.Notifications.subjectBoldStyle, range: range)
-            } else if notificationRange.isPost || notificationRange.isComment {
-                theString.addAttributes(WPStyleGuide.Notifications.subjectItalicsStyle, range: range)
-            }
-        }
-
-        return theString;
+        let richSubject = textWithRangeStyles(isSubject: true)
+        setCacheValue(richSubject, forKey: richSubjectCacheKey)
+        
+        return richSubject
     }
 
     public func snippetAttributedText() -> NSAttributedString {
@@ -35,40 +21,92 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        return NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.snippetRegularStyle)
+        let richSnippetCacheKey = "richSnippet"
+        if let cachedSnippet = cacheValueForKey(richSnippetCacheKey) as? NSAttributedString {
+            return cachedSnippet
+        }
+        
+        let richSnippet = NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
+        setCacheValue(richSnippet, forKey: richSnippetCacheKey)
+        
+        return richSnippet
     }
 
-    public func regularAttributedText() -> NSAttributedString {
+    public func richAttributedText() -> NSAttributedString {
+        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
+        //  TextOverride is a transient property meant to store, temporarily, the edited text
+        if textOverride != nil {
+            return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
+        }
+        
+        let richTextCacheKey = "richText"
+        if let cachedText = cacheValueForKey(richTextCacheKey) as? NSAttributedString {
+            return cachedText
+        }
+        
+        let richText = textWithRangeStyles(isSubject: false)
+        setCacheValue(richText, forKey: richTextCacheKey)
+        
+        return richText
+    }
+    
+    public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
+        // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
+        if mediaMap == nil || textOverride != nil {
+            return nil
+        }
+        
+        var ranges = [NSValue: UIImage]()
+        
+        for theMedia in media as [NotificationMedia] {
+            if let image = mediaMap![theMedia.mediaURL] {
+                let rangeValue      = NSValue(range: theMedia.range)
+                ranges[rangeValue]  = image
+            }
+        }
+        
+        return ranges
+    }
+    
+    
+    // MARK: - Private Helpers
+    private func textWithRangeStyles(#isSubject: Bool) -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
         }
         
-        let theString = NSMutableAttributedString(string: text, attributes: WPStyleGuide.Notifications.blockRegularStyle)
+        // Setup the styles
+        let regularStyle    = isSubject ? Styles.subjectRegularStyle : (isBadge ? Styles.blockBadgeStyle : Styles.blockRegularStyle)
+        let quotesStyle     = isSubject ? Styles.subjectItalicsStyle : Styles.blockBoldStyle
+        let userStyle       = isSubject ? Styles.subjectBoldStyle    : Styles.blockBoldStyle
+        let postStyle       = isSubject ? Styles.subjectItalicsStyle : Styles.blockItalicsStyle
+        let commentStyle    = postStyle
+        let blockStyle      = Styles.blockQuotedStyle
         
-        theString.applyAttributesToQuotes(WPStyleGuide.Notifications.blockBoldStyle)
+        // Format the String
+        let theString = NSMutableAttributedString(string: text, attributes: regularStyle)
+        theString.applyAttributesToQuotes(quotesStyle)
         
         for range in ranges as [NotificationRange] {
-            if range.isPost {
-                theString.addAttributes(WPStyleGuide.Notifications.blockItalicsStyle, range: range.range)
+            if range.isUser {
+                theString.addAttributes(userStyle, range: range.range)
+            } else if range.isPost {
+                theString.addAttributes(postStyle, range: range.range)
+            } else if range.isComment {
+                theString.addAttributes(commentStyle, range: range.range)
             } else if range.isBlockquote {
-                theString.addAttributes(WPStyleGuide.Notifications.blockQuotedStyle, range: range.range)
+                theString.addAttributes(blockStyle, range: range.range)
             }
 
-            if range.url != nil {
+            // Don't Highlight Links in the subject
+            if isSubject == false && range.url != nil {
                 theString.addAttribute(NSLinkAttributeName, value: range.url, range: range.range)
-                theString.addAttribute(NSForegroundColorAttributeName, value: WPStyleGuide.Notifications.blockLinkColor, range: range.range)
+                theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: range.range)
             }
         }
 
         return theString
     }
-
-    public func regularAttributedTextOverride() -> NSAttributedString? {
-        //  Operations such as editing a comment cause a lag between the REST and Simperium update.
-        //  TextOverride is a transient property meant to store, temporarily, the edited text
-        if textOverride != nil {
-            return NSAttributedString(string: textOverride, attributes: WPStyleGuide.Notifications.blockRegularStyle)
-        }
-        return nil
-    }
+    
+    private typealias Styles = WPStyleGuide.Notifications
 }
