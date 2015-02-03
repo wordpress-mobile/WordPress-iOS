@@ -107,7 +107,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [WordPressAppDelegate fixKeychainAccess];
 
     // Simperium: Wire CoreData Stack
-    [self configureSimperium];
+    [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
     [self configureLogging];
@@ -947,10 +947,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Simperium
 
-- (void)configureSimperium
+- (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -962,7 +963,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
-    
+
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -988,6 +989,19 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
+
+- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
+{
+    NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSString *name = nil;
+    
+    if ([launchURL.host isEqualToString:@"notifications"]) {
+        name = [[launchURL.query dictionaryFromQueryString] stringForKey:@"bucket_name"];
+    }
+    
+    return name ?: WPNotificationsBucketName;
+}
+
 
 #pragma mark - Keychain
 
