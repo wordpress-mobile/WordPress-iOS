@@ -8,6 +8,7 @@
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderBlockedTableViewCell.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostContentView.h"
@@ -1048,6 +1049,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 
     [postView updateActionButtons];
+}
+
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderPost *post = [self postFromCellSubview:contentView];
+
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
