@@ -61,10 +61,6 @@
 #import <Lookback/Lookback.h>
 #endif
 
-#ifdef INTERNAL_BUILD
-#import <NewRelicAgent/NewRelic.h>
-#endif
-
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -112,7 +108,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
-    [self configureNewRelic];
     [self configureCrashlytics];
     [self initializeAppTracking];
 
@@ -744,17 +739,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-}
-
-- (void)configureNewRelic
-{
-#ifdef INTERNAL_BUILD
-    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
-    if (applicationToken.length != 0) {
-        [NewRelicAgent enableCrashReporting:NO];
-        [NewRelicAgent startWithApplicationToken:applicationToken];
-    }
-#endif
 }
 
 #pragma mark - BITCrashManagerDelegate
