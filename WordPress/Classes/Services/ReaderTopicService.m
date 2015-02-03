@@ -60,7 +60,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             return;
         }
 
-        [self mergeTopics:topics forAccount:reloadedAccount];
+        [self mergeMenuTopics:topics forAccount:reloadedAccount];
 
         if (success) {
             success();
@@ -182,7 +182,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (NSUInteger)numberOfSubscribedTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed == YES AND type == %@", ReaderTopicTypeTag];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed = YES AND type = %@", ReaderTopicTypeTag];
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (error) {
@@ -298,7 +298,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 - (ReaderTopic *)topicForSite:(ReaderSite *)site {
-    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];
+
+    NSString *path;
+    if (site.isFeed) {
+        path = [NSString stringWithFormat:@"%@read/feed/%@", WordPressRestApiEndpointURL, site.path];
+    } else {
+        path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];
+    }
 
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
@@ -319,7 +325,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                      insertIntoManagedObjectContext:self.managedObjectContext];
     }
 
-    topic.topicID = site.siteID;
+    topic.topicID = (site.isFeed) ? site.feedID : site.siteID;
     topic.type = ReaderTopicTypeSite;
     topic.title = site.name;
     topic.path = path;
@@ -446,9 +452,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account
+- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account
 {
-    NSArray *currentTopics = [self allTopics];
+    NSArray *currentTopics = [self allMenuTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
 
     for (RemoteReaderTopic *remoteTopic in topics) {
@@ -479,6 +485,26 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
+ Fetch all `ReaderTopics` for the menu currently in Core Data.
+
+ @return An array of all `ReaderTopics` for the menu currently persisted in Core Data.
+ */
+- (NSArray *)allMenuTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isMenuItem = YES"];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return results;
+}
+
+/**
  Fetch all `ReaderTopics` currently in Core Data.
 
  @return An array of all `ReaderTopics` currently persisted in Core Data.
@@ -505,7 +531,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  */
 - (ReaderTopic *)findWithPath:(NSString *)path
 {
-    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
+    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
 }
 
