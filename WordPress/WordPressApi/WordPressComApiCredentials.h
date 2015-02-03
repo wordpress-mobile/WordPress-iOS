@@ -16,5 +16,4 @@
 + (NSString *)debuggingKey;
 + (NSString *)lookbackToken;
 + (NSString *)appbotXAPIKey;
-+ (NSString *)newRelicApplicationToken;
 @end
