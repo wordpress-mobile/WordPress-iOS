@@ -20,6 +20,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic authorEmail;
 @dynamic authorURL;
 @dynamic blogName;
+@dynamic blogDescription;
 @dynamic blogURL;
 @dynamic commentCount;
 @dynamic commentsOpen;
