@@ -100,7 +100,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(accountEmailUpdated:)
-                                                 name:WPAccountWordPressComAccountEmailAndDefaultBlogUpdatedNotification
+                                                 name:WPAccountEmailAndDefaultBlogUpdatedNotification
                                                object:nil];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
