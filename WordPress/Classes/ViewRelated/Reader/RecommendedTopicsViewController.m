@@ -108,12 +108,11 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
 
     if ([self isWPComUser]) {
-        request.predicate = [NSPredicate predicateWithFormat:@"(topicID > 0 AND isSubscribed = NO) AND (type != %@)",
-                             ReaderTopicTypeSite];
+        // Just fetch popular/recommended tags
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID > 0 AND isSubscribed = NO) AND (isMenuItem = YES)"];
     } else {
-        // include lists for non wpcom users
-        request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = NO) AND (type != %@)",
-                             ReaderTopicTypeSite];
+        // fetch popular/recommended tags + any default lists
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = NO) AND (isMenuItem = YES)"];
     }
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
