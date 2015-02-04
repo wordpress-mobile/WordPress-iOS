@@ -39,7 +39,6 @@ static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 static NSInteger RPVCRefreshInterval = 300; // 5 minutes
 static CGRect RPVCTableHeaderFrame = {0.0f, 0.0f, 0.0f, 40.0f};
 
-
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
@@ -218,7 +217,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.tableView.accessibilityIdentifier = @"Reader Table";
     
     // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
-    if (UIDevice.isPad) {
+    if (UIDevice.isPad && !self.skipIpadTopPadding) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];
     }
 }
