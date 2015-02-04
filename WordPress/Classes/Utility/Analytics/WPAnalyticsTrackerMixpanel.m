@@ -15,6 +15,7 @@
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
+NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (instancetype)init
 {
@@ -43,12 +44,12 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
     if ([self didUserCreateAccountOnMobile]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
-        [self setSuperProperty:@"seen_legacy_editor" toValue:@(![WPPostViewController isNewEditorEnabled])];
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
     } else if (sessionCount == 0) {
         // First time users whether they have created an account or are signing in have never seen the legacy editor.
-        [self setSuperProperty:@"seen_legacy_editor" toValue:@NO];
+        [self setSuperProperty:SeenLegacyEditor toValue:@NO];
     } else {
-        [self setSuperProperty:@"seen_legacy_editor" toValue:@YES];
+        [self setSuperProperty:SeenLegacyEditor toValue:@YES];
     }
     
     [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
