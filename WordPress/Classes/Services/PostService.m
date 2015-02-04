@@ -369,6 +369,8 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         remotePost.metadata = [self remoteMetadataForPost:postPost];
     }
 
+    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
+
     return remotePost;
 }
 
