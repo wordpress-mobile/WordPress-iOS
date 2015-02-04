@@ -5,6 +5,7 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReaderPost.h"
 #import "ReaderPostService.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
@@ -12,10 +13,13 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicService.h"
+#import "UIImageView+AFNetworkingExtra.h"
 #import "WPTabBarController.h"
 #import "WordPress-Swift.h"
 
 static const NSInteger ReaderSiteHeaderHeight = 44.0;
+static const NSInteger ReaderSiteHeaderTopPadding = 10.0;
+static const NSInteger ReaderSiteHeaderHorizontalPadding = 8.0;
 
 @interface ReaderBrowseSiteViewController ()
 @property (nonatomic, strong) ReaderPostsViewController *postsViewController;
@@ -40,7 +44,7 @@ static const NSInteger ReaderSiteHeaderHeight = 44.0;
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Preview Site", @"");
+    self.title = NSLocalizedString(@"Site Detail", @"Title of the blog preview screen. The screen shows a list of posts from a blog and provides an option to follow the blog.");
 
     if (!self.post) {
         return;
@@ -62,17 +66,30 @@ static const NSInteger ReaderSiteHeaderHeight = 44.0;
 
 - (void)configureHeaderView
 {
-    self.headerView = [[ReaderSiteHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), ReaderSiteHeaderHeight)];
+    self.headerView = [[ReaderSiteHeaderView alloc] init];
     self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
     self.headerView.title = self.siteTopic.title;
     self.headerView.subtitle = self.siteTopic.topicDescription;
-    // TODO: Load blavatar
+
+    NSInteger imageWidth = (NSInteger)ReaderHeaderViewAvatarSize;
+    NSString *blogPath = [self.post.blogURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *mshotPath = [NSString stringWithFormat:@"http://s.wordpress.com/mshots/v1/%@/?w=%d", blogPath, imageWidth];
+
+    // TODO: Need loading placeholder.
+    if (!self.post.isPrivate) {
+        [self.headerView.avatarImageView setImageWithURL:[NSURL URLWithString:mshotPath] placeholderImage:[UIImage imageNamed:@""]];
+    } else {
+        // TODO: Need "Lock" icon for private sites.
+        [self.headerView.avatarImageView setImage:[UIImage imageNamed:@""]];
+    }
+
     [self.view addSubview:self.headerView];
 }
 
 - (void)configurePostsViewController
 {
     self.postsViewController = [[ReaderPostsViewController alloc] init];
+    self.postsViewController.skipIpadTopPadding = YES;
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
     childView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -85,19 +102,40 @@ static const NSInteger ReaderSiteHeaderHeight = 44.0;
 
 - (void)configureViewConstraints
 {
+    NSInteger headerIpadWidth = WPTableViewFixedWidth - (ReaderSiteHeaderHorizontalPadding * 2);
     UIView *postsView = self.postsViewController.view;
     UIView *headerView = self.headerView;
     NSDictionary *views = NSDictionaryOfVariableBindings(headerView, postsView);
-    NSDictionary *metrics = @{@"headerHeight":@(ReaderSiteHeaderHeight)};
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[headerView]|"
-                                                                      options:0
-                                                                      metrics:metrics
-                                                                        views:views]];
+    NSDictionary *metrics = @{
+                              @"headerHeight":@(ReaderSiteHeaderHeight),
+                              @"headerIpadWidth":@(headerIpadWidth),
+                              @"headerTopPadding":@(ReaderSiteHeaderTopPadding),
+                              @"headerHorizontalPadding":@(ReaderSiteHeaderHorizontalPadding)
+                              };
+    if ([UIDevice isPad]) {
+        [self.view addConstraint:[NSLayoutConstraint constraintWithItem:headerView
+                                                              attribute:NSLayoutAttributeCenterX
+                                                              relatedBy:NSLayoutRelationEqual
+                                                                 toItem:self.view
+                                                              attribute:NSLayoutAttributeCenterX
+                                                             multiplier:1
+                                                               constant:0]];
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[headerView(headerIpadWidth)]"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+
+    } else {
+        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(headerHorizontalPadding)-[headerView]-(headerHorizontalPadding)-|"
+                                                                          options:0
+                                                                          metrics:metrics
+                                                                            views:views]];
+    }
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[postsView]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerView(headerHeight)][postsView]|"
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(headerTopPadding)-[headerView]-[postsView]|"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
