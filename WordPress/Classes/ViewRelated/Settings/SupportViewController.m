@@ -252,14 +252,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = nil;
+    WPTableViewCell *cell = nil;
     if (indexPath.section == SettingsSectionActivityLog && (indexPath.row == 1 || indexPath.row == 2)) {
         // Settings / Extra Debug
         static NSString *CellIdentifierSwitchAccessory = @"SupportViewSwitchAccessoryCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSwitchAccessory];
 
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierSwitchAccessory];
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierSwitchAccessory];
         }
 
         UISwitch *switchAccessory = [[UISwitch alloc] initWithFrame:CGRectZero];
@@ -271,14 +271,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierBadgeAccessory];
 
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierBadgeAccessory];
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifierBadgeAccessory];
         }
     } else {
         static NSString *CellIdentifier = @"SupportViewStandardCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+            cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
         }
     }
 
