@@ -40,7 +40,7 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
     }
     
     NSInteger sessionCount = [self sessionCount];
-    if ([[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue]) {
+    if ([self didUserCreateAccountOnMobile]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
         [self setSuperProperty:@"seen_legacy_editor" toValue:@(![WPPostViewController isNewEditorEnabled])];
@@ -53,6 +53,11 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
     
     [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
     [standardDefaults synchronize];
+}
+
+- (BOOL)didUserCreateAccountOnMobile
+{
+    return [[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue];
 }
 
 - (void)track:(WPAnalyticsStat)stat
