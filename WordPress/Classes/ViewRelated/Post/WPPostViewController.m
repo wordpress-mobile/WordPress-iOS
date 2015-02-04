@@ -568,16 +568,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Actions
 
+/**
+ *	@brief      Handles the UIControlEventTouchUpInside event for the blog selector button.
+ *	@details    This method handles a the touch up inside event for the blog selector button.
+                Since there are two different modes this button can have, we have a few
+                different scenarios to consider:  1) If the user is editing an existing post 
+                exit the screen we are currently on and return. 2) If the user is creating a
+                new post and the post does not have site-specific changes, show the blog selector
+                3) If the user is creating a new post and the post does have site-specific 
+                changes, display a blog change warning.
+ *
+ *	@param      sender The WPBlogSelectorButton triggering this action.
+ */
 - (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
-    // If we are editing an existing post, we need to simply exit
-    // the screen we are currently on and return.
     if (sender.buttonMode == WPBlogSelectorButtonSingleSite) {
-        if (self.isEditing) {
-            [self cancelEditing];
-        } else {
-            [self dismissEditView];
-        }
+        [self cancelEditingOrDismiss];
         return;
     }
     
@@ -883,6 +889,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 #pragma mark - Instance Methods
+
+- (void)cancelEditingOrDismiss
+{
+    if (self.isEditing) {
+        [self cancelEditing];
+    } else {
+        [self dismissEditView];
+    }
+}
 
 - (UIImage *)tintedImageWithColor:(UIColor *)tintColor image:(UIImage *)image
 {
