@@ -39,7 +39,7 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
         return;
     }
     
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [self sessionCount];
     if ([[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue]) {
         // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
         // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
@@ -710,7 +710,7 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
 
 - (void)incrementSessionCount
 {
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [self sessionCount];
     sessionCount++;
     
     if (sessionCount == 1) {
@@ -720,6 +720,11 @@ NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_le
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (NSInteger)sessionCount
+{
+    return [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
 }
 
 @end
