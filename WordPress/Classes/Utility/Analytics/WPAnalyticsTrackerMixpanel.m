@@ -9,10 +9,13 @@
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "AccountServiceRemoteREST.h"
+#import "WPPostViewController.h"
 
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
+NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
+NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (instancetype)init
 {
@@ -27,6 +30,35 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
+    [self flagIfUserHasSeenLegacyEditor];
+}
+
+- (void)flagIfUserHasSeenLegacyEditor
+{
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standardDefaults boolForKey:CheckedIfUserHasSeenLegacyEditor]) {
+        return;
+    }
+    
+    NSInteger sessionCount = [self sessionCount];
+    if ([self didUserCreateAccountOnMobile]) {
+        // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
+        // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
+    } else if (sessionCount == 0) {
+        // First time users whether they have created an account or are signing in have never seen the legacy editor.
+        [self setSuperProperty:SeenLegacyEditor toValue:@NO];
+    } else {
+        [self setSuperProperty:SeenLegacyEditor toValue:@YES];
+    }
+    
+    [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
+    [standardDefaults synchronize];
+}
+
+- (BOOL)didUserCreateAccountOnMobile
+{
+    return [[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue];
 }
 
 - (void)track:(WPAnalyticsStat)stat
@@ -191,6 +223,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[property] = @(YES);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)setSuperProperty:(NSString *)property toValue:(id)value
+{
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
@@ -677,7 +716,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)incrementSessionCount
 {
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [self sessionCount];
     sessionCount++;
     
     if (sessionCount == 1) {
@@ -687,6 +726,11 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (NSInteger)sessionCount
+{
+    return [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
 }
 
 @end
