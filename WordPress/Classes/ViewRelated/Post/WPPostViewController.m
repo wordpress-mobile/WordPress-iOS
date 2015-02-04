@@ -568,8 +568,19 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Actions
 
-- (void)showBlogSelectorPrompt
+- (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
+    // If we are editing an existing post, we need to simply exit
+    // the screen we are currently on and return.
+    if (sender.buttonMode == WPBlogSelectorButtonSingleSite) {
+        if (self.isEditing) {
+            [self cancelEditing];
+        } else {
+            [self dismissEditView];
+        }
+        return;
+    }
+    
     if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
@@ -1234,13 +1245,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [blogButton sizeToFit];
         }
         
-        // The blog picker is read-only if one of the following is true:
+        // The blog picker is in single site mode if one of the following is true:
         // editor screen is in preview mode, there is only 1 blog, or the user
-        // is editing an existing post
+        // is editing an existing post.
         if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
-            blogButton.isReadOnly = YES;
+            blogButton.buttonMode = WPBlogSelectorButtonSingleSite;
         } else {
-            blogButton.isReadOnly = NO;
+            blogButton.buttonMode = WPBlogSelectorButtonMultipleSite;
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
@@ -1254,7 +1265,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (!_blogPickerButton) {
         CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
-        [button addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
     
