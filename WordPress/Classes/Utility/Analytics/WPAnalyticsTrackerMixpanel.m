@@ -9,10 +9,12 @@
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "AccountServiceRemoteREST.h"
+#import "WPPostViewController.h"
 
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
+NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
 
 - (instancetype)init
 {
@@ -27,6 +29,30 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
+    [self flagIfUserHasSeenLegacyEditor];
+}
+
+- (void)flagIfUserHasSeenLegacyEditor
+{
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standardDefaults boolForKey:CheckedIfUserHasSeenLegacyEditor]) {
+        return;
+    }
+    
+    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    if ([[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue]) {
+        // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
+        // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
+        [self setSuperProperty:@"seen_legacy_editor" toValue:@(![WPPostViewController isNewEditorEnabled])];
+    } else if (sessionCount == 0) {
+        // First time users whether they have created an account or are signing in have never seen the legacy editor.
+        [self setSuperProperty:@"seen_legacy_editor" toValue:@NO];
+    } else {
+        [self setSuperProperty:@"seen_legacy_editor" toValue:@YES];
+    }
+    
+    [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
+    [standardDefaults synchronize];
 }
 
 - (void)track:(WPAnalyticsStat)stat
@@ -191,6 +217,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[property] = @(YES);
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (void)setSuperProperty:(NSString *)property toValue:(id)value
+{
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
