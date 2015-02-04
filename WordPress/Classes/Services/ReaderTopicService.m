@@ -363,7 +363,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.topicID = post.siteID;
     topic.type = ReaderTopicTypeSite;
     topic.title = post.blogName;
-    topic.topicDescription = (post.blogDescription) ? post.blogDescription : post.blogURL;
+    topic.topicDescription = ([post.blogDescription length] > 0) ? post.blogDescription : post.blogURL;
     topic.path = path;
 
     return topic;
