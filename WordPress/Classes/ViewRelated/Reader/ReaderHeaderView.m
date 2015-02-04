@@ -95,7 +95,7 @@ const CGFloat ReaderHeaderViewLabelHeight = 18.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_subtitleLabel(labelHeight)][_titleLabel(labelHeight)]-(-2)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-2)-[_titleLabel(labelHeight)][_subtitleLabel(labelHeight)]-(-2)-|"
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:metrics
                                                                    views:views]];
