@@ -133,7 +133,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [NSUserDefaults resetStandardUserDefaults];
     }
 
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
+        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    }
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
