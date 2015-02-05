@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-typedef void(^WPWhatsNewDismissBlock)();
+#import "WPWhatsNewView.h"
 
 /**
  *  @class      WPWhatsNew
