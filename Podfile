@@ -27,7 +27,8 @@ pod 'Helpshift', '~>4.8.0'
 pod 'CTAssetsPickerController', '~> 2.7.0'
 pod 'WordPress-iOS-Shared', '0.1.6'
 pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-iOS-Editor', :commit => 'fac90a14bcf14440f7c80eee603e04e631f08a16'
-pod 'WordPressCom-Stats-iOS', '0.1.6'
+# pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS'
+pod 'WordPressCom-Stats-iOS', :path => '~/src/WordPressCom-Stats-iOS/'
 pod 'WordPressCom-Analytics-iOS', '0.0.24'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
@@ -37,7 +38,7 @@ pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.gi
 pod 'MRProgress', '~>0.7.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', '0.1.6'
+    pod 'WordPressCom-Stats-iOS', :path => '~/src/WordPressCom-Stats-iOS/'
 end
 
 target :WordPressTest, :exclusive => true do
