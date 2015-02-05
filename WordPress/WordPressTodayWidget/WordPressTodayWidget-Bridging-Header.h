@@ -1,5 +1,5 @@
 #import <WPStatsService.h>
-#import <WPStatsTopPost.h>
+#import <StatsSummary.h>
 #import "WPDDLogWrapper.h"
 #import "SFHFKeychainUtils.h"
 #import "Constants.h"

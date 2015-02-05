@@ -113,11 +113,11 @@ PODS:
     - AFNetworking (~> 2.3.1)
     - wpxmlrpc (~> 0.5)
   - WordPressCom-Analytics-iOS (0.0.24)
-  - WordPressCom-Stats-iOS (0.1.6):
+  - WordPressCom-Stats-iOS (0.2.0):
     - AFNetworking (~> 2.3.1)
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.1.0)
+    - WordPress-iOS-Shared (~> 0.1.6)
     - WordPressCom-Analytics-iOS
   - wpxmlrpc (0.7)
 
@@ -152,7 +152,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.1.6)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.1`)
   - WordPressCom-Analytics-iOS (= 0.0.24)
-  - WordPressCom-Stats-iOS (= 0.1.6)
+  - WordPressCom-Stats-iOS (from `~/src/WordPressCom-Stats-iOS/`)
   - wpxmlrpc (~> 0.7)
 
 EXTERNAL SOURCES:
@@ -176,6 +176,8 @@ EXTERNAL SOURCES:
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.1
+  WordPressCom-Stats-iOS:
+    :path: ~/src/WordPressCom-Stats-iOS/
 
 CHECKOUT OPTIONS:
   MGImageUtilities:
@@ -196,6 +198,9 @@ CHECKOUT OPTIONS:
   WordPressApi:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.1
+  WordPressCom-Stats-iOS:
+    :commit: 1875ef493dd6e7b801ba0ee8383f3caa80edd0cd
+    :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 SPEC CHECKSUMS:
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
@@ -233,7 +238,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: da49965799a7e0d7d0b5c7996a8b8d561c500374
   WordPressApi: 5c703b0d684caed966eca2404ba9aff0abfe30bc
   WordPressCom-Analytics-iOS: ed19908a43ccd02a186dd03793bcb22d05eddda7
-  WordPressCom-Stats-iOS: e737c05039d52cdd2cb2af8eceae7f31e498d0c1
+  WordPressCom-Stats-iOS: a5cdaf171ac1b7e19eabcf0b3389682b084af019
   wpxmlrpc: 75ad2e4663c3a65948f5ae0799d948a8445bb0cf
 
 COCOAPODS: 0.35.0
