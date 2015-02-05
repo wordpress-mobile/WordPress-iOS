@@ -408,6 +408,11 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
             break;
+        case WPAnalyticsStatEditorEditedImage:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Edited Image"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_edited_image"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_edited_image"];
+            break;
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
@@ -448,6 +453,17 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
             [instructions addSuperPropertyToFlag:@"enabled_new_editor"];
             break;
+            // TODO: (Diego Rey Mendez) re-enable the following lines once this issue is fixed
+            //
+            //  https://github.com/wordpress-mobile/WordPress-iOS/issues/3165
+            //
+            // IMPORTANT: the reason this code was changed without a proper PR is that it was breaking
+            // builds.
+            //
+            //case WPAnalyticsStatEditorDisabledNewVersion:
+            //  instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Disabled New Version"];
+            //  [instructions addSuperPropertyToFlag:@"disabled_new_editor"];
+            //  break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_item_via_email"];

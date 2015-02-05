@@ -30,7 +30,6 @@
 #import "WPBlogSelectorButton.h"
 #import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
-#import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
 #import "WPTableViewCell.h"
 #import "WPTabBarController.h"
@@ -840,6 +839,34 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+    
+    if (isEnabled) {
+        [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+    } else {
+        // TODO: (Diego Rey Mendez) re-enable the following line once this issue is fixed
+        //
+        //  https://github.com/wordpress-mobile/WordPress-iOS/issues/3165
+        //
+        // IMPORTANT: the reason this code was changed without a proper PR is that it was breaking
+        // builds.
+        //
+        //[WPAnalytics track:WPAnalyticsStatEditorDisabledNewVersion];
+    }
+}
+
++ (BOOL)makeNewEditorAvailable
+{
+    BOOL result = NO;
+    BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
+    
+    if (newVisualEditorNotAvailable) {
+        
+        result = YES;
+        [WPPostViewController setNewEditorAvailable:YES];
+        [WPPostViewController setNewEditorEnabled:YES];
+    }
+    
+    return result;
 }
 
 + (BOOL)isNewEditorAvailable
@@ -936,6 +963,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
+- (NSInteger)currentBlogCount
+{
+    NSInteger blogCount = 0;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    blogCount = [blogService blogCountForAllAccounts];
+    
+    return blogCount;
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -955,30 +992,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
+    NSArray* leftBarButtons;
     
     if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
+        // Previewing a post (no edit)
         [self.navigationItem setLeftBarButtonItems:nil];
-        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:NO];
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons];
 	}
 }
 
@@ -1198,24 +1228,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     UIBarButtonItem *aUIButtonBarItem;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || ![self isPostLocal] || [[WPTabBarController sharedInstance] isNavigatingMySitesTab]) {
-        aUIButtonBarItem = nil;
     } else {
-        UIButton *blogButton = self.blogPickerButton;
+        WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (IS_IPAD) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
+        }
+        
+        // The blog picker is read-only if one of the following is true:
+        // editor screen is in preview mode, there is only 1 blog, or the user
+        // is editing an existing post
+        if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
+            blogButton.isReadOnly = YES;
+        } else {
+            blogButton.isReadOnly = NO;
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
@@ -1342,7 +1375,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 		return;
 	}
     
-    [self stopEditing];
 	[self savePostAndDismissVC];
 }
 
@@ -1355,6 +1387,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self showFailedMediaRemovalAlert];
         return;
     }
+    [self stopEditing];
     [self savePost];
     [self dismissEditView];
 }
@@ -1981,6 +2014,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
+    [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
+    
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
 

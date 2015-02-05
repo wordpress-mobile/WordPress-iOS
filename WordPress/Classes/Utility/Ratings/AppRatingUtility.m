@@ -65,8 +65,6 @@ NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneap
     operation.responseSerializer = [[AFJSONResponseSerializer alloc] init];
     [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
     {
-        DDLogVerbose(@"App Review Prompt Throttling Response Received : %@", responseObject);
-        
         NSDictionary *responseDictionary = (NSDictionary *)responseObject;
         AppRatingUtility *appRatingUtility = [AppRatingUtility sharedInstance];
         appRatingUtility.allPromptingDisabled = [responseDictionary[@"all-disabled"] boolValue];
