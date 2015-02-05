@@ -5,16 +5,19 @@
 #import "StatsWebViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
-#import "WPStatsViewController_Private.h"
 #import "BlogService.h"
 #import "SettingsViewController.h"
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
+#import <WPStatsViewController.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
-@interface StatsViewController () <UIActionSheetDelegate>
+@interface StatsViewController () <UIActionSheetDelegate, WPStatsViewControllerDelegate>
+
 @property (nonatomic, assign) BOOL showingJetpackLogin;
+@property (nonatomic, strong) WPStatsViewController *statsVC;
+
 @end
 
 @implementation StatsViewController
@@ -23,7 +26,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     self = [super init];
     if (self) {
-        self.statsDelegate = self;
     }
     return self;
 }
@@ -31,7 +33,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.tableView.accessibilityIdentifier = @"Stats Table";
+    
+    self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:nil] instantiateInitialViewController];
+    
     if (self.presentingViewController == nil && WIDGETS_EXIST) {
         UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
         self.navigationItem.rightBarButtonItem = settingsButton;
@@ -49,7 +53,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
-        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+//        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
     }
 }
 
@@ -58,24 +62,24 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
-    self.siteTimeZone = [blogService timeZoneForBlog:self.blog];
+    self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
 
     if (self.blog.isWPcom) {
 
-        self.oauth2Token = self.blog.restApi.authToken;
-        self.siteID = self.blog.blogID;
+        self.statsVC.oauth2Token = self.blog.restApi.authToken;
+        self.statsVC.siteID = self.blog.blogID;
 
-        [super initStats];
+//        [super initStats];
         return;
     }
 
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.siteID = self.blog.jetpackBlogID;
-        self.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
+        self.statsVC.siteID = self.blog.jetpackBlogID;
+        self.statsVC.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
 
-        [super initStats];
+//        [super initStats];
     } else {
         [self promptForJetpackCredentials];
     }
@@ -84,10 +88,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)saveSiteDetailsForTodayWidget
 {
     TodayExtensionService *service = [TodayExtensionService new];
-    [service configureTodayWidgetWithSiteID:self.siteID
+    [service configureTodayWidgetWithSiteID:self.statsVC.siteID
                                    blogName:self.blog.blogName
-                               siteTimeZone:self.siteTimeZone
-                             andOAuth2Token:self.oauth2Token];
+                               siteTimeZone:self.statsVC.siteTimeZone
+                             andOAuth2Token:self.statsVC.oauth2Token];
 }
 
 - (void)promptForJetpackCredentials
@@ -106,14 +110,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
-            self.tableView.scrollEnabled = YES;
+//            self.tableView.scrollEnabled = YES;
             [self initStats];
         }
     }];
 
-    self.tableView.scrollEnabled = NO;
+//    self.tableView.scrollEnabled = NO;
     [self addChildViewController:controller];
-    [self.tableView addSubview:controller.view];
+    [self.view addSubview:controller.view];
 }
 
 - (void)statsViewController:(WPStatsViewController *)statsViewController didSelectViewWebStatsForSiteID:(NSNumber *)siteID
