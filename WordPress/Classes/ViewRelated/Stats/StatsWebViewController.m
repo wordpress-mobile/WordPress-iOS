@@ -365,7 +365,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         blogID = [blog jetpackBlogID];
     }
 
-    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?no-chrome&blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/stats/%@", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
