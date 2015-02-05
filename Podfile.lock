@@ -152,7 +152,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.1.6)
   - WordPressApi (from `https://github.com/wordpress-mobile/WordPressApi.git`, tag `0.2.1`)
   - WordPressCom-Analytics-iOS (= 0.0.24)
-  - WordPressCom-Stats-iOS (from `~/src/WordPressCom-Stats-iOS/`)
+  - WordPressCom-Stats-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Stats-iOS`)
   - wpxmlrpc (~> 0.7)
 
 EXTERNAL SOURCES:
@@ -177,7 +177,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.1
   WordPressCom-Stats-iOS:
-    :path: ~/src/WordPressCom-Stats-iOS/
+    :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 CHECKOUT OPTIONS:
   MGImageUtilities:
@@ -199,7 +199,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/WordPressApi.git
     :tag: 0.2.1
   WordPressCom-Stats-iOS:
-    :commit: 1875ef493dd6e7b801ba0ee8383f3caa80edd0cd
+    :commit: 73f055ff99ddd325e1f2161fbe0124998c874de6
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 SPEC CHECKSUMS:
