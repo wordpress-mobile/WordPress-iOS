@@ -174,6 +174,11 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (void)handleEditorChanged:(id)sender
 {
     UISwitch *aSwitch = (UISwitch *)sender;
+    if (aSwitch.on) {
+        [WPAnalytics track:WPAnalyticsStatEditorToggledOn];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatEditorToggledOff];
+    }
     [WPPostViewController setNewEditorEnabled:aSwitch.on];
 }
 
