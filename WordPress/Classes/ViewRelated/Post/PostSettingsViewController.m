@@ -997,7 +997,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
     convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
     self.featuredImageProgress = convertingProgress;
-    __weak PostSettingsViewController *weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
         if (!weakSelf) {
@@ -1106,14 +1106,14 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    __weak PostSettingsViewController *weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     self.isUploadingMedia = YES;
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        [self uploadFeatureImage:asset];
+        [weakSelf uploadFeatureImage:asset];
         if (IS_IPAD) {
             [weakSelf.popover dismissPopoverAnimated:YES];
         } else {
