@@ -35,15 +35,18 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [super viewDidLoad];
     
     self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:nil] instantiateInitialViewController];
+    self.statsVC.statsDelegate = self;
     
-    if (self.presentingViewController == nil && WIDGETS_EXIST) {
-        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
-        self.navigationItem.rightBarButtonItem = settingsButton;
-    } else if (self.presentingViewController != nil) {
+    self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
+
+    // Being shown in a modal window
+    if (self.presentingViewController != nil) {
         UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(doneButtonTapped:)];
         self.navigationItem.rightBarButtonItem = doneButton;
         self.title = self.blog.blogName;
     }
+
+    [self initStats];
 }
 
 - (void)setBlog:(Blog *)blog
@@ -57,6 +60,19 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
+- (void)addStatsViewControllerToView
+{
+    if (self.presentingViewController == nil && WIDGETS_EXIST) {
+        UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Today", @"") style:UIBarButtonItemStylePlain target:self action:@selector(makeSiteTodayWidgetSite:)];
+        self.navigationItem.rightBarButtonItem = settingsButton;
+    }
+    
+    [self addChildViewController:self.statsVC];
+    [self.view addSubview:self.statsVC.view];
+    [self.statsVC didMoveToParentViewController:self];
+}
+
+
 - (void)initStats
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -65,11 +81,10 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
 
     if (self.blog.isWPcom) {
-
         self.statsVC.oauth2Token = self.blog.restApi.authToken;
         self.statsVC.siteID = self.blog.blogID;
+        [self addStatsViewControllerToView];
 
-//        [super initStats];
         return;
     }
 
@@ -78,12 +93,13 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
         self.statsVC.siteID = self.blog.jetpackBlogID;
         self.statsVC.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
+        [self addStatsViewControllerToView];
 
-//        [super initStats];
     } else {
         [self promptForJetpackCredentials];
     }
 }
+
 
 - (void)saveSiteDetailsForTodayWidget
 {
@@ -93,6 +109,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
                                siteTimeZone:self.statsVC.siteTimeZone
                              andOAuth2Token:self.statsVC.oauth2Token];
 }
+
 
 - (void)promptForJetpackCredentials
 {
@@ -110,15 +127,15 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
             [safeController.view removeFromSuperview];
             [safeController removeFromParentViewController];
             self.showingJetpackLogin = NO;
-//            self.tableView.scrollEnabled = YES;
+            
             [self initStats];
         }
     }];
 
-//    self.tableView.scrollEnabled = NO;
     [self addChildViewController:controller];
     [self.view addSubview:controller.view];
 }
+
 
 - (void)statsViewController:(WPStatsViewController *)statsViewController didSelectViewWebStatsForSiteID:(NSNumber *)siteID
 {
@@ -126,6 +143,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     vc.blog = self.blog;
     [self.navigationController pushViewController:vc animated:YES];
 }
+
 
 - (IBAction)makeSiteTodayWidgetSite:(id)sender
 {
@@ -141,6 +159,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
+
 - (IBAction)doneButtonTapped:(id)sender
 {
     if (self.dismissBlock) {
@@ -148,7 +167,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     }
 }
 
+
 #pragma mark - UIActionSheetDelegate methods
+
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -165,6 +186,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     [coder encodeObject:blogObjectURL forKey:StatsBlogObjectURLRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
+
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
