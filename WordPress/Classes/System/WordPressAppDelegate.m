@@ -38,6 +38,7 @@
 #import "PostsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPostViewController.h"
+#import "WPWhatsNew.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderViewController.h"
@@ -60,10 +61,6 @@
 #import <Lookback/Lookback.h>
 #endif
 
-#ifdef INTERNAL_BUILD
-#import <NewRelicAgent/NewRelic.h>
-#endif
-
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
@@ -71,6 +68,7 @@
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -105,13 +103,13 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [WordPressAppDelegate fixKeychainAccess];
 
     // Simperium: Wire CoreData Stack
-    [self configureSimperium];
+    [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
-    [self configureNewRelic];
     [self configureCrashlytics];
+    [self initializeAppTracking];
 
     // Start Simperium
     [self loginSimperium];
@@ -135,7 +133,9 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
         [NSUserDefaults resetStandardUserDefaults];
     }
 
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
+        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    }
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
@@ -168,6 +168,10 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
+    if ([WPPostViewController makeNewEditorAvailable]) {
+        [self setMustShowWhatsNewPopup:YES];
+    }
+    
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
@@ -328,23 +332,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
                     }
                 }
             }
-		} else if ([[url host] isEqualToString:@"editor"]) {
-			NSDictionary* params = [[url query] dictionaryFromQueryString];
-			
-			if (params.count > 0) {
-				BOOL available = [[params objectForKey:kWPEditorConfigURLParamAvailable] boolValue];
-				BOOL enabled = [[params objectForKey:kWPEditorConfigURLParamEnabled] boolValue];
-				
-				[WPPostViewController setNewEditorAvailable:available];
-				[WPPostViewController setNewEditorEnabled:enabled];
-                
-                if (available) {
-                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
-                }
-				
-				[self showVisualEditorAvailableInSettingsAnimation:available];
-			}
-        }
+		}
     }
 
     return returnValue;
@@ -411,7 +399,8 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
-    [self initializeAppTracking];
+    
+    [self showWhatsNewIfNeeded];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -539,11 +528,17 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
+    __weak __typeof(self) weakSelf = self;
+    
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
     loginViewController.cancellable = NO;
     loginViewController.dismissBlock = ^{
-        [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        
+        __strong __typeof(weakSelf) strongSelf = self;
+        
+        [strongSelf.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        [strongSelf showWhatsNewIfNeeded];
     };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
@@ -638,10 +633,8 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:^{
-        DDLogVerbose(@"Was able to successfully retrieve data about whether to disable the app review prompts");
-    } failure:^{
-        DDLogError(@"Was unable to retrieve data about whether to disable the app review prompts");
+    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:nil failure:^{
+        DDLogError(@"Was unable to retrieve data about throttling");
     }];
 }
 
@@ -745,21 +738,9 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
-    // Disabling the crash manager as we're using new relic to track crashes
-    [BITHockeyManager sharedHockeyManager].disableCrashManager = YES;
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-}
-
-- (void)configureNewRelic
-{
-#ifdef INTERNAL_BUILD
-    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
-    if (applicationToken.length != 0) {
-        [NewRelicAgent startWithApplicationToken:applicationToken];
-    }
-#endif
 }
 
 #pragma mark - BITCrashManagerDelegate
@@ -952,10 +933,11 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 
 #pragma mark - Simperium
 
-- (void)configureSimperium
+- (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -967,7 +949,7 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
-    
+
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -993,6 +975,19 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
 {
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
+
+- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
+{
+    NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSString *name = nil;
+    
+    if ([launchURL.host isEqualToString:@"notifications"]) {
+        name = [[launchURL.query dictionaryFromQueryString] stringForKey:@"bucket_name"];
+    }
+    
+    return name ?: WPNotificationsBucketName;
+}
+
 
 #pragma mark - Keychain
 
@@ -1253,38 +1248,50 @@ static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracki
     [service removeTodayWidgetConfiguration];
 }
 
-#pragma mark - GUI animations
+#pragma mark - What's new
 
-- (void)showVisualEditorAvailableInSettingsAnimation:(BOOL)available
+/**
+ *  @brief      Shows the What's New popup if needed.
+ *  @details    Takes care of saving the user defaults that signal that What's New was already
+ *              shown.  Also adds a slight delay before showing anything.  Also does nothing if
+ *              the user is not logged in.
+ */
+- (void)showWhatsNewIfNeeded
 {
-	UIView* notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	notificationView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-	notificationView.alpha = 0.0f;
-	
-	[self.window addSubview:notificationView];
-	
-	[UIView animateWithDuration:0.2f animations:^{
-		notificationView.alpha = 1.0f;
-	} completion:^(BOOL finished) {
-		
-		NSString* statusString = nil;
-		
-		if (available) {
-			statusString = NSLocalizedString(@"Visual Editor added to Settings", nil);
-		} else {
-			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
-		}
-        
-        [SVProgressHUD showSuccessWithStatus:statusString maskType:SVProgressHUDMaskTypeNone];
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			[UIView animateWithDuration:0.2f animations:^{
-				notificationView.alpha = 0.0f;
-			} completion:^(BOOL finished) {
-				[notificationView removeFromSuperview];
-			}];
-		});
-	}];
+    BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
+    
+    if (userIsLoggedIn) {
+        if ([self mustShowWhatsNewPopup]) {
+            
+            static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+            static const CGFloat WhatsNewShowDelay = 1.0f;
+            
+            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+            
+            BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+            
+            if (!whatsNewAlreadyShown) {
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                    
+                    WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                    
+                    [whatsNew show];
+                    
+                    [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                });
+            }
+        }
+    }
+}
+
+- (BOOL)mustShowWhatsNewPopup
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:MustShowWhatsNewPopup];
+}
+
+- (void)setMustShowWhatsNewPopup:(BOOL)mustShow
+{
+    [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
 }
 
 @end

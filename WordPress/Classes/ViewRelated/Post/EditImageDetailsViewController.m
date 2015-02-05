@@ -437,7 +437,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     UITableViewTextFieldCell *cell = [self getTextFieldCell];
     cell.tag = ImageDetailsRowLink;
     cell.textLabel.text = NSLocalizedString(@"Link To", @"Image link option title");
-    cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"http://wwww.example.com/", @"Placeholder text for the link field.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
+    cell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"http://www.example.com/", @"Placeholder text for the link field.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
     cell.textField.accessibilityIdentifier = @"title value";
     cell.textField.text = self.imageDetails.linkURL;
     cell.textField.tag = 0;

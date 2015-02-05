@@ -69,7 +69,11 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
         // (not strictly needed when white, but left here for possible customization)
         [[self tabBar] setBackgroundImage:[UIImage imageWithColor:[UIColor whiteColor]]];
 
-        [self setViewControllers:@[self.blogListNavigationController, self.readerNavigationController, self.newPostViewController, self.meNavigationController, self.notificationsNavigationController]];
+        [self setViewControllers:@[self.blogListNavigationController,
+                                   self.readerNavigationController,
+                                   self.newPostViewController,
+                                   self.meNavigationController,
+                                   self.notificationsNavigationController]];
 
         [self setSelectedViewController:self.blogListNavigationController];
 
@@ -319,6 +323,8 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
         case WPTabNotifications:
             currentlySelectedScreen = @"Notifications";
             break;
+        case WPTabMe:
+            currentlySelectedScreen = @"Me";
         default:
             break;
     }
