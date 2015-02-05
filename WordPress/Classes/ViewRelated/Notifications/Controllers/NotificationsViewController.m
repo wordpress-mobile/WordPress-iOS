@@ -106,8 +106,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [super viewDidLoad];
     
     // Register the cells
-    NSString *cellNibName       = [NoteTableViewCell classNameWithoutNamespaces];
-    self.tableViewCellNib       = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
+    NSString *cellNibName = [NoteTableViewCell classNameWithoutNamespaces];
+    self.tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
@@ -125,10 +125,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     // WPTableViewHandler
-    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights        = YES;
-    tableViewHandler.delegate               = self;
-    self.tableViewHandler                   = tableViewHandler;
+    WPTableViewHandler *tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights = YES;
+    tableViewHandler.delegate = self;
+    self.tableViewHandler = tableViewHandler;
     
     // Reload the tableView right away: setting the new dataSource doesn't nuke the row + section count cache
     [self.tableView reloadData];
@@ -145,6 +145,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [self updateTabBarBadgeNumber];
     [self showNoResultsViewIfNeeded];
     [self showManageButtonIfNeeded];
+    [self showBucketNameIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -405,6 +406,19 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
                                                                              action:@selector(showNotificationSettings)];
 }
 
+- (void)showBucketNameIfNeeded
+{
+    // This is only required for debugging:
+    // If we're sync'ing against a custom bucket, we should let the user know about it!
+    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
+    if ([name isEqualToString:WPNotificationsBucketName]) {
+        return;
+    }
+
+    self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
+}
+
 - (void)removeManageButton
 {
     self.navigationItem.rightBarButtonItem = nil;
@@ -628,6 +642,16 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
+    // Update Separators:
+    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
+    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
+    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
+    {
+        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+    }
+    
+    // Update NoResults View
     [self showNoResultsViewIfNeeded];
 }
 
@@ -638,18 +662,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     // Yes. This is dummy. Simperium handles sync for us!
     [self.refreshControl endRefreshing];
-}
-
-- (void)didChangeContent
-{
-    // Update Separators:
-    // Due to an UIKit bug, we need to draw our own separators (Issue #2845). Let's update the separator status
-    // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
-    for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
-    {
-        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
-    }
 }
 
 

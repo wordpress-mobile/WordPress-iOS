@@ -9,6 +9,7 @@ typedef NS_ENUM(NSUInteger, WPBlogSelectorButtonStyle)
 @interface WPBlogSelectorButton : UIButton
 
 @property (nonatomic, assign) WPBlogSelectorButtonStyle buttonStyle;
+@property (nonatomic, assign) BOOL isReadOnly;
 
 + (id)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle;
 
