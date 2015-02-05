@@ -1022,9 +1022,12 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
                               [strongSelf.tableView reloadData];
                           } failure:^(NSError *error) {
                               strongSelf.isUploadingMedia = NO;
+                              [strongSelf.tableView reloadData];
+                              if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                                  return;
+                              }
                               [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
                               DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
-                              [strongSelf.tableView reloadData];
                           }];
         [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
         progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
