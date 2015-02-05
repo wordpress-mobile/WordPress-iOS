@@ -23,7 +23,7 @@
 
 #pragma mark - Showing
 
-- (void)show
+- (void)showWithDismissBlock:(WPWhatsNewDismissBlock)dismissBlock
 {
     NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSAssert(versionString,
@@ -38,7 +38,10 @@
         
         UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
         
-        [self showWithTitle:whatsNewTitle details:whatsNewDetails image:image];
+        [self showWithTitle:whatsNewTitle
+                    details:whatsNewDetails
+                      image:image
+               dismissBlock:dismissBlock];
     }
 }
 
@@ -46,13 +49,15 @@
  *  @brief      Shows the What's New popup with the specified title, details and image.
  *  @details    Should not be called directly in most cases.  Use method "show" instead.
  *
- *  @param      title       The title to display.  Cannot be nil or zero length.
- *  @param      details     The details to display.  Cannot be nil or zero length.
- *  @param      image       The image to show.  Cannot be nil.
+ *  @param      title           The title to display.  Cannot be nil or zero length.
+ *  @param      details         The details to display.  Cannot be nil or zero length.
+ *  @param      image           The image to show.  Cannot be nil.
+ *  @param      dismissBlock    The dismiss block for the whats new view.  Can be nil.
  */
 - (void)showWithTitle:(NSString*)title
               details:(NSString*)details
                 image:(UIImage*)image
+         dismissBlock:(WPWhatsNewDismissBlock)dismissBlock
 {
     NSParameterAssert([title isKindOfClass:[NSString class]]);
     NSParameterAssert([title length] > 0);
@@ -92,6 +97,8 @@
             [dimmerView removeFromSuperview];
         }];
     };
+    
+    whatsNewView.didDismissBlock = dismissBlock;
     
     [dimmerView showAnimated:YES completion:nil];
     [whatsNewView showAnimated:YES completion:nil];
