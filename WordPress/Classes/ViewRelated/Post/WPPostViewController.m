@@ -209,7 +209,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
         
-        if (post.blog.isPrivate) {
+        if (post.blog.isWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
     }
