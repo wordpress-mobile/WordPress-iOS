@@ -568,8 +568,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Actions
 
-- (void)showBlogSelectorPrompt
+/**
+ *	@brief      Handles the UIControlEventTouchUpInside event for the blog selector button.
+ *	@details    This method handles a the touch up inside event for the blog selector button.
+                Since there are two different modes this button can have, we have a few
+                different scenarios to consider:  1) If the user is editing an existing post 
+                exit the screen we are currently on and return. 2) If the user is creating a
+                new post and the post does not have site-specific changes, show the blog selector
+                3) If the user is creating a new post and the post does have site-specific 
+                changes, display a blog change warning.
+ *
+ *	@param      sender The WPBlogSelectorButton triggering this action.
+ */
+- (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
+    if (sender.buttonMode == WPBlogSelectorButtonSingleSite) {
+        [self cancelEditingOrDismiss];
+        return;
+    }
+    
     if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
@@ -872,6 +889,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 #pragma mark - Instance Methods
+
+- (void)cancelEditingOrDismiss
+{
+    if (self.isEditing) {
+        [self cancelEditing];
+    } else {
+        [self dismissEditView];
+    }
+}
 
 - (UIImage *)tintedImageWithColor:(UIColor *)tintColor image:(UIImage *)image
 {
@@ -1234,13 +1260,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [blogButton sizeToFit];
         }
         
-        // The blog picker is read-only if one of the following is true:
+        // The blog picker is in single site mode if one of the following is true:
         // editor screen is in preview mode, there is only 1 blog, or the user
-        // is editing an existing post
+        // is editing an existing post.
         if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
-            blogButton.isReadOnly = YES;
+            blogButton.buttonMode = WPBlogSelectorButtonSingleSite;
         } else {
-            blogButton.isReadOnly = NO;
+            blogButton.buttonMode = WPBlogSelectorButtonMultipleSite;
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
@@ -1254,7 +1280,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (!_blogPickerButton) {
         CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
-        [button addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
     
