@@ -221,9 +221,9 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
-	elsif k == "SIMPERIUM_API_KEY"
+    elsif k == "SIMPERIUM_API_KEY"
       simperium_api_key = v.chomp
-	elsif k == "SIMPERIUM_APP_ID"
+    elsif k == "SIMPERIUM_APP_ID"
       simperium_app_id = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
