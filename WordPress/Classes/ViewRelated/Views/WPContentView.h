@@ -121,11 +121,12 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) WPContentActionView *actionView;
 
 /* Factory methos for subviews */
-- (WPContentAttributionView *)viewForAttributionView;
-- (UILabel *)viewForTitle;
-- (UIView *)viewForContent;
-- (WPContentActionView *)viewForActionView;
-- (UIImageView *)imageViewForFeaturedImage;
+- (void)buildAttributionView;
+- (void)buildAttributionBorderView;
+- (void)buildFeaturedImageview;
+- (void)buildTitleLabel;
+- (void)buildContentView;
+- (void)buildActionView;
 
 /**
  Configures the appearance of the attribution view based on the content provider.
