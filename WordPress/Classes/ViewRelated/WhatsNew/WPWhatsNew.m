@@ -36,7 +36,7 @@
     
     if (appHasWhatsNewInfo) {
         
-        UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
+        UIImage* image = [UIImage imageNamed:@"icon-whats-new"];
         
         [self showWithTitle:whatsNewTitle
                     details:whatsNewDetails
