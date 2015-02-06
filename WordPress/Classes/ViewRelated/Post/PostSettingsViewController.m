@@ -991,6 +991,51 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     return _imageSource;
 }
 
+- (void) uploadFeatureImage:(ALAsset *)asset
+{
+    NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
+    [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
+    convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
+    self.featuredImageProgress = convertingProgress;
+    __weak __typeof(self) weakSelf = self;
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
+        if (!weakSelf) {
+            return;
+        }
+        PostSettingsViewController * strongSelf = weakSelf;
+        strongSelf.featuredImageProgress.completedUnitCount++;
+        if (error) {
+            DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
+            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
+            strongSelf.isUploadingMedia = NO;
+            return;
+        }
+        media.mediaType = MediaTypeFeatured;
+        NSProgress * progress = nil;
+        [mediaService uploadMedia:media
+                         progress:&progress
+                          success:^{
+                              strongSelf.isUploadingMedia = NO;
+                              Post *post = (Post *)weakSelf.apost;
+                              post.featuredImage = media;
+                              [strongSelf.tableView reloadData];
+                          } failure:^(NSError *error) {
+                              strongSelf.isUploadingMedia = NO;
+                              [strongSelf.tableView reloadData];
+                              if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                                  return;
+                              }
+                              [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
+                              DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
+                          }];
+        [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
+        progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+        strongSelf.featuredImageProgress = progress;
+        [strongSelf.tableView reloadData];
+    }];
+}
+
 #pragma mark - WPTableImageSourceDelegate
 
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource
@@ -1061,47 +1106,14 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    __weak PostSettingsViewController *weakSelf = self;
+    __weak __typeof(self) weakSelf = self;
     self.isUploadingMedia = YES;
     // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
-        [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
-        convertingProgress.localizedDescription = NSLocalizedString(@"Preparing...",@"Label to show while converting and/or resizing media to send to server");
-        weakSelf.featuredImageProgress = convertingProgress;
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.apost.objectID completion:^(Media *media, NSError * error) {
-            weakSelf.featuredImageProgress.completedUnitCount++;
-            if (error) {
-                DDLogError(@"Couldn't export featured image %@: %@", assetURL, [error localizedDescription]);
-                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
-                weakSelf.isUploadingMedia = NO;
-                return;
-            }
-            media.mediaType = MediaTypeFeatured;
-            NSProgress * progress = nil;
-            [mediaService uploadMedia:media
-                             progress:&progress
-                              success:^{
-                weakSelf.isUploadingMedia = NO;
-                Post *post = (Post *)weakSelf.apost;
-                post.featuredImage = media;
-                [weakSelf.tableView reloadData];
-            } failure:^(NSError *error) {
-                weakSelf.isUploadingMedia = NO;
-                [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
-                DDLogError(@"Couldn't upload featured image %@: %@", assetURL, [error localizedDescription]);
-                [weakSelf.tableView reloadData];
-            }];
-            [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
-            progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
-            weakSelf.featuredImageProgress = progress;
-            [weakSelf.tableView reloadData];
-        }];
-
+        [weakSelf uploadFeatureImage:asset];
         if (IS_IPAD) {
             [weakSelf.popover dismissPopoverAnimated:YES];
         } else {

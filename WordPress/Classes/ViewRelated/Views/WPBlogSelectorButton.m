@@ -63,20 +63,14 @@
     return frame;
 }
 
-- (void)setIsReadOnly:(BOOL)isReadOnly
+- (void)setButtonMode:(WPBlogSelectorButtonMode)value
 {
-    self.enabled = !isReadOnly;
-    self.userInteractionEnabled = !isReadOnly;
-    if (isReadOnly) {
+    _buttonMode = value;
+    if (self.buttonMode == WPBlogSelectorButtonSingleSite) {
         [self setImage:nil forState:UIControlStateNormal];
     } else {
         [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
     }
-}
-
-- (BOOL)isReadOnly
-{
-    return !self.enabled;
 }
 
 @end
