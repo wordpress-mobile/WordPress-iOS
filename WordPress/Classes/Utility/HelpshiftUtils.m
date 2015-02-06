@@ -7,7 +7,7 @@ NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCountUpdatedNotification";
 // This delay is required to give some time to Mixpanel to update the remote variable
-CGFloat const HelpshiftFlagCheckDelay = 5.0;
+CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 @interface HelpshiftUtils () <HelpshiftDelegate>
 
