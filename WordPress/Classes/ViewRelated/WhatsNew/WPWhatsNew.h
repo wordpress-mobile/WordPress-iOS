@@ -1,5 +1,7 @@
 #import <Foundation/Foundation.h>
 
+#import "WPWhatsNewView.h"
+
 /**
  *  @class      WPWhatsNew
  *  @brief      This class is a module that can be used to contain the logic to show the What's New
@@ -16,7 +18,10 @@
  *  @brief      Shows the What's New popup.
  *  @details    If this version of the application does not have the required title and details
  *              glotpress strings, then nothing will be shown.
+ *
+ *  @param      dismissBlock    This block will be executed when the WPWhatsNewView is dismissed.
+ *                              Can be nil.
  */
-- (void)show;
+- (void)showWithDismissBlock:(WPWhatsNewDismissBlock)dismissBlock;
 
 @end
