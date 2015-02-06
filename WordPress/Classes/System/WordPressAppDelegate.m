@@ -1275,9 +1275,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     
                     WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
                     
-                    [whatsNew show];
-                    
-                    [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                    [whatsNew showWithDismissBlock:^{
+                        [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                    }];
                 });
             }
         }
