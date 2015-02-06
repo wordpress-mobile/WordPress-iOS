@@ -25,15 +25,13 @@
 }
 
 #pragma mark - Private Methods
-
-- (UILabel *)viewForTitle
+- (void)buildTitleLabel
 {
-    UILabel *label = [super viewForTitle];
-    label.numberOfLines = 0;
-    return label;
+    [super buildTitleLabel];
+    self.titleLabel.numberOfLines = 0;
 }
 
-- (UIView *)viewForContent
+- (void)buildContentView
 {
     // Minimal frame so internal DTAttriutedTextContentView gets layout.
     CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.bounds), 1.0);
@@ -42,14 +40,15 @@
     richTextView.translatesAutoresizingMaskIntoConstraints = NO;
     richTextView.delegate = self;
     richTextView.edgeInsets = UIEdgeInsetsMake(0.0, horizontalInnerPadding, 0.0, horizontalInnerPadding);
-    return richTextView;
+
+    self.contentView = richTextView;
+    [self addSubview:self.contentView];
 }
 
-- (UIImageView *)imageViewForFeaturedImage
+- (void)buildFeaturedImageview
 {
-    UIImageView *imageView = [super imageViewForFeaturedImage];
-    imageView.userInteractionEnabled = YES;
-    return imageView;
+    [super buildFeaturedImageview];
+    self.featuredImageView.userInteractionEnabled = YES;
 }
 
 - (void)configureContentView
