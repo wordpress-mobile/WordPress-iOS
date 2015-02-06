@@ -741,6 +741,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
+    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -753,6 +754,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
+    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
