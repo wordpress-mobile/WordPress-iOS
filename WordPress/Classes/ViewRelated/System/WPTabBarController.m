@@ -82,6 +82,11 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
                                                      name:HelpshiftUnreadCountUpdatedNotification
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(defaultAccountDidChange:)
+                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                   object:nil];
     }
     return self;
 }
@@ -410,6 +415,16 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     else {
         [meTabBarItem setBadgeValue:[NSString stringWithFormat:@"%ld", unreadCount]];
     }
+}
+
+#pragma mark - Default Account Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
+    [self.blogListNavigationController popToRootViewControllerAnimated:NO];
+    [self.readerNavigationController popToRootViewControllerAnimated:NO];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
 @end
