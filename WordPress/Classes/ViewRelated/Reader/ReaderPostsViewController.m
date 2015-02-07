@@ -15,6 +15,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
 #import "ReaderPostTableViewCell.h"
+#import "ReaderPostUnattributedTableViewCell.h"
 #import "ReaderSiteService.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
@@ -215,11 +216,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.refreshControl = refreshControl;
 }
 
+- (Class)classForPostCell
+{
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return [ReaderPostUnattributedTableViewCell class];
+    }
+    return [ReaderPostTableViewCell class];
+}
+
 - (void)configureTableView
 {
     [self.tableView registerClass:[ReaderBlockedTableViewCell class] forCellReuseIdentifier:BlockedCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.accessibilityIdentifier = @"Reader Table";
@@ -245,7 +254,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configureCellForLayout
 {
     NSString *CellIdentifier = @"CellForLayoutIdentifier";
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:CellIdentifier];
     self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 }
 

@@ -89,6 +89,7 @@ static const NSInteger ReaderSiteHeaderHorizontalPadding = 8.0;
 - (void)configurePostsViewController
 {
     self.postsViewController = [[ReaderPostsViewController alloc] init];
+    self.postsViewController.readerViewStyle = ReaderViewStyleSitePreview;
     self.postsViewController.skipIpadTopPadding = YES;
     [self addChildViewController:self.postsViewController];
     UIView *childView = self.postsViewController.view;
