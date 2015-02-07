@@ -159,6 +159,7 @@
 		5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */; };
 		5DCC4CD819A50CC0003E548C /* ReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DCC4CD719A50CC0003E548C /* ReaderSite.m */; };
 		5DDC44671A72BB07007F538E /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC44661A72BB07007F538E /* ReaderViewController.m */; };
+		5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
 		5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */; };
@@ -779,6 +780,8 @@
 		5DCC4CD719A50CC0003E548C /* ReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSite.m; sourceTree = "<group>"; };
 		5DDC44651A72BB07007F538E /* ReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderViewController.h; sourceTree = "<group>"; };
 		5DDC44661A72BB07007F538E /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
+		5DE88FA81A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostUnattributedTableViewCell.h; sourceTree = "<group>"; };
+		5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostUnattributedTableViewCell.m; sourceTree = "<group>"; };
 		5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceTest.m; sourceTree = "<group>"; };
 		5DEB61B2156FCD3400242C35 /* WPWebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWebView.h; sourceTree = "<group>"; };
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
@@ -1746,6 +1749,8 @@
 				5DF94E4F1962BAEB00359241 /* ReaderPostSimpleContentView.m */,
 				5D42A3EF175E75EE005CFF05 /* ReaderPostTableViewCell.h */,
 				5D42A3F0175E75EE005CFF05 /* ReaderPostTableViewCell.m */,
+				5DE88FA81A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.h */,
+				5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */,
 				5D9B17C319998A430047A4A2 /* ReaderBlockedTableViewCell.h */,
 				5D9B17C419998A430047A4A2 /* ReaderBlockedTableViewCell.m */,
 				E1D062D2177C685700644185 /* ContentActionButton.h */,
@@ -3536,6 +3541,7 @@
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */,
+				5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
