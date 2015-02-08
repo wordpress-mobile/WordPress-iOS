@@ -340,8 +340,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     if (!post.isWPCom) {
         return nil;
     }
-    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
-
+    NSString *path;
+    if (post.isWPCom) {
+        path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+    } else {
+        path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+    }
     NSError *error;
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
     request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", path];
