@@ -9,7 +9,7 @@
 #import "ReaderPostService.h"
 #import "ReaderPostsViewController.h"
 #import "ReaderPostDetailViewController.h"
-#import "ReaderSiteHeaderView.h"
+#import "ReaderPostAttributionView.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicService.h"
@@ -21,9 +21,9 @@ static const NSInteger ReaderSiteHeaderHeight = 44.0;
 static const NSInteger ReaderSiteHeaderTopPadding = 10.0;
 static const NSInteger ReaderSiteHeaderHorizontalPadding = 8.0;
 
-@interface ReaderBrowseSiteViewController ()
+@interface ReaderBrowseSiteViewController ()<WPContentAttributionViewDelegate>
 @property (nonatomic, strong) ReaderPostsViewController *postsViewController;
-@property (nonatomic, strong) ReaderSiteHeaderView *headerView;
+@property (nonatomic, strong) ReaderPostAttributionView *headerView;
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderTopic *siteTopic;
 @end
@@ -66,12 +66,13 @@ static const NSInteger ReaderSiteHeaderHorizontalPadding = 8.0;
 
 - (void)configureHeaderView
 {
-    self.headerView = [[ReaderSiteHeaderView alloc] init];
+    self.headerView = [[ReaderPostAttributionView alloc] init];
     self.headerView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.headerView.title = self.siteTopic.title;
-    self.headerView.subtitle = self.siteTopic.topicDescription;
+    self.headerView.attributionNameLabel.text = self.siteTopic.title;
+    self.headerView.delegate = self;
+    [self.headerView selectAttributionButton:self.post.isFollowing];
 
-    NSInteger imageWidth = (NSInteger)ReaderHeaderViewAvatarSize;
+    NSInteger imageWidth = (NSInteger)WPContentAttributionViewAvatarSize;
     NSString *blogPath = [self.post.blogURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *mshotPath = [NSString stringWithFormat:@"http://s.wordpress.com/mshots/v1/%@/?w=%d", blogPath, imageWidth];
 
@@ -142,6 +143,34 @@ static const NSInteger ReaderSiteHeaderHorizontalPadding = 8.0;
                                                                         views:views]];
 
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
+{
+    UIButton *followButton = (UIButton *)sender;
+
+    if (!self.post.isFollowing) {
+        [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
+    }
+
+    [followButton setSelected:!self.post.isFollowing]; // Set it optimistically
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+
+    [context performBlock:^{
+        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:self.post.objectID error:nil];
+        if (!postInContext) {
+            return;
+        }
+
+        [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
+                [followButton setSelected:postInContext.isFollowing];
+            });
+        }];
+    }];
 }
 
 @end
