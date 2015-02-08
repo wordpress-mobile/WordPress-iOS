@@ -35,7 +35,6 @@
     return CGSizeMake(size.width, ceil(height));
 }
 
-
 - (void)configureConstraints
 {
     UIView *featuredImageView = self.featuredImageView;
@@ -72,7 +71,6 @@
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
                                                                  options:0
