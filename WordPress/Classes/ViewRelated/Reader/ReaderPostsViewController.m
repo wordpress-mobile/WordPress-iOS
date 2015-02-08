@@ -1018,7 +1018,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
-    UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    ReaderPostDetailViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    detailController.readerViewStyle = self.readerViewStyle;
     [self.navigationController pushViewController:detailController animated:YES];
 
     [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
