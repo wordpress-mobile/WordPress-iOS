@@ -156,7 +156,7 @@
     NSString *details = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-details",
                                                           nil,
                                                           [NSBundle mainBundle],
-                                                          @"This version of the WordPress app includes a beautiful new visual editor. Try it out by creating a new post.",
+                                                          @"The WordPress app for iOS now includes a beautiful new visual editor. Try it out by creating a new post.",
                                                           @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
