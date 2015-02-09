@@ -148,7 +148,7 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `d53501adf7fa2dae12b296d429aa866b67f7ae31`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-iOS-Editor`, commit `6f13e808caa07317c033cb42c100099391b12230`)
   - WordPress-iOS-Shared (= 0.1.8)
   - WordPressApi (~> 0.2.2)
   - WordPressCom-Analytics-iOS (= 0.0.25)
@@ -171,7 +171,7 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: d53501adf7fa2dae12b296d429aa866b67f7ae31
+    :commit: 6f13e808caa07317c033cb42c100099391b12230
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
 
 CHECKOUT OPTIONS:
@@ -188,7 +188,7 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: d53501adf7fa2dae12b296d429aa866b67f7ae31
+    :commit: 6f13e808caa07317c033cb42c100099391b12230
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
 
 SPEC CHECKSUMS:
