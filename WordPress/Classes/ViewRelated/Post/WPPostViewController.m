@@ -1572,7 +1572,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    return self.mediaInProgress.count > 0;
 }
 
 - (void)cancelMediaUploads
@@ -1690,8 +1690,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-        [self stopTrackingProgressOfMediaWithId:imageUniqueId];
-        [self refreshNavigationBarButtons:NO];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:imageUniqueId];
@@ -1741,8 +1739,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
                     [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
                     [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                    [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
-                    [strongSelf refreshNavigationBarButtons:NO];
                 } failure:^(NSError *error) {
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
@@ -2020,6 +2016,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
+{
+    [self stopTrackingProgressOfMediaWithId:imageId];
+    [self refreshNavigationBarButtons:NO];
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url imageMeta:(WPImageMeta *)imageMeta
