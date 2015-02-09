@@ -23,16 +23,16 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="Share your Story!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="5qs-xg-ets" userLabel="Title Text View">
-                    <rect key="frame" x="20" y="80" width="220" height="35"/>
+                    <rect key="frame" x="20" y="84" width="220" height="34"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="35" id="sug-n5-6nx"/>
+                        <constraint firstAttribute="height" constant="34" id="sug-n5-6nx"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcP-jy-MXs" userLabel="Separator Line View">
-                    <rect key="frame" x="0.0" y="231" width="260" height="0.5"/>
+                    <rect key="frame" x="0.0" y="232" width="260" height="0.5"/>
                     <color key="backgroundColor" red="0.57024998383178827" green="0.5725490196078431" blue="0.56380973514078536" alpha="0.5" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="WRy-k8-iUa"/>
@@ -52,10 +52,10 @@
                         <action selector="dismissPopup:" destination="iN0-l3-epB" eventType="touchUpInside" id="9jl-7L-b7m"/>
                     </connections>
                 </button>
-                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rZt-IM-vJ7">
-                    <rect key="frame" x="20" y="8" width="220" height="64"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="rZt-IM-vJ7">
+                    <rect key="frame" x="20" y="10" width="220" height="74"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="64" id="MHJ-uN-1jr"/>
+                        <constraint firstAttribute="height" constant="74" id="MHJ-uN-1jr"/>
                         <constraint firstAttribute="width" constant="220" id="NaB-E5-fp7"/>
                         <constraint firstAttribute="width" constant="64" id="jYu-AC-hoE"/>
                     </constraints>
@@ -65,12 +65,12 @@
                         </mask>
                     </variation>
                 </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="We have exciting new updates to the WordPress editor. If you haven't blogged in a while, try it out by creating a new post." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Yo-lx-1UL" userLabel="Details Text View">
-                    <rect key="frame" x="20" y="123" width="220" height="100"/>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="The WordPress app for iOS  now includes a beautiful new visual editor. Try it out by creating a new post." textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7Yo-lx-1UL" userLabel="Details Text View">
+                    <rect key="frame" x="30" y="118" width="200" height="106"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="100" id="d06-w8-7sQ"/>
-                        <constraint firstAttribute="width" constant="220" id="qKj-0j-rfx"/>
+                        <constraint firstAttribute="height" constant="106" id="d06-w8-7sQ"/>
+                        <constraint firstAttribute="width" constant="200" id="qKj-0j-rfx"/>
                     </constraints>
                     <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -81,7 +81,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="5qs-xg-ets" firstAttribute="top" secondItem="rZt-IM-vJ7" secondAttribute="bottom" constant="8" symbolic="YES" id="22A-It-gGX"/>
+                <constraint firstItem="5qs-xg-ets" firstAttribute="top" secondItem="rZt-IM-vJ7" secondAttribute="bottom" id="22A-It-gGX"/>
                 <constraint firstAttribute="trailing" secondItem="JiN-6m-R2d" secondAttribute="trailing" id="2cB-rS-7Kj"/>
                 <constraint firstItem="JiN-6m-R2d" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="3Fq-f4-o9c"/>
                 <constraint firstAttribute="bottom" secondItem="vcP-jy-MXs" secondAttribute="bottom" id="5Ov-Tj-6cg"/>
@@ -91,16 +91,16 @@
                 <constraint firstAttribute="trailing" secondItem="vcP-jy-MXs" secondAttribute="trailing" id="KLq-ha-GMZ"/>
                 <constraint firstItem="7Yo-lx-1UL" firstAttribute="top" secondItem="rZt-IM-vJ7" secondAttribute="bottom" constant="8" symbolic="YES" id="Ohw-Ee-36q"/>
                 <constraint firstAttribute="centerX" secondItem="rZt-IM-vJ7" secondAttribute="centerX" id="R0J-rh-FVe"/>
-                <constraint firstItem="7Yo-lx-1UL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="X4d-d1-fnB"/>
+                <constraint firstItem="7Yo-lx-1UL" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="30" id="X4d-d1-fnB"/>
                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="7Yo-lx-1UL" secondAttribute="trailing" constant="20" symbolic="YES" id="dNC-PX-joy"/>
                 <constraint firstItem="vcP-jy-MXs" firstAttribute="top" secondItem="7Yo-lx-1UL" secondAttribute="bottom" constant="8" symbolic="YES" id="dln-Ga-wpo"/>
                 <constraint firstAttribute="bottom" secondItem="JiN-6m-R2d" secondAttribute="bottom" id="eMZ-jB-Dmj"/>
                 <constraint firstItem="vcP-jy-MXs" firstAttribute="top" secondItem="7Yo-lx-1UL" secondAttribute="bottom" constant="8" symbolic="YES" id="hFq-f8-4az"/>
                 <constraint firstAttribute="trailing" secondItem="5qs-xg-ets" secondAttribute="trailing" constant="20" symbolic="YES" id="kpf-gB-MLZ"/>
-                <constraint firstItem="7Yo-lx-1UL" firstAttribute="top" secondItem="5qs-xg-ets" secondAttribute="bottom" constant="8" symbolic="YES" id="r2r-1X-2e9"/>
+                <constraint firstItem="7Yo-lx-1UL" firstAttribute="top" secondItem="5qs-xg-ets" secondAttribute="bottom" id="r2r-1X-2e9"/>
                 <constraint firstAttribute="bottom" secondItem="vcP-jy-MXs" secondAttribute="bottom" constant="66" id="rvE-IV-5Oo"/>
-                <constraint firstItem="rZt-IM-vJ7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="tVa-qr-9r7"/>
-                <constraint firstAttribute="trailing" secondItem="7Yo-lx-1UL" secondAttribute="trailing" constant="20" symbolic="YES" id="vi1-MR-hKe"/>
+                <constraint firstItem="rZt-IM-vJ7" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="10" id="tVa-qr-9r7"/>
+                <constraint firstAttribute="trailing" secondItem="7Yo-lx-1UL" secondAttribute="trailing" constant="30" id="vi1-MR-hKe"/>
                 <constraint firstItem="vcP-jy-MXs" firstAttribute="top" secondItem="7Yo-lx-1UL" secondAttribute="bottom" constant="8" symbolic="YES" id="wGl-R2-8dN"/>
                 <constraint firstItem="vcP-jy-MXs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="xei-xJ-ZPD"/>
                 <constraint firstItem="7Yo-lx-1UL" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="leading" constant="20" symbolic="YES" id="xo1-zf-STO"/>
