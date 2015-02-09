@@ -1572,7 +1572,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    return self.mediaInProgress.count > 0;
 }
 
 - (void)cancelMediaUploads
