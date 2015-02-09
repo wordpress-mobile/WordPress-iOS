@@ -672,6 +672,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     [Crashlytics setUserName:[defaultAccount username]];
     [self setCommonCrashlyticsParameters];
+
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
 
 #pragma mark - Crash reporting
