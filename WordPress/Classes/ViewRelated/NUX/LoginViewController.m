@@ -128,8 +128,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration {
-
+                                         duration:(NSTimeInterval)duration
+{
     [self layoutControls];
 }
 
@@ -831,7 +831,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
 {
-
     _statusLabel.hidden = !(status.length > 0);
     _statusLabel.text = status;
 
@@ -1094,7 +1093,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (NSArray *)controlsToHideForTextEntry
 {
-
     NSArray *controlsToHide = @[_helpButton, _helpBadge];
 
     // Hide the
