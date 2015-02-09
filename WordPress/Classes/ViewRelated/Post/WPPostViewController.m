@@ -1690,8 +1690,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-        [self stopTrackingProgressOfMediaWithId:imageUniqueId];
-        [self refreshNavigationBarButtons:NO];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:imageUniqueId];
