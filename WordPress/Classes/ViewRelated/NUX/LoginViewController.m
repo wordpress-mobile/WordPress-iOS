@@ -815,10 +815,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     }
     NSString *username = [[_usernameText.text trim] lowercaseString];
     NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
-    if ([reservedUserNames containsObject:username]) {
-        return YES;
-    }
-    return NO;
+    
+    return [reservedUserNames containsObject:username];
 }
 
 - (void)displayErrorMessages
@@ -1112,13 +1110,8 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
 {
     NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
-    if (unreadCount > 0) {
-        _helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
-        _helpBadge.hidden = NO;
-    } else {
-        _helpBadge.text = @"0";
-        _helpBadge.hidden = YES;
-    }
+    _helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
+    _helpBadge.hidden = (unreadCount == 0);
 }
 
 @end
