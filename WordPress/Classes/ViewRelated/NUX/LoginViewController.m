@@ -28,34 +28,31 @@ static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-@interface LoginViewController () <UITextFieldDelegate> {
+@interface LoginViewController () <UITextFieldDelegate>
 
-    // Views
-    UIView *_mainView;
-    WPNUXSecondaryButton *_skipToCreateAccount;
-    WPNUXSecondaryButton *_toggleSignInForm;
-    WPNUXSecondaryButton *_forgotPassword;
-    UIButton *_helpButton;
-    WPNUXHelpBadgeLabel *_helpBadge;
-    UIImageView *_icon;
-    WPWalkthroughTextField *_usernameText;
-    WPWalkthroughTextField *_passwordText;
-    WPWalkthroughTextField *_siteUrlText;
-    WPNUXMainButton *_signInButton;
-    WPNUXSecondaryButton *_cancelButton;
+// Views
+@property (nonatomic, strong) UIView                    *mainView;
+@property (nonatomic, strong) WPNUXSecondaryButton      *skipToCreateAccount;
+@property (nonatomic, strong) WPNUXSecondaryButton      *toggleSignInForm;
+@property (nonatomic, strong) WPNUXSecondaryButton      *forgotPassword;
+@property (nonatomic, strong) UIButton                  *helpButton;
+@property (nonatomic, strong) WPNUXHelpBadgeLabel       *helpBadge;
+@property (nonatomic, strong) UIImageView               *icon;
+@property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
+@property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
+@property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
+@property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
+@property (nonatomic, strong) UILabel                   *statusLabel;
 
-    UILabel *_statusLabel;
-
-    // Measurements
-    CGFloat _keyboardOffset;
-
-    BOOL _userIsDotCom;
-    BOOL _blogConnectedToJetpack;
-    NSString *_dotComSiteUrl;
-    NSArray *_blogs;
-    Blog *_blog;
-    NSUInteger _numberOfTimesLoginFailed;
-}
+// Measurements
+@property (nonatomic, strong) NSString                  *dotComSiteUrl;
+@property (nonatomic, strong) NSArray                   *blogs;
+@property (nonatomic, strong) Blog                      *blog;
+@property (nonatomic, assign) CGFloat                   keyboardOffset;
+@property (nonatomic, assign) BOOL                      userIsDotCom;
+@property (nonatomic, assign) BOOL                      blogConnectedToJetpack;
+@property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
 
 @end
 
