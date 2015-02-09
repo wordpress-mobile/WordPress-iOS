@@ -514,7 +514,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
-        if (presenter.presentedViewController) {
+        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+        if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
             [presenter dismissViewControllerAnimated:animated completion:^{
                 [self showWelcomeScreenAnimated:animated thenEditor:NO];
             }];
