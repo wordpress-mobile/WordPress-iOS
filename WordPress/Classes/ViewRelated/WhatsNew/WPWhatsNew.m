@@ -36,7 +36,7 @@
     
     if (appHasWhatsNewInfo) {
         
-        UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
+        UIImage* image = [UIImage imageNamed:@"icon-whats-new"];
         
         [self showWithTitle:whatsNewTitle
                     details:whatsNewDetails
@@ -86,9 +86,21 @@
     
     whatsNewView.center = dimmerView.center;
     
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = YES;
+    whatsNewView.details.selectable = YES;
+    
     whatsNewView.title.text = title;
     whatsNewView.details.text = details;
     whatsNewView.imageView.image = image;
+    
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = NO;
+    whatsNewView.details.selectable = NO;
 
     whatsNewView.willDismissBlock = ^void() {
         [dimmerView hideAnimated:YES completion:^(BOOL finished) {
@@ -156,7 +168,7 @@
     NSString *details = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-details",
                                                           nil,
                                                           [NSBundle mainBundle],
-                                                          @"This version of the WordPress app includes a beautiful new visual editor. Try it out by creating a new post.",
+                                                          @"The WordPress app for iOS now includes a beautiful new visual editor. Try it out by creating a new post.",
                                                           @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
