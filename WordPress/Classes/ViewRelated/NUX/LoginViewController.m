@@ -94,11 +94,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
     [self addMainView];
     [self initializeViewWithDefaultWPComAccount:defaultAccount];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -106,10 +101,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(helpshiftUnreadCountUpdated:)
-                                                 name:HelpshiftUnreadCountUpdatedNotification
-                                               object:nil];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
 
     [HelpshiftUtils refreshUnreadNotificationCount];
 
