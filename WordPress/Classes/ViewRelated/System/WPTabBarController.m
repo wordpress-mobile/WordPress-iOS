@@ -211,7 +211,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
-    [self.tabBarController setSelectedIndex:tabIndex];
+    [self setSelectedIndex:tabIndex];
 }
 
 - (void)showMySitesTab
@@ -322,7 +322,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 {
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
-    switch (self.tabBarController.selectedIndex) {
+    switch (self.selectedIndex) {
         case WPTabMySites:
             currentlySelectedScreen = @"Blog List";
             break;
@@ -398,7 +398,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.tabBarController.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Helpers
