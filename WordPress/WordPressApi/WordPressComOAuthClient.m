@@ -21,14 +21,34 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 #pragma mark - Misc
 
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSString *authToken))success failure:(void (^)(NSError *error))failure {
-    NSDictionary *parameters = @{
-                                 @"username": username,
-                                 @"password": password,
-                                 @"grant_type": @"password",
-                                 @"client_id": [WordPressComApiCredentials client],
-                                 @"client_secret": [WordPressComApiCredentials secret],
-                                 };
+- (void)authenticateWithUsername:(NSString *)username
+                        password:(NSString *)password
+                         success:(void (^)(NSString *authToken))success
+                         failure:(void (^)(NSError *error))failure
+{
+    [self authenticateWithUsername:username password:password multifactorCode:nil success:success failure:failure];
+}
+
+
+- (void)authenticateWithUsername:(NSString *)username
+                        password:(NSString *)password
+                 multifactorCode:(NSString *)multifactorCode
+                         success:(void (^)(NSString *authToken))success
+                         failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *parameters = [@{
+        @"username": username,
+        @"password": password,
+        @"grant_type": @"password",
+        @"client_id": [WordPressComApiCredentials client],
+        @"client_secret": [WordPressComApiCredentials secret],
+        @"wpcom_supports_2fa": @(YES)
+    } mutableCopy];
+    
+    if (multifactorCode) {
+        [parameters setObject:multifactorCode forKey:@"wpcom_otp"];
+    }
+    
     [self POST:@"token"
 	parameters:parameters
 	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
