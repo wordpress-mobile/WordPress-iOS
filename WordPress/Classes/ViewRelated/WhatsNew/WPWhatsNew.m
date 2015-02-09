@@ -86,9 +86,21 @@
     
     whatsNewView.center = dimmerView.center;
     
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = YES;
+    whatsNewView.details.selectable = YES;
+    
     whatsNewView.title.text = title;
     whatsNewView.details.text = details;
     whatsNewView.imageView.image = image;
+    
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = NO;
+    whatsNewView.details.selectable = NO;
 
     whatsNewView.willDismissBlock = ^void() {
         [dimmerView hideAnimated:YES completion:^(BOOL finished) {
