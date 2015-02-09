@@ -77,7 +77,6 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         [self setSelectedViewController:self.blogListNavigationController];
 
-        // since this is a singleton, it's ok to add the notification observer in the init
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
                                                      name:HelpshiftUnreadCountUpdatedNotification
@@ -89,6 +88,11 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
                                                    object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Tab Bar Items
