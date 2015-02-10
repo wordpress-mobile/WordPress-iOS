@@ -39,6 +39,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
 static CGFloat const GeneralWalkthroughStandardOffset = 15;
 static CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
 static CGSize const GeneralWalkthroughTextFieldSize = {320.0, 44.0};
+static CGFloat const GeneralWalkthroughTextFieldOverlapY = 1;
 static CGSize const GeneralWalkthroughButtonSize = {290.0, 41.0};
 static CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 static CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
@@ -537,7 +538,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [self.mainView addSubview:usernameText];
     [self.mainView addSubview:passwordText];
     [self.mainView addSubview:multifactorText];
-    [self.mainView insertSubview:siteUrlText belowSubview:passwordText];
+    [self.mainView addSubview:siteUrlText];
     [self.mainView addSubview:signInButton];
     [self.mainView addSubview:statusLabel];
     [self.mainView addSubview:toggleSignInForm];
@@ -626,15 +627,19 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     _usernameText.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Password
-    CGFloat passwordTextY = CGRectGetMaxY(_usernameText.frame) - 1;
+    CGFloat passwordTextY = CGRectGetMaxY(_usernameText.frame) - GeneralWalkthroughTextFieldOverlapY;
     _passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
+    // Layout Multifactor
+    CGFloat multifactorTextY = CGRectGetMaxY(_passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    _multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    
     // Layout Site URL
-    CGFloat siteUrlTextY = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
+    CGFloat siteUrlTextY = CGRectGetMaxY(_passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
     _siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Sign in Button
-    CGFloat signInButtonY = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
+    CGFloat signInButtonY = [self lastTextfieldMaxY] + GeneralWalkthroughStandardOffset;
     _signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
 
     // Layout Lost password Button
@@ -816,6 +821,17 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
     
     return [reservedUserNames containsObject:username];
+}
+
+- (CGFloat)lastTextfieldMaxY
+{
+    if (self.shouldDisplayMultifactor) {
+        return CGRectGetMaxY(self.multifactorText.frame);
+    } else if (_userIsDotCom) {
+        return CGRectGetMaxY(self.passwordText.frame);
+    } else {
+        return CGRectGetMaxY(self.siteUrlText.frame);
+    }
 }
 
 - (void)displayErrorMessages
@@ -1087,7 +1103,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton, _statusLabel];
+    return @[_icon, _usernameText, _passwordText, _multifactorText, _siteUrlText, _signInButton, _statusLabel];
 }
 
 - (NSArray *)controlsToHideForTextEntry
