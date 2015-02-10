@@ -75,22 +75,27 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
             NSString *errorCode = [response stringForKey:@"error"];
             NSString *errorDescription = [response stringForKey:@"error_description"];
 
-            NSInteger code = WordPressComOAuthErrorUnknown;
             /*
              Possible errors:
              - invalid_client: client_id is missing or wrong, it shouldn't happen
              - unsupported_grant_type: client_id doesn't support password grants
-             - invalid_request: a required field is missing/malformed
-             - invalid_request: authentication failed
+             - invalid_request: A required field is missing/malformed
+             - invalid_request: Authentication failed
+             - needs_2fa: Multifactor Authentication code is required
              */
-            if ([errorCode isEqualToString:@"invalid_client"]) {
-                code = WordPressComOAuthErrorInvalidClient;
-            } else if ([errorCode isEqualToString:@"unsupported_grant_type"]) {
-                code = WordPressComOAuthErrorUnsupportedGrantType;
-            } else if ([errorCode isEqualToString:@"invalid_request"]) {
-                code = WordPressComOAuthErrorInvalidRequest;
-            }
-            return [NSError errorWithDomain:WordPressComOAuthErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
+            
+            NSDictionary *errorsMap = @{
+                @"invalid_client"           : @(WordPressComOAuthErrorInvalidClient),
+                @"unsupported_grant_type"   : @(WordPressComOAuthErrorUnsupportedGrantType),
+                @"invalid_request"          : @(WordPressComOAuthErrorInvalidRequest),
+                @"needs_2fa"                : @(WordPressComOAuthErrorNeedsMultifactorCode)
+            };
+
+            NSNumber *mappedCode = errorsMap[errorCode] ?: @(WordPressComOAuthErrorUnknown);
+            
+            return [NSError errorWithDomain:WordPressComOAuthErrorDomain
+                                       code:mappedCode.intValue
+                                   userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
         }
     }
     return error;

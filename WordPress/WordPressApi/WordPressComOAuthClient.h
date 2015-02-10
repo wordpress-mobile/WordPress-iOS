@@ -6,6 +6,7 @@ typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
     WordPressComOAuthErrorInvalidClient,
     WordPressComOAuthErrorUnsupportedGrantType,
     WordPressComOAuthErrorInvalidRequest,
+    WordPressComOAuthErrorNeedsMultifactorCode
 };
 
 /**
