@@ -419,8 +419,8 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     }
 
     // Add Info button
-    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
     if (_helpButton == nil) {
+        UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
         _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
         [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
@@ -432,7 +432,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         [_mainView addSubview:_helpButton];
     }
 
-    // help badge
+    // Help badge
     if (_helpBadge == nil) {
         _helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
         _helpBadge.layer.masksToBounds = YES;
@@ -492,8 +492,8 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         _siteUrlText.showTopLineSeparator = YES;
         _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
-        // insert URL field below password field to hide when signing into
-        // WP.com account
+        
+        // insert URL field below password field to hide when signing into WP.com account
         [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
     }
     _siteUrlText.enabled = !_userIsDotCom;
@@ -508,16 +508,10 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     }
     _signInButton.enabled = [self isSignInEnabled];
 
-    NSString *signInTitle;
-    if (_userIsDotCom) {
-        signInTitle = NSLocalizedString(@"Sign In", nil);
-        _signInButton.accessibilityIdentifier = @"Sign In";
-    } else {
-        signInTitle = NSLocalizedString(@"Add Site", nil);
-        _signInButton.accessibilityIdentifier = @"Add Site";
-    }
-    [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
-
+    NSString *signInTitle = _userIsDotCom ? @"Sign In" : @"Add Site";
+    [_signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
+    _signInButton.accessibilityIdentifier = signInTitle;
+    
     // Add Cancel Button
     if (self.cancellable && _cancelButton == nil) {
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
@@ -546,16 +540,11 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
         [_mainView addSubview:_toggleSignInForm];
     }
+    
     if (!self.onlyDotComAllowed && !defaultAccount) {
-        NSString *toggleTitle;
-        if (_userIsDotCom) {
-            toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
-            _toggleSignInForm.accessibilityIdentifier = @"Add Self-Hosted Site";
-        } else {
-            toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
-            _toggleSignInForm.accessibilityIdentifier = @"Sign in to WordPress.com";
-        }
-        [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+        NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+        _toggleSignInForm.accessibilityIdentifier = toggleTitle;
+        [_toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
     }
 
     if (!defaultAccount) {
