@@ -344,27 +344,51 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     BOOL restoreOnlyIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
     
     if (restoreOnlyIfNewEditorIsEnabled) {
-        if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
-            
-            UINavigationController *navController = [[UINavigationController alloc] init];
-            navController.restorationIdentifier = WPEditorNavigationRestorationID;
-            navController.restorationClass = self;
-            
-            restoredViewController = navController;
-            
-        } else if ([self isSelfIdentifierPath:identifierComponents]) {
-            
-            AbstractPost* restoredPost = [self decodePostFromCoder:coder];
-            
-            if (restoredPost) {
-                WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
-                
-                restoredViewController = [[self alloc] initWithPost:restoredPost
-                                                               mode:mode];
-            } else {
-                restoredViewController = [[self alloc] initInFailedStateRestorationMode];
-            }
-        }
+        restoredViewController = [self restoreViewControllerWithIdentifierPath:identifierComponents
+                                                                         coder:coder];
+    }
+    
+    return restoredViewController;
+}
+
+#pragma mark - Restoration helpers
+
++ (UIViewController*)restoreParentNavigationController
+{
+    UINavigationController *navController = [[UINavigationController alloc] init];
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = self;
+    
+    return navController;
+}
+
++ (UIViewController*)restoreViewControllerWithIdentifierPath:(NSArray*)identifierComponents
+                                                       coder:(NSCoder *)coder
+{
+    UIViewController *restoredViewController = nil;
+    
+    if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
+        
+        restoredViewController = [self restoreParentNavigationController];
+    } else if ([self isSelfIdentifierPath:identifierComponents]) {
+        restoredViewController = [self restoreViewControllerWithCoder:coder];
+    }
+    
+    return restoredViewController;
+}
+
++ (UIViewController*)restoreViewControllerWithCoder:(NSCoder *)coder
+{
+    UIViewController *restoredViewController = nil;
+    AbstractPost *restoredPost = [self decodePostFromCoder:coder];
+    
+    if (restoredPost) {
+        WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
+        
+        restoredViewController = [[self alloc] initWithPost:restoredPost
+                                                       mode:mode];
+    } else {
+        restoredViewController = [[self alloc] initInFailedStateRestorationMode];
     }
     
     return restoredViewController;
