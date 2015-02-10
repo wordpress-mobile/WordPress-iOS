@@ -136,11 +136,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (IS_IPHONE) {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-
-    return UIInterfaceOrientationMaskAll;
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
@@ -594,7 +590,8 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (void)layoutControls
 {
-    CGFloat x,y;
+    CGFloat x;
+    CGFloat y;
 
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
