@@ -74,9 +74,10 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 @property (nonatomic, strong) NSArray                   *blogs;
 @property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
+@property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
+@property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
 @property (nonatomic, assign) BOOL                      blogConnectedToJetpack;
-@property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
 
 @end
 
@@ -104,12 +105,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    if (defaultAccount) {
+    self.hasDefaultAccount = (defaultAccount != nil);
+    if (defaultAccount != nil) {
         _userIsDotCom = NO;
     }
 
     [self addMainView];
-    [self initializeViewWithDefaultWPComAccount:defaultAccount];
+    [self initializeView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -144,6 +146,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 {
     [self layoutControls];
 }
+
 
 #pragma mark - UITextField delegate methods
 
@@ -360,14 +363,12 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 {
     _userIsDotCom = !_userIsDotCom;
     _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions.
+    // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
+    // to their new positions.
     [UIView animateWithDuration:0.3
                      animations:^{
-                         [self initializeViewWithDefaultWPComAccount:defaultAccount];
+                         [self initializeView];
                      }];
 }
 
@@ -403,13 +404,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [_mainView addGestureRecognizer:gestureRecognizer];
 }
 
-- (void)initializeViewWithDefaultWPComAccount:(WPAccount *)defaultAccount
+- (void)initializeView
 {
-    [self addControlsWithDefaultWPComAccount:defaultAccount];
+    [self addControls];
     [self layoutControls];
 }
 
-- (void)addControlsWithDefaultWPComAccount:(WPAccount *)defaultAccount
+- (void)addControls
 {
     // Add Icon
     if (_icon == nil) {
@@ -555,13 +556,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         [_mainView addSubview:_toggleSignInForm];
     }
     
-    if (!self.onlyDotComAllowed && !defaultAccount) {
+    if (!self.onlyDotComAllowed && !self.hasDefaultAccount) {
         NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
         _toggleSignInForm.accessibilityIdentifier = toggleTitle;
         [_toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
     }
-
-    if (!defaultAccount) {
+    
+    if (!self.hasDefaultAccount) {
         // Add Skip to Create Account Button
         if (_skipToCreateAccount == nil) {
             _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
