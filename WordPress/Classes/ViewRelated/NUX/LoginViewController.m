@@ -394,176 +394,172 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];
-    _mainView.frame = self.view.bounds;
-    _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:_mainView];
+    NSAssert(self.view, @"The view should be loaded by now");
+    
+    UIView *mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapGestureAction:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
-    [_mainView addGestureRecognizer:gestureRecognizer];
+    [mainView addGestureRecognizer:gestureRecognizer];
+    
+    // Attach + Keep the Reference
+    [self.view addSubview:mainView];
+    self.mainView = mainView;
 }
 
 - (void)addControls
 {
+    NSAssert(self.view, @"The view should be loaded by now");
+    NSAssert(self.mainView, @"Please, initialize the mainView first");
+    
     // Add Icon
-    if (_icon == nil) {
-        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
-        _icon.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_mainView addSubview:_icon];
-    }
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
+    icon.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 
     // Add Info button
-    if (_helpButton == nil) {
-        UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
-        _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
-        [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
-        _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-        _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_helpButton sizeToFit];
-        [_helpButton setExclusiveTouch:YES];
-        [_mainView addSubview:_helpButton];
-    }
+    UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
+    UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
+    [helpButton setImage:infoButtonImage forState:UIControlStateNormal];
+    helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+    helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    [helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [helpButton sizeToFit];
+    [helpButton setExclusiveTouch:YES];
 
     // Help badge
-    if (_helpBadge == nil) {
-        _helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
-        _helpBadge.layer.masksToBounds = YES;
-        _helpBadge.layer.cornerRadius = 6;
-        _helpBadge.textAlignment = NSTextAlignmentCenter;
-        _helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
-        _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
-        _helpBadge.hidden = YES;
-        [_mainView addSubview:_helpBadge];
-    }
+    WPNUXHelpBadgeLabel *helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
+    helpBadge.layer.masksToBounds = YES;
+    helpBadge.layer.cornerRadius = 6;
+    helpBadge.textAlignment = NSTextAlignmentCenter;
+    helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
+    helpBadge.textColor = [UIColor whiteColor];
+    helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
+    helpBadge.hidden = YES;
 
     // Add Username
-    if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
-        _usernameText.backgroundColor = [UIColor whiteColor];
-        _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
-        _usernameText.font = [WPNUXUtility textFieldFont];
-        _usernameText.adjustsFontSizeToFitWidth = YES;
-        _usernameText.returnKeyType = UIReturnKeyNext;
-        _usernameText.delegate = self;
-        _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _usernameText.accessibilityIdentifier = @"Username / Email";
-        [_mainView addSubview:_usernameText];
-    }
+    WPWalkthroughTextField *usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+    usernameText.backgroundColor = [UIColor whiteColor];
+    usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
+    usernameText.font = [WPNUXUtility textFieldFont];
+    usernameText.adjustsFontSizeToFitWidth = YES;
+    usernameText.returnKeyType = UIReturnKeyNext;
+    usernameText.delegate = self;
+    usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+    usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    usernameText.accessibilityIdentifier = @"Username / Email";
 
     // Add Password
-    if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _passwordText.backgroundColor = [UIColor whiteColor];
-        _passwordText.placeholder = NSLocalizedString(@"Password", nil);
-        _passwordText.font = [WPNUXUtility textFieldFont];
-        _passwordText.delegate = self;
-        _passwordText.secureTextEntry = YES;
-        _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
-        _passwordText.showSecureTextEntryToggle = YES;
-        _passwordText.showTopLineSeparator = YES;
-        _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _passwordText.accessibilityIdentifier = @"Password";
-        [_mainView addSubview:_passwordText];
-    }
+    WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+    passwordText.backgroundColor = [UIColor whiteColor];
+    passwordText.placeholder = NSLocalizedString(@"Password", nil);
+    passwordText.font = [WPNUXUtility textFieldFont];
+    passwordText.delegate = self;
+    passwordText.secureTextEntry = YES;
+    passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
+    passwordText.showSecureTextEntryToggle = YES;
+    passwordText.showTopLineSeparator = YES;
+    passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    passwordText.accessibilityIdentifier = @"Password";
     
     // Add Multifactor
-    if (_multifactorText == nil) {
-        _multifactorText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _multifactorText.backgroundColor = [UIColor whiteColor];
-        _multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
-        _multifactorText.font = [WPNUXUtility textFieldFont];
-        _multifactorText.delegate = self;
-        _multifactorText.returnKeyType = UIReturnKeyDone;
-        _multifactorText.showTopLineSeparator = YES;
-        _multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _multifactorText.accessibilityIdentifier = @"Verification Code";
-        [_mainView addSubview:_multifactorText];
-    }
+    WPWalkthroughTextField *multifactorText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+    multifactorText.backgroundColor = [UIColor whiteColor];
+    multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
+    multifactorText.font = [WPNUXUtility textFieldFont];
+    multifactorText.delegate = self;
+    multifactorText.returnKeyType = UIReturnKeyDone;
+    multifactorText.showTopLineSeparator = YES;
+    multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    multifactorText.accessibilityIdentifier = @"Verification Code";
 
     // Add Site Url
-    if (_siteUrlText == nil) {
-        _siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
-        _siteUrlText.backgroundColor = [UIColor whiteColor];
-        _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
-        _siteUrlText.font = [WPNUXUtility textFieldFont];
-        _siteUrlText.adjustsFontSizeToFitWidth = YES;
-        _siteUrlText.delegate = self;
-        _siteUrlText.keyboardType = UIKeyboardTypeURL;
-        _siteUrlText.returnKeyType = UIReturnKeyDone;
-        _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _siteUrlText.showTopLineSeparator = YES;
-        _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
-        
-        // insert URL field below password field to hide when signing into WP.com account
-        [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
-    }
-
+    WPWalkthroughTextField *siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
+    siteUrlText.backgroundColor = [UIColor whiteColor];
+    siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
+    siteUrlText.font = [WPNUXUtility textFieldFont];
+    siteUrlText.adjustsFontSizeToFitWidth = YES;
+    siteUrlText.delegate = self;
+    siteUrlText.keyboardType = UIKeyboardTypeURL;
+    siteUrlText.returnKeyType = UIReturnKeyDone;
+    siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
+    siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    siteUrlText.showTopLineSeparator = YES;
+    siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
+    
     // Add Sign In Button
-    if (_signInButton == nil) {
-        _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _signInButton.accessibilityIdentifier = @"Sign In";
-        [_mainView addSubview:_signInButton];
-    }
+    WPNUXMainButton *signInButton = [[WPNUXMainButton alloc] init];
+    [signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    signInButton.accessibilityIdentifier = @"Sign In";
     
     // Add Cancel Button
-    if (_cancelButton == nil) {
-        _cancelButton = [[WPNUXSecondaryButton alloc] init];
-        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton setExclusiveTouch:YES];
-        [_cancelButton sizeToFit];
-        [self.view addSubview:_cancelButton];
-    }
+    WPNUXSecondaryButton *cancelButton = [[WPNUXSecondaryButton alloc] init];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setExclusiveTouch:YES];
+    [cancelButton sizeToFit];
 
     // Add status label
-    if (_statusLabel == nil) {
-        _statusLabel = [[UILabel alloc] init];
-        _statusLabel.font = [WPNUXUtility confirmationLabelFont];
-        _statusLabel.textColor = [WPNUXUtility confirmationLabelColor];
-        _statusLabel.textAlignment = NSTextAlignmentCenter;
-        _statusLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _statusLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_mainView addSubview:_statusLabel];
-    }
+    UILabel *statusLabel = [[UILabel alloc] init];
+    statusLabel.font = [WPNUXUtility confirmationLabelFont];
+    statusLabel.textColor = [WPNUXUtility confirmationLabelColor];
+    statusLabel.textAlignment = NSTextAlignmentCenter;
+    statusLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    statusLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 
     // Add Account type toggle
-    if (_toggleSignInForm == nil) {
-        _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-        [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
-        _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-        [_mainView addSubview:_toggleSignInForm];
-    }
+    WPNUXSecondaryButton *toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
+    [toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
+    toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
     
     // Add Skip to Create Account Button
-    if (_skipToCreateAccount == nil) {
-        _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
-        _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-        [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-        [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_mainView addSubview:_skipToCreateAccount];
-    }
+    WPNUXSecondaryButton *skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+    skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    [skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+    [skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
 
     // Add Lost Password Button
-    if (_forgotPassword == nil) {
-        _forgotPassword = [[WPNUXSecondaryButton alloc] init];
-        _forgotPassword.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [_forgotPassword setTitle:NSLocalizedString(@"Lost your password?", nil) forState:UIControlStateNormal];
-        [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
-        _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
-        [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
-        [_mainView addSubview:_forgotPassword];
-    }
+    WPNUXSecondaryButton *forgotPassword = [[WPNUXSecondaryButton alloc] init];
+    forgotPassword.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [forgotPassword setTitle:NSLocalizedString(@"Lost your password?", nil) forState:UIControlStateNormal];
+    [forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+    forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
+    [forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
+    
+    // Attach Subviews
+    [self.view addSubview:cancelButton];
+    [self.mainView addSubview:icon];
+    [self.mainView addSubview:helpButton];
+    [self.mainView addSubview:helpBadge];
+    [self.mainView addSubview:usernameText];
+    [self.mainView addSubview:passwordText];
+    [self.mainView addSubview:multifactorText];
+    [self.mainView insertSubview:siteUrlText belowSubview:passwordText];
+    [self.mainView addSubview:signInButton];
+    [self.mainView addSubview:statusLabel];
+    [self.mainView addSubview:toggleSignInForm];
+    [self.mainView addSubview:skipToCreateAccount];
+    [self.mainView addSubview:forgotPassword];
+
+    // Keep the references!
+    self.cancelButton = cancelButton;
+    self.icon = icon;
+    self.helpButton = helpButton;
+    self.helpBadge = helpBadge;
+    self.usernameText = usernameText;
+    self.passwordText = passwordText;
+    self.multifactorText = multifactorText;
+    self.siteUrlText = siteUrlText;
+    self.signInButton = signInButton;
+    self.statusLabel = statusLabel;
+    self.toggleSignInForm = toggleSignInForm;
+    self.skipToCreateAccount = skipToCreateAccount;
+    self.forgotPassword = forgotPassword;
 }
 
 
@@ -579,13 +575,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 {
     self.cancelButton.hidden = !self.cancellable;
     
-    self.skipToCreateAccount.hidden = self.hasDefaultAccount;
-    
-    NSString *toggleTitle = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
-    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
-    self.toggleSignInForm.hidden = (self.onlyDotComAllowed || self.hasDefaultAccount);
-    
     self.siteUrlText.enabled = !self.userIsDotCom;
     self.forgotPassword.hidden = !self.isForgotPasswordEnabled;
     
@@ -593,6 +582,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [self.signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
     self.signInButton.accessibilityIdentifier = signInTitle;
     self.signInButton.enabled = self.isSignInEnabled;
+    
+    NSString *toggleTitle = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
+    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
+    self.toggleSignInForm.hidden = (self.onlyDotComAllowed || self.hasDefaultAccount);
+    
+    self.skipToCreateAccount.hidden = self.hasDefaultAccount;
 }
 
 - (void)layoutControls
