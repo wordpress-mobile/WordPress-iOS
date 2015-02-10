@@ -38,10 +38,8 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
 
 static CGFloat const GeneralWalkthroughStandardOffset = 15;
 static CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
-static CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
-static CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-static CGFloat const GeneralWalkthroughButtonWidth = 290.0;
-static CGFloat const GeneralWalkthroughButtonHeight = 41.0;
+static CGSize const GeneralWalkthroughTextFieldSize = {320.0, 44.0};
+static CGSize const GeneralWalkthroughButtonSize = {290.0, 41.0};
 static CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 static CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
@@ -593,75 +591,68 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (void)layoutControls
 {
-    CGFloat x;
-    CGFloat y;
-
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
-
+    
+    CGFloat textFieldX = (viewWidth - GeneralWalkthroughTextFieldSize.width) * 0.5f;
+    CGFloat textLabelX = (viewWidth - GeneralWalkthroughMaxTextWidth) * 0.5f;
+    CGFloat buttonX = (viewWidth - GeneralWalkthroughButtonSize.width) * 0.5f;
+    
     // Layout Help Button
-    x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _helpButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight));
+    CGFloat helpButtonX = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
+    CGFloat helpButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    _helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    x = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 5;
-    _helpBadge.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
+    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 5;
+    _helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
 
     // Layout Cancel Button
-    x = 0;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _cancelButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonHeight));
+    CGFloat cancelButtonX = 0;
+    CGFloat cancelButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    _cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
-    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
+    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
     CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
 
-    x = (viewWidth - CGRectGetWidth(_icon.frame))/2.0;
-    y = startingYForCenteredControls;
-    _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
+    CGFloat iconX = (viewWidth - CGRectGetWidth(_icon.frame)) * 0.5f;
+    CGFloat iconY = startingYForCenteredControls;
+    _icon.frame = CGRectIntegral(CGRectMake(iconX, iconY, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
 
     // Layout Username
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_icon.frame) + GeneralWalkthroughStandardOffset;
-    _usernameText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
+    CGFloat usernameTextY = CGRectGetMaxY(_icon.frame) + GeneralWalkthroughStandardOffset;
+    _usernameText.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Password
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_usernameText.frame) - 1;
-    _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
+    CGFloat passwordTextY = CGRectGetMaxY(_usernameText.frame) - 1;
+    _passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Site URL
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
-    _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
+    CGFloat siteUrlTextY = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
+    _siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
-    y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
+    CGFloat signInButtonY = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
+    _signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
 
     // Layout Lost password Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
-    y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat forgotPasswordY = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
-    _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
+    _forgotPassword.frame = CGRectIntegral(CGRectMake(buttonX, forgotPasswordY, GeneralWalkthroughButtonSize.width, forgotPasswordHeight));
 
     // Layout Skip to Create Account Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
-    y = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
-    _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight));
+    CGFloat skipToCreateAccountY = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(buttonX, skipToCreateAccountY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughSecondaryButtonHeight));
 
     // Layout Status Label
-    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
-    y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    _statusLabel.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight));
+    CGFloat statusLabelY = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    _statusLabel.frame = CGRectIntegral(CGRectMake(textLabelX, statusLabelY, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight));
 
     // Layout Toggle Button
-    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
-    y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
-    _toggleSignInForm.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33));
+    CGFloat toggleSignInY = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    _toggleSignInForm.frame = CGRectIntegral(CGRectMake(textLabelX, toggleSignInY, GeneralWalkthroughMaxTextWidth, GeneralWalkthroughSecondaryButtonHeight));
 }
 
 - (void)dismiss
