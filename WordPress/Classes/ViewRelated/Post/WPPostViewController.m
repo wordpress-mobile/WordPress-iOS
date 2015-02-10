@@ -1572,17 +1572,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)isMediaUploading
 {
-    if (self.mediaInProgress.count == 0){
-        return NO;
-    }
-    
-    __block BOOL mediaUploading = NO;
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
         if (progress.totalUnitCount != 0){
-            mediaUploading = YES;
+            return YES;
         }
-    }];
-    return mediaUploading;
+    }
+    return NO;
 }
 
 - (void)cancelMediaUploads
