@@ -87,7 +87,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
  *  @details    Won't be necessary once WPWhatsNew is changed to inherit from UIViewController
  *              https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
  */
-@property (nonatomic, assign, readwrite) BOOL                           isShowingWhatsNew;
+@property (nonatomic, assign, readwrite) BOOL                           wasWhatsNewShown;
 
 @end
 
@@ -1267,37 +1267,30 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
  */
 - (void)showWhatsNewIfNeeded
 {
-    BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
-    
-    if (userIsLoggedIn) {
-        if ([self mustShowWhatsNewPopup]) {
-            
-            static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
-            static const CGFloat WhatsNewShowDelay = 1.0f;
-            
-            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-            
-            BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
-            
-            if (!whatsNewAlreadyShown) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    
-                    // TODO: this method should be improved to have a single method to know wether
-                    // the whats new popup should be shown or not.
-                    //
-                    // https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
-                    //
-                    if (!self.isShowingWhatsNew) {
-                        self.isShowingWhatsNew = YES;
+    if (!self.wasWhatsNewShown) {
+        BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
+        
+        if (userIsLoggedIn) {
+            if ([self mustShowWhatsNewPopup]) {
+                
+                static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+                static const CGFloat WhatsNewShowDelay = 1.0f;
+                
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                
+                BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+                
+                if (!whatsNewAlreadyShown) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.wasWhatsNewShown = YES;
                         
                         WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
                         
                         [whatsNew showWithDismissBlock:^{
                             [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
-                            self.isShowingWhatsNew = NO;
                         }];
-                    }
-                });
+                    });
+                }
             }
         }
     }
