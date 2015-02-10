@@ -82,6 +82,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
+/**
+ *  @brief      Flag that signals wether Whats New is on screen or not.
+ *  @details    Won't be necessary once WPWhatsNew is changed to inherit from UIViewController
+ *              https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
+ */
+@property (nonatomic, assign, readwrite) BOOL                           isShowingWhatsNew;
+
 @end
 
 @implementation WordPressAppDelegate
@@ -1275,11 +1282,21 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             if (!whatsNewAlreadyShown) {
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                     
-                    WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
-                    
-                    [whatsNew showWithDismissBlock:^{
-                        [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
-                    }];
+                    // TODO: this method should be improved to have a single method to know wether
+                    // the whats new popup should be shown or not.
+                    //
+                    // https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
+                    //
+                    if (!self.isShowingWhatsNew) {
+                        self.isShowingWhatsNew = YES;
+                        
+                        WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                        
+                        [whatsNew showWithDismissBlock:^{
+                            [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                            self.isShowingWhatsNew = NO;
+                        }];
+                    }
                 });
             }
         }
