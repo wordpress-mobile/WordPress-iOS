@@ -19,6 +19,7 @@
 #import "BlogService.h"
 #import "WPNUXHelpBadgeLabel.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import "NSURL+IDN.h"
@@ -722,21 +723,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
 }
 
-- (BOOL)isUrlWPCom:(NSString *)url
-{
-    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSArray *result = [protocol matchesInString:[url trim] options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [[url trim] length])];
-
-    return [result count] != 0;
-}
-
 - (NSString *)getSiteUrl
 {
     NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if ([self isUrlWPCom:url]) {
+    if (url.isWordPressComURL) {
         if (siteURL.scheme == nil) {
             url = [NSString stringWithFormat:@"https://%@", url];
         } else {
@@ -866,7 +859,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         return;
     }
 
-    if ([self isUrlWPCom:_siteUrlText.text]) {
+    if (_siteUrlText.text.isWordPressComURL) {
         [self signInForWPComForUsername:username andPassword:password];
         return;
     }

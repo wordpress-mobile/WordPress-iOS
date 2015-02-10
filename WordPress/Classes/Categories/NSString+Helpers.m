@@ -188,4 +188,13 @@ static NSString *const Ellipsis =  @"\u2026";
     return tokens;
 }
 
+- (BOOL)isWordPressComURL
+{
+    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSString *trimmed = [self trim];
+    NSArray *result = [protocol matchesInString:trimmed options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, trimmed.length)];
+    
+    return result.count != 0;
+}
+
 @end
