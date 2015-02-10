@@ -98,21 +98,19 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
-    _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
-
+    
+    // Do we have a default account?
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
+    // Initialize flags!
     self.hasDefaultAccount = (defaultAccount != nil);
-    if (defaultAccount != nil) {
-        _userIsDotCom = NO;
-    }
+    self.userIsDotCom = !self.hasDefaultAccount && (self.onlyDotComAllowed || !self.prefersSelfHosted);
 
     [self addMainView];
-    [self initializeView];
+    [self addControls];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -127,7 +125,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
     [HelpshiftUtils refreshUnreadNotificationCount];
 
-    [self layoutControls];
+    [self reloadInterface];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -180,8 +178,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
-                                                       replacementString:(NSString *)string
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
 {
     BOOL isUsernameFilled = [self isUsernameFilled];
     BOOL isPasswordFilled = [self isPasswordFilled];
@@ -202,6 +199,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
     return YES;
 }
+
 
 #pragma mark - Displaying of Error Messages
 
@@ -315,6 +313,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [self.view addSubview:overlayView];
 }
 
+
 #pragma mark - Button Press Methods
 
 - (void)helpButtonAction:(id)sender
@@ -362,14 +361,14 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 - (void)toggleSignInFormAction:(id)sender
 {
-    _userIsDotCom = !_userIsDotCom;
-    _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
+    self.userIsDotCom = !self.userIsDotCom;
+    self.passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
 
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
     // to their new positions.
     [UIView animateWithDuration:0.3
                      animations:^{
-                         [self initializeView];
+                         [self reloadInterface];
                      }];
 }
 
@@ -390,6 +389,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
 }
 
+
 #pragma mark - Private Methods
 
 - (void)addMainView
@@ -403,12 +403,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
     [_mainView addGestureRecognizer:gestureRecognizer];
-}
-
-- (void)initializeView
-{
-    [self addControls];
-    [self layoutControls];
 }
 
 - (void)addControls
@@ -512,7 +506,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         // insert URL field below password field to hide when signing into WP.com account
         [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
     }
-    _siteUrlText.enabled = !_userIsDotCom;
 
     // Add Sign In Button
     if (_signInButton == nil) {
@@ -522,14 +515,9 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         _signInButton.accessibilityIdentifier = @"Sign In";
         [_mainView addSubview:_signInButton];
     }
-    _signInButton.enabled = [self isSignInEnabled];
-
-    NSString *signInTitle = _userIsDotCom ? @"Sign In" : @"Add Site";
-    [_signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
-    _signInButton.accessibilityIdentifier = signInTitle;
     
     // Add Cancel Button
-    if (self.cancellable && _cancelButton == nil) {
+    if (_cancelButton == nil) {
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -557,21 +545,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         [_mainView addSubview:_toggleSignInForm];
     }
     
-    if (!self.onlyDotComAllowed && !self.hasDefaultAccount) {
-        NSString *toggleTitle = _userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-        _toggleSignInForm.accessibilityIdentifier = toggleTitle;
-        [_toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
-    }
-    
-    if (!self.hasDefaultAccount) {
-        // Add Skip to Create Account Button
-        if (_skipToCreateAccount == nil) {
-            _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
-            _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-            [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-            [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
-            [_mainView addSubview:_skipToCreateAccount];
-        }
+    // Add Skip to Create Account Button
+    if (_skipToCreateAccount == nil) {
+        _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+        _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+        [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+        [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
+        [_mainView addSubview:_skipToCreateAccount];
     }
 
     // Add Lost Password Button
@@ -584,7 +564,35 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
         [_mainView addSubview:_forgotPassword];
     }
-    _forgotPassword.hidden = ![self isForgotPasswordEnabled];
+}
+
+
+#pragma mark - Private Helpers
+
+- (void)reloadInterface
+{
+    [self updateControls];
+    [self layoutControls];
+}
+
+- (void)updateControls
+{
+    self.cancelButton.hidden = !self.cancellable;
+    
+    self.skipToCreateAccount.hidden = self.hasDefaultAccount;
+    
+    NSString *toggleTitle = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
+    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
+    self.toggleSignInForm.hidden = (self.onlyDotComAllowed || self.hasDefaultAccount);
+    
+    self.siteUrlText.enabled = !self.userIsDotCom;
+    self.forgotPassword.hidden = !self.isForgotPasswordEnabled;
+    
+    NSString *signInTitle = _userIsDotCom ? @"Sign In" : @"Add Site";
+    [self.signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
+    self.signInButton.accessibilityIdentifier = signInTitle;
+    self.signInButton.enabled = self.isSignInEnabled;
 }
 
 - (void)layoutControls
