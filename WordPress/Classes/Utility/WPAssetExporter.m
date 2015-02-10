@@ -43,7 +43,7 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
 {
     if (!asset.defaultRepresentation) {
         if (handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a media that belogns to a photostream that needs to be downloaded locally first.")};
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a media that belogns to a photostream that needs to be downloaded locally first.")};
             NSError * error = [NSError errorWithDomain:WPAssetExportErrorDomain
                                                   code:WPAssetExportErrorCodeMissingAsset
                                               userInfo:userInfo];
