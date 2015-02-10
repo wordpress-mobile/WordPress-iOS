@@ -362,7 +362,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return navController;
 }
 
-+ (UIViewController*)restoreViewControllerWithIdentifierPath:(NSArray*)identifierComponents
++ (UIViewController*)restoreViewControllerWithIdentifierPath:(NSArray *)identifierComponents
                                                        coder:(NSCoder *)coder
 {
     UIViewController *restoredViewController = nil;
