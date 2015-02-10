@@ -318,7 +318,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     CGRect frame = self.mediaProgressView.frame;
     frame.size.width = self.view.frame.size.width;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
+
 }
 
 #pragma mark - viewDidLoad helpers
