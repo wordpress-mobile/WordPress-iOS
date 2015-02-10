@@ -465,12 +465,13 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
     passwordText.accessibilityIdentifier = @"Password";
     
     // Add Multifactor
-    WPWalkthroughTextField *multifactorText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+    WPWalkthroughTextField *multifactorText = [[WPWalkthroughTextField alloc] init];
     multifactorText.backgroundColor = [UIColor whiteColor];
     multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
     multifactorText.font = [WPNUXUtility textFieldFont];
     multifactorText.delegate = self;
-    multifactorText.returnKeyType = UIReturnKeyDone;
+    multifactorText.keyboardType = UIKeyboardTypeNumberPad;
+    multifactorText.textAlignment = NSTextAlignmentCenter;
     multifactorText.showTopLineSeparator = YES;
     multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     multifactorText.accessibilityIdentifier = @"Verification Code";
