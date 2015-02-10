@@ -35,7 +35,6 @@ static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-static CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
 static CGFloat const GeneralWalkthroughStandardOffset = 15;
 static CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
 static CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
@@ -64,6 +63,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 @property (nonatomic, strong) UIImageView               *icon;
 @property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
 @property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
+@property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
 @property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
@@ -475,6 +475,20 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _passwordText.accessibilityIdentifier = @"Password";
         [_mainView addSubview:_passwordText];
+    }
+    
+    // Add Multifactor
+    if (_multifactorText == nil) {
+        _multifactorText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+        _multifactorText.backgroundColor = [UIColor whiteColor];
+        _multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
+        _multifactorText.font = [WPNUXUtility textFieldFont];
+        _multifactorText.delegate = self;
+        _multifactorText.returnKeyType = UIReturnKeyDone;
+        _multifactorText.showTopLineSeparator = YES;
+        _multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+        _multifactorText.accessibilityIdentifier = @"Verification Code";
+        [_mainView addSubview:_multifactorText];
     }
 
     // Add Site Url
