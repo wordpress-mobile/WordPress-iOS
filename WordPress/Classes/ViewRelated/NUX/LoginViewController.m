@@ -547,12 +547,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         [_mainView addSubview:_toggleSignInForm];
     }
     if (!self.onlyDotComAllowed && !defaultAccount) {
-        // Add Account type toggle
-        if (_toggleSignInForm == nil) {
-            _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-            [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
-            [_mainView addSubview:_toggleSignInForm];
-        }
         NSString *toggleTitle;
         if (_userIsDotCom) {
             toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
