@@ -958,11 +958,12 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
                      multifactorCode:multifactor
                              success:^(NSString *authToken) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
-                                 _userIsDotCom = YES;
+                                 self.userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  
+                                 // If needed, show the multifactor field
                                  if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
                                      [self displayMultifactorTextfield];
                                  } else {
