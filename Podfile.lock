@@ -173,9 +173,6 @@ EXTERNAL SOURCES:
   WordPress-iOS-Editor:
     :commit: fdd0665e9fe88d1da546d28f1b8f2dfec016737c
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
-  WordPressApi:
-    :git: https://github.com/wordpress-mobile/WordPressApi.git
-    :tag: 0.2.1
   WordPressCom-Stats-iOS:
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
@@ -195,9 +192,6 @@ CHECKOUT OPTIONS:
   WordPress-iOS-Editor:
     :commit: fdd0665e9fe88d1da546d28f1b8f2dfec016737c
     :git: git://github.com/wordpress-mobile/WordPress-iOS-Editor
-  WordPressApi:
-    :git: https://github.com/wordpress-mobile/WordPressApi.git
-    :tag: 0.2.1
   WordPressCom-Stats-iOS:
     :commit: 73f055ff99ddd325e1f2161fbe0124998c874de6
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
