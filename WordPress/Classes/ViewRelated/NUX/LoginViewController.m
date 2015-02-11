@@ -900,7 +900,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
-    NSString *multifactor = _multifactorText.text;
+    NSString *multifactor = self.shouldDisplayMultifactor ? _multifactorText.text : nil;
 
     if (_userIsDotCom) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
@@ -1119,6 +1119,8 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
                          [self reloadInterface];
+                     } completion:^(BOOL finished) {
+                         self.multifactorText.text = nil;
                      }];
 }
 
