@@ -80,6 +80,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
+@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
 
 @end
 
@@ -334,6 +335,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
+    [self hideMultifactorTextfieldIfNeeded];
 }
 
 - (void)signInButtonAction:(id)sender
@@ -575,22 +577,44 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (void)updateControls
 {
-    self.cancelButton.hidden = !self.cancellable;
+    // TextFields
+    self.usernameText.alpha         = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
+    self.passwordText.alpha         = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
+    self.multifactorText.alpha      = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaEnabled  : GeneralWalkthroughAlphaHidden;
+    self.siteUrlText.alpha          = self.userIsDotCom             ? GeneralWalkthroughAlphaHidden   : GeneralWalkthroughAlphaEnabled;
     
-    self.siteUrlText.enabled = !self.userIsDotCom;
-    self.forgotPassword.hidden = !self.isForgotPasswordEnabled;
+    self.usernameText.enabled       = !self.shouldDisplayMultifactor;
+    self.passwordText.enabled       = !self.shouldDisplayMultifactor;
+    self.multifactorText.enabled    = self.shouldDisplayMultifactor;
+    self.siteUrlText.enabled        = !self.userIsDotCom;
     
-    NSString *signInTitle = _userIsDotCom ? @"Sign In" : @"Add Site";
-    [self.signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
+    // Cancel Button
+    self.cancelButton.hidden        = !self.cancellable;
+    
+    // SignIn Button
+    NSString *signInTitle = @"Add Site";
+    
+    if (self.shouldDisplayMultifactor) {
+        signInTitle = @"Verify";
+    } else if (self.userIsDotCom) {
+        signInTitle = @"Sign In";
+    }
+    
+    self.signInButton.enabled       = self.isSignInEnabled;
     self.signInButton.accessibilityIdentifier = signInTitle;
-    self.signInButton.enabled = self.isSignInEnabled;
+    [self.signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
     
-    NSString *toggleTitle = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
+    // Dotcom / SelfHosted Button
+    NSString *toggleTitle           = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
+    self.toggleSignInForm.hidden    = (self.onlyDotComAllowed || self.hasDefaultAccount);
     self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
-    self.toggleSignInForm.hidden = (self.onlyDotComAllowed || self.hasDefaultAccount);
+    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
     
+    // Create Account Button
     self.skipToCreateAccount.hidden = self.hasDefaultAccount;
+    
+    // Forgot Password Button
+    self.forgotPassword.hidden      = !self.isForgotPasswordEnabled;
 }
 
 - (void)layoutControls
@@ -866,14 +890,15 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
+    NSString *multifactor = _multifactorText.text;
 
     if (_userIsDotCom) {
-        [self signInForWPComForUsername:username andPassword:password];
+        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
 
     if (_siteUrlText.text.isWordPressComURL) {
-        [self signInForWPComForUsername:username andPassword:password];
+        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
 
@@ -884,7 +909,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
             [self setAuthenticating:NO withStatusMessage:nil];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
-                [self signInForWPComForUsername:username andPassword:password];
+//                [self signInWithWPComForUsername:username password:password];
             } else {
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
@@ -904,20 +929,28 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
-- (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
+- (void)signInWithWPComForUsername:(NSString *)username
+                          password:(NSString *)password
+                       multifactor:(NSString *)multifactor
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
 
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:multifactor
                              success:^(NSString *authToken) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  _userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
-                                 [self displayRemoteError:error];
+                                 
+                                 if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+                                     [self displayMultifactorTextfield];
+                                 } else {
+                                     [self displayRemoteError:error];
+                                 }
                              }];
 }
 
@@ -1051,6 +1084,36 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         }
     }
 }
+
+
+#pragma mark - Multifactor Helpers
+
+- (void)displayMultifactorTextfield
+{
+    self.shouldDisplayMultifactor = YES;
+    
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                         [self.multifactorText becomeFirstResponder];
+                     }];
+}
+
+- (void)hideMultifactorTextfieldIfNeeded
+{
+    if (!self.shouldDisplayMultifactor) {
+        return;
+    }
+    
+    self.shouldDisplayMultifactor = NO;
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                     }];
+}
+
+
+#pragma mark - Keyboard Handling
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
