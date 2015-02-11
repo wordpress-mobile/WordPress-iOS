@@ -2,7 +2,8 @@
 #import "WordPress-Swift.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 
-static const CGFloat LableVerticalMargin = 20.0;
+static const CGFloat LabelTopMargin = 20.0;
+static const CGFloat LabelBottomMargin = 10.0;
 static const CGFloat LabelHorizontalMargin = 8.0;
 
 @interface ReaderPreviewHeaderView ()
@@ -45,7 +46,8 @@ static const CGFloat LabelHorizontalMargin = 8.0;
     NSInteger viewWidth = (NSInteger)WPTableViewFixedWidth;
     NSDictionary *views = NSDictionaryOfVariableBindings(_label);
     NSDictionary *metrics = @{@"viewWidth":@(viewWidth),
-                              @"verticalMargin":@(LableVerticalMargin),
+                              @"topMargin":@(LabelTopMargin),
+                              @"bottomMargin":@(LabelBottomMargin),
                               @"horizontalMargin":@(LabelHorizontalMargin)};
 
     if ([UIDevice isPad]) {
@@ -69,7 +71,7 @@ static const CGFloat LabelHorizontalMargin = 8.0;
                                                                        views:views]];
     }
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(verticalMargin@500)-[_label]-(verticalMargin@500)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(topMargin@500)-[_label]-(bottomMargin@500)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -78,14 +80,14 @@ static const CGFloat LabelHorizontalMargin = 8.0;
 - (CGSize)intrinsicContentSize
 {
     CGSize size = self.label.intrinsicContentSize;
-    CGFloat viewHeight = size.height + (LableVerticalMargin * 2.0);
+    CGFloat viewHeight = size.height + LabelBottomMargin + LabelTopMargin;
     return CGSizeMake(size.width, viewHeight);
 }
 
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat viewHeight = (LableVerticalMargin * 2.0);
+    CGFloat viewHeight = LabelBottomMargin + LabelTopMargin;
     CGFloat labelWidth = [UIDevice isPad] ? WPTableViewFixedWidth : (size.width - (LabelHorizontalMargin * 2));
 
     CGSize labelSize = [self.label sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_HEIGHT_UNKNOWN)];
