@@ -836,6 +836,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)saveContextForSync
 {
+    if (self.syncHelper.isSyncing) {
+        return;
+    }
+
     if (self.tableViewHandler.isScrolling) {
         return;
     }

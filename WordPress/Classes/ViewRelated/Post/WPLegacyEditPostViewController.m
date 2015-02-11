@@ -14,6 +14,7 @@
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
+#import "WPPostViewController.h"
 #import "WPProgressTableViewCell.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -43,6 +44,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
+    BOOL dontRestoreIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
+    
+    if (dontRestoreIfNewEditorIsEnabled) {
+        return nil;
+    }
 
     if ([[identifierComponents lastObject] isEqualToString:WPLegacyEditorNavigationRestorationID]) {
         UINavigationController *navController = [[UINavigationController alloc] init];
