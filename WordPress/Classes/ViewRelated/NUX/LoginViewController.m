@@ -800,6 +800,10 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     return [[_passwordText.text trim] length] != 0;
 }
 
+- (BOOL)isMultifactorFilled
+{
+    return self.multifactorText.text.isEmpty == NO;
+}
 - (BOOL)isSiteUrlFilled
 {
     return [[_siteUrlText.text trim] length] != 0;
@@ -817,7 +821,13 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)areDotComFieldsFilled
 {
-    return [self isUsernameFilled] && [self isPasswordFilled];
+    BOOL areCredentialsFilled = [self isUsernameFilled] && [self isPasswordFilled];
+    
+    if (![self shouldDisplayMultifactor]) {
+        return areCredentialsFilled;
+    }
+    
+    return areCredentialsFilled && [self isMultifactorFilled];
 }
 
 - (BOOL)areSelfHostedFieldsFilled
