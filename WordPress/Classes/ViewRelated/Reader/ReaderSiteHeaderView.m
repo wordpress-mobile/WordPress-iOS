@@ -1,6 +1,7 @@
 #import "ReaderSiteHeaderView.h"
 #import "ReaderPostAttributionView.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "WordPress-Swift.h"
 
 static const CGFloat StandardMargin = 8.0;
 static const CGFloat BorderHeight = 1.0;
@@ -37,7 +38,7 @@ static const CGFloat BorderHeight = 1.0;
 {
     self.attributionView = [[ReaderPostAttributionView alloc] init];
     self.attributionView.translatesAutoresizingMaskIntoConstraints = NO;
-
+    self.attributionView.avatarImageView.shouldRoundCorners = NO;
     [self addSubview:self.attributionView];
 }
 
