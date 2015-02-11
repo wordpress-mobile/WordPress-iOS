@@ -75,6 +75,8 @@
     
     UIView *keyView = [self keyView];
     
+    [keyView.superview endEditing:YES];
+    
     [keyView addSubview:dimmerView];
     [dimmerView addSubview:whatsNewView];
     
