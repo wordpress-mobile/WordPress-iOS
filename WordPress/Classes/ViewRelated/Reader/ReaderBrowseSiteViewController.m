@@ -94,7 +94,7 @@
         [attributionView.avatarImageView setImageWithURL:[NSURL URLWithString:mshotPath] placeholderImage:[UIImage imageNamed:@""]];
     } else {
         // TODO: Need "Lock" icon for private sites.
-        [attributionView.avatarImageView setImage:[UIImage imageNamed:@""]];
+        [attributionView.avatarImageView setImage:[UIImage imageNamed:@"icon-lock"]];
     }
 
     [self.view addSubview:self.siteHeaderView];
