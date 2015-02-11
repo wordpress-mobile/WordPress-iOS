@@ -23,7 +23,7 @@
 
 #pragma mark - Showing
 
-- (void)show
+- (void)showWithDismissBlock:(WPWhatsNewDismissBlock)dismissBlock
 {
     NSString *versionString = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     NSAssert(versionString,
@@ -36,9 +36,12 @@
     
     if (appHasWhatsNewInfo) {
         
-        UIImage* image = [UIImage imageNamed:@"icon-tab-newpost"];
+        UIImage* image = [UIImage imageNamed:@"icon-whats-new"];
         
-        [self showWithTitle:whatsNewTitle details:whatsNewDetails image:image];
+        [self showWithTitle:whatsNewTitle
+                    details:whatsNewDetails
+                      image:image
+               dismissBlock:dismissBlock];
     }
 }
 
@@ -46,13 +49,15 @@
  *  @brief      Shows the What's New popup with the specified title, details and image.
  *  @details    Should not be called directly in most cases.  Use method "show" instead.
  *
- *  @param      title       The title to display.  Cannot be nil or zero length.
- *  @param      details     The details to display.  Cannot be nil or zero length.
- *  @param      image       The image to show.  Cannot be nil.
+ *  @param      title           The title to display.  Cannot be nil or zero length.
+ *  @param      details         The details to display.  Cannot be nil or zero length.
+ *  @param      image           The image to show.  Cannot be nil.
+ *  @param      dismissBlock    The dismiss block for the whats new view.  Can be nil.
  */
 - (void)showWithTitle:(NSString*)title
               details:(NSString*)details
                 image:(UIImage*)image
+         dismissBlock:(WPWhatsNewDismissBlock)dismissBlock
 {
     NSParameterAssert([title isKindOfClass:[NSString class]]);
     NSParameterAssert([title length] > 0);
@@ -68,24 +73,34 @@
     
     WPBackgroundDimmerView* dimmerView = [[WPBackgroundDimmerView alloc] init];
     
-    UIWindow* keyWindow = [[UIApplication sharedApplication] keyWindow];
-    NSAssert([keyWindow isKindOfClass:[UIWindow class]],
-             @"We're expecting the application window to exist when this method is called.");
+    UIView *keyView = [self keyView];
     
-    [keyWindow addSubview:dimmerView];
+    [keyView addSubview:dimmerView];
     [dimmerView addSubview:whatsNewView];
     
-    [self configureConstraintsBetweenKeyWindow:keyWindow
-                                 andDimmerView:dimmerView];
+    [self configureConstraintsBetweenKeyView:keyView
+                               andDimmerView:dimmerView];
     
     [self configureConstraintsBetweenDimmerView:dimmerView
                                 andWhatsNewView:whatsNewView];
     
     whatsNewView.center = dimmerView.center;
     
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = YES;
+    whatsNewView.details.selectable = YES;
+    
     whatsNewView.title.text = title;
     whatsNewView.details.text = details;
     whatsNewView.imageView.image = image;
+    
+    // WORKAROUND: if we set the text of these while selectable == NO, then the font and formatting
+    // options are lost under iOS 7 (not sure about 8).
+    //
+    whatsNewView.title.selectable = NO;
+    whatsNewView.details.selectable = NO;
 
     whatsNewView.willDismissBlock = ^void() {
         [dimmerView hideAnimated:YES completion:^(BOOL finished) {
@@ -93,9 +108,36 @@
         }];
     };
     
+    whatsNewView.didDismissBlock = dismissBlock;
+    
     [dimmerView showAnimated:YES completion:nil];
     [whatsNewView showAnimated:YES completion:nil];
 }
+
+#pragma mark - Key View
+
+/**
+ *  @brief      Gets the key view.
+ *  @details    The key view is the view the what's new dialog should be added to.  It's the first
+ *              subview of the key window.
+ *
+ *  @returns    The key view.
+ */
+- (UIView*)keyView
+{
+    UIWindow* keyWindow = [[UIApplication sharedApplication] keyWindow];
+    NSAssert([keyWindow isKindOfClass:[UIWindow class]],
+             @"We're expecting the application window to exist when this method is called.");
+    
+    NSAssert([keyWindow.subviews count] > 0,
+             @"We should only call this method when there's something on-screen.");
+    UIView* keyView = [keyWindow.subviews objectAtIndex:0];
+    NSAssert([keyView isKindOfClass:[UIView class]],
+             @"We're expecting to have a keyView at this point.");
+    
+    return keyView;
+}
+
 
 #pragma mark - Localizable data
 
@@ -126,7 +168,7 @@
     NSString *details = NSLocalizedStringWithDefaultValue(@"whats-new-inapp-details",
                                                           nil,
                                                           [NSBundle mainBundle],
-                                                          @"This version of the WordPress app includes a beautiful new visual editor. Try it out by creating a new post.",
+                                                          @"The WordPress app for iOS now includes a beautiful new visual editor. Try it out by creating a new post.",
                                                           @"The details for the \"What's New\" dialog");
     
     // IMPORTANT: this sounds hackish, but it's actually the best way to check if a translation
@@ -214,17 +256,17 @@
     [dimmerView addConstraints:@[xAlignment, yAlignment]];
 }
 
-- (void)configureConstraintsBetweenKeyWindow:(UIWindow*)keyWindow
-                               andDimmerView:(WPBackgroundDimmerView*)dimmerView
+- (void)configureConstraintsBetweenKeyView:(UIView*)keyView
+                             andDimmerView:(WPBackgroundDimmerView*)dimmerView
 {
-    NSParameterAssert([keyWindow isKindOfClass:[UIWindow class]]);
+    NSParameterAssert([keyView isKindOfClass:[UIView class]]);
     NSParameterAssert([dimmerView isKindOfClass:[WPBackgroundDimmerView class]]);
-    NSAssert([keyWindow.subviews containsObject:dimmerView],
+    NSAssert([keyView.subviews containsObject:dimmerView],
              @"The key window should already contain the dimmer view at this point.");
     
     [dimmerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     
-    NSLayoutConstraint* dimmerLeft = [NSLayoutConstraint constraintWithItem:keyWindow
+    NSLayoutConstraint* dimmerLeft = [NSLayoutConstraint constraintWithItem:keyView
                                                                   attribute:NSLayoutAttributeLeft
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:dimmerView
@@ -232,7 +274,7 @@
                                                                  multiplier:1.0f
                                                                    constant:0.0f];
     
-    NSLayoutConstraint* dimmerRight = [NSLayoutConstraint constraintWithItem:keyWindow
+    NSLayoutConstraint* dimmerRight = [NSLayoutConstraint constraintWithItem:keyView
                                                                    attribute:NSLayoutAttributeRight
                                                                    relatedBy:NSLayoutRelationEqual
                                                                       toItem:dimmerView
@@ -240,7 +282,7 @@
                                                                   multiplier:1.0f
                                                                     constant:0.0f];
     
-    NSLayoutConstraint* dimmerTop = [NSLayoutConstraint constraintWithItem:keyWindow
+    NSLayoutConstraint* dimmerTop = [NSLayoutConstraint constraintWithItem:keyView
                                                                  attribute:NSLayoutAttributeTop
                                                                  relatedBy:NSLayoutRelationEqual
                                                                     toItem:dimmerView
@@ -248,7 +290,7 @@
                                                                 multiplier:1.0f
                                                                   constant:0.0f];
     
-    NSLayoutConstraint* dimmerBottom = [NSLayoutConstraint constraintWithItem:keyWindow
+    NSLayoutConstraint* dimmerBottom = [NSLayoutConstraint constraintWithItem:keyView
                                                                     attribute:NSLayoutAttributeBottom
                                                                     relatedBy:NSLayoutRelationEqual
                                                                        toItem:dimmerView
@@ -256,7 +298,7 @@
                                                                    multiplier:1.0f
                                                                      constant:0.0f];
 
-    [keyWindow addConstraints:@[dimmerLeft, dimmerRight, dimmerTop, dimmerBottom]];
+    [keyView addConstraints:@[dimmerLeft, dimmerRight, dimmerTop, dimmerBottom]];
 }
 
 @end
