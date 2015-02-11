@@ -23,15 +23,6 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 - (void)authenticateWithUsername:(NSString *)username
                         password:(NSString *)password
-                         success:(void (^)(NSString *authToken))success
-                         failure:(void (^)(NSError *error))failure
-{
-    [self authenticateWithUsername:username password:password multifactorCode:nil success:success failure:failure];
-}
-
-
-- (void)authenticateWithUsername:(NSString *)username
-                        password:(NSString *)password
                  multifactorCode:(NSString *)multifactorCode
                          success:(void (^)(NSString *authToken))success
                          failure:(void (^)(NSError *error))failure
