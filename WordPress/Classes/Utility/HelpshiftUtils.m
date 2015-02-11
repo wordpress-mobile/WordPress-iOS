@@ -6,6 +6,8 @@
 NSString *const UserDefaultsHelpshiftEnabled = @"wp_helpshift_enabled";
 NSString *const UserDefaultsHelpshiftWasUsed = @"wp_helpshift_used";
 NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCountUpdatedNotification";
+// This delay is required to give some time to Mixpanel to update the remote variable
+CGFloat const HelpshiftFlagCheckDelay = 10.0;
 
 @interface HelpshiftUtils () <HelpshiftDelegate>
 
@@ -31,10 +33,14 @@ NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCount
 {
     [[Helpshift sharedInstance] setDelegate:[HelpshiftUtils sharedInstance]];
     [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
-    [HelpshiftUtils checkIfHelpshiftShouldBeEnabled];
+
+    // We want to make sure Mixpanel updates the remote variable before we check for the flag
+    [[HelpshiftUtils sharedInstance] performSelector:@selector(checkIfHelpshiftShouldBeEnabled)
+                                          withObject:nil
+                                          afterDelay:HelpshiftFlagCheckDelay];
 }
 
-+ (void)checkIfHelpshiftShouldBeEnabled
+- (void)checkIfHelpshiftShouldBeEnabled
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults registerDefaults:@{UserDefaultsHelpshiftEnabled:@NO}];
@@ -53,6 +59,9 @@ NSString *const HelpshiftUnreadCountUpdatedNotification = @"HelpshiftUnreadCount
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
         [defaults setBool:YES forKey:UserDefaultsHelpshiftEnabled];
         [defaults synchronize];
+
+        // if the Helpshift is enabled we want to refresh unread count, since the check happens with a delay
+        [HelpshiftUtils refreshUnreadNotificationCount];
     } else {
         DDLogInfo(@"Helpshift Disabled");
 
