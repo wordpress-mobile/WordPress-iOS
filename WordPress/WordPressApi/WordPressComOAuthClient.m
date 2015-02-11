@@ -45,7 +45,7 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
         @"wpcom_supports_2fa": @(YES)
     } mutableCopy];
     
-    if (multifactorCode) {
+    if (multifactorCode.length > 0) {
         [parameters setObject:multifactorCode forKey:@"wpcom_otp"];
     }
     
