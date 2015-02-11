@@ -155,6 +155,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:nil
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                  WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];

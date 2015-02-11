@@ -740,6 +740,7 @@ CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:_usernameField.text
                                 password:_passwordField.text
+                         multifactorCode:nil
                                  success:signInSuccess
                                  failure:signInFailure];
     }];
