@@ -455,6 +455,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return [NSDictionary dictionaryWithObjectsAndKeys:self.readerTopic.title, @"tag", nil];
 }
 
+- (void)setTableHeaderView:(UIView *)view
+{
+    self.tableView.tableHeaderView = view;
+}
+
 
 #pragma mark - Image Methods
 
