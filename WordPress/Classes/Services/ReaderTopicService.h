@@ -38,6 +38,11 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)deleteAllTopics;
 
 /**
+ Deletes a specific topic from core data and saves the context. Use to clean up previewed topics.
+ */
+- (void)deleteTopic:(ReaderTopic *)topic;
+
+/**
  Marks the specified topic as being subscribed, and marks it current.
  
  @param topic The ReaderTopic to follow and make current.

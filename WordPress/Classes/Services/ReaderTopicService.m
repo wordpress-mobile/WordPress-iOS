@@ -205,6 +205,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }];
 }
 
+- (void)deleteTopic:(ReaderTopic *)topic
+{
+    [self.managedObjectContext deleteObject:topic];
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
 - (void)subscribeToAndMakeTopicCurrent:(ReaderTopic *)topic
 {
     // Optimistically mark the topic subscribed.
@@ -336,10 +344,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (ReaderTopic *)siteTopicForPost:(ReaderPost *)post
 {
-    // Feed posts are not supported yet.
-    if (!post.isWPCom) {
-        return nil;
-    }
     NSString *path;
     if (post.isWPCom) {
         path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
