@@ -951,8 +951,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
             [self setAuthenticating:NO withStatusMessage:nil];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
-#warning TODO: Fixme please
-//                [self signInWithWPComForUsername:username password:password];
+                [self signInWithWPComForUsername:username password:password multifactor:multifactor];
             } else {
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
