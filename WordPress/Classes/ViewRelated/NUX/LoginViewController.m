@@ -78,8 +78,8 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
 @property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
-@property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
+@property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
 @property (nonatomic, assign) BOOL                      shouldReauthenticateDefaultAccount;
 
@@ -109,9 +109,10 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     // Initialize flags!
-    self.hasDefaultAccount = (defaultAccount != nil);
     self.userIsDotCom = !self.hasDefaultAccount && (self.onlyDotComAllowed || !self.prefersSelfHosted);
-
+    self.hasDefaultAccount = (defaultAccount != nil);
+    
+    // Initialize Interface
     [self addMainView];
     [self addControls];
     
@@ -121,6 +122,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     }
     
     self.usernameText.text = defaultAccount.username;
+    self.userIsDotCom = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -626,12 +628,12 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     
     // Dotcom / SelfHosted Button
     NSString *toggleTitle           = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-    self.toggleSignInForm.hidden    = (self.onlyDotComAllowed || self.hasDefaultAccount);
+    self.toggleSignInForm.hidden    = !self.isSignInToggleEnabled;
     self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
     [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
     
     // Create Account Button
-    self.skipToCreateAccount.hidden = self.hasDefaultAccount;
+    self.skipToCreateAccount.hidden = !self.isAccountCreationEnabled;
     
     // Forgot Password Button
     self.forgotPassword.hidden      = !self.isForgotPasswordEnabled;
@@ -832,6 +834,16 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (BOOL)isSignInEnabled
 {
     return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
+}
+
+- (BOOL)isSignInToggleEnabled
+{
+    return !self.onlyDotComAllowed && !self.hasDefaultAccount;
+}
+
+- (BOOL)isAccountCreationEnabled
+{
+    return self.hasDefaultAccount == NO;
 }
 
 - (BOOL)isForgotPasswordEnabled
