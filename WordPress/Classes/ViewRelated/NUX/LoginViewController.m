@@ -156,7 +156,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     if (textField == _usernameText) {
         [_passwordText becomeFirstResponder];
     } else if (textField == _passwordText) {
-        if (_userIsDotCom) {
+        if (self.userIsDotCom) {
             [self signInButtonAction:nil];
         } else {
             [_siteUrlText becomeFirstResponder];
@@ -204,11 +204,11 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         isMultifactorFilled = updatedStringHasContent;
     }
 
-    isSiteUrlFilled         = (_userIsDotCom || isSiteUrlFilled);
+    isSiteUrlFilled         = (self.userIsDotCom || isSiteUrlFilled);
     isMultifactorFilled     = (!_shouldDisplayMultifactor || isMultifactorFilled);
     
     _signInButton.enabled   = isUsernameFilled && isPasswordFilled && isSiteUrlFilled && isMultifactorFilled;
-    _forgotPassword.hidden  = !(_userIsDotCom || isSiteUrlFilled);
+    _forgotPassword.hidden  = !(self.userIsDotCom || isSiteUrlFilled);
 
     return YES;
 }
@@ -396,7 +396,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (void)forgotPassword:(id)sender
 {
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
-    if (!_userIsDotCom) {
+    if (!self.userIsDotCom) {
         baseUrl = [self getSiteUrl];
     }
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
@@ -474,6 +474,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     passwordText.delegate = self;
     passwordText.secureTextEntry = YES;
     passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
+    passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     passwordText.showSecureTextEntryToggle = YES;
     passwordText.showTopLineSeparator = YES;
     passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -654,7 +655,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     _cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
-    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
+    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (self.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
     CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
 
     CGFloat iconX = (viewWidth - CGRectGetWidth(_icon.frame)) * 0.5f;
@@ -795,7 +796,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)areFieldsValid
 {
-    if ([self areSelfHostedFieldsFilled] && !_userIsDotCom) {
+    if ([self areSelfHostedFieldsFilled] && !self.userIsDotCom) {
         return [self isUrlValid];
     }
 
@@ -823,12 +824,12 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)isSignInEnabled
 {
-    return _userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
+    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
 - (BOOL)isForgotPasswordEnabled
 {
-    return _userIsDotCom || [self isUrlValid];
+    return self.userIsDotCom || [self isUrlValid];
 }
 
 - (BOOL)areDotComFieldsFilled
@@ -863,7 +864,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)isUserNameReserved
 {
-    if (!_userIsDotCom) {
+    if (!self.userIsDotCom) {
         return NO;
     }
     NSString *username = [[_usernameText.text trim] lowercaseString];
@@ -876,7 +877,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 {
     if (self.shouldDisplayMultifactor) {
         return CGRectGetMaxY(self.multifactorText.frame);
-    } else if (_userIsDotCom) {
+    } else if (self.userIsDotCom) {
         return CGRectGetMaxY(self.passwordText.frame);
     } else {
         return CGRectGetMaxY(self.siteUrlText.frame);
@@ -910,11 +911,11 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
 
-    NSString *username = _usernameText.text;
-    NSString *password = _passwordText.text;
-    NSString *multifactor = self.shouldDisplayMultifactor ? _multifactorText.text : nil;
+    NSString *username = self.usernameText.text;
+    NSString *password = self.passwordText.text;
+    NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
 
-    if (_userIsDotCom) {
+    if (self.userIsDotCom) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
@@ -931,6 +932,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
             [self setAuthenticating:NO withStatusMessage:nil];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
+#warning TODO: Fixme please
 //                [self signInWithWPComForUsername:username password:password];
             } else {
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
