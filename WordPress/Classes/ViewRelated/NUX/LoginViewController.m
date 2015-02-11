@@ -81,6 +81,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+@property (nonatomic, assign) BOOL                      shouldReauthenticateDefaultAccount;
 
 @end
 
@@ -113,6 +114,13 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
     [self addMainView];
     [self addControls];
+    
+    // Reauth: Pre-populate username. If needed
+    if (!self.shouldReauthenticateDefaultAccount) {
+        return;
+    }
+    
+    self.usernameText.text = defaultAccount.username;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -473,7 +481,6 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     passwordText.font = [WPNUXUtility textFieldFont];
     passwordText.delegate = self;
     passwordText.secureTextEntry = YES;
-    passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     passwordText.showSecureTextEntryToggle = YES;
     passwordText.showTopLineSeparator = YES;
@@ -1215,6 +1222,28 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
     _helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
     _helpBadge.hidden = (unreadCount == 0);
+}
+
+
+#pragma mark - Static Helpers
+
++ (void)presentModalReauthScreen
+{
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.onlyDotComAllowed = YES;
+    loginViewController.shouldReauthenticateDefaultAccount = YES;
+    loginViewController.cancellable = YES;
+    loginViewController.dismissBlock = ^{
+        [rootViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.navigationBar.translucent = NO;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 @end
