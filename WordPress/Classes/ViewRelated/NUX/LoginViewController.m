@@ -70,8 +70,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 @property (nonatomic, strong) UILabel                   *statusLabel;
 
 // Measurements
-@property (nonatomic, strong) NSString                  *dotComSiteUrl;
-@property (nonatomic, strong) NSArray                   *blogs;
 @property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
 @property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
@@ -864,7 +862,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
     NSString *username = _usernameText.text;
     NSString *password = _passwordText.text;
-    _dotComSiteUrl = nil;
 
     if (_userIsDotCom) {
         [self signInForWPComForUsername:username andPassword:password];
@@ -883,8 +880,6 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
             [self setAuthenticating:NO withStatusMessage:nil];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
-                NSDictionary *siteUrl = [options dictionaryForKey:@"home_url"];
-                _dotComSiteUrl = [siteUrl objectForKey:@"value"];
                 [self signInForWPComForUsername:username andPassword:password];
             } else {
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
