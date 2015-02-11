@@ -118,18 +118,14 @@
     [self.view addSubview:childView];
     [self.postsViewController didMoveToParentViewController:self];
 
-    UIView *tableHeaderView;
     if (self.siteTopic.topicDescription) {
         // Build the table header
         self.tableHeaderView = [[ReaderPreviewHeaderView alloc] init];
         self.tableHeaderView.text = self.siteTopic.topicDescription;
         CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
         self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
-        tableHeaderView = self.tableHeaderView;
-    } else {
-        tableHeaderView.backgroundColor = [UIColor clearColor];
+        [self.postsViewController setTableHeaderView:self.tableHeaderView];
     }
-    [self.postsViewController setTableHeaderView:tableHeaderView];
 
     self.postsViewController.readerTopic = self.siteTopic;
 }
