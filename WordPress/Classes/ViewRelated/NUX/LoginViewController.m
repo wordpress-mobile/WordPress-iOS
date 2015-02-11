@@ -32,24 +32,24 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
-static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-static CGFloat const GeneralWalkthroughStandardOffset = 15;
-static CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
-static CGSize const GeneralWalkthroughTextFieldSize = {320.0, 44.0};
-static CGFloat const GeneralWalkthroughTextFieldOverlapY = 1;
-static CGSize const GeneralWalkthroughButtonSize = {290.0, 41.0};
-static CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-static CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
+static CGFloat const GeneralWalkthroughStandardOffset           = 15;
+static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
+static CGSize const GeneralWalkthroughTextFieldSize             = {320.0, 44.0};
+static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1;
+static CGSize const GeneralWalkthroughButtonSize                = {290.0, 41.0};
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33;
+static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
 
-static CGFloat const GeneralWalkthroughAlphaHidden = 0.0f;
-static CGFloat const GeneralWalkthroughAlphaDisabled = 0.5f;
-static CGFloat const GeneralWalkthroughAlphaEnabled = 1.0f;
 static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
+static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
+static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
+static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
-static CGFloat const HiddenControlsHeightThreshold = 480.0;
+static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 
 #pragma mark ====================================================================================
