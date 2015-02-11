@@ -59,7 +59,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     NSDictionary *params = @{@"number":numberToFetch,
                              @"before": [DateUtils isoStringFromDate:date],
                              @"order": @"DESC",
-                             @"meta":@"site"
+                             @"meta":@"site,feed"
                              };
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
