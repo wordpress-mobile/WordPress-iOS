@@ -82,6 +82,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
+/**
+ *  @brief      Flag that signals wether Whats New is on screen or not.
+ *  @details    Won't be necessary once WPWhatsNew is changed to inherit from UIViewController
+ *              https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
+ */
+@property (nonatomic, assign, readwrite) BOOL                           wasWhatsNewShown;
+
 @end
 
 @implementation WordPressAppDelegate
@@ -133,7 +140,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [NSUserDefaults resetStandardUserDefaults];
     }
 
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
+        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+    }
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
 
     if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
@@ -514,7 +523,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
-        if (presenter.presentedViewController) {
+        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+        if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
             [presenter dismissViewControllerAnimated:animated completion:^{
                 [self showWelcomeScreenAnimated:animated thenEditor:NO];
             }];
@@ -672,6 +683,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     [Crashlytics setUserName:[defaultAccount username]];
     [self setCommonCrashlyticsParameters];
+
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
 
 #pragma mark - Crash reporting
@@ -1256,27 +1269,30 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
  */
 - (void)showWhatsNewIfNeeded
 {
-    BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
-    
-    if (userIsLoggedIn) {
-        if ([self mustShowWhatsNewPopup]) {
-            
-            static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
-            static const CGFloat WhatsNewShowDelay = 1.0f;
-            
-            NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
-            
-            BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
-            
-            if (!whatsNewAlreadyShown) {
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                    
-                    WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
-                    
-                    [whatsNew show];
-                    
-                    [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
-                });
+    if (!self.wasWhatsNewShown) {
+        BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
+        
+        if (userIsLoggedIn) {
+            if ([self mustShowWhatsNewPopup]) {
+                
+                static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+                static const CGFloat WhatsNewShowDelay = 1.0f;
+                
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                
+                BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+                
+                if (!whatsNewAlreadyShown) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.wasWhatsNewShown = YES;
+                        
+                        WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                        
+                        [whatsNew showWithDismissBlock:^{
+                            [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                        }];
+                    });
+                }
             }
         }
     }
