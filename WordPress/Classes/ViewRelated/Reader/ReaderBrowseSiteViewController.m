@@ -59,19 +59,21 @@
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
 
-    CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
-    self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
-    [self.postsViewController setTableHeaderView:self.tableHeaderView];
+    if (self.tableHeaderView) {
+        CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
+        self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+        [self.postsViewController setTableHeaderView:self.tableHeaderView];
+    }
 }
 
+
+#pragma mark - Configuration
 
 - (void)createSiteTopic
 {
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     self.siteTopic = [topicService siteTopicForPost:self.post];
 }
-
-#pragma mark - Configuration
 
 - (void)configureSiteHeaderView
 {
@@ -107,12 +109,19 @@
     [self.view addSubview:childView];
     [self.postsViewController didMoveToParentViewController:self];
 
-    // Build the table header
-    self.tableHeaderView = [[ReaderPreviewHeaderView alloc] init];
-    self.tableHeaderView.text = self.siteTopic.topicDescription;
-    CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
-    self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
-    [self.postsViewController setTableHeaderView:self.tableHeaderView];
+    UIView *tableHeaderView;
+    if (self.siteTopic.topicDescription) {
+        // Build the table header
+        self.tableHeaderView = [[ReaderPreviewHeaderView alloc] init];
+        self.tableHeaderView.text = self.siteTopic.topicDescription;
+        CGSize size = [self.tableHeaderView sizeThatFits:CGSizeMake(CGRectGetWidth(self.view.frame), CGFLOAT_HEIGHT_UNKNOWN)];
+        self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
+        tableHeaderView = self.tableHeaderView;
+    } else {
+        tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.frame), 10.0)];
+        tableHeaderView.backgroundColor = [UIColor clearColor];
+    }
+    [self.postsViewController setTableHeaderView:tableHeaderView];
 
     self.postsViewController.readerTopic = self.siteTopic;
 }
