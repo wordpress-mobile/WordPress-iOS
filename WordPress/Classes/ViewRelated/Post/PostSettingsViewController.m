@@ -1007,7 +1007,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         strongSelf.featuredImageProgress.completedUnitCount++;
         if (error) {
             DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];strongSelf.isUploadingMedia = NO;
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+            strongSelf.isUploadingMedia = NO;
             return;
         }
         media.mediaType = MediaTypeFeatured;
