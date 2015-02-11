@@ -1006,7 +1006,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
         strongSelf.featuredImageProgress.completedUnitCount++;
         if (error) {
             DDLogError(@"Couldn't export image: %@", [error localizedDescription]);
-            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export feature image", @"The title for an alert that says to the user that the featured image he selected couldn't be exported.") message:error.localizedDescription];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
             strongSelf.isUploadingMedia = NO;
             return;
         }
@@ -1112,6 +1112,11 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
     [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+            return;
+        }
         [weakSelf uploadFeatureImage:asset];
         if (IS_IPAD) {
             [weakSelf.popover dismissPopoverAnimated:YES];
