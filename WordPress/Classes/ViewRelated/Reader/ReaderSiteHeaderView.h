@@ -1,4 +1,4 @@
-#import "ReaderHeaderView.h"
+#import <UIKit/UIKit.h>
 
 @class ReaderPostAttributionView;
 
