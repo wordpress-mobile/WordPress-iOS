@@ -85,16 +85,10 @@
     attributionView.backgroundColor = [UIColor whiteColor];
     [attributionView selectAttributionButton:self.post.isFollowing];
 
-    NSInteger imageWidth = (NSInteger)WPContentAttributionViewAvatarSize;
-    NSString *blogPath = [self.post.blogURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *mshotPath = [NSString stringWithFormat:@"http://s.wordpress.com/mshots/v1/%@/?w=%d", blogPath, imageWidth];
-
-    // TODO: Need loading placeholder.
-    if (!self.post.isPrivate) {
-        [attributionView.avatarImageView setImageWithURL:[NSURL URLWithString:mshotPath] placeholderImage:[UIImage imageNamed:@""]];
+    if (self.post.isWPCom) {
+        [attributionView.avatarImageView setImageWithBlavatarUrl:self.post.blogURL placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
     } else {
-        // TODO: Need "Lock" icon for private sites.
-        [attributionView.avatarImageView setImage:[UIImage imageNamed:@"icon-lock"]];
+        [attributionView.avatarImageView setImageWithBlavatarUrl:self.post.blogURL placeholderImage:[UIImage imageNamed:@"icon-feed"]];
     }
 
     [self.view addSubview:self.siteHeaderView];
