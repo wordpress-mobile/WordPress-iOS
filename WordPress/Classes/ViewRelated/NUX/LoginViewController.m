@@ -44,6 +44,11 @@ static CGSize const GeneralWalkthroughButtonSize = {290.0, 41.0};
 static CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
 static CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
+static CGFloat const GeneralWalkthroughAlphaHidden = 0.0f;
+static CGFloat const GeneralWalkthroughAlphaDisabled = 0.5f;
+static CGFloat const GeneralWalkthroughAlphaEnabled = 1.0f;
+static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
+
 static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
 
@@ -363,7 +368,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
 
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
     // to their new positions.
-    [UIView animateWithDuration:0.3
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
                          [self reloadInterface];
                      }];
@@ -1068,7 +1073,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         }
 
         for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 0.0;
+            control.alpha = GeneralWalkthroughAlphaHidden;
         }
     } completion:^(BOOL finished) {
 
@@ -1092,7 +1097,7 @@ static CGFloat const HiddenControlsHeightThreshold = 480.0;
         }
 
         for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 1.0;
+            control.alpha = GeneralWalkthroughAlphaEnabled;
         }
     }];
 }
