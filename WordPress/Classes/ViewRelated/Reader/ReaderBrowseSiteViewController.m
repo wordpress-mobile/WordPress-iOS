@@ -32,6 +32,13 @@
 
 #pragma mark - Lifecycle Methods
 
+- (void)dealloc
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+    [service deleteTopic:self.siteTopic];
+}
+
 - (instancetype)initWithPost:(ReaderPost *)post
 {
     self = [super init];
