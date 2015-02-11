@@ -9,10 +9,13 @@
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "AccountServiceRemoteREST.h"
+#import "WPPostViewController.h"
 
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
+NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
+NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (instancetype)init
 {
@@ -27,6 +30,35 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
+    [self flagIfUserHasSeenLegacyEditor];
+}
+
+- (void)flagIfUserHasSeenLegacyEditor
+{
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standardDefaults boolForKey:CheckedIfUserHasSeenLegacyEditor]) {
+        return;
+    }
+    
+    NSInteger sessionCount = [self sessionCount];
+    if ([self didUserCreateAccountOnMobile]) {
+        // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
+        // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
+    } else if (sessionCount == 0) {
+        // First time users whether they have created an account or are signing in have never seen the legacy editor.
+        [self setSuperProperty:SeenLegacyEditor toValue:@NO];
+    } else {
+        [self setSuperProperty:SeenLegacyEditor toValue:@YES];
+    }
+    
+    [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
+    [standardDefaults synchronize];
+}
+
+- (BOOL)didUserCreateAccountOnMobile
+{
+    return [[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue];
 }
 
 - (void)track:(WPAnalyticsStat)stat
@@ -194,6 +226,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
+- (void)setSuperProperty:(NSString *)property toValue:(id)value
+{
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
 - (void)setValue:(id)value forPeopleProperty:(NSString *)property
 {
     [[Mixpanel sharedInstance].people set:@{ property : value } ];
@@ -211,6 +250,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
+            break;
+        case WPAnalyticsStatAppInstalled:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Installed"];
+            [instructions setCurrentDateForPeopleProperty:@"application_installed"];
             break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
@@ -423,6 +466,14 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_edited_image"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_edited_image"];
             break;
+        case WPAnalyticsStatEditorToggledOn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor On"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(YES)];
+            break;
+        case WPAnalyticsStatEditorToggledOff:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor Off"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(NO)];
+            break;
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
@@ -463,17 +514,6 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
             [instructions addSuperPropertyToFlag:@"enabled_new_editor"];
             break;
-            // TODO: (Diego Rey Mendez) re-enable the following lines once this issue is fixed
-            //
-            //  https://github.com/wordpress-mobile/WordPress-iOS/issues/3165
-            //
-            // IMPORTANT: the reason this code was changed without a proper PR is that it was breaking
-            // builds.
-            //
-            //case WPAnalyticsStatEditorDisabledNewVersion:
-            //  instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Disabled New Version"];
-            //  [instructions addSuperPropertyToFlag:@"disabled_new_editor"];
-            //  break;
         case WPAnalyticsStatSharedItemViaEmail:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_items_shared_via_email"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_shared_item_via_email"];
@@ -686,12 +726,21 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)incrementSessionCount
 {
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [self sessionCount];
     sessionCount++;
+    
+    if (sessionCount == 1) {
+        [WPAnalytics track:WPAnalyticsStatAppInstalled];
+    }
 
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (NSInteger)sessionCount
+{
+    return [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
 }
 
 @end
