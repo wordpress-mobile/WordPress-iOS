@@ -17,6 +17,7 @@
 #import "ReaderTopicService.h"
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTabBarController.h"
+#import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 
 @interface ReaderBrowseSiteViewController ()<WPContentAttributionViewDelegate>
@@ -162,6 +163,13 @@
                                                                         views:views]];
 
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
+{
+    WPWebViewController *controller = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
+    controller.url = [NSURL URLWithString:self.post.blogURL];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
