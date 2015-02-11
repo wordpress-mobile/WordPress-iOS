@@ -163,6 +163,10 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         }
     } else if (textField == _siteUrlText && _signInButton.enabled) {
         [self signInButtonAction:nil];
+    } else if (textField == _multifactorText) {
+        if ([self isMultifactorFilled]) {
+            [self signInButtonAction:nil];
+        }
     }
 
     return YES;
@@ -483,6 +487,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     multifactorText.delegate = self;
     multifactorText.keyboardType = UIKeyboardTypeNumberPad;
     multifactorText.textAlignment = NSTextAlignmentCenter;
+    multifactorText.returnKeyType = UIReturnKeyDone;
     multifactorText.showTopLineSeparator = YES;
     multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     multifactorText.accessibilityIdentifier = @"Verification Code";
