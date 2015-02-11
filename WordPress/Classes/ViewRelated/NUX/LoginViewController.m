@@ -185,6 +185,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     BOOL isUsernameFilled = [self isUsernameFilled];
     BOOL isPasswordFilled = [self isPasswordFilled];
     BOOL isSiteUrlFilled = [self isSiteUrlFilled];
+    BOOL isMultifactorFilled = [self isMultifactorFilled];
 
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
@@ -195,9 +196,15 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         isPasswordFilled = updatedStringHasContent;
     } else if (textField == _siteUrlText) {
         isSiteUrlFilled = updatedStringHasContent;
+    } else if (textField == _multifactorText) {
+        isMultifactorFilled = updatedStringHasContent;
     }
-    _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
-    _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
+
+    isSiteUrlFilled         = (_userIsDotCom || isSiteUrlFilled);
+    isMultifactorFilled     = (!_shouldDisplayMultifactor || isMultifactorFilled);
+    
+    _signInButton.enabled   = isUsernameFilled && isPasswordFilled && isSiteUrlFilled && isMultifactorFilled;
+    _forgotPassword.hidden  = !(_userIsDotCom || isSiteUrlFilled);
 
     return YES;
 }
