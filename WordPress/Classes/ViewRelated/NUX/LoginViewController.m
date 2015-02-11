@@ -80,7 +80,6 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
-@property (nonatomic, assign) BOOL                      blogConnectedToJetpack;
 
 @end
 
@@ -705,7 +704,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
-        _blogConnectedToJetpack = didAuthenticate;
+
         [self dismiss];
     }];
     [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
