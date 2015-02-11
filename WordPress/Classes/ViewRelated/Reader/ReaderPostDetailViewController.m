@@ -2,6 +2,7 @@
 
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
@@ -413,6 +414,12 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
         [followButton setSelected:post.isFollowing];
     }];
+}
+
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
