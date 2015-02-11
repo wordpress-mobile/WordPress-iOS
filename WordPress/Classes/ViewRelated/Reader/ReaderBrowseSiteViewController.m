@@ -87,10 +87,11 @@
     attributionView.backgroundColor = [UIColor whiteColor];
     [attributionView selectAttributionButton:self.post.isFollowing];
 
+    NSURL *blogURL = [NSURL URLWithString:self.post.blogURL];
     if (self.post.isWPCom) {
-        [attributionView.avatarImageView setImageWithBlavatarUrl:self.post.blogURL placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
+        [attributionView.avatarImageView setImageWithBlavatarUrl:[blogURL host] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
     } else {
-        [attributionView.avatarImageView setImageWithBlavatarUrl:self.post.blogURL placeholderImage:[UIImage imageNamed:@"icon-feed"]];
+        [attributionView.avatarImageView setImageWithBlavatarUrl:[blogURL host] placeholderImage:[UIImage imageNamed:@"icon-feed"]];
     }
 
     [self.view addSubview:self.siteHeaderView];
@@ -118,7 +119,6 @@
         self.tableHeaderView.frame = CGRectMake(0.0, 0.0, size.width, size.height);
         tableHeaderView = self.tableHeaderView;
     } else {
-        tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.frame), 10.0)];
         tableHeaderView.backgroundColor = [UIColor clearColor];
     }
     [self.postsViewController setTableHeaderView:tableHeaderView];
