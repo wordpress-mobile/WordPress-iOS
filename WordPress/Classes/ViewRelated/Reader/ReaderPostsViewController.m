@@ -337,13 +337,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return NSLocalizedString(@"You have not liked any posts.", @"Message shown to user when the reader list is empty because they have not liked any posts.");
     }
 
-    return NSLocalizedString(@"Sorry. No posts yet.", @"Generic message shown to the user when the reader list is empty. ");
+    return NSLocalizedString(@"Sorry. No posts found.", @"Generic message shown to the user when the reader list is empty. ");
 }
 
 - (NSString *)noResultsMessageText
 {
     if (self.syncHelper.isSyncing) {
         return @"";
+    }
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return NSLocalizedString(@"We were unable to load any posts for this site.", @"Message shown when wwe were unable to load posts for a site being previewed in the reader. ");
     }
     return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", @"Message shown encouraging the user to browse posts from popular sites. ");
 }
