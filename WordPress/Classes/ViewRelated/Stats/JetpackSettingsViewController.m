@@ -42,9 +42,8 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     BOOL _authenticating;
 }
 
-- (id)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog
 {
-
     self = [super init];
     if (self) {
         _blog = blog;
@@ -58,14 +57,16 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (BOOL) hidesBottomBarWhenPushed
+- (BOOL)hidesBottomBarWhenPushed
 {
     return YES;
 }
+
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self layoutControls];
 }
+
 
 #pragma mark -
 #pragma mark LifeCycle Methods
