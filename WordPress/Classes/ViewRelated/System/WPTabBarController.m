@@ -77,13 +77,22 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         [self setSelectedViewController:self.blogListNavigationController];
 
-        // since this is a singleton, it's ok to add the notification observer in the init
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
                                                      name:HelpshiftUnreadCountUpdatedNotification
                                                    object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(defaultAccountDidChange:)
+                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Tab Bar Items
@@ -202,7 +211,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showTabForIndex:(NSInteger)tabIndex
 {
-    [self.tabBarController setSelectedIndex:tabIndex];
+    [self setSelectedIndex:tabIndex];
 }
 
 - (void)showMySitesTab
@@ -313,7 +322,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 {
     // Check which tab is currently selected
     NSString *currentlySelectedScreen = @"";
-    switch (self.tabBarController.selectedIndex) {
+    switch (self.selectedIndex) {
         case WPTabMySites:
             currentlySelectedScreen = @"Blog List";
             break;
@@ -389,7 +398,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (BOOL)isNavigatingMySitesTab
 {
-    return (self.tabBarController.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
+    return (self.selectedIndex == WPTabMySites && [self.blogListViewController.navigationController.viewControllers count] > 1);
 }
 
 #pragma mark - Helpers
@@ -410,6 +419,16 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     else {
         [meTabBarItem setBadgeValue:[NSString stringWithFormat:@"%ld", unreadCount]];
     }
+}
+
+#pragma mark - Default Account Notifications
+
+- (void)defaultAccountDidChange:(NSNotification *)notification
+{
+    [self.blogListNavigationController popToRootViewControllerAnimated:NO];
+    [self.readerNavigationController popToRootViewControllerAnimated:NO];
+    [self.meNavigationController popToRootViewControllerAnimated:NO];
+    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
 }
 
 @end
