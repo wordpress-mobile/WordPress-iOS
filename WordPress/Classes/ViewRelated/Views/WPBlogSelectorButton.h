@@ -6,9 +6,15 @@ typedef NS_ENUM(NSUInteger, WPBlogSelectorButtonStyle)
     WPBlogSelectorButtonTypeSingleLine
 };
 
+typedef NS_ENUM(NSUInteger, WPBlogSelectorButtonMode) {
+    WPBlogSelectorButtonSingleSite,
+    WPBlogSelectorButtonMultipleSite,
+};
+
 @interface WPBlogSelectorButton : UIButton
 
 @property (nonatomic, assign) WPBlogSelectorButtonStyle buttonStyle;
+@property (nonatomic, assign) WPBlogSelectorButtonMode buttonMode;
 
 + (id)buttonWithFrame:(CGRect)frame buttonStyle:(WPBlogSelectorButtonStyle)buttonStyle;
 

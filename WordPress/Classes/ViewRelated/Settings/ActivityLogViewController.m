@@ -53,7 +53,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
 
-    [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:ActivityLogCellIdentifier];
 }
 
 - (void)didReceiveMemoryWarning
@@ -97,7 +97,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ActivityLogCellIdentifier];
+    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:ActivityLogCellIdentifier];
     if (indexPath.section == 0) {
         DDLogFileInfo *logFileInfo = (DDLogFileInfo *)self.logFiles[indexPath.row];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

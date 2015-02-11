@@ -63,4 +63,14 @@
     return frame;
 }
 
+- (void)setButtonMode:(WPBlogSelectorButtonMode)value
+{
+    _buttonMode = value;
+    if (self.buttonMode == WPBlogSelectorButtonSingleSite) {
+        [self setImage:nil forState:UIControlStateNormal];
+    } else {
+        [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
+    }
+}
+
 @end

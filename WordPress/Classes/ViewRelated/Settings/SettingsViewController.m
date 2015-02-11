@@ -30,6 +30,7 @@
 #import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
+#import <WordPress-iOS-Shared/WPTableViewCell.h>
 
 #ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
@@ -173,6 +174,11 @@ static CGFloat const SettingsRowHeight = 44.0;
 - (void)handleEditorChanged:(id)sender
 {
     UISwitch *aSwitch = (UISwitch *)sender;
+    if (aSwitch.on) {
+        [WPAnalytics track:WPAnalyticsStatEditorToggledOn];
+    } else {
+        [WPAnalytics track:WPAnalyticsStatEditorToggledOff];
+    }
     [WPPostViewController setNewEditorEnabled:aSwitch.on];
 }
 
@@ -226,7 +232,6 @@ static CGFloat const SettingsRowHeight = 44.0;
 		return nil;
 	} else {
 		WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-		header.fixedWidth = 0.0;
 		header.title = [self titleForHeaderInSection:section];
 		return header;
 	}
@@ -316,9 +321,9 @@ static CGFloat const SettingsRowHeight = 44.0;
             cellStyle = UITableViewCellStyleDefault;
     }
 
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:cellStyle reuseIdentifier:cellIdentifier];
     }
 
     if (indexPath.section == SettingsSectionMedia) {

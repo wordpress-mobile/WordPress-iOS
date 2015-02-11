@@ -40,7 +40,9 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 
 - (void)setUsername:(NSString *)username
 {
-    self.usernameLabel.text = [NSString stringWithFormat:@"@%@", username];;
+    // If the username is an email, we don't want the preceding @ sign before it
+    NSString *prefix = [username containsString:@"@"] ? @"" : @"@";
+    self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];;
 }
 
 - (void)setGravatarEmail:(NSString *)gravatarEmail
@@ -104,6 +106,8 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 {
     CGRect gravatarFrame = CGRectMake(0.0f, 0.0f, MeHeaderViewGravatarSize, MeHeaderViewGravatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:gravatarFrame];
+    imageView.layer.cornerRadius = MeHeaderViewGravatarSize / 2.0;
+    imageView.clipsToBounds = YES;
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     return imageView;
 }
