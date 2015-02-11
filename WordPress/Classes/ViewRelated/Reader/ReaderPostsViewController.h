@@ -6,8 +6,13 @@ typedef NS_ENUM(NSUInteger, ReaderViewStyle) {
 };
 
 @class ReaderTopic;
+
 @interface ReaderPostsViewController : UITableViewController
+
 @property (nonatomic, strong) ReaderTopic *readerTopic;
 @property (nonatomic, assign) BOOL skipIpadTopPadding;
 @property (nonatomic, assign) ReaderViewStyle readerViewStyle;
+
+- (void)setTableHeaderView:(UIView *)view;
+
 @end
