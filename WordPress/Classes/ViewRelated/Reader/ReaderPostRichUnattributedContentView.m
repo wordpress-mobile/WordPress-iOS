@@ -75,7 +75,7 @@
                                                                    views:views]];
 
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
