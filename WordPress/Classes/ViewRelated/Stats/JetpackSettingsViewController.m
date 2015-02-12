@@ -481,6 +481,9 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     [self updateSaveButton];
 }
 
+
+#pragma mark - Keyboard Helpers
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *keyboardInfo = notification.userInfo;
@@ -501,7 +504,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
         }
 
         for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 0.0;
+            control.alpha = JetpackTextFieldAlphaHidden;
         }
     } completion:^(BOOL finished) {
 
@@ -525,7 +528,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
         }
 
         for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 1.0;
+            control.alpha = JetpackTextFieldAlphaEnabled;
         }
     }];
 }
