@@ -519,7 +519,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        CGSize size;
+        CGSize size = CGSizeZero;
         if (self.image) {
             size = self.image.size;
         }
