@@ -41,7 +41,7 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 - (void)setUsername:(NSString *)username
 {
     // If the username is an email, we don't want the preceding @ sign before it
-    NSString *prefix = [username containsString:@"@"] ? @"" : @"@";
+    NSString *prefix = ([username rangeOfString:@"@"].location != NSNotFound) ? @"" : @"@";
     self.usernameLabel.text = [NSString stringWithFormat:@"%@%@", prefix, username];;
 }
 
