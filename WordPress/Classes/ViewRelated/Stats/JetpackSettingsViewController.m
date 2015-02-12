@@ -535,28 +535,23 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[_usernameField, _passwordField, _signInButton, _icon, _description];
+    return @[_usernameTextField, _passwordTextField, _multifactorTextField, _signInButton, _icon, _descriptionLabel];
 }
 
 - (NSArray *)controlsToHideForTextEntry
 {
     NSArray *controlsToHide = @[];
-
-    // Hide the
     BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
     if (isSmallScreen) {
         controlsToHide = [controlsToHide arrayByAddingObject:_icon];
-        controlsToHide = [controlsToHide arrayByAddingObject:_description];
+        controlsToHide = [controlsToHide arrayByAddingObject:_descriptionLabel];
     }
+    
     return controlsToHide;
 }
 
-#pragma mark - Custom methods
 
-- (BOOL)saveEnabled
-{
-    return (!_authenticating && _usernameField.text.length && _passwordField.text.length);
-}
+#pragma mark - Custom methods
 
 - (void)setAuthenticating:(BOOL)authenticating
 {
@@ -567,18 +562,6 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     [self.signInButton showActivityIndicator:authenticating];
 }
 
-- (void)updateSaveButton
-{
-    if (![self isViewLoaded]) return;
-
-    _signInButton.enabled = [self saveEnabled];
-}
-
-- (void)dismissKeyboard
-{
-    [_usernameField resignFirstResponder];
-    [_passwordField resignFirstResponder];
-}
 
 #pragma mark - Browser
 
