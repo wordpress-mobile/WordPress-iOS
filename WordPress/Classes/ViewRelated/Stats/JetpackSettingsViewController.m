@@ -412,10 +412,12 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
         [self handleSignInError:error];
     };
 
-    [_blog validateJetpackUsername:_usernameField.text
-                          password:_passwordField.text
-                           success:finishedBlock
-                           failure:failureBlock];
+    [self.blog validateJetpackUsername:self.usernameTextField.text
+                              password:self.passwordTextField.text
+                       multifactorCode:self.multifactorTextField.text
+                               success:finishedBlock
+                               failure:failureBlock];
+}
 
 
 #pragma mark - Helpers
