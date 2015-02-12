@@ -567,7 +567,8 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 - (void)openInstallJetpackURL
 {
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
-    [self openURL:[NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
+    NSString *targetURL = [_blog adminUrlWithPath:JetpackInstallRelativePath];
+    [self openURL:[NSURL URLWithString:targetURL] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
 
 - (void)openMoreInformationURL
