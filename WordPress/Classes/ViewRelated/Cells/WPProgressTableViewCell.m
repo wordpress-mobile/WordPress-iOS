@@ -14,7 +14,8 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     NSProgress *_progress;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
         _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10,0,40,40)];
@@ -24,7 +25,8 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
 }
 
