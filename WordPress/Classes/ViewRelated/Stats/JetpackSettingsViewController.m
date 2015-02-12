@@ -168,158 +168,255 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 - (void)addControls
 {
     // Add Logo
-    if (_icon == nil) {
-        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
-        [self.view addSubview:_icon];
-    }
-
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-jetpack-gray"]];
+    icon.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     // Add Description
-    if (_description == nil) {
-        _description = [[UILabel alloc] init];
-        _description.backgroundColor = [UIColor clearColor];
-        _description.textAlignment = NSTextAlignmentCenter;
-        _description.numberOfLines = 0;
-        _description.lineBreakMode = NSLineBreakByWordWrapping;
-        _description.font = [WPNUXUtility descriptionTextFont];
-        _description.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
-        _description.textColor = [WPStyleGuide allTAllShadeGrey];
-        [self.view addSubview:_description];
-    }
-
+    UILabel *descriptionLabel = [[UILabel alloc] init];
+    descriptionLabel.backgroundColor = [UIColor clearColor];
+    descriptionLabel.textAlignment = NSTextAlignmentCenter;
+    descriptionLabel.numberOfLines = 0;
+    descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    descriptionLabel.font = [WPNUXUtility descriptionTextFont];
+    descriptionLabel.text = NSLocalizedString(@"Hold the web in the palm of your hand. Full publishing power in a pint-sized package.", @"NUX First Walkthrough Page 1 Description");
+    descriptionLabel.textColor = [WPStyleGuide allTAllShadeGrey];
+    descriptionLabel.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     // Add Username
-    if (_usernameField == nil) {
-        _usernameField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
-        _usernameField.backgroundColor = [UIColor whiteColor];
-        _usernameField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
-        _usernameField.font = [WPNUXUtility textFieldFont];
-        _usernameField.adjustsFontSizeToFitWidth = YES;
-        _usernameField.delegate = self;
-        _usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameField.text = _blog.jetpackUsername;
-        _usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        [self.view addSubview:_usernameField];
-    }
-
+    WPWalkthroughTextField *usernameTextField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+    usernameTextField.backgroundColor = [UIColor whiteColor];
+    usernameTextField.placeholder = NSLocalizedString(@"WordPress.com username", @"");
+    usernameTextField.font = [WPNUXUtility textFieldFont];
+    usernameTextField.adjustsFontSizeToFitWidth = YES;
+    usernameTextField.delegate = self;
+    usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameTextField.text = self.blog.jetpackUsername;
+    usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     // Add Password
-    if (_passwordField == nil) {
-        _passwordField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _passwordField.backgroundColor = [UIColor whiteColor];
-        _passwordField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
-        _passwordField.font = [WPNUXUtility textFieldFont];
-        _passwordField.delegate = self;
-        _passwordField.secureTextEntry = YES;
-        _passwordField.showSecureTextEntryToggle = YES;
-        _passwordField.text = _blog.jetpackPassword;
-        _passwordField.clearsOnBeginEditing = YES;
-        _passwordField.showTopLineSeparator = YES;
-        [self.view addSubview:_passwordField];
-    }
+    WPWalkthroughTextField *passwordTextField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+    passwordTextField.backgroundColor = [UIColor whiteColor];
+    passwordTextField.placeholder = NSLocalizedString(@"WordPress.com password", @"");
+    passwordTextField.font = [WPNUXUtility textFieldFont];
+    passwordTextField.delegate = self;
+    passwordTextField.secureTextEntry = YES;
+    passwordTextField.showSecureTextEntryToggle = YES;
+    passwordTextField.text = self.blog.jetpackPassword;
+    passwordTextField.clearsOnBeginEditing = YES;
+    passwordTextField.showTopLineSeparator = YES;
+    passwordTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
+    // Add Multifactor
+    WPWalkthroughTextField *multifactorText = [[WPWalkthroughTextField alloc] init];
+    multifactorText.backgroundColor = [UIColor whiteColor];
+    multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
+    multifactorText.font = [WPNUXUtility textFieldFont];
+    multifactorText.delegate = self;
+    multifactorText.keyboardType = UIKeyboardTypeNumberPad;
+    multifactorText.textAlignment = NSTextAlignmentCenter;
+    multifactorText.returnKeyType = UIReturnKeyDone;
+    multifactorText.showTopLineSeparator = YES;
+    multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    multifactorText.accessibilityIdentifier = @"Verification Code";
 
     // Add Sign In Button
-    if (_signInButton == nil) {
-        _signInButton = [[WPNUXMainButton alloc] init];
-        NSString *title = _showFullScreen ? NSLocalizedString(@"Sign In", nil) : NSLocalizedString(@"Save", nil);
-        [_signInButton setTitle:title forState:UIControlStateNormal];
-        [_signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:_signInButton];
-        _signInButton.enabled = NO;
-    }
-
+    WPNUXMainButton *signInButton = [[WPNUXMainButton alloc] init];
+    [signInButton addTarget:self action:@selector(saveAction:) forControlEvents:UIControlEventTouchUpInside];
+    signInButton.enabled = NO;
+    signInButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     // Add Download Button
-    if (_installJetbackButton == nil) {
-        _installJetbackButton = [[WPNUXMainButton alloc] init];
-        [_installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
-        [_installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:_installJetbackButton];
-    }
-
+    WPNUXMainButton *installJetbackButton = [[WPNUXMainButton alloc] init];
+    [installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
+    [installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
+    installJetbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
     // Add More Information Button
-    if (_moreInformationButton == nil) {
-        _moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_moreInformationButton setTitle:NSLocalizedString(@"More information", @"") forState:UIControlStateNormal];
-        [_moreInformationButton addTarget:self action:@selector(openMoreInformationURL) forControlEvents:UIControlEventTouchUpInside];
-        [_moreInformationButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
-        _moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
-        [self.view addSubview:_moreInformationButton];
+    UIButton *moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [moreInformationButton setTitle:NSLocalizedString(@"More information", @"") forState:UIControlStateNormal];
+    [moreInformationButton addTarget:self action:@selector(openMoreInformationURL) forControlEvents:UIControlEventTouchUpInside];
+    [moreInformationButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+    moreInformationButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
+    moreInformationButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    
+    // Attach Subviews
+    [self.view addSubview:icon];
+    [self.view addSubview:descriptionLabel];
+    [self.view addSubview:usernameTextField];
+    [self.view addSubview:passwordTextField];
+    [self.view addSubview:multifactorText];
+    [self.view addSubview:signInButton];
+    [self.view addSubview:installJetbackButton];
+    [self.view addSubview:moreInformationButton];
+    
+    // Keep the Reference!
+    self.icon = icon;
+    self.descriptionLabel = descriptionLabel;
+    self.usernameTextField = usernameTextField;
+    self.passwordTextField = passwordTextField;
+    self.multifactorTextField = multifactorText;
+    self.signInButton = signInButton;
+    self.installJetbackButton = installJetbackButton;
+    self.moreInformationButton = moreInformationButton;
+}
+
+- (void)addGesturesRecognizer
+{
+    UITapGestureRecognizer *dismissKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    dismissKeyboardTapRecognizer.cancelsTouchesInView = YES;
+    dismissKeyboardTapRecognizer.delegate = self;
+    [self.view addGestureRecognizer:dismissKeyboardTapRecognizer];
+}
+
+- (void)addSkipButtonIfNeeded
+{
+    if (!self.canBeSkipped) {
+        return;
     }
-    [self updateSaveButton];
+    
+    if (self.showFullScreen) {
+        WPNUXSecondaryButton *skipButton = [[WPNUXSecondaryButton alloc] init];
+        [skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
+        [skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
+        [skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
+        skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+        skipButton.accessibilityIdentifier = @"Skip";
+        [skipButton sizeToFit];
+        [self.view addSubview:skipButton];
+        self.skipButton = skipButton;
+    } else {
+        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"")
+                                                                                  style:UIBarButtonItemStylePlain
+                                                                                 target:self
+                                                                                 action:@selector(skipAction:)];
+    }
+    
+    self.navigationItem.hidesBackButton = YES;
+}
+
+
+#pragma mark Interface Helpers
+
+- (void)updateSaveButton
+{
+    BOOL enabled = (!_authenticating && _usernameTextField.text.length && _passwordTextField.text.length);
+    self.signInButton.enabled = enabled;
+}
+
+- (void)dismissKeyboard
+{
+    [self.view endEditing:YES];
+    [self hideMultifactorTextfieldIfNeeded];
+}
+
+- (void)reloadInterface
+{
+    [self updateControls];
+    [self layoutControls];
+}
+
+- (void)updateControls
+{
+    BOOL hasJetpack                 = self.blog.hasJetpack;
+    
+    _usernameTextField.alpha        = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
+    _passwordTextField.alpha        = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
+    _multifactorTextField.alpha     = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaEnabled  : JetpackTextFieldAlphaHidden;
+    
+    _usernameTextField.enabled      = !self.shouldDisplayMultifactor;
+    _passwordTextField.enabled      = !self.shouldDisplayMultifactor;
+    _multifactorTextField.enabled   = self.shouldDisplayMultifactor;
+    
+    _usernameTextField.hidden       = !hasJetpack;
+    _passwordTextField.hidden       = !hasJetpack;
+    _multifactorTextField.hidden    = !hasJetpack;
+    _signInButton.hidden            = !hasJetpack;
+    _installJetbackButton.hidden    = hasJetpack;
+    _moreInformationButton.hidden   = hasJetpack;
+    
+    
+    NSString *title = NSLocalizedString(@"Save", nil);
+    if (self.shouldDisplayMultifactor) {
+        title = NSLocalizedString(@"Verify", nil);
+    } else if (self.showFullScreen) {
+        title = NSLocalizedString(@"Sign In", nil);
+    }
+    
+    [self.signInButton setTitle:title forState:UIControlStateNormal];
+    
 }
 
 - (void)layoutControls
 {
-    CGFloat x,y;
-    BOOL hasJetpack = [_blog hasJetpack];
-
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
 
+    CGFloat textFieldX = (viewWidth - JetpackTextFieldWidth) * 0.5f;
+    CGFloat buttonX = (viewWidth - JetpackSignInButtonWidth) * 0.5f;
+    
     // Layout Icon
-    x = (viewWidth - CGRectGetWidth(_icon.frame))/2.0;
-    y = JetpackiOS7StatusBarOffset + JetpackIconVerticalOffset;
-    _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
-    _icon.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGFloat iconX = (viewWidth - CGRectGetWidth(_icon.frame)) * 0.5f;
+    CGFloat iconY = JetpackiOS7StatusBarOffset + JetpackIconVerticalOffset;
+    _icon.frame = CGRectIntegral(CGRectMake(iconX, iconY, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
 
     // Layout Description
-    CGSize labelSize = [_description suggestedSizeForWidth:JetpackMaxTextWidth];
-    x = (viewWidth - labelSize.width)/2.0;
-    y = CGRectGetMaxY(_icon.frame) + 0.5*JetpackStandardOffset;
-    _description.frame = CGRectIntegral(CGRectMake(x, y, labelSize.width, labelSize.height));
-    _description.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGSize labelSize = [_descriptionLabel suggestedSizeForWidth:JetpackMaxTextWidth];
+    CGFloat descriptionLabelX = (viewWidth - labelSize.width) * 0.5f;
+    CGFloat descriptionLabelY = CGRectGetMaxY(_icon.frame) + 0.5*JetpackStandardOffset;
+    _descriptionLabel.frame = CGRectIntegral(CGRectMake(descriptionLabelX, descriptionLabelY, labelSize.width, labelSize.height));
 
     // Layout Username
-    x = (viewWidth - JetpackTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_description.frame) + JetpackStandardOffset;
-    _usernameField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
-    _usernameField.hidden = !hasJetpack;
-    _usernameField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-
+    CGFloat usernameTextFieldY = CGRectGetMaxY(_descriptionLabel.frame) + JetpackStandardOffset;
+    _usernameTextField.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextFieldY, JetpackTextFieldWidth, JetpackTextFieldHeight));
+    
     // Layout Password
-    x = (viewWidth - JetpackTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_usernameField.frame);
-    _passwordField.frame = CGRectIntegral(CGRectMake(x, y, JetpackTextFieldWidth, JetpackTextFieldHeight));
-    _passwordField.hidden = !hasJetpack;
-    _passwordField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-
+    CGFloat passwordTextFieldY = CGRectGetMaxY(_usernameTextField.frame);
+    _passwordTextField.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextFieldY, JetpackTextFieldWidth, JetpackTextFieldHeight));
+    
+    CGFloat multifactorTextY = CGRectGetMaxY(_passwordTextField.frame);
+    _multifactorTextField.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, JetpackTextFieldWidth, JetpackTextFieldHeight));
+    
     // Layout Sign in Button
-    x = (viewWidth - JetpackSignInButtonWidth) / 2.0;
-    y = CGRectGetMaxY(_passwordField.frame) + JetpackStandardOffset;
-    _signInButton.frame = CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
-    _signInButton.hidden = !hasJetpack;
-    _signInButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGFloat signInButtonY = [self lastTextfieldMaxY] + JetpackStandardOffset;
+    _signInButton.frame = CGRectMake(buttonX, signInButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
 
     // Layout Download Button
-    x = (viewWidth - JetpackSignInButtonWidth)/2.0;
-    y = CGRectGetMaxY(_description.frame) + JetpackStandardOffset;
-    _installJetbackButton.frame = CGRectIntegral(CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
-    _installJetbackButton.hidden = hasJetpack;
-    _installJetbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGFloat installJetpackButtonY = CGRectGetMaxY(_descriptionLabel.frame) + JetpackStandardOffset;
+    _installJetbackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout More Information Button
-    x = (viewWidth - JetpackSignInButtonWidth)/2.0;
-    y = CGRectGetMaxY(_installJetbackButton.frame);
-    _moreInformationButton.frame = CGRectIntegral(CGRectMake(x, y, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
-    _moreInformationButton.hidden = hasJetpack;
-    _moreInformationButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGFloat moreInformationButtonY = CGRectGetMaxY(_installJetbackButton.frame);
+    _moreInformationButton.frame = CGRectIntegral(CGRectMake(buttonX, moreInformationButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout Skip Button
-    x = viewWidth - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
-    y = viewHeight - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
-    _skipButton.frame = CGRectMake(x, y, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
-    _skipButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    CGFloat skipButtonX = viewWidth - CGRectGetWidth(_skipButton.frame) - JetpackStandardOffset;
+    CGFloat skipButtonY = viewHeight - JetpackStandardOffset - CGRectGetHeight(_skipButton.frame);
+    _skipButton.frame = CGRectMake(skipButtonX, skipButtonY, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
 
     NSArray *viewsToCenter;
-    UIView *endingView;
-    if (hasJetpack) {
-        viewsToCenter = @[_icon, _description, _usernameField, _passwordField, _signInButton];
-        endingView = _signInButton;
+    if (self.blog.hasJetpack) {
+        viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _signInButton];
     } else {
-        viewsToCenter = @[_icon, _description, _installJetbackButton, _moreInformationButton];
-        endingView = _moreInformationButton;
+        viewsToCenter = @[_icon, _descriptionLabel, _installJetbackButton, _moreInformationButton];
     }
-
+    
+    UIView *endingView = [viewsToCenter lastObject];
     [WPNUXUtility centerViews:viewsToCenter withStartingView:_icon andEndingView:endingView forHeight:(viewHeight - 100)];
 }
+
+- (CGFloat)lastTextfieldMaxY
+{
+    if (self.shouldDisplayMultifactor) {
+        return CGRectGetMaxY(self.multifactorTextField.frame);
+    } else {
+        return CGRectGetMaxY(self.passwordTextField.frame);
+    }
+}
+
+
+#pragma mark - Button Helpers
 
 - (void)skipAction:(id)sender
 {
