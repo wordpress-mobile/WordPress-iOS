@@ -411,6 +411,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
             width = width - cellMargins;
             CGFloat height = ceilf((width / imageWidth) * imageHeight);
             return height + cellMargins;
+        } else if ([self isUploadingMedia]) {
+            return CellHeight + 2*PostFeaturedImageCellMargin;
         }
     }
 
