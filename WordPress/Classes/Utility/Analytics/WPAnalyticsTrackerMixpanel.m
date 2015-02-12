@@ -204,6 +204,10 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
     [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [self setValue:obj forPeopleProperty:key];
     }];
+    
+    [instructions.superPropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setSuperProperty:key toValue:obj];
+    }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -509,6 +513,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];
             [instructions setCurrentDateForPeopleProperty:@"$created"];
             [instructions addSuperPropertyToFlag:@"created_account_on_mobile"];
+            [instructions setSuperProperty:@"created_account_on_app_version" toValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
             break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
