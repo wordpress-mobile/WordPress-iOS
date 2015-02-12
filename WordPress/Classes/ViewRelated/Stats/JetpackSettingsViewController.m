@@ -409,8 +409,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
     void (^failureBlock)(NSError *error) = ^(NSError *error) {
         [self setAuthenticating:NO];
-        DDLogError(@"Unable to authenticate with Jetpack");
-        [WPError showNetworkingAlertWithError:error];
+        [self handleSignInError:error];
     };
 
     [_blog validateJetpackUsername:_usernameField.text
