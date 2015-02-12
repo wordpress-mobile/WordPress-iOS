@@ -13,34 +13,59 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 
-CGFloat const JetpackiOS7StatusBarOffset = 20.0;
-CGFloat const JetpackStandardOffset = 16;
-CGFloat const JetpackTextFieldWidth = 320.0;
-CGFloat const JetpackMaxTextWidth = 289.0;
-CGFloat const JetpackTextFieldHeight = 44.0;
-CGFloat const JetpackIconVerticalOffset = 77;
-CGFloat const JetpackSignInButtonWidth = 289.0;
-CGFloat const JetpackSignInButtonHeight = 41.0;
+
+
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static NSString *JetpackInstallRelativePath             = @"plugin-install.php?tab=plugin-information&plugin=jetpack";
+
+static CGFloat const JetpackiOS7StatusBarOffset         = 20.0;
+static CGFloat const JetpackStandardOffset              = 16;
+static CGFloat const JetpackTextFieldWidth              = 320.0;
+static CGFloat const JetpackMaxTextWidth                = 289.0;
+static CGFloat const JetpackTextFieldHeight             = 44.0;
+static CGFloat const JetpackIconVerticalOffset          = 77;
+static CGFloat const JetpackSignInButtonWidth           = 289.0;
+static CGFloat const JetpackSignInButtonHeight          = 41.0;
+
+static NSTimeInterval const JetpackAnimationDuration    = 0.3f;
+static CGFloat const JetpackTextFieldAlphaHidden        = 0.0f;
+static CGFloat const JetpackTextFieldAlphaDisabled      = 0.5f;
+static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
+
+@property (nonatomic, strong) UIImageView               *icon;
+@property (nonatomic, strong) UILabel                   *descriptionLabel;
+@property (nonatomic, strong) WPWalkthroughTextField    *usernameTextField;
+@property (nonatomic, strong) WPWalkthroughTextField    *passwordTextField;
+@property (nonatomic, strong) WPWalkthroughTextField    *multifactorTextField;
+@property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXMainButton           *installJetbackButton;
+@property (nonatomic, strong) UIButton                  *moreInformationButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *skipButton;
+
+@property (nonatomic, strong) Blog                      *blog;
+
+@property (nonatomic, assign) CGFloat                   keyboardOffset;
+@property (nonatomic, assign) BOOL                      authenticating;
+@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+
 @end
 
-@implementation JetpackSettingsViewController {
-    Blog *_blog;
 
-    UIImageView *_icon;
-    UILabel *_description;
-    WPWalkthroughTextField *_usernameField;
-    WPWalkthroughTextField *_passwordField;
-    WPNUXMainButton *_signInButton;
-    WPNUXMainButton *_installJetbackButton;
-    UIButton *_moreInformationButton;
-    WPNUXSecondaryButton *_skipButton;
+#pragma mark ====================================================================================
+#pragma mark JetpackSettingsViewController
+#pragma mark ====================================================================================
 
-    CGFloat _keyboardOffset;
-
-    BOOL _authenticating;
-}
+@implementation JetpackSettingsViewController
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
