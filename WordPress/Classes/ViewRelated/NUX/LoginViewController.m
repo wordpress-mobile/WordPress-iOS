@@ -81,7 +81,6 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
-@property (nonatomic, assign) BOOL                      shouldReauthenticateDefaultAccount;
 
 @end
 
@@ -109,9 +108,9 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     // Initialize flags!
-    self.userIsDotCom = !self.hasDefaultAccount && (self.onlyDotComAllowed || !self.prefersSelfHosted);
     self.hasDefaultAccount = (defaultAccount != nil);
-    
+    self.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
+
     // Initialize Interface
     [self addMainView];
     [self addControls];
