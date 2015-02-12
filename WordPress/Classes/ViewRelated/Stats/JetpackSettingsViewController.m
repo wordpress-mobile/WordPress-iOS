@@ -93,14 +93,13 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 }
 
 
-#pragma mark -
-#pragma mark LifeCycle Methods
+#pragma mark - pragma mark LifeCycle Methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:_showFullScreen animated:animated];
-    [self layoutControls];
+    [self.navigationController setNavigationBarHidden:self.showFullScreen animated:animated];
+    [self reloadInterface];
 }
 
 - (void)viewDidLoad
@@ -357,9 +356,9 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _usernameField) {
-        [_passwordField becomeFirstResponder];
-    } else if (textField == _passwordField) {
+    if (textField == self.usernameTextField) {
+        [self.passwordTextField becomeFirstResponder];
+    } else if (textField == self.passwordTextField || textField == self.multifactorTextField) {
         [self saveAction:nil];
     }
 
@@ -512,8 +511,8 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (void)updateMessage
 {
-    if ([_blog hasJetpack]) {
-        _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+    if (self.blog.hasJetpack) {
+        self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
         self.descriptionLabel.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
@@ -553,11 +552,13 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    BOOL isUsernameField = [touch.view isDescendantOfView:_usernameField];
-    BOOL isSigninButton = [touch.view isDescendantOfView:_signInButton];
-    if (isUsernameField || isSigninButton) {
+    BOOL isusernameTextField = [touch.view isDescendantOfView:self.usernameTextField];
+    BOOL isSigninButton = [touch.view isDescendantOfView:self.signInButton];
+    
+    if (isusernameTextField || isSigninButton) {
         return NO;
     }
+    
     return YES;
 }
 
