@@ -296,7 +296,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
             if ([[ps host] isEqualToString:[url host]]) {
                 stagger = YES;
-                stop = YES;
+                *stop = YES;
             }
         }];
     }];
