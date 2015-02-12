@@ -417,9 +417,53 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
                           password:_passwordField.text
                            success:finishedBlock
                            failure:failureBlock];
+
+
+#pragma mark - Helpers
+
+- (void)handleSignInError:(NSError *)error
+{
+    // If needed, show the multifactor field
+    if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+        [self displayMultifactorTextfield];
+        return;
+    }
+    
+    [WPError showNetworkingAlertWithError:error];
 }
 
-#pragma mark - UITextField delegate and Keyboard
+
+#pragma mark - Multifactor Helpers
+
+- (void)displayMultifactorTextfield
+{
+    self.shouldDisplayMultifactor = YES;
+    
+    [UIView animateWithDuration:JetpackAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                         [self.multifactorTextField becomeFirstResponder];
+                     }];
+}
+
+- (void)hideMultifactorTextfieldIfNeeded
+{
+    if (!self.shouldDisplayMultifactor) {
+        return;
+    }
+    
+    self.shouldDisplayMultifactor = NO;
+    [UIView animateWithDuration:JetpackAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                     } completion:^(BOOL finished) {
+                         self.multifactorTextField.text = nil;
+                     }];
+}
+
+
+
+#pragma mark - UITextField delegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
