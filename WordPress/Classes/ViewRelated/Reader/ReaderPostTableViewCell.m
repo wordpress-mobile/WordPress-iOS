@@ -34,7 +34,7 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     if (self) {
         self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
-        _sideBorderView = [self newSideBoarderView];
+        _sideBorderView = [self newSideBorderView];
         [self.contentView addSubview:_sideBorderView];
 
         _postView = [self newReaderPostContentView];
@@ -46,11 +46,11 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
     return self;
 }
 
-- (UIView *)newSideBoarderView
+- (UIView *)newSideBorderView
 {
     UIView *view = [[UIView alloc] init];
     view.translatesAutoresizingMaskIntoConstraints = NO;
-    view.backgroundColor = [UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:238.0/255.0 alpha:1.0];
+    view.backgroundColor = [WPStyleGuide readGrey];
     view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     return view;
 }
