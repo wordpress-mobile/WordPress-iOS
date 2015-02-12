@@ -6,6 +6,7 @@
 @property (nonatomic, strong) NSString *superPropertyToIncrement;
 @property (nonatomic, strong, readonly) NSMutableArray *superPropertiesToFlag;
 @property (nonatomic, strong, readonly) NSDictionary *peoplePropertiesToAssign;
+@property (nonatomic, strong, readonly) NSDictionary *superPropertiesToAssign;
 @property (nonatomic, strong) NSString *peoplePropertyToIncrement;
 @property (nonatomic, strong) NSString *propertyToIncrement;
 @property (nonatomic, assign) WPAnalyticsStat stat;
@@ -21,5 +22,6 @@
 - (void)addSuperPropertyToFlag:(NSString *)property;
 - (void)setCurrentDateForPeopleProperty:(NSString *)property;
 - (void)setPeopleProperty:(NSString *)property toValue:(id)value;
+- (void)setSuperProperty:(NSString *)property toValue:(id)value;
 
 @end
