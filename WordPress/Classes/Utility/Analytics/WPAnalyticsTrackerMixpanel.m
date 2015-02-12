@@ -322,11 +322,6 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_stats"];
             break;
-        case WPAnalyticsStatStatsTappedBarChart:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Tapped Bar Chart"];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_tapped_stats_bar_chart"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_stats_bar_chart"];
-            break;
         case WPAnalyticsStatStatsOpenedWebVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Opened Web Version"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_web_version_of_stats"];
@@ -336,6 +331,21 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Scrolled to Bottom"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_scrolled_to_bottom_of_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_scrolled_to_bottom_of_stats"];
+            break;
+        case WPAnalyticsStatStatsSinglePostAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Single Post Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_single_post_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_single_post_screen_stats"];
+            break;
+        case WPAnalyticsStatStatsTappedBarChart:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Tapped Bar Chart"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_tapped_stats_bar_chart"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_tapped_stats_bar_chart"];
+            break;
+        case WPAnalyticsStatStatsViewAllAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - View All Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_view_all_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_view_all_screen_stats"];
             break;
         case WPAnalyticsStatEditorUploadMediaFailed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Upload Media Failed"];
