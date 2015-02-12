@@ -523,15 +523,6 @@ CGFloat const JetpackSignInButtonHeight = 41.0;
     }];
 }
 
-- (void)tryLoginWithUsername:(NSString *)username andPassword:(NSString *)password
-{
-    NSAssert(username != nil, @"Can't login with a nil username");
-    NSAssert(password != nil, @"Can't login with a nil password");
-    _usernameField.text = username;
-    _passwordField.text = password;
-
-    [self saveAction:nil];
-}
 
 #pragma mark - UIGestureRecognizerDelegate
 
