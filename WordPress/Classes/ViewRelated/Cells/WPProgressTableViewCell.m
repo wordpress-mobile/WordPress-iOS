@@ -36,6 +36,12 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     [self.progressView stopAnimating];
 }
 
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.frame = CGRectInset(self.imageView.frame, 0, 5);
+}
+
 #pragma mark - Progress handling
 
 - (void) setProgress:(NSProgress *) progress {
