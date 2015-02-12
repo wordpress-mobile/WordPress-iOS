@@ -110,52 +110,22 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     self.title = NSLocalizedString(@"Jetpack Connect", @"");
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
-    [self initializeView];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    
+    [nc addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:self.usernameTextField];
+    [nc addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:self.passwordTextField];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_usernameField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldDidChangeNotificationReceived:) name:UITextFieldTextDidChangeNotification object:_passwordField];
-
-    if (self.canBeSkipped) {
-        if (_showFullScreen) {
-            _skipButton = [[WPNUXSecondaryButton alloc] init];
-            [_skipButton setTitle:NSLocalizedString(@"Skip", @"") forState:UIControlStateNormal];
-            [_skipButton setTitleColor:[WPStyleGuide allTAllShadeGrey] forState:UIControlStateNormal];
-            [_skipButton addTarget:self action:@selector(skipAction:) forControlEvents:UIControlEventTouchUpInside];
-            [_skipButton sizeToFit];
-            _skipButton.accessibilityIdentifier = @"Skip";
-            [self.view addSubview:_skipButton];
-        } else {
-            UIBarButtonItem *skipButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Skip", @"") style:UIBarButtonItemStylePlain target:self action:@selector(skipAction:)];
-            self.navigationItem.rightBarButtonItem = skipButton;
-        }
-
-        self.navigationItem.hidesBackButton = YES;
-
-    }
-
+    [self addControls];
+    [self addGesturesRecognizer];
+    [self addSkipButtonIfNeeded];
+    
     [self updateMessage];
     [self updateSaveButton];
 
     double delayInSeconds = 0.1;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self checkForJetpack];
-    });
-
-    UITapGestureRecognizer *dismissKeyboardTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
-    dismissKeyboardTapRecognizer.cancelsTouchesInView = YES;
-    dismissKeyboardTapRecognizer.delegate = self;
-    [self.view addGestureRecognizer:dismissKeyboardTapRecognizer];
-}
-
-- (void)initializeView
-{
-
-    [self addControls];
-    [self layoutControls];
+    [self performSelector:@selector(checkForJetpack) withObject:nil afterDelay:delayInSeconds];
 }
 
 // This resolves a crash due to JetpackSettingsViewController previously using a .xib.
