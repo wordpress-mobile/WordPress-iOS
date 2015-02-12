@@ -72,7 +72,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     self = [super init];
     if (self) {
         _blog = blog;
-        self.showFullScreen = YES;
+        _showFullScreen = YES;
     }
     return self;
 }
@@ -448,10 +448,10 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 - (void)setAuthenticating:(BOOL)authenticating
 {
     _authenticating = authenticating;
-    _usernameField.enabled = !authenticating;
-    _passwordField.enabled = !authenticating;
+    self.usernameTextField.enabled = !authenticating;
+    self.passwordTextField.enabled = !authenticating;
     [self updateSaveButton];
-    [_signInButton showActivityIndicator:authenticating];
+    [self.signInButton showActivityIndicator:authenticating];
 }
 
 - (void)updateSaveButton
@@ -515,23 +515,23 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     if ([_blog hasJetpack]) {
         _description.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
-        _description.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
+        self.descriptionLabel.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
     }
-    [_description sizeToFit];
+    [self.descriptionLabel sizeToFit];
 
     [self layoutControls];
 }
 
 - (void)checkForJetpack
 {
-    if ([_blog hasJetpack]) {
-        if (!_blog.jetpackUsername || !_blog.jetpackPassword) {
+    if (self.blog.hasJetpack) {
+        if (!self.blog.jetpackUsername || !self.blog.jetpackPassword) {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            _usernameField.text = [defaultAccount username];
-            _passwordField.text = [defaultAccount password];
+            self.usernameTextField.text = defaultAccount.username;
+            self.passwordTextField.text = defaultAccount.password;
             [self updateSaveButton];
         }
         return;
@@ -539,8 +539,8 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncOptionsForBlog:_blog success:^{
-        if ([_blog hasJetpack]) {
+    [blogService syncOptionsForBlog:self.blog success:^{
+        if (self.blog.hasJetpack) {
             [self updateMessage];
         }
     } failure:^(NSError *error) {
