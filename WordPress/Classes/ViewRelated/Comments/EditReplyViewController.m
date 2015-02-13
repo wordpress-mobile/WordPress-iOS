@@ -38,7 +38,7 @@ static CGFloat const ERVCContentScrollMargin = 10.;
 {
     [super viewDidLoad];
     
-    self.title = NSLocalizedString(@"Edit Reply", @"Comment Reply Screen title");
+    self.title = NSLocalizedString(@"Reply", @"Comment Reply Screen title");
     self.navigationItem.rightBarButtonItem.title = NSLocalizedString(@"Send", @"Verb, submit a comment reply");
     self.content = [NSString string];
     
