@@ -18,7 +18,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 {
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10,0,40,40)];
+        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
         _progressView.hidden = YES;
         self.accessoryView = _progressView;
     }
@@ -41,7 +41,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    self.imageView.frame = CGRectInset(self.imageView.frame, 0, 5);
+    self.imageView.frame = CGRectInset(self.imageView.frame, 0.0, 5.0);
 }
 
 #pragma mark - Progress handling
