@@ -1032,6 +1032,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
                           }];
         [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
         progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+        progress.kind = NSProgressKindFile;
         strongSelf.featuredImageProgress = progress;
         [strongSelf.tableView reloadData];
     }];
