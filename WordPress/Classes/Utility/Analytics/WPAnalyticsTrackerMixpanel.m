@@ -115,6 +115,17 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
     [self retrieveAndRegisterEmailAddressIfApplicable];
 }
 
+- (void)aliasNewUser
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
+    NSString *username = account.username;
+    
+    [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
+    [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+}
+
 - (void)retrieveAndRegisterEmailAddressIfApplicable
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -504,6 +515,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setCurrentDateForPeopleProperty:@"$created"];
             [instructions addSuperPropertyToFlag:@"created_account_on_mobile"];
             [instructions setSuperProperty:@"created_account_on_app_version" toValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+            [self aliasNewUser];
             break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
