@@ -606,8 +606,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog
 {
-    NSString *timeZoneName = [blog.options stringForKey:@"timezone"];
-    NSNumber *gmtOffSet = [blog.options numberForKey:@"gmt_offset"];
+    NSString *timeZoneName = [blog getOptionValue:@"timezone"];
+    NSNumber *gmtOffSet = [blog getOptionValue:@"gmt_offset"];
     id optionValue = [blog getOptionValue:@"time_zone"];
     
     NSTimeZone *timeZone = nil;
