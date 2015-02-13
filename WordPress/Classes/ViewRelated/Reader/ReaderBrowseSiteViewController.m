@@ -52,6 +52,7 @@
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Site Detail", @"Title of the blog preview screen. The screen shows a list of posts from a blog and provides an option to follow the blog.");
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
     if (!self.post) {
         return;
