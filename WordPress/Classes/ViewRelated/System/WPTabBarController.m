@@ -2,6 +2,7 @@
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
+#import "AccountService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "Blog.h"
