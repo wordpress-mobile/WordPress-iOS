@@ -4,6 +4,7 @@
 
 static const CGFloat LabelTopMargin = 20.0;
 static const CGFloat LabelBottomMargin = 10.0;
+static const CGFloat LabelBottomMarginIpad = 20.0;
 static const CGFloat LabelHorizontalMargin = 8.0;
 
 @interface ReaderPreviewHeaderView ()
@@ -43,11 +44,11 @@ static const CGFloat LabelHorizontalMargin = 8.0;
 
 - (void)configureConstraints
 {
-    NSInteger viewWidth = (NSInteger)WPTableViewFixedWidth;
+    CGFloat bottomMargin = [self bottomMarginHeight];
     NSDictionary *views = NSDictionaryOfVariableBindings(_label);
-    NSDictionary *metrics = @{@"viewWidth":@(viewWidth),
+    NSDictionary *metrics = @{@"viewWidth":@(WPTableViewFixedWidth),
                               @"topMargin":@(LabelTopMargin),
-                              @"bottomMargin":@(LabelBottomMargin),
+                              @"bottomMargin":@(bottomMargin),
                               @"horizontalMargin":@(LabelHorizontalMargin)};
 
     if ([UIDevice isPad]) {
@@ -77,17 +78,22 @@ static const CGFloat LabelHorizontalMargin = 8.0;
                                                                    views:views]];
 }
 
+- (CGFloat)bottomMarginHeight
+{
+    return [UIDevice isPad] ? LabelBottomMarginIpad : LabelBottomMargin;
+}
+
 - (CGSize)intrinsicContentSize
 {
     CGSize size = self.label.intrinsicContentSize;
-    CGFloat viewHeight = size.height + LabelBottomMargin + LabelTopMargin;
+    CGFloat viewHeight = size.height + [self bottomMarginHeight] + LabelTopMargin;
     return CGSizeMake(size.width, viewHeight);
 }
 
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat viewHeight = LabelBottomMargin + LabelTopMargin;
+    CGFloat viewHeight = [self bottomMarginHeight] + LabelTopMargin;
     CGFloat labelWidth = [UIDevice isPad] ? WPTableViewFixedWidth : (size.width - (LabelHorizontalMargin * 2));
 
     CGSize labelSize = [self.label sizeThatFits:CGSizeMake(labelWidth, CGFLOAT_HEIGHT_UNKNOWN)];
