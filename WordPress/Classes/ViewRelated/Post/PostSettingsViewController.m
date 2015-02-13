@@ -411,6 +411,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
             width = width - cellMargins;
             CGFloat height = ceilf((width / imageWidth) * imageHeight);
             return height + cellMargins;
+        } else if ([self isUploadingMedia]) {
+            return CellHeight + (2.0 * PostFeaturedImageCellMargin);
         }
     }
 
@@ -1033,6 +1035,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
                           }];
         [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
         progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+        progress.kind = NSProgressKindFile;
+        [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
         strongSelf.featuredImageProgress = progress;
         [strongSelf.tableView reloadData];
     }];
