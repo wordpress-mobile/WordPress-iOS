@@ -1,4 +1,5 @@
 PODS:
+  - 1PasswordExtension (1.1)
   - AFNetworking (2.3.1):
     - AFNetworking/NSURLConnection (= 2.3.1)
     - AFNetworking/NSURLSession (= 2.3.1)
@@ -122,6 +123,7 @@ PODS:
   - wpxmlrpc (0.7)
 
 DEPENDENCIES:
+  - 1PasswordExtension
   - AFNetworking (~> 2.3.1)
   - AMPopTip (~> 0.7)
   - CocoaLumberjack (~> 1.9)
@@ -186,6 +188,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/appbotx.git
 
 SPEC CHECKSUMS:
+  1PasswordExtension: 37d1488cf049b8bc0811beb7b52a19f8f803f7c8
   AFNetworking: 6d7b76aa5d04c8c37daad3eef4b7e3f2a7620da3
   AMPopTip: dc5bdb3a88bc2ed0a7ac9799e0a5d47c5211721f
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
