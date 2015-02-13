@@ -14,17 +14,19 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     NSProgress *_progress;
 }
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:reuseIdentifier];
     if (self) {
-        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10,0,40,40)];
+        _progressView = [[MRActivityIndicatorView alloc] initWithFrame:CGRectMake(10.0,0.0,40.0,40.0)];
         _progressView.hidden = YES;
         self.accessoryView = _progressView;
     }
     return self;
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [_progress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
 }
 
@@ -34,6 +36,12 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
     self.progressView.hidden = YES;
     self.progressView.hidesWhenStopped=YES;
     [self.progressView stopAnimating];
+}
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    self.imageView.frame = CGRectInset(self.imageView.frame, 0.0, 5.0);
 }
 
 #pragma mark - Progress handling
@@ -71,7 +79,7 @@ NSString * const WPProgressImageThumbnailKey = @"WPProgressImageThumbnailKey";
         self.textLabel.text = NSLocalizedString(@"Cancelled",@"The action was cancelled");
         self.detailTextLabel.text = @"";
     } else if (_progress.totalUnitCount == 0 && _progress.completedUnitCount == 0){
-        self.textLabel.text = NSLocalizedString(@"Failed",@"The action was failed");
+        self.textLabel.text = NSLocalizedString(@"Failed",@"The action failed");
         self.detailTextLabel.text = @"";
     } else {
         self.textLabel.text = [_progress localizedDescription];
