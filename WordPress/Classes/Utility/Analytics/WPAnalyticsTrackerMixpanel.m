@@ -674,6 +674,12 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
             break;
+        case WPAnalyticsStatLoginFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed Login"];
+            break;
+        case WPAnalyticsStatLoginFailedToGuessXMLRPC:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
+            break;
         default:
             break;
     }
