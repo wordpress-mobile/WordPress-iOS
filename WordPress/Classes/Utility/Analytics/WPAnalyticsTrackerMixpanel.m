@@ -118,12 +118,14 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 - (void)aliasNewUser
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    NSString *username = account.username;
-    
-    [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
-    [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+    [context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account = [accountService defaultWordPressComAccount];
+        NSString *username = account.username;
+        
+        [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
+        [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+    }];
 }
 
 - (void)retrieveAndRegisterEmailAddressIfApplicable
