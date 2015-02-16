@@ -80,11 +80,6 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
-            var numberFormatter = NSNumberFormatter()
-            numberFormatter.locale = NSLocale.currentLocale()
-            numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            numberFormatter.maximumFractionDigits = 0
-            
             self.visitorCount = wpStatsSummary.visitors
             self.viewCount = wpStatsSummary.views
             

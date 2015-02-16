@@ -3790,7 +3790,7 @@
 					"-l\"z\"",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "29192ca6-3411-4ba5-9967-fd7d30bcee3a";
+				PROVISIONING_PROFILE = "56ae6a33-0068-453a-ad6d-abfdd50b86ff";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -3846,7 +3846,7 @@
 					"-l\"z\"",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "d43f9e78-6f10-4495-bc98-dbee08832487";
+				PROVISIONING_PROFILE = "99275e9d-ad23-4674-aa89-8a5d9ffcccef";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -3923,7 +3923,7 @@
 					"-l\"z\"",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "d43f9e78-6f10-4495-bc98-dbee08832487";
+				PROVISIONING_PROFILE = "99275e9d-ad23-4674-aa89-8a5d9ffcccef";
 				STRIP_INSTALLED_PRODUCT = NO;
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
