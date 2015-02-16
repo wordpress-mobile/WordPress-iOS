@@ -37,7 +37,7 @@ pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.gi
 pod 'MRProgress', '~>0.7.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS'
+    pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => 'fe29b5d6000b5a01037d130e65c870985b60363b'
 end
 
 target :WordPressTest, :exclusive => true do
