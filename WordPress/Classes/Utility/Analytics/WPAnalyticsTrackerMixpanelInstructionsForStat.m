@@ -3,6 +3,7 @@
 @interface WPAnalyticsTrackerMixpanelInstructionsForStat () {
     NSMutableArray *_superPropertiesToFlag;
     NSMutableDictionary *_peoplePropertiesToAssign;
+    NSMutableDictionary *_superPropertiesToAssign;
 }
 
 @end
@@ -13,8 +14,9 @@
 {
     if (self = [super init]) {
         _disableTrackingForSelfHosted = NO;
-        _superPropertiesToFlag = [[NSMutableArray alloc] init];
-        _peoplePropertiesToAssign = [[NSMutableDictionary alloc] init];
+        _superPropertiesToFlag = [NSMutableArray new];
+        _peoplePropertiesToAssign = [NSMutableDictionary new];
+        _superPropertiesToAssign = [NSMutableDictionary new];
     }
     return self;
 }
@@ -79,6 +81,13 @@
     NSParameterAssert(property != nil);
     NSParameterAssert(value != nil);
     _peoplePropertiesToAssign[property] = value;
+}
+
+- (void)setSuperProperty:(NSString *)property toValue:(id)value
+{
+    NSParameterAssert(property != nil);
+    NSParameterAssert(value != nil);
+    _superPropertiesToAssign[property] = value;
 }
 
 @end
