@@ -103,7 +103,7 @@
 
 - (void)testTimeZoneForBlogRESTTimeZoneOption
 {
-    self.blog.options = @{ @"timezone" : @"America/Chicago" };
+    self.blog.options = @{ @"timezone" : @{ @"value" : @"America/Chicago" }};
     
     NSTimeZone *timeZone = [self.blogService timeZoneForBlog:self.blog];
     
@@ -113,7 +113,7 @@
 
 - (void)testTimeZoneForBlogRESTGMTOffsetOption
 {
-    self.blog.options = @{ @"gmt_offset" : @-5 };
+    self.blog.options = @{ @"gmt_offset" : @{ @"value" : @-5 }};
     
     NSTimeZone *timeZone = [self.blogService timeZoneForBlog:self.blog];
     
