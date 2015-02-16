@@ -390,7 +390,7 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    if (_userIsDotCom == false && _siteUrlText.text == 0) {
+    if (_userIsDotCom == false && _siteUrlText.text.isEmpty) {
         [self displayOnePasswordEmptySiteAlert];
         return;
     }
