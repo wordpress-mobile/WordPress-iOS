@@ -51,6 +51,7 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
     WPNUXSecondaryButton *_toggleSignInForm;
     WPNUXSecondaryButton *_forgotPassword;
     UIButton *_helpButton;
+    UIButton *_onePasswordButton;
     WPNUXHelpBadgeLabel *_helpBadge;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
@@ -459,7 +460,22 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
         _usernameText.accessibilityIdentifier = @"Username / Email";
         [_mainView addSubview:_usernameText];
     }
-
+    
+    // Add OnePassword
+    if (_onePasswordButton == nil) {
+        _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _onePasswordButton.frame = OnePasswordButtonFrame;
+        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+        [_onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *containerView = [[UIView alloc] initWithFrame:OnePasswordContainerFrame];
+        [containerView addSubview:_onePasswordButton];
+        _usernameText.rightView = containerView;
+    }
+    
+    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    _usernameText.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
     // Add Password
     if (_passwordText == nil) {
         _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
