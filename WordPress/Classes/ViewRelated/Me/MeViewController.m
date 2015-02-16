@@ -17,6 +17,7 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import <WordPress-iOS-Shared/WPTableViewSectionHeaderView.h>
 #import "HelpshiftUtils.h"
 
 const typedef enum {
@@ -200,22 +201,43 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
-                NSString *signOutString = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                NSString *signoutFromAccunt = [NSString stringWithFormat:@"Unlink %@", defaultAccount.username];
+                NSString *signOutString = NSLocalizedString(signoutFromAccunt, @"Sign out from WordPress.com");
                 cell.textLabel.text = signOutString;
                 cell.accessibilityIdentifier = signOutString;
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+                NSString *signInString = NSLocalizedString(@"Sign in to WordPress.com", @"Sign in to WordPress.com");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
             }
         }
     }
     return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    if (section == MeSectionWpCom) {
+        return NSLocalizedString(@"WORDPRESS.COM LINKED ACCOUNT", @"WordPress.com sign-in/sign-out section header title");
+    }
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate methods
