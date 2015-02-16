@@ -388,6 +388,51 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
 }
 
+- (IBAction)findLoginFromOnePassword:(id)sender
+{
+    if (_userIsDotCom == false && _siteUrlText.text == 0) {
+        [self displayOnePasswordEmptySiteAlert];
+        return;
+    }
+ 
+    NSString *loginURL = _userIsDotCom ? WPOnePasswordWordPressComURL : _siteUrlText.text;
+    
+    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
+                                                forViewController:self
+                                                           sender:sender
+                                                       completion:^(NSDictionary *loginDict, NSError *error) {
+                                                           if (!loginDict) {
+                                                               if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                                                                   DDLogError(@"OnePassword Error: %@", error);
+                                                               }
+                                                               return;
+                                                           }
+                                                           
+                                                           _usernameText.text = loginDict[AppExtensionUsernameKey];
+                                                           _passwordText.text = loginDict[AppExtensionPasswordKey];
+                                                           [self signIn];
+                                                       }];
+}
+
+
+#pragma mark - One Password Helpers
+
+- (void)displayOnePasswordEmptySiteAlert
+{
+    NSString *message = NSLocalizedString(@"Site address is required to be entered before 1Password can be used.",
+                                          @"Error message displayed when the user is Signing into a self hosted site and "
+                                          @"tapped the 1Password Button before typing his siteURL");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                                              otherButtonTitles:nil];
+    
+    [alertView show];
+}
+
+
 #pragma mark - Private Methods
 
 - (void)addMainView
