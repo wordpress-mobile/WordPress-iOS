@@ -87,24 +87,34 @@ extension NotificationBlock
         let theString = NSMutableAttributedString(string: text, attributes: regularStyle)
         theString.applyAttributesToQuotes(quotesStyle)
         
+        // Apply the Ranges
+        var lengthShift = 0
+        
         for range in ranges as [NotificationRange] {
+            var shiftedRange        = range.range
+            shiftedRange.location   += lengthShift
+            
             if range.isUser {
-                theString.addAttributes(userStyle, range: range.range)
+                theString.addAttributes(userStyle, range: shiftedRange)
             } else if range.isPost {
-                theString.addAttributes(postStyle, range: range.range)
+                theString.addAttributes(postStyle, range: shiftedRange)
             } else if range.isComment {
-                theString.addAttributes(commentStyle, range: range.range)
+                theString.addAttributes(commentStyle, range: shiftedRange)
             } else if range.isBlockquote {
-                theString.addAttributes(blockStyle, range: range.range)
+                theString.addAttributes(blockStyle, range: shiftedRange)
+            } else if range.isNoticon {
+                let noticon = NSAttributedString(string: "\(range.value) ", attributes: Styles.subjectNoticonStyle)
+                theString.replaceCharactersInRange(shiftedRange, withAttributedString: noticon)
+                lengthShift += noticon.length
             }
-
+            
             // Don't Highlight Links in the subject
             if isSubject == false && range.url != nil {
-                theString.addAttribute(NSLinkAttributeName, value: range.url, range: range.range)
-                theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: range.range)
+                theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
+                theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: shiftedRange)
             }
         }
-
+        
         return theString
     }
     
