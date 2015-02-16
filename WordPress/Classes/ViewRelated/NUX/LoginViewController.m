@@ -24,9 +24,22 @@
 #import <NSURL+IDN.h>
 #import "HelpshiftUtils.h"
 
-static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
-static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+
+static CGFloat const GeneralWalkthroughStandardOffset           = 15;
+static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
+static CGFloat const GeneralWalkthroughTextFieldWidth           = 320.0;
+static CGFloat const GeneralWalkthroughTextFieldHeight          = 44.0;
+static CGFloat const GeneralWalkthroughButtonWidth              = 290.0;
+static CGFloat const GeneralWalkthroughButtonHeight             = 41.0;
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33;
+static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
+
+static CGRect const OnePasswordButtonFrame                      = {0.0f, 0.0f, 22.0f, 22.0f};
+static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 31.0f, 22.0f};
+
 
 @interface LoginViewController () <UITextFieldDelegate> {
 
@@ -60,16 +73,6 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
 @end
 
 @implementation LoginViewController
-
-CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
-CGFloat const GeneralWalkthroughStandardOffset = 15;
-CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
-CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
-CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughButtonWidth = 290.0;
-CGFloat const GeneralWalkthroughButtonHeight = 41.0;
-CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dealloc
 {
