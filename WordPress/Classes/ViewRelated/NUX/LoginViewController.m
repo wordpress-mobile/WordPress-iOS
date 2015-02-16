@@ -311,7 +311,7 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
 
 #pragma mark - Button Press Methods
 
-- (void)helpButtonAction:(id)sender
+- (IBAction)helpButtonAction:(id)sender
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
@@ -320,17 +320,17 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)skipToCreateAction:(id)sender
+- (IBAction)skipToCreateAction:(id)sender
 {
     [self showCreateAccountView];
 }
 
-- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
+- (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
 }
 
-- (void)signInButtonAction:(id)sender
+- (IBAction)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
 
@@ -354,7 +354,7 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
     [self signIn];
 }
 
-- (void)toggleSignInFormAction:(id)sender
+- (IBAction)toggleSignInFormAction:(id)sender
 {
     _userIsDotCom = !_userIsDotCom;
     _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
@@ -369,14 +369,15 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
                      }];
 }
 
-- (void)cancelButtonAction:(id)sender
+
+- (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
         self.dismissBlock();
     }
 }
 
-- (void)forgotPassword:(id)sender
+- (IBAction)forgotPassword:(id)sender
 {
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
     if (!_userIsDotCom) {
