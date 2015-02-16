@@ -1163,8 +1163,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
         // If the image is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.") withSupportButton:NO];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
         if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
