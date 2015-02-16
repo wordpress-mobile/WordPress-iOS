@@ -36,3 +36,5 @@ BOOL const WPJetpackRESTEnabled                                     = NO;
 #endif
 
 NSString *const WPiTunesAppId                                       = @"335703880";
+
+NSString *const WPOnePasswordWordPressComURL                        = @"https://www.wordpress.com";
