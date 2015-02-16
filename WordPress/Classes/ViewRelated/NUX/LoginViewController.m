@@ -905,10 +905,10 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
 {
-
     _statusLabel.hidden = !(status.length > 0);
     _statusLabel.text = status;
 
+    _onePasswordButton.enabled = !authenticating;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
