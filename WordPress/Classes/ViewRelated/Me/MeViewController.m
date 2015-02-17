@@ -268,7 +268,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
             if (defaultAccount) {
                 // Present the Sign out ActionSheet
-                NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
+                NSString *signOutTitle = NSLocalizedString(@"Signing out removes all of your sites associated with %@",
+                                                           @"Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
