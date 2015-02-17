@@ -8,18 +8,18 @@ fi
 command -v xcpretty >/dev/null
 if [ $? -eq 1 ]; then
 echo >&2 "xcpretty not found don't use it."
-xcodebuild build test \
+xctool build test \
 	-destination "platform=iOS Simulator,name=iPhone 4s,OS=8.1" \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-configuration Debug
 else
-xcodebuild build test \
+xctool build test \
 	-destination "platform=iOS Simulator,name=iPhone 4s,OS=8.1" \
 	-workspace "$TRAVIS_XCODE_WORKSPACE" \
 	-scheme "$TRAVIS_XCODE_SCHEME" \
 	-configuration Debug \
-	-sdk "$TRAVIS_XCODE_SDK" | xcpretty -c && exit ${PIPESTATUS[0]}
+	-sdk "$TRAVIS_XCODE_SDK"
 fi
 
 
