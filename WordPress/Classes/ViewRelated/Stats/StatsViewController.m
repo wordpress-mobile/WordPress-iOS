@@ -56,11 +56,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-    
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (!appDelegate.connectionAvailable) {
-        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
-    }
 }
 
 - (void)addStatsViewControllerToView
@@ -78,6 +73,12 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if (!appDelegate.connectionAvailable) {
+        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+        return;
+    }
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
