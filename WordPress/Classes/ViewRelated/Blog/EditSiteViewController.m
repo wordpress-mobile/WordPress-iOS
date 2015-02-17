@@ -160,6 +160,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     return header;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 48;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
@@ -306,7 +311,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             }
         }
     }
-    [tv deselectRowAtIndexPath:indexPath animated:YES];
+    //[tv deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.section == 2) {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
