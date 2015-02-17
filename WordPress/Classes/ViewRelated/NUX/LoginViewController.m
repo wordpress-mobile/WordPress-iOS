@@ -418,7 +418,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
 
 - (void)displayOnePasswordEmptySiteAlert
 {
-    NSString *message = NSLocalizedString(@"Site address is required to be entered before 1Password can be used.",
+    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
                                           @"Error message displayed when the user is Signing into a self hosted site and "
                                           @"tapped the 1Password Button before typing his siteURL");
     
