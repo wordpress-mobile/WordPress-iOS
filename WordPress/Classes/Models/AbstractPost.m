@@ -279,7 +279,7 @@
     // We need the extra check since [nil isEqual:nil] returns NO
     // and because @"" != nil
     if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
-        && (![self.postTitle isEqualToString:original.postTitle])) {
+        && (![self.postTitle isEqual:original.postTitle])) {
         return YES;
     }
     
