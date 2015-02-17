@@ -10,6 +10,7 @@
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
 #import <WPStatsViewController.h>
+#import <WPNoResultsView.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -17,6 +18,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
+@property (nonatomic, weak) WPNoResultsView *noResultsView;
 
 @end
 
@@ -56,7 +58,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if (!appDelegate.connectionAvailable) {
-//        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
     }
 }
 
@@ -165,6 +167,15 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (self.dismissBlock) {
         self.dismissBlock();
     }
+}
+
+
+- (void)showNoResultsWithTitle:(NSString *)title message:(NSString *)message
+{
+    [self.noResultsView removeFromSuperview];
+    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
+    self.noResultsView = noResultsView;
+    [self.view addSubview:self.noResultsView];
 }
 
 
