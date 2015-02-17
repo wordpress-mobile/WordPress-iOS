@@ -81,6 +81,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.syncHelper.delegate = nil;
+    self.tableViewHandler.delegate = nil;
 }
 
 - (instancetype)init
@@ -750,7 +752,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSDate *earlierThan = post.sortDate;
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf = self;
     
