@@ -312,6 +312,7 @@
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="commentCount" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
@@ -348,11 +349,13 @@
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerSites" inverseEntity="Account" syncable="YES"/>
     </entity>
     <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
+        <attribute name="isMenuItem" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="path" attributeType="String" indexed="YES" syncable="YES"/>
         <attribute name="title" attributeType="String" syncable="YES"/>
+        <attribute name="topicDescription" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="topicID" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerTopics" inverseEntity="Account" syncable="YES"/>
@@ -385,9 +388,9 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="148"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="448"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="465"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="180"/>
+        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="210"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>
