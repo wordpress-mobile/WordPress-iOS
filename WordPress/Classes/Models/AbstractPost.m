@@ -277,6 +277,7 @@
     AbstractPost *original = (AbstractPost *)self.original;
     
     // We need the extra check since [nil isEqual:nil] returns NO
+    // and because @"" != nil
     if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
         && (![self.postTitle isEqualToString:original.postTitle])) {
         return YES;
