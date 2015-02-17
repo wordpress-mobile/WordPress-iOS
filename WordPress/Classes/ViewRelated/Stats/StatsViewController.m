@@ -3,6 +3,7 @@
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
 #import "StatsWebViewController.h"
+#import "WPChromelessWebViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -143,6 +144,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     StatsWebViewController *vc = [[StatsWebViewController alloc] init];
     vc.blog = self.blog;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
+- (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
+{
+    WPChromelessWebViewController *vc = [[WPChromelessWebViewController alloc] init];
+    [vc loadPath:url.absoluteString];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
