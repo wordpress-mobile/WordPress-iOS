@@ -79,6 +79,10 @@
                                           options:options
                                             error:&error];
     
+    if (!result) {
+        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
+    }
+
     XCTAssertTrue(result);
     
     psc = nil;
@@ -89,7 +93,7 @@
                                                           toModel:model
                                                 orderedModelNames:@[@"WordPress 18", @"WordPress 19", @"WordPress 20", @"WordPress 21"]
                                                             error:&error];
-    if (error) {
+    if (!migrateResult) {
         NSLog(@"Error while migrating: %@", error);
     }
     XCTAssertTrue(migrateResult);
@@ -101,6 +105,9 @@
                                      options:options
                                        error:&error];
     
+    if (!result) {
+        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
+    }
     XCTAssertTrue(result);
 }
 
@@ -134,7 +141,10 @@
                                                                         NSUserDomainMask,
                                                                         YES) lastObject];
     NSURL *storeURL = [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:fileName]];
-    [[NSFileManager defaultManager] removeItemAtURL:storeURL error:nil];
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] removeItemAtURL:storeURL error:&error]) {
+        NSLog(@"Error removing file: %@", [error localizedDescription]);
+    }
     
     return storeURL;
 }
