@@ -494,7 +494,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
     [WPNUXUtility centerViews:controls withStartingView:_titleLabel andEndingView:_TOSLabel forHeight:viewHeight];
 }
 
-- (void)helpButtonAction
+- (IBAction)helpButtonAction
 {
     SupportViewController *supportVC = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportVC];
@@ -503,12 +503,12 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)backButtonAction
+- (IBAction)backButtonAction
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (void)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
+- (IBAction)viewWasTapped:(UITapGestureRecognizer *)gestureRecognizer
 {
     [self.view endEditing:YES];
 }
@@ -557,7 +557,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
     [self createUserAndSite];
 }
 
-- (void)TOSLabelWasTapped
+- (IBAction)TOSLabelWasTapped
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
