@@ -13,6 +13,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
 @property (nonatomic, strong) NSString *blogName;
+@property (nonatomic, strong) NSString *blogDescription;
 @property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *commentCount;
 @property (nonatomic) BOOL commentsOpen;

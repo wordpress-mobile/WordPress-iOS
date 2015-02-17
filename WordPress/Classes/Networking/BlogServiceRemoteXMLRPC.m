@@ -68,8 +68,14 @@
 
         NSDictionary *postFormats = responseObject;
         NSDictionary *respDict = responseObject;
-        if ([postFormats objectForKey:@"supported"] && [[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+        if ([postFormats objectForKey:@"supported"]) {
+            NSMutableArray *supportedKeys;
+            if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+                supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+            } else if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSDictionary class]]) {
+                supportedKeys = [NSMutableArray arrayWithArray:[[postFormats objectForKey:@"supported"] allValues]];
+            }
+            
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
             if (![supportedKeys containsObject:@"standard"]) {
                 [supportedKeys addObject:@"standard"];

@@ -89,6 +89,8 @@
                                     @"image_default_link_type",
                                     @"software_version",
                                     @"videopress_enabled",
+                                    @"timezone",
+                                    @"gmt_offset"
                                     ];
 
         for (NSString *key in optionsDirectMapKeys) {
