@@ -37,4 +37,7 @@ BOOL const WPJetpackRESTEnabled                                     = NO;
 
 NSString *const WPiTunesAppId                                       = @"335703880";
 
-NSString *const WPOnePasswordWordPressComURL                        = @"https://www.wordpress.com";
+NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
+NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
+NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
+NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;
