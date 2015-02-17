@@ -30,13 +30,13 @@ static NSString *const ForgotPasswordDotComBaseUrl              = @"https://word
 static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-static CGFloat const GeneralWalkthroughStandardOffset           = 15;
+static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
 static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
 static CGFloat const GeneralWalkthroughTextFieldWidth           = 320.0;
 static CGFloat const GeneralWalkthroughTextFieldHeight          = 44.0;
 static CGFloat const GeneralWalkthroughButtonWidth              = 290.0;
 static CGFloat const GeneralWalkthroughButtonHeight             = 41.0;
-static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33;
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
 static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
 
 static CGFloat const OnePasswordPaddingX                        = 9.0;
