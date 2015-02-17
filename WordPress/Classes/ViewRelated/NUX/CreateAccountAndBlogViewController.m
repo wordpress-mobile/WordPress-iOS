@@ -22,6 +22,10 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
+#import "Constants.h"
+
+#import <1PasswordExtension/OnePasswordExtension.h>
+
 
 @interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
     // Page 1
@@ -33,6 +37,7 @@
     WPWalkthroughTextField *_emailField;
     WPWalkthroughTextField *_usernameField;
     WPWalkthroughTextField *_passwordField;
+    UIButton *_onePasswordButton;
     WPNUXMainButton *_createAccountButton;
     WPWalkthroughTextField *_siteAddressField;
 
@@ -302,7 +307,26 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
         _passwordField.accessibilityIdentifier = @"Password";
         [self.view addSubview:_passwordField];
     }
-
+    
+    // Add OnePassword
+    if (_onePasswordButton == nil) {
+        _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+        [_onePasswordButton addTarget:self action:@selector(saveLoginToOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+        [_onePasswordButton sizeToFit];
+        
+        CGRect containerFrame = _onePasswordButton.frame;
+        containerFrame.size.width += CreateAccountAndBlogOnePasswordPaddingX;
+        
+        UIView *containerView = [[UIView alloc] initWithFrame:containerFrame];
+        [containerView addSubview:_onePasswordButton];
+        _passwordField.rightView = containerView;
+    }
+    
+    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    _passwordField.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    _passwordField.showSecureTextEntryToggle = !isOnePasswordAvailable;
+    
     // Add Site Address
     if (_siteAddressField == nil) {
         _siteAddressField = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
@@ -489,7 +513,39 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
     [self.view endEditing:YES];
 }
 
-- (void)createAccountButtonAction
+- (IBAction)saveLoginToOnePassword:(id)sender
+{
+    NSDictionary *newLoginDetails = @{
+        AppExtensionTitleKey        : WPOnePasswordWordPressTitle,
+        AppExtensionUsernameKey     : _usernameField.text ?: [NSString string],
+        AppExtensionPasswordKey     : _passwordField.text ?: [NSString string],
+    };
+    
+    NSDictionary *passwordGenerationOptions = @{
+        AppExtensionGeneratedPasswordMinLengthKey: @(WPOnePasswordGeneratedMinLength),
+        AppExtensionGeneratedPasswordMaxLengthKey: @(WPOnePasswordGeneratedMaxLength)
+    };
+    
+    [[OnePasswordExtension sharedExtension] storeLoginForURLString:WPOnePasswordWordPressComURL
+                                                      loginDetails:newLoginDetails
+                                         passwordGenerationOptions:passwordGenerationOptions
+                                                 forViewController:self
+                                                            sender:sender
+                                                        completion:^(NSDictionary *loginDict, NSError *error) {
+        
+        if (!loginDict) {
+            if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                DDLogError(@"Failed to use 1Password App Extension to save a new Login: %@", error);
+            }
+            return;
+        }
+        
+        _usernameField.text = loginDict[AppExtensionUsernameKey] ?: [NSString string];
+        _passwordField.text = loginDict[AppExtensionPasswordKey] ?: [NSString string];
+    }];
+}
+
+- (IBAction)createAccountButtonAction
 {
     [self.view endEditing:YES];
 
