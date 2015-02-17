@@ -41,7 +41,7 @@
 #import "WPWhatsNew.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
-#import "ReaderPostsViewController.h"
+#import "ReaderViewController.h"
 #import "SupportViewController.h"
 #import "StatsViewController.h"
 #import "Constants.h"
@@ -290,9 +290,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                 NSNumber *postId = [params numberForKey:@"postId"];
 
                 WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
-                [tabBarController.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
+                [tabBarController.readerViewController.navigationController popToRootViewControllerAnimated:NO];
                 [tabBarController showReaderTab];
-                [tabBarController.readerPostsViewController openPost:postId onBlog:blogId];
+                [tabBarController.readerViewController openPost:postId onBlog:blogId];
                 
                 returnValue = YES;
             }

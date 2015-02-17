@@ -2,6 +2,7 @@
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #import "WordPressAppDelegate.h"
+#import "AccountService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "Blog.h"
@@ -12,7 +13,7 @@
 #import "MeViewController.h"
 #import "NotificationsViewController.h"
 #import "PostsViewController.h"
-#import "ReaderPostsViewController.h"
+#import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPageViewController.h"
@@ -31,7 +32,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
-@property (nonatomic, strong) ReaderPostsViewController *readerPostsViewController;
+@property (nonatomic, strong) ReaderViewController *readerViewController;
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 @property (nonatomic, strong) MeViewController *meViewController;
 @property (nonatomic, strong) UIViewController *newPostViewController;
@@ -131,15 +132,15 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
         return _readerNavigationController;
     }
 
-    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
-    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
+    self.readerViewController = [[ReaderViewController alloc] init];
+    _readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerViewController];
     _readerNavigationController.navigationBar.translucent = NO;
     UIImage *readerTabBarImage = [UIImage imageNamed:@"icon-tab-reader"];
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
     [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
 
     return _readerNavigationController;
 }
