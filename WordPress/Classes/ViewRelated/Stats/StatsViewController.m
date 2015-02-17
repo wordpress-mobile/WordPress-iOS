@@ -36,6 +36,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:nil] instantiateInitialViewController];
     self.statsVC.statsDelegate = self;
