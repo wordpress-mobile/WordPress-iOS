@@ -39,8 +39,7 @@ static CGFloat const GeneralWalkthroughButtonHeight             = 41.0;
 static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33;
 static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
 
-static CGRect const OnePasswordButtonFrame                      = {0.0f, 0.0f, 22.0f, 22.0f};
-static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 31.0f, 22.0f};
+static CGFloat const OnePasswordPaddingX                        = 9.0;
 
 
 @interface LoginViewController () <UITextFieldDelegate> {
@@ -401,17 +400,17 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
                                                 forViewController:self
                                                            sender:sender
                                                        completion:^(NSDictionary *loginDict, NSError *error) {
-                                                           if (!loginDict) {
-                                                               if (error.code != AppExtensionErrorCodeCancelledByUser) {
-                                                                   DDLogError(@"OnePassword Error: %@", error);
-                                                               }
-                                                               return;
-                                                           }
-                                                           
-                                                           _usernameText.text = loginDict[AppExtensionUsernameKey];
-                                                           _passwordText.text = loginDict[AppExtensionPasswordKey];
-                                                           [self signIn];
-                                                       }];
+        if (!loginDict) {
+            if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                DDLogError(@"OnePassword Error: %@", error);
+            }
+            return;
+        }
+
+        _usernameText.text = loginDict[AppExtensionUsernameKey];
+        _passwordText.text = loginDict[AppExtensionPasswordKey];
+        [self signIn];
+    }];
 }
 
 
@@ -509,11 +508,14 @@ static CGRect const OnePasswordContainerFrame                   = {0.0f, 0.0f, 3
     // Add OnePassword
     if (_onePasswordButton == nil) {
         _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _onePasswordButton.frame = OnePasswordButtonFrame;
         [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
         [_onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+        [_onePasswordButton sizeToFit];
         
-        UIView *containerView = [[UIView alloc] initWithFrame:OnePasswordContainerFrame];
+        CGRect containerFrame = _onePasswordButton.frame;
+        containerFrame.size.width += OnePasswordPaddingX;
+
+        UIView *containerView = [[UIView alloc] initWithFrame:containerFrame];
         [containerView addSubview:_onePasswordButton];
         _usernameText.rightView = containerView;
     }
