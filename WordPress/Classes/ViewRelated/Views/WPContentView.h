@@ -26,6 +26,11 @@ extern const CGFloat WPContentViewLineHeightMultiple;
 @optional
 
 /**
+ Tells the delegate the user has tapped on the attribution avatar.
+ */
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView;
+
+/**
  Tells the delegate the user has tapped on the featured image.
  
  @param contentView The content view informing the delegate of the event.
@@ -116,11 +121,12 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) WPContentActionView *actionView;
 
 /* Factory methos for subviews */
-- (WPContentAttributionView *)viewForAttributionView;
-- (UILabel *)viewForTitle;
-- (UIView *)viewForContent;
-- (WPContentActionView *)viewForActionView;
-- (UIImageView *)imageViewForFeaturedImage;
+- (void)buildAttributionView;
+- (void)buildAttributionBorderView;
+- (void)buildFeaturedImageview;
+- (void)buildTitleLabel;
+- (void)buildContentView;
+- (void)buildActionView;
 
 /**
  Configures the appearance of the attribution view based on the content provider.
