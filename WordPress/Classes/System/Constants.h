@@ -25,3 +25,8 @@ extern NSString *const WPInternalBetaShakeToPullUpFeedbackKey;
 extern BOOL const WPJetpackRESTEnabled;
 
 extern NSString *const WPiTunesAppId;
+
+extern NSString *const WPOnePasswordWordPressTitle;
+extern NSString *const WPOnePasswordWordPressComURL;
+extern NSInteger const WPOnePasswordGeneratedMinLength;
+extern NSInteger const WPOnePasswordGeneratedMaxLength;
