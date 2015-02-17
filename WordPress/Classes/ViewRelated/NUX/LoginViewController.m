@@ -425,7 +425,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
                                                         message:message
                                                        delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Accept", nil)
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
                                               otherButtonTitles:nil];
     
     [alertView show];
