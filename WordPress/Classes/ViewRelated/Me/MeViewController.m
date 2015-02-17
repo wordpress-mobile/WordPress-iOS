@@ -201,16 +201,18 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
-                NSString *signoutFromAccunt = [NSString stringWithFormat:@"Unlink %@", defaultAccount.username];
-                NSString *signOutString = NSLocalizedString(signoutFromAccunt, @"Sign out from WordPress.com");
+                NSString *signOutString = NSLocalizedString(@"Disconnect from WordPress.com",
+                                                            @"Label for disconnecting from WordPress.com account");
                 cell.textLabel.text = signOutString;
                 cell.accessibilityIdentifier = signOutString;
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Sign in to WordPress.com", @"Sign in to WordPress.com");
+                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com Account",
+                                                           @"Label for connecting to WordPress.com account");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
             }
@@ -235,7 +237,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     if (section == MeSectionWpCom) {
-        return NSLocalizedString(@"WORDPRESS.COM LINKED ACCOUNT", @"WordPress.com sign-in/sign-out section header title");
+        return NSLocalizedString(@"WordPress.com Account", @"WordPress.com sign-in/sign-out section header title");
     }
     return nil;
 }
