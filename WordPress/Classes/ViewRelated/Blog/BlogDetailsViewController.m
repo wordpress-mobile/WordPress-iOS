@@ -29,6 +29,7 @@
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
+#import "ReachabilityUtils.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -402,10 +403,16 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
-    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
 
+    [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 @end
