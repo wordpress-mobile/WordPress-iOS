@@ -54,16 +54,17 @@
 
 @implementation CreateAccountAndBlogViewController
 
-CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
-CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
-CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
-CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
-CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
-CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
-CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
-CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
-CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
+static CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
+static CGFloat const CreateAccountAndBlogIconVerticalOffset = 70.0;
+static CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
+static CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
+static CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
+static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
+static CGFloat const CreateAccountAndBlogKeyboardOffset = 132.0;
+static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
+static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
+static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
+static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
 
 - (id)init
 {
