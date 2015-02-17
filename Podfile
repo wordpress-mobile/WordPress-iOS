@@ -5,6 +5,7 @@ xcodeproj 'WordPress/WordPress.xcodeproj'
 inhibit_all_warnings!
 
 platform :ios, '7.0'
+pod '1PasswordExtension'
 pod 'AFNetworking',	'~> 2.5.1'
 pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', '0.3'
