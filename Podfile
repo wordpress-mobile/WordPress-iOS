@@ -6,7 +6,7 @@ inhibit_all_warnings!
 
 platform :ios, '7.0'
 pod '1PasswordExtension'
-pod 'AFNetworking',	'~> 2.3.1'
+pod 'AFNetworking',	'~> 2.5.1'
 pod 'Reachability',	'3.1.1'
 pod 'NSURL+IDN', '0.3'
 pod 'DTCoreText',   '1.6.13'
@@ -14,7 +14,7 @@ pod 'UIDeviceIdentifier', '~> 0.1'
 pod 'SVProgressHUD', :git => 'https://github.com/TransitApp/SVProgressHUD.git', :commit => '2ac46ae2f2dd37db153ce1daea73b1273ac2bba3'
 pod 'AMPopTip', '~> 0.7'
 pod 'wpxmlrpc', '~> 0.7'
-pod 'WordPressApi', '~> 0.2.2'
+pod 'WordPressApi', '~> 0.3.1'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Mixpanel', '2.5.4'
 pod 'CocoaLumberjack', '~>1.9'
@@ -26,9 +26,9 @@ pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.8.0'
 pod 'CTAssetsPickerController', '~> 2.7.0'
-pod 'WordPress-iOS-Shared', '0.1.8'
-pod 'WordPress-iOS-Editor', '0.4'
-pod 'WordPressCom-Stats-iOS', '0.1.6'
+pod 'WordPress-iOS-Shared', '0.2.0'
+pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => 'c7a2ef6ef77e892bba430efd923592f4d6200d00'
+pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => 'fe29b5d6000b5a01037d130e65c870985b60363b'
 pod 'WordPressCom-Analytics-iOS', '0.0.25'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
@@ -38,7 +38,7 @@ pod "WordPress-AppbotX", :git => "https://github.com/wordpress-mobile/appbotx.gi
 pod 'MRProgress', '~>0.7.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', '0.1.6'
+    pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => 'fe29b5d6000b5a01037d130e65c870985b60363b'
 end
 
 target :WordPressTest, :exclusive => true do
