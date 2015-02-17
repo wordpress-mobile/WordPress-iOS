@@ -86,11 +86,11 @@
     }
 
     if (self.showSecureTextEntryToggle) {
-        returnRect.size.width -= self.secureTextEntryToggle.frame.size.width;
+        returnRect.size.width -= CGRectGetWidth(self.secureTextEntryToggle.frame);
     }
     
     if (self.rightView && self.rightViewMode != UITextFieldViewModeNever) {
-        returnRect.size.width -= self.rightView.frame.size.width;
+        returnRect.size.width -= CGRectGetWidth(self.rightView.frame);
     }
 
     return CGRectIntegral(returnRect);
