@@ -721,6 +721,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
 {
     _authenticating = authenticating;
     _createAccountButton.enabled = !authenticating;
+    _onePasswordButton.enabled = !authenticating;
     [_createAccountButton showActivityIndicator:authenticating];
 }
 
