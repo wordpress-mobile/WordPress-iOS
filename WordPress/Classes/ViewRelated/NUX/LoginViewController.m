@@ -1028,7 +1028,6 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
                                             xmlrpc:(NSString *)xmlrpc
                                            options:(NSDictionary *)options
 {
-    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -1065,6 +1064,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         [self dismiss];
     }
 
+    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];
 }
