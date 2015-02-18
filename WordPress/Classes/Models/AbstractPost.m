@@ -277,27 +277,34 @@
     AbstractPost *original = (AbstractPost *)self.original;
     
     // We need the extra check since [nil isEqual:nil] returns NO
-    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
+    // and because @"" != nil
+    if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
+        && (![self.postTitle isEqual:original.postTitle])) {
         return YES;
     }
     
-    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
+    if (!([self.content length] == 0 && [original.content length] == 0)
+        && (![self.content isEqual:original.content])) {
         return YES;
     }
     
-    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
+    if (!([self.status length] == 0 && [original.status length] == 0)
+        && (![self.status isEqual:original.status])) {
         return YES;
     }
     
-    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
+    if (!([self.password length] == 0 && [original.password length] == 0)
+        && (![self.password isEqual:original.password])) {
         return YES;
     }
     
-    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
+    if ((self.dateCreated != original.dateCreated)
+        && (![self.dateCreated isEqual:original.dateCreated])) {
         return YES;
     }
     
-    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
+    if (!([self.permaLink length] == 0 && [original.permaLink length] == 0)
+        && (![self.permaLink isEqual:original.permaLink])) {
         return YES;
     }
     
