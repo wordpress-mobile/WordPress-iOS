@@ -183,8 +183,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         } else {
             [self.siteUrlText becomeFirstResponder];
         }
-    } else if (textField == self.siteUrlText && self.signInButton.enabled) {
-        [self signInButtonAction:nil];
+    } else if (textField == self.siteUrlText) {
+        if (self.signInButton.enabled) {
+            [self signInButtonAction:nil];
+        }
     } else if (textField == self.multifactorText) {
         if ([self isMultifactorFilled]) {
             [self signInButtonAction:nil];
@@ -334,8 +336,18 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [alertView show];
 }
 
+- (void)displayErrorMessages
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
 
-#pragma mark - Button Press Methods
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
+}
+
+
+#pragma mark - Button Handlers
 
 - (IBAction)helpButtonAction:(id)sender
 {
@@ -519,9 +531,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [onePasswordView addSubview:onePasswordButton];
     usernameText.rightView = onePasswordView;
     
-    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
-    usernameText.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
-    
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
     passwordText.backgroundColor = [UIColor whiteColor];
@@ -660,44 +669,38 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
+    // One Password
+    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
     // TextFields
-    self.usernameText.alpha         = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    self.passwordText.alpha         = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    self.multifactorText.alpha      = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaEnabled  : GeneralWalkthroughAlphaHidden;
-    self.siteUrlText.alpha          = self.userIsDotCom             ? GeneralWalkthroughAlphaHidden   : GeneralWalkthroughAlphaEnabled;
+    self.usernameText.alpha                 = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
+    self.passwordText.alpha                 = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
+    self.multifactorText.alpha              = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaEnabled  : GeneralWalkthroughAlphaHidden;
+    self.siteUrlText.alpha                  = self.userIsDotCom             ? GeneralWalkthroughAlphaHidden   : GeneralWalkthroughAlphaEnabled;
     
-    self.usernameText.enabled       = !self.shouldDisplayMultifactor;
-    self.passwordText.enabled       = !self.shouldDisplayMultifactor;
-    self.multifactorText.enabled    = self.shouldDisplayMultifactor;
-    self.siteUrlText.enabled        = !self.userIsDotCom;
+    self.usernameText.enabled               = !self.shouldDisplayMultifactor;
+    self.passwordText.enabled               = !self.shouldDisplayMultifactor;
+    self.multifactorText.enabled            = self.shouldDisplayMultifactor;
+    self.siteUrlText.enabled                = !self.userIsDotCom;
     
-    // Cancel Button
-    self.cancelButton.hidden        = !self.cancellable;
+    // Buttons
+    self.cancelButton.hidden                = !self.cancellable;
+    self.forgotPassword.hidden              = !self.isForgotPasswordEnabled;
+    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor;
+    self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
     
     // SignIn Button
-    NSString *signInTitle = @"Add Site";
-    
-    if (self.shouldDisplayMultifactor) {
-        signInTitle = @"Verify";
-    } else if (self.userIsDotCom) {
-        signInTitle = @"Sign In";
-    }
-    
-    self.signInButton.enabled       = self.isSignInEnabled;
+    NSString *signInTitle                   = self.signInButtonTitle;
+    self.signInButton.enabled               = self.isSignInEnabled;
     self.signInButton.accessibilityIdentifier = signInTitle;
-    [self.signInButton setTitle:NSLocalizedString(signInTitle, nil) forState:UIControlStateNormal];
+    [self.signInButton setTitle:signInTitle forState:UIControlStateNormal];
     
     // Dotcom / SelfHosted Button
-    NSString *toggleTitle           = self.userIsDotCom ? @"Add Self-Hosted Site" : @"Sign in to WordPress.com";
-    self.toggleSignInForm.hidden    = !self.isSignInToggleEnabled;
+    NSString *toggleTitle                   = self.toggleSignInButtonTitle;
+    self.toggleSignInForm.hidden            = !self.isSignInToggleEnabled;
     self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
-    [self.toggleSignInForm setTitle:NSLocalizedString(toggleTitle, nil) forState:UIControlStateNormal];
-    
-    // Create Account Button
-    self.skipToCreateAccount.hidden = !self.isAccountCreationEnabled;
-    
-    // Forgot Password Button
-    self.forgotPassword.hidden      = !self.isForgotPasswordEnabled;
+    [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
 }
 
 - (void)layoutControls
@@ -752,6 +755,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     CGFloat signInButtonY = [self lastTextfieldMaxY] + GeneralWalkthroughStandardOffset;
     self.signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
 
+    // Layout SMS Label
+    CGFloat smsLabelY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    self.sendVerificationCodeButton.frame = CGRectIntegral(CGRectMake(textLabelX, smsLabelY, GeneralWalkthroughButtonSize.width, self.sendVerificationCodeButton.titleLabel.font.lineHeight * LoginVerificationCodeNumberOfLines));
+    
     // Layout Lost password Button
     CGFloat forgotPasswordY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
     CGFloat forgotPasswordHeight = [self.forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.forgotPassword.titleLabel.font}].height;
@@ -956,29 +963,39 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return [reservedUserNames containsObject:username];
 }
 
+- (NSString *)signInButtonTitle
+{
+    if (self.shouldDisplayMultifactor) {
+        return NSLocalizedString(@"Verify", @"Button title for Two Factor code verification");
+    } else if (self.userIsDotCom) {
+        return NSLocalizedString(@"Sign In", @"Button title for Sign In Action");
+    }
+    
+    return NSLocalizedString(@"Add Site", @"Button title for Add SelfHosted Site");
+}
+
+- (NSString *)toggleSignInButtonTitle
+{
+    if (self.userIsDotCom) {
+        return NSLocalizedString(@"Add Self-Hosted Site", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
+    }
+    
+    return NSLocalizedString(@"Sign in to WordPress.com", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
+}
+
 - (CGFloat)lastTextfieldMaxY
 {
     if (self.shouldDisplayMultifactor) {
         return CGRectGetMaxY(self.multifactorText.frame);
     } else if (self.userIsDotCom) {
         return CGRectGetMaxY(self.passwordText.frame);
-    } else {
-        return CGRectGetMaxY(self.siteUrlText.frame);
     }
+    
+    return CGRectGetMaxY(self.siteUrlText.frame);
 }
 
 
 #pragma mark - Backend Helpers
-
-- (void)displayErrorMessages
-{
-    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
-}
-
-- (void)displayReservedNameErrorMessage
-{
-    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
-}
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
 {
