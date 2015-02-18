@@ -143,7 +143,8 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
-
+    [nc addObserver:self selector:@selector(updateControls) name:UITextFieldTextDidChangeNotification object:nil];
+    
     [HelpshiftUtils refreshUnreadNotificationCount];
 
     [self reloadInterface];
@@ -200,36 +201,6 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
     self.signInButton.enabled = [self isSignInEnabled];
-    return YES;
-}
-
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-{
-    BOOL isUsernameFilled = [self isUsernameFilled];
-    BOOL isPasswordFilled = [self isPasswordFilled];
-    BOOL isSiteUrlFilled = [self isSiteUrlFilled];
-    BOOL isMultifactorFilled = [self isMultifactorFilled];
-
-    NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
-    [updatedString replaceCharactersInRange:range withString:string];
-    
-    BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
-    if (textField == self.usernameText) {
-        isUsernameFilled = updatedStringHasContent;
-    } else if (textField == self.passwordText) {
-        isPasswordFilled = updatedStringHasContent;
-    } else if (textField == self.siteUrlText) {
-        isSiteUrlFilled = updatedStringHasContent;
-    } else if (textField == self.multifactorText) {
-        isMultifactorFilled = updatedStringHasContent;
-    }
-
-    isSiteUrlFilled         = (self.userIsDotCom || isSiteUrlFilled);
-    isMultifactorFilled     = (!self.shouldDisplayMultifactor || isMultifactorFilled);
-    
-    self.signInButton.enabled   = isUsernameFilled && isPasswordFilled && isSiteUrlFilled && isMultifactorFilled;
-    self.forgotPassword.hidden  = !(self.userIsDotCom || isSiteUrlFilled);
-
     return YES;
 }
 
