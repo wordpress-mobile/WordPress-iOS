@@ -93,6 +93,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+@property (nonatomic, assign) BOOL                      authenticating;
 
 @end
 
@@ -657,6 +658,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
+    // Spinner!
+    [self.signInButton showActivityIndicator:self.authenticating];
+    
+    // Background Taps
+    self.tapGestureRecognizer.enabled       = self.isGesturesRecognizerEnabled;
+    
     // One Password
     BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
     self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
@@ -669,11 +676,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     self.usernameText.enabled               = self.isUsernameEnabled;
     self.passwordText.enabled               = self.isPasswordEnabled;
+    self.onePasswordButton.enabled          = self.isOnePasswordEnabled;
     self.multifactorText.enabled            = self.isMultifactorEnabled;
     self.siteUrlText.enabled                = self.isSiteUrlEnabled;
     
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
+    self.cancelButton.enabled               = self.isCancelButtonEnabled;
     self.forgotPassword.hidden              = !self.isForgotPasswordEnabled;
     self.sendVerificationCodeButton.hidden  = !self.isVerificationCodeEnabled;
     self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
@@ -796,7 +805,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)showJetpackAuthentication
 {
-    [self setAuthenticating:NO withStatusMessage:nil];
+    [self finishedAuthenticating];
     JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
@@ -900,6 +909,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return !self.shouldDisplayMultifactor;
 }
 
+- (BOOL)isOnePasswordEnabled
+{
+    return !self.authenticating;
+}
+
 - (BOOL)isMultifactorEnabled
 {
     return self.shouldDisplayMultifactor;
@@ -912,12 +926,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)isVerificationCodeEnabled
 {
-    return self.shouldDisplayMultifactor;
+    return self.shouldDisplayMultifactor && !self.authenticating;
 }
 
 - (BOOL)isSignInEnabled
 {
-    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
+    BOOL isEnabled = self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
+    return isEnabled && !self.authenticating;
 }
 
 - (BOOL)isSignInToggleEnabled
@@ -927,12 +942,23 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)isAccountCreationEnabled
 {
-    return self.hasDefaultAccount == NO;
+    return self.hasDefaultAccount == NO && !self.authenticating;
 }
 
 - (BOOL)isForgotPasswordEnabled
 {
-    return (self.userIsDotCom || [self isUrlValid]) && !self.shouldDisplayMultifactor;
+    BOOL isEnabled = (self.userIsDotCom || [self isUrlValid]) && !self.shouldDisplayMultifactor;
+    return isEnabled && !self.authenticating;
+}
+
+- (BOOL)isCancelButtonEnabled
+{
+    return !self.authenticating;
+}
+
+- (BOOL)isGesturesRecognizerEnabled
+{
+    return !self.authenticating;
 }
 
 - (BOOL)areDotComFieldsFilled
@@ -1009,29 +1035,36 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 }
 
 
-#pragma mark - Backend Helpers
+#pragma mark - Auth Helpers
 
-- (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
+- (void)startedAuthenticatingWithMessage:(NSString *)status
 {
+    [self setAuthenticating:YES status:status];
+}
+
+- (void)finishedAuthenticating
+{
+    [self setAuthenticating:NO status:nil];
+}
+
+- (void)setAuthenticating:(BOOL)authenticating status:(NSString *)status
+{
+    self.authenticating = authenticating;
+    
     self.statusLabel.hidden = !(status.length > 0);
     self.statusLabel.text = status;
-
-    self.onePasswordButton.enabled = !authenticating;
-    self.signInButton.enabled = !authenticating;
-    self.toggleSignInForm.hidden = authenticating;
-    self.skipToCreateAccount.hidden = authenticating;
-    self.forgotPassword.hidden = authenticating;
-    self.cancelButton.enabled = !authenticating;
-    self.tapGestureRecognizer.enabled = !authenticating;
     
-    [self.signInButton showActivityIndicator:authenticating];
+    [self updateControls];
 }
+
+
+#pragma mark - Backend Helpers
 
 - (void)signIn
 {
     NSString *username = self.usernameText.text;
     NSString *password = self.passwordText.text;
-    NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
+    NSString *multifactor = self.multifactorText.text;
 
     if (self.userIsDotCom || self.siteUrlText.text.isWordPressComURL) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
@@ -1042,7 +1075,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRPCURL username:username password:password];
 
         [api getBlogOptionsWithSuccess:^(id options){
-            [self setAuthenticating:NO withStatusMessage:nil];
+            [self finishedAuthenticating];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
                 [self signInWithWPComForUsername:username password:password multifactor:multifactor];
@@ -1051,7 +1084,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
-            [self setAuthenticating:NO withStatusMessage:nil];
+            [self finishedAuthenticating];
             [self displayRemoteError:error];
         }];
     };
@@ -1060,7 +1093,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         [self handleGuessXMLRPCURLFailure:error];
     };
 
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Authenticating", nil)];
     
     NSString *siteUrl = [NSURL IDNEncodedURL:self.siteUrlText.text];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
@@ -1070,18 +1103,18 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                           password:(NSString *)password
                        multifactor:(NSString *)multifactor
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
 
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
                      multifactorCode:multifactor
                              success:^(NSString *authToken) {
-                                 [self setAuthenticating:NO withStatusMessage:nil];
+                                 [self finishedAuthenticating];
                                  self.userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
-                                 [self setAuthenticating:NO withStatusMessage:nil];
+                                 [self finishedAuthenticating];
                                  
                                  // If needed, show the multifactor field
                                  if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
@@ -1096,7 +1129,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                     password:(NSString *)password
                                    authToken:(NSString *)authToken
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
@@ -1105,7 +1138,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account
                                 success:^{
-                                    [self setAuthenticating:NO withStatusMessage:nil];
+                                    [self finishedAuthenticating];
                                     [self dismiss];
                                     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
@@ -1114,7 +1147,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                     [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
                                 }
                                 failure:^(NSError *error) {
-                                    [self setAuthenticating:NO withStatusMessage:nil];
+                                    [self finishedAuthenticating];
                                     [self displayRemoteError:error];
                                 }];
 }
@@ -1167,7 +1200,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
 {
-    [self setAuthenticating:NO withStatusMessage:nil];
+    [self finishedAuthenticating];
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
         [self displayRemoteError:nil];
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
