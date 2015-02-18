@@ -994,6 +994,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return CGRectGetMaxY(self.siteUrlText.frame);
 }
 
+- (CGFloat)editionModeMaxY
+{
+    UIView *bottomView = self.shouldDisplayMultifactor ? self.sendVerificationCodeButton : self.signInButton;
+    return CGRectGetMaxY(bottomView.frame);
+}
+
 
 #pragma mark - Backend Helpers
 
@@ -1247,7 +1253,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(self.signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
+    
+    CGFloat newKeyboardOffset = (self.editionModeMaxY - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
         return;
