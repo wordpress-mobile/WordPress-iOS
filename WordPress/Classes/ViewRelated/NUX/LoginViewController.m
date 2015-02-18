@@ -172,17 +172,17 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _usernameText) {
-        [_passwordText becomeFirstResponder];
-    } else if (textField == _passwordText) {
+    if (textField == self.usernameText) {
+        [self.passwordText becomeFirstResponder];
+    } else if (textField == self.passwordText) {
         if (self.userIsDotCom) {
             [self signInButtonAction:nil];
         } else {
-            [_siteUrlText becomeFirstResponder];
+            [self.siteUrlText becomeFirstResponder];
         }
-    } else if (textField == _siteUrlText && _signInButton.enabled) {
+    } else if (textField == self.siteUrlText && self.signInButton.enabled) {
         [self signInButtonAction:nil];
-    } else if (textField == _multifactorText) {
+    } else if (textField == self.multifactorText) {
         if ([self isMultifactorFilled]) {
             [self signInButtonAction:nil];
         }
@@ -193,13 +193,13 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self isSignInEnabled];
+    self.signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self isSignInEnabled];
+    self.signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
@@ -212,22 +212,23 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
     NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
     [updatedString replaceCharactersInRange:range withString:string];
+    
     BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
-    if (textField == _usernameText) {
+    if (textField == self.usernameText) {
         isUsernameFilled = updatedStringHasContent;
-    } else if (textField == _passwordText) {
+    } else if (textField == self.passwordText) {
         isPasswordFilled = updatedStringHasContent;
-    } else if (textField == _siteUrlText) {
+    } else if (textField == self.siteUrlText) {
         isSiteUrlFilled = updatedStringHasContent;
-    } else if (textField == _multifactorText) {
+    } else if (textField == self.multifactorText) {
         isMultifactorFilled = updatedStringHasContent;
     }
 
     isSiteUrlFilled         = (self.userIsDotCom || isSiteUrlFilled);
-    isMultifactorFilled     = (!_shouldDisplayMultifactor || isMultifactorFilled);
+    isMultifactorFilled     = (!self.shouldDisplayMultifactor || isMultifactorFilled);
     
-    _signInButton.enabled   = isUsernameFilled && isPasswordFilled && isSiteUrlFilled && isMultifactorFilled;
-    _forgotPassword.hidden  = !(self.userIsDotCom || isSiteUrlFilled);
+    self.signInButton.enabled   = isUsernameFilled && isPasswordFilled && isSiteUrlFilled && isMultifactorFilled;
+    self.forgotPassword.hidden  = !(self.userIsDotCom || isSiteUrlFilled);
 
     return YES;
 }
@@ -276,8 +277,8 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
         [webViewController setUrl:[NSURL URLWithString:path]];
-        [webViewController setUsername:_usernameText.text];
-        [webViewController setPassword:_passwordText.text];
+        [webViewController setUsername:self.usernameText.text];
+        [webViewController setPassword:self.passwordText.text];
         webViewController.shouldScrollToBottom = YES;
         [self.navigationController setNavigationBarHidden:NO animated:NO];
         [self.navigationController pushViewController:webViewController animated:NO];
@@ -400,7 +401,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     if ([self isUserNameReserved]) {
         [self displayReservedNameErrorMessage];
         [self toggleSignInFormAction:nil];
-        [_siteUrlText becomeFirstResponder];
+        [self.siteUrlText becomeFirstResponder];
         return;
     }
 
@@ -440,12 +441,12 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    if (_userIsDotCom == false && _siteUrlText.text.isEmpty) {
+    if (self.userIsDotCom == false && self.siteUrlText.text.isEmpty) {
         [self displayOnePasswordEmptySiteAlert];
         return;
     }
  
-    NSString *loginURL = _userIsDotCom ? WPOnePasswordWordPressComURL : _siteUrlText.text;
+    NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrlText.text;
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
                                                 forViewController:self
@@ -718,70 +719,70 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     CGFloat buttonX = (viewWidth - GeneralWalkthroughButtonSize.width) * 0.5f;
     
     // Layout Help Button
-    CGFloat helpButtonX = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
+    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - GeneralWalkthroughStandardOffset;
     CGFloat helpButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonSize.height));
+    self.helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(self.helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
-    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 5;
-    _helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
+    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
+    self.helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(self.helpBadge.frame), CGRectGetHeight(self.helpBadge.frame)));
 
     // Layout Cancel Button
     CGFloat cancelButtonX = 0;
     CGFloat cancelButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonSize.height));
+    self.cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(self.cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
-    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (self.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
+    CGFloat heightOfControls = CGRectGetHeight(self.icon.frame) + GeneralWalkthroughStandardOffset + (self.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
     CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
 
-    CGFloat iconX = (viewWidth - CGRectGetWidth(_icon.frame)) * 0.5f;
+    CGFloat iconX = (viewWidth - CGRectGetWidth(self.icon.frame)) * 0.5f;
     CGFloat iconY = startingYForCenteredControls;
-    _icon.frame = CGRectIntegral(CGRectMake(iconX, iconY, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
+    self.icon.frame = CGRectIntegral(CGRectMake(iconX, iconY, CGRectGetWidth(self.icon.frame), CGRectGetHeight(self.icon.frame)));
 
     // Layout Username
-    CGFloat usernameTextY = CGRectGetMaxY(_icon.frame) + GeneralWalkthroughStandardOffset;
-    _usernameText.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    CGFloat usernameTextY = CGRectGetMaxY(self.icon.frame) + GeneralWalkthroughStandardOffset;
+    self.usernameText.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Password
-    CGFloat passwordTextY = CGRectGetMaxY(_usernameText.frame) - GeneralWalkthroughTextFieldOverlapY;
-    _passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    CGFloat passwordTextY = CGRectGetMaxY(self.usernameText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    self.passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Multifactor
-    CGFloat multifactorTextY = CGRectGetMaxY(_passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
-    _multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    CGFloat multifactorTextY = CGRectGetMaxY(self.passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    self.multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
     
     // Layout Site URL
-    CGFloat siteUrlTextY = CGRectGetMaxY(_passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
-    _siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    CGFloat siteUrlTextY = CGRectGetMaxY(self.passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    self.siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Sign in Button
     CGFloat signInButtonY = [self lastTextfieldMaxY] + GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
+    self.signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
 
     // Layout Lost password Button
-    CGFloat forgotPasswordY = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
-    _forgotPassword.frame = CGRectIntegral(CGRectMake(buttonX, forgotPasswordY, GeneralWalkthroughButtonSize.width, forgotPasswordHeight));
+    CGFloat forgotPasswordY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat forgotPasswordHeight = [self.forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.forgotPassword.titleLabel.font}].height;
+    self.forgotPassword.frame = CGRectIntegral(CGRectMake(buttonX, forgotPasswordY, GeneralWalkthroughButtonSize.width, forgotPasswordHeight));
 
     // Layout Skip to Create Account Button
     CGFloat skipToCreateAccountY = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
-    _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(buttonX, skipToCreateAccountY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughSecondaryButtonHeight));
+    self.skipToCreateAccount.frame = CGRectIntegral(CGRectMake(buttonX, skipToCreateAccountY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughSecondaryButtonHeight));
 
     // Layout Status Label
-    CGFloat statusLabelY = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    _statusLabel.frame = CGRectIntegral(CGRectMake(textLabelX, statusLabelY, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight));
+    CGFloat statusLabelY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    self.statusLabel.frame = CGRectIntegral(CGRectMake(textLabelX, statusLabelY, GeneralWalkthroughMaxTextWidth, self.statusLabel.font.lineHeight));
 
     // Layout Toggle Button
-    CGFloat toggleSignInY = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
-    _toggleSignInForm.frame = CGRectIntegral(CGRectMake(textLabelX, toggleSignInY, GeneralWalkthroughMaxTextWidth, GeneralWalkthroughSecondaryButtonHeight));
+    CGFloat toggleSignInY = CGRectGetMinY(self.skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    self.toggleSignInForm.frame = CGRectIntegral(CGRectMake(textLabelX, toggleSignInY, GeneralWalkthroughMaxTextWidth, GeneralWalkthroughSecondaryButtonHeight));
 }
 
 - (void)dismiss
 {
     // If we were invoked from the post tab proceed to the editor. Our work here is done.
-    if (_showEditorAfterAddingSites) {
+    if (self.showEditorAfterAddingSites) {
         [[WPTabBarController sharedInstance] showPostTab];
         return;
     }
@@ -810,7 +811,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (void)showJetpackAuthentication
 {
     [self setAuthenticating:NO withStatusMessage:nil];
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:_blog];
+    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
@@ -835,15 +836,15 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (void)showHelpshiftConversationView
 {
     NSDictionary *metaData = @{@"Source": @"Failed login",
-                               @"Username": _usernameText.text,
-                               @"SiteURL": _siteUrlText.text};
+                               @"Username": self.usernameText.text,
+                               @"SiteURL": self.siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
 }
 
 - (NSString *)getSiteUrl
 {
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
@@ -886,12 +887,12 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)isUsernameFilled
 {
-    return [[_usernameText.text trim] length] != 0;
+    return [[self.usernameText.text trim] length] != 0;
 }
 
 - (BOOL)isPasswordFilled
 {
-    return [[_passwordText.text trim] length] != 0;
+    return [[self.passwordText.text trim] length] != 0;
 }
 
 - (BOOL)isMultifactorFilled
@@ -900,7 +901,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 }
 - (BOOL)isSiteUrlFilled
 {
-    return [[_siteUrlText.text trim] length] != 0;
+    return [[self.siteUrlText.text trim] length] != 0;
 }
 
 - (BOOL)isSignInEnabled
@@ -946,10 +947,10 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (BOOL)isUrlValid
 {
-    if (_siteUrlText.text.length == 0) {
+    if (self.siteUrlText.text.length == 0) {
         return NO;
     }
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
     return siteURL != nil;
 }
 
@@ -958,7 +959,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     if (!self.userIsDotCom) {
         return NO;
     }
-    NSString *username = [[_usernameText.text trim] lowercaseString];
+    NSString *username = [[self.usernameText.text trim] lowercaseString];
     NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
     
     return [reservedUserNames containsObject:username];
@@ -1039,7 +1040,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
     
-    NSString *siteUrl = [NSURL IDNEncodedURL:_siteUrlText.text];
+    NSString *siteUrl = [NSURL IDNEncodedURL:self.siteUrlText.text];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
@@ -1111,23 +1112,23 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    _blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
-    if (!_blog) {
-        _blog = [blogService createBlogWithAccount:account];
+    self.blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!self.blog) {
+        self.blog = [blogService createBlogWithAccount:account];
         if (url) {
-            _blog.url = url;
+            self.blog.url = url;
         }
         if (blogName) {
-            _blog.blogName = [blogName stringByDecodingXMLCharacters];
+            self.blog.blogName = [blogName stringByDecodingXMLCharacters];
         }
     }
-    _blog.xmlrpc = xmlrpc;
-    _blog.options = options;
-    [_blog dataSave];
-    [blogService syncBlog:_blog success:nil failure:nil];
+    self.blog.xmlrpc = xmlrpc;
+    self.blog.options = options;
+    [self.blog dataSave];
+    [blogService syncBlog:self.blog success:nil failure:nil];
 
-    if ([_blog hasJetpack]) {
-        if ([_blog hasJetpackAndIsConnectedToWPCom]) {
+    if ([self.blog hasJetpack]) {
+        if ([self.blog hasJetpackAndIsConnectedToWPCom]) {
             [self showJetpackAuthentication];
         } else {
             [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
@@ -1170,10 +1171,10 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
             [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
         } else {
             if (error.code == WordPressComOAuthErrorInvalidRequest) {
-                _numberOfTimesLoginFailed++;
+                self.numberOfTimesLoginFailed++;
             }
 
-            if ([HelpshiftUtils isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+            if ([HelpshiftUtils isHelpshiftEnabled] && self.numberOfTimesLoginFailed >= 2) {
                 [self displayGenericErrorMessageWithHelpshiftButton:message];
             } else {
                 [self displayGenericErrorMessage:message];
@@ -1238,7 +1239,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
+    CGFloat newKeyboardOffset = (CGRectGetMaxY(self.signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
         return;
@@ -1256,7 +1257,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         }
     } completion:^(BOOL finished) {
 
-        _keyboardOffset += newKeyboardOffset;
+        self.keyboardOffset += newKeyboardOffset;
     }];
 }
 
@@ -1265,8 +1266,8 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
 
-    CGFloat currentKeyboardOffset = _keyboardOffset;
-    _keyboardOffset = 0;
+    CGFloat currentKeyboardOffset = self.keyboardOffset;
+    self.keyboardOffset = 0;
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
@@ -1283,17 +1284,17 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[_icon, _usernameText, _passwordText, _multifactorText, _siteUrlText, _signInButton, _statusLabel];
+    return @[self.icon, self.usernameText, self.passwordText, self.multifactorText, self.siteUrlText, self.signInButton, self.statusLabel];
 }
 
 - (NSArray *)controlsToHideForTextEntry
 {
-    NSArray *controlsToHide = @[_helpButton, _helpBadge];
+    NSArray *controlsToHide = @[self.helpButton, self.helpBadge];
 
     // Hide the
     BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > HiddenControlsHeightThreshold);
     if (isSmallScreen) {
-        controlsToHide = [controlsToHide arrayByAddingObject:_icon];
+        controlsToHide = [controlsToHide arrayByAddingObject:self.icon];
     }
     return controlsToHide;
 }
@@ -1304,8 +1305,8 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 - (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
 {
     NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
-    _helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
-    _helpBadge.hidden = (unreadCount == 0);
+    self.helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
+    self.helpBadge.hidden = (unreadCount == 0);
 }
 
 
