@@ -200,7 +200,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     self.signInButton.enabled = [self isSignInEnabled];
-    return YES;
+    return !self.authenticating;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
@@ -440,7 +440,15 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)sendVerificationCode:(id)sender
 {
-    
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client requestOneTimeCodeWithUsername:self.usernameText.text
+                                  password:self.passwordText.text
+                                   success:^{
+
+                                   }
+                                   failure:^(NSError *error) {
+
+                                   }];
 }
 
 
@@ -937,7 +945,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)isSignInToggleEnabled
 {
-    return !self.onlyDotComAllowed && !self.hasDefaultAccount;
+    return !self.onlyDotComAllowed && !self.hasDefaultAccount && !self.authenticating;
 }
 
 - (BOOL)isAccountCreationEnabled
