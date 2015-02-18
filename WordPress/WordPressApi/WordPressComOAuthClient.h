@@ -35,4 +35,17 @@ typedef NS_ENUM(NSUInteger, WordPressComOAuthError) {
                          success:(void (^)(NSString *authToken))success
                          failure:(void (^)(NSError *error))failure;
 
+/**
+ Requests a One Time Code, to be sent via SMS.
+ 
+ @param username the account's username.
+ @param password the account's password.
+ @param success block to be called if authentication was successful.
+ @param failure block to be called if authentication failed. The error object is passed as a parameter.
+ */
+- (void)requestOneTimeCodeWithUsername:(NSString *)username
+                              password:(NSString *)password
+                               success:(void (^)(void))success
+                               failure:(void (^)(NSError *error))failure;
+
 @end

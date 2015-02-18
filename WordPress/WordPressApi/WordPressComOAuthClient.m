@@ -57,6 +57,43 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
            }];
 }
 
+- (void)requestOneTimeCodeWithUsername:(NSString *)username
+                              password:(NSString *)password
+                               success:(void (^)(void))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *parameters = @{
+        @"username": username,
+        @"password": password,
+        @"grant_type": @"password",
+        @"client_id": [WordPressComApiCredentials client],
+        @"client_secret": [WordPressComApiCredentials secret],
+        @"wpcom_supports_2fa": @(YES),
+        @"wpcom_resend_otp": @(YES)
+    };
+    
+    [self POST:@"token"
+    parameters:parameters
+       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           if (success) {
+               success();
+           }
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           error = [self processError:error forOperation:operation];
+           
+           // SORRY:
+           // SMS Requests will still return WordPressComOAuthErrorNeedsMultifactorCode. In which case,
+           // we should hit the success callback.
+           if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+               if (success) {
+                   success();
+               }
+           } else if (failure) {
+               failure(error);
+           }
+       }];
+}
+
 - (NSError *)processError:(NSError *)error forOperation:(AFHTTPRequestOperation *)operation {
     if (operation.response.statusCode >= 400 && operation.response.statusCode < 500) {
         // Bad request, look for errors in the JSON response
