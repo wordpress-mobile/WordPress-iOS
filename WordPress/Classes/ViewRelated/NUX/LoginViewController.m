@@ -999,18 +999,11 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (void)signIn
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
-
     NSString *username = self.usernameText.text;
     NSString *password = self.passwordText.text;
     NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
 
-    if (self.userIsDotCom) {
-        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
-        return;
-    }
-
-    if (_siteUrlText.text.isWordPressComURL) {
+    if (self.userIsDotCom || self.siteUrlText.text.isWordPressComURL) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
@@ -1037,8 +1030,9 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         [self handleGuessXMLRPCURLFailure:error];
     };
 
+    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
+    
     NSString *siteUrl = [NSURL IDNEncodedURL:_siteUrlText.text];
-
     [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
@@ -1296,6 +1290,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     }
     return controlsToHide;
 }
+
 
 #pragma mark - Helpshift Notifications
 
