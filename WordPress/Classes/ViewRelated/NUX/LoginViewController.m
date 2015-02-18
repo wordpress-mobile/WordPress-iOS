@@ -82,6 +82,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
 @property (nonatomic, strong) UILabel                   *statusLabel;
+@property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
 
 // Measurements
 @property (nonatomic, strong) Blog                      *blog;
@@ -477,10 +478,11 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
     [mainView addGestureRecognizer:gestureRecognizer];
-    
+
     // Attach + Keep the Reference
     [self.view addSubview:mainView];
     self.mainView = mainView;
+    self.tapGestureRecognizer = gestureRecognizer;
 }
 
 - (void)addControls
@@ -988,16 +990,18 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
 {
-    _statusLabel.hidden = !(status.length > 0);
-    _statusLabel.text = status;
+    self.statusLabel.hidden = !(status.length > 0);
+    self.statusLabel.text = status;
 
-    _onePasswordButton.enabled = !authenticating;
-    _signInButton.enabled = !authenticating;
-    _toggleSignInForm.hidden = authenticating;
-    _skipToCreateAccount.hidden = authenticating;
-    _forgotPassword.hidden = authenticating;
-    _cancelButton.enabled = !authenticating;
-    [_signInButton showActivityIndicator:authenticating];
+    self.onePasswordButton.enabled = !authenticating;
+    self.signInButton.enabled = !authenticating;
+    self.toggleSignInForm.hidden = authenticating;
+    self.skipToCreateAccount.hidden = authenticating;
+    self.forgotPassword.hidden = authenticating;
+    self.cancelButton.enabled = !authenticating;
+    self.tapGestureRecognizer.enabled = !authenticating;
+    
+    [self.signInButton showActivityIndicator:authenticating];
 }
 
 - (void)signIn
