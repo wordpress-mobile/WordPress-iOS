@@ -277,22 +277,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.view addSubview:overlayView];
 }
 
-- (void)displayGenerateApplicationSpecificPasswordErrorMessage:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:GenerateApplicationSpecificPasswordUrl]];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController pushViewController:webViewController animated:YES];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
-}
-
 - (void)displayGenericErrorMessage:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
@@ -416,11 +400,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)forgotPassword:(id)sender
 {
-    NSString *baseUrl = ForgotPasswordDotComBaseUrl;
-    if (!self.userIsDotCom) {
-        baseUrl = [self getSiteUrl];
-    }
+    NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self getSiteUrl];
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
+    
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
 }
 
@@ -1207,18 +1189,14 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
-            [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
-        } else {
-            if (error.code == WordPressComOAuthErrorInvalidRequest) {
-                self.numberOfTimesLoginFailed++;
-            }
+        if (error.code == WordPressComOAuthErrorInvalidRequest) {
+            self.numberOfTimesLoginFailed++;
+        }
 
-            if ([HelpshiftUtils isHelpshiftEnabled] && self.numberOfTimesLoginFailed >= 2) {
-                [self displayGenericErrorMessageWithHelpshiftButton:message];
-            } else {
-                [self displayGenericErrorMessage:message];
-            }
+        if ([HelpshiftUtils isHelpshiftEnabled] && self.numberOfTimesLoginFailed >= 2) {
+            [self displayGenericErrorMessageWithHelpshiftButton:message];
+        } else {
+            [self displayGenericErrorMessage:message];
         }
         return;
     }
