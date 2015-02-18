@@ -455,6 +455,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
 }
 
+
 #pragma mark - Private Methods
 
 - (void)addMainView
@@ -674,20 +675,20 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
     
     // TextFields
-    self.usernameText.alpha                 = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    self.passwordText.alpha                 = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    self.multifactorText.alpha              = self.shouldDisplayMultifactor ? GeneralWalkthroughAlphaEnabled  : GeneralWalkthroughAlphaHidden;
-    self.siteUrlText.alpha                  = self.userIsDotCom             ? GeneralWalkthroughAlphaHidden   : GeneralWalkthroughAlphaEnabled;
+    self.usernameText.alpha                 = self.isUsernameEnabled    ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+    self.passwordText.alpha                 = self.isPasswordEnabled    ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+    self.multifactorText.alpha              = self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
+    self.siteUrlText.alpha                  = self.isSiteUrlEnabled     ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
     
-    self.usernameText.enabled               = !self.shouldDisplayMultifactor;
-    self.passwordText.enabled               = !self.shouldDisplayMultifactor;
-    self.multifactorText.enabled            = self.shouldDisplayMultifactor;
-    self.siteUrlText.enabled                = !self.userIsDotCom;
+    self.usernameText.enabled               = self.isUsernameEnabled;
+    self.passwordText.enabled               = self.isPasswordEnabled;
+    self.multifactorText.enabled            = self.isMultifactorEnabled;
+    self.siteUrlText.enabled                = self.isSiteUrlEnabled;
     
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
     self.forgotPassword.hidden              = !self.isForgotPasswordEnabled;
-    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor;
+    self.sendVerificationCodeButton.hidden  = !self.isVerificationCodeEnabled;
     self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
     
     // SignIn Button
@@ -790,7 +791,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+    
     if (!defaultAccount) {
         [[WPTabBarController sharedInstance] showMySitesTab];
     }
@@ -902,6 +903,31 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return [[self.siteUrlText.text trim] length] != 0;
 }
 
+- (BOOL)isUsernameEnabled
+{
+    return !self.shouldDisplayMultifactor;
+}
+
+- (BOOL)isPasswordEnabled
+{
+    return !self.shouldDisplayMultifactor;
+}
+
+- (BOOL)isMultifactorEnabled
+{
+    return self.shouldDisplayMultifactor;
+}
+
+- (BOOL)isSiteUrlEnabled
+{
+    return !self.userIsDotCom;
+}
+
+- (BOOL)isVerificationCodeEnabled
+{
+    return self.shouldDisplayMultifactor;
+}
+
 - (BOOL)isSignInEnabled
 {
     return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
@@ -919,7 +945,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)isForgotPasswordEnabled
 {
-    return self.userIsDotCom || [self isUrlValid];
+    return (self.userIsDotCom || [self isUrlValid]) && !self.shouldDisplayMultifactor;
 }
 
 - (BOOL)areDotComFieldsFilled
