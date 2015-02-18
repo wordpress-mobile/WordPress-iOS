@@ -344,6 +344,21 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [self.view addSubview:overlayView];
 }
 
+- (void)displayOnePasswordEmptySiteAlert
+{
+    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
+                                          @"Error message displayed when the user is Signing into a self hosted site and "
+                                          @"tapped the 1Password Button before typing his siteURL");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
+                                              otherButtonTitles:nil];
+    
+    [alertView show];
+}
+
 
 #pragma mark - Button Press Methods
 
@@ -446,24 +461,6 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         self.passwordText.text = loginDict[AppExtensionPasswordKey];
         [self signIn];
     }];
-}
-
-
-#pragma mark - One Password Helpers
-
-- (void)displayOnePasswordEmptySiteAlert
-{
-    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
-                                          @"Error message displayed when the user is Signing into a self hosted site and "
-                                          @"tapped the 1Password Button before typing his siteURL");
-    
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
-                                                        message:message
-                                                       delegate:nil
-                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
-                                              otherButtonTitles:nil];
-    
-    [alertView show];
 }
 
 
@@ -873,6 +870,9 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     return url;
 }
 
+
+#pragma mark - Dynamic Properties
+
 - (BOOL)areFieldsValid
 {
     if ([self areSelfHostedFieldsFilled] && !self.userIsDotCom) {
@@ -972,6 +972,9 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
         return CGRectGetMaxY(self.siteUrlText.frame);
     }
 }
+
+
+#pragma mark - Backend Helpers
 
 - (void)displayErrorMessages
 {
