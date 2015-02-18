@@ -145,7 +145,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
-    [nc addObserver:self selector:@selector(updateControls) name:UITextFieldTextDidChangeNotification object:nil];
+    [nc addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
 
@@ -206,6 +206,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     self.signInButton.enabled = [self isSignInEnabled];
     return YES;
+}
+
+- (void)textFieldDidChange:(NSNotification *)note
+{
+    [self updateControls];
 }
 
 
@@ -294,7 +299,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
 {
     WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the error message when a user has repeated trouble logging in");
+    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the ""error message when a user has repeated trouble logging in");
     overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
         [overlayView dismiss];
         [self showHelpshiftConversationView];
@@ -946,11 +951,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
 }
 
-- (BOOL)hasUserOnlyEnteredValuesForDotCom
-{
-    return [self areDotComFieldsFilled] && ![self areSelfHostedFieldsFilled];
-}
-
 - (BOOL)isUrlValid
 {
     if (self.siteUrlText.text.length == 0) {
@@ -1311,7 +1311,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     NSArray *controlsToHide = @[self.helpButton, self.helpBadge];
 
-    // Hide the
     BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > LoginHiddenControlsHeightThreshold);
     if (isSmallScreen) {
         controlsToHide = [controlsToHide arrayByAddingObject:self.icon];
