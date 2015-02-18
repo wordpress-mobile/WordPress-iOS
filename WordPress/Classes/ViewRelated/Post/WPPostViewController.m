@@ -808,7 +808,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self.post hasUnsavedChanges]) {
+    if ([self.post hasLocalChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
