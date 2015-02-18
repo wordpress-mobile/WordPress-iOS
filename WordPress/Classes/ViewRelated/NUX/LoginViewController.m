@@ -58,6 +58,7 @@ static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static CGFloat const LoginOnePasswordPaddingX                   = 9.0;
 static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
+static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 
 #pragma mark ====================================================================================
@@ -80,6 +81,7 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 @property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
 @property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
 @property (nonatomic, strong) UILabel                   *statusLabel;
 @property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
@@ -436,6 +438,10 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
     }];
 }
 
+- (IBAction)sendVerificationCode:(id)sender
+{
+    
+}
 
 #pragma mark - Private Methods
 
@@ -542,6 +548,18 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
     multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     multifactorText.accessibilityIdentifier = @"Verification Code";
 
+    // Add Verification Code SMS Button
+    NSString *smsText = NSLocalizedString(@"Enter the code on your authenticator app or send the code via text message.",
+                                          @"Message displayed when a verification code is needed");
+    
+    WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
+    sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    sendVerificationCodeButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
+    sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [sendVerificationCodeButton setTitle:smsText forState:UIControlStateNormal];
+    [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
+    
     // Add Site Url
     WPWalkthroughTextField *siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
     siteUrlText.backgroundColor = [UIColor whiteColor];
@@ -605,6 +623,7 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
     [self.mainView addSubview:usernameText];
     [self.mainView addSubview:passwordText];
     [self.mainView addSubview:multifactorText];
+    [self.mainView addSubview:sendVerificationCodeButton];
     [self.mainView addSubview:siteUrlText];
     [self.mainView addSubview:signInButton];
     [self.mainView addSubview:statusLabel];
@@ -621,6 +640,7 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
     self.passwordText = passwordText;
     self.onePasswordButton = onePasswordButton;
     self.multifactorText = multifactorText;
+    self.sendVerificationCodeButton = sendVerificationCodeButton;
     self.siteUrlText = siteUrlText;
     self.signInButton = signInButton;
     self.statusLabel = statusLabel;
@@ -1255,7 +1275,8 @@ static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[self.icon, self.usernameText, self.passwordText, self.multifactorText, self.siteUrlText, self.signInButton, self.statusLabel];
+    return @[ self.icon, self.usernameText, self.passwordText, self.multifactorText, self.sendVerificationCodeButton,
+              self.siteUrlText, self.signInButton, self.statusLabel ];
 }
 
 - (NSArray *)controlsToHideForTextEntry
