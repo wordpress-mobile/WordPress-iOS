@@ -1,28 +1,35 @@
 #import <WPXMLRPC/WPXMLRPC.h>
-#import "LoginViewController.h"
+#import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <1PasswordExtension/OnePasswordExtension.h>
+
 #import "CreateAccountAndBlogViewController.h"
-#import "WPTabBarController.h"
 #import "SupportViewController.h"
+#import "LoginViewController.h"
+#import "JetpackSettingsViewController.h"
+
+#import "WPAccount.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
-#import "WPWalkthroughTextField.h"
-#import "WordPressComOAuthClient.h"
-#import "WPWebViewController.h"
-#import "Blog+Jetpack.h"
-#import "JetpackSettingsViewController.h"
-#import "WPWalkthroughOverlayView.h"
-#import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
-#import "WPAccount.h"
+#import "WPNUXHelpBadgeLabel.h"
+#import "WPTabBarController.h"
+#import "WPWalkthroughTextField.h"
+#import "WPWalkthroughOverlayView.h"
+#import "WPWebViewController.h"
+
+#import "WordPressComOAuthClient.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "WPNUXHelpBadgeLabel.h"
-#import "NSString+XMLExtensions.h"
+#import "Blog+Jetpack.h"
+
 #import "NSString+Helpers.h"
-#import <Helpshift/Helpshift.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import "NSString+XMLExtensions.h"
 #import "NSURL+IDN.h"
+
+#import "Constants.h"
+#import "ReachabilityUtils.h"
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
@@ -36,12 +43,12 @@ static NSString *const ForgotPasswordDotComBaseUrl              = @"https://word
 static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-static CGFloat const GeneralWalkthroughStandardOffset           = 15;
+static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
 static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
 static CGSize const GeneralWalkthroughTextFieldSize             = {320.0, 44.0};
-static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1;
+static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1.0;
 static CGSize const GeneralWalkthroughButtonSize                = {290.0, 41.0};
-static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33;
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
 static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
 
 static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
@@ -49,6 +56,7 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
+static CGFloat const OnePasswordPaddingX                        = 9.0;
 static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 
@@ -68,6 +76,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 @property (nonatomic, strong) UIImageView               *icon;
 @property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
 @property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
+@property (nonatomic, strong) UIButton                  *onePasswordButton;
 @property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
 @property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
@@ -338,7 +347,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
 
 #pragma mark - Button Press Methods
 
-- (void)helpButtonAction:(id)sender
+- (IBAction)helpButtonAction:(id)sender
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
@@ -347,18 +356,18 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)skipToCreateAction:(id)sender
+- (IBAction)skipToCreateAction:(id)sender
 {
     [self showCreateAccountView];
 }
 
-- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
+- (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
     [self hideMultifactorTextfieldIfNeeded];
 }
 
-- (void)signInButtonAction:(id)sender
+- (IBAction)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
 
@@ -382,7 +391,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [self signIn];
 }
 
-- (void)toggleSignInFormAction:(id)sender
+- (IBAction)toggleSignInFormAction:(id)sender
 {
     self.userIsDotCom = !self.userIsDotCom;
     self.passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
@@ -395,14 +404,15 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
                      }];
 }
 
-- (void)cancelButtonAction:(id)sender
+
+- (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
         self.dismissBlock();
     }
 }
 
-- (void)forgotPassword:(id)sender
+- (IBAction)forgotPassword:(id)sender
 {
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
     if (!self.userIsDotCom) {
@@ -410,6 +420,50 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     }
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
+}
+
+- (IBAction)findLoginFromOnePassword:(id)sender
+{
+    if (_userIsDotCom == false && _siteUrlText.text.isEmpty) {
+        [self displayOnePasswordEmptySiteAlert];
+        return;
+    }
+ 
+    NSString *loginURL = _userIsDotCom ? WPOnePasswordWordPressComURL : _siteUrlText.text;
+    
+    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
+                                                forViewController:self
+                                                           sender:sender
+                                                       completion:^(NSDictionary *loginDict, NSError *error) {
+        if (!loginDict) {
+            if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                DDLogError(@"OnePassword Error: %@", error);
+            }
+            return;
+        }
+
+        self.usernameText.text = loginDict[AppExtensionUsernameKey];
+        self.passwordText.text = loginDict[AppExtensionPasswordKey];
+        [self signIn];
+    }];
+}
+
+
+#pragma mark - One Password Helpers
+
+- (void)displayOnePasswordEmptySiteAlert
+{
+    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
+                                          @"Error message displayed when the user is Signing into a self hosted site and "
+                                          @"tapped the 1Password Button before typing his siteURL");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
+                                              otherButtonTitles:nil];
+    
+    [alertView show];
 }
 
 
@@ -475,6 +529,22 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     usernameText.accessibilityIdentifier = @"Username / Email";
 
+    // Add OnePassword
+    UIButton *onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+    [onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+    [onePasswordButton sizeToFit];
+    
+    CGRect containerFrame = onePasswordButton.frame;
+    containerFrame.size.width += OnePasswordPaddingX;
+
+    UIView *onePasswordView = [[UIView alloc] initWithFrame:containerFrame];
+    [onePasswordView addSubview:onePasswordButton];
+    usernameText.rightView = onePasswordView;
+    
+    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    usernameText.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
     passwordText.backgroundColor = [UIColor whiteColor];
@@ -578,6 +648,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     self.helpBadge = helpBadge;
     self.usernameText = usernameText;
     self.passwordText = passwordText;
+    self.onePasswordButton = onePasswordButton;
     self.multifactorText = multifactorText;
     self.siteUrlText = siteUrlText;
     self.signInButton = signInButton;
@@ -917,6 +988,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     _statusLabel.hidden = !(status.length > 0);
     _statusLabel.text = status;
 
+    _onePasswordButton.enabled = !authenticating;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
