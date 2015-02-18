@@ -39,25 +39,26 @@
                               };
     
     NSError *error = nil;
-    BOOL result = [psc addPersistentStoreWithType:NSSQLiteStoreType
+    NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                                     configuration:nil
                                               URL:storeUrl
                                           options:options
                                             error:&error];
     
-    XCTAssertTrue(result);
+    XCTAssertNotNil(ps);
+    //make sure we remove the persistent store to make sure it releases the file.
+    [psc removePersistentStore:ps error:&error];
     
     psc = nil;
     model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model21Url];
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-    result = [psc addPersistentStoreWithType:NSSQLiteStoreType
+    NSPersistentStore * psFail = [psc addPersistentStoreWithType:NSSQLiteStoreType
                                configuration:nil
                                          URL:storeUrl
                                      options:options
                                        error:&error];
     
-    XCTAssertFalse(result);
-    
+    XCTAssertNil(psFail);
 }
 
 - (void)testMigrate19to21Success {
@@ -73,17 +74,17 @@
                               };
     
     NSError *error = nil;
-    BOOL result = [psc addPersistentStoreWithType:NSSQLiteStoreType
+    NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                                     configuration:nil
                                               URL:storeUrl
                                           options:options
                                             error:&error];
     
-    if (!result) {
+    if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
     }
 
-    XCTAssertTrue(result);
+    XCTAssertNotNil(ps);
     
     psc = nil;
     
@@ -99,16 +100,19 @@
     XCTAssertTrue(migrateResult);
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
-    result = [psc addPersistentStoreWithType:NSSQLiteStoreType
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
                                configuration:nil
                                          URL:storeUrl
                                      options:options
                                        error:&error];
     
-    if (!result) {
+    if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
     }
-    XCTAssertTrue(result);
+    XCTAssertNotNil(ps);
+    
+    //make sure we remove the persistent store to make sure it releases the file.
+    [psc removePersistentStore:ps error:&error];
 }
 
 // Returns the URL for a model file with the given name in the given directory.
