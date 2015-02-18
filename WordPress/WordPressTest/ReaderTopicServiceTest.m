@@ -17,7 +17,7 @@
 @end
 
 @interface ReaderTopicService()
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account;
+- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account;
 - (NSString *)formatTitle:(NSString *)str;
 @end
 
@@ -147,14 +147,20 @@
     foo.title = @"foo";
     foo.path = @"http://foo.com";
     foo.isSubscribed = YES;
+    foo.isMenuItem = YES;
+    foo.type = ReaderTopicTypeList;
 
     RemoteReaderTopic *bar = [[RemoteReaderTopic alloc] init];
     bar.title = @"bar";
     bar.path = @"http://bar.com";
+    bar.isMenuItem = YES;
+    bar.type = ReaderTopicTypeList;
 
     RemoteReaderTopic *baz = [[RemoteReaderTopic alloc] init];
     baz.title = @"baz";
     baz.path = @"http://baz.com";
+    baz.isMenuItem = YES;
+    baz.type = ReaderTopicTypeList;
 
     return @[foo, bar, baz];
 }
@@ -169,7 +175,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
 
     // Topics exist in the context
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
@@ -179,7 +185,7 @@
 
     // Merg new set of topics.
     RemoteReaderTopic *foo = remoteTopics.firstObject;
-    [service mergeTopics:@[foo] forAccount:nil];
+    [service mergeMenuTopics:@[foo] forAccount:nil];
 
     // Make sure the missing topics were removed when merged
     count = [context countForFetchRequest:request error:&error];
@@ -203,7 +209,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:startingTopics forAccount:nil];
+    [service mergeMenuTopics:startingTopics forAccount:nil];
 
     // Topics exist in the context
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
@@ -214,7 +220,7 @@
     XCTAssertEqual(count, [startingTopics count], @"Number of topics in context did not match expected.");
 
     // Merg new set of topics.
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
 
     // Make sure the missing topics were added when merged
     count = [context countForFetchRequest:request error:&error];
@@ -238,7 +244,7 @@
     service.currentTopic = nil;
 
     // Current topic is not nil after a sync
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
     XCTAssertNotNil(service.currentTopic, @"The current topic was nil.");
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];

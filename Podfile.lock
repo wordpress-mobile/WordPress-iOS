@@ -1,4 +1,5 @@
 PODS:
+  - 1PasswordExtension (1.1)
   - AFNetworking (2.5.1):
     - AFNetworking/NSURLConnection (= 2.5.1)
     - AFNetworking/NSURLSession (= 2.5.1)
@@ -122,6 +123,7 @@ PODS:
   - wpxmlrpc (0.7)
 
 DEPENDENCIES:
+  - 1PasswordExtension
   - AFNetworking (~> 2.5.1)
   - AMPopTip (~> 0.7)
   - CocoaLumberjack (~> 1.9)
@@ -152,7 +154,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.2.0)
   - WordPressApi (~> 0.3.1)
   - WordPressCom-Analytics-iOS (= 0.0.25)
-  - WordPressCom-Stats-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Stats-iOS`, commit `fe29b5d6000b5a01037d130e65c870985b60363b`)
+  - WordPressCom-Stats-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Stats-iOS`, commit `bd37321189ad3de9343cb2761d6ec5fbef06c72a`)
   - wpxmlrpc (~> 0.7)
 
 EXTERNAL SOURCES:
@@ -174,7 +176,7 @@ EXTERNAL SOURCES:
     :commit: c7a2ef6ef77e892bba430efd923592f4d6200d00
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
   WordPressCom-Stats-iOS:
-    :commit: fe29b5d6000b5a01037d130e65c870985b60363b
+    :commit: bd37321189ad3de9343cb2761d6ec5fbef06c72a
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 CHECKOUT OPTIONS:
@@ -194,10 +196,11 @@ CHECKOUT OPTIONS:
     :commit: c7a2ef6ef77e892bba430efd923592f4d6200d00
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
   WordPressCom-Stats-iOS:
-    :commit: fe29b5d6000b5a01037d130e65c870985b60363b
+    :commit: bd37321189ad3de9343cb2761d6ec5fbef06c72a
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 SPEC CHECKSUMS:
+  1PasswordExtension: 37d1488cf049b8bc0811beb7b52a19f8f803f7c8
   AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
   AMPopTip: dc5bdb3a88bc2ed0a7ac9799e0a5d47c5211721f
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
