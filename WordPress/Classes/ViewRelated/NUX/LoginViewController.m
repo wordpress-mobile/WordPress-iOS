@@ -56,8 +56,8 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
-static CGFloat const OnePasswordPaddingX                        = 9.0;
-static CGFloat const HiddenControlsHeightThreshold              = 480.0;
+static CGFloat const LoginOnePasswordPaddingX                   = 9.0;
+static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 
 
 #pragma mark ====================================================================================
@@ -536,7 +536,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     [onePasswordButton sizeToFit];
     
     CGRect containerFrame = onePasswordButton.frame;
-    containerFrame.size.width += OnePasswordPaddingX;
+    containerFrame.size.width += LoginOnePasswordPaddingX;
 
     UIView *onePasswordView = [[UIView alloc] initWithFrame:containerFrame];
     [onePasswordView addSubview:onePasswordButton];
@@ -1292,7 +1292,7 @@ static CGFloat const HiddenControlsHeightThreshold              = 480.0;
     NSArray *controlsToHide = @[self.helpButton, self.helpBadge];
 
     // Hide the
-    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > HiddenControlsHeightThreshold);
+    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > LoginHiddenControlsHeightThreshold);
     if (isSmallScreen) {
         controlsToHide = [controlsToHide arrayByAddingObject:self.icon];
     }
