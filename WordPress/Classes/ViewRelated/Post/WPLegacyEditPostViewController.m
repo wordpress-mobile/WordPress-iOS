@@ -829,18 +829,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-    __block BOOL hasFailedMedia = NO;
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
         if (progress.totalUnitCount == 0){
-            hasFailedMedia = YES;
+            return YES;
         }
-    }];
-    return hasFailedMedia;
+    }
+    return NO;
 }
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
+        if (progress.totalUnitCount != 0){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)cancelMediaUploads
