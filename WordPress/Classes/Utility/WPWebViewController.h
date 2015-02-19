@@ -2,11 +2,7 @@
 
 @interface WPWebViewController : UIViewController
 
-@property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSURL *wpLoginURL;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *accessToken;
+// Interface
 @property (nonatomic,   weak) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIView *loadingView;
@@ -20,6 +16,15 @@
 @property (nonatomic, strong) UIBarButtonItem *spinnerButton;
 @property (nonatomic, strong) NSTimer *statusTimer;
 @property (nonatomic, assign) BOOL hidesLinkOptions;
+
+// Endpoint!
+@property (nonatomic, strong) NSURL *url;
+
+// Authentication
+@property (nonatomic, strong) NSURL *wpLoginURL;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *authToken;
 
 // Reader variables
 @property (nonatomic, strong) NSString *detailContent;

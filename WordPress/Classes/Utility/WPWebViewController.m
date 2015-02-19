@@ -255,41 +255,19 @@
         [self retryWithLogin];
         return;
     }
-
-    NSURL *webURL;
-    if (self.needsLogin) {
-        if (self.wpLoginURL != nil) {
-            webURL = self.wpLoginURL;
-        } else { //try to guess the login URL
-            webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-        }
+    
+    NSURL *targetURL = [self targetURL];
+    NSAssert(targetURL, @"Invalid targetURL");
+    
+    NSURLRequest *request = nil;
+    
+    if (!self.needsLogin) {
+        request = [self requestForURL:targetURL];
     } else {
-        webURL = self.url;
+        request = [self requestForURL:targetURL username:self.username password:self.password token:self.authToken];
     }
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-
-    [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
-    if (self.needsLogin) {
-        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                                  [self.username stringByUrlEncoding],
-                                  [self.password stringByUrlEncoding],
-                                  [[self.url absoluteString] stringByUrlEncoding]];
-
-        if ( self.wpLoginURL != nil ) {
-            [request setURL: self.wpLoginURL];
-        } else {
-             [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
-         }
-
-        [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
-        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-    }
+    
+    NSAssert(request, @"We should have a valid request here!");
     [self.webView loadRequest:request];
 }
 
@@ -601,6 +579,65 @@
         CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
         [self.scrollView setContentOffset:bottomOffset animated:YES];
     }
+}
+
+
+#pragma mark - Requests Helpers
+
+- (NSURL *)targetURL
+{
+    if (!self.needsLogin) {
+        return self.url;
+    }
+    
+    if (!self.wpLoginURL) {
+        return [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+    }
+    
+    return self.wpLoginURL;
+}
+
+- (NSURLRequest *)requestForURL:(NSURL *)url
+{
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
+    [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
+    
+    return request;
+}
+
+- (NSURLRequest *)requestForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password token:(NSString *)token
+{
+    NSParameterAssert(url);
+    NSParameterAssert(username);
+    NSParameterAssert(password != nil || token != nil);
+    
+    NSMutableURLRequest *request = [[self requestForURL:url] mutableCopy];
+    
+    // Method!
+    [request setHTTPMethod:@"POST"];
+    
+    // Auth Body
+    NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
+                              [username stringByUrlEncoding],
+                              [password stringByUrlEncoding] ?: [NSString string],
+                              [url.absoluteString stringByUrlEncoding]];
+    
+    request.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
+    
+    // Auth Headers
+    [request setValue:[NSString stringWithFormat:@"%d", request_body.length] forHTTPHeaderField:@"Content-Length"];
+    [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
+    
+    // Bearer Token!
+    if (token) {
+        NSString *bearer = [NSString stringWithFormat:@"Bearer %@", token];
+        [request setValue:bearer forHTTPHeaderField:@"Authorization"];
+    }
+    
+    return request;
 }
 
 @end
