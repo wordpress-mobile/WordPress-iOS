@@ -342,10 +342,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)password
 {
-    WPAccount *account = self.account;
-    NSString *password = account.password ?: @"";
+    return self.account.password ?: @"";
+}
 
-    return password;
+- (NSString *)authToken
+{
+    return self.account.authToken;
 }
 
 - (BOOL)supportsFeaturedImages
