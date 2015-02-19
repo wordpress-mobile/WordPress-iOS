@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-# Test Comment
+# Test Comment 2
 
 xcodeproj 'WordPress/WordPress.xcodeproj'
 
