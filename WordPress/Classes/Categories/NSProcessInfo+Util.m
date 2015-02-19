@@ -2,7 +2,7 @@
 
 @implementation NSProcessInfo (Util)
 
-+ (BOOL) isRunningTests
++ (BOOL)isRunningTests
 {
     NSDictionary *environment = [[NSProcessInfo processInfo] environment];
     NSString *injectBundle = environment[@"XCInjectBundle"];
@@ -10,4 +10,5 @@
     return result;
 
 }
+
 @end
