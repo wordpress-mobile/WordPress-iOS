@@ -488,6 +488,15 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_notification_details"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_opened_notification_details"];
             break;
+        case WPAnalyticsStatOnePasswordLogin:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - SignIn Filled"];
+            break;
+        case WPAnalyticsStatOnePasswordSignup:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - Signup Filled"];
+            break;
+        case WPAnalyticsStatOnePasswordFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - Extension Failure"];
+            break;
         case WPAnalyticsStatOpenedPosts:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Posts"];
             break;
