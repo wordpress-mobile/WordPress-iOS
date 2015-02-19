@@ -154,7 +154,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.2.0)
   - WordPressApi (~> 0.3.1)
   - WordPressCom-Analytics-iOS (= 0.0.26)
-  - WordPressCom-Stats-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Stats-iOS`, commit `bd37321189ad3de9343cb2761d6ec5fbef06c72a`)
+  - WordPressCom-Stats-iOS (from `git://github.com/wordpress-mobile/WordPressCom-Stats-iOS`, commit `3d9cc7988d0b8df44a76c817415d4b36b4201e49`)
   - wpxmlrpc (~> 0.7)
 
 EXTERNAL SOURCES:
@@ -176,7 +176,7 @@ EXTERNAL SOURCES:
     :commit: c7a2ef6ef77e892bba430efd923592f4d6200d00
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
   WordPressCom-Stats-iOS:
-    :commit: bd37321189ad3de9343cb2761d6ec5fbef06c72a
+    :commit: 3d9cc7988d0b8df44a76c817415d4b36b4201e49
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 CHECKOUT OPTIONS:
@@ -196,7 +196,7 @@ CHECKOUT OPTIONS:
     :commit: c7a2ef6ef77e892bba430efd923592f4d6200d00
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
   WordPressCom-Stats-iOS:
-    :commit: bd37321189ad3de9343cb2761d6ec5fbef06c72a
+    :commit: 3d9cc7988d0b8df44a76c817415d4b36b4201e49
     :git: git://github.com/wordpress-mobile/WordPressCom-Stats-iOS
 
 SPEC CHECKSUMS:
