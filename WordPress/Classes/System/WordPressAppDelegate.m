@@ -70,6 +70,13 @@ int ddLogLevel                                                  = LOG_LEVEL_INFO
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
+static BOOL isRunningTests(void) {
+    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
+    NSString *injectBundle = environment[@"XCInjectBundle"];
+    BOOL result = [[injectBundle pathExtension] isEqualToString:@"xctest"] || [[injectBundle pathExtension] isEqualToString:@"octest"];
+    return result;
+}
+
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
@@ -638,6 +645,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)initializeAppTracking
 {
+    // Dont start App Tracking if we are running the test suite
+    if (isRunningTests()) {
+        return;
+    }
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
