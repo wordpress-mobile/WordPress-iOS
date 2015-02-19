@@ -157,7 +157,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                             password:password
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];
