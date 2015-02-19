@@ -643,6 +643,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if ([NSProcessInfo isRunningTests]) {
         return;
     }
+    
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
     [AppRatingUtility setSystemWideSignificantEventsCount:10];
