@@ -11,9 +11,11 @@
 
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
-@property (weak, readonly) UIScrollView *scrollView;
-@property (nonatomic) BOOL isLoading, needsLogin, hasLoadedContent;
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) BOOL needsLogin;
+@property (nonatomic, assign) BOOL hasLoadedContent;
 
 @end
 
@@ -22,7 +24,7 @@
 - (void)dealloc
 {
     _webView.delegate = nil;
-    if ([_webView isLoading]) {
+    if (_webView.isLoading) {
         [_webView stopLoading];
     }
     _statusTimer = nil;
