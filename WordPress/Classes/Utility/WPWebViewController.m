@@ -624,15 +624,15 @@
     [request setHTTPMethod:@"POST"];
     
     // Auth Body
-    NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                              [username stringByUrlEncoding],
-                              encodedPassword,
-                              [url.absoluteString stringByUrlEncoding]];
+    NSString *requestBody = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
+                                 @"log", [username stringByUrlEncoding],
+                                 @"pwd", encodedPassword,
+                                 @"redirect_to", [url.absoluteString stringByUrlEncoding]];
     
-    request.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
+    request.HTTPBody = [requestBody dataUsingEncoding:NSUTF8StringEncoding];
     
     // Auth Headers
-    [request setValue:[NSString stringWithFormat:@"%d", request_body.length] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:[NSString stringWithFormat:@"%d", requestBody.length] forHTTPHeaderField:@"Content-Length"];
     [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
     
     // Bearer Token
