@@ -616,13 +616,17 @@
     
     NSMutableURLRequest *request = [[self requestForURL:url] mutableCopy];
     
+    // If we've got a token, let's make sure the password never gets sent
+    NSString *encodedPassword = token.length == 0 ? [password stringByUrlEncoding] : nil;
+    encodedPassword = encodedPassword ?: [NSString string];
+    
     // Method!
     [request setHTTPMethod:@"POST"];
     
     // Auth Body
     NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
                               [username stringByUrlEncoding],
-                              [password stringByUrlEncoding] ?: [NSString string],
+                              encodedPassword,
                               [url.absoluteString stringByUrlEncoding]];
     
     request.HTTPBody = [request_body dataUsingEncoding:NSUTF8StringEncoding];
@@ -631,10 +635,9 @@
     [request setValue:[NSString stringWithFormat:@"%d", request_body.length] forHTTPHeaderField:@"Content-Length"];
     [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
     
-    // Bearer Token!
+    // Bearer Token
     if (token) {
-        NSString *bearer = [NSString stringWithFormat:@"Bearer %@", token];
-        [request setValue:bearer forHTTPHeaderField:@"Authorization"];
+        [request setValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:@"Authorization"];
     }
     
     return request;
