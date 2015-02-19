@@ -37,7 +37,7 @@
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super viewDidLoad];
 
     if (IS_IPHONE) {
@@ -101,7 +101,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [super viewWillAppear:animated];
 
     if ( self.detailContent == nil ) {
@@ -124,7 +124,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
@@ -237,7 +237,7 @@
 
 - (void)refreshWebView
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
 
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
@@ -301,7 +301,7 @@
 
 - (void)setUrl:(NSURL *)theURL
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     if (_url != theURL) {
         _url = theURL;
         if (_url && self.webView) {
@@ -559,7 +559,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [self setLoading:NO];
 
     CGSize webviewSize = self.view.frame.size;
