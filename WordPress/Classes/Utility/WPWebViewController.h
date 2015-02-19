@@ -6,7 +6,8 @@
 @property (nonatomic, strong) NSURL *wpLoginURL;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
+@property (nonatomic, strong) NSString *accessToken;
+@property (nonatomic,   weak) IBOutlet UIWebView *webView;
 @property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
 @property (nonatomic, strong) IBOutlet UIView *loadingView;
 @property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
@@ -17,19 +18,20 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *optionsButton;
 @property (nonatomic, strong) UIBarButtonItem *spinnerButton;
-@property (strong, nonatomic) NSTimer *statusTimer;
-@property (nonatomic) BOOL hidesLinkOptions;
+@property (nonatomic, strong) NSTimer *statusTimer;
+@property (nonatomic, assign) BOOL hidesLinkOptions;
 
-//reader variables
-@property (nonatomic,strong) NSString *detailContent;
-@property (nonatomic,strong) NSString *detailHTML;
-@property (nonatomic,strong) NSString *readerAllItems;
-@property (nonatomic) BOOL shouldScrollToBottom;
+// Reader variables
+@property (nonatomic, strong) NSString *detailContent;
+@property (nonatomic, strong) NSString *detailHTML;
+@property (nonatomic, strong) NSString *readerAllItems;
+@property (nonatomic, assign) BOOL shouldScrollToBottom;
 
-- (void) showCloseButton;
-- (IBAction) showLinkOptions;
-- (IBAction) dismiss;
-- (IBAction) goForward;
-- (IBAction) goBack;
-- (IBAction) reload;
+- (void)showCloseButton;
+- (IBAction)showLinkOptions;
+- (IBAction)dismiss;
+- (IBAction)goForward;
+- (IBAction)goBack;
+- (IBAction)reload;
+
 @end
