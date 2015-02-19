@@ -534,12 +534,15 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
         if (!loginDict) {
             if (error.code != AppExtensionErrorCodeCancelledByUser) {
                 DDLogError(@"Failed to use 1Password App Extension to save a new Login: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
             }
             return;
         }
-        
+                                                            
         _usernameField.text = loginDict[AppExtensionUsernameKey] ?: [NSString string];
         _passwordField.text = loginDict[AppExtensionPasswordKey] ?: [NSString string];
+                                                            
+        [WPAnalytics track:WPAnalyticsStatOnePasswordSignup];
     }];
 }
 
