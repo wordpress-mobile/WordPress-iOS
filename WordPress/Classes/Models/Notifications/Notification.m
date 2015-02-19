@@ -23,6 +23,7 @@ NSString const *NoteRangeTypeComment    = @"comment";
 NSString const *NoteRangeTypeStats      = @"stat";
 NSString const *NoteRangeTypeBlockquote = @"blockquote";
 NSString const *NoteRangeTypeNoticon    = @"noticon";
+NSString const *NoteRangeTypeSite       = @"site";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
@@ -74,14 +75,16 @@ NSString const *NotePostIdKey           = @"post_id";
 		_url                = [NSURL URLWithString:[rawRange stringForKey:NoteUrlKey]];
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
+        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
         
-        //  SORRY:
+        //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
         //  ======
         //  `id` is coupled with the `type
         //
         //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
+        //      type = site     => id = site_id
 
         if ([_type isEqual:NoteRangeTypePost]) {
             _postID         = [rawRange numberForKey:NoteRangeIdKey];
@@ -95,9 +98,10 @@ NSString const *NotePostIdKey           = @"post_id";
             
         } else if ([_type isEqual:NoteRangeTypeNoticon]) {
             _value          = [rawRange stringForKey:NoteRangeValueKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeSite]) {
+            _siteID         = [rawRange numberForKey:NoteRangeIdKey];
         }
-        
-        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
 	}
 	
 	return self;
