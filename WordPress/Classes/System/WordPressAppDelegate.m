@@ -47,6 +47,7 @@
 #import "Constants.h"
 #import "UIImage+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
+#import "NSProcessInfo+Util.h"
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -69,13 +70,6 @@
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
-
-static BOOL isRunningTests(void) {
-    NSDictionary *environment = [[NSProcessInfo processInfo] environment];
-    NSString *injectBundle = environment[@"XCInjectBundle"];
-    BOOL result = [[injectBundle pathExtension] isEqualToString:@"xctest"] || [[injectBundle pathExtension] isEqualToString:@"octest"];
-    return result;
-}
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
@@ -646,7 +640,7 @@ static BOOL isRunningTests(void) {
 - (void)initializeAppTracking
 {
     // Dont start App Tracking if we are running the test suite
-    if (isRunningTests()) {
+    if ([NSProcessInfo isRunningTests]) {
         return;
     }
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
