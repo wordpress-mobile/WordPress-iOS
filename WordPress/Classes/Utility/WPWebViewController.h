@@ -1,6 +1,6 @@
-#import <MessageUI/MFMailComposeViewController.h>
+#import <UIKit/UIKit.h>
 
-@interface WPWebViewController : UIViewController <MFMailComposeViewControllerDelegate>
+@interface WPWebViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *url;
 @property (nonatomic, strong) NSURL *wpLoginURL;
@@ -27,7 +27,6 @@
 @property (nonatomic, strong) NSString *readerAllItems;
 @property (nonatomic, assign) BOOL shouldScrollToBottom;
 
-- (void)showCloseButton;
 - (IBAction)showLinkOptions;
 - (IBAction)dismiss;
 - (IBAction)goForward;
