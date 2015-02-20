@@ -13,14 +13,14 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 
-CGFloat const JetpackiOS7StatusBarOffset = 20.0;
-CGFloat const JetpackStandardOffset = 16;
-CGFloat const JetpackTextFieldWidth = 320.0;
-CGFloat const JetpackMaxTextWidth = 289.0;
-CGFloat const JetpackTextFieldHeight = 44.0;
-CGFloat const JetpackIconVerticalOffset = 77;
-CGFloat const JetpackSignInButtonWidth = 289.0;
-CGFloat const JetpackSignInButtonHeight = 41.0;
+static CGFloat const JetpackiOS7StatusBarOffset = 20.0;
+static CGFloat const JetpackStandardOffset = 16.0;
+static CGFloat const JetpackTextFieldWidth = 320.0;
+static CGFloat const JetpackMaxTextWidth = 289.0;
+static CGFloat const JetpackTextFieldHeight = 44.0;
+static CGFloat const JetpackIconVerticalOffset = 77.0;
+static CGFloat const JetpackSignInButtonWidth = 289.0;
+static CGFloat const JetpackSignInButtonHeight = 41.0;
 
 @interface JetpackSettingsViewController () <UITextFieldDelegate, UIGestureRecognizerDelegate>
 @end
