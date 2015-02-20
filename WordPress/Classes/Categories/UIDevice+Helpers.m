@@ -4,6 +4,18 @@ static NSString * const WordPressIdentifierDefaultsKey = @"WordPressIdentifier";
 
 @implementation UIDevice (Helpers)
 
+- (NSString *)wordPressUserAgent
+{
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    NSString *userAgent = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
+                           appVersion,
+                           self.systemName,
+                           self.systemVersion,
+                           self.model];
+    
+    return userAgent;
+}
+
 - (NSString *)wordPressIdentifier
 {
     NSString *uuid;
