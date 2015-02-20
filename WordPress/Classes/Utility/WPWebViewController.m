@@ -4,6 +4,7 @@
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
+#import "NSURLRequest+Helpers.h"
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
