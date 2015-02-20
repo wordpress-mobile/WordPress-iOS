@@ -20,7 +20,7 @@
 #import "NSString+HTML.h"
 #import "PocketAPI.h"
 #import "ReaderPost.h"
-#import "UIDevice+WordPressIdentifier.h"
+#import "UIDevice+Helpers.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAccount.h"
 #import "AccountService.h"
@@ -1078,7 +1078,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
-    DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
+    DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
 

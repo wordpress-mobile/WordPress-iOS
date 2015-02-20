@@ -2,8 +2,8 @@
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
 #import <UIDeviceHardware.h>
-#import "UIDevice+WordPressIdentifier.h"
 #import "WordPressAppDelegate.h"
+#import "UIDevice+Helpers.h"
 #import "NotificationsManager.h"
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
@@ -397,7 +397,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                  @"device_model"    : [UIDeviceHardware platform],
                                  @"os_version"      : [[UIDevice currentDevice] systemVersion],
                                  @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                 @"device_uuid"     : [[UIDevice currentDevice] wordpressIdentifier],
+                                 @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
                                  };
     
     [self POST:@"devices/new"
