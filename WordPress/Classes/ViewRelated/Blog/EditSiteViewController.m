@@ -563,12 +563,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     if (error) {
         NSString *message;
-        if ([error code] == 403) {
+        if (error.code == 403) {
             message = NSLocalizedString(@"Please try entering your login details again.", @"");
         } else {
             message = [error localizedDescription];
         }
-        if ([error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode] == 405) {
+        if (error.code == 405) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
