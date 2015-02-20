@@ -1,5 +1,6 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
+#import "NSURLRequest+Helpers.h"
 #import "Post.h"
 #import "Category.h"
 
