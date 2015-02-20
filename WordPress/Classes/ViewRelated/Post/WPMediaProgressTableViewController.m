@@ -2,7 +2,7 @@
 #import "WPProgressTableViewCell.h"
 
 static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
-static CGFloat * const WPProgressCellHeight = 74.0f;
+static CGFloat const WPProgressCellHeight = 74.0f;
 
 @interface WPMediaProgressTableViewController ()
 
