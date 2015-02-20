@@ -359,8 +359,6 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     [webView loadRequest:mRequest];
 }
