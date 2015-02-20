@@ -228,10 +228,11 @@
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
+    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
+    livePreviewController.authToken = defaultAccount.authToken;
     livePreviewController.username = defaultAccount.username;
     livePreviewController.password = defaultAccount.password;
-    [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
-    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
+    livePreviewController.wpLoginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
     [self.navigationController pushViewController:livePreviewController animated:YES];
 }
 
