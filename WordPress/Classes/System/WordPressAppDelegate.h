@@ -20,13 +20,6 @@
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
-///---------------------------
-/// @name User agent switching
-///---------------------------
-- (void)useDefaultUserAgent;
-- (void)useAppUserAgent;
-- (NSString *)applicationUserAgent;
-
 ///-----------
 /// @name NUX
 ///-----------

@@ -1,6 +1,5 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
-#import "NSString+Helpers.h"
 #import "Post.h"
 #import "Category.h"
 
@@ -38,14 +37,15 @@
 
 - (void)didReceiveMemoryWarning
 {
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidLoad
 {
+    DDLogMethod();
+    
     [super viewDidLoad];
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setupWebView];
     [self setupLoadingView];
 }
@@ -211,21 +211,16 @@
         [self showSimplePreview];
     } else {
         if (needsLogin) {
-            NSString *wpLoginURL = [self.apost.blog loginUrl];
-            NSURL *url = [NSURL URLWithString:wpLoginURL];
-            NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-            [req setHTTPMethod:@"POST"];
-            [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
-                                         @"log", [self.apost.blog.username stringByUrlEncoding],
-                                         @"pwd", [self.apost.blog.password stringByUrlEncoding],
-                                         @"redirect_to", [link stringByUrlEncoding]];
-
-            NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];
-            [req setHTTPBody: paramData];
-            [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
-            [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-            [self.webView loadRequest:req];
+            NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
+            NSURL *redirectURL = [NSURL URLWithString:link];
+            
+            NSURLRequest *request = [NSURLRequest requestForAuthenticationWithURL:loginURL
+                                                                      redirectURL:redirectURL
+                                                                         username:self.apost.blog.username
+                                                                         password:self.apost.blog.password
+                                                                      bearerToken:self.apost.blog.authToken
+                                                                        userAgent:nil];
+            [self.webView loadRequest:request];
             DDLogInfo(@"Showing real preview (login) for %@", link);
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
