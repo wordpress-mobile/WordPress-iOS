@@ -21,7 +21,6 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -54,10 +53,8 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
     if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                withAnimation:nil];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
     }
     [self refreshWebView];
 }
@@ -65,7 +62,6 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
     [self.webView stopLoading];
 }
 

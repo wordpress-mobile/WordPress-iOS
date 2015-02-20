@@ -4,6 +4,7 @@
 #import "AFHTTPRequestOperation.h"
 #import "WordPressAppDelegate.h"
 #import "UIColor+Helpers.h"
+#import "UIDevice+Helpers.h"
 
 NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequestNotification";
 
@@ -122,11 +123,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
 
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *userAgent = [appDelegate applicationUserAgent];
-    if (!userAgent){
-        userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    }
+    NSString *userAgent = [[UIDevice currentDevice] wordPressUserAgent];
     [self setDefaultHeader:@"User-Agent" value:userAgent];
 }
 

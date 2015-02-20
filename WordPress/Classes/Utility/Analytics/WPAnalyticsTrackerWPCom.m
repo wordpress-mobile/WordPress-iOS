@@ -1,5 +1,5 @@
 #import "WPAnalyticsTrackerWPCom.h"
-#import "WordPressAppDelegate.h"
+#import "UIDevice+Helpers.h"
 #import "Constants.h"
 
 @implementation WPAnalyticsTrackerWPCom
@@ -30,9 +30,10 @@
 {
     int x = arc4random();
     NSString *statsURL = [NSString stringWithFormat:@"%@%@%@%@%d" , WPMobileReaderURL, @"&template=stats&stats_name=", statName, @"&rnd=", x];
+    NSString *wordPressUserAgent = [[UIDevice currentDevice] wordPressUserAgent];
+    
     NSMutableURLRequest* request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:statsURL]];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
+    [request setValue:wordPressUserAgent forHTTPHeaderField:@"User-Agent"];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:request delegate:nil];
     [conn start];
 }
