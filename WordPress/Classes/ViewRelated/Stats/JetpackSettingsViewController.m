@@ -449,20 +449,19 @@ static CGFloat const JetpackSignInButtonHeight = 41.0;
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
     NSURL *targetURL = [NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]];
     NSURL *loginURL = [NSURL URLWithString:_blog.loginUrl];
-    [self openURL:targetURL authToken:_blog.authToken username:_blog.username password:_blog.password wpLoginURL:loginURL];
+    [self openURL:targetURL username:_blog.username password:_blog.password wpLoginURL:loginURL];
 }
 
 - (void)openMoreInformationURL
 {
     NSURL *targetURL = [NSURL URLWithString:JetpackMoreInformationURL];
-    [self openURL:targetURL authToken:nil username:nil password:nil wpLoginURL:nil];
+    [self openURL:targetURL username:nil password:nil wpLoginURL:nil];
 }
 
-- (void)openURL:(NSURL *)url authToken:(NSString *)authToken username:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
+- (void)openURL:(NSURL *)url username:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.url = url;
-    webViewController.authToken = authToken;
     webViewController.username = username;
     webViewController.password = password;
     webViewController.wpLoginURL = wpLoginURL;
