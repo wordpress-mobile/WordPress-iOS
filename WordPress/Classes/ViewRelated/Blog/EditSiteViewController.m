@@ -76,6 +76,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
         self.url = self.blog.url;
+        self.authToken = self.blog.authToken;
         self.username = self.blog.username;
         self.password = self.blog.password;
 
@@ -595,10 +596,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:path]];
-    [webViewController setUsername:self.username];
-    [webViewController setPassword:self.password];
-    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.url = [NSURL URLWithString:path];
+    webViewController.authToken = self.authToken;
+    webViewController.username = self.username;
+    webViewController.password = self.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
     [self.navigationController pushViewController:webViewController animated:YES];
 }

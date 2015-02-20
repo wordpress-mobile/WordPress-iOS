@@ -1102,7 +1102,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
     WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:url];
+    controller.url = url;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -1143,7 +1143,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:linkURL];
+    controller.url = linkURL;
     [self.navigationController pushViewController:controller animated:YES];
 }
 

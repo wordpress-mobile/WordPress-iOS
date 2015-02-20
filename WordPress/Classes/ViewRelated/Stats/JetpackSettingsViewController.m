@@ -13,6 +13,7 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 
+static NSString * const JetpackMoreInformationURL = @"http://ios.wordpress.org/faq/#faq_15";
 static CGFloat const JetpackiOS7StatusBarOffset = 20.0;
 static CGFloat const JetpackStandardOffset = 16.0;
 static CGFloat const JetpackTextFieldWidth = 320.0;
@@ -446,24 +447,25 @@ static CGFloat const JetpackSignInButtonHeight = 41.0;
 - (void)openInstallJetpackURL
 {
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
-    [self openURL:[NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]] withUsername:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
+    NSURL *targetURL = [NSURL URLWithString:[_blog adminUrlWithPath:@"plugin-install.php?tab=plugin-information&plugin=jetpack"]];
+    NSURL *loginURL = [NSURL URLWithString:_blog.loginUrl];
+    [self openURL:targetURL authToken:_blog.authToken username:_blog.username password:_blog.password wpLoginURL:loginURL];
 }
 
 - (void)openMoreInformationURL
 {
-    [self openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_15"] withUsername:nil password:nil wpLoginURL:nil];
+    NSURL *targetURL = [NSURL URLWithString:JetpackMoreInformationURL];
+    [self openURL:targetURL authToken:nil username:nil password:nil wpLoginURL:nil];
 }
 
-- (void)openURL:(NSURL *)url withUsername:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
+- (void)openURL:(NSURL *)url authToken:(NSString *)authToken username:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:url];
-    if (username && password && wpLoginURL) {
-
-        [webViewController setUsername:username];
-        [webViewController setPassword:password];
-        [webViewController setWpLoginURL:wpLoginURL];
-    }
+    webViewController.url = url;
+    webViewController.authToken = authToken;
+    webViewController.username = username;
+    webViewController.password = password;
+    webViewController.wpLoginURL = wpLoginURL;
 
     if (self.navigationController) {
         [self.navigationController pushViewController:webViewController animated:YES];
