@@ -970,6 +970,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 }];
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                uploadProgress.kind = NSProgressKindFile;
+                [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
                 [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
                 [strongSelf.mediaGlobalProgress resignCurrent];
             }];
