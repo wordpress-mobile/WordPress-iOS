@@ -58,7 +58,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma - Initializers
 
-- (id)initWithOAuthToken:(NSString *)authToken
+- (instancetype)initWithOAuthToken:(NSString *)authToken
 {
 	NSParameterAssert([authToken isKindOfClass:[NSString class]]);
 	
@@ -66,8 +66,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	
 	self = [super initWithBaseURL:url];
 	
-	if (self)
-	{
+    if (self) {
         _authToken = authToken;
         self.requestSerializer = [AFJSONRequestSerializer serializer];
 		
