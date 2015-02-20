@@ -3,6 +3,7 @@
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
+#import "UIDevice+Helpers.h"
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
@@ -256,18 +257,9 @@
         return;
     }
     
-    NSURL *targetURL = [self targetURL];
-    NSAssert(targetURL, @"Invalid targetURL");
-    
-    NSURLRequest *request = nil;
-    
-    if (!self.needsLogin) {
-        request = [self requestForURL:targetURL];
-    } else {
-        request = [self requestForURL:targetURL username:self.username password:self.password token:self.authToken];
-    }
-    
+    NSURLRequest *request = [self newRequestForWebsite];
     NSAssert(request, @"We should have a valid request here!");
+    
     [self.webView loadRequest:request];
 }
 
@@ -584,63 +576,21 @@
 
 #pragma mark - Requests Helpers
 
-- (NSURL *)targetURL
+- (NSURLRequest *)newRequestForWebsite
 {
+    NSString *userAgent = [[UIDevice currentDevice] wordPressUserAgent];
     if (!self.needsLogin) {
-        return self.url;
+        return [NSURLRequest requestWithURL:self.url userAgent:userAgent];
     }
     
-    if (!self.wpLoginURL) {
-        return [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-    }
+    NSURL *loginURL = self.wpLoginURL ?: [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     
-    return self.wpLoginURL;
-}
-
-- (NSURLRequest *)requestForURL:(NSURL *)url
-{
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
-    
-    return request;
-}
-
-- (NSURLRequest *)requestForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password token:(NSString *)token
-{
-    NSParameterAssert(url);
-    NSParameterAssert(username);
-    NSParameterAssert(password != nil || token != nil);
-    
-    NSMutableURLRequest *request = [[self requestForURL:url] mutableCopy];
-    
-    // If we've got a token, let's make sure the password never gets sent
-    NSString *encodedPassword = token.length == 0 ? [password stringByUrlEncoding] : nil;
-    encodedPassword = encodedPassword ?: [NSString string];
-    
-    // Method!
-    [request setHTTPMethod:@"POST"];
-    
-    // Auth Body
-    NSString *requestBody = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
-                                 @"log", [username stringByUrlEncoding],
-                                 @"pwd", encodedPassword,
-                                 @"redirect_to", [url.absoluteString stringByUrlEncoding]];
-    
-    request.HTTPBody = [requestBody dataUsingEncoding:NSUTF8StringEncoding];
-    
-    // Auth Headers
-    [request setValue:[NSString stringWithFormat:@"%d", requestBody.length] forHTTPHeaderField:@"Content-Length"];
-    [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    
-    // Bearer Token
-    if (token) {
-        [request setValue:[NSString stringWithFormat:@"Bearer %@", token] forHTTPHeaderField:@"Authorization"];
-    }
-    
-    return request;
+    return [NSURLRequest requestForAuthenticationWithURL:loginURL
+                                             redirectURL:self.url
+                                                username:self.username
+                                                password:self.password
+                                             bearerToken:self.authToken
+                                               userAgent:userAgent];
 }
 
 @end

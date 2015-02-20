@@ -156,7 +156,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
-    [self setupUserAgent];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -830,49 +829,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }];
 }
 
-#pragma mark - Networking setup, User agents
-
-- (void)setupUserAgent
-{
-    // Keep a copy of the original userAgent for use with certain webviews in the app.
-    UIWebView *webView = [[UIWebView alloc] init];
-    NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
-    NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
-                       appVersion,
-                       [[UIDevice currentDevice] systemName],
-                       [[UIDevice currentDevice] systemVersion],
-                       [[UIDevice currentDevice] model]
-                       ];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys: appUA, @"UserAgent", defaultUA, @"DefaultUserAgent", appUA, @"AppUserAgent", nil];
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)useDefaultUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (void)useAppUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (NSString *)applicationUserAgent
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
-}
+#pragma mark - Networking setup
 
 - (void)setupSingleSignOn
 {
@@ -1076,7 +1033,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #endif
     DDLogInfo(@"Extra debug: %@", extraDebug ? @"YES" : @"NO");
     DDLogInfo(@"Device model: %@ (%@)", [UIDeviceHardware platformString], [UIDeviceHardware platform]);
-    DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
+    DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
