@@ -842,11 +842,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    if ([defaultAccount username]) {
-        [[WPComOAuthController sharedController] setWordPressComUsername:[defaultAccount username]];
-        [[WPComOAuthController sharedController] setWordPressComPassword:[defaultAccount password]];
-    }
+    WPComOAuthController *oAuthController = [WPComOAuthController sharedController];
+    
+    [oAuthController setWordPressComUsername:defaultAccount.username];
+    [oAuthController setWordPressComPassword:defaultAccount.password];
+    [oAuthController setWordPressComAuthToken:defaultAccount.authToken];
 }
 
 - (void)setupReachability
