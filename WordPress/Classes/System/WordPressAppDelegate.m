@@ -1185,8 +1185,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
 {
-    [self toggleExtraDebuggingIfNeeded];
-
     // If the notification object is not nil, then it's a login
     if (notification.object) {
         [self loginSimperium];
@@ -1206,6 +1204,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [self showWelcomeScreenIfNeededAnimated:NO];
         [self removeTodayWidgetConfiguration];
     }
+    
+    [self toggleExtraDebuggingIfNeeded];
+    [self setupSingleSignOn];
 }
 
 #pragma mark - Today Extension
