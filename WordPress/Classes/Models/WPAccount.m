@@ -52,6 +52,10 @@
 
 - (NSString *)password
 {
+    if (self.isWpcom) {
+        return [NSString string];
+    }
+    
     return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
 }
 
