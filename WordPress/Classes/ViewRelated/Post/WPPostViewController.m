@@ -8,7 +8,6 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
-#import <AMPopTip/AMPopTip.h>
 #import <SVProgressHUD.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
@@ -35,6 +34,7 @@
 #import "WPTabBarController.h"
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
+#import "WPTooltip.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -558,25 +558,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showOnboardingTips
 {
-    AMPopTip *popTip = [AMPopTip popTip];
     CGFloat xValue = IS_IPAD ? CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-20.0 : CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-10.0;
     CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
-    [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
-    [[AMPopTip appearance] setTextColor:[UIColor whiteColor]];
-    [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
-    [[AMPopTip appearance] setArrowSize:CGSizeMake(12.0, 8.0)];
-    [[AMPopTip appearance] setEdgeMargin:5.0];
-    [[AMPopTip appearance] setDelayIn:0.5];
-    UIEdgeInsets insets = {6,5,6,5};
-    [[AMPopTip appearance] setEdgeInsets:insets];
-    popTip.shouldDismissOnTap = YES;
-    popTip.shouldDismissOnTapOutside = YES;
-    [popTip showText:NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.")
-           direction:AMPopTipDirectionDown
-            maxWidth:200
-              inView:self.view
-           fromFrame:targetFrame
-            duration:3];
+    NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
+    [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
 }
 
 #pragma mark - Actions
