@@ -55,7 +55,12 @@
 
 - (void)showOnboardingTips
 {
-    CGFloat xValue = IS_IPAD ? CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-20.0 : CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-10.0;
+    CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+    if (IS_IPAD) {
+        xValue -= 20.0;
+    } else {
+        xValue -= 10.0;
+    }
     CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
     NSString *tooltipText = NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.");
     [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
