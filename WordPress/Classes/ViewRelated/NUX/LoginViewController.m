@@ -403,12 +403,15 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
         if (!loginDict) {
             if (error.code != AppExtensionErrorCodeCancelledByUser) {
                 DDLogError(@"OnePassword Error: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
             }
             return;
         }
-
+                                                           
         _usernameText.text = loginDict[AppExtensionUsernameKey];
         _passwordText.text = loginDict[AppExtensionPasswordKey];
+                                                           
+        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signIn];
     }];
 }
