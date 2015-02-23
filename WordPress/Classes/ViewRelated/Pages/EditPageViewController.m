@@ -5,7 +5,7 @@
 #import "Page.h"
 #import "Blog.h"
 #import "PageSettingsViewController.h"
-#import <AMPopTip/AMPopTip.h>
+#import "WPTooltip.h"
 
 @implementation EditPageViewController
 
@@ -55,25 +55,10 @@
 
 - (void)showOnboardingTips
 {
-    AMPopTip *popTip = [AMPopTip popTip];
     CGFloat xValue = IS_IPAD ? CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-20.0 : CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-10.0;
     CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
-    [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
-    [[AMPopTip appearance] setTextColor:[UIColor whiteColor]];
-    [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
-    [[AMPopTip appearance] setArrowSize:CGSizeMake(12.0, 8.0)];
-    [[AMPopTip appearance] setEdgeMargin:5.0];
-    [[AMPopTip appearance] setDelayIn:0.5];
-    UIEdgeInsets insets = {6,5,6,5};
-    [[AMPopTip appearance] setEdgeInsets:insets];
-    popTip.shouldDismissOnTap = YES;
-    popTip.shouldDismissOnTapOutside = YES;
-    [popTip showText:NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.")
-           direction:AMPopTipDirectionDown
-            maxWidth:200
-              inView:self.view
-           fromFrame:targetFrame
-            duration:3];
+    NSString *tooltipText = NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.");
+    [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
 }
 
 @end
