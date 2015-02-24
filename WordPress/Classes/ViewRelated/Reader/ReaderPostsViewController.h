@@ -1,8 +1,18 @@
 #import <UIKit/UIKit.h>
-#import "ReaderPostContentView.h"
 
-@interface ReaderPostsViewController : UITableViewController<ReaderPostContentViewDelegate, UIViewControllerRestoration>
+typedef NS_ENUM(NSUInteger, ReaderViewStyle) {
+    ReaderViewStyleNormal,
+    ReaderViewStyleSitePreview
+};
 
-- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId;
+@class ReaderTopic;
+
+@interface ReaderPostsViewController : UITableViewController
+
+@property (nonatomic, strong) ReaderTopic *readerTopic;
+@property (nonatomic, assign) BOOL skipIpadTopPadding;
+@property (nonatomic, assign) ReaderViewStyle readerViewStyle;
+
+- (void)setTableHeaderView:(UIView *)view;
 
 @end
