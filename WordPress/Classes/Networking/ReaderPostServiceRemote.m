@@ -255,7 +255,8 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
 
     NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
-
+    NSDictionary *discussionDict = [dict dictionaryForKey:@"discussion"];
+    
     post.author = [self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]]; // typically the author's screen name
     post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]];
     post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:@"name"]]; // Typically the author's given name
@@ -264,8 +265,8 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     post.blogName = [self siteNameFromPostDictionary:dict];
     post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
-    post.commentCount = [dict numberForKey:@"comment_count"];
-    post.commentsOpen = [[dict numberForKey:@"comments_open"] boolValue];
+    post.commentCount = [discussionDict numberForKey:@"comment_count"];
+    post.commentsOpen = [[discussionDict numberForKey:@"comments_open"] boolValue];
     post.content = [self stringOrEmptyString:[dict stringForKey:@"content"]];
     post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:@"date"]];
     post.featuredImage = [self featuredImageFromPostDictionary:dict];
