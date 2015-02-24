@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@interface NSURLRequest (Helpers)
+@interface WPURLRequest : NSURLRequest
 
 
 /**

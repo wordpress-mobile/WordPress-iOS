@@ -4,7 +4,7 @@
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
-#import "NSURLRequest+Helpers.h"
+#import "WPURLRequest.h"
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
@@ -581,12 +581,12 @@
 {
     NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
     if (!self.needsLogin) {
-        return [NSURLRequest requestWithURL:self.url userAgent:userAgent];
+        return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }
     
     NSURL *loginURL = self.wpLoginURL ?: [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
     
-    return [NSURLRequest requestForAuthenticationWithURL:loginURL
+    return [WPURLRequest requestForAuthenticationWithURL:loginURL
                                              redirectURL:self.url
                                                 username:self.username
                                                 password:self.password
