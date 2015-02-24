@@ -255,7 +255,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
 
     NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
-    NSDictionary *discussionDict = [dict dictionaryForKey:@"discussion"];
+    NSDictionary *discussionDict = [dict dictionaryForKey:@"discussion"] ?: dict;
     
     post.author = [self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]]; // typically the author's screen name
     post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]];
