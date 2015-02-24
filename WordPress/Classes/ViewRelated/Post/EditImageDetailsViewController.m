@@ -159,6 +159,17 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     } else {
         newSize.width = size.height * ratio;
     }
+
+    if (newSize.width > size.width) {
+        newSize.height *= (size.width / newSize.width);
+        newSize.width = size.width;
+    }
+
+    if (newSize.height > size.height) {
+        newSize.width *= (size.height / newSize.height);
+        newSize.height = size.height;
+    }
+
     return newSize;
 }
 
@@ -544,13 +555,13 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
             size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
         }
 
+        CGFloat ratio = [self.imageDetails.width floatValue] / [self.imageDetails.height floatValue];
         self.imageDetails.width = @"";
         self.imageDetails.height = @"";
 
         // Don't set width/height if full size was selected.
         if (!CGSizeEqualToSize(size, CGSizeZero)) {
-            self.imageDetails.width = @"";
-            self.imageDetails.height = @"";
+            size = [self sizeForSize:size constrainedToRatio:ratio];
             if (size.width) {
                 self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
             }
