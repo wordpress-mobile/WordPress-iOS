@@ -307,10 +307,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra
 {
     NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password;
-    if (!password) {
-        password = @"";
-    }
+    NSString *password = self.password ?: [NSString string];
+    
     [result addObject:self.blogID];
     [result addObject:self.username];
     [result addObject:password];
