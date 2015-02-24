@@ -6,7 +6,7 @@
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
-#import "NSURLRequest+Helpers.h"
+#import "WPURLRequest.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPCookie.h"
@@ -282,7 +282,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     NSURL *loginURL = [NSURL URLWithString:@"https://wordpress.com/wp-login.php"];
     NSURL *redirectURL = [NSURL URLWithString:@"https://wordpress.com"];
     
-    NSURLRequest *request = [NSURLRequest requestForAuthenticationWithURL:loginURL
+    NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                               redirectURL:redirectURL
                                                                  username:username
                                                                  password:password
