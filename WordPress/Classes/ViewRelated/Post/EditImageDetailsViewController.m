@@ -535,9 +535,6 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         CGSize size = CGSizeZero;
-        if (self.image) {
-            size = self.image.size;
-        }
 
         if ([status isEqualToString:@"thumbnail"]) {
             size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
@@ -549,12 +546,19 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
         self.imageDetails.width = @"";
         self.imageDetails.height = @"";
-        if (size.width) {
-            self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
+
+        // Don't set width/height if full size was selected.
+        if (!CGSizeEqualToSize(size, CGSizeZero)) {
+            self.imageDetails.width = @"";
+            self.imageDetails.height = @"";
+            if (size.width) {
+                self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
+            }
+            if (size.height) {
+                self.imageDetails.height = [NSString stringWithFormat:@"%d", (NSInteger)size.height];
+            }
         }
-        if (size.height) {
-            self.imageDetails.height = [NSString stringWithFormat:@"%d", (NSInteger)size.height];
-        }
+
         self.imageDetails.size = status;
 
         [weakVc dismiss];
