@@ -1,5 +1,5 @@
 #import "WPWebAppViewController.h"
-#import "UIDevice+Helpers.h"
+#import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
 
 @implementation WPWebAppViewController {
@@ -96,7 +96,7 @@
     }
 
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    NSString *userAgent = [[UIDevice currentDevice] wordPressUserAgent];
+    NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSDictionary *cookieHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookies cookiesForURL:request.URL]];
     [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
