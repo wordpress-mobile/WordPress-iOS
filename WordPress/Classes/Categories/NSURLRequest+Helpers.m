@@ -5,16 +5,7 @@
 
 + (NSURLRequest *)requestWithURL:(NSURL *)url userAgent:(NSString *)userAgent
 {
-    NSParameterAssert(url);
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    
-    if (userAgent) {
-        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    }
-    
-    return request;
+    return [self mutableRequestWithURL:url userAgent:userAgent];
 }
 
 + (NSURLRequest *)requestForAuthenticationWithURL:(NSURL *)loginUrl
@@ -29,7 +20,7 @@
     NSParameterAssert(username);
     NSParameterAssert(password != nil || bearerToken != nil);
     
-    NSMutableURLRequest *request = [[self requestWithURL:loginUrl userAgent:userAgent] mutableCopy];
+    NSMutableURLRequest *request = [self mutableRequestWithURL:loginUrl userAgent:userAgent];
     
     // If we've got a token, let's make sure the password never gets sent
     NSString *encodedPassword = bearerToken.length == 0 ? [password stringByUrlEncoding] : nil;
@@ -53,6 +44,22 @@
     // Bearer Token
     if (bearerToken) {
         [request setValue:[NSString stringWithFormat:@"Bearer %@", bearerToken] forHTTPHeaderField:@"Authorization"];
+    }
+    
+    return request;
+}
+
+#pragma mark - Private Methods
+
++ (NSMutableURLRequest *)mutableRequestWithURL:(NSURL *)url userAgent:(NSString *)userAgent
+{
+    NSParameterAssert(url);
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
+    
+    if (userAgent) {
+        [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     }
     
     return request;
