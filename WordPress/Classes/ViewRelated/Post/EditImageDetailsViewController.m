@@ -160,16 +160,6 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
         newSize.width = size.height * ratio;
     }
 
-    if (newSize.width > size.width) {
-        newSize.height *= (size.width / newSize.width);
-        newSize.width = size.width;
-    }
-
-    if (newSize.height > size.height) {
-        newSize.width *= (size.height / newSize.height);
-        newSize.height = size.height;
-    }
-
     return newSize;
 }
 
