@@ -1,7 +1,8 @@
-#import "NSURLRequest+Helpers.h"
+#import "WPURLRequest.h"
 #import "NSString+Helpers.h"
 
-@implementation NSURLRequest (Helpers)
+
+@implementation WPURLRequest
 
 + (NSURLRequest *)requestWithURL:(NSURL *)url userAgent:(NSString *)userAgent
 {

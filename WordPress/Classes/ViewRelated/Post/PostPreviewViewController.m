@@ -1,6 +1,6 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
-#import "NSURLRequest+Helpers.h"
+#import "WPURLRequest.h"
 #import "Post.h"
 #import "Category.h"
 
@@ -218,7 +218,7 @@
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
             
-            NSURLRequest *request = [NSURLRequest requestForAuthenticationWithURL:loginURL
+            NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                                       redirectURL:redirectURL
                                                                          username:self.apost.blog.username
                                                                          password:self.apost.blog.password
