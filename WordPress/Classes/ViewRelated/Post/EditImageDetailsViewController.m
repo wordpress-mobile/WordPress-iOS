@@ -8,6 +8,7 @@
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WordPress-Swift.h"
 
 static NSString *const TextFieldCell = @"TextFieldCell";
 static NSString *const CellIdentifier = @"CellIdentifier";
@@ -176,10 +177,20 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (void)handleCloseButtonTapped:(id)sender
 {
-    if (self.delegate) {
+    if ([UIDevice isOS8]) {
+        // Update the delegate immediately for iOS 8 and later. This allows for a
+        // better user experience as any changes should already be in place when the
+        // editor reappears.
         [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        // Update the delegate in the completion block. Avoids a race condition
+        // on iOS7 that could lead to a crash in WebCore due to invalid geometry,
+        // apparently caused by changes to the DOM during vc transition animation.
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+        }];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)handleTapInView:(UITapGestureRecognizer *)gestureRecognizer
