@@ -130,22 +130,38 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     NSString *large = NSLocalizedString(@"Large", @"Large image size. Should be the same as in core WP.");
     NSString *full = NSLocalizedString(@"Full Size", @"Full size image. (default). Should be the same as in core WP.");
 
+    CGFloat ratio = [self.imageDetails.width floatValue] / [self.imageDetails.height floatValue];
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
     CGSize size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
+        size = [self sizeForSize:size constrainedToRatio:ratio];
         thumbnail = [NSString stringWithFormat:@"%@ - %d x %d", thumbnail, (NSInteger)size.width, (NSInteger)size.height];
     }
     size = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
+        size = [self sizeForSize:size constrainedToRatio:ratio];
         medium = [NSString stringWithFormat:@"%@ - %d x %d", medium, (NSInteger)size.width, (NSInteger)size.height];
     }
     size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
     if (!CGSizeEqualToSize(size, CGSizeZero)) {
+        size = [self sizeForSize:size constrainedToRatio:ratio];
         large = [NSString stringWithFormat:@"%@ - %d x %d", large, (NSInteger)size.width, (NSInteger)size.height];
     }
 
     _sizeTitles = @[thumbnail, medium, large, full];
     return _sizeTitles;
+}
+
+- (CGSize)sizeForSize:(CGSize)size constrainedToRatio:(CGFloat)ratio
+{
+    CGSize newSize = size;
+    if (size.width > size.height) {
+        newSize.height = size.width / ratio;
+    } else {
+        newSize.width = size.height * ratio;
+    }
+
+    return newSize;
 }
 
 - (NSArray *)sizeValues
@@ -531,9 +547,6 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
         CGSize size = CGSizeZero;
-        if (self.image) {
-            size = self.image.size;
-        }
 
         if ([status isEqualToString:@"thumbnail"]) {
             size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
@@ -543,14 +556,21 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
             size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
         }
 
+        CGFloat ratio = [self.imageDetails.width floatValue] / [self.imageDetails.height floatValue];
         self.imageDetails.width = @"";
         self.imageDetails.height = @"";
-        if (size.width) {
-            self.imageDetails.width = [NSString stringWithFormat:@"%d", size.width];
+
+        // Don't set width/height if full size was selected.
+        if (!CGSizeEqualToSize(size, CGSizeZero)) {
+            size = [self sizeForSize:size constrainedToRatio:ratio];
+            if (size.width) {
+                self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
+            }
+            if (size.height) {
+                self.imageDetails.height = [NSString stringWithFormat:@"%d", (NSInteger)size.height];
+            }
         }
-        if (size.height) {
-            self.imageDetails.height = [NSString stringWithFormat:@"%d", size.height];
-        }
+
         self.imageDetails.size = status;
 
         [weakVc dismiss];
