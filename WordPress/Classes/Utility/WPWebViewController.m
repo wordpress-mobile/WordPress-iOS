@@ -579,7 +579,7 @@
 
 - (NSURLRequest *)newRequestForWebsite
 {
-    NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
     if (!self.needsLogin) {
         return [NSURLRequest requestWithURL:self.url userAgent:userAgent];
     }

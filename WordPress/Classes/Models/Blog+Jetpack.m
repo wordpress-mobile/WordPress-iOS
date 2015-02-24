@@ -2,7 +2,7 @@
 
 #import "Blog+Jetpack.h"
 #import "WPAccount.h"
-#import "UIDevice+Helpers.h"
+#import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
@@ -76,7 +76,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
     AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-    NSString* userAgent = [[UIDevice currentDevice] wordPressUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
 
     operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
