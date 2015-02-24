@@ -409,10 +409,9 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     }
 
     [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
+
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:dashboardUrl]];
-    [self.navigationController pushViewController:webViewController animated:YES];
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
 @end
