@@ -2,9 +2,11 @@
 
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
+#import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
 #import "RebloggingViewController.h"
 #import "WPActivityDefaults.h"
@@ -100,6 +102,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 #pragma mark - Configuration
 
+- (Class)classForPostView
+{
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return [ReaderPostRichUnattributedContentView class];
+    }
+    return [ReaderPostRichContentView class];
+}
+
 - (void)configureNavbar
 {
     // Don't show 'Reader' in the next-view back button
@@ -119,7 +129,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -404,6 +414,12 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
         [followButton setSelected:post.isFollowing];
     }];
+}
+
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender

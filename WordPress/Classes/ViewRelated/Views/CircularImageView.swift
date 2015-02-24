@@ -3,6 +3,13 @@ import Foundation
 // Makes a UIImageView circular. Handy for gravatars
 class CircularImageView : UIImageView
 {
+    var shouldRoundCorners : Bool = true {
+        didSet {
+            let rect = frame;
+            frame = rect;
+        }
+    }
+
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
 
@@ -23,7 +30,11 @@ class CircularImageView : UIImageView
 
     override var frame: CGRect {
         didSet {
-            layer.cornerRadius = (frame.width * 0.5)
+            if (shouldRoundCorners) {
+                layer.cornerRadius = (frame.width * 0.5)
+            } else {
+                layer.cornerRadius = 0;
+            }
         }
     }
 }
