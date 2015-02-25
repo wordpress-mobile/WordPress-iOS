@@ -955,12 +955,14 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
+            [WPAnalytics track:WPAnalyticsStatLoginFailed];
             [self setAuthenticating:NO withStatusMessage:nil];
             [self displayRemoteError:error];
         }];
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
+        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
         [self handleGuessXMLRPCURLFailure:error];
     };
 
@@ -981,6 +983,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                                  _userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
+                                 [WPAnalytics track:WPAnalyticsStatLoginFailed];
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  [self displayRemoteError:error];
                              }];
