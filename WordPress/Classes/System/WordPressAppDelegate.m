@@ -127,6 +127,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self toggleExtraDebuggingIfNeeded];
     [self removeCredentialsForDebug];
 
+    // Stop Storing WordPress.com passwords
+    [self removeWordPressComPassword];
+    
     // Stats and feedback    
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
@@ -1060,6 +1063,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     DDLogVerbose(@"End keychain fixing");
 }
+
+#pragma mark - WordPress.com Accounts
+
+- (void)removeWordPressComPassword
+{
+    // Nuke WordPress.com stored passwords, since it's no longer required.
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+    [accountService removeWordPressComAccountPasswordIfNeeded];
+}
+
 
 #pragma mark - Debugging and logging
 
