@@ -111,6 +111,7 @@
                 </mask>
             </variation>
             <connections>
+                <outlet property="acceptButton" destination="JiN-6m-R2d" id="2CR-1f-n6a"/>
                 <outlet property="details" destination="7Yo-lx-1UL" id="eEq-ir-BGX"/>
                 <outlet property="detailsHeightConstraint" destination="d06-w8-7sQ" id="buX-Kv-Rll"/>
                 <outlet property="imageView" destination="rZt-IM-vJ7" id="JGZ-vj-KV2"/>
