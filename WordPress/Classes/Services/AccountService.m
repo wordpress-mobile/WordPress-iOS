@@ -11,6 +11,7 @@
 #import "NSString+XMLExtensions.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
+static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
 @interface AccountService ()
 
@@ -247,6 +248,21 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
     }];
+}
+
+- (void)removeWordPressComAccountPasswordIfNeeded
+{
+    // Let's do this just once!
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:DefaultDotcomAccountPasswordRemovedKey]) {
+        return;
+    }
+    
+    WPAccount *account = [self defaultWordPressComAccount];
+    account.password = nil;
+    
+    [defaults setBool:YES forKey:DefaultDotcomAccountPasswordRemovedKey];
+    [defaults synchronize];
 }
 
 @end
