@@ -26,10 +26,10 @@ pod 'CrashlyticsLumberjack', '~>1.0.0'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.8.0'
 pod 'CTAssetsPickerController', '~> 2.7.0'
-pod 'WordPress-iOS-Shared', '0.2.0'
-pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => 'c7a2ef6ef77e892bba430efd923592f4d6200d00'
-pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => 'bd37321189ad3de9343cb2761d6ec5fbef06c72a'
-pod 'WordPressCom-Analytics-iOS', '0.0.25'
+pod 'WordPress-iOS-Shared', '0.2.2'
+pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => '1051403661ca8dbbdbc691b2bac8f30f1906cf15'
+pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => '3d9cc7988d0b8df44a76c817415d4b36b4201e49'
+pod 'WordPressCom-Analytics-iOS', '0.0.26'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'Simperium', '0.7.8'
@@ -38,7 +38,7 @@ pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.gi
 pod 'MRProgress', '~>0.7.0'
 
 target 'WordPressTodayWidget', :exclusive => true do
-    pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => 'bd37321189ad3de9343cb2761d6ec5fbef06c72a'
+    pod 'WordPressCom-Stats-iOS', :git => 'git://github.com/wordpress-mobile/WordPressCom-Stats-iOS', :commit => '3d9cc7988d0b8df44a76c817415d4b36b4201e49'
 end
 
 target :WordPressTest, :exclusive => true do
