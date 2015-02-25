@@ -17,11 +17,13 @@ NSString *NoteActionTrashKey            = @"trash-comment";
 NSString *NoteActionLikeKey             = @"like-comment";
 NSString *NoteActionEditKey             = @"approve-comment";
 
-NSString const *NoteLinkTypeUser        = @"user";
-NSString const *NoteLinkTypePost        = @"post";
-NSString const *NoteLinkTypeComment     = @"comment";
-NSString const *NoteLinkTypeStats       = @"stat";
-NSString const *NoteLinkTypeBlockquote  = @"blockquote";
+NSString const *NoteRangeTypeUser       = @"user";
+NSString const *NoteRangeTypePost       = @"post";
+NSString const *NoteRangeTypeComment    = @"comment";
+NSString const *NoteRangeTypeStats      = @"stat";
+NSString const *NoteRangeTypeBlockquote = @"blockquote";
+NSString const *NoteRangeTypeNoticon    = @"noticon";
+NSString const *NoteRangeTypeSite       = @"site";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
@@ -49,11 +51,8 @@ NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
 
-
 NSString const *NoteRangeIdKey          = @"id";
-NSString const *NoteRangeTypeComment    = @"comment";
-NSString const *NoteRangeTypePost       = @"post";
-NSString const *NoteRangeTypeUser       = @"user";
+NSString const *NoteRangeValueKey       = @"value";
 NSString const *NoteSiteIdKey           = @"site_id";
 NSString const *NotePostIdKey           = @"post_id";
 
@@ -76,14 +75,16 @@ NSString const *NotePostIdKey           = @"post_id";
 		_url                = [NSURL URLWithString:[rawRange stringForKey:NoteUrlKey]];
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
+        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
         
-        //  SORRY:
+        //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
         //  ======
         //  `id` is coupled with the `type
         //
         //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
+        //      type = site     => id = site_id
 
         if ([_type isEqual:NoteRangeTypePost]) {
             _postID         = [rawRange numberForKey:NoteRangeIdKey];
@@ -94,9 +95,13 @@ NSString const *NotePostIdKey           = @"post_id";
             
         } else if ([_type isEqual:NoteRangeTypeUser]) {
             _userID         = [rawRange numberForKey:NoteRangeIdKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeNoticon]) {
+            _value          = [rawRange stringForKey:NoteRangeValueKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeSite]) {
+            _siteID         = [rawRange numberForKey:NoteRangeIdKey];
         }
-        
-        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
 	}
 	
 	return self;
@@ -104,27 +109,32 @@ NSString const *NotePostIdKey           = @"post_id";
 
 - (BOOL)isUser
 {
-    return [self.type isEqual:NoteLinkTypeUser];
+    return [self.type isEqual:NoteRangeTypeUser];
 }
 
 - (BOOL)isPost
 {
-    return [self.type isEqual:NoteLinkTypePost];
+    return [self.type isEqual:NoteRangeTypePost];
 }
 
 - (BOOL)isComment
 {
-    return [self.type isEqual:NoteLinkTypeComment];
+    return [self.type isEqual:NoteRangeTypeComment];
 }
 
 - (BOOL)isStats
 {
-    return [self.type isEqual:NoteLinkTypeStats];
+    return [self.type isEqual:NoteRangeTypeStats];
 }
 
 - (BOOL)isBlockquote
 {
-    return [self.type isEqual:NoteLinkTypeBlockquote];
+    return [self.type isEqual:NoteRangeTypeBlockquote];
+}
+
+- (BOOL)isNoticon
+{
+    return [self.type isEqual:NoteRangeTypeNoticon];
 }
 
 + (NSArray *)rangesFromArray:(NSArray *)rawURL

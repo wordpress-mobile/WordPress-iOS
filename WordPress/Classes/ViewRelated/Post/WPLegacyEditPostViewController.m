@@ -11,7 +11,6 @@
 #import "BlogService.h"
 #import "PostService.h"
 #import "MediaService.h"
-#import "WPMediaUploader.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
@@ -830,18 +829,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-    __block BOOL hasFailedMedia = NO;
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
         if (progress.totalUnitCount == 0){
-            hasFailedMedia = YES;
+            return YES;
         }
-    }];
-    return hasFailedMedia;
+    }
+    return NO;
 }
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
+        if (progress.totalUnitCount != 0){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)cancelMediaUploads
@@ -967,6 +970,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 }];
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                uploadProgress.kind = NSProgressKindFile;
+                [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
                 [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
                 [strongSelf.mediaGlobalProgress resignCurrent];
             }];
@@ -1164,8 +1169,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
         // If the image is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.") withSupportButton:NO];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
         if (picker.selectedAssets.count >= MaximumNumberOfPictures) {

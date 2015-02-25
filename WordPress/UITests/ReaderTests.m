@@ -72,17 +72,23 @@
 
 - (void) testReblog {
 
+    [tester tapViewWithAccessibilityLabel:@"Topics"];
+    [tester waitForTimeInterval:2];
+    
+    [tester tapViewWithAccessibilityLabel:@"Freshly Pressed"];
+    [tester waitForTimeInterval:5];
+    
     [tester tapViewWithAccessibilityLabel:@"Reblog"];
     [tester waitForTimeInterval:2];
-    
-    [tester tapViewWithAccessibilityLabel:@"Optional note"];
-    [tester waitForTimeInterval:2];
-    [tester enterTextIntoCurrentFirstResponder:@"Interesting!"];
-    [tester waitForTimeInterval:2];
-    
+    UIView * view = nil;
+    if ([tester tryFindingAccessibilityElement:nil view:&view withIdentifier:@"Optional note" tappable:NO error:nil]) {
+        [tester tapScreenAtPoint:CGPointMake(CGRectGetMaxX(view.frame)-10,CGRectGetMaxY(view.frame)-10)];
+        [tester waitForTimeInterval:2];
+        [tester enterTextIntoCurrentFirstResponder:@"Interesting!"];
+        [tester waitForTimeInterval:2];
+    }
     [tester tapViewWithAccessibilityLabel:@"Publish"];
     [tester waitForTimeInterval:2];
-
 }
 
 - (void) testFollow {
