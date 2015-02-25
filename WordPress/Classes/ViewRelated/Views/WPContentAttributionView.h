@@ -14,6 +14,11 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
 @optional
 
 /**
+ Tells the delegate the user has tapped the attribution avatar.
+ */
+- (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView;
+
+/**
  Tells the delegate the user has tapped the attribution button.
  */
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender;

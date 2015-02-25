@@ -156,7 +156,7 @@
 - (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
-    post.siteID = jsonPost[@"siteID"];
+    post.siteID = jsonPost[@"site_ID"];
     post.authorAvatarURL = jsonPost[@"author"][@"avatar_URL"];
     post.authorDisplayName = jsonPost[@"author"][@"name"];
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
