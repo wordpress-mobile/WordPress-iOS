@@ -111,39 +111,21 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
 {
-    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];    
-    if (jsonMedia[@"id"]) {
-        remoteMedia.mediaID =  @([jsonMedia[@"id"] intValue]);
-        remoteMedia.url = [NSURL URLWithString:jsonMedia[@"link"]];
-        //remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
-        remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
-        remoteMedia.postID = jsonMedia[@"parent"];
-        remoteMedia.file = jsonMedia[@"metadata"][@"file"];
-        //remoteMedia.mimeType = jsonMedia[@"mime_type"];
-        remoteMedia.extension = [jsonMedia[@"metadata"][@"file"] pathExtension];
-        remoteMedia.title = jsonMedia[@"title"];
-        remoteMedia.caption = jsonMedia[@"caption"];
-        //remoteMedia.descriptionText = jsonMedia[@"description"];
-        remoteMedia.height = jsonMedia[@"metadata"][@"height"];
-        remoteMedia.width = jsonMedia[@"metadata"][@"width"];
-        remoteMedia.exif = jsonMedia[@"metadata"][@"image_meta"];
-    } else {
-        // v1.1
-        remoteMedia.mediaID =  jsonMedia[@"ID"];
-        remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
-        remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
-        remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
-        remoteMedia.postID = jsonMedia[@"post_ID"];
-        remoteMedia.file = jsonMedia[@"file"];
-        remoteMedia.mimeType = jsonMedia[@"mime_type"];
-        remoteMedia.extension = jsonMedia[@"extension"];
-        remoteMedia.title = jsonMedia[@"title"];
-        remoteMedia.caption = jsonMedia[@"caption"];
-        remoteMedia.descriptionText = jsonMedia[@"description"];
-        remoteMedia.height = jsonMedia[@"height"];
-        remoteMedia.width = jsonMedia[@"width"];
-        remoteMedia.exif = jsonMedia[@"exif"];
-    }
+    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
+    remoteMedia.mediaID =  jsonMedia[@"ID"];
+    remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
+    remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
+    remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
+    remoteMedia.postID = jsonMedia[@"post_ID"];
+    remoteMedia.file = jsonMedia[@"file"];
+    remoteMedia.mimeType = jsonMedia[@"mime_type"];
+    remoteMedia.extension = jsonMedia[@"extension"];
+    remoteMedia.title = jsonMedia[@"title"];
+    remoteMedia.caption = jsonMedia[@"caption"];
+    remoteMedia.descriptionText = jsonMedia[@"description"];
+    remoteMedia.height = jsonMedia[@"height"];
+    remoteMedia.width = jsonMedia[@"width"];
+    remoteMedia.exif = jsonMedia[@"exif"];    
     return remoteMedia;
 }
 

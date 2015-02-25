@@ -9,7 +9,7 @@
 
 @implementation WPWalkthroughTextField
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
@@ -45,9 +45,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-
-    // draw top border
-
+    // Draw top border
     if (_showTopLineSeparator) {
 
         CGContextRef context = UIGraphicsGetCurrentContext();
@@ -64,20 +62,22 @@
 
 - (void)layoutSubviews
 {
-
     [super layoutSubviews];
 
     self.secureTextEntryToggle.hidden = !self.showSecureTextEntryToggle;
     if (self.showSecureTextEntryToggle) {
-        self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame), (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0, CGRectGetWidth(self.secureTextEntryToggle.frame), CGRectGetHeight(self.secureTextEntryToggle.frame)));
+        self.secureTextEntryToggle.frame = CGRectIntegral(CGRectMake(CGRectGetWidth(self.bounds) - CGRectGetWidth(self.secureTextEntryToggle.frame),
+                                                                     (CGRectGetHeight(self.bounds) - CGRectGetHeight(self.secureTextEntryToggle.frame)) / 2.0,
+                                                                     CGRectGetWidth(self.secureTextEntryToggle.frame),
+                                                                     CGRectGetHeight(self.secureTextEntryToggle.frame)));
         [self bringSubviewToFront:self.secureTextEntryToggle];
     }
 }
 
 - (CGRect)calculateTextRectForBounds:(CGRect)bounds
 {
-
     CGRect returnRect;
+    
     if (_leftViewImage) {
         CGFloat leftViewWidth = _leftViewImage.size.width;
         returnRect = CGRectMake(leftViewWidth + 2 * _textInsets.left, _textInsets.top, bounds.size.width - leftViewWidth - 2 * _textInsets.left - _textInsets.right, bounds.size.height - _textInsets.top - _textInsets.bottom);
@@ -86,7 +86,11 @@
     }
 
     if (self.showSecureTextEntryToggle) {
-        returnRect.size.width -= self.secureTextEntryToggle.frame.size.width;
+        returnRect.size.width -= CGRectGetWidth(self.secureTextEntryToggle.frame);
+    }
+    
+    if (self.rightView && self.rightViewMode != UITextFieldViewModeNever) {
+        returnRect.size.width -= CGRectGetWidth(self.rightView.frame);
     }
 
     return CGRectIntegral(returnRect);

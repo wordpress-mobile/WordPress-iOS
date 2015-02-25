@@ -7,47 +7,100 @@
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGSize newSize = [super sizeThatFits:size];
-    newSize.height -= self.actionView.intrinsicContentSize.height;
+    CGFloat innerWidth = size.width - (WPContentViewOuterMargin * 2);
+    CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
+    CGFloat height = 0;
+    height += self.attributionView.intrinsicContentSize.height;
+    if (!self.featuredImageView.hidden) {
+        height += (size.width * WPContentViewMaxImageHeightPercentage);
+    }
+    height += [self.titleLabel sizeThatFits:innerSize].height;
+    height += [self sizeThatFitsContent:innerSize].height;
 
-    return newSize;
+    height += WPContentViewOuterMargin;
+    height += WPContentViewAttributionVerticalPadding;
+    height += WPContentViewTitleContentPadding;
+    height += (WPContentViewVerticalPadding * 2);
+
+    return CGSizeMake(size.width, ceil(height));
 }
 
 #pragma mark - Private Methods
 
 - (void)configureConstraints
 {
-    [super configureConstraints];
+    UIView *attributionView = self.attributionView;
+    UIView *attributionBorderView = self.attributionBorderView;
+    UIView *featuredImageView = self.featuredImageView;
+    UIView *titleLabel = self.titleLabel;
+    UIView *contentView = self.contentView;
 
-    UIView *actionView = self.actionView;
-    NSDictionary *views = NSDictionaryOfVariableBindings(actionView);
+    CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
+    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView);
+    NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
+                              @"contentViewOuterMargin": @(contentViewOuterMargin),
+                              @"verticalPadding": @(WPContentViewVerticalPadding),
+                              @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
+                              @"titleContentPadding": @(WPContentViewTitleContentPadding),
+                              @"borderHeight": @(WPContentViewBorderHeight),
+                              @"priority":@900
+                              };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[actionView(0)]" options:0 metrics:nil views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[attributionView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[attributionBorderView]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[featuredImageView]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[titleLabel]-(outerMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(contentViewOuterMargin)-[contentView]-(contentViewOuterMargin)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+
+    // Positions the border below the attribution view. Featured image should appear above it.
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[attributionView]-(attributionVerticalPadding@priority)-[attributionBorderView(borderHeight)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
 }
 
-- (void)configureActionView
-{
-    // Hide the actionview and remove its subviews.
-    // This let's us clear its internal constraints allowing it to accept a 0 height.
-    // This prevents this sub class from having to rebuild the parent class's constraints.
-    self.actionView.hidden = YES;
-    NSArray *arr = self.actionView.subviews;
-    for (UIView *view in arr) {
-        [view removeFromSuperview];
-    }
-}
-
-- (void)updateActionButtons
-{
-    // noop
-}
-
-- (WPContentAttributionView *)viewForAttributionView
+- (void)buildAttributionView
 {
     WPSimpleContentAttributionView *attrView = [[WPSimpleContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
     [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
-    return attrView;
+
+    self.attributionView = attrView;
+    [self addSubview:self.attributionView];
+}
+
+- (void)buildActionView
+{
+    //noop
+}
+
+- (void)configureActionView
+{
+    // noop
 }
 
 @end
