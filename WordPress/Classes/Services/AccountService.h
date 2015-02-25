@@ -92,4 +92,9 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
 
+/**
+ Removes your default WordPress.com password from the keychain, if needed.
+ */
+- (void)removeWordPressComAccountPasswordIfNeeded;
+
 @end
