@@ -892,7 +892,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     WPComOAuthController *oAuthController = [WPComOAuthController sharedController];
     
     [oAuthController setWordPressComUsername:defaultAccount.username];
-    [oAuthController setWordPressComPassword:defaultAccount.password];
     [oAuthController setWordPressComAuthToken:defaultAccount.authToken];
 }
 
