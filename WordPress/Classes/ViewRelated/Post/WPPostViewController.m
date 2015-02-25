@@ -1426,7 +1426,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 /**
- *	@brief		Saves the post being edited and uploads it.
+ *	@brief		Saves the post being edited and uploads it.  If the post is changing from 'draft' status to 'publish' set the date to now.
  */
 - (void)savePost
 {
@@ -1435,6 +1435,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self.view endEditing:YES];
     
+    if ([self.post.original.status isEqualToString:@"draft"]  && [self.post.status isEqualToString:@"publish"]) {
+        self.post.dateCreated = [NSDate date];
+    }
     self.post = self.post.original;
     [self.post applyRevision];
     [self.post deleteRevision];

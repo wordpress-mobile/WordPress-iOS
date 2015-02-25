@@ -428,12 +428,15 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         if (!loginDict) {
             if (error.code != AppExtensionErrorCodeCancelledByUser) {
                 DDLogError(@"OnePassword Error: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
             }
             return;
         }
 
         self.usernameText.text = loginDict[AppExtensionUsernameKey];
         self.passwordText.text = loginDict[AppExtensionPasswordKey];
+                                                           
+        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signIn];
     }];
 }
@@ -1092,12 +1095,14 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
+            [WPAnalytics track:WPAnalyticsStatLoginFailed];
             [self finishedAuthenticating];
             [self displayRemoteError:error];
         }];
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
+        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
         [self handleGuessXMLRPCURLFailure:error];
     };
 
@@ -1122,6 +1127,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                  self.userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
+                                 
+                                 [WPAnalytics track:WPAnalyticsStatLoginFailed];
                                  [self finishedAuthenticating];
                                  
                                  // If needed, show the multifactor field
