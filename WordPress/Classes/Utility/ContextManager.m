@@ -210,6 +210,8 @@ static ContextManager *instance;
             DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+        
+        [WPAnalytics track:WPAnalyticsStatLogout];
     }
 
     return _persistentStoreCoordinator;
