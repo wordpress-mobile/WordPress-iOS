@@ -20,6 +20,7 @@ static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
+static CGFloat const EditSiteRowHeight = 48.0;
 
 @interface EditSiteViewController ()
 
@@ -158,6 +159,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     header.title = [self titleForHeaderInSection:section];
 
     return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return EditSiteRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
