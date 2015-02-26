@@ -155,6 +155,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
     [self.tableView deselectSelectedRowWithAnimation:YES];
     
+    // While we're onscreen, please, update rows with animations
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
+    
     // Refresh the UI
     [self hookApplicationStateNotes];
     [self trackAppearedIfNeeded];
@@ -175,6 +178,9 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     [super viewWillDisappear:animated];
     [self unhookApplicationStateNotes];
+    
+    // Bufix: If we're not onscreen, don't use row animations. Otherwise the fade animation might get animated incrementally
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
 }
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
