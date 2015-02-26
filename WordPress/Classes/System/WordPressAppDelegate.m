@@ -1238,7 +1238,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             }
         }];
     } else {
-        // No need to check for welcome screen unless we are signing out
+        if ([self noBlogsAndNoWordPressDotComAccount]) {
+            [WPAnalytics track:WPAnalyticsStatLogout];
+        }
         [self logoutSimperiumAndResetNotifications];
         [self showWelcomeScreenIfNeededAnimated:NO];
         [self removeTodayWidgetConfiguration];
