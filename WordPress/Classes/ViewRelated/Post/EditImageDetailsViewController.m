@@ -8,6 +8,7 @@
 #import "UIImageView+AFNetworkingExtra.h"
 #import "WPTableViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WordPress-Swift.h"
 
 static NSString *const TextFieldCell = @"TextFieldCell";
 static NSString *const CellIdentifier = @"CellIdentifier";
@@ -130,21 +131,44 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     NSString *full = NSLocalizedString(@"Full Size", @"Full size image. (default). Should be the same as in core WP.");
 
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
-    CGSize size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+    CGSize imageSize = [self imageSize];
+    CGSize size = CGSizeZero;
+    CGSize maxSize = [[sizes valueForKey:@"smallSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         thumbnail = [NSString stringWithFormat:@"%@ - %d x %d", thumbnail, (NSInteger)size.width, (NSInteger)size.height];
     }
-    size = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+    maxSize = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         medium = [NSString stringWithFormat:@"%@ - %d x %d", medium, (NSInteger)size.width, (NSInteger)size.height];
     }
-    size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
+    maxSize = [[sizes valueForKey:@"largeSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         large = [NSString stringWithFormat:@"%@ - %d x %d", large, (NSInteger)size.width, (NSInteger)size.height];
     }
 
     _sizeTitles = @[thumbnail, medium, large, full];
     return _sizeTitles;
+}
+
+- (CGSize)sizeForSize:(CGSize)size withMaxSize:(CGSize)maxSize
+{
+    CGSize newSize = size;
+    CGFloat ratio = size.width / size.height;
+
+    if (size.width > maxSize.width) {
+        newSize.width = maxSize.width;
+        newSize.height = newSize.width / ratio;
+    }
+
+    if (size.height > maxSize.height) {
+        newSize.height = maxSize.height;
+        newSize.width = newSize.height * ratio;
+    }
+
+    return newSize;
 }
 
 - (NSArray *)sizeValues
@@ -159,6 +183,11 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                     @"full"
                     ];
     return _sizeValues;
+}
+
+- (CGSize)imageSize
+{
+    return CGSizeMake([self.imageDetails.naturalWidth floatValue], [self.imageDetails.naturalHeight floatValue]);
 }
 
 #pragma mark - Configuration
@@ -176,10 +205,20 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (void)handleCloseButtonTapped:(id)sender
 {
-    if (self.delegate) {
+    if ([UIDevice isOS8]) {
+        // Update the delegate immediately for iOS 8 and later. This allows for a
+        // better user experience as any changes should already be in place when the
+        // editor reappears.
         [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        // Update the delegate in the completion block. Avoids a race condition
+        // on iOS7 that could lead to a crash in WebCore due to invalid geometry,
+        // apparently caused by changes to the DOM during vc transition animation.
+        [self dismissViewControllerAnimated:YES completion:^{
+            [self.delegate editImageDetailsViewController:self didFinishEditingImageDetails:self.imageDetails];
+        }];
     }
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)handleTapInView:(UITapGestureRecognizer *)gestureRecognizer
@@ -519,27 +558,31 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        CGSize size;
-        if (self.image) {
-            size = self.image.size;
-        }
+        CGSize maxSize = CGSizeZero;
 
         if ([status isEqualToString:@"thumbnail"]) {
-            size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"smallSize"] CGSizeValue];
         } else if ([status isEqualToString:@"medium"]) {
-            size = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
         } else if ([status isEqualToString:@"large"]) {
-            size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"largeSize"] CGSizeValue];
         }
 
         self.imageDetails.width = @"";
         self.imageDetails.height = @"";
-        if (size.width) {
-            self.imageDetails.width = [NSString stringWithFormat:@"%d", size.width];
+
+        // Don't set width/height if full size was selected.
+        if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+            CGSize imageSize = [self imageSize];
+            CGSize size = [self sizeForSize:imageSize withMaxSize:maxSize];
+            if (size.width) {
+                self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
+            }
+            if (size.height) {
+                self.imageDetails.height = [NSString stringWithFormat:@"%d", (NSInteger)size.height];
+            }
         }
-        if (size.height) {
-            self.imageDetails.height = [NSString stringWithFormat:@"%d", size.height];
-        }
+
         self.imageDetails.size = status;
 
         [weakVc dismiss];
