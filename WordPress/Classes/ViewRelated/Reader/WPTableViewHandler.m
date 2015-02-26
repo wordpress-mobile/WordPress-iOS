@@ -469,12 +469,15 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     [self.tableView endUpdates];
+    
     if (self.indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
-
-        self.indexPathSelectedBeforeUpdates = nil;
-        self.indexPathSelectedAfterUpdates = nil;
+    } else if (self.indexPathSelectedBeforeUpdates) {
+        [self.tableView selectRowAtIndexPath:self.indexPathSelectedBeforeUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
+    
+    self.indexPathSelectedBeforeUpdates = nil;
+    self.indexPathSelectedAfterUpdates = nil;
 
     if ([self.delegate respondsToSelector:@selector(tableViewDidChangeContent:)]) {
         [self.delegate tableViewDidChangeContent:self.tableView];
@@ -501,7 +504,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
     }
-
+    
     switch(type) {
         case NSFetchedResultsChangeInsert:
         {
@@ -522,7 +525,6 @@ static CGFloat const DefaultCellHeight = 44.0;
         {
             [self invalidateCachedRowHeightAtIndexPath:indexPath];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:self.updateRowAnimation];
-            self.indexPathSelectedAfterUpdates = self.tableView.indexPathForSelectedRow;
         }
             break;
         case NSFetchedResultsChangeMove:
