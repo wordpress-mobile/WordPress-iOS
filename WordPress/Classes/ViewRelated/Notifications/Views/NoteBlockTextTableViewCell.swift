@@ -79,6 +79,11 @@ import Foundation
     }
         
     // MARK: - RichTextView Data Source
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        onUrlClick?(URL)
+        return false
+    }
+    
     public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
     }
