@@ -522,6 +522,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         {
             [self invalidateCachedRowHeightAtIndexPath:indexPath];
             [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:self.updateRowAnimation];
+            self.indexPathSelectedAfterUpdates = self.tableView.indexPathForSelectedRow;
         }
             break;
         case NSFetchedResultsChangeMove:
