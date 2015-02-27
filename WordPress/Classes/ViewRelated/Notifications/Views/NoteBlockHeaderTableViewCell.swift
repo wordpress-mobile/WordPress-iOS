@@ -47,8 +47,8 @@ import Foundation
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
         nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
         nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
-        snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
-        snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
+        snippetLabel.font               = WPStyleGuide.Notifications.detailsSippetFont
+        snippetLabel.textColor          = WPStyleGuide.Notifications.detailsSippetColor
         gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
 
         // iPad: Use a bigger image size!
