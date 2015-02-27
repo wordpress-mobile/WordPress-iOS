@@ -54,6 +54,10 @@ extension WPStyleGuide
 
         // MARK: - Styles used by NotificationDetailsViewController
         //
+        public static let detailsSippetFont         = blockItalicsFont
+        
+        public static let detailsSippetColor        = WPStyleGuide.newKidOnTheBlockBlue()
+        
         
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
