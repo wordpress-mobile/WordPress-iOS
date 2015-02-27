@@ -8,6 +8,15 @@ extension WPStyleGuide
         // MARK: - Styles Used by NotificationsViewController
         //
 
+        //  NoteTableViewHeader
+        public static let sectionHeaderFont         = WPFontManager.openSansBoldFontOfSize(headerFontSize)
+        public static let sectionHeaderTextColor    = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
+        public static let sectionHeaderBackgroundColor  = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
+        
+        public static let sectionHeaderRegularStyle = [ NSParagraphStyleAttributeName:  headerParagraph,
+                                                        NSFontAttributeName:            sectionHeaderFont,
+                                                        NSForegroundColorAttributeName: sectionHeaderTextColor ]
+        
         //  NoteTableViewCell
         public static let noticonFont               = UIFont(name: "Noticons", size: 16)
         public static let noticonTextColor          = UIColor.whiteColor()
@@ -45,15 +54,6 @@ extension WPStyleGuide
 
         // MARK: - Styles used by NotificationDetailsViewController
         //
-
-        //  Header
-        public static let headerFont                = WPFontManager.openSansBoldFontOfSize(headerFontSize)
-        public static let headerTextColor           = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
-        public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
-
-        public static let headerRegularStyle        = [ NSParagraphStyleAttributeName:  headerParagraph,
-                                                        NSFontAttributeName:            headerFont,
-                                                        NSForegroundColorAttributeName: headerTextColor ]
         
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
