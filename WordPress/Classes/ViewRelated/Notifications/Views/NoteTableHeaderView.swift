@@ -8,7 +8,7 @@ import Foundation
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
             if let unwrappedTitle = newValue?.uppercaseString {
-                titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: Style.headerRegularStyle)
+                titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: Style.sectionHeaderRegularStyle)
                 setNeedsLayout()
             }
         }
@@ -78,7 +78,7 @@ import Foundation
     
     // MARK - Private Helpers
     private func setupSubviews() {
-        backgroundColor             = Style.headerBackgroundColor
+        backgroundColor             = Style.sectionHeaderBackgroundColor
         
         titleLabel                  = UILabel()
         titleLabel.textAlignment    = .Left
