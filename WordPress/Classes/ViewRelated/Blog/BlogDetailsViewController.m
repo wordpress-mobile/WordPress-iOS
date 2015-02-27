@@ -29,6 +29,7 @@
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
+#import "ReachabilityUtils.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -402,6 +403,11 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
 
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
