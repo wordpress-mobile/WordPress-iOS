@@ -3,70 +3,34 @@ import Foundation
 
 extension NotificationBlock
 {
-    private struct Constants
-    {
-        static let richSubjectCacheKey  = "richSubjectCacheKey"
-        static let richSnippetCacheKey  = "richSnippetCacheKey"
-        static let richHeaderCacheKey   = "richHeaderCacheKey"
-        static let richTextCacheKey     = "richTextCacheKey"
-    }
-
-    // MARK: - Helpers used in NotificationsViewController
+    // MARK: - Text Formatting Helpers
     //
-    public func subjectAttributedText() -> NSAttributedString {
-        if let cachedSubject = cacheValueForKey(Constants.richSubjectCacheKey) as? NSAttributedString {
-            return cachedSubject
-        }
-        
-        let richSubject = textWithRangeStyles(isSubject: true)
-        setCacheValue(richSubject, forKey: Constants.richSubjectCacheKey)
-        
-        return richSubject
+    public func attributedSubjectText() -> NSAttributedString {
+        return textWithRangeStyles(Constants.subjectStyles, cacheKey: Constants.richSubjectCacheKey)
     }
 
-    public func snippetAttributedText() -> NSAttributedString {
-        if text == nil {
-            return NSAttributedString()
-        }
-
-        if let cachedSnippet = cacheValueForKey(Constants.richSnippetCacheKey) as? NSAttributedString {
-            return cachedSnippet
-        }
-        
-        let richSnippet = NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
-        setCacheValue(richSnippet, forKey: Constants.richSnippetCacheKey)
-        
-        return richSnippet
+    public func attributedSnippetText() -> NSAttributedString {
+        return textWithRangeStyles(Constants.snippetStyles, cacheKey: Constants.richSnippetCacheKey)
     }
 
-    
-    // MARK: - Helpers used in NotificationsDetailsViewController
-    //
-    public func headerAttributedText() -> NSAttributedString {
-        if text == nil {
-            return NSAttributedString()
-        }
-        
-        return NSAttributedString()
+    public func attributedHeaderTitleText() -> NSAttributedString {
+        return textWithRangeStyles(Constants.headerTitleStyles, cacheKey: Constants.richHeaderTitleCacheKey)
     }
 
-    public func richAttributedText() -> NSAttributedString {
+    public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
             return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
-        if let cachedText = cacheValueForKey(Constants.richTextCacheKey) as? NSAttributedString {
-            return cachedText
-        }
-        
-        let richText = textWithRangeStyles(isSubject: false)
-        setCacheValue(richText, forKey: Constants.richTextCacheKey)
-        
-        return richText
+        let styles = isBadge ? Constants.richBadgeStyles : Constants.richNormalStyles
+        return textWithRangeStyles(styles, cacheKey: Constants.richTextCacheKey)
     }
     
+    
+    // MARK: - Media Helpers
+    //
     public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
         if mediaMap == nil || textOverride != nil {
@@ -88,22 +52,25 @@ extension NotificationBlock
     
     // MARK: - Private Helpers
     //
-    private func textWithRangeStyles(#isSubject: Bool) -> NSAttributedString {
+    private func textWithRangeStyles(styles: [String: AnyObject], cacheKey: String) -> NSAttributedString {
+        // Is it cached?
+        if let cachedSubject = cacheValueForKey(cacheKey) as? NSAttributedString {
+            return cachedSubject
+        }
+        
+        // Is it empty?
         if text == nil {
             return NSAttributedString()
         }
         
-        // Setup the styles
-        let regularStyle    = isSubject ? Styles.subjectRegularStyle : (isBadge ? Styles.blockBadgeStyle : Styles.blockRegularStyle)
-        let quotesStyle     = isSubject ? Styles.subjectItalicsStyle : Styles.blockBoldStyle
-        let userStyle       = isSubject ? Styles.subjectBoldStyle    : Styles.blockBoldStyle
-        let postStyle       = isSubject ? Styles.subjectItalicsStyle : Styles.blockItalicsStyle
-        let commentStyle    = postStyle
-        let blockStyle      = Styles.blockQuotedStyle
-        
         // Format the String
+        let regularStyle = styles[Constants.regularStyleKey] as [NSString: AnyObject]
         let theString = NSMutableAttributedString(string: text, attributes: regularStyle)
-        theString.applyAttributesToQuotes(quotesStyle)
+        
+        // Apply Quotes Styles
+        if let unwrappedQuoteStyle = styles[Constants.quoteStyleKey] as? [NSString: AnyObject] {
+            theString.applyAttributesToQuotes(unwrappedQuoteStyle)
+        }
         
         // Apply the Ranges
         var lengthShift = 0
@@ -112,28 +79,87 @@ extension NotificationBlock
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
             
-            if range.isUser {
-                theString.addAttributes(userStyle, range: shiftedRange)
-            } else if range.isPost {
-                theString.addAttributes(postStyle, range: shiftedRange)
-            } else if range.isComment {
-                theString.addAttributes(commentStyle, range: shiftedRange)
-            } else if range.isBlockquote {
-                theString.addAttributes(blockStyle, range: shiftedRange)
-            } else if range.isNoticon {
+            if let unwrappedRangeStyle = styles[range.type] as? [NSString: AnyObject] {
+                theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
+            }
+                
+            if range.isNoticon {
                 let noticon = NSAttributedString(string: "\(range.value) ", attributes: Styles.subjectNoticonStyle)
                 theString.replaceCharactersInRange(shiftedRange, withAttributedString: noticon)
                 lengthShift += noticon.length
             }
             
-            // Don't Highlight Links in the subject
-            if isSubject == false && range.url != nil {
-                theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
-                theString.addAttribute(NSForegroundColorAttributeName, value: Styles.blockLinkColor, range: shiftedRange)
-            }
+//            if range.url != nil && styles.linkColor != nil {
+//                theString.addAttribute(NSLinkAttributeName, value: range.url, range: shiftedRange)
+//                theString.addAttribute(NSForegroundColorAttributeName, value: styles.linkColor!, range: shiftedRange)
+//            }
         }
         
+        // Store in Cache
+        setCacheValue(theString, forKey: cacheKey)
+        
         return theString
+    }
+    
+    
+    // MARK: - NotificationBlock+Interface Constants
+    //
+    private struct Constants
+    {
+        static let richSubjectCacheKey      = "richSubjectCacheKey"
+        static let richSnippetCacheKey      = "richSnippetCacheKey"
+        static let richHeaderTitleCacheKey  = "richHeaderTitleCacheKey"
+        static let richTextCacheKey         = "richTextCacheKey"
+        
+        static let userStyleKey             = NoteRangeTypeUser
+        static let postStyleKey             = NoteRangeTypePost
+        static let commentStyleKey          = NoteRangeTypeComment
+        static let bockquoteKey             = NoteRangeTypeBlockquote
+        static let regularStyleKey          = "regularStyleKey"
+        static let quoteStyleKey            = "quoteStyleKey"
+        static let linkStyleKey             = "linkStyleKey"
+        
+        // Mark: - NotificationsViewController Styles
+        static let subjectStyles = [
+            regularStyleKey                 : Styles.subjectRegularStyle,
+            quoteStyleKey                   : Styles.subjectItalicsStyle,
+            
+            userStyleKey                    : Styles.subjectBoldStyle,
+            postStyleKey                    : Styles.subjectItalicsStyle,
+            commentStyleKey                 : Styles.subjectItalicsStyle,
+            bockquoteKey                    : Styles.subjectQuotedStyle
+        ]
+
+        static let snippetStyles = [
+            regularStyleKey                 : Styles.snippetRegularStyle
+        ]
+
+        // Mark: - NotificationDetailsViewController Styles
+        static let headerTitleStyles = [
+            regularStyleKey                 : Styles.snippetRegularStyle
+        ]
+        
+        static let richNormalStyles = [
+            regularStyleKey                 : Styles.blockRegularStyle,
+            quoteStyleKey                   : Styles.blockBoldStyle,
+            linkStyleKey                    : Styles.blockLinkColor,
+            
+            userStyleKey                    : Styles.blockBoldStyle,
+            postStyleKey                    : Styles.blockItalicsStyle,
+            commentStyleKey                 : Styles.blockItalicsStyle,
+            bockquoteKey                    : Styles.blockQuotedStyle
+        ]
+        
+        static let richBadgeStyles = [
+            regularStyleKey                 : Styles.badgeRegularStyle,
+            quoteStyleKey                   : Styles.badgeBoldStyle,
+            linkStyleKey                    : Styles.badgeLinkColor,
+            
+            userStyleKey                    : Styles.badgeBoldStyle,
+            postStyleKey                    : Styles.badgeItalicsStyle,
+            commentStyleKey                 : Styles.badgeItalicsStyle,
+            bockquoteKey                    : Styles.badgeQuotedStyle
+        ]
     }
     
     private typealias Styles = WPStyleGuide.Notifications
