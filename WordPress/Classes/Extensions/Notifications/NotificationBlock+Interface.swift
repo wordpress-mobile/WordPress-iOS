@@ -3,15 +3,23 @@ import Foundation
 
 extension NotificationBlock
 {
+    private struct Constants
+    {
+        static let richSubjectCacheKey  = "richSubjectCacheKey"
+        static let richSnippetCacheKey  = "richSnippetCacheKey"
+        static let richHeaderCacheKey   = "richHeaderCacheKey"
+        static let richTextCacheKey     = "richTextCacheKey"
+    }
+
+    // MARK: - Helpers used in NotificationsViewController
+    //
     public func subjectAttributedText() -> NSAttributedString {
-        let richSubjectCacheKey = "richSubject"
-        
-        if let cachedSubject = cacheValueForKey(richSubjectCacheKey) as? NSAttributedString {
+        if let cachedSubject = cacheValueForKey(Constants.richSubjectCacheKey) as? NSAttributedString {
             return cachedSubject
         }
         
         let richSubject = textWithRangeStyles(isSubject: true)
-        setCacheValue(richSubject, forKey: richSubjectCacheKey)
+        setCacheValue(richSubject, forKey: Constants.richSubjectCacheKey)
         
         return richSubject
     }
@@ -21,15 +29,25 @@ extension NotificationBlock
             return NSAttributedString()
         }
 
-        let richSnippetCacheKey = "richSnippet"
-        if let cachedSnippet = cacheValueForKey(richSnippetCacheKey) as? NSAttributedString {
+        if let cachedSnippet = cacheValueForKey(Constants.richSnippetCacheKey) as? NSAttributedString {
             return cachedSnippet
         }
         
         let richSnippet = NSAttributedString(string: text, attributes: Styles.snippetRegularStyle)
-        setCacheValue(richSnippet, forKey: richSnippetCacheKey)
+        setCacheValue(richSnippet, forKey: Constants.richSnippetCacheKey)
         
         return richSnippet
+    }
+
+    
+    // MARK: - Helpers used in NotificationsDetailsViewController
+    //
+    public func headerAttributedText() -> NSAttributedString {
+        if text == nil {
+            return NSAttributedString()
+        }
+        
+        return NSAttributedString()
     }
 
     public func richAttributedText() -> NSAttributedString {
@@ -39,13 +57,12 @@ extension NotificationBlock
             return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
         }
         
-        let richTextCacheKey = "richText"
-        if let cachedText = cacheValueForKey(richTextCacheKey) as? NSAttributedString {
+        if let cachedText = cacheValueForKey(Constants.richTextCacheKey) as? NSAttributedString {
             return cachedText
         }
         
         let richText = textWithRangeStyles(isSubject: false)
-        setCacheValue(richText, forKey: richTextCacheKey)
+        setCacheValue(richText, forKey: Constants.richTextCacheKey)
         
         return richText
     }
@@ -70,6 +87,7 @@ extension NotificationBlock
     
     
     // MARK: - Private Helpers
+    //
     private func textWithRangeStyles(#isSubject: Bool) -> NSAttributedString {
         if text == nil {
             return NSAttributedString()
