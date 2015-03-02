@@ -4,30 +4,30 @@ import Foundation
 @objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public var header: String? {
+    public var headerTitle: String? {
         set {
-            nameLabel.text  = newValue
+            headerTitleLabel.text  = newValue
         }
         get {
-            return nameLabel.text
+            return headerTitleLabel.text
         }
     }
     
-    public var attributedHeader: NSAttributedString? {
+    public var attributedHeaderTitle: NSAttributedString? {
         set {
-            nameLabel.attributedText  = newValue
+            headerTitleLabel.attributedText  = newValue
         }
         get {
-            return nameLabel.attributedText
+            return headerTitleLabel.attributedText
         }
     }
 
-    public var snippet: String? {
+    public var headerDetails: String? {
         set {
-            snippetLabel.text = newValue
+            headerDetailsLabel.text = newValue
         }
         get {
-            return snippetLabel.text
+            return headerDetailsLabel.text
         }
     }
     
@@ -55,10 +55,10 @@ import Foundation
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
-        nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
-        snippetLabel.font               = WPStyleGuide.Notifications.detailsSippetFont
-        snippetLabel.textColor          = WPStyleGuide.Notifications.detailsSippetColor
+        headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleFont
+        headerTitleLabel.textColor      = WPStyleGuide.Notifications.headerTitleColor
+        headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsFont
+        headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
         gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
 
         // iPad: Use a bigger image size!
@@ -75,6 +75,6 @@ import Foundation
     
     // MARK: - IBOutlets
     @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var nameLabel:           UILabel!
-    @IBOutlet private weak var snippetLabel:        UILabel!
+    @IBOutlet private weak var headerTitleLabel:    UILabel!
+    @IBOutlet private weak var headerDetailsLabel:  UILabel!
 }

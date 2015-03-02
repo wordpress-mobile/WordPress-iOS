@@ -577,8 +577,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
     
-    cell.attributedHeader               = gravatarBlock.headerAttributedText;
-    cell.snippet                        = snippetBlock.text;
+    cell.attributedHeaderTitle          = gravatarBlock.titleAttributedText;
+    cell.headerDetails                  = snippetBlock.text;
     
     if ([self isLayoutCell:cell]) {
         return;
