@@ -46,6 +46,7 @@
 @property (nonatomic,   weak,  readonly) NSString       *version;
 @property (nonatomic, strong,  readonly) NSString       *username;
 @property (nonatomic, strong,  readonly) NSString       *password;
+@property (nonatomic, strong,  readonly) NSString       *authToken;
 
 
 /**
