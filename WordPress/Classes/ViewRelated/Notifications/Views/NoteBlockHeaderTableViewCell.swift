@@ -4,7 +4,7 @@ import Foundation
 @objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public var name: String? {
+    public var header: String? {
         set {
             nameLabel.text  = newValue
         }
@@ -12,6 +12,16 @@ import Foundation
             return nameLabel.text
         }
     }
+    
+    public var attributedHeader: NSAttributedString? {
+        set {
+            nameLabel.attributedText  = newValue
+        }
+        get {
+            return nameLabel.attributedText
+        }
+    }
+
     public var snippet: String? {
         set {
             snippetLabel.text = newValue

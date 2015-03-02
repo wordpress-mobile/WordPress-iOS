@@ -291,7 +291,7 @@ static NSInteger const CVCNumberOfSections = 2;
         postTitle = [self.comment.post contentPreviewForDisplay];
     }
 
-    cell.name = self.comment.post.author;
+    cell.header = self.comment.post.author;
     cell.snippet = postTitle;
 
     if (cell != self.headerLayoutCell && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
