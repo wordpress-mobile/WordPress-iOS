@@ -291,8 +291,8 @@ static NSInteger const CVCNumberOfSections = 2;
         postTitle = [self.comment.post contentPreviewForDisplay];
     }
 
-    cell.header = self.comment.post.author;
-    cell.snippet = postTitle;
+    cell.headerTitle = self.comment.post.author;
+    cell.headerDetails = postTitle;
 
     if (cell != self.headerLayoutCell && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];

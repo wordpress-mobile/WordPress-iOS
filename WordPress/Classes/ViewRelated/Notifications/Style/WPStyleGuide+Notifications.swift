@@ -56,10 +56,24 @@ extension WPStyleGuide
 
         // MARK: - Styles used by NotificationDetailsViewController
         //
-        public static let detailsSippetFont         = blockItalicsFont
+
+        // Header
+        public static let headerTitleFont           = blockBoldFont
+        public static let headerTitleColor          = blockTextColor
         
-        public static let detailsSippetColor        = WPStyleGuide.newKidOnTheBlockBlue()
+        public static let headerDetailsFont         = blockItalicsFont
+        public static let headerDetailsColor        = WPStyleGuide.newKidOnTheBlockBlue()
         
+        //  Badges
+        public static let badgeBackgroundColor      = UIColor.clearColor()
+        public static let badgeLinkColor            = blockLinkColor
+        
+        public static let badgeRegularStyle         = [ NSParagraphStyleAttributeName:  badgeParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        public static let badgeBoldStyle            = blockBoldStyle
+        public static let badgeItalicsStyle         = blockItalicsStyle
+        public static let badgeQuotedStyle          = blockQuotedStyle
         
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
@@ -92,18 +106,6 @@ extension WPStyleGuide
         public static let blockQuotedStyle          = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor]
-        
-        //  Badges
-        public static let badgeBackgroundColor      = UIColor.clearColor()
-        public static let badgeLinkColor            = blockLinkColor
-        
-        public static let badgeRegularStyle         = [ NSParagraphStyleAttributeName:  badgeParagraph,
-                                                        NSFontAttributeName:            blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
-        public static let badgeBoldStyle            = blockBoldStyle
-        public static let badgeItalicsStyle         = blockItalicsStyle
-        public static let badgeQuotedStyle          = blockQuotedStyle
-        
         
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
