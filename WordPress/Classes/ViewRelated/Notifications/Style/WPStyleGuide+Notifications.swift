@@ -46,6 +46,8 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            subjectNoticonFont!,
                                                         NSForegroundColorAttributeName: subjectNoticonColor ]
         
+        public static let subjectQuotedStyle        = blockQuotedStyle
+        
         //  Subject Snippet
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         public static let snippetRegularStyle       = [ NSParagraphStyleAttributeName:  snippetParagraph,
@@ -91,13 +93,18 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor]
         
-        public static let blockBadgeStyle           = [ NSParagraphStyleAttributeName:  badgeParagraph,
-                                                        NSFontAttributeName:            blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
-        
         //  Badges
         public static let badgeBackgroundColor      = UIColor.clearColor()
-
+        public static let badgeLinkColor            = blockLinkColor
+        
+        public static let badgeRegularStyle         = [ NSParagraphStyleAttributeName:  badgeParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: blockTextColor]
+        public static let badgeBoldStyle            = blockBoldStyle
+        public static let badgeItalicsStyle         = blockItalicsStyle
+        public static let badgeQuotedStyle          = blockQuotedStyle
+        
+        
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
