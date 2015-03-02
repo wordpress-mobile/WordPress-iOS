@@ -778,9 +778,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text
-                                                                            password:_passwordField.text
-                                                                           authToken:authToken];
+            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text authToken:authToken];
             _account.email = _emailField.text;
             if (![accountService defaultWordPressComAccount]) {
                 [accountService setDefaultWordPressComAccount:_account];

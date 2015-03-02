@@ -113,7 +113,10 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert([post.postID integerValue] > 0);
+    NSParameterAssert(post.postID.integerValue > 0);
+    NSParameterAssert(blog.username);
+    NSParameterAssert(blog.password);
+    
     if ([post.postID integerValue] <= 0) {
         if (failure) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
@@ -127,6 +130,7 @@
 
     NSDictionary *extraParameters = [self parametersWithRemotePost:post];
     NSArray *parameters = @[post.postID, blog.username, blog.password, extraParameters];
+    
     [self.api callMethod:@"metaWeblog.editPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
