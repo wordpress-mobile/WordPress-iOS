@@ -6,7 +6,7 @@
 #import "Constants.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
-#import "CategoryService.h"
+#import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
 
@@ -86,7 +86,7 @@
 - (void)saveAddCategory:(id)sender
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:context];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:context];
     NSString *catName = [self.createCatNameField.text trim];
 
     if (!catName ||[catName length] == 0) {

@@ -7,8 +7,8 @@
 #import "PostServiceRemoteREST.h"
 #import "PostServiceRemoteXMLRPC.h"
 #import "RemotePost.h"
-#import "CategoryService.h"
 #import "RemotePostCategory.h"
+#import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
@@ -443,7 +443,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 - (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
