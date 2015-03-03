@@ -27,7 +27,7 @@
 
 - (PostCategory *)newCategoryForBlog:(Blog *)blog
 {
-    PostCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"PostCategory"
+    PostCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                        inManagedObjectContext:self.managedObjectContext];
     category.blog = blog;
     return category;
