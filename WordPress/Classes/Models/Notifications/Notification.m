@@ -76,9 +76,21 @@ NSString const *NotePostIdKey           = @"post_id";
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
         _siteID             = [rawRange numberForKey:NoteSiteIdKey];
+
+        //  SORRY I:
+        //  ========
+        //  The backend may not even send a type when there is a url.
+        //  I feel awful
         
-        //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
-        //  ======
+        if (_type == nil && _url != nil) {
+            _type           = (NSString *)NoteRangeTypeSite;
+        }
+        
+        _type               = _type ?: [NSString string];
+        
+        
+        //  SORRY II: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
+        //  =========
         //  `id` is coupled with the `type
         //
         //      type = post     => id = post_id
