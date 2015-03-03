@@ -39,7 +39,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MeHeaderView *headerView;
-@property (nonatomic, strong) UILabel *helpshiftBadgeLabel;
 
 @end
 
@@ -65,13 +64,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    self.helpshiftBadgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    self.helpshiftBadgeLabel.layer.masksToBounds = YES;
-    self.helpshiftBadgeLabel.layer.cornerRadius = 15;
-    self.helpshiftBadgeLabel.textAlignment = NSTextAlignmentCenter;
-    self.helpshiftBadgeLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-    self.helpshiftBadgeLabel.textColor = [UIColor whiteColor];
 
     [self setupAutolayoutConstraints];
 }
@@ -147,6 +139,17 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self.tableView reloadData];
 }
 
+- (UILabel *)helpshiftBadgeLabel
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    label.layer.masksToBounds = YES;
+    label.layer.cornerRadius = 15;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    label.textColor = [UIColor whiteColor];
+    return label;
+}
+
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -183,8 +186,9 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
                 NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
                 if ([HelpshiftUtils isHelpshiftEnabled] && unreadNotificationCount > 0) {
-                    self.helpshiftBadgeLabel.text = [NSString stringWithFormat:@"%ld", unreadNotificationCount];
-                    cell.accessoryView = self.helpshiftBadgeLabel;
+                    UILabel *label = [self helpshiftBadgeLabel];
+                    label.text = [NSString stringWithFormat:@"%ld", unreadNotificationCount];
+                    cell.accessoryView = label;
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 } else {
                     cell.accessoryView = nil;
