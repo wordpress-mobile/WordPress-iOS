@@ -1,7 +1,7 @@
 #import "WPAddCategoryViewController.h"
 #import "Blog.h"
 #import "Post.h"
-#import "Category.h"
+#import "PostCategory.h"
 #import "CategoriesViewController.h"
 #import "Constants.h"
 #import "EditSiteViewController.h"
@@ -12,7 +12,7 @@
 
 @interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
 
-@property (nonatomic, strong) Category *parentCategory;
+@property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) UITextField *createCatNameField;
 @property (nonatomic, strong) UITextField *parentCatNameField;
@@ -98,7 +98,7 @@
         return;
     }
 
-    Category *category = [categoryService findWithBlogObjectID:self.post.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
+    PostCategory *category = [categoryService findWithBlogObjectID:self.post.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
     if (category) {
         // If there's an existing category with that name and parent, let's use that
         [self dismissWithCategory:category];
@@ -110,7 +110,7 @@
     [categoryService createCategoryWithName:catName
                      parentCategoryObjectID:self.parentCategory.objectID
                             forBlogObjectID:self.post.blog.objectID
-                                    success:^(Category *category) {
+                                    success:^(PostCategory *category) {
                                         [self removeProgressIndicator];
                                         [self dismissWithCategory:category];
                                     } failure:^(NSError *error) {
@@ -130,7 +130,7 @@
                                     }];
 }
 
-- (void)dismissWithCategory:(Category *)category
+- (void)dismissWithCategory:(PostCategory *)category
 {
     // Add the newly created category to the post
     [self.post.categories addObject:category];
@@ -243,7 +243,7 @@
 
 #pragma mark - CategoriesViewControllerDelegate methods
 
-- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category
+- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(PostCategory *)category
 {
     self.parentCategory = category;
     [self.tableView reloadData];
