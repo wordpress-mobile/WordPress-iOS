@@ -69,7 +69,6 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
     NSString *_dotComSiteUrl;
     NSArray *_blogs;
     Blog *_blog;
-    NSUInteger _numberOfTimesLoginFailed;
 }
 
 @end
@@ -786,6 +785,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                                @"SiteURL": _siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -1087,11 +1087,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
         if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
             [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
         } else {
-            if (error.code == WordPressComOAuthErrorInvalidRequest) {
-                _numberOfTimesLoginFailed++;
-            }
-
-            if ([HelpshiftUtils isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self displayGenericErrorMessageWithHelpshiftButton:message];
             } else {
                 [self displayGenericErrorMessage:message];
