@@ -1,13 +1,13 @@
-#import "CategoriesViewController.h"
+#import "PostCategoriesViewController.h"
 #import "PostCategory.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
-#import "WPAddCategoryViewController.h"
+#import "WPAddPostCategoryViewController.h"
 #import "WPCategoryTree.h"
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
-@interface CategoriesViewController ()
+@interface PostCategoriesViewController ()
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
@@ -18,9 +18,9 @@
 @property (nonatomic, assign) BOOL addingNewCategory;
 @end
 
-@implementation CategoriesViewController
+@implementation PostCategoriesViewController
 
-- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+- (instancetype)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
@@ -82,7 +82,7 @@
 - (void)showAddNewCategory
 {
     DDLogMethod();
-    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithPost:self.post];
+    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
@@ -184,8 +184,8 @@
 
     // If we're choosing a parent category then we're done.
     if (self.selectionMode == CategoriesSelectionModeParent) {
-        if ([self.delegate respondsToSelector:@selector(categoriesViewController:didSelectCategory:)]) {
-            [self.delegate categoriesViewController:self didSelectCategory:category];
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewControllerdidSelectCategory:)]) {
+            [self.delegate postCategoriesViewController:self didSelectCategory:category];
         }
 
         [self.navigationController popViewControllerAnimated:YES];

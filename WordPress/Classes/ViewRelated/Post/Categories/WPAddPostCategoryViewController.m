@@ -1,8 +1,8 @@
-#import "WPAddCategoryViewController.h"
+#import "WPAddPostCategoryViewController.h"
 #import "Blog.h"
 #import "Post.h"
 #import "PostCategory.h"
-#import "CategoriesViewController.h"
+#import "PostCategoriesViewController.h"
 #import "Constants.h"
 #import "EditSiteViewController.h"
 #import "WordPressAppDelegate.h"
@@ -10,7 +10,7 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 
-@interface WPAddCategoryViewController ()<CategoriesViewControllerDelegate>
+@interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Post *post;
@@ -20,9 +20,9 @@
 
 @end
 
-@implementation WPAddCategoryViewController
+@implementation WPAddPostCategoryViewController
 
-- (id)initWithPost:(Post *)post
+- (instancetype)initWithPost:(Post *)post
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
@@ -145,7 +145,7 @@
 
 - (void)showParentCategorySelector
 {
-    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -241,9 +241,9 @@
     return YES;
 }
 
-#pragma mark - CategoriesViewControllerDelegate methods
+#pragma mark - PostCategoriesViewControllerDelegate methods
 
-- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(PostCategory *)category
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller didSelectCategory:(PostCategory *)category
 {
     self.parentCategory = category;
     [self.tableView reloadData];

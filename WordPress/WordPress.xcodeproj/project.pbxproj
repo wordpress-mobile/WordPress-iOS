@@ -111,7 +111,7 @@
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
 		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
-		5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */; };
+		5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */; };
 		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
 		5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7B414319E482C9007D9EC7 /* WPRichTextEmbed.swift */; };
@@ -276,7 +276,7 @@
 		93FA59DD18D88C1C001446BC /* PostCategoryService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93FA59DC18D88C1C001446BC /* PostCategoryService.m */; };
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
-		A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */; };
+		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
 		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
@@ -694,8 +694,8 @@
 		5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationViewController.m; sourceTree = "<group>"; };
 		5D577D341891360900B964C3 /* PostGeolocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationView.h; sourceTree = "<group>"; };
 		5D577D351891360900B964C3 /* PostGeolocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationView.m; sourceTree = "<group>"; };
-		5D5D0025187DA9D30027CEF6 /* CategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CategoriesViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
-		5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CategoriesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		5D5D0025187DA9D30027CEF6 /* PostCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PostCategoriesViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoriesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
 		5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PageSettingsViewController.m; sourceTree = "<group>"; };
 		5D62BAD818AAAE9B0044E5F7 /* PostSettingsViewController_Internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostSettingsViewController_Internal.h; sourceTree = "<group>"; usesTabs = 0; };
@@ -1008,8 +1008,8 @@
 		93FA59DC18D88C1C001446BC /* PostCategoryService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoryService.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate.html; path = Resources/HTML/defaultPostTemplate.html; sourceTree = "<group>"; };
-		A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddCategoryViewController.h; sourceTree = "<group>"; };
-		A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPAddCategoryViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		A0E293EF0E21027E00C6919C /* WPAddPostCategoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAddPostCategoryViewController.h; sourceTree = "<group>"; };
+		A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPAddPostCategoryViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		A20971B419B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A20971B519B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A20971B619B0BC390058F395 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
@@ -1830,12 +1830,12 @@
 		5D1EBF56187C9B95003393F8 /* Categories */ = {
 			isa = PBXGroup;
 			children = (
-				A0E293EF0E21027E00C6919C /* WPAddCategoryViewController.h */,
-				A0E293F00E21027E00C6919C /* WPAddCategoryViewController.m */,
+				A0E293EF0E21027E00C6919C /* WPAddPostCategoryViewController.h */,
+				A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */,
 				7059CD1F0F332B6500A0660B /* WPCategoryTree.h */,
 				7059CD200F332B6500A0660B /* WPCategoryTree.m */,
-				5D5D0025187DA9D30027CEF6 /* CategoriesViewController.h */,
-				5D5D0026187DA9D30027CEF6 /* CategoriesViewController.m */,
+				5D5D0025187DA9D30027CEF6 /* PostCategoriesViewController.h */,
+				5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */,
 			);
 			path = Categories;
 			sourceTree = "<group>";
@@ -3392,7 +3392,7 @@
 				C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */,
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
 				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
-				A0E293F10E21027E00C6919C /* WPAddCategoryViewController.m in Sources */,
+				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,
@@ -3497,7 +3497,7 @@
 				E1AB07AD1578D34300D6AD64 /* SettingsViewController.m in Sources */,
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				B5D7F2DC1A04180A006D3047 /* NSAttributedString+RichTextView.swift in Sources */,
-				5D5D0027187DA9D30027CEF6 /* CategoriesViewController.m in Sources */,
+				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
 				5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
