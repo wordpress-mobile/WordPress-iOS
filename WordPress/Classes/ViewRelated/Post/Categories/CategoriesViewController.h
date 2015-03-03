@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "Post.h"
-#import "Category.h"
+#import "PostCategory.h"
 
 typedef enum {
     CategoriesSelectionModePost = 0,
@@ -24,6 +24,6 @@ typedef enum {
 @protocol CategoriesViewControllerDelegate <NSObject>
 
 @optional
-- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(Category *)category;
+- (void)categoriesViewController:(CategoriesViewController *)controller didSelectCategory:(PostCategory *)category;
 
 @end

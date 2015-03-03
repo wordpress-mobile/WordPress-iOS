@@ -1,6 +1,6 @@
-#import "Category.h"
+#import "PostCategory.h"
 
-@implementation Category
+@implementation PostCategory
 
 @dynamic categoryID;
 @dynamic categoryName;

@@ -1,14 +1,14 @@
 #import "PostService.h"
 #import "Post.h"
 #import "Coordinate.h"
-#import "Category.h"
+#import "PostCategory.h"
 #import "Page.h"
 #import "PostServiceRemote.h"
 #import "PostServiceRemoteREST.h"
 #import "PostServiceRemoteXMLRPC.h"
 #import "RemotePost.h"
-#import "RemoteCategory.h"
 #import "CategoryService.h"
+#import "RemotePostCategory.h"
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
@@ -377,15 +377,15 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 - (NSArray *)remoteCategoriesForPost:(Post *)post
 {
     NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:post.categories.count];
-    for (Category *category in post.categories) {
+    for (PostCategory *category in post.categories) {
         [remoteCategories addObject:[self remoteCategoryWithCategory:category]];
     }
     return [NSArray arrayWithArray:remoteCategories];
 }
 
-- (RemoteCategory *)remoteCategoryWithCategory:(Category *)category
+- (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
 {
-    RemoteCategory *remoteCategory = [RemoteCategory new];
+    RemotePostCategory *remoteCategory = [RemotePostCategory new];
     remoteCategory.categoryID = category.categoryID;
     remoteCategory.name = category.categoryName;
     remoteCategory.parentID = category.parentID;
@@ -446,8 +446,8 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
-    for (RemoteCategory *remoteCategory in remoteCategories) {
-        Category *category = [categoryService findWithBlogObjectID:blogObjectID andCategoryID:remoteCategory.categoryID];
+    for (RemotePostCategory *remoteCategory in remoteCategories) {
+        PostCategory *category = [categoryService findWithBlogObjectID:blogObjectID andCategoryID:remoteCategory.categoryID];
         if (!category) {
             category = [categoryService newCategoryForBlogObjectID:blogObjectID];
             category.categoryID = remoteCategory.categoryID;
