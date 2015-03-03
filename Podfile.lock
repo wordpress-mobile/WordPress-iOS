@@ -120,7 +120,7 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.2.0)
     - WordPressCom-Analytics-iOS
-  - wpxmlrpc (0.7)
+  - wpxmlrpc (0.8)
 
 DEPENDENCIES:
   - 1PasswordExtension
@@ -155,7 +155,7 @@ DEPENDENCIES:
   - WordPressApi (= 0.3.1)
   - WordPressCom-Analytics-iOS (= 0.0.27)
   - WordPressCom-Stats-iOS (= 0.2.0)
-  - wpxmlrpc (~> 0.7)
+  - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -231,6 +231,6 @@ SPEC CHECKSUMS:
   WordPressApi: 95a1b20372c3a5052f4d3bc4d333f72009c3d986
   WordPressCom-Analytics-iOS: e7cfc141f0a112291f09dd5eefe51d68cce417ad
   WordPressCom-Stats-iOS: bb023fc4c623cb77c9baa43db228df3a0394a558
-  wpxmlrpc: 75ad2e4663c3a65948f5ae0799d948a8445bb0cf
+  wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
 
 COCOAPODS: 0.35.0
