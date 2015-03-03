@@ -785,6 +785,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                                @"SiteURL": _siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
