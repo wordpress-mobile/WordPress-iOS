@@ -21,12 +21,26 @@
 #import <NSString+XMLExtensions.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <1PasswordExtension/OnePasswordExtension.h>
 #import <NSURL+IDN.h>
 #import "HelpshiftUtils.h"
+#import "Constants.h"
 
-static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
-static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+
+static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
+static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
+static CGFloat const GeneralWalkthroughTextFieldWidth           = 320.0;
+static CGFloat const GeneralWalkthroughTextFieldHeight          = 44.0;
+static CGFloat const GeneralWalkthroughButtonWidth              = 290.0;
+static CGFloat const GeneralWalkthroughButtonHeight             = 41.0;
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
+static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
+
+static CGFloat const OnePasswordPaddingX                        = 9.0;
+
 
 @interface LoginViewController () <UITextFieldDelegate> {
 
@@ -36,6 +50,7 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
     WPNUXSecondaryButton *_toggleSignInForm;
     WPNUXSecondaryButton *_forgotPassword;
     UIButton *_helpButton;
+    UIButton *_onePasswordButton;
     WPNUXHelpBadgeLabel *_helpBadge;
     UIImageView *_icon;
     WPWalkthroughTextField *_usernameText;
@@ -60,16 +75,6 @@ static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.supp
 @end
 
 @implementation LoginViewController
-
-CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
-CGFloat const GeneralWalkthroughStandardOffset = 15;
-CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
-CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
-CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughButtonWidth = 290.0;
-CGFloat const GeneralWalkthroughButtonHeight = 41.0;
-CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dealloc
 {
@@ -306,7 +311,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 #pragma mark - Button Press Methods
 
-- (void)helpButtonAction:(id)sender
+- (IBAction)helpButtonAction:(id)sender
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
@@ -315,17 +320,17 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)skipToCreateAction:(id)sender
+- (IBAction)skipToCreateAction:(id)sender
 {
     [self showCreateAccountView];
 }
 
-- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
+- (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
 }
 
-- (void)signInButtonAction:(id)sender
+- (IBAction)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
 
@@ -349,7 +354,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self signIn];
 }
 
-- (void)toggleSignInFormAction:(id)sender
+- (IBAction)toggleSignInFormAction:(id)sender
 {
     _userIsDotCom = !_userIsDotCom;
     _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
@@ -364,14 +369,15 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                      }];
 }
 
-- (void)cancelButtonAction:(id)sender
+
+- (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
         self.dismissBlock();
     }
 }
 
-- (void)forgotPassword:(id)sender
+- (IBAction)forgotPassword:(id)sender
 {
     NSString *baseUrl = ForgotPasswordDotComBaseUrl;
     if (!_userIsDotCom) {
@@ -380,6 +386,54 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
 }
+
+- (IBAction)findLoginFromOnePassword:(id)sender
+{
+    if (_userIsDotCom == false && _siteUrlText.text.isEmpty) {
+        [self displayOnePasswordEmptySiteAlert];
+        return;
+    }
+ 
+    NSString *loginURL = _userIsDotCom ? WPOnePasswordWordPressComURL : _siteUrlText.text;
+    
+    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
+                                                forViewController:self
+                                                           sender:sender
+                                                       completion:^(NSDictionary *loginDict, NSError *error) {
+        if (!loginDict) {
+            if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                DDLogError(@"OnePassword Error: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
+            }
+            return;
+        }
+                                                           
+        _usernameText.text = loginDict[AppExtensionUsernameKey];
+        _passwordText.text = loginDict[AppExtensionPasswordKey];
+                                                           
+        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
+        [self signIn];
+    }];
+}
+
+
+#pragma mark - One Password Helpers
+
+- (void)displayOnePasswordEmptySiteAlert
+{
+    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
+                                          @"Error message displayed when the user is Signing into a self hosted site and "
+                                          @"tapped the 1Password Button before typing his siteURL");
+    
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
+                                              otherButtonTitles:nil];
+    
+    [alertView show];
+}
+
 
 #pragma mark - Private Methods
 
@@ -453,7 +507,25 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _usernameText.accessibilityIdentifier = @"Username / Email";
         [_mainView addSubview:_usernameText];
     }
+    
+    // Add OnePassword
+    if (_onePasswordButton == nil) {
+        _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+        [_onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+        [_onePasswordButton sizeToFit];
+        
+        CGRect containerFrame = _onePasswordButton.frame;
+        containerFrame.size.width += OnePasswordPaddingX;
 
+        UIView *containerView = [[UIView alloc] initWithFrame:containerFrame];
+        [containerView addSubview:_onePasswordButton];
+        _usernameText.rightView = containerView;
+    }
+    
+    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    _usernameText.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
     // Add Password
     if (_passwordText == nil) {
         _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
@@ -838,10 +910,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
 {
-
     _statusLabel.hidden = !(status.length > 0);
     _statusLabel.text = status;
 
+    _onePasswordButton.enabled = !authenticating;
     _signInButton.enabled = !authenticating;
     _toggleSignInForm.hidden = authenticating;
     _skipToCreateAccount.hidden = authenticating;
@@ -883,12 +955,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
+            [WPAnalytics track:WPAnalyticsStatLoginFailed];
             [self setAuthenticating:NO withStatusMessage:nil];
             [self displayRemoteError:error];
         }];
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
+        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
         [self handleGuessXMLRPCURLFailure:error];
     };
 
@@ -907,22 +981,21 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                              success:^(NSString *authToken) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  _userIsDotCom = YES;
-                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                                 [self createWordPressComAccountForUsername:username authToken:authToken];
                              } failure:^(NSError *error) {
+                                 [WPAnalytics track:WPAnalyticsStatLoginFailed];
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  [self displayRemoteError:error];
                              }];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username
-                                    password:(NSString *)password
-                                   authToken:(NSString *)authToken
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
 
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account

@@ -1,6 +1,7 @@
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
+#import "ReaderTopic.h"
 
 @interface ReaderTopicServiceRemote ()
 
@@ -55,15 +56,15 @@
         }
 
         for (NSString *key in defaults) {
-            [topics addObject:[self normalizeTopicDictionary:[defaults objectForKey:key] subscribed:NO recommended:NO]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[defaults objectForKey:key] subscribed:NO recommended:NO]];
         }
 
         for (NSString *key in subscribed) {
-            [topics addObject:[self normalizeTopicDictionary:[subscribed objectForKey:key] subscribed:YES recommended:NO]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[subscribed objectForKey:key] subscribed:YES recommended:NO]];
         }
 
         for (NSString *key in recommended) {
-            [topics addObject:[self normalizeTopicDictionary:[recommended objectForKey:key] subscribed:NO recommended:YES]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[recommended objectForKey:key] subscribed:NO recommended:YES]];
         }
 
         for (id topic in subscribedAndRecommended) {
@@ -71,7 +72,7 @@
             if ([topic isKindOfClass:[NSString class]]) {
                 continue;
             }
-            [topics addObject:[self normalizeTopicDictionary:(NSDictionary *)topic subscribed:YES recommended:YES]];
+            [topics addObject:[self normalizeMenuTopicDictionary:(NSDictionary *)topic subscribed:YES recommended:YES]];
         }
 
         success(topics);
@@ -176,6 +177,14 @@
     return topicName;
 }
 
+- (RemoteReaderTopic *)normalizeMenuTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
+{
+    RemoteReaderTopic *topic = [self normalizeTopicDictionary:topicDict subscribed:subscribed recommended:recommended];
+    topic.isMenuItem = YES;
+    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
+    return topic;
+}
+
 /**
  Normalizes the supplied topics dictionary, ensuring expected keys are always present.
 
@@ -199,6 +208,7 @@
     topic.path = url;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
+
     return topic;
 }
 

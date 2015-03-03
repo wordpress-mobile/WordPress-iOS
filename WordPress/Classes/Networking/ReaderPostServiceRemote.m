@@ -58,7 +58,8 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     NSNumber *numberToFetch = @(count);
     NSDictionary *params = @{@"number":numberToFetch,
                              @"before": [DateUtils isoStringFromDate:date],
-                             @"order": @"DESC"
+                             @"order": @"DESC",
+                             @"meta":@"site,feed"
                              };
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
@@ -261,6 +262,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:@"URL"]];
     post.blogName = [self siteNameFromPostDictionary:dict];
+    post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
     post.commentCount = [dict numberForKey:@"comment_count"];
     post.commentsOpen = [[dict numberForKey:@"comments_open"] boolValue];
@@ -634,6 +636,17 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
 
     return siteName;
+}
+
+/**
+ Get the description of the post's site.
+
+ @param dict A dictionary representing a post object from the REST API.
+ @return The description of the post's site or an empty string.
+ */
+- (NSString *)siteDescriptionFromPostDictionary:(NSDictionary *)dict
+{
+    return [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.description"]];
 }
 
 /**

@@ -13,10 +13,12 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
-@implementation Blog {
-    WPXMLRPCClient *_api;
-    NSString *_blavatarUrl;
-}
+@interface Blog ()
+@property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
+@property (nonatomic, weak, readwrite) NSString *blavatarUrl;
+@end
+
+@implementation Blog
 
 @dynamic blogID;
 @dynamic blogName;
@@ -43,6 +45,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@synthesize api = _api;
+@synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
 @synthesize isSyncingComments;
@@ -64,8 +68,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [super didTurnIntoFault];
 
     // Clean up instance variables
-    _blavatarUrl = nil;
-    _api = nil;
+    self.blavatarUrl = nil;
+    self.api = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -282,15 +286,37 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
         NSManagedObjectContext *context = [self managedObjectContext];
         [context deleteObject:self];
-        // For self hosted blogs, remove account unless there are other associated blogs
-        if (account && !account.isWpcom) {
-            if ([account.blogs count] == 1 && [[account.blogs anyObject] isEqual:self]) {
-                [context deleteObject:account];
-            }
-        }
+        
+        [self removeSelfHostedAccountIfNeeded:account
+                                      context:context];
+        
         [self dataSave];
         [WPAnalytics refreshMetadata];
     }];
+}
+
+/**
+ *  @brief      For self hosted blogs, removes the account unless there are other associated blogs.
+ *
+ *  @param      account     The account to remove, if it matches the criteria.  Cannot be nil.
+ *  @param      context     The context to use for the changes.  Cannot be nil.
+ */
+- (void)removeSelfHostedAccountIfNeeded:(WPAccount*)account
+                                context:(NSManagedObjectContext*)context
+{
+    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
+    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
+    
+    BOOL isWpComAccount = account && !account.isWpcom;
+    
+    if (isWpComAccount) {
+        BOOL accountOnlyHasThisBlog = ([account.blogs count] == 1
+                                       && [[account.blogs anyObject] isEqual:self]);
+        
+        if (accountOnlyHasThisBlog) {
+            [context deleteObject:account];
+        }
+    }
 }
 
 - (void)setXmlrpc:(NSString *)xmlrpc
@@ -298,19 +324,18 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
-     _blavatarUrl = nil;
+    
+    self.blavatarUrl = nil;
 
     // Reset the api client so next time we use the new XML-RPC URL
-     _api = nil;
+    self.api = nil;
 }
 
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra
 {
     NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password;
-    if (!password) {
-        password = @"";
-    }
+    NSString *password = self.password ?: [NSString string];
+    
     [result addObject:self.blogID];
     [result addObject:self.username];
     [result addObject:password];
@@ -342,10 +367,12 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)password
 {
-    WPAccount *account = self.account;
-    NSString *password = account.password ?: @"";
+    return self.account.password ?: @"";
+}
 
-    return password;
+- (NSString *)authToken
+{
+    return self.account.authToken;
 }
 
 - (BOOL)supportsFeaturedImages

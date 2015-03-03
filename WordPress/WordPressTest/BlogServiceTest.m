@@ -24,7 +24,7 @@
     
     self.blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" password:@"test" authToken:@"token"];
+    WPAccount *account = [service createOrUpdateWordPressComAccountWithUsername:@"test" authToken:@"token"];
     self.blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     self.blog.xmlrpc = @"http://test.blog/xmlrpc.php";
     self.blog.url = @"http://test.blog/";
