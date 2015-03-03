@@ -115,64 +115,6 @@
     [psc removePersistentStore:ps error:&error];
 }
 
-- (void)testMigrate27to28 {
-    NSURL *model27Url = [self urlForModelName:@"WordPress 27" inDirectory:nil];
-    NSURL *model28Url = [self urlForModelName:@"WordPress 28" inDirectory:nil];
-    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress27.sqlite"];
-    
-    // Load a stack with Model 27
-    NSManagedObjectModel *model27 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model27Url];
-    NSPersistentStoreCoordinator *pscForModel27 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model27];
-    
-    NSDictionary *options = @{
-        NSInferMappingModelAutomaticallyOption          : @(YES),
-        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
-    };
-    
-    NSError *error = nil;
-    NSPersistentStore *psForModel27 = [pscForModel27 addPersistentStoreWithType:NSSQLiteStoreType
-                                                                  configuration:nil
-                                                                            URL:storeUrl
-                                                                        options:options
-                                                                          error:&error];
-    
-    if (!psForModel27) {
-        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
-    }
-    
-    XCTAssertNotNil(psForModel27);
-    [pscForModel27 removePersistentStore:psForModel27 error:&error];
-    pscForModel27 = nil;
-    psForModel27 = nil;
-    
-    // Migrate over to Model 28
-    NSManagedObjectModel *model28 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model28Url];
-    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
-                                                           ofType:NSSQLiteStoreType
-                                                          toModel:model28
-                                                orderedModelNames:@[@"WordPress 27", @"WordPress 28"]
-                                                            error:&error];
-    if (!migrateResult) {
-        NSLog(@"Error while migrating: %@", error);
-    }
-    XCTAssertTrue(migrateResult);
-    
-    NSPersistentStoreCoordinator *pscForModel28 = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model28];
-    NSPersistentStore *psForModel28 = [pscForModel28 addPersistentStoreWithType:NSSQLiteStoreType
-                                                                  configuration:nil
-                                                                            URL:storeUrl
-                                                                        options:options
-                                                                          error:&error];
-    
-    if (!psForModel28) {
-        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
-    }
-    XCTAssertNotNil(psForModel28);
-    
-    // Make sure we remove the persistent store to make sure it releases the file.
-    [pscForModel28 removePersistentStore:psForModel28 error:&error];
-}
-
 // Returns the URL for a model file with the given name in the given directory.
 // @param directory The name of the bundle directory to search.  If nil,
 //    searches default paths.
