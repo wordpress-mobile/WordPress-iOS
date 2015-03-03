@@ -130,7 +130,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     _failedMediaAlertView.delegate = nil;
     [_mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
 }
 
@@ -267,8 +266,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
     
-    [self startListeningToMediaNotifications];
-    
     [self geotagNewPost];
     self.delegate = self;
     self.failedMediaAlertView = nil;
@@ -320,19 +317,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
 
-}
-
-#pragma mark - viewDidLoad helpers
-
-- (void)startListeningToMediaNotifications
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:)
-                                                 name:MediaShouldInsertBelowNotification
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(removeMedia:)
-                                                 name:@"ShouldRemoveMedia"
-                                               object:nil];
 }
 
 #pragma mark - UIViewControllerRestoration
@@ -824,7 +808,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
 	
-    if ([self.post hasUnsavedChanges]) {
+    if ([self.post hasLocalChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
         [self stopEditing];
@@ -1442,7 +1426,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 /**
- *	@brief		Saves the post being edited and uploads it.
+ *	@brief		Saves the post being edited and uploads it.  If the post is changing from 'draft' status to 'publish' set the date to now.
  */
 - (void)savePost
 {
@@ -1451,6 +1435,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self.view endEditing:YES];
     
+    if ([self.post.original.status isEqualToString:@"draft"]  && [self.post.status isEqualToString:@"publish"]) {
+        self.post.dateCreated = [NSDate date];
+    }
     self.post = self.post.original;
     [self.post applyRevision];
     [self.post deleteRevision];
@@ -1590,13 +1577,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-    __block BOOL hasFailedMedia = NO;
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
         if (progress.totalUnitCount == 0){
-            hasFailedMedia = YES;
+            return YES;
         }
-    }];
-    return hasFailedMedia;
+    }
+    return NO;
 }
 
 - (BOOL)isMediaUploading
@@ -1802,67 +1788,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-#pragma mark - Media Formatting
-
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
 {
     [self.editorView insertImage:url alt:alt];
 }
 
-- (void)insertMediaBelow:(NSNotification *)notification
-{
-	Media *media = (Media *)[notification object];
-    [self insertMedia:media];
-}
-
-- (void)insertMedia:(Media *)media
-{
-    NSAssert(_post != nil, @"The post should not be nil here.");
-    NSAssert(!_post.isFault, @"The post should not be a fault here here.");
-    NSAssert(_post.managedObjectContext != nil,
-             @"The post's MOC should not be nil here.");
-    
-	NSString *prefix = @"<br /><br />";
-    
-	if(self.post.content == nil || [self.post.content isEqualToString:@""]) {
-		self.post.content = @"";
-		prefix = @"";
-	}
-	
-	NSMutableString *content = [[NSMutableString alloc] initWithString:self.post.content];
-	NSRange imgHTML = [content rangeOfString: media.html];
-	NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]];
- 	NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
-	
-	if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
-		[content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
-        self.post.content = content;
-	}
-	else {
-		if (imgHTMLPre.location != NSNotFound)
-			[content replaceCharactersInRange:imgHTMLPre withString:@""];
-		else if (imgHTMLPost.location != NSNotFound)
-			[content replaceCharactersInRange:imgHTMLPost withString:@""];
-		else
-			[content replaceCharactersInRange:imgHTML withString:@""];
-		[content appendString:[NSString stringWithFormat:@"<br /><br />%@", media.html]];
-		self.post.content = content;
-	}
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self refreshUIForCurrentPost];
-    });
-    [self.post save];
-}
-
-- (void)removeMedia:(NSNotification *)notification
-{
-	//remove the html string for the media object
-	Media *media = (Media *)[notification object];
-    self.titleText = [self removeMedia:media fromString:self.titleText];
-    [self autosaveContent];
-    [self refreshUIForCurrentPost];
-}
 
 - (NSString *)removeMedia:(Media *)media fromString:(NSString *)string
 {

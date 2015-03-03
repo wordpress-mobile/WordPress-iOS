@@ -29,6 +29,7 @@
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
+#import "ReachabilityUtils.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -389,11 +390,12 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
         // Do nothing
     } else {
         WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:blogURL]];
-        if ([blog isPrivate]) {
-            [webViewController setUsername:blog.username];
-            [webViewController setPassword:blog.password];
-            [webViewController setWpLoginURL:[NSURL URLWithString:blog.loginUrl]];
+        webViewController.url = [NSURL URLWithString:blogURL];
+        if (blog.isPrivate) {
+            webViewController.authToken = blog.authToken;
+            webViewController.username = blog.username;
+            webViewController.password = blog.password;
+            webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
         }
         [self.navigationController pushViewController:webViewController animated:YES];
     }
@@ -402,6 +404,11 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
 - (void)showViewAdminForBlog:(Blog *)blog
 {
+    if (![ReachabilityUtils isInternetReachable]) {
+        [ReachabilityUtils showAlertNoInternetConnection];
+        return;
+    }
+
     [WPAnalytics track:WPAnalyticsStatOpenedViewAdmin];
 
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];

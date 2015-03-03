@@ -113,7 +113,10 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert([post.postID integerValue] > 0);
+    NSParameterAssert(post.postID.integerValue > 0);
+    NSParameterAssert(blog.username);
+    NSParameterAssert(blog.password);
+    
     if ([post.postID integerValue] <= 0) {
         if (failure) {
             NSDictionary *userInfo = @{NSLocalizedDescriptionKey: @"Can't edit a post if it's not in the server"};
@@ -127,6 +130,7 @@
 
     NSDictionary *extraParameters = [self parametersWithRemotePost:post];
     NSArray *parameters = @[post.postID, blog.username, blog.password, extraParameters];
+    
     [self.api callMethod:@"metaWeblog.editPost"
               parameters:parameters
                  success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -237,17 +241,18 @@
     [postParams setValueIfNotNil:[post.URL absoluteString] forKey:@"permalink"];
     [postParams setValueIfNotNil:post.excerpt forKey:@"mt_excerpt"];
     [postParams setValueIfNotNil:post.slug forKey:@"wp_slug"];
+    
     // To remove a featured image, you have to send an empty string to the API
     if (post.postThumbnailID == nil) {
         // Including an empty string for wp_post_thumbnail generates
         // an "Invalid attachment ID" error in the call to wp.newPage
         if (existingPost) {
-            [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
+            postParams[@"wp_post_thumbnail"] = @"";
         }
     } else if (!existingPost || post.isFeaturedImageChanged) {
         // Do not add this param to existing posts when the featured image has not changed.
         // Doing so results in a XML-RPC fault: Invalid attachment ID.
-        [postParams setValue:post.postThumbnailID forKey:@"wp_post_thumbnail"];
+        postParams[@"wp_post_thumbnail"] = post.postThumbnailID;
     }
 
     [postParams setValueIfNotNil:post.format forKey:@"wp_post_format"];
@@ -256,7 +261,7 @@
     if (existingPost && post.date == nil) {
         // Change the date of an already published post to the current date/time. (publish immediately)
         // Pass the current date so the post is updated correctly
-        [postParams setValue:[NSDate date] forKeyPath:@"date_created_gmt"];
+        postParams[@"date_created_gmt"] = [NSDate date];
     }
 
     if (post.categories) {
@@ -265,11 +270,12 @@
         for (RemoteCategory *cat in categories) {
             [categoryNames addObject:cat.name];
         }
-        [postParams setObject:categoryNames forKey:@"categories"];
+        
+        postParams[@"categories"] = categoryNames;
     }
 
     if ([post.metadata count] > 0) {
-        [postParams setObject:post.metadata forKey:@"custom_fields"];
+        postParams[@"custom_fields"] = post.metadata;
     }
 
     if (post.status == nil) {

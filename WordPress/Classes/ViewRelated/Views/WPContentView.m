@@ -149,8 +149,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)configureConstraints
 {
+    UIView *attributionView = self.attributionView;
+    UIView *attributionBorderView = self.attributionBorderView;
+    UIView *featuredImageView = self.featuredImageView;
+    UIView *titleLabel = self.titleLabel;
+    UIView *contentView = self.contentView;
+    UIView *actionView = self.actionView;
+
     CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
-    NSDictionary *views = NSDictionaryOfVariableBindings(_attributionView, _attributionBorderView, _featuredImageView, _titleLabel, _contentView, _actionView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView, actionView);
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
                               @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
@@ -160,43 +167,44 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
                               @"priority":@900
                               };
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_attributionView]-(outerMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[attributionView]-(outerMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_titleLabel]-(outerMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[attributionBorderView]-(outerMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(contentViewOuterMargin)-[_contentView]-(contentViewOuterMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[featuredImageView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_actionView]-(outerMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[titleLabel]-(outerMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_featuredImageView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(contentViewOuterMargin)-[contentView]-(contentViewOuterMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[_attributionBorderView]-(outerMargin)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin)-[actionView]-(outerMargin)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[_attributionView]-(attributionVerticalPadding@priority)-[_featuredImageView]-(verticalPadding@priority)-[_titleLabel]-(titleContentPadding@priority)-[_contentView]-(verticalPadding@priority)-[_actionView]|"
+
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
 
     // Positions the border below the attribution view. Featured image should appear above it.
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_attributionView]-(attributionVerticalPadding@priority)-[_attributionBorderView(borderHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[attributionView]-(attributionVerticalPadding@priority)-[attributionBorderView(borderHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -249,45 +257,37 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)constructSubviews
 {
-    self.attributionView = [self viewForAttributionView];
-    [self addSubview:self.attributionView];
-
-    self.attributionBorderView = [self viewForBorder];
-    [self addSubview:self.attributionBorderView];
-
-    self.featuredImageView = [self imageViewForFeaturedImage];
-    [self addSubview:self.featuredImageView];
-
-    self.titleLabel = [self viewForTitle];
-    [self addSubview:self.titleLabel];
-
-    self.contentView = [self viewForContent];
-    [self addSubview:self.contentView];
-
-    self.actionView = [self viewForActionView];
-    [self addSubview:self.actionView];
+    [self buildAttributionView];
+    [self buildAttributionBorderView];
+    [self buildFeaturedImageview];
+    [self buildTitleLabel];
+    [self buildContentView];
+    [self buildActionView];
 }
 
 #pragma mark - Subview factories
 
-- (WPContentAttributionView *)viewForAttributionView
+- (void)buildAttributionView
 {
     WPContentAttributionView *attrView = [[WPContentAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
     [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     attrView.delegate = self;
-    return attrView;
+
+    self.attributionView = attrView;
+    [self addSubview:self.attributionView];
 }
 
-- (UIView *)viewForBorder
+- (void)buildAttributionBorderView
 {
     UIView *borderView = [[UIView alloc] init];
     borderView.translatesAutoresizingMaskIntoConstraints = NO;
     borderView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:240.0/255.0 blue:245.0/255.0 alpha:1.0];
-    return borderView;
+    self.attributionBorderView = borderView;
+    [self addSubview:self.attributionBorderView];
 }
 
-- (UIImageView *)imageViewForFeaturedImage
+- (void)buildFeaturedImageview
 {
     UIImageView *featuredImageView = [[UIImageView alloc] init];
     featuredImageView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -299,10 +299,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(featuredImageAction:)];
     [featuredImageView addGestureRecognizer:tgr];
 
-    return featuredImageView;
+    self.featuredImageView = featuredImageView;
+    [self addSubview:self.featuredImageView];
 }
 
-- (UILabel *)viewForTitle
+- (void)buildTitleLabel
 {
     UILabel *titleLabel = [[UILabel alloc] init];
     titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -313,10 +314,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     titleLabel.numberOfLines = 4;
     [self registerLabelForRefreshingPreferredMaxLayoutWidth:titleLabel];
 
-    return titleLabel;
+    self.titleLabel = titleLabel;
+    [self addSubview:self.titleLabel];
 }
 
-- (UIView *)viewForContent
+- (void)buildContentView
 {
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.translatesAutoresizingMaskIntoConstraints = NO;
@@ -327,14 +329,17 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     contentLabel.numberOfLines = 4;
     [self registerLabelForRefreshingPreferredMaxLayoutWidth:contentLabel];
 
-    return contentLabel;
+    self.contentView = contentLabel;
+    [self addSubview:self.contentView];
 }
 
-- (WPContentActionView *)viewForActionView
+- (void)buildActionView
 {
     WPContentActionView *actionView = [[WPContentActionView alloc] init];
     actionView.translatesAutoresizingMaskIntoConstraints = NO;
-    return actionView;
+
+    self.actionView = actionView;
+    [self addSubview:self.actionView];
 }
 
 #pragma mark - Configuration
@@ -510,6 +515,13 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     if ([self.delegate respondsToSelector:@selector(contentView:didReceiveAttributionMenuAction:)]) {
         [self.delegate contentView:self didReceiveAttributionMenuAction:sender];
+    }
+}
+
+- (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
+{
+    if ([self.delegate respondsToSelector:@selector(contentViewDidReceiveAvatarAction:)]) {
+        [self.delegate contentViewDidReceiveAvatarAction:self];
     }
 }
 
