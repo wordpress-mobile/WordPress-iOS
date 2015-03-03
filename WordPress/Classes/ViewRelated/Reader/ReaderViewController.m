@@ -188,4 +188,11 @@
 }
 
 
+#pragma mark - Scrollable Controller
+
+- (void)scrollViewToTop
+{
+    [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+}
+
 @end
