@@ -55,9 +55,9 @@ import Foundation
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
-        headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleFont
+        headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleBoldFont
         headerTitleLabel.textColor      = WPStyleGuide.Notifications.headerTitleColor
-        headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsFont
+        headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsRegularFont
         headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
         gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
 

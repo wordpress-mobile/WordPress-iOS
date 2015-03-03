@@ -726,8 +726,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
+    // Load the attributedText
+    NSAttributedString *text        = textBlock.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText;
+    
     // Setup the Cell
-    cell.attributedText             = [textBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedText             = [text stringByEmbeddingImageAttachments:mediaRanges];
     cell.isBadge                    = textBlock.isBadge;
     
     // Setup the Callbacks
