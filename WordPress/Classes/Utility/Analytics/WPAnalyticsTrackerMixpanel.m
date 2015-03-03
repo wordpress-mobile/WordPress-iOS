@@ -115,6 +115,19 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
     [self retrieveAndRegisterEmailAddressIfApplicable];
 }
 
+- (void)aliasNewUser
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account = [accountService defaultWordPressComAccount];
+        NSString *username = account.username;
+        
+        [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
+        [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+    }];
+}
+
 - (void)retrieveAndRegisterEmailAddressIfApplicable
 {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -488,6 +501,15 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_notification_details"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_opened_notification_details"];
             break;
+        case WPAnalyticsStatOnePasswordLogin:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - SignIn Filled"];
+            break;
+        case WPAnalyticsStatOnePasswordSignup:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - Signup Filled"];
+            break;
+        case WPAnalyticsStatOnePasswordFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - Extension Failure"];
+            break;
         case WPAnalyticsStatOpenedPosts:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Posts"];
             break;
@@ -514,6 +536,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setCurrentDateForPeopleProperty:@"$created"];
             [instructions addSuperPropertyToFlag:@"created_account_on_mobile"];
             [instructions setSuperProperty:@"created_account_on_app_version" toValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+            [self aliasNewUser];
             break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
@@ -683,6 +706,12 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Didn't Like App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
+            break;
+        case WPAnalyticsStatLoginFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed Login"];
+            break;
+        case WPAnalyticsStatLoginFailedToGuessXMLRPC:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
             break;
         default:
             break;

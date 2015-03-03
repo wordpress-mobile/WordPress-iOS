@@ -3,6 +3,7 @@
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
 #import "StatsWebViewController.h"
+#import "WPChromelessWebViewController.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "BlogService.h"
@@ -10,6 +11,7 @@
 #import "SFHFKeychainUtils.h"
 #import "TodayExtensionService.h"
 #import <WPStatsViewController.h>
+#import <WPNoResultsView.h>
 
 static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
@@ -17,6 +19,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
+@property (nonatomic, weak) WPNoResultsView *noResultsView;
 
 @end
 
@@ -33,6 +36,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+ 
+    self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
     self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:nil] instantiateInitialViewController];
     self.statsVC.statsDelegate = self;
@@ -53,11 +58,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 {
     _blog = blog;
     DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
-    
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-    if (!appDelegate.connectionAvailable) {
-//        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
-    }
 }
 
 - (void)addStatsViewControllerToView
@@ -75,6 +75,12 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 - (void)initStats
 {
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if (!appDelegate.connectionAvailable) {
+        [self showNoResultsWithTitle:NSLocalizedString(@"No Connection", @"") message:NSLocalizedString(@"An active internet connection is required to view stats", @"")];
+        return;
+    }
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     
@@ -145,6 +151,14 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 }
 
 
+- (void)statsViewController:(WPStatsViewController *)controller openURL:(NSURL *)url
+{
+    WPChromelessWebViewController *vc = [[WPChromelessWebViewController alloc] init];
+    [vc loadPath:url.absoluteString];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+
 - (IBAction)makeSiteTodayWidgetSite:(id)sender
 {
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You can display a single site's stats in the iOS Today/Notification Center view.", @"Action sheet title for setting Today Widget site to the current one")
@@ -165,6 +179,15 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     if (self.dismissBlock) {
         self.dismissBlock();
     }
+}
+
+
+- (void)showNoResultsWithTitle:(NSString *)title message:(NSString *)message
+{
+    [self.noResultsView removeFromSuperview];
+    WPNoResultsView *noResultsView = [WPNoResultsView noResultsViewWithTitle:title message:message accessoryView:nil buttonTitle:nil];
+    self.noResultsView = noResultsView;
+    [self.view addSubview:self.noResultsView];
 }
 
 

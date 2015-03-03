@@ -1,6 +1,6 @@
 #import "WPWebBridge.h"
 #import <CommonCrypto/CommonDigest.h>
-#import "UIDevice+WordPressIdentifier.h"
+#import "UIDevice+Helpers.h"
 
 static NSString *const HybridTokenSetting = @"WPWebAppHybridAuthToken";
 static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
@@ -66,7 +66,7 @@ static NSString *const AuthorizedHybridHost = @"en.wordpress.com";
     NSString *token = [defaults stringForKey:HybridTokenSetting];
 
     if (token == nil) {
-        NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordpressIdentifier], arc4random()];
+        NSString *concat = [NSString stringWithFormat:@"%@--%d", [[UIDevice currentDevice] wordPressIdentifier], arc4random()];
         const char *concat_str = [concat UTF8String];
         unsigned char result[CC_MD5_DIGEST_LENGTH];
         CC_MD5(concat_str, (CC_LONG)strlen(concat_str), result);

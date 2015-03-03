@@ -80,4 +80,8 @@
 - (BOOL)privateContent;
 
 
+#pragma mark - Private Subclass Methods
+
+- (void)buildActionButtons;
+
 @end

@@ -17,6 +17,7 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
+#import <WordPress-iOS-Shared/WPTableViewSectionHeaderView.h>
 #import "HelpshiftUtils.h"
 
 const typedef enum {
@@ -204,18 +205,41 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
-                NSString *signOutString = NSLocalizedString(@"Sign Out", @"Sign out from WordPress.com");
+                NSString *signOutString = NSLocalizedString(@"Disconnect from WordPress.com",
+                                                            @"Label for disconnecting from WordPress.com account");
                 cell.textLabel.text = signOutString;
                 cell.accessibilityIdentifier = signOutString;
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Sign In", @"Sign in to WordPress.com");
+                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com Account",
+                                                           @"Label for connecting to WordPress.com account");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
             }
         }
     }
     return cell;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    if (section == MeSectionWpCom) {
+        return NSLocalizedString(@"WordPress.com Account", @"WordPress.com sign-in/sign-out section header title");
+    }
+    return nil;
 }
 
 #pragma mark - UITableViewDelegate methods
@@ -244,7 +268,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
             if (defaultAccount) {
                 // Present the Sign out ActionSheet
-                NSString *signOutTitle = NSLocalizedString(@"You are logged in as %@", @"");
+                NSString *signOutTitle = NSLocalizedString(@"Signing out removes all of your sites associated with %@",
+                                                           @"Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
