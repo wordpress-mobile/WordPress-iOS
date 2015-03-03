@@ -44,15 +44,64 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @implementation MeViewController
 
+#pragma mark - LifeCycle Methods
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadView
+- (instancetype)init
 {
-    [super loadView];
+    self = [super init];
+    if (self) {
+        // we want to observe for the account change notification even if the view is not visible
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(defaultAccountDidChange:)
+                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                   object:nil];
 
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(accountEmailUpdated:)
+                                                     name:WPAccountEmailAndDefaultBlogUpdatedNotification
+                                                   object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(helpshiftUnreadCountUpdated:)
+                                                     name:HelpshiftUnreadCountUpdatedNotification
+                                                   object:nil];
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    [self buildTableView];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    // we want to keep email and default blog information up to date, this is probably the best place to do it
+    [accountService updateEmailAndDefaultBlogForWordPressComAccount:defaultAccount];
+
+    [self refreshHeaderView];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+
+    [HelpshiftUtils refreshUnreadNotificationCount];
+}
+
+#pragma mark - View Construction / Configuration
+
+- (void)buildTableView
+{
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
@@ -79,44 +128,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-
-    // we want to observe for the account change notification even if the view is not visible
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(defaultAccountDidChange:)
-                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountEmailUpdated:)
-                                                 name:WPAccountEmailAndDefaultBlogUpdatedNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(helpshiftUnreadCountUpdated:)
-                                                 name:HelpshiftUnreadCountUpdatedNotification
-                                               object:nil];
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    // we want to keep email and default blog information up to date, this is probably the best place to do it
-    [accountService updateEmailAndDefaultBlogForWordPressComAccount:defaultAccount];
-
-    [self refreshHeaderView];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-
-    [HelpshiftUtils refreshUnreadNotificationCount];
 }
 
 #pragma mark - Header methods
