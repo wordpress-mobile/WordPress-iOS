@@ -77,7 +77,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
     AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-    NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
 
     operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
@@ -162,7 +162,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                      multifactorCode:multifactorCode
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];

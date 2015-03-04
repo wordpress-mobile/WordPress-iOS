@@ -3,7 +3,6 @@
 #import "WPTabBarController.h"
 
 #import "WordPressAppDelegate.h"
-#import "UIDevice+WordPressIdentifier.h"
 
 #import "WordPressComApi.h"
 #import <WPXMLRPCClient.h>
