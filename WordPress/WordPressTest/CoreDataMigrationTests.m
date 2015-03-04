@@ -115,6 +115,97 @@
     [psc removePersistentStore:ps error:&error];
 }
 
+- (void)testMigrate27to28preservesCategories {
+    // Properties
+    NSURL *model27Url = [self urlForModelName:@"WordPress 27" inDirectory:nil];
+    NSURL *model28Url = [self urlForModelName:@"WordPress 28" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress27.sqlite"];
+    
+    // Load a Model 27 Stack
+    NSManagedObjectModel *model27 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model27Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model27];
+    
+    NSDictionary *options = @{
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
+    
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 27");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+    
+    // Insert a dummy Category
+    NSManagedObject *account = [self insertDummyAccountInContext:context];
+    XCTAssertNotNil(account, @"Couldn't insert an account");
+    
+    NSManagedObject *blog = [self insertDummyBlogInContext:context];
+    XCTAssertNotNil(blog, @"Couldn't insert a blog");
+
+    [blog setValue:account forKey:@"account"];
+    
+    NSManagedObject *category = [self insertDummyCategoryInContext:context];
+    XCTAssertNotNil(category, @"Couldn't insert a category");
+    
+    [category setValue:blog forKey:@"blog"];
+    
+    [context save:&error];
+    
+    XCTAssertNil(error, @"Error while saving context");
+    
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+    
+    // Migrate to Model 28
+    NSManagedObjectModel *model28 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model28Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model28
+                                                orderedModelNames:@[@"WordPress 27", @"WordPress 28"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+    
+    // Load a Model 28 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model28];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+    
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 27");
+    XCTAssertNotNil(ps);
+    
+    // Is the category there?
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Category"];
+    NSArray *categories = [context executeFetchRequest:request error:&error];
+    NSManagedObject *migratedCategory = categories.firstObject;
+    
+    XCTAssertNotNil(migratedCategory, @"Missing migrated category?");
+    XCTAssertTrue([self isDummyCategory:migratedCategory], @"Invalid category entity");
+    
+    // Cleanup
+    [psc removePersistentStore:ps error:&error];
+}
+
+
+#pragma mark - Private Helpers
+
 // Returns the URL for a model file with the given name in the given directory.
 // @param directory The name of the bundle directory to search.  If nil,
 //    searches default paths.
@@ -153,5 +244,52 @@
     return storeURL;
 }
 
+
+- (NSManagedObject *)insertDummyBlogInContext:(NSManagedObjectContext *)context
+{
+    // Insert a dummy blog with all of the required properties set
+    NSManagedObject *blog = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    
+    [blog setValue:@(123) forKey:@"blogID"];
+    [blog setValue:@(false) forKey:@"geolocationEnabled"];
+    [blog setValue:@(false) forKey:@"hasOlderPosts"];
+    [blog setValue:@(false) forKey:@"visible"];
+    [blog setValue:@"www.wordpress.com" forKey:@"url"];
+    [blog setValue:@"www.wordpress.com" forKey:@"xmlrpc"];
+    
+    return blog;
+}
+
+- (NSManagedObject *)insertDummyAccountInContext:(NSManagedObjectContext *)context
+{
+    // Insert an account with all of the required properties set
+    NSManagedObject *account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    
+    [account setValue:@(false) forKey:@"isWpcom"];
+    [account setValue:@"wordpress" forKey:@"username"];
+    [account setValue:@"www.wordpress.com" forKey:@"xmlrpc"];
+    
+    return account;
+}
+
+- (NSManagedObject *)insertDummyCategoryInContext:(NSManagedObjectContext *)context
+{
+    // Insert a category with all of the required properties set
+    NSManagedObject *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category" inManagedObjectContext:context];
+    
+    [category setValue:@(1234) forKey:@"parentID"];
+    [category setValue:@"name" forKey:@"categoryName"];
+    
+    return category;
+}
+
+- (BOOL)isDummyCategory:(NSManagedObject *)object
+{
+    NSNumber *parentID = [object valueForKey:@"parentID"];
+    NSString *name = [object valueForKey:@"categoryName"];
+    NSManagedObject *blog = [object valueForKey:@"blog"];
+    
+    return [@(1234) isEqual:parentID] && [@"name" isEqual:name] && [blog isKindOfClass:[NSManagedObject class]];
+}
 
 @end
