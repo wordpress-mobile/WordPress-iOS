@@ -42,6 +42,11 @@ typedef void(^WPWhatsNewDismissBlock)();
  */
 @property (nonatomic, weak, readonly) IBOutlet UITextView *title;
 
+/**
+ *  @brief      The accept button that dismissess the popup.
+ */
+@property (nonatomic, weak, readonly) IBOutlet UIButton *acceptButton;
+
 #pragma mark - Properties: Blocks
 
 /**
