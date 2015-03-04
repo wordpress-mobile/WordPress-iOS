@@ -159,7 +159,8 @@
     if (title == nil || ([title length] == 0)) {
         title = NSLocalizedString(@"(no title)", @"");
     }
-    return [title stringByDecodingXMLCharacters];}
+    return [title stringByDecodingXMLCharacters];
+}
 
 - (NSString *)authorForDisplay
 {

@@ -10,9 +10,7 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
-@interface BasePost : NSManagedObject<WPContentViewProvider> {
-
-}
+@interface BasePost : NSManagedObject<WPContentViewProvider>
 
 // Attributes
 @property (nonatomic, strong) NSNumber * postID;
