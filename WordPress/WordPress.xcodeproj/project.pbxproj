@@ -619,6 +619,10 @@
 		5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPButtonForNavigationBar.m; sourceTree = "<group>"; usesTabs = 0; };
 		5903AE1C19B60AB9009D5354 /* WPButtonForNavigationBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPButtonForNavigationBar.h; sourceTree = "<group>"; usesTabs = 0; };
 		591252291A38AE9C00468279 /* TodayWidgetPrefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TodayWidgetPrefix.pch; sourceTree = "<group>"; };
+		59184BC81AA74D9B00EC0A6B /* Pods.gcov.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = Pods.gcov.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.gcov.xcconfig"; sourceTree = "<group>"; };
+		59184BCA1AA74DA300EC0A6B /* Pods-WordPressTest.gcov.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.gcov.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.gcov.xcconfig"; sourceTree = "<group>"; };
+		59184BCC1AA74DB500EC0A6B /* Pods-WordPressTodayWidget.gcov.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.gcov.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.gcov.xcconfig"; sourceTree = "<group>"; };
+		59184BCE1AA74DD600EC0A6B /* Pods-UITests.gcov.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = "Pods-UITests.gcov.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.gcov.xcconfig"; sourceTree = "<group>"; };
 		591A428A1A6DC1B0003807A6 /* WPBackgroundDimmerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBackgroundDimmerView.h; sourceTree = "<group>"; };
 		591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBackgroundDimmerView.m; sourceTree = "<group>"; };
 		591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPGUIConstants.h; sourceTree = "<group>"; };
@@ -2487,18 +2491,22 @@
 			isa = PBXGroup;
 			children = (
 				AC055AD29E203B2021E7F39B /* Pods.debug.xcconfig */,
+				59184BC81AA74D9B00EC0A6B /* Pods.gcov.xcconfig */,
 				AEFB66560B716519236CEE67 /* Pods.release.xcconfig */,
 				C9F5071C28C57CE611E00B1F /* Pods.release-internal.xcconfig */,
 				501C8A355B53A6971F731ECA /* Pods.distribution.xcconfig */,
 				B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */,
+				59184BCA1AA74DA300EC0A6B /* Pods-WordPressTest.gcov.xcconfig */,
 				9198544476D3B385673B18E9 /* Pods-WordPressTest.release.xcconfig */,
 				A42FAD830601402EC061BE54 /* Pods-WordPressTest.release-internal.xcconfig */,
 				B6E2365A531EA4BD7025525F /* Pods-WordPressTest.distribution.xcconfig */,
 				0CF877DC71756EFA3346E26F /* Pods-WordPressTodayWidget.debug.xcconfig */,
+				59184BCC1AA74DB500EC0A6B /* Pods-WordPressTodayWidget.gcov.xcconfig */,
 				2B3804821972897F0DEC4183 /* Pods-WordPressTodayWidget.release.xcconfig */,
 				052EFF90F810139789A446FB /* Pods-WordPressTodayWidget.release-internal.xcconfig */,
 				67040029265369CB7FAE64FA /* Pods-WordPressTodayWidget.distribution.xcconfig */,
 				45A679DE2C6B64047BAF97E9 /* Pods-UITests.debug.xcconfig */,
+				59184BCE1AA74DD600EC0A6B /* Pods-UITests.gcov.xcconfig */,
 				1E59E0C89B24D8AA3B12DEC8 /* Pods-UITests.release.xcconfig */,
 				91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */,
 				71E3F8ABCB453500748B60CE /* Pods-UITests.distribution.xcconfig */,
@@ -3999,6 +4007,231 @@
 			};
 			name = Distribution;
 		};
+		594949B51AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_GENERATE_TEST_COVERAGE_FILES = YES;
+				GCC_INSTRUMENT_PROGRAM_FLOW_ARCS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = "";
+				GCC_THUMB_SUPPORT = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = "";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-Wno-format-security",
+					"-DDEBUG",
+					"-DGCOV",
+				);
+				OTHER_LDFLAGS = (
+					"-lxml2",
+					"-licucore",
+				);
+				PRODUCT_MODULE_NAME = WordPress;
+				SDKROOT = iphoneos;
+			};
+			name = Gcov;
+		};
+		594949B61AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59184BC81AA74D9B00EC0A6B /* Pods.gcov.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = NO;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN__ARC_BRIDGE_CAST_NONARC = NO;
+				CODE_SIGN_ENTITLEMENTS = WordPress.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				DEFINES_MODULE = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Classes\"",
+					"$(SRCROOT)",
+				);
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPress_Prefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				INFOPLIST_FILE = Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-Wno-format-security",
+					"-DDEBUG",
+					"-Wno-format",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"iconv\"",
+					"-l\"sqlite3.0\"",
+					"-l\"z\"",
+				);
+				PRODUCT_NAME = WordPress;
+				PROVISIONING_PROFILE = "56ae6a33-0068-453a-ad6d-abfdd50b86ff";
+				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				USER_HEADER_SEARCH_PATHS = "";
+				WPCOM_CONFIG = $HOME/.wpcom_app_credentials;
+				WPCOM_SCHEME = wpdebug;
+			};
+			name = Gcov;
+		};
+		594949B71AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59184BCA1AA74DA300EC0A6B /* Pods-WordPressTest.gcov.xcconfig */;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WordPressTest/WordPressTest-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+			};
+			name = Gcov;
+		};
+		594949B81AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Gcov;
+		};
+		594949B91AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59184BCC1AA74DB500EC0A6B /* Pods-WordPressTodayWidget.gcov.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = WordPressTodayWidget/WordPressTodayWidget.entitlements;
+				CODE_SIGN_IDENTITY = "";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = WordPressTodayWidget/TodayWidgetPrefix.pch;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = WordPressTodayWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "343e00f7-4f3c-4cb5-a319-d8ccc532197e";
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				WPCOM_SCHEME = wpdebug;
+			};
+			name = Gcov;
+		};
+		594949BA1AA73EC7007228FC /* Gcov */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 59184BCE1AA74DD600EC0A6B /* Pods-UITests.gcov.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = UITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
+			};
+			name = Gcov;
+		};
 		93DEAA9D182D567A004E34D1 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -4632,6 +4865,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1D6058940D05DD3E006BFB54 /* Debug */,
+				594949B61AA73EC7007228FC /* Gcov */,
 				1D6058950D05DD3E006BFB54 /* Release */,
 				93DEAA9E182D567A004E34D1 /* Release-Internal */,
 				2F30B4C20E342FDF00211B15 /* Distribution */,
@@ -4643,6 +4877,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				93E5284919A7741A003A1A9C /* Debug */,
+				594949B91AA73EC7007228FC /* Gcov */,
 				93E5284A19A7741A003A1A9C /* Release */,
 				93E5284B19A7741A003A1A9C /* Release-Internal */,
 				93E5284C19A7741A003A1A9C /* Distribution */,
@@ -4654,6 +4889,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A2795808198819DE0031C6A3 /* Debug */,
+				594949B81AA73EC7007228FC /* Gcov */,
 				A2795809198819DE0031C6A3 /* Release */,
 				A279580A198819DE0031C6A3 /* Release-Internal */,
 				A279580B198819DE0031C6A3 /* Distribution */,
@@ -4665,6 +4901,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C01FCF4F08A954540054247B /* Debug */,
+				594949B51AA73EC7007228FC /* Gcov */,
 				C01FCF5008A954540054247B /* Release */,
 				93DEAA9D182D567A004E34D1 /* Release-Internal */,
 				2F30B4C10E342FDF00211B15 /* Distribution */,
@@ -4676,6 +4913,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E16AB93914D978240047A2E5 /* Debug */,
+				594949B71AA73EC7007228FC /* Gcov */,
 				E16AB93A14D978240047A2E5 /* Release */,
 				93DEAAA0182D567A004E34D1 /* Release-Internal */,
 				E16AB93B14D978240047A2E5 /* Distribution */,
@@ -4687,6 +4925,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FFF96F8A19EBE7FB00DFC821 /* Debug */,
+				594949BA1AA73EC7007228FC /* Gcov */,
 				FFF96F8B19EBE7FB00DFC821 /* Release */,
 				FFF96F8C19EBE7FB00DFC821 /* Release-Internal */,
 				FFF96F8D19EBE7FB00DFC821 /* Distribution */,
