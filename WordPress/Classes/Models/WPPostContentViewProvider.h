@@ -1,13 +1,28 @@
-//
-//  WPPostContentViewProvider.h
-//  WordPress
-//
-//  Created by aerych on 3/4/15.
-//  Copyright (c) 2015 WordPress. All rights reserved.
-//
+#import <Foundation/Foundation.h>
 
-#ifndef WordPress_WPPostContentViewProvider_h
-#define WordPress_WPPostContentViewProvider_h
+@protocol WPPostContentViewProvider <NSObject>
 
+// Identity accessors
+- (NSURL *)authorURL;
+- (NSString *)authorNameForDisplay;
+- (NSURL *)avatarURLForDisplay; // Some providers use a hardcoded URL or blavatar URL
+- (NSString *)gravatarEmailForDisplay;
+- (NSString *)blogNameForDisplay;
+- (NSURL *)blogURL;
 
-#endif
+// Content accessors
+- (NSString *)titleForDisplay;
+- (NSString *)contentForDisplay;
+- (NSString *)contentPreviewForDisplay;
+- (NSURL *)featuredImageURLForDisplay;
+
+// Meta accessors
+- (NSDate *)dateForDisplay;
+- (NSString *)statusForDisplay;
+- (BOOL)unreadStatusForDisplay;
+- (NSInteger)commentCount;
+- (NSInteger)likeCount;
+- (BOOL)hasLiked;
+- (BOOL)hasCommented;
+
+@end
