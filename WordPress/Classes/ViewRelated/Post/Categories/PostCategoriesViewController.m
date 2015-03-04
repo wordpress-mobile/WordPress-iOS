@@ -1,13 +1,13 @@
-#import "CategoriesViewController.h"
-#import "Category.h"
+#import "PostCategoriesViewController.h"
+#import "PostCategory.h"
 #import "NSString+XMLExtensions.h"
 #import "WordPressAppDelegate.h"
-#import "WPAddCategoryViewController.h"
+#import "WPAddPostCategoryViewController.h"
 #import "WPCategoryTree.h"
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
-@interface CategoriesViewController ()
+@interface PostCategoriesViewController ()
 
 @property (nonatomic, strong) Post *post;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
@@ -18,9 +18,9 @@
 @property (nonatomic, assign) BOOL addingNewCategory;
 @end
 
-@implementation CategoriesViewController
+@implementation PostCategoriesViewController
 
-- (id)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+- (instancetype)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
@@ -82,7 +82,7 @@
 - (void)showAddNewCategory
 {
     DDLogMethod();
-    WPAddCategoryViewController *addCategoryViewController = [[WPAddCategoryViewController alloc] initWithPost:self.post];
+    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithPost:self.post];
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
@@ -102,12 +102,12 @@
 
     NSMutableDictionary *categoryDict = [NSMutableDictionary dictionary];
     for (NSInteger i = 0; i < count; i++) {
-        Category *category = [self.categories objectAtIndex:i];
+        PostCategory *category = [self.categories objectAtIndex:i];
         [categoryDict setObject:category forKey:category.categoryID];
     }
 
     for (NSInteger i = 0; i < count; i++) {
-        Category *category = [self.categories objectAtIndex:i];
+        PostCategory *category = [self.categories objectAtIndex:i];
 
         NSInteger indentationLevel = [self indentationLevelForCategory:category.parentID categoryCollection:categoryDict];
 
@@ -124,7 +124,7 @@
         return 0;
     }
 
-    Category *category = [categoryDict objectForKey:parentID];
+    PostCategory *category = [categoryDict objectForKey:parentID];
     return ([self indentationLevelForCategory:category.parentID categoryCollection:categoryDict]) + 1;
 }
 
@@ -148,7 +148,7 @@
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:categoryCell];
     }
 
-    Category *category = self.categories[indexPath.row];
+    PostCategory *category = self.categories[indexPath.row];
 
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
@@ -180,12 +180,12 @@
 {
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
-    Category *category = self.categories[indexPath.row];
+    PostCategory *category = self.categories[indexPath.row];
 
     // If we're choosing a parent category then we're done.
     if (self.selectionMode == CategoriesSelectionModeParent) {
-        if ([self.delegate respondsToSelector:@selector(categoriesViewController:didSelectCategory:)]) {
-            [self.delegate categoriesViewController:self didSelectCategory:category];
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewControllerdidSelectCategory:)]) {
+            [self.delegate postCategoriesViewController:self didSelectCategory:category];
         }
 
         [self.navigationController popViewControllerAnimated:YES];

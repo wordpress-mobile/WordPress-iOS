@@ -7,7 +7,7 @@
 #import "Post.h"
 #import "Page.h"
 #import "Media.h"
-#import "CategoryService.h"
+#import "PostCategoryService.h"
 #import "CommentService.h"
 #import "PostService.h"
 #import "BlogServiceRemote.h"
@@ -235,7 +235,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     // We're ignoring the callbacks here but this needs refactoring
     [commentService syncCommentsForBlog:blog success:nil failure:nil];
 
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
@@ -273,7 +273,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             // We're ignoring the callbacks here but this needs refactoring
             [commentService syncCommentsForBlog:blog success:nil failure:nil];
 
-            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
+            PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
 
         } failure:nil];

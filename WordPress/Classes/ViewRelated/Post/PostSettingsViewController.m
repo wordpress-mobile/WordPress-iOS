@@ -1,7 +1,7 @@
 #import "PostSettingsViewController.h"
 #import "PostSettingsViewController_Internal.h"
 
-#import "CategoriesViewController.h"
+#import "PostCategoriesViewController.h"
 #import "FeaturedImageViewController.h"
 #import "LocationService.h"
 #import "NSString+XMLExtensions.h"
@@ -929,7 +929,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 - (void)showCategoriesSelection
 {
-    CategoriesViewController *controller = [[CategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
