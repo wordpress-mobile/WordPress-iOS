@@ -1,7 +1,7 @@
 #import "PostServiceRemoteXMLRPC.h"
 #import "Blog.h"
 #import "RemotePost.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi.h>
 
@@ -220,8 +220,8 @@
     return [NSArray arrayWithArray:remoteCategories];
 }
 
-- (RemoteCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcCategory {
-    RemoteCategory *category = [RemoteCategory new];
+- (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcCategory {
+    RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [xmlrpcCategory numberForKey:@"term_id"];
     category.name = [xmlrpcCategory stringForKey:@"name"];
     category.parentID = [xmlrpcCategory numberForKey:@"parent"];
@@ -267,7 +267,7 @@
     if (post.categories) {
         NSArray *categories = post.categories;
         NSMutableArray *categoryNames = [NSMutableArray arrayWithCapacity:[categories count]];
-        for (RemoteCategory *cat in categories) {
+        for (RemotePostCategory *cat in categories) {
             [categoryNames addObject:cat.name];
         }
         
