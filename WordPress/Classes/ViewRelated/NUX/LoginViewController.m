@@ -89,7 +89,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 // Measurements
 @property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
-@property (nonatomic, assign) NSUInteger                numberOfTimesLoginFailed;
 @property (nonatomic, assign) BOOL                      userIsDotCom;
 @property (nonatomic, assign) BOOL                      hasDefaultAccount;
 @property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
@@ -846,6 +845,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                @"SiteURL": self.siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
 - (NSString *)getSiteUrl
@@ -1123,9 +1123,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                             password:password
                      multifactorCode:multifactor
                              success:^(NSString *authToken) {
+                                 
                                  [self finishedAuthenticating];
                                  self.userIsDotCom = YES;
-                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                                 [self createWordPressComAccountForUsername:username authToken:authToken];
+                                 
                              } failure:^(NSError *error) {
                                  
                                  [WPAnalytics track:WPAnalyticsStatLoginFailed];
@@ -1140,15 +1142,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                              }];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username
-                                    password:(NSString *)password
-                                   authToken:(NSString *)authToken
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
 {
     [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
 
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account
@@ -1237,11 +1237,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     DDLogError(@"%@", error);
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        if (error.code == WordPressComOAuthErrorInvalidRequest) {
-            self.numberOfTimesLoginFailed++;
-        }
-
-        if ([HelpshiftUtils isHelpshiftEnabled] && self.numberOfTimesLoginFailed >= 2) {
+        if ([HelpshiftUtils isHelpshiftEnabled]) {
             [self displayGenericErrorMessageWithHelpshiftButton:message];
         } else {
             [self displayGenericErrorMessage:message];
