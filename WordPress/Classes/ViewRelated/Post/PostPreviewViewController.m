@@ -2,7 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "WPURLRequest.h"
 #import "Post.h"
-#import "Category.h"
+#import "PostCategory.h"
 
 @interface PostPreviewViewController ()
 
@@ -155,7 +155,7 @@
         NSString *catStr = @"";
         NSUInteger i = 0, count = [categories count];
         for (i = 0; i < count; i++) {
-            Category *category = [categories objectAtIndex:i];
+            PostCategory *category = [categories objectAtIndex:i];
             catStr = [catStr stringByAppendingString:category.categoryName];
             if (i < count-1) {
                 catStr = [catStr stringByAppendingString:@", "];

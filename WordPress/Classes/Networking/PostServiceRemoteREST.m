@@ -2,7 +2,7 @@
 #import "WordPressComApi.h"
 #import "Blog.h"
 #import "RemotePost.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
 @interface PostServiceRemoteREST ()
@@ -278,8 +278,8 @@
     return [NSArray arrayWithArray:categories];
 }
 
-- (RemoteCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {
-    RemoteCategory *category = [RemoteCategory new];
+- (RemotePostCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {
+    RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = jsonCategory[@"ID"];
     category.name = jsonCategory[@"name"];
     category.parentID = jsonCategory[@"parent"];
