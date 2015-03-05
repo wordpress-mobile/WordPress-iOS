@@ -1,9 +1,10 @@
 #import <CoreData/CoreData.h>
 #import "AbstractPost.h"
+#import "WPPostContentViewProvider.h"
 
 @class Coordinate;
 
-@interface Post : AbstractPost
+@interface Post : AbstractPost <WPPostContentViewProvider>
 
 ///-------------------------------
 /// @name Specific Post properties
