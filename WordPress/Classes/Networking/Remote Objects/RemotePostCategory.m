@@ -1,6 +1,6 @@
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 
-@implementation RemoteCategory
+@implementation RemotePostCategory
 
 - (NSString *)debugDescription {
     NSDictionary *properties = @{

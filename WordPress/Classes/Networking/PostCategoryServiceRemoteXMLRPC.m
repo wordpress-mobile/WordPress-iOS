@@ -1,13 +1,13 @@
-#import "CategoryServiceRemoteXMLRPC.h"
+#import "PostCategoryServiceRemoteXMLRPC.h"
 #import "Blog.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 #import <NSString+Util.h>
 
-@interface CategoryServiceRemoteXMLRPC ()
+@interface PostCategoryServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WPXMLRPCClient *api;
 @end
 
-@implementation CategoryServiceRemoteXMLRPC
+@implementation PostCategoryServiceRemoteXMLRPC
 
 - (instancetype)initWithApi:(WPXMLRPCClient *)api
 {
@@ -38,9 +38,9 @@
                  }];
 }
 
-- (void)createCategory:(RemoteCategory *)category
+- (void)createCategory:(RemotePostCategory *)category
                forBlog:(Blog *)blog
-               success:(void (^)(RemoteCategory *))success
+               success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
     NSDictionary *extraParameters = @{
@@ -65,7 +65,7 @@
                          }
                          return;
                      }
-                     RemoteCategory *newCategory = [RemoteCategory new];
+                     RemotePostCategory *newCategory = [RemotePostCategory new];
                      NSString *categoryID = (NSString *)responseObject;
                      newCategory.categoryID = [categoryID numericValue];
                      if (success) {
@@ -87,9 +87,9 @@
     return [NSArray arrayWithArray:categories];
 }
 
-- (RemoteCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
+- (RemotePostCategory *)remoteCategoryFromXMLRPCDictionary:(NSDictionary *)xmlrpcDictionary
 {
-    RemoteCategory *category = [RemoteCategory new];
+    RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = [xmlrpcDictionary numberForKey:@"term_id"];
     category.name = [xmlrpcDictionary stringForKey:@"name"];
     category.parentID = [xmlrpcDictionary numberForKey:@"parent"];
