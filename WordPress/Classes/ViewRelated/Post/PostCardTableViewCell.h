@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "WPContentViewProvider.h"
+#import "WPPostContentViewProvider.h"
 
 @interface PostCardTableViewCell : UITableViewCell
 
@@ -29,6 +29,6 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *wrapperViewLowerConstraint;
 
-- (void)configureCell:(id<WPContentViewProvider>)contentProvider;
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider;
 
 @end
