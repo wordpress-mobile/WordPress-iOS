@@ -302,6 +302,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
     post.authorAvatarURL = remotePost.authorAvatarURL;
+    post.mt_excerpt = remotePost.excerpt;
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
