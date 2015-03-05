@@ -1050,12 +1050,12 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
         if (posterMatch.location != NSNotFound) {
             NSString *poster = [string substringWithRange:posterMatch];
-            NSString *value = [self parseValueForAttriuteNamed:@"height" inElement:poster];
+            NSString *value = [self parseValueForAttributeNamed:@"height" inElement:poster];
             if (value) {
                 height = value;
             }
 
-            value = [self parseValueForAttriuteNamed:@"src" inElement:poster];
+            value = [self parseValueForAttributeNamed:@"src" inElement:poster];
             if (value) {
                 placeholder = value;
             }
@@ -1071,7 +1071,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return mstr;
 }
 
-- (NSString *)parseValueForAttriuteNamed:(NSString *)attribute inElement:(NSString *)element
+- (NSString *)parseValueForAttributeNamed:(NSString *)attribute inElement:(NSString *)element
 {
     NSString *value = @"";
     NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];
