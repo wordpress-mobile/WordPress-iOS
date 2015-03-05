@@ -8,6 +8,7 @@
 #import "WPWalkthroughTextField.h"
 #import "WPNUXSecondaryButton.h"
 #import "UILabel+SuggestSize.h"
+#import "NSAttributedString+Util.h"
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
 #import "BlogService.h"
@@ -19,22 +20,24 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-static NSString *JetpackInstallRelativePath             = @"plugin-install.php?tab=plugin-information&plugin=jetpack";
-static NSString *JetpackMoreInformationURL              = @"http://ios.wordpress.org/faq/#faq_15";
+static NSString *JetpackInstallRelativePath                 = @"plugin-install.php?tab=plugin-information&plugin=jetpack";
+static NSString *JetpackMoreInformationURL                  = @"http://ios.wordpress.org/faq/#faq_15";
 
-static CGFloat const JetpackiOS7StatusBarOffset         = 20.0;
-static CGFloat const JetpackStandardOffset              = 16;
-static CGFloat const JetpackTextFieldWidth              = 320.0;
-static CGFloat const JetpackMaxTextWidth                = 289.0;
-static CGFloat const JetpackTextFieldHeight             = 44.0;
-static CGFloat const JetpackIconVerticalOffset          = 77;
-static CGFloat const JetpackSignInButtonWidth           = 289.0;
-static CGFloat const JetpackSignInButtonHeight          = 41.0;
+static CGFloat const JetpackiOS7StatusBarOffset             = 20.0;
+static CGFloat const JetpackStandardOffset                  = 16;
+static CGFloat const JetpackTextFieldWidth                  = 320.0;
+static CGFloat const JetpackMaxTextWidth                    = 289.0;
+static CGFloat const JetpackTextFieldHeight                 = 44.0;
+static CGFloat const JetpackIconVerticalOffset              = 77;
+static CGFloat const JetpackSignInButtonWidth               = 289.0;
+static CGFloat const JetpackSignInButtonHeight              = 41.0;
 
-static NSTimeInterval const JetpackAnimationDuration    = 0.3f;
-static CGFloat const JetpackTextFieldAlphaHidden        = 0.0f;
-static CGFloat const JetpackTextFieldAlphaDisabled      = 0.5f;
-static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
+static NSTimeInterval const JetpackAnimationDuration        = 0.3f;
+static CGFloat const JetpackTextFieldAlphaHidden            = 0.0f;
+static CGFloat const JetpackTextFieldAlphaDisabled          = 0.5f;
+static CGFloat const JetpackTextFieldAlphaEnabled           = 1.0f;
+
+static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 
 #pragma mark ====================================================================================
@@ -49,6 +52,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 @property (nonatomic, strong) WPWalkthroughTextField    *passwordTextField;
 @property (nonatomic, strong) WPWalkthroughTextField    *multifactorTextField;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
 @property (nonatomic, strong) WPNUXMainButton           *installJetbackButton;
 @property (nonatomic, strong) UIButton                  *moreInformationButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *skipButton;
@@ -198,6 +202,32 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     signInButton.enabled = NO;
     signInButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
+    // Text: Verification Code SMS
+    NSString *codeText = NSLocalizedString(@"Enter the code on your authenticator app or ", @"Message displayed when a verification code is needed");
+    NSMutableAttributedString *attributedCodeText = [[NSMutableAttributedString alloc] initWithString:codeText];
+    
+    NSString *smsText = NSLocalizedString(@"send the code via text message.", @"Sends an SMS with the Multifactor Auth Code");
+    NSMutableAttributedString *attributedSmsText = [[NSMutableAttributedString alloc] initWithString:smsText];
+    [attributedSmsText applyUnderline];
+    
+    [attributedCodeText appendAttributedString:attributedSmsText];
+    [attributedCodeText applyFont:[WPNUXUtility confirmationLabelFont]];
+    [attributedCodeText applyForegroundColor:[WPStyleGuide allTAllShadeGrey]];
+    
+    NSMutableAttributedString *attributedCodeHighlighted = [attributedCodeText mutableCopy];
+    [attributedCodeHighlighted applyForegroundColor:[WPNUXUtility confirmationLabelColor]];
+    
+    // Add Verification Code SMS Button
+    WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
+    
+    sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    sendVerificationCodeButton.titleLabel.numberOfLines = JetpackVerificationCodeNumberOfLines;
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeText forState:UIControlStateNormal];
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeHighlighted forState:UIControlStateHighlighted];
+    [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
+
     // Add Download Button
     WPNUXMainButton *installJetbackButton = [[WPNUXMainButton alloc] init];
     [installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
@@ -219,6 +249,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     [self.view addSubview:passwordTextField];
     [self.view addSubview:multifactorText];
     [self.view addSubview:signInButton];
+    [self.view addSubview:sendVerificationCodeButton];
     [self.view addSubview:installJetbackButton];
     [self.view addSubview:moreInformationButton];
     
@@ -229,6 +260,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     self.passwordTextField = passwordTextField;
     self.multifactorTextField = multifactorText;
     self.signInButton = signInButton;
+    self.sendVerificationCodeButton = sendVerificationCodeButton;
     self.installJetbackButton = installJetbackButton;
     self.moreInformationButton = moreInformationButton;
 }
@@ -290,22 +322,23 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (void)updateControls
 {
-    BOOL hasJetpack                 = self.blog.hasJetpack;
+    BOOL hasJetpack                         = self.blog.hasJetpack;
     
-    _usernameTextField.alpha        = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
-    _passwordTextField.alpha        = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
-    _multifactorTextField.alpha     = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaEnabled  : JetpackTextFieldAlphaHidden;
+    self.usernameTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
+    self.passwordTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
+    self.multifactorTextField.alpha         = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaEnabled  : JetpackTextFieldAlphaHidden;
     
-    _usernameTextField.enabled      = !self.shouldDisplayMultifactor;
-    _passwordTextField.enabled      = !self.shouldDisplayMultifactor;
-    _multifactorTextField.enabled   = self.shouldDisplayMultifactor;
+    self.usernameTextField.enabled          = !self.shouldDisplayMultifactor;
+    self.passwordTextField.enabled          = !self.shouldDisplayMultifactor;
+    self.multifactorTextField.enabled       = self.shouldDisplayMultifactor;
     
-    _usernameTextField.hidden       = !hasJetpack;
-    _passwordTextField.hidden       = !hasJetpack;
-    _multifactorTextField.hidden    = !hasJetpack;
-    _signInButton.hidden            = !hasJetpack;
-    _installJetbackButton.hidden    = hasJetpack;
-    _moreInformationButton.hidden   = hasJetpack;
+    self.usernameTextField.hidden           = !hasJetpack;
+    self.passwordTextField.hidden           = !hasJetpack;
+    self.multifactorTextField.hidden        = !hasJetpack;
+    self.signInButton.hidden                = !hasJetpack;
+    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
+    self.installJetbackButton.hidden        = hasJetpack;
+    self.moreInformationButton.hidden       = hasJetpack;
     
     
     NSString *title = NSLocalizedString(@"Save", nil);
@@ -353,6 +386,11 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     CGFloat signInButtonY = [self lastTextfieldMaxY] + JetpackStandardOffset;
     _signInButton.frame = CGRectMake(buttonX, signInButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight);
 
+    // Layout SMS Label
+    CGFloat smsLabelY = CGRectGetMaxY(_signInButton.frame) + 0.5 * JetpackStandardOffset;
+    CGSize targetSize = [_sendVerificationCodeButton.titleLabel sizeThatFits:CGSizeMake(JetpackTextFieldWidth, CGFLOAT_MAX)];
+    _sendVerificationCodeButton.frame = CGRectIntegral(CGRectMake(textFieldX, smsLabelY, JetpackTextFieldWidth, targetSize.height));
+    
     // Layout Download Button
     CGFloat installJetpackButtonY = CGRectGetMaxY(_descriptionLabel.frame) + JetpackStandardOffset;
     _installJetbackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
@@ -368,7 +406,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
     NSArray *viewsToCenter;
     if (self.blog.hasJetpack) {
-        viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _signInButton];
+        viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _sendVerificationCodeButton, _signInButton];
     } else {
         viewsToCenter = @[_icon, _descriptionLabel, _installJetbackButton, _moreInformationButton];
     }
@@ -386,17 +424,23 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     }
 }
 
+- (CGFloat)editionModeMaxY
+{
+    UIView *bottomView = self.shouldDisplayMultifactor ? self.sendVerificationCodeButton : self.signInButton;
+    return CGRectGetMaxY(bottomView.frame);
+}
+
 
 #pragma mark - Button Helpers
 
-- (void)skipAction:(id)sender
+- (IBAction)skipAction:(id)sender
 {
     if (self.completionBlock) {
         self.completionBlock(NO);
     }
 }
 
-- (void)saveAction:(id)sender
+- (IBAction)saveAction:(id)sender
 {
     [self dismissKeyboard];
     [self setAuthenticating:YES];
@@ -418,6 +462,15 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
                        multifactorCode:self.multifactorTextField.text
                                success:finishedBlock
                                failure:failureBlock];
+}
+
+- (IBAction)sendVerificationCode:(id)sender
+{
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client requestOneTimeCodeWithUsername:self.usernameTextField.text
+                                  password:self.passwordTextField.text
+                                   success:nil
+                                   failure:nil];
 }
 
 
@@ -492,8 +545,8 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + JetpackStandardOffset;
-
+    CGFloat newKeyboardOffset = (self.editionModeMaxY - CGRectGetMinY(keyboardFrame)) + JetpackStandardOffset;
+    
     if (newKeyboardOffset < 0) {
         return;
     }
@@ -537,7 +590,8 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[_usernameTextField, _passwordTextField, _multifactorTextField, _signInButton, _icon, _descriptionLabel];
+    return @[self.usernameTextField, self.passwordTextField, self.multifactorTextField, self.signInButton,
+             self.sendVerificationCodeButton, self.icon, self.descriptionLabel];
 }
 
 - (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
