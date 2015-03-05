@@ -4,8 +4,11 @@
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
-#import "NSString+XMLExtensions.h"
-#import "NSString+Helpers.h"
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+
+@interface Post()
+@property (nonatomic, strong) NSString *storedContentPreviewForDisplay;
+@end
 
 @implementation Post
 
@@ -17,8 +20,14 @@
 @dynamic publicID;
 @dynamic categories;
 @synthesize specialType;
+@synthesize storedContentPreviewForDisplay;
 
 #pragma mark - NSManagedObject subclass methods
+
+- (void)awakeFromFetch
+{
+    [self buildContentPreview];
+}
 
 - (void)didTurnIntoFault
 {
@@ -28,6 +37,17 @@
 }
 
 #pragma mark -
+
+- (void)buildContentPreview
+{
+    NSString *str = self.mt_excerpt;
+    if ([str length]) {
+        str = [BasePost makePlainText:str];
+    } else {
+        str = [BasePost createSummaryFromContent:self.content];
+    }
+    self.storedContentPreviewForDisplay = str ? str : @"";
+}
 
 - (NSString *)categoriesText
 {
@@ -203,8 +223,10 @@
 
 - (NSString *)contentPreviewForDisplay
 {
-    NSString *content = self.content ? self.content : @"";
-    return [[[content stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+    if (self.storedContentPreviewForDisplay == nil) {
+        [self buildContentPreview];
+    }
+    return self.storedContentPreviewForDisplay;
 }
 
 - (NSString *)gravatarEmailForDisplay
