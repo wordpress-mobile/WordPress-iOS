@@ -4,11 +4,17 @@
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
+#import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 
 @implementation Post
 
-@dynamic geolocation, tags, postFormat;
-@dynamic latitudeID, longitudeID, publicID;
+@dynamic geolocation;
+@dynamic tags;
+@dynamic postFormat;
+@dynamic latitudeID;
+@dynamic longitudeID;
+@dynamic publicID;
 @dynamic categories;
 @synthesize specialType;
 
@@ -139,6 +145,76 @@
     }
     
     return NO;
+}
+
+#pragma mark - WPPostContentViewProvider Methods
+
+- (NSString *)authorNameForDisplay
+{
+    return self.author;
+}
+
+- (NSURL *)blogURL
+{
+    return nil;
+}
+
+- (NSInteger)commentCount
+{
+    return 0;
+}
+
+- (NSInteger)likeCount
+{
+    return 0;
+}
+
+- (BOOL)hasCommented
+{
+    return NO;
+}
+
+- (BOOL)hasLiked
+{
+    return NO;
+}
+
+- (NSString *)titleForDisplay
+{
+    NSString *title = self.postTitle ? self.postTitle : @"";
+    title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    return [title stringByDecodingXMLCharacters];
+}
+
+- (NSString *)authorForDisplay
+{
+    return self.author;
+}
+
+- (NSString *)blogNameForDisplay
+{
+    return self.blog.blogName;
+}
+
+- (NSString *)contentForDisplay
+{
+    return self.content;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    NSString *content = self.content ? self.content : @"";
+    return [[[content stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+}
+
+- (NSString *)gravatarEmailForDisplay
+{
+    return nil;
+}
+
+- (NSURL *)avatarURLForDisplay
+{
+    return nil;
 }
 
 @end
