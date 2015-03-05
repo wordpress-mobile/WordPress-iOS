@@ -155,7 +155,7 @@ DEPENDENCIES:
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.27)
   - WordPressCom-Stats-iOS (= 0.2.0)
-  - wpxmlrpc (~> 0.7)
+  - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
   EmailChecker:
