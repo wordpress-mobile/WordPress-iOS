@@ -15,7 +15,6 @@ static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
 @implementation PostCardTableViewCell
 
 - (void)awakeFromNib {
-    // Initialization code
     [self applyStyles];
 }
 
