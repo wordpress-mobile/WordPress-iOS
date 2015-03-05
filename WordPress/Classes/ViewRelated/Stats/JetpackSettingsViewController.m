@@ -499,14 +499,14 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
+            control.alpha = JetpackTextFieldAlphaHidden;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
-        }
-
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = JetpackTextFieldAlphaHidden;
         }
     } completion:^(BOOL finished) {
 
@@ -523,14 +523,14 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     _keyboardOffset = 0;
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
+            control.alpha = JetpackTextFieldAlphaEnabled;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
-        }
-
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = JetpackTextFieldAlphaEnabled;
         }
     }];
 }
@@ -540,13 +540,15 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
     return @[_usernameTextField, _passwordTextField, _multifactorTextField, _signInButton, _icon, _descriptionLabel];
 }
 
-- (NSArray *)controlsToHideForTextEntry
+- (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
-    NSArray *controlsToHide = @[];
-    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
-    if (isSmallScreen) {
-        controlsToHide = [controlsToHide arrayByAddingObject:_icon];
-        controlsToHide = [controlsToHide arrayByAddingObject:_descriptionLabel];
+    NSMutableArray *controlsToHide = [NSMutableArray array];
+    
+    // Find  controls that fall off the screen
+    for (UIView *control in self.controlsToMoveForTextEntry) {
+        if (control.frame.origin.y - offset <= 0) {
+            [controlsToHide addObject:control];
+        }
     }
     
     return controlsToHide;
