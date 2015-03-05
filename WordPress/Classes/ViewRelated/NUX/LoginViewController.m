@@ -547,31 +547,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     multifactorText.showTopLineSeparator = YES;
     multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     multifactorText.accessibilityIdentifier = @"Verification Code";
-
-    // Add Verification Code SMS Button
-    NSString *codeText = NSLocalizedString(@"Enter the code on your authenticator app or ", @"Message displayed when a verification code is needed");
-    NSMutableAttributedString *attributedCodeText = [[NSMutableAttributedString alloc] initWithString:codeText];
-
-    NSString *smsText = NSLocalizedString(@"send the code via text message.", @"Sends an SMS with the Multifactor Auth Code");
-    NSMutableAttributedString *attributedSmsText = [[NSMutableAttributedString alloc] initWithString:smsText];
-    [attributedSmsText applyUnderline];
-    
-    [attributedCodeText appendAttributedString:attributedSmsText];
-    [attributedCodeText applyFont:[WPNUXUtility confirmationLabelFont]];
-    [attributedCodeText applyForegroundColor:[UIColor whiteColor]];
-    
-    NSMutableAttributedString *attributedCodeHighlighted = [attributedCodeText mutableCopy];
-    [attributedCodeHighlighted applyForegroundColor:[WPNUXUtility confirmationLabelColor]];
-
-    // Add Verification Code SMS Button
-    WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
-
-    sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [sendVerificationCodeButton setAttributedTitle:attributedCodeText forState:UIControlStateNormal];
-    [sendVerificationCodeButton setAttributedTitle:attributedCodeHighlighted forState:UIControlStateHighlighted];
-    [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
     
     // Add Site Url
     WPWalkthroughTextField *siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
@@ -593,6 +568,32 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
     signInButton.accessibilityIdentifier = @"Sign In";
+    
+    // Text: Verification Code SMS
+    NSString *codeText = NSLocalizedString(@"Enter the code on your authenticator app or ", @"Message displayed when a verification code is needed");
+    NSMutableAttributedString *attributedCodeText = [[NSMutableAttributedString alloc] initWithString:codeText];
+    
+    NSString *smsText = NSLocalizedString(@"send the code via text message.", @"Sends an SMS with the Multifactor Auth Code");
+    NSMutableAttributedString *attributedSmsText = [[NSMutableAttributedString alloc] initWithString:smsText];
+    [attributedSmsText applyUnderline];
+    
+    [attributedCodeText appendAttributedString:attributedSmsText];
+    [attributedCodeText applyFont:[WPNUXUtility confirmationLabelFont]];
+    [attributedCodeText applyForegroundColor:[UIColor whiteColor]];
+    
+    NSMutableAttributedString *attributedCodeHighlighted = [attributedCodeText mutableCopy];
+    [attributedCodeHighlighted applyForegroundColor:[WPNUXUtility confirmationLabelColor]];
+    
+    // Add Verification Code SMS Button
+    WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
+    
+    sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    sendVerificationCodeButton.titleLabel.numberOfLines = LoginVerificationCodeNumberOfLines;
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeText forState:UIControlStateNormal];
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeHighlighted forState:UIControlStateHighlighted];
+    [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
     
     // Add Cancel Button
     WPNUXSecondaryButton *cancelButton = [[WPNUXSecondaryButton alloc] init];
@@ -770,7 +771,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
     // Layout SMS Label
     CGFloat smsLabelY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    self.sendVerificationCodeButton.frame = CGRectIntegral(CGRectMake(textLabelX, smsLabelY, GeneralWalkthroughButtonSize.width, self.sendVerificationCodeButton.titleLabel.font.lineHeight * LoginVerificationCodeNumberOfLines));
+    CGSize targetSize = [self.sendVerificationCodeButton.titleLabel sizeThatFits:CGSizeMake(GeneralWalkthroughButtonSize.width, CGFLOAT_MAX)];
+    self.sendVerificationCodeButton.frame = CGRectIntegral(CGRectMake(textLabelX, smsLabelY, GeneralWalkthroughButtonSize.width, targetSize.height));
     
     // Layout Lost password Button
     CGFloat forgotPasswordY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
