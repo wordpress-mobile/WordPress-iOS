@@ -56,7 +56,7 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
-static CGFloat const LoginOnePasswordPaddingX                   = 9.0;
+static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
 static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
@@ -523,12 +523,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
     [onePasswordButton sizeToFit];
     
-    CGRect containerFrame = onePasswordButton.frame;
-    containerFrame.size.width += LoginOnePasswordPaddingX;
-
-    UIView *onePasswordView = [[UIView alloc] initWithFrame:containerFrame];
-    [onePasswordView addSubview:onePasswordButton];
-    usernameText.rightView = onePasswordView;
+    usernameText.rightView = onePasswordButton;
+    usernameText.rightViewPadding = LoginOnePasswordPadding;
     
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
