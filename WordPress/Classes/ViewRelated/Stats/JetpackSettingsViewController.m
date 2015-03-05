@@ -94,7 +94,7 @@ static CGFloat const JetpackTextFieldAlphaEnabled       = 1.0f;
 }
 
 
-#pragma mark - pragma mark LifeCycle Methods
+#pragma mark - LifeCycle Methods
 
 - (void)viewWillAppear:(BOOL)animated
 {
