@@ -1,6 +1,6 @@
 #import "Post.h"
 #import "Media.h"
-#import "Category.h"
+#import "PostCategory.h"
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
