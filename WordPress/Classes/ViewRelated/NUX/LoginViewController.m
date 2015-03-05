@@ -384,6 +384,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)toggleSignInFormAction:(id)sender
 {
+    self.shouldDisplayMultifactor = false;
     self.userIsDotCom = !self.userIsDotCom;
     self.passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
 
@@ -445,7 +446,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client requestOneTimeCodeWithUsername:self.usernameText.text
                                   password:self.passwordText.text
-                                   success:nil
+                                   success:^{
+                                       [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
+                                   }
                                    failure:nil];
 }
 
@@ -1168,13 +1171,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                  
                              } failure:^(NSError *error) {
                                  
-                                 [WPAnalytics track:WPAnalyticsStatLoginFailed];
+                                 // Remove the Spinner + Status Message
                                  [self finishedAuthenticating];
                                  
                                  // If needed, show the multifactor field
                                  if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
                                      [self displayMultifactorTextfield];
                                  } else {
+                                     NSDictionary *properties = @{ @"multifactor" : @(self.shouldDisplayMultifactor) };
+                                     [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
+                                     
                                      [self displayRemoteError:error];
                                  }
                              }];
@@ -1191,9 +1197,17 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account
                                 success:^{
+                                    // Dismiss the UI
                                     [self finishedAuthenticating];
                                     [self dismiss];
-                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
+                                    
+                                    // Hit the Tracker
+                                    NSDictionary *properties = @{
+                                        @"multifactor" : @(self.shouldDisplayMultifactor),
+                                        @"dotcom_user" : @(YES)
+                                    };
+                                    
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
                                     [WPAnalytics refreshMetadata];
 
                                     // once blogs for the accounts are synced, we want to update account details for it
@@ -1306,6 +1320,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)displayMultifactorTextfield
 {
+    [WPAnalytics track:WPAnalyticsStatTwoFactorCodeRequested];
     self.shouldDisplayMultifactor = YES;
     
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration

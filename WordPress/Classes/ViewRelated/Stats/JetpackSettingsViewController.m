@@ -447,6 +447,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
     void (^finishedBlock)() = ^() {
         [self setAuthenticating:NO];
+        
         if (self.completionBlock) {
             self.completionBlock(YES);
         }
@@ -469,7 +470,9 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client requestOneTimeCodeWithUsername:self.usernameTextField.text
                                   password:self.passwordTextField.text
-                                   success:nil
+                                   success:^{
+                                       [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
+                                   }
                                    failure:nil];
 }
 
@@ -492,6 +495,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)displayMultifactorTextfield
 {
+    [WPAnalytics track:WPAnalyticsStatTwoFactorCodeRequested];
     self.shouldDisplayMultifactor = YES;
     
     [UIView animateWithDuration:JetpackAnimationDuration
