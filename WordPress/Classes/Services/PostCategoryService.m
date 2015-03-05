@@ -1,19 +1,19 @@
-#import "CategoryService.h"
-#import "Category.h"
+#import "PostCategoryService.h"
+#import "PostCategory.h"
 #import "Blog.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 #import "ContextManager.h"
-#import "CategoryServiceRemote.h"
-#import "CategoryServiceRemoteREST.h"
-#import "CategoryServiceRemoteXMLRPC.h"
+#import "PostCategoryServiceRemote.h"
+#import "PostCategoryServiceRemoteREST.h"
+#import "PostCategoryServiceRemoteXMLRPC.h"
 
-@interface CategoryService ()
+@interface PostCategoryService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
 
-@implementation CategoryService
+@implementation PostCategoryService
 
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
 {
@@ -25,15 +25,15 @@
     return self;
 }
 
-- (Category *)newCategoryForBlog:(Blog *)blog
+- (PostCategory *)newCategoryForBlog:(Blog *)blog
 {
-    Category *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
+    PostCategory *category = [NSEntityDescription insertNewObjectForEntityForName:@"Category"
                                                        inManagedObjectContext:self.managedObjectContext];
     category.blog = blog;
     return category;
 }
 
-- (Category *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID {
+- (PostCategory *)newCategoryForBlogObjectID:(NSManagedObjectID *)blogObjectID {
     Blog *blog = [self blogWithObjectID:blogObjectID];
     return [self newCategoryForBlog:blog];
 }
@@ -55,20 +55,20 @@
     return NO;
 }
 
-- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
+- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID andCategoryID:(NSNumber *)categoryID
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"categoryID == %@", categoryID];
     return [self findWithBlogObjectID:blogObjectID predicate:predicate];
 }
 
-- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name
+- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID parentID:(NSNumber *)parentID andName:(NSString *)name
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(categoryName like %@) AND (parentID = %@)", name,
                               (parentID ? parentID : @0)];
     return [self findWithBlogObjectID:blogObjectID predicate:predicate];
 }
 
-- (Category *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID predicate:(NSPredicate *)predicate
+- (PostCategory *)findWithBlogObjectID:(NSManagedObjectID *)blogObjectID predicate:(NSPredicate *)predicate
 {
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
@@ -77,7 +77,7 @@
 
 }
 
-- (Category *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
+- (PostCategory *)createOrReplaceFromDictionary:(NSDictionary *)categoryInfo
                             forBlogObjectID:(NSManagedObjectID *)blogObjectID
 {
     Blog *blog = [self blogWithObjectID:blogObjectID];
@@ -89,7 +89,7 @@
         return nil;
     }
 
-    Category *category = [self findWithBlogObjectID:blog.objectID andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
+    PostCategory *category = [self findWithBlogObjectID:blog.objectID andCategoryID:[[categoryInfo objectForKey:@"categoryId"] numericValue]];
 
     if (category == nil) {
         category = [self newCategoryForBlog:blog];
@@ -106,7 +106,7 @@
                       success:(void (^)())success
                       failure:(void (^)(NSError *error))failure
 {
-    id<CategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     [remote getCategoriesForBlog:blog
                          success:^(NSArray *categories) {
                              [self.managedObjectContext performBlock:^{
@@ -118,26 +118,26 @@
 - (void)createCategoryWithName:(NSString *)name
         parentCategoryObjectID:(NSManagedObjectID *)parentCategoryObjectID
                forBlogObjectID:(NSManagedObjectID *)blogObjectID
-                       success:(void (^)(Category *category))success
+                       success:(void (^)(PostCategory *category))success
                        failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(name != nil);
     Blog *blog = [self blogWithObjectID:blogObjectID];
 
-    Category *parent = [self categoryWithObjectID:parentCategoryObjectID];
+    PostCategory *parent = [self categoryWithObjectID:parentCategoryObjectID];
 
-    RemoteCategory *remoteCategory = [RemoteCategory new];
+    RemotePostCategory *remoteCategory = [RemotePostCategory new];
     remoteCategory.parentID = parent.categoryID;
     remoteCategory.name = name;
 
-    id<CategoryServiceRemote> remote = [self remoteForBlog:blog];
+    id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
     [remote createCategory:remoteCategory
                    forBlog:blog
-                   success:^(RemoteCategory *receivedCategory) {
+                   success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
-                           Category *newCategory = [self newCategoryForBlog:blog];
+                           PostCategory *newCategory = [self newCategoryForBlog:blog];
                            newCategory.categoryID = receivedCategory.categoryID;
-                           if ([remote isKindOfClass:[CategoryServiceRemoteXMLRPC class]]) {
+                           if ([remote isKindOfClass:[PostCategoryServiceRemoteXMLRPC class]]) {
                                // XML-RPC only returns ID, let's fetch the new category as
                                // filters might change the content
                                [self syncCategoriesForBlog:blog success:nil failure:nil];
@@ -166,15 +166,15 @@
     [toDelete minusSet:remoteSet];
 
     if ([toDelete count] > 0) {
-        for (Category *category in blog.categories) {
+        for (PostCategory *category in blog.categories) {
             if ([toDelete containsObject:category.categoryID]) {
                 [self.managedObjectContext deleteObject:category];
             }
         }
     }
 
-    for (RemoteCategory *remoteCategory in categories) {
-        Category *category = [self findWithBlogObjectID:blog.objectID andCategoryID:remoteCategory.categoryID];
+    for (RemotePostCategory *remoteCategory in categories) {
+        PostCategory *category = [self findWithBlogObjectID:blog.objectID andCategoryID:remoteCategory.categoryID];
         if (!category) {
             category = [self newCategoryForBlog:blog];
             category.categoryID = remoteCategory.categoryID;
@@ -206,14 +206,14 @@
     return blog;
 }
 
-- (Category *)categoryWithObjectID:(NSManagedObjectID *)objectID
+- (PostCategory *)categoryWithObjectID:(NSManagedObjectID *)objectID
 {
     if (objectID == nil) {
         return nil;
     }
 
     NSError *error;
-    Category *category = (Category *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
+    PostCategory *category = (PostCategory *)[self.managedObjectContext existingObjectWithID:objectID error:&error];
     if (error) {
         DDLogError(@"Error when retrieving Category by ID: %@", error);
         return nil;
@@ -222,11 +222,11 @@
     return category;
 }
 
-- (id<CategoryServiceRemote>)remoteForBlog:(Blog *)blog {
+- (id<PostCategoryServiceRemote>)remoteForBlog:(Blog *)blog {
     if (blog.restApi) {
-        return [[CategoryServiceRemoteREST alloc] initWithApi:blog.restApi];
+        return [[PostCategoryServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        return [[CategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+        return [[PostCategoryServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
 }
 
