@@ -65,7 +65,8 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 
 + (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
 }
 
 + (NSString *)createSummaryFromContent:(NSString *)string
