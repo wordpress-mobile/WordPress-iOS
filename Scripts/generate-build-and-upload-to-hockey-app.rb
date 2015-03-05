@@ -58,6 +58,11 @@ def upload_ipa_to_hockey_app(hockey_app_api_token)
   Kernel.system("ipa distribute:hockeyapp -f WordPress.ipa --token #{hockey_app_api_token} --mandatory")
 end
 
+if Dir.pwd =~ /Scripts/
+  puts "Must run script from root folder"
+  exit
+end
+
 check_dependencies
 build_ipa
 upload_ipa_to_hockey_app(get_hockey_app_api_token)
