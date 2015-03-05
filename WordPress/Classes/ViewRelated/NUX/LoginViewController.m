@@ -57,7 +57,6 @@ static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
-static CGFloat const LoginHiddenControlsHeightThreshold         = 480.0;
 static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 
@@ -675,22 +674,22 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
     
     // TextFields
-    self.usernameText.alpha                 = self.isUsernameEnabled    ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
-    self.passwordText.alpha                 = self.isPasswordEnabled    ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
-    self.multifactorText.alpha              = self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
-    self.siteUrlText.alpha                  = self.isSiteUrlEnabled     ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
+    self.usernameText.alpha                 = self.usernameAlpha;
+    self.passwordText.alpha                 = self.passwordAlpha;
+    self.siteUrlText.alpha                  = self.siteAlpha;
+    self.multifactorText.alpha              = self.multifactorAlpha;
     
     self.usernameText.enabled               = self.isUsernameEnabled;
     self.passwordText.enabled               = self.isPasswordEnabled;
     self.onePasswordButton.enabled          = self.isOnePasswordEnabled;
-    self.multifactorText.enabled            = self.isMultifactorEnabled;
     self.siteUrlText.enabled                = self.isSiteUrlEnabled;
+    self.multifactorText.enabled            = self.isMultifactorEnabled;
     
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
     self.cancelButton.enabled               = self.isCancelButtonEnabled;
     self.forgotPassword.hidden              = !self.isForgotPasswordEnabled;
-    self.sendVerificationCodeButton.hidden  = !self.isVerificationCodeEnabled;
+    self.sendVerificationCodeButton.hidden  = !self.isSendCodeEnabled;
     self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
     
     // SignIn Button
@@ -745,15 +744,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     // Layout Password
     CGFloat passwordTextY = CGRectGetMaxY(self.usernameText.frame) - GeneralWalkthroughTextFieldOverlapY;
     self.passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
-
-    // Layout Multifactor
-    CGFloat multifactorTextY = CGRectGetMaxY(self.passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
-    self.multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
     
     // Layout Site URL
     CGFloat siteUrlTextY = CGRectGetMaxY(self.passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
     self.siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
+    // Layout Multifactor
+    CGFloat multifactorTextY = self.userIsDotCom ? CGRectGetMaxY(self.passwordText.frame) : CGRectGetMaxY(self.siteUrlText.frame);
+    multifactorTextY -= GeneralWalkthroughTextFieldOverlapY;
+    self.multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    
     // Layout Sign in Button
     CGFloat signInButtonY = [self lastTextfieldMaxY] + GeneralWalkthroughStandardOffset;
     self.signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
@@ -876,7 +876,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 }
 
 
-#pragma mark - Dynamic Properties
+#pragma mark - Validation Helpers
 
 - (BOOL)areFieldsValid
 {
@@ -906,6 +906,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return [[self.siteUrlText.text trim] length] != 0;
 }
 
+
+#pragma mark - Interface Helpers: TextFields
+
 - (BOOL)isUsernameEnabled
 {
     return !self.shouldDisplayMultifactor;
@@ -921,20 +924,42 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return !self.authenticating;
 }
 
-- (BOOL)isMultifactorEnabled
-{
-    return self.shouldDisplayMultifactor;
-}
-
 - (BOOL)isSiteUrlEnabled
 {
     return !self.userIsDotCom;
 }
 
-- (BOOL)isVerificationCodeEnabled
+- (BOOL)isMultifactorEnabled
 {
-    return self.shouldDisplayMultifactor && !self.authenticating;
+    return self.shouldDisplayMultifactor;
 }
+
+- (CGFloat)usernameAlpha
+{
+    return self.isUsernameEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+}
+
+- (CGFloat)passwordAlpha
+{
+    return self.isPasswordEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+}
+
+- (CGFloat)siteAlpha
+{
+    if (self.isSiteUrlEnabled) {
+        return self.isMultifactorEnabled ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
+    }
+    
+    return GeneralWalkthroughAlphaHidden;
+}
+
+- (CGFloat)multifactorAlpha
+{
+    return self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
+}
+
+
+#pragma mark - Interface Helpers: Buttons
 
 - (BOOL)isSignInEnabled
 {
@@ -945,6 +970,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isSignInToggleEnabled
 {
     return !self.onlyDotComAllowed && !self.hasDefaultAccount && !self.authenticating;
+}
+
+- (BOOL)isSendCodeEnabled
+{
+    return self.shouldDisplayMultifactor && !self.authenticating;
 }
 
 - (BOOL)isAccountCreationEnabled
@@ -1311,9 +1341,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
             control.frame = frame;
         }
 
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
             control.alpha = GeneralWalkthroughAlphaHidden;
         }
+        
     } completion:^(BOOL finished) {
 
         self.keyboardOffset += newKeyboardOffset;
@@ -1335,7 +1366,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
             control.frame = frame;
         }
 
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
             control.alpha = GeneralWalkthroughAlphaEnabled;
         }
     }];
@@ -1347,14 +1378,18 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
               self.siteUrlText, self.signInButton, self.statusLabel ];
 }
 
-- (NSArray *)controlsToHideForTextEntry
+- (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
-    NSArray *controlsToHide = @[self.helpButton, self.helpBadge];
-
-    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > LoginHiddenControlsHeightThreshold);
-    if (isSmallScreen) {
-        controlsToHide = [controlsToHide arrayByAddingObject:self.icon];
+    NSMutableArray *controlsToHide = [NSMutableArray array];
+    [controlsToHide addObjectsFromArray:@[ self.helpButton, self.helpBadge ]];
+    
+    // Find  controls that fall off the screen
+    for (UIView *control in self.controlsToMoveForTextEntry) {
+        if (control.frame.origin.y - offset <= 0) {
+            [controlsToHide addObject:control];
+        }
     }
+    
     return controlsToHide;
 }
 
