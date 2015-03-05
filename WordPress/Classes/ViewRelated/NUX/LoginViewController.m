@@ -26,6 +26,7 @@
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
+#import "NSAttributedString+Util.h"
 #import "NSURL+IDN.h"
 
 #import "Constants.h"
@@ -444,12 +445,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client requestOneTimeCodeWithUsername:self.usernameText.text
                                   password:self.passwordText.text
-                                   success:^{
-
-                                   }
-                                   failure:^(NSError *error) {
-
-                                   }];
+                                   success:nil
+                                   failure:nil];
 }
 
 
@@ -552,15 +549,28 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     multifactorText.accessibilityIdentifier = @"Verification Code";
 
     // Add Verification Code SMS Button
-    NSString *smsText = NSLocalizedString(@"Enter the code on your authenticator app or send the code via text message.",
-                                          @"Message displayed when a verification code is needed");
+    NSString *codeText = NSLocalizedString(@"Enter the code on your authenticator app or ", @"Message displayed when a verification code is needed");
+    NSMutableAttributedString *attributedCodeText = [[NSMutableAttributedString alloc] initWithString:codeText];
+
+    NSString *smsText = NSLocalizedString(@"send the code via text message.", @"Sends an SMS with the Multifactor Auth Code");
+    NSMutableAttributedString *attributedSmsText = [[NSMutableAttributedString alloc] initWithString:smsText];
+    [attributedSmsText applyUnderline];
     
+    [attributedCodeText appendAttributedString:attributedSmsText];
+    [attributedCodeText applyFont:[WPNUXUtility confirmationLabelFont]];
+    [attributedCodeText applyForegroundColor:[UIColor whiteColor]];
+    
+    NSMutableAttributedString *attributedCodeHighlighted = [attributedCodeText mutableCopy];
+    [attributedCodeHighlighted applyForegroundColor:[WPNUXUtility confirmationLabelColor]];
+
+    // Add Verification Code SMS Button
     WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
+
     sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-    sendVerificationCodeButton.titleLabel.font = [WPNUXUtility confirmationLabelFont];
     sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [sendVerificationCodeButton setTitle:smsText forState:UIControlStateNormal];
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeText forState:UIControlStateNormal];
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeHighlighted forState:UIControlStateHighlighted];
     [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
     
     // Add Site Url
@@ -1335,14 +1345,14 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
+            control.alpha = GeneralWalkthroughAlphaHidden;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
-        }
-
-        for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
-            control.alpha = GeneralWalkthroughAlphaHidden;
         }
         
     } completion:^(BOOL finished) {
@@ -1360,15 +1370,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.keyboardOffset = 0;
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
+            control.alpha = GeneralWalkthroughAlphaEnabled;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
 
-        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
-            control.alpha = GeneralWalkthroughAlphaEnabled;
-        }
     }];
 }
 
