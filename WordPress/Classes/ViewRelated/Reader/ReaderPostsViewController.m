@@ -45,6 +45,8 @@ NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
+NSString * const ReaderDetailTypeNormal = @"normal";
+NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 @interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
                                         UIActionSheetDelegate,
@@ -1032,7 +1034,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     detailController.readerViewStyle = self.readerViewStyle;
     [self.navigationController pushViewController:detailController animated:YES];
 
-    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
+    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:@{@"post-detail-type":detailType}];
 }
 
 
