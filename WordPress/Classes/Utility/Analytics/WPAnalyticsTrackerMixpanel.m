@@ -334,6 +334,11 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_commented_on_reader_article"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_commented_on_article"];
             break;
+        case WPAnalyticsStatReaderPreviewedSite:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reader - Blog Preview"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_viewed_blog_preview"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_viewed_blog_preview"];
+            break;
         case WPAnalyticsStatStatsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];

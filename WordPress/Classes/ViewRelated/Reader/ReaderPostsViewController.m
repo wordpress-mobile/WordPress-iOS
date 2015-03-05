@@ -1088,9 +1088,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
 {
     ReaderPost *post = [self postFromCellSubview:contentView];
-
     ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
     [self.navigationController pushViewController:controller animated:YES];
+    [WPAnalytics track:WPAnalyticsStatReaderPreviewedSite];
 }
 
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
