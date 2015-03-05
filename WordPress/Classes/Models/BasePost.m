@@ -3,7 +3,11 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
 #import "WPComLanguages.h"
-#import "NSString+XMLExtensions.h"
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+#import <WordPress-iOS-Shared/NSString+Util.h>
+#import "NSString+Helpers.h"
+
+static const NSUInteger PostDerivedSummaryLength = 150;
 
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
@@ -57,6 +61,18 @@
     }
 
     return title;
+}
+
++ (NSString *)makePlainText:(NSString *)string
+{
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+}
+
++ (NSString *)createSummaryFromContent:(NSString *)string
+{
+    string = [self makePlainText:string];
+    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
+    return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
 - (NSArray *)availableStatuses

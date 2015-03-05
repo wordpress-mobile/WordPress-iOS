@@ -13,7 +13,6 @@
 #import "NSString+XMLExtensions.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 20;
-NSUInteger const ReaderPostServiceSummaryLength = 150;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
@@ -910,9 +909,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
 {
-    string = [self makePlainText:string];
-    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-    return [string stringByEllipsizingWithMaxLength:ReaderPostServiceSummaryLength preserveWords:YES];
+    return [BasePost createSummaryFromContent:string];
 }
 
 /**
@@ -923,7 +920,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [BasePost makePlainText:string];
 }
 
 /**
