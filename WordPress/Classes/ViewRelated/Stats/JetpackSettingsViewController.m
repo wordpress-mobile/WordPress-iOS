@@ -711,10 +711,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    BOOL isusernameTextField = [touch.view isDescendantOfView:self.usernameTextField];
+    BOOL isUsernameTextField = [touch.view isDescendantOfView:self.usernameTextField];
     BOOL isSigninButton = [touch.view isDescendantOfView:self.signInButton];
     
-    if (isusernameTextField || isSigninButton) {
+    if (isUsernameTextField || isSigninButton) {
         return NO;
     }
     
