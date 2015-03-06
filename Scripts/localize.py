@@ -121,6 +121,10 @@ def merge(merged_fname, old_fname, new_fname):
 STRINGS_FILE = 'Localizable.strings'
 
 def localize(path):
+    if "Scripts" in path:
+        print "Must run script from the root folder"
+        quit()
+
     os.chdir(path)
     resources_path = os.path.join(path, 'Resources')
     language = os.path.join(resources_path, 'en.lproj')

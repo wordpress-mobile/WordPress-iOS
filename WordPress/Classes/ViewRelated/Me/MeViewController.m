@@ -39,75 +39,46 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MeHeaderView *headerView;
-@property (nonatomic, strong) UILabel *helpshiftBadgeLabel;
 
 @end
 
 @implementation MeViewController
+
+#pragma mark - LifeCycle Methods
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)loadView
+- (instancetype)init
 {
-    [super loadView];
+    self = [super init];
+    if (self) {
+        // we want to observe for the account change notification even if the view is not visible
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(defaultAccountDidChange:)
+                                                     name:WPAccountDefaultWordPressComAccountChangedNotification
+                                                   object:nil];
 
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    self.tableView.rowHeight = MVCTableViewRowHeight;
-    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
-    [self.view addSubview:self.tableView];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(accountEmailUpdated:)
+                                                     name:WPAccountEmailAndDefaultBlogUpdatedNotification
+                                                   object:nil];
 
-    self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
-
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    self.helpshiftBadgeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
-    self.helpshiftBadgeLabel.layer.masksToBounds = YES;
-    self.helpshiftBadgeLabel.layer.cornerRadius = 15;
-    self.helpshiftBadgeLabel.textAlignment = NSTextAlignmentCenter;
-    self.helpshiftBadgeLabel.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
-    self.helpshiftBadgeLabel.textColor = [UIColor whiteColor];
-
-    [self setupAutolayoutConstraints];
-}
-
-- (void)setupAutolayoutConstraints
-{
-    NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
-                                                                      options:0
-                                                                      metrics:nil
-                                                                        views:views]];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(helpshiftUnreadCountUpdated:)
+                                                     name:HelpshiftUnreadCountUpdatedNotification
+                                                   object:nil];
+    }
+    return self;
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    // we want to observe for the account change notification even if the view is not visible
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(defaultAccountDidChange:)
-                                                 name:WPAccountDefaultWordPressComAccountChangedNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(accountEmailUpdated:)
-                                                 name:WPAccountEmailAndDefaultBlogUpdatedNotification
-                                               object:nil];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(helpshiftUnreadCountUpdated:)
-                                                 name:HelpshiftUnreadCountUpdatedNotification
-                                               object:nil];
+    [self buildTableView];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -125,6 +96,38 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
 
     [HelpshiftUtils refreshUnreadNotificationCount];
+}
+
+#pragma mark - View Construction / Configuration
+
+- (void)buildTableView
+{
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    self.tableView.rowHeight = MVCTableViewRowHeight;
+    self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
+    [self.view addSubview:self.tableView];
+
+    self.headerView = [[MeHeaderView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), MeHeaderViewHeight)];
+
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    [self setupAutolayoutConstraints];
+}
+
+- (void)setupAutolayoutConstraints
+{
+    NSMutableDictionary *views = [@{@"tableView": self.tableView} mutableCopy];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[tableView]|"
+                                                                      options:0
+                                                                      metrics:nil
+                                                                        views:views]];
 }
 
 #pragma mark - Header methods
@@ -145,6 +148,17 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     }
 
     [self.tableView reloadData];
+}
+
+- (UILabel *)helpshiftBadgeLabel
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 30)];
+    label.layer.masksToBounds = YES;
+    label.layer.cornerRadius = 15;
+    label.textAlignment = NSTextAlignmentCenter;
+    label.backgroundColor = [WPStyleGuide newKidOnTheBlockBlue];
+    label.textColor = [UIColor whiteColor];
+    return label;
 }
 
 #pragma mark - UITableViewDataSource methods
@@ -183,8 +197,9 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
                 NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
                 if ([HelpshiftUtils isHelpshiftEnabled] && unreadNotificationCount > 0) {
-                    self.helpshiftBadgeLabel.text = [NSString stringWithFormat:@"%ld", unreadNotificationCount];
-                    cell.accessoryView = self.helpshiftBadgeLabel;
+                    UILabel *label = [self helpshiftBadgeLabel];
+                    label.text = [NSString stringWithFormat:@"%ld", unreadNotificationCount];
+                    cell.accessoryView = label;
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 } else {
                     cell.accessoryView = nil;
