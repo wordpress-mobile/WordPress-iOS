@@ -38,6 +38,11 @@
 # * Chinese (China) [zh-Hans]
 # * Chinese (Taiwan) [zh-Hant]
 
+if Dir.pwd =~ /Scripts/
+  puts "Must run script from root folder"
+  exit
+end
+
 LANGS={
   'da' => 'da',         # Danish
   'de' => 'de',         # German
