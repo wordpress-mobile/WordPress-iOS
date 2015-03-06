@@ -154,13 +154,8 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.27)
-<<<<<<< HEAD
   - WordPressCom-Stats-iOS (= 0.2.3)
-  - wpxmlrpc (~> 0.7)
-=======
-  - WordPressCom-Stats-iOS (= 0.2.0)
   - wpxmlrpc (~> 0.8)
->>>>>>> ed4988b846784918f3ce9a298d4731aa36335c45
 
 EXTERNAL SOURCES:
   EmailChecker:
@@ -235,12 +230,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
   WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
   WordPressCom-Analytics-iOS: e7cfc141f0a112291f09dd5eefe51d68cce417ad
-<<<<<<< HEAD
   WordPressCom-Stats-iOS: a441c86acf99c7707dbea239667e9cb1dbc1b980
-  wpxmlrpc: 75ad2e4663c3a65948f5ae0799d948a8445bb0cf
-=======
-  WordPressCom-Stats-iOS: bb023fc4c623cb77c9baa43db228df3a0394a558
   wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
->>>>>>> ed4988b846784918f3ce9a298d4731aa36335c45
 
 COCOAPODS: 0.35.0
