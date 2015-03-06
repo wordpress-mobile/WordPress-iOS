@@ -1,10 +1,27 @@
 import Foundation
 
 
+/**
+*  @extension       NotificationBlock
+*
+*  @brief           This class extension implements helper methods to aid formatting a NotificationBlock's
+*                   payload, for usage in several different spots of the app.
+*
+*  @details         The main goal of this helper Extension is to encapsulate presentation details into a 
+                    single piece of code, while preserving a clear sepparation with the Model itself.
+                    We rely on a cache mechanism, implemented for performance purposes, that will get nuked
+                    whenever the related Notification object gets updated.
+*/
 extension NotificationBlock
 {
-    // MARK: - Text Formatting Helpers
+    // MARK: - Public Methods
     //
+    
+    /**
+    *	@brief      Formats a NotificationBlock for usage in NoteTableViewCell, in the subject field
+    *
+    *	@returns	A Subject Attributed String
+    */
     public func attributedSubjectText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.subjectRegularStyle,
@@ -16,6 +33,11 @@ extension NotificationBlock
         return attributedText(Constants.richSubjectCacheKey)
     }
 
+    /**
+    *	@brief      Formats a NotificationBlock for usage in NoteTableViewCell, in the snippet field
+    *
+    *	@returns	A Snippet Attributed String
+    */
     public func attributedSnippetText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.snippetRegularStyle,
@@ -27,6 +49,11 @@ extension NotificationBlock
         return attributedText(Constants.richSnippetCacheKey)
     }
 
+    /**
+    *	@brief      Formats a NotificationBlock for usage in NoteBlockHeaderTableViewCell
+    *
+    *	@returns	A Header Attributed String
+    */
     public func attributedHeaderTitleText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.headerTitleRegularStyle,
@@ -38,6 +65,12 @@ extension NotificationBlock
         return attributedText(Constants.richHeaderTitleCacheKey)
     }
 
+    /**
+    *	@brief      Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell 
+    *               and NoteBlockCommentTableViewCell.
+    *
+    *	@returns	An Attributed String for usage in both, comments and cell cells
+    */
     public func attributedRichText() -> NSAttributedString {
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
@@ -55,6 +88,12 @@ extension NotificationBlock
         return attributedText(Constants.richTextCacheKey)
     }
     
+    /**
+    *	@brief      Formats a NotificationBlock for usage into Badge-Type notifications. This contains
+    *               custom formatting that differs from regular notifications, such as centered texts.
+    *
+    *	@returns	An Attributed String for usage in Badge Notifications
+    */
     public func attributedBadgeText() -> NSAttributedString {
         let attributedText = memoize { () -> NSAttributedString in
             return self.textWithStyles(Styles.badgeRegularStyle,
@@ -67,8 +106,15 @@ extension NotificationBlock
     }
 
     
-    // MARK: - Media Helpers
-    //
+    /**
+    *	@brief      Given a set of URL's and the Images they reference to, this method will return a Dictionary
+    *               with the NSRange's in which the given UIImage's should be injected
+    *   @details    This is used to build an Attributed String containing inline images.
+    *
+    *   @param      mediaMap    A Dictionary mapping asset URL's to the already-downloaded assets
+    *
+    *	@returns	A Dictionary mapping Text-Ranges in which the UIImage's should be applied
+    */
     public func buildRangesToImagesMap(mediaMap: [NSURL: UIImage]?) -> [NSValue: UIImage]? {
         // If we've got a text override: Ranges may not match, and the new text may not even contain ranges!
         if mediaMap == nil || textOverride != nil {
@@ -90,6 +136,15 @@ extension NotificationBlock
     
     // MARK: - Private Helpers
     //
+    
+    /**
+    *	@brief      This method is meant to aid cache-implementation into all of the AttriutedString getters
+    *               introduced in this extension.
+    *
+    *   @param      fn  A Closure that, on execution, returns an attributed string.
+    *	@returns	A new Closure that on execution will either hit the cache, or execute the closure `fn`
+    *               and store its return value in the cache.
+    */
     private func memoize(fn: () -> NSAttributedString) -> String -> NSAttributedString {
         return {
             (cacheKey : String) -> NSAttributedString in
@@ -106,6 +161,16 @@ extension NotificationBlock
         }
     }
     
+    /**
+    *	@brief      This method is an all-purpose helper to aid formatting the NotificationBlock's payload text.
+    *
+    *   @param      attributes      Represents the attributes to be applied, initially, to the Text.
+    *   @param      quoteStyles     The Styles to be applied to "any quoted text"
+    *   @param      rangeStylesMap  A Dictionary object mapping NotificationBlock types to a dictionary of styles
+    *                               to be applied.
+    *   @param      linksColor      The color that should be used on any links contained.
+    *	@returns	A NSAttributedString instance, formatted with all of the specified parameters
+    */
     private func textWithStyles(attributes  : [NSString: AnyObject],
                                 quoteStyles : [NSString: AnyObject]?,
                              rangeStylesMap : [NSString: AnyObject]?,
