@@ -122,7 +122,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     // Initialize flags!
     self.hasDefaultAccount = (defaultAccount != nil);
     self.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
-
+    
     // Initialize Interface
     [self addMainView];
     [self addControls];
@@ -916,9 +916,46 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     return self.multifactorText.text.isEmpty == NO;
 }
+
 - (BOOL)isSiteUrlFilled
 {
     return [[self.siteUrlText.text trim] length] != 0;
+}
+
+- (BOOL)areDotComFieldsFilled
+{
+    BOOL areCredentialsFilled = [self isUsernameFilled] && [self isPasswordFilled];
+    
+    if (![self shouldDisplayMultifactor]) {
+        return areCredentialsFilled;
+    }
+    
+    return areCredentialsFilled && [self isMultifactorFilled];
+}
+
+- (BOOL)areSelfHostedFieldsFilled
+{
+    return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
+}
+
+- (BOOL)isUrlValid
+{
+    if (self.siteUrlText.text.length == 0) {
+        return NO;
+    }
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
+    return siteURL != nil;
+}
+
+- (BOOL)isUserNameReserved
+{
+    if (!self.userIsDotCom) {
+        return NO;
+    }
+    NSString *username = [[self.usernameText.text trim] lowercaseString];
+    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
+    
+    return [reservedUserNames containsObject:username];
 }
 
 
@@ -1013,41 +1050,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return !self.authenticating;
 }
 
-- (BOOL)areDotComFieldsFilled
-{
-    BOOL areCredentialsFilled = [self isUsernameFilled] && [self isPasswordFilled];
-    
-    if (![self shouldDisplayMultifactor]) {
-        return areCredentialsFilled;
-    }
-    
-    return areCredentialsFilled && [self isMultifactorFilled];
-}
 
-- (BOOL)areSelfHostedFieldsFilled
-{
-    return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
-}
-
-- (BOOL)isUrlValid
-{
-    if (self.siteUrlText.text.length == 0) {
-        return NO;
-    }
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
-    return siteURL != nil;
-}
-
-- (BOOL)isUserNameReserved
-{
-    if (!self.userIsDotCom) {
-        return NO;
-    }
-    NSString *username = [[self.usernameText.text trim] lowercaseString];
-    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
-    
-    return [reservedUserNames containsObject:username];
-}
+#pragma mark - Text Helpers
 
 - (NSString *)signInButtonTitle
 {
@@ -1408,6 +1412,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
+    // Always hide the Help + Badge
     NSMutableArray *controlsToHide = [NSMutableArray array];
     [controlsToHide addObjectsFromArray:@[ self.helpButton, self.helpBadge ]];
     
