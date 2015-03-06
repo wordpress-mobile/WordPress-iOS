@@ -1120,7 +1120,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     NSString *username = self.usernameText.text;
     NSString *password = self.passwordText.text;
-    NSString *multifactor = self.multifactorText.text;
+    NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
 
     if (self.userIsDotCom || self.siteUrlText.text.isWordPressComURL) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
