@@ -28,6 +28,7 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
+#import "BlogService.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -208,7 +209,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)checkWPComAccountExists
 {
-    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext] defaultWordPressComAccount] != nil);
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    self.hasWPComAccount = [blogService blogCountVisibleForWPComAccounts] > 0;
 }
 
 - (void)configureRefreshControl
