@@ -95,6 +95,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     return self;
 }
@@ -201,6 +203,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
+
+#pragma mark - Notifications
+
+- (void)didChangeAccount:(NSNotification *)notification
+{
+    [self checkWPComAccountExists];
+    [self.tableView reloadData];
 }
 
 
