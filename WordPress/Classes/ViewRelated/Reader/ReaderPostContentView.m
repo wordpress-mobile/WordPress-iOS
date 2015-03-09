@@ -102,7 +102,7 @@
         [actionButtons addObject:self.likeButton];
     }
 
-    if (self.post.commentsOpen && !self.shouldHideComments) {
+    if (self.post.commentsOpen || [self.post.commentCount integerValue] > 0) {
         [actionButtons addObject:self.commentButton];
     }
 
