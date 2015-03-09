@@ -923,7 +923,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.readerTopic.type != ReaderTopicTypeList)) ? YES : NO;
-    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
+    cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.canShowActionButtons = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
     [cell configureCell:post];
