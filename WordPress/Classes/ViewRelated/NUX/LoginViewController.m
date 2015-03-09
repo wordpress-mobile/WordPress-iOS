@@ -198,13 +198,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    self.signInButton.enabled = [self isSignInEnabled];
-    return !self.authenticating;
+    return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    self.signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
@@ -697,10 +695,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
-    self.cancelButton.enabled               = self.isCancelButtonEnabled;
-    self.sendVerificationCodeButton.hidden  = !self.isSendCodeEnabled;
-    self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
     self.forgotPassword.hidden              = self.isForgotPasswordHidden;
+    self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
+    self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
     
     // SignIn Button
     NSString *signInTitle                   = self.signInButtonTitle;
@@ -710,7 +707,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     // Dotcom / SelfHosted Button
     NSString *toggleTitle                   = self.toggleSignInButtonTitle;
-    self.toggleSignInForm.hidden            = !self.isSignInToggleEnabled;
+    self.toggleSignInForm.hidden            = self.isSignInToggleHidden;
     self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
     [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
 }
@@ -1009,19 +1006,19 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
-- (BOOL)isSignInToggleEnabled
+- (BOOL)isSignInToggleHidden
 {
-    return !self.onlyDotComAllowed && !self.hasDefaultAccount && !self.authenticating;
+    return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
 }
 
-- (BOOL)isSendCodeEnabled
+- (BOOL)isSendCodeHidden
 {
-    return self.shouldDisplayMultifactor && !self.authenticating;
+    return !self.shouldDisplayMultifactor || self.authenticating;
 }
 
-- (BOOL)isAccountCreationEnabled
+- (BOOL)isAccountCreationHidden
 {
-    return self.hasDefaultAccount == NO && !self.authenticating;
+    return self.hasDefaultAccount || self.authenticating;
 }
 
 - (BOOL)isForgotPasswordHidden
