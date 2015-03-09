@@ -1,0 +1,2 @@
+NSLocationUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
+NSLocationWhenInUseUsageDescription = "WordPress would like to add your location to posts on sites where you have enabled geotagging.";
