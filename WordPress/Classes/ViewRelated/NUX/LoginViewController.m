@@ -680,9 +680,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     // Spinner!
     [self.signInButton showActivityIndicator:self.authenticating];
     
-    // Background Taps
-    self.tapGestureRecognizer.enabled       = self.isGesturesRecognizerEnabled;
-    
     // One Password
     BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
     self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
@@ -695,16 +692,15 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     self.usernameText.enabled               = self.isUsernameEnabled;
     self.passwordText.enabled               = self.isPasswordEnabled;
-    self.onePasswordButton.enabled          = self.isOnePasswordEnabled;
     self.siteUrlText.enabled                = self.isSiteUrlEnabled;
     self.multifactorText.enabled            = self.isMultifactorEnabled;
     
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
     self.cancelButton.enabled               = self.isCancelButtonEnabled;
-    self.forgotPassword.hidden              = !self.isForgotPasswordEnabled;
     self.sendVerificationCodeButton.hidden  = !self.isSendCodeEnabled;
     self.skipToCreateAccount.hidden         = !self.isAccountCreationEnabled;
+    self.forgotPassword.hidden              = self.isForgotPasswordHidden;
     
     // SignIn Button
     NSString *signInTitle                   = self.signInButtonTitle;
@@ -971,11 +967,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return !self.shouldDisplayMultifactor;
 }
 
-- (BOOL)isOnePasswordEnabled
-{
-    return !self.authenticating;
-}
-
 - (BOOL)isSiteUrlEnabled
 {
     return !self.userIsDotCom;
@@ -1015,8 +1006,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (BOOL)isSignInEnabled
 {
-    BOOL isEnabled = self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
-    return isEnabled && !self.authenticating;
+    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
 - (BOOL)isSignInToggleEnabled
@@ -1034,20 +1024,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return self.hasDefaultAccount == NO && !self.authenticating;
 }
 
-- (BOOL)isForgotPasswordEnabled
+- (BOOL)isForgotPasswordHidden
 {
-    BOOL isEnabled = (self.userIsDotCom || [self isUrlValid]) && !self.shouldDisplayMultifactor;
-    return isEnabled && !self.authenticating;
-}
-
-- (BOOL)isCancelButtonEnabled
-{
-    return !self.authenticating;
-}
-
-- (BOOL)isGesturesRecognizerEnabled
-{
-    return !self.authenticating;
+    BOOL isEnabled = self.userIsDotCom || self.isUrlValid;
+    return !isEnabled || self.authenticating || self.shouldDisplayMultifactor;
 }
 
 
@@ -1109,6 +1089,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     self.statusLabel.hidden = !(status.length > 0);
     self.statusLabel.text = status;
+    
+    self.view.userInteractionEnabled = !authenticating;
     
     [self updateControls];
 }
