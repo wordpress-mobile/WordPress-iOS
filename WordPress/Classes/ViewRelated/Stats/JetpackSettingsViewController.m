@@ -442,7 +442,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (IBAction)saveAction:(id)sender
 {
-    [self dismissKeyboard];
+    [self.view endEditing:YES];
     [self setAuthenticating:YES];
 
     void (^finishedBlock)() = ^() {
