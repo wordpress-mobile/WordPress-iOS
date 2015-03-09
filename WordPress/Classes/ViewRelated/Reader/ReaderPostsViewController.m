@@ -59,8 +59,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSNumber *siteIDToBlock;
-@property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
+@property (nonatomic, strong) ReaderPost *postForMenuActionSheet;
+@property (nonatomic, strong) NSMutableArray *postIDsForUndoBlockCells;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
@@ -95,6 +95,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
+
+        _postIDsForUndoBlockCells = [NSMutableArray array];
     }
     return self;
 }
@@ -558,25 +560,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Blocking
 
-- (void)blockSite
+- (void)blockSite:(ReaderPost *)post
 {
-    if (!self.siteIDToBlock) {
-        return;
-    }
-
+    NSNumber *postID = post.postID;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-
-    NSNumber *siteIDToBlock = self.siteIDToBlock;
-    self.siteIDToBlock = nil;
+    [self addBlockedPostID:postID];
 
     __weak __typeof(self) weakSelf = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
-        // Nothing to do.
+    [service flagSiteWithID:post.siteID asBlocked:YES success:^{
+
     } failure:^(NSError *error) {
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        [weakSelf.tableView reloadData];
-        weakSelf.postIDThatInitiatedBlock = nil;
+        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
+        [weakSelf removeBlockedPostID:postID];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -588,15 +584,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)unblockSiteForPost:(ReaderPost *)post
 {
+    NSNumber *postID = post.postID;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
+
     __weak __typeof(self) weakSelf = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
-        // Nothing to do.
-        weakSelf.postIDThatInitiatedBlock = nil;
+        [weakSelf removeBlockedPostID:postID];
+
     } failure:^(NSError *error) {
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        [self.tableView reloadData];
+        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -606,14 +603,32 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)setPostIDThatInitiatedBlock:(NSNumber *)postIDThatInitiatedBlock
+- (void)addBlockedPostID:(NSNumber *)postID
 {
-    // Comparing integer values is a valid check even if both values are nil, where an isEqual check would fail.
-    if ([_postIDThatInitiatedBlock integerValue] == [postIDThatInitiatedBlock integerValue]) {
+    if ([self.postIDsForUndoBlockCells containsObject:postID]) {
         return;
     }
 
-    _postIDThatInitiatedBlock = postIDThatInitiatedBlock;
+    [self.postIDsForUndoBlockCells addObject:postID];
+    [self updateAndPerformFetchRequest];
+}
+
+- (void)removeBlockedPostID:(NSNumber *)postID
+{
+    if (![self.postIDsForUndoBlockCells containsObject:postID]) {
+        return;
+    }
+
+    [self.postIDsForUndoBlockCells removeObject:postID];
+    [self updateAndPerformFetchRequest];
+}
+
+- (void)removeAllBlockedPostIDs
+{
+    if ([self.postIDsForUndoBlockCells count] == 0) {
+        return;
+    }
+    [self.postIDsForUndoBlockCells removeAllObjects];
     [self updateAndPerformFetchRequest];
 }
 
@@ -680,7 +695,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         ReaderTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.postIDThatInitiatedBlock = nil;
+                [weakSelf removeAllBlockedPostIDs];
                 if (success) {
                     success(count, hasMore);
                 }
@@ -706,7 +721,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         ReaderTopic *topicInContext = [self topicInContext:context];
         [service backfillPostsForTopic:topicInContext skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.postIDThatInitiatedBlock = nil;
+                [weakSelf removeAllBlockedPostIDs];
                 if (success) {
                     success(count, hasMore);
                 }
@@ -857,8 +872,8 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     NSPredicate *predicate;
 
-    if (self.postIDThatInitiatedBlock) {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID = %@)", self.readerTopic, self.postIDThatInitiatedBlock];
+    if ([self.postIDsForUndoBlockCells count]) {
+        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
     } else {
         predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
     }
@@ -1017,11 +1032,10 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([UIDevice isPad]) {
+    ReaderPost *post = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
+    if ([UIDevice isPad] || post.isSiteBlocked) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-
-    ReaderPost *post = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 
     if (post.isSiteBlocked) {
         [self unblockSiteForPost:post];
@@ -1126,8 +1140,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender
 {
     ReaderPost *post = [self postFromCellSubview:sender];
-    self.siteIDToBlock = post.siteID;
-    self.postIDThatInitiatedBlock = post.postID;
+    self.postForMenuActionSheet = post;
 
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
@@ -1189,13 +1202,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    ReaderPost *post = self.postForMenuActionSheet;
+    self.postForMenuActionSheet = nil;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
-        self.siteIDToBlock = nil;
-        self.postIDThatInitiatedBlock = nil;
         return;
     }
 
-    [self blockSite];
+    [self blockSite:post];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
