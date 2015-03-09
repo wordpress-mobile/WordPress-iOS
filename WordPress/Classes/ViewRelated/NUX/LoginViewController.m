@@ -1152,7 +1152,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                              success:^(NSString *authToken) {
                                  
                                  [self finishedAuthenticating];
-                                 self.userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username authToken:authToken];
                                  
                              } failure:^(NSError *error) {
@@ -1175,6 +1174,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
 {
     [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
+    
+    self.userIsDotCom = YES;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
