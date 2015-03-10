@@ -125,7 +125,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }
 
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ AND url = %@", @"visible = YES", url];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
                                                                    ascending:YES]];
