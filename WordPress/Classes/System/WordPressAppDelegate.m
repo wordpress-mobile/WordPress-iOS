@@ -377,18 +377,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             }
         });
     }];
-    
-#ifdef GCOV
-    // The following code has been added following Apple's documentation on Testing Coverage support
-    // in Xcode.
-    //
-    // Check the following link out for more information:
-    // https://developer.apple.com/library/ios/qa/qa1514/_index.html
-    //
-    extern void __gcov_flush();
-    
-    __gcov_flush();
-#endif
 }
 
 - (NSString *)currentlySelectedScreen
