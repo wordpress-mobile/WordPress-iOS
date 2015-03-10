@@ -596,6 +596,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
+        readerViewController.title = NSLocalizedString(@"Post", @"Reader title when pushed from Notifications");
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
     }
 }
