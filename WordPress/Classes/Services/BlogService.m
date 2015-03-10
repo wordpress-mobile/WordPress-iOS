@@ -24,8 +24,6 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const BlogEntity = @"Blog";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
 NSString *const BlogName = @"blogName";
-NSString *const IsVisiblePredicate = @"visible = YES";
-NSString *const IsWPComAndVisiblePredicate = @"account.isWpcom = YES AND visible = YES";
 NSString *const GetFeatures = @"wpcom.getFeatures";
 NSString *const VideopressEnabled = @"videopress_enabled";
 NSString *const XmlRpc = @"xmlrpc";
@@ -36,7 +34,7 @@ NSString *const TimeZoneName = @"timezone";
 NSString *const GmtOffset = @"gmt_offset";
 NSString *const TimeZone = @"time_zone";
 NSString *const HttpsPrefix = @"https://";
-float const OneHourInSeconds = 60.0 * 60.0;
+CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 @interface BlogService ()
 
@@ -127,7 +125,7 @@ float const OneHourInSeconds = 60.0 * 60.0;
     }
 
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ AND url = %@", IsVisiblePredicate, url];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ AND url = %@", @"visible = YES", url];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
                                                                    ascending:YES]];
@@ -152,7 +150,7 @@ float const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)firstBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsVisiblePredicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
@@ -171,7 +169,7 @@ float const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)firstWPComBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsWPComAndVisiblePredicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
@@ -418,7 +416,7 @@ float const OneHourInSeconds = 60.0 * 60.0;
 
 - (NSInteger)blogCountVisibleForWPComAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsWPComAndVisiblePredicate];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
     
     return [self blogCountWithPredicate:predicate];
 }
