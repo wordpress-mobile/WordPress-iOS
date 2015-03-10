@@ -190,27 +190,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-
-    // TODO:
-    // This snippet prevents an AutoLayout constraint error message, due to an 'Out of Bounds' bottom constraint.
-    // We can't really calculate the exact bottom padding required  before the error is printed, since the target NavBar's height
-    // and KeyboardHeight are unknown.
-    // During the rotation sequence, the OS itself will quickly post the 'KeyboardWillHide' / 'KeyboardWillShow' notifications,
-    // and the exact bottom inset will be properly calculated. Please, nuke this if we (ever) find a better approach.
-    //
-    if (!self.replyTextView.isFirstResponder) {
-        return;
-    }
-
-    CGFloat delta = size.height - PostHeaderHeight - self.replyTextViewBottomConstraint.constant;
-    if (delta < 0) {
-        self.replyTextViewBottomConstraint.constant += delta;
-    }
-}
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     // Remove the no results view or else the position will abruptly adjust after rotation
@@ -442,6 +421,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                       attribute:NSLayoutAttributeBottom
                                                                      multiplier:1.0
                                                                        constant:0.0];
+    self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
 
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
