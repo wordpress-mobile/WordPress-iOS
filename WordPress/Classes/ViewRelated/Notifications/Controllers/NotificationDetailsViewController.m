@@ -768,13 +768,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     BOOL success = false;
     
-    if (!success && self.note.isComment) {
-        success = [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
-    }
-    
     if (!success && self.note.isFollow) {
         success = [self displayFollowersWithSiteID:self.note.metaSiteID];
         success = YES;
+    }
+    
+    if (!success && self.note.metaCommentID) {
+        success = [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
     }
     
     if (!success) {
