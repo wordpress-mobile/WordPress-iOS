@@ -28,6 +28,7 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
+#import "BlogService.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -915,11 +916,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
     cell.postView.canShowActionButtons = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
+    
+    [self setReblogButtonVisibilityOfPostView:cell.postView];
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 
     cell.postView.delegate = self;
+}
+
+- (void)setReblogButtonVisibilityOfPostView:(ReaderPostContentView *)postView
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    postView.shouldHideReblogButton = ![blogService hasVisibleWPComAccounts];
 }
 
 - (void)configureBlockedCell:(ReaderBlockedTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
