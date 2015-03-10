@@ -294,7 +294,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 - (void)refresh
 {
-    self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
+    self.title = self.post.postTitle ?: NSLocalizedString(@"Post", @"Placeholder title for ReaderPostDetails.");
 
     [self refreshPostView];
 
