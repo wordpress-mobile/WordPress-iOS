@@ -1,4 +1,5 @@
 #import <XCTest/XCTest.h>
+#import <OCMock/OCMock.h>
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -9,6 +10,7 @@
 @interface BlogServiceTest : XCTestCase
 
 @property (nonatomic, strong) BlogService *blogService;
+@property (nonatomic, strong) id blogServiceMock;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) TestContextManager *testContextManager;
 
@@ -40,21 +42,22 @@
                                   },
                           };
     self.blog.account = account;
+    
+    self.blogServiceMock = OCMPartialMock(self.blogService);
 
     [service setDefaultWordPressComAccount:account];
 }
 
 - (void)tearDown
 {
-    [super tearDown];
-    
-    // Cleans up values saved in NSUserDefaults
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    if ([service defaultWordPressComAccount]) {
-        [service removeDefaultWordPressComAccount];
-    }
-    
+    self.blogService = nil;
+    self.blogServiceMock = nil;
+    self.blog = nil;
     self.testContextManager = nil;
+    
+    [self cleanUpNSUserDefaultValues];
+
+    [super tearDown];
 }
 
 - (void)testTimeZoneForBlogNoTimeZoneInOptions
@@ -120,6 +123,26 @@
     XCTAssertEqualObjects(timeZone, [NSTimeZone timeZoneForSecondsFromGMT:(-5 * 60 * 60)], @"Timezone should be GMT-5");
 }
 
+- (void)testHasVisibleWPComAccountsWithVisibleWPComAccounts
+{
+    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(1);
+    
+    XCTAssertTrue([self.blogService hasVisibleWPComAccounts]);
+}
 
+- (void)testHasVisibleWPComAccountsWithNoVisibleWPComAccounts
+{
+    OCMStub([self.blogServiceMock blogCountVisibleForWPComAccounts]).andReturn(0);
+    
+    XCTAssertFalse([self.blogService hasVisibleWPComAccounts]);
+}
+
+- (void)cleanUpNSUserDefaultValues
+{
+    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    if ([service defaultWordPressComAccount]) {
+        [service removeDefaultWordPressComAccount];
+    }
+}
 
 @end
