@@ -20,13 +20,28 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 
+NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
+NSString *const BlogEntity = @"Blog";
+NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
+NSString *const BlogName = @"blogName";
+NSString *const IsVisiblePredicate = @"visible = YES";
+NSString *const IsWPComAndVisiblePredicate = @"account.isWpcom = YES AND visible = YES";
+NSString *const GetFeatures = @"wpcom.getFeatures";
+NSString *const VideopressEnabled = @"videopress_enabled";
+NSString *const XmlRpc = @"xmlrpc";
+NSString *const Standard = @"standard";
+NSString *const MinimumVersion = @"3.6";
+NSString *const DateCreatedGmt = @"date_created_gmt";
+NSString *const TimeZoneName = @"timezone";
+NSString *const GmtOffset = @"gmt_offset";
+NSString *const TimeZone = @"time_zone";
+NSString *const HttpsPrefix = @"https://";
+
 @interface BlogService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
-
-NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @implementation BlogService
 
@@ -42,7 +57,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
+    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:BlogEntity];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
 
     fetchRequest.predicate = predicate;
@@ -95,7 +110,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     if (!url) {
         // Check for the old key and migrate the value if it exists.
         // TODO: We can probably discard this in the 4.2 release.
-        NSString *oldKey = @"EditPostViewControllerLastUsedBlogURL";
+        NSString *oldKey = EditPostViewControllerLastUsedBlogURLOldKey;
         url = [defaults stringForKey:oldKey];
         if (url) {
             [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
@@ -108,10 +123,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return nil;
     }
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ AND url = %@", IsVisiblePredicate, url];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     if (error) {
@@ -131,10 +146,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (Blog *)firstBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsVisiblePredicate];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
@@ -148,10 +163,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (Blog *)firstWPComBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsWPComAndVisiblePredicate];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
@@ -310,11 +325,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         return;
     }
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:@"wpcom.getFeatures" parameters:parameters];
+    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:GetFeatures parameters:parameters];
     WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
-        if (([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:@"videopress_enabled"] != nil)) {
-            videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
+        if (([responseObject isKindOfClass:[NSDictionary class]]) && ([responseObject objectForKey:VideopressEnabled] != nil)) {
+            videoEnabled = [[responseObject objectForKey:VideopressEnabled] boolValue];
         } else {
             videoEnabled = YES;
         }
@@ -351,10 +366,10 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (NSArray *)blogsForAllAccounts
 {
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES];
 
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:BlogEntity inManagedObjectContext:self.managedObjectContext]];
     [request setSortDescriptors:@[sortDescriptor]];
 
     NSError *error;
@@ -384,7 +399,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         Blog *blogToReturn = [foundBlogs anyObject];
         for (Blog *b in foundBlogs) {
             // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
-            if (!([b.url hasPrefix:@"https://"])) {
+            if (!([b.url hasPrefix:HttpsPrefix])) {
                 blogToReturn = b;
                 break;
             }
@@ -412,8 +427,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
 {
-    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:@"xmlrpc"]];
-    NSSet *localSet = [account.blogs valueForKey:@"xmlrpc"];
+    NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:XmlRpc]];
+    NSSet *localSet = [account.blogs valueForKey:XmlRpc];
     NSMutableSet *toDelete = [localSet mutableCopy];
     [toDelete minusSet:remoteSet];
 
@@ -517,7 +532,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog" inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:BlogEntity inManagedObjectContext:self.managedObjectContext]];
     [request setIncludesSubentities:NO];
 
     if (predicate) {
@@ -539,7 +554,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
                               [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     [request setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"date_created_gmt" ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DateCreatedGmt ascending:YES];
     [request setSortDescriptors:@[sortDescriptor]];
     request.includesSubentities = NO;
     request.resultType = NSCountResultType;
@@ -560,14 +575,13 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
             if (blog) {
                 blog.options = [NSDictionary dictionaryWithDictionary:options];
-                NSString *minimumVersion = @"3.6";
                 float version = [[blog version] floatValue];
-                if (version < [minimumVersion floatValue]) {
-                    if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue]) {
+                if (version < [MinimumVersion floatValue]) {
+                    if (blog.lastUpdateWarning == nil || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue]) {
                         // TODO :: Remove UI call from service layer
                         [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
-                        blog.lastUpdateWarning = minimumVersion;
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
+                        blog.lastUpdateWarning = MinimumVersion;
                     }
                 }
 
@@ -587,9 +601,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:@"standard"]) {
+                if (![formats objectForKey:Standard]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[Standard] = NSLocalizedString(Standard, @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;
@@ -606,9 +620,9 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog
 {
-    NSString *timeZoneName = [blog getOptionValue:@"timezone"];
-    NSNumber *gmtOffSet = [blog getOptionValue:@"gmt_offset"];
-    id optionValue = [blog getOptionValue:@"time_zone"];
+    NSString *timeZoneName = [blog getOptionValue:TimeZoneName];
+    NSNumber *gmtOffSet = [blog getOptionValue:GmtOffset];
+    id optionValue = [blog getOptionValue:TimeZone];
     
     NSTimeZone *timeZone = nil;
     if (timeZoneName.length > 0) {
