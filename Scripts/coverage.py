@@ -314,7 +314,6 @@ def main(arguments):
     return
 
 main(sys.argv)
-#selectSimulator()
 print("Done.")
 
 
