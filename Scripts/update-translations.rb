@@ -44,6 +44,7 @@ if Dir.pwd =~ /Scripts/
 end
 
 LANGS={
+  'ar' => 'ar',         # Arabic
   'da' => 'da',         # Danish
   'de' => 'de',         # German
   'es' => 'es',         # Spanish
