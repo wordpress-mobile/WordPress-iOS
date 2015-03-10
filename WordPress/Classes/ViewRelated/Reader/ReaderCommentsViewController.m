@@ -65,6 +65,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic) BOOL canComment;
+@property (nonatomic) BOOL isLoggedIn;
+
 @end
 
 
@@ -99,7 +102,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super viewDidLoad];
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
-    
+    [self checkIfLoggedIn];
+    [self checkIfCanComment];
+
     [self configureNavbar];
     [self configurePostHeader];
     [self configureTableView];
@@ -188,7 +193,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
 {
     [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
+
     // TODO:
     // This snippet prevents an AutoLayout constraint error message, due to an 'Out of Bounds' bottom constraint.
     // We can't really calculate the exact bottom padding required  before the error is printed, since the target NavBar's height
@@ -199,7 +204,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (!self.replyTextView.isFirstResponder) {
         return;
     }
-    
+
     CGFloat delta = size.height - PostHeaderHeight - self.replyTextViewBottomConstraint.constant;
     if (delta < 0) {
         self.replyTextViewBottomConstraint.constant += delta;
@@ -437,7 +442,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                       attribute:NSLayoutAttributeBottom
                                                                      multiplier:1.0
                                                                        constant:0.0];
-    
+
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
     if ([UIDevice isPad]) {
@@ -546,6 +551,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
+- (void)checkIfCanComment
+{
+    self.canComment = self.post.commentsOpen && self.isLoggedIn;
+}
+
+- (void)checkIfLoggedIn
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+}
 
 #pragma mark - Accessor methods
 
@@ -585,11 +600,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return _activityFooter;
 }
 
-- (BOOL)canComment
-{
-    return self.post.commentsOpen;
-}
-
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
@@ -597,7 +607,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)shouldDisplayReplyTextView
 {
-    return self.post.commentsOpen;
+    return self.canComment;
 }
 
 - (BOOL)shouldDisplaySuggestionsTableView
@@ -939,6 +949,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
     ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
+    cell.shouldEnableLoggedinFeatures = self.isLoggedIn;
+    cell.shouldShowReply = self.canComment;
+
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     if (comment.depth > 0 && indexPath.row > 0) {
@@ -1114,7 +1127,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    if (![self canComment]) {
+    if (!self.canComment) {
         return;
     }
 
