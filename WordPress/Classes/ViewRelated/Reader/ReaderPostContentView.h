@@ -64,7 +64,7 @@
 @property (nonatomic) BOOL shouldShowAttributionButton;
 
 /**
- A Boolean value specifying whether the view should display the reblog button.
+ A Boolean value specifying whether the view should hide the reblog button.
  Determined by there being a visible WPCom blog
  */
 @property (nonatomic) BOOL shouldHideReblogButton;
