@@ -2,6 +2,7 @@ import glob
 import os
 import shutil
 import subprocess
+import StringIO
 import sys
 
 # Directories
@@ -19,8 +20,14 @@ gcovOutputFileName = gcovOutputDirectory + "/gcov.output"
 allGcdaFiles = "/*.gcda"
 allGcnoFiles = "/*.gcno"
 
-# Simulator
-simulatorPlatform = "iOS Simulator,name=iPhone 6 (8.1),OS=8.1"
+# Data conversion methods
+
+def IsInt(i):
+    try:
+        int(i)
+        return True
+    except ValueError:
+        return False
 
 # Directory methods
 
@@ -50,10 +57,11 @@ def removeFileIfNecessary(file):
         os.remove(gcovOutputFileName)
     return
 
-#Xcode interaction methods
+# Xcode interaction methods
 
-def xcodeBuildOperation(operation):
+def xcodeBuildOperation(operation, simulator):
     assert operation
+    print "AHOI: " + simulator
     return subprocess.call(["xcodebuild",
                             operation,
                             "-workspace",
@@ -63,20 +71,37 @@ def xcodeBuildOperation(operation):
                             "-configuration",
                             "Debug",
                             "-destination",
-                            "platform=" + simulatorPlatform,
+                            "platform=" + simulator,
                             "-derivedDataPath",
                             derivedDataDirectory,
                             "GCC_GENERATE_TEST_COVERAGE_FILES=YES",
                             "GCC_INSTRUMENT_PROGRAM_FLOW_ARCS=YES"])
 
-def xcodeClean():
-    return xcodeBuildOperation("clean")
+def xcodeClean(simulator):
+    return xcodeBuildOperation("clean", simulator)
 
-def xcodeBuild():
-    return xcodeBuildOperation("build")
+def xcodeBuild(simulator):
+    return xcodeBuildOperation("build", simulator)
 
-def xcodeTest():
-    return xcodeBuildOperation("test")
+def xcodeTest(simulator):
+    return xcodeBuildOperation("test", simulator)
+
+# Simulator interaction methods
+
+def simulatorEraseContentAndSettings(simulator):
+    
+    deviceID = simulator[2]
+    
+    command = ["xcrun",
+               "simctl",
+               "erase",
+               deviceID]
+    result = subprocess.call(command)
+    
+    if (result != 0):
+        exit("Error: subprocess xcrun failed to erase content and settings for device ID: " + deviceID + ".")
+    
+    return
 
 # Caching methods
 
@@ -100,14 +125,14 @@ def createInitialDirectories():
     createDirectoryIfNecessary(finalReport)
     return
 
-def generateGcdaAndGcnoFiles():
-    if xcodeClean() != 0:
+def generateGcdaAndGcnoFiles(simulator):
+    if xcodeClean(simulator) != 0:
         sys.exit("Exit: the clean procedure failed.")
     
-    if xcodeBuild() != 0:
+    if xcodeBuild(simulator) != 0:
         sys.exit("Exit: the build procedure failed.")
     
-    if xcodeTest() != 0:
+    if xcodeTest(simulator) != 0:
         sys.exit("Exit: the test procedure failed.")
     
     cacheAllGcdaFiles()
@@ -130,6 +155,86 @@ def processGcdaAndGcnoFiles():
                         cwd = gcovOutputDirectory,
                         stdout = gcovOutputFile)
     return
+
+# Selecting a Simulator
+
+def availableSimulators():
+    command = ["xcrun",
+               "simctl",
+               "list",
+               "devices"]
+
+    process = subprocess.Popen(command,
+                               stdout = subprocess.PIPE)
+    out, err = process.communicate()
+
+    simulators = availableSimulatorsFromXcrunOutput(out)
+
+    return simulators
+
+def availableSimulatorsFromXcrunOutput(output):
+    outStringIO = StringIO.StringIO(output)
+    
+    iOSVersion = ""
+    simulators = []
+    
+    line = outStringIO.readline()
+    line = line.strip("\r").strip("\n")
+    
+    assert line == "== Devices =="
+
+    while True:
+        line = outStringIO.readline()
+        line = line.strip("\r").strip("\n")
+        
+        if line.startswith("-- "):
+            iOSVersion = line.strip("-- iOS ").strip(" --")
+        elif line:
+            name = line[4:line.rfind(" (", 0, line.rfind(" ("))]
+            id = line[line.rfind("(", 0, line.rfind("(")) + 1:line.rfind(")", 0, line.rfind(")"))]
+            simulators.append([iOSVersion, name, id])
+        else:
+            break
+
+    return simulators
+
+def askUserToSelectSimulator(simulators):
+    option = ""
+    
+    while True:
+        print "\r\nPlease select a simulator:\r\n"
+        
+        for idx, simulator in enumerate(simulators):
+            print str(idx) + " - iOS Version: " + simulator[0] + " - Name: " + simulator[1] + " - ID: " + simulator[2]
+        print "x - Exit\r\n"
+        
+        option = raw_input(": ")
+        
+        if option == "x":
+            exit(0)
+        elif IsInt(option):
+            intOption = int(option)
+            if intOption >= 0 and intOption < len(simulators):
+                break
+
+        print "Invalid option!"
+    return int(option)
+
+def selectSimulator():
+    result = None
+    simulators = availableSimulators()
+    
+    if (len(simulators) > 0):
+        option = askUserToSelectSimulator(simulators)
+        
+        assert option >= 0 and option < len(simulators)
+        
+        simulatorEraseContentAndSettings(simulators[option])
+        
+        result = "iOS Simulator,name=" + simulators[option][1] + ",OS=" + simulators[option][0]
+        print "Selected simulator: " + result
+
+    return result
 
 # Parsing the data
 
@@ -199,7 +304,9 @@ def parseGcovFiles():
 def main(arguments):
     createInitialDirectories()
 
-    generateGcdaAndGcnoFiles()
+    simulator = selectSimulator()
+    
+    generateGcdaAndGcnoFiles(simulator)
     processGcdaAndGcnoFiles()
     parseGcovFiles()
     
@@ -207,6 +314,7 @@ def main(arguments):
     return
 
 main(sys.argv)
+#selectSimulator()
 print("Done.")
 
 
