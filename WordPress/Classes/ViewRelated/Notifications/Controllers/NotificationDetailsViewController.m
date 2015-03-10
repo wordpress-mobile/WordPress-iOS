@@ -507,12 +507,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
-
-        if (self.note.isComment) {
-            [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
-        } else {
-            [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
-        }
+        
+        [self openNotificationHeader:group];
     }
 }
 
@@ -735,7 +731,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 }
 
 
-#pragma mark - Helpers
+#pragma mark - Associated Resources
 
 - (void)openURL:(NSURL *)url
 {
@@ -762,6 +758,34 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [self.tableView deselectSelectedRowWithAnimation:YES];
     }
 }
+
+- (void)openNotificationHeader:(NotificationBlockGroup *)header
+{
+    NSParameterAssert(header);
+    NSParameterAssert(header.type == NoteBlockGroupTypeHeader);
+    
+    BOOL success = false;
+    
+    if (!success && self.note.isComment) {
+        success = [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        success = [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayWebViewWithURL:resourceURL];
+    }
+    
+    if (!success) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
+
+
+#pragma mark - Helpers
 
 - (BOOL)displayReaderWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
