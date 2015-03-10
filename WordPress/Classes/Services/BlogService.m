@@ -411,6 +411,13 @@ float const OneHourInSeconds = 60.0 * 60.0;
     return [self blogCountWithPredicate:predicate];
 }
 
+- (NSInteger)blogCountVisibleForWPComAccounts
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:IsWPComAndVisiblePredicate];
+    
+    return [self blogCountWithPredicate:predicate];
+}
+
 - (NSInteger)blogCountVisibleForAllAccounts
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@"
