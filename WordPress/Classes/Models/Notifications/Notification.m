@@ -32,6 +32,7 @@ NSString const *NoteTypeUser            = @"user";
 NSString const *NoteTypeComment         = @"comment";
 NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypePost            = @"post";
+NSString const *NoteTypeFollow          = @"follow";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -603,6 +604,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isPost
 {
     return [self.type isEqual:NoteTypePost];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteTypeFollow];
 }
 
 - (BOOL)isBadge
