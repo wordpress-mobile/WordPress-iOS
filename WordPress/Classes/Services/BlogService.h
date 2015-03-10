@@ -70,6 +70,8 @@
                               success:(void (^)(BOOL enabled))success
                               failure:(void (^)(NSError *error))failure;
 
+- (BOOL)hasVisibleWPComAccounts;
+
 - (NSInteger)blogCountForAllAccounts;
 
 - (NSInteger)blogCountSelfHosted;

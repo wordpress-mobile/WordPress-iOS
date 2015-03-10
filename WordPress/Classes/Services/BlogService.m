@@ -399,6 +399,11 @@ float const OneHourInSeconds = 60.0 * 60.0;
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
+- (BOOL)hasVisibleWPComAccounts
+{
+    return [self blogCountVisibleForWPComAccounts] > 0;
+}
+
 - (NSInteger)blogCountForAllAccounts
 {
     return [self blogCountWithPredicate:nil];
