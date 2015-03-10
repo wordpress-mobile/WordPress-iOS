@@ -1126,7 +1126,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
-        readerViewController.title = NSLocalizedString(@"Post", @"Reader title when pushed from Notifications");
         [readerViewController setupWithPostID:postID siteID:siteID];
     }
 }

@@ -295,7 +295,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 - (void)refresh
 {
     // Allow the Title Placeholder to be set externally. If empty, fall back to "Reader"
-    self.title = self.post.postTitle ?: (self.title ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails."));
+    self.title = self.post.postTitle ?: NSLocalizedString(@"Post", @"Placeholder title for ReaderPostDetails.");
 
     [self refreshPostView];
 
