@@ -4,8 +4,7 @@
 @class Blog;
 @class WPAccount;
 
-@interface BlogService : NSObject <LocalCoreDataService>
-
+@interface BlogService : NSObject<LocalCoreDataService>
 
 /**
  Returns the blog that matches with a given blogID
@@ -45,11 +44,17 @@
  */
 - (Blog *)firstWPComBlog;
 
+- (void)syncBlogsForAccount:(WPAccount *)account
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
 
-- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure;
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure;
 
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
  *  Used for instances where the entire blog should be refreshed or initially downloaded.
@@ -57,9 +62,13 @@
  *  \param success Completion block called if the operation was a success
  *  \param failure Completion block called if the operation was a failure
  */
-- (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncBlog:(Blog *)blog
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure;
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
+- (void)checkVideoPressEnabledForBlog:(Blog *)blog
+                              success:(void (^)(BOOL enabled))success
+                              failure:(void (^)(NSError *error))failure;
 
 - (NSInteger)blogCountForAllAccounts;
 
@@ -87,7 +96,8 @@
  @param account the account the blog belongs to
  @return the blog if one was found, otherwise it returns nil
  */
-- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account;
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
+                   inAccount:(WPAccount *)account;
 
 /**
  Creates a blank `Blog` object for this account

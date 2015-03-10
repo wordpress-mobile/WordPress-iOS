@@ -36,6 +36,7 @@ NSString *const TimeZoneName = @"timezone";
 NSString *const GmtOffset = @"gmt_offset";
 NSString *const TimeZone = @"time_zone";
 NSString *const HttpsPrefix = @"https://";
+float const OneHourInSeconds = 60.0 * 60.0;
 
 @interface BlogService ()
 
@@ -63,7 +64,8 @@ NSString *const HttpsPrefix = @"https://";
     fetchRequest.predicate = predicate;
 
     NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                error:&error];
 
     if (error) {
         DDLogError(@"Error while fetching Blog by blogID: %@", error);
@@ -76,7 +78,8 @@ NSString *const HttpsPrefix = @"https://";
 - (void)flagBlogAsLastUsed:(Blog *)blog
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:blog.url forKey:LastUsedBlogURLDefaultsKey];
+    [defaults setObject:blog.url
+                 forKey:LastUsedBlogURLDefaultsKey];
     [defaults synchronize];
 }
 
@@ -104,7 +107,6 @@ NSString *const HttpsPrefix = @"https://";
 
 - (Blog *)lastUsedBlog
 {
-    // Try to get the last used blog, if there is one.
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     NSString *url = [defaults stringForKey:LastUsedBlogURLDefaultsKey];
     if (!url) {
@@ -113,7 +115,8 @@ NSString *const HttpsPrefix = @"https://";
         NSString *oldKey = EditPostViewControllerLastUsedBlogURLOldKey;
         url = [defaults stringForKey:oldKey];
         if (url) {
-            [defaults setObject:url forKey:LastUsedBlogURLDefaultsKey];
+            [defaults setObject:url
+                         forKey:LastUsedBlogURLDefaultsKey];
             [defaults removeObjectForKey:oldKey];
             [defaults synchronize];
         }
@@ -126,9 +129,12 @@ NSString *const HttpsPrefix = @"https://";
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%@ AND url = %@", IsVisiblePredicate, url];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
+                                                                   ascending:YES]];
     NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                error:&error];
+    
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
         return nil;
@@ -149,9 +155,11 @@ NSString *const HttpsPrefix = @"https://";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:IsVisiblePredicate];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
+                                                                   ascending:YES]];
     NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                error:&error];
 
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
@@ -166,9 +174,11 @@ NSString *const HttpsPrefix = @"https://";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:IsWPComAndVisiblePredicate];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:BlogEntity];
     [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES]];
+    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:BlogName
+                                                                   ascending:YES]];
     NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
+                                                                error:&error];
 
     if (error) {
         DDLogError(@"Couldn't fetch blogs: %@", error);
@@ -178,14 +188,18 @@ NSString *const HttpsPrefix = @"https://";
     return [results firstObject];
 }
 
-- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncBlogsForAccount:(WPAccount *)account
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
 {
     DDLogMethod();
 
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
-            [self mergeBlogs:blogs withAccount:account completion:success];
+            [self mergeBlogs:blogs
+                 withAccount:account
+                  completion:success];
             
             Blog *defaultBlog = account.defaultBlog;
             TodayExtensionService *service = [TodayExtensionService new];
@@ -194,7 +208,8 @@ NSString *const HttpsPrefix = @"https://";
             if (WIDGETS_EXIST
                 && !widgetIsConfigured
                 && defaultBlog != nil
-                && account.isWpcom) {
+                && account.isWpcom)
+            {
                 NSNumber *siteId = defaultBlog.blogID;
                 NSString *blogName = defaultBlog.blogName;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
@@ -209,58 +224,94 @@ NSString *const HttpsPrefix = @"https://";
                 });
             }
         }];
-    } failure:^(NSError *error) {
-        DDLogError(@"Error syncing blogs: %@", error);
+    }
+                        failure:^(NSError *error) {
+                            DDLogError(@"Error syncing blogs: %@", error);
 
-        if (failure) {
-            failure(error);
-        }
-    }];
+                            if (failure) {
+                                failure(error);
+                            }
+                        }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
+    [remote syncOptionsForBlog:blog
+                       success:[self optionsHandlerWithBlogObjectID:blog.objectID
+                                                  completionHandler:success]
+                       failure:failure];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure
 {
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:success] failure:failure];
+    [remote syncPostFormatsForBlog:blog
+                           success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
+                                                          completionHandler:success]
+                           failure:failure];
 }
 
-- (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncBlog:(Blog *)blog
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure
 {
     if ([self shouldStaggerRequestsForBlog:blog]) {
         [self syncBlogStaggeringRequests:blog];
+        
         return;
     }
 
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
-        DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
-    }];
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
-        DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
-    }];
+    [remote syncOptionsForBlog:blog
+                       success:[self optionsHandlerWithBlogObjectID:blog.objectID
+                                                               completionHandler:nil]
+                       failure:^(NSError *error) {
+                           DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+                       }];
+    
+    [remote syncPostFormatsForBlog:blog
+                           success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
+                                                          completionHandler:nil]
+                           failure:^(NSError *error) {
+                               DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+                           }];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
     // Right now, none of the callers care about the results of the sync
     // We're ignoring the callbacks here but this needs refactoring
-    [commentService syncCommentsForBlog:blog success:nil failure:nil];
+    [commentService syncCommentsForBlog:blog
+                                success:nil
+                                failure:nil];
 
     CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
+    [categoryService syncCategoriesForBlog:blog
+                                   success:nil
+                                   failure:nil];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    
     // FIXME: this is hacky, but XML-RPC doesn't support fetching "any" type of post
     // Ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
     if (blog.restApi) {
-        [postService syncPostsOfType:PostServiceTypeAny forBlog:blog success:nil failure:nil];
+        [postService syncPostsOfType:PostServiceTypeAny
+                             forBlog:blog
+                             success:nil
+                             failure:nil];
     } else {
-        [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:nil failure:nil];
-        [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:nil failure:nil];
+        [postService syncPostsOfType:PostServiceTypePost
+                             forBlog:blog
+                             success:nil
+                             failure:nil];
+        [postService syncPostsOfType:PostServiceTypePage
+                             forBlog:blog
+                             success:nil
+                             failure:nil];
     }
 }
 
@@ -269,11 +320,8 @@ NSString *const HttpsPrefix = @"https://";
     __weak __typeof(self) weakSelf = self;
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-
     [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:^{
-
         [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
-
             __strong __typeof(weakSelf) strongSelf = weakSelf;
             id<BlogServiceRemote> remote = [strongSelf remoteForBlog:blog];
             [remote syncOptionsForBlog:blog success:[strongSelf optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
@@ -290,11 +338,8 @@ NSString *const HttpsPrefix = @"https://";
 
             CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
-
         } failure:nil];
-
     } failure:nil];
-
 }
 
 // Batch requests to sites using basic http auth to avoid auth failures in certain cases.
@@ -315,15 +360,22 @@ NSString *const HttpsPrefix = @"https://";
             }
         }];
     }];
+    
     return stagger;
 }
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
+- (void)checkVideoPressEnabledForBlog:(Blog *)blog
+                              success:(void (^)(BOOL enabled))success
+                              failure:(void (^)(NSError *error))failure
 {
     if (!blog.isWPcom) {
-        if (success) success(YES);
+        if (success) {
+            success(YES);
+        }
+        
         return;
     }
+    
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
     WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:GetFeatures parameters:parameters];
     WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -354,26 +406,31 @@ NSString *const HttpsPrefix = @"https://";
 
 - (NSInteger)blogCountSelfHosted
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@"
+                                                argumentArray:@[@(NO)]];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSInteger)blogCountVisibleForAllAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@" argumentArray:@[@(YES)]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@"
+                                                argumentArray:@[@(YES)]];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSArray *)blogsForAllAccounts
 {
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:BlogName ascending:YES];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:BlogName
+                                                                     ascending:YES];
 
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:BlogEntity inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:BlogEntity
+                                   inManagedObjectContext:self.managedObjectContext]];
     [request setSortDescriptors:@[sortDescriptor]];
 
     NSError *error;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request error:&error];
+    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request
+                                                              error:&error];
 
     if (error) {
         DDLogError(@"Error while retrieving all blogs");
@@ -418,14 +475,17 @@ NSString *const HttpsPrefix = @"https://";
 
 - (Blog *)createBlogWithAccount:(WPAccount *)account
 {
-    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class]) inManagedObjectContext:self.managedObjectContext];
+    Blog *blog = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Blog class])
+                                               inManagedObjectContext:self.managedObjectContext];
     blog.account = account;
     return blog;
 }
 
 #pragma mark - Private methods
 
-- (void)mergeBlogs:(NSArray *)blogs withAccount:(WPAccount *)account completion:(void (^)())completion
+- (void)mergeBlogs:(NSArray *)blogs
+       withAccount:(WPAccount *)account
+        completion:(void (^)())completion
 {
     NSSet *remoteSet = [NSSet setWithArray:[blogs valueForKey:XmlRpc]];
     NSSet *localSet = [account.blogs valueForKey:XmlRpc];
@@ -443,9 +503,11 @@ NSString *const HttpsPrefix = @"https://";
     // Go through each remote incoming blog and make sure we're up to date with titles, etc.
     // Also adds any blogs we don't have
     for (RemoteBlog *remoteBlog in blogs) {
-        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc inAccount:account];
+        Blog *blog = [self findBlogWithXmlrpc:remoteBlog.xmlrpc
+                                    inAccount:account];
         if (!blog && account.jetpackBlogs.count > 0) {
-            blog = [self migrateRemoteJetpackBlog:remoteBlog forAccount:account];
+            blog = [self migrateRemoteJetpackBlog:remoteBlog
+                                       forAccount:account];
         }
         if (!blog) {
             blog = [self createBlogWithAccount:account];
@@ -482,7 +544,8 @@ NSString *const HttpsPrefix = @"https://";
  @param account the account in which to search for the blog
  @returns the migrated blog if found, or nil otherwise
  */
-- (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog forAccount:(WPAccount *)account
+- (Blog *)migrateRemoteJetpackBlog:(RemoteBlog *)remoteBlog
+                        forAccount:(WPAccount *)account
 {
     Blog *jetpackBlog = [[account.jetpackBlogs filteredSetUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         Blog *blogToTest = (Blog *)evaluatedObject;
@@ -532,7 +595,8 @@ NSString *const HttpsPrefix = @"https://";
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:BlogEntity inManagedObjectContext:self.managedObjectContext]];
+    [request setEntity:[NSEntityDescription entityForName:BlogEntity
+                                   inManagedObjectContext:self.managedObjectContext]];
     [request setIncludesSubentities:NO];
 
     if (predicate) {
@@ -540,39 +604,44 @@ NSString *const HttpsPrefix = @"https://";
     }
 
     NSError *err;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&err];
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request
+                                                                 error:&err];
     if (count == NSNotFound) {
         count = 0;
     }
     return count;
 }
 
-- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName forBlog:(Blog *)blog
+- (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName
+                                        forBlog:(Blog *)blog
 {
     __block NSUInteger count = 0;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)",
-                              [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber == %@) AND (postID != NULL) AND (original == NULL) AND (blog == %@)", [NSNumber numberWithInt:AbstractPostRemoteStatusSync], blog];
     [request setPredicate:predicate];
-    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DateCreatedGmt ascending:YES];
+    NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:DateCreatedGmt
+                                                                   ascending:YES];
     [request setSortDescriptors:@[sortDescriptor]];
     request.includesSubentities = NO;
     request.resultType = NSCountResultType;
 
     [self.managedObjectContext performBlockAndWait:^{
         NSError *error = nil;
-        count = [self.managedObjectContext countForFetchRequest:request error:&error];
+        count = [self.managedObjectContext countForFetchRequest:request
+                                                          error:&error];
     }];
     return count;
 }
 
 #pragma mark - Completion handlers
 
-- (OptionsHandler)optionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
+- (OptionsHandler)optionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                               completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *options) {
         [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:nil];
             if (blog) {
                 blog.options = [NSDictionary dictionaryWithDictionary:options];
                 float version = [[blog version] floatValue];
@@ -594,11 +663,13 @@ NSString *const HttpsPrefix = @"https://";
     };
 }
 
-- (PostFormatsHandler)postFormatsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID completionHandler:(void (^)(void))completion
+- (PostFormatsHandler)postFormatsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                                       completionHandler:(void (^)(void))completion
 {
     return ^void(NSDictionary *postFormats) {
         [self.managedObjectContext performBlock:^{
-            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
                 if (![formats objectForKey:Standard]) {
@@ -630,11 +701,11 @@ NSString *const HttpsPrefix = @"https://";
     }
     
     if (!timeZone && gmtOffSet != nil) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * 60.0 * 60.0)];
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
     }
     
     if (!timeZone && optionValue != nil) {
-        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * 60.0 * 60.0;
+        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
         timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
     }
     
