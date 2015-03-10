@@ -13,7 +13,6 @@
 
 @implementation WPAnalyticsTrackerMixpanel
 
-NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
 NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
@@ -85,15 +84,30 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 - (void)refreshMetadata
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-
+    __block NSUInteger blogCount;
+    __block NSString *username;
+    __block NSString *emailAddress;
+    __block BOOL accountPresent = NO;
+    __block BOOL jetpackBlogsPresent = NO;
+    [context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account = [accountService defaultWordPressComAccount];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        
+        blogCount = [blogService blogCountForAllAccounts];
+        if (account != nil) {
+            username = account.username;
+            emailAddress = account.email;
+            accountPresent = YES;
+            jetpackBlogsPresent = [account jetpackBlogs].count > 0;
+        }
+    }];
+    
     BOOL dotcom_user = NO;
     BOOL jetpack_user = NO;
-    if (account != nil) {
+    if (accountPresent) {
         dotcom_user = YES;
-        if ([[account jetpackBlogs] count] > 0) {
+        if (jetpackBlogsPresent) {
             jetpack_user = YES;
         }
     }
@@ -102,17 +116,17 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
     superProperties[@"platform"] = @"iOS";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
-    superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
+    superProperties[@"number_of_blogs"] = @(blogCount);
     superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 
-    NSString *username = account.username;
-    if (account && [username length] > 0) {
+    if (accountPresent && [username length] > 0) {
         [[Mixpanel sharedInstance] identify:username];
         [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+        if ([emailAddress length] > 0) {
+            [[Mixpanel sharedInstance].people set:@"$email" to:emailAddress];
+        }
     }
-
-    [self retrieveAndRegisterEmailAddressIfApplicable];
 }
 
 - (void)aliasNewUser
@@ -126,40 +140,6 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
         [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
     }];
-}
-
-- (void)retrieveAndRegisterEmailAddressIfApplicable
-{
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    if ([userDefaults boolForKey:EmailAddressRetrievedKey]) {
-        return;
-    }
-
-    DDLogInfo(@"Retrieving /me endpoint");
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    if (defaultAccount == nil) {
-        return;
-    }
-
-    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:defaultAccount.restApi];
-    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
-        if ([[userDetails stringForKey:@"email"] length] > 0) {
-            [[Mixpanel sharedInstance].people set:@"$email" to:[userDetails stringForKey:@"email"]];
-            [userDefaults setBool:YES forKey:EmailAddressRetrievedKey];
-            [userDefaults synchronize];
-        }
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed to retrieve /me endpoint");
-    }];
-}
-
-+ (void)resetEmailRetrievalCheck
-{
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:EmailAddressRetrievedKey];
 }
 
 #pragma mark - Private Methods
