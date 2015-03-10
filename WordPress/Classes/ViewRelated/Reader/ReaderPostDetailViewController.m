@@ -15,6 +15,7 @@
 #import "WPTableImageSource.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
+#import "BlogService.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
@@ -140,7 +141,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     self.postView.canShowActionButtons = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
     
+    [self setReblogButtonVisibilityOfPostView:self.postView];
     [self.scrollView addSubview:self.postView];
+}
+
+- (void)setReblogButtonVisibilityOfPostView:(ReaderPostRichContentView *)postView
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    postView.shouldHideReblogButton = ![blogService hasVisibleWPComAccounts];
 }
 
 - (void)configureConstraints
