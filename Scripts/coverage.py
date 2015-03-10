@@ -10,6 +10,7 @@ cacheDirectory = dataDirectory + "/Cache"
 derivedDataDirectory = dataDirectory + "/DerivedData"
 buildObjectsDirectory = derivedDataDirectory + "/Build/Intermediates/WordPress.build/Debug-iphonesimulator/WordPress.build/Objects-normal/x86_64"
 gcovOutputDirectory = dataDirectory + "/GCOVOutput"
+finalReport = dataDirectory + "/FinalReport"
 
 # Files
 gcovOutputFileName = gcovOutputDirectory + "/gcov.output"
@@ -96,6 +97,7 @@ def createInitialDirectories():
     createDirectoryIfNecessary(cacheDirectory)
     createDirectoryIfNecessary(derivedDataDirectory)
     createDirectoryIfNecessary(gcovOutputDirectory)
+    createDirectoryIfNecessary(finalReport)
     return
 
 def generateGcdaAndGcnoFiles():
@@ -110,10 +112,6 @@ def generateGcdaAndGcnoFiles():
     
     cacheAllGcdaFiles()
     cacheAllGcnoFiles()
-    return
-
-def parseGcdaAndGcnoFiles():
-    
     return
 
 def processGcdaAndGcnoFiles():
@@ -133,6 +131,69 @@ def processGcdaAndGcnoFiles():
                         stdout = gcovOutputFile)
     return
 
+# Parsing the data
+
+def parseCoverageData(line):
+    header = "Lines executed:"
+    
+    assert line.startswith(header)
+    
+    line = line[len(header):]
+    lineComponents = line.split(" of ")
+    
+    percentage = float(lineComponents[0].strip("%")) / 100
+    totalLines = int(lineComponents[1])
+    linesExecuted = int(round(percentage * totalLines))
+    
+    return str(percentage), str(totalLines), str(linesExecuted)
+
+def parseFilePath(line):
+    assert line.startswith("File '")
+
+    splitStrings = line.split("'")
+    path = splitStrings[1]
+
+    parentDir = os.path.dirname(os.getcwd())
+    
+    if path.startswith(parentDir):
+        path = path[len(parentDir):]
+    else:
+        path = None
+
+    return path
+
+def parseGcovFiles():
+    gcovFile = open(gcovOutputFileName, "r")
+    csvFile = open(finalReport + "/report.csv", "w")
+    
+    lineNumber = 0
+    skipNext = False
+    
+    csvFile.write("File, Covered Lines, Total Lines, Coverage Percentage\r\n")
+    
+    for line in gcovFile:
+        lineOffset = lineNumber % 4
+        
+        if lineOffset == 0:
+            filePath = parseFilePath(line)
+        
+            if filePath:
+                csvFile.write(filePath + ",")
+            else:
+                skipNext = True
+        
+        elif lineOffset == 1:
+            if not skipNext:
+                percentage, totalLines, linesExecuted = parseCoverageData(line)
+                
+                csvFile.write(linesExecuted + "," + totalLines + "," + percentage + "\r\n")
+            else:
+                skipNext = False
+
+        lineNumber += 1
+
+    return
+
 # Main
 
 def main(arguments):
@@ -140,16 +201,13 @@ def main(arguments):
 
     generateGcdaAndGcnoFiles()
     processGcdaAndGcnoFiles()
-    parseGcdaAndGcnoFiles()
+    parseGcovFiles()
     
     removeDirectory(derivedDataDirectory)
     return
 
-#main(sys.argv)
-
-createDirectoryIfNecessary(gcovOutputDirectory)
-processGcdaAndGcnoFiles()
-print("Done")
+main(sys.argv)
+print("Done.")
 
 
 
