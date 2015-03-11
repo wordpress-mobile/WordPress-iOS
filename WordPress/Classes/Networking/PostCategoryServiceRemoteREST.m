@@ -1,13 +1,13 @@
-#import "CategoryServiceRemoteREST.h"
+#import "PostCategoryServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "Blog.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 
-@interface CategoryServiceRemoteREST ()
+@interface PostCategoryServiceRemoteREST ()
 @property (nonatomic, strong) WordPressComApi *api;
 @end
 
-@implementation CategoryServiceRemoteREST
+@implementation PostCategoryServiceRemoteREST
 
 - (instancetype)initWithApi:(WordPressComApi *)api
 {
@@ -36,9 +36,9 @@
           }];
 }
 
-- (void)createCategory:(RemoteCategory *)category
+- (void)createCategory:(RemotePostCategory *)category
                forBlog:(Blog *)blog
-               success:(void (^)(RemoteCategory *))success
+               success:(void (^)(RemotePostCategory *))success
                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(category.name.length > 0);
@@ -52,7 +52,7 @@
     [self.api POST:path
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               RemoteCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
+               RemotePostCategory *receivedCategory = [self remoteCategoryWithJSONDictionary:responseObject];
                if (success) {
                    success(receivedCategory);
                }
@@ -72,9 +72,9 @@
     return [NSArray arrayWithArray:categories];
 }
 
-- (RemoteCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
+- (RemotePostCategory *)remoteCategoryWithJSONDictionary:(NSDictionary *)jsonCategory
 {
-    RemoteCategory *category = [RemoteCategory new];
+    RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = jsonCategory[@"ID"];
     category.name = jsonCategory[@"name"];
     category.parentID = jsonCategory[@"parent"];

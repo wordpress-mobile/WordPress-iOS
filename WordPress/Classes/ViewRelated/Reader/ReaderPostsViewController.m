@@ -28,6 +28,7 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
+#import "BlogService.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -71,6 +72,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 @property (nonatomic) BOOL shouldSkipRowAnimation;
 @property (nonatomic) UIDeviceOrientation previousOrientation;
 @property (nonatomic) BOOL hasWPComAccount;
+@property (nonatomic) BOOL hasVisibleWPComAccount;
 
 @property (nonatomic, strong) NSManagedObjectContext *contextForSync;
 
@@ -125,11 +127,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     [super viewWillAppear:animated];
 
-    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
-        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
-            [self.tableView reloadData];
-        }
+    if ([self shouldRefreshTableViewOnViewWillAppear]) {
+        [self.tableView reloadData];
     }
 
     [self configureNoResultsView];
@@ -222,9 +221,41 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 #pragma mark - Configuration
 
+- (BOOL)shouldRefreshTableViewOnViewWillAppear
+{
+    return ([self changedOrientation] || [self toggledVisibilityOfWPComAccount]);
+}
+
+- (BOOL)changedOrientation
+{
+    if (self.previousOrientation != UIInterfaceOrientationUnknown
+        && UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+    {
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+        
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)toggledVisibilityOfWPComAccount
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    BOOL currentlyHasVisibleWPComAccount = [blogService hasVisibleWPComAccounts];
+    
+    if (self.hasVisibleWPComAccount != currentlyHasVisibleWPComAccount) {
+        self.hasVisibleWPComAccount = currentlyHasVisibleWPComAccount;
+        
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)checkWPComAccountExists
 {
-    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext] defaultWordPressComAccount] != nil);
+    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]] defaultWordPressComAccount] != nil);
 }
 
 - (void)configureRefreshControl
@@ -412,7 +443,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         topic = nil;
 
     } else {
-        topic = [self topic:readerTopic inContext:self.managedObjectContext];
+        topic = [self topic:readerTopic inContext:[self managedObjectContext]];
     }
 
     if (topic == _readerTopic) {
@@ -944,6 +975,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
+    cell.postView.shouldHideReblogButton = !self.hasVisibleWPComAccount;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];

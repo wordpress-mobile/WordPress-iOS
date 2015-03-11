@@ -11,6 +11,7 @@
 #import "NSString+XMLExtensions.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
+static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
 @interface AccountService ()
 
@@ -148,16 +149,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  Uses a background managed object context.
 
  @param username the WordPress.com account's username
- @param password the WordPress.com account's password
- @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
  @return a WordPress.com `WPAccount` object for the given `username`
- @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
+ @see createOrUpdateWordPressComAccountWithUsername:password:authToken:
  */
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                    password:(NSString *)password
                                                    authToken:(NSString *)authToken
 {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:nil];
     account.authToken = authToken;
     account.isWpcom = YES;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -248,6 +247,21 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
     }];
+}
+
+- (void)removeWordPressComAccountPasswordIfNeeded
+{
+    // Let's do this just once!
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:DefaultDotcomAccountPasswordRemovedKey]) {
+        return;
+    }
+    
+    WPAccount *account = [self defaultWordPressComAccount];
+    account.password = nil;
+    
+    [defaults setBool:YES forKey:DefaultDotcomAccountPasswordRemovedKey];
+    [defaults synchronize];
 }
 
 @end
