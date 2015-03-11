@@ -333,7 +333,7 @@
                                     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-                                    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
 
                                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:1];
                                     [loginController.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];

@@ -5,6 +5,7 @@
 #import "Page.h"
 #import "Blog.h"
 #import "PageSettingsViewController.h"
+#import "WPTooltip.h"
 
 @implementation EditPageViewController
 
@@ -48,6 +49,21 @@
 
 - (AbstractPost *)createNewDraftForBlog:(Blog *)blog {
     return [PostService createDraftPageInMainContextForBlog:blog];
+}
+
+#pragma mark - Onboarding
+
+- (void)showOnboardingTips
+{
+    CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+    if (IS_IPAD) {
+        xValue -= 20.0;
+    } else {
+        xValue -= 10.0;
+    }
+    CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+    NSString *tooltipText = NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.");
+    [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
 }
 
 @end

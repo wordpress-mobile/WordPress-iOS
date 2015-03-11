@@ -69,7 +69,6 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
     NSString *_dotComSiteUrl;
     NSArray *_blogs;
     Blog *_blog;
-    NSUInteger _numberOfTimesLoginFailed;
 }
 
 @end
@@ -786,6 +785,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                                @"SiteURL": _siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
 - (BOOL)isUrlWPCom:(NSString *)url
@@ -981,7 +981,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                              success:^(NSString *authToken) {
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  _userIsDotCom = YES;
-                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                                 [self createWordPressComAccountForUsername:username authToken:authToken];
                              } failure:^(NSError *error) {
                                  [WPAnalytics track:WPAnalyticsStatLoginFailed];
                                  [self setAuthenticating:NO withStatusMessage:nil];
@@ -989,15 +989,13 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
                              }];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username
-                                    password:(NSString *)password
-                                   authToken:(NSString *)authToken
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
 {
     [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
 
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account
@@ -1089,11 +1087,7 @@ static CGFloat const OnePasswordPaddingX                        = 9.0;
         if ([message rangeOfString:@"application-specific"].location != NSNotFound) {
             [self displayGenerateApplicationSpecificPasswordErrorMessage:message];
         } else {
-            if (error.code == WordPressComOAuthErrorInvalidRequest) {
-                _numberOfTimesLoginFailed++;
-            }
-
-            if ([HelpshiftUtils isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+            if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self displayGenericErrorMessageWithHelpshiftButton:message];
             } else {
                 [self displayGenericErrorMessage:message];
