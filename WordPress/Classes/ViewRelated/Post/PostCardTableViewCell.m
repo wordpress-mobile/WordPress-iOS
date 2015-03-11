@@ -1,7 +1,10 @@
 #import "PostCardTableViewCell.h"
 #import "NSDate+StringFormatting.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "UIImageView+Gravatar.h"
 #import "WPStyleGuide+Posts.h"
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
+
+#import <SDWebImage/UIImageView+WebCache.h>
 
 static const CGFloat PostCardTitleLowerConstraintConstant = 4.0;
 static const CGFloat PostCardSnippetLowerConstraintConstant = 8.0;
@@ -79,6 +82,14 @@ static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
 - (void)configureAuthor
 {
     self.authorLabel.text = [self.contentProvider authorNameForDisplay];
+    [self.avatarImageView sd_setImageWithURL:[self blavatarURL]
+                            placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
+}
+
+- (NSURL *)blavatarURL
+{
+    NSInteger size = (NSInteger)ceil(CGRectGetWidth(self.avatarImageView.frame) * [[UIScreen mainScreen] scale]);
+    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blogURLForDisplay] withSize:size];
 }
 
 - (void)configureFeaturedImage
