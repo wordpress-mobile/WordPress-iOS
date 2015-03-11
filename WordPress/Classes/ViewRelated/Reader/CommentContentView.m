@@ -95,11 +95,11 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                    views:views]];
 
     // Author and date
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1@200)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-(>=1@200)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];

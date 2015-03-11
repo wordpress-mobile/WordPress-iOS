@@ -21,14 +21,25 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 #pragma mark - Misc
 
-- (void)authenticateWithUsername:(NSString *)username password:(NSString *)password success:(void (^)(NSString *authToken))success failure:(void (^)(NSError *error))failure {
-    NSDictionary *parameters = @{
-                                 @"username": username,
-                                 @"password": password,
-                                 @"grant_type": @"password",
-                                 @"client_id": [WordPressComApiCredentials client],
-                                 @"client_secret": [WordPressComApiCredentials secret],
-                                 };
+- (void)authenticateWithUsername:(NSString *)username
+                        password:(NSString *)password
+                 multifactorCode:(NSString *)multifactorCode
+                         success:(void (^)(NSString *authToken))success
+                         failure:(void (^)(NSError *error))failure
+{
+    NSMutableDictionary *parameters = [@{
+        @"username": username,
+        @"password": password,
+        @"grant_type": @"password",
+        @"client_id": [WordPressComApiCredentials client],
+        @"client_secret": [WordPressComApiCredentials secret],
+        @"wpcom_supports_2fa": @(YES)
+    } mutableCopy];
+    
+    if (multifactorCode.length > 0) {
+        [parameters setObject:multifactorCode forKey:@"wpcom_otp"];
+    }
+    
     [self POST:@"token"
 	parameters:parameters
 	   success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -46,6 +57,43 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
            }];
 }
 
+- (void)requestOneTimeCodeWithUsername:(NSString *)username
+                              password:(NSString *)password
+                               success:(void (^)(void))success
+                               failure:(void (^)(NSError *error))failure
+{
+    NSDictionary *parameters = @{
+        @"username": username,
+        @"password": password,
+        @"grant_type": @"password",
+        @"client_id": [WordPressComApiCredentials client],
+        @"client_secret": [WordPressComApiCredentials secret],
+        @"wpcom_supports_2fa": @(YES),
+        @"wpcom_resend_otp": @(YES)
+    };
+    
+    [self POST:@"token"
+    parameters:parameters
+       success:^(AFHTTPRequestOperation *operation, id responseObject) {
+           if (success) {
+               success();
+           }
+       } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+           error = [self processError:error forOperation:operation];
+           
+           // SORRY:
+           // SMS Requests will still return WordPressComOAuthErrorNeedsMultifactorCode. In which case,
+           // we should hit the success callback.
+           if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+               if (success) {
+                   success();
+               }
+           } else if (failure) {
+               failure(error);
+           }
+       }];
+}
+
 - (NSError *)processError:(NSError *)error forOperation:(AFHTTPRequestOperation *)operation {
     if (operation.response.statusCode >= 400 && operation.response.statusCode < 500) {
         // Bad request, look for errors in the JSON response
@@ -55,22 +103,27 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
             NSString *errorCode = [response stringForKey:@"error"];
             NSString *errorDescription = [response stringForKey:@"error_description"];
 
-            NSInteger code = WordPressComOAuthErrorUnknown;
             /*
              Possible errors:
              - invalid_client: client_id is missing or wrong, it shouldn't happen
              - unsupported_grant_type: client_id doesn't support password grants
-             - invalid_request: a required field is missing/malformed
-             - invalid_request: authentication failed
+             - invalid_request: A required field is missing/malformed
+             - invalid_request: Authentication failed
+             - needs_2fa: Multifactor Authentication code is required
              */
-            if ([errorCode isEqualToString:@"invalid_client"]) {
-                code = WordPressComOAuthErrorInvalidClient;
-            } else if ([errorCode isEqualToString:@"unsupported_grant_type"]) {
-                code = WordPressComOAuthErrorUnsupportedGrantType;
-            } else if ([errorCode isEqualToString:@"invalid_request"]) {
-                code = WordPressComOAuthErrorInvalidRequest;
-            }
-            return [NSError errorWithDomain:WordPressComOAuthErrorDomain code:code userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
+            
+            NSDictionary *errorsMap = @{
+                @"invalid_client"           : @(WordPressComOAuthErrorInvalidClient),
+                @"unsupported_grant_type"   : @(WordPressComOAuthErrorUnsupportedGrantType),
+                @"invalid_request"          : @(WordPressComOAuthErrorInvalidRequest),
+                @"needs_2fa"                : @(WordPressComOAuthErrorNeedsMultifactorCode)
+            };
+
+            NSNumber *mappedCode = errorsMap[errorCode] ?: @(WordPressComOAuthErrorUnknown);
+            
+            return [NSError errorWithDomain:WordPressComOAuthErrorDomain
+                                       code:mappedCode.intValue
+                                   userInfo:@{NSLocalizedDescriptionKey: errorDescription}];
         }
     }
     return error;

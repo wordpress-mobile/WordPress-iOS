@@ -559,8 +559,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     // Load the Subject + Snippet
     Notification *note          = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
-    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
+    NSAttributedString *subject = note.subjectBlock.attributedSubjectText;
+    NSAttributedString *snippet = note.snippetBlock.attributedSnippetText;
     
     // Old School Height Calculation
     CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
@@ -625,8 +625,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
+    cell.attributedSubject                  = note.subjectBlock.attributedSubjectText;
+    cell.attributedSnippet                  = note.snippetBlock.attributedSnippetText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
