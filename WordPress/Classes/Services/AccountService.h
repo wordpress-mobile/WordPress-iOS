@@ -4,6 +4,7 @@
 @class WPAccount, Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
+extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : NSObject <LocalCoreDataService>
 
@@ -85,5 +86,12 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
  */
 - (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
+
+/**
+ Updates email and defaultBlog fields for a WordPress.com WPAccount using /me endpoint
+
+ @param account WordPress.com WPAccount desired to be updated
+ */
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
 
 @end

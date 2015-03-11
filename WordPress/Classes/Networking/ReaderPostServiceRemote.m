@@ -3,7 +3,7 @@
 #import "DateUtils.h"
 #import "RemoteReaderPost.h"
 
-static const NSInteger FeaturedImageMinimumWidth = 600;
+static const NSInteger FeaturedImageMinimumWidth = 640;
 
 @interface ReaderPostServiceRemote ()
 
@@ -464,7 +464,7 @@ static const NSInteger FeaturedImageMinimumWidth = 600;
         NSDictionary *attachment = [attachments firstObject];
         NSString *mimeType = [attachment stringForKey:@"mime_type"];
         NSInteger width = [[attachment numberForKey:@"width"] integerValue];
-        if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= 1024) {
+        if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= FeaturedImageMinimumWidth) {
             featuredImage = [self stringOrEmptyString:[attachment stringForKey:@"URL"]];
         }
     }

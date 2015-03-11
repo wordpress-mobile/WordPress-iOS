@@ -7,3 +7,6 @@
 #import "WPAccount.h"
 #import "Blog.h"
 #import "AccountService.h"
+#import "Post.h"
+#import "Page.h"
+#import "ReaderPost.h"

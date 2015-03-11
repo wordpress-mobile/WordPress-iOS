@@ -217,6 +217,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
+    if ([self shouldStaggerRequestsForBlog:blog]) {
+        [self syncBlogStaggeringRequests:blog];
+        return;
+    }
+
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
         DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
@@ -242,6 +247,60 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:nil failure:nil];
         [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:nil failure:nil];
     }
+}
+
+- (void)syncBlogStaggeringRequests:(Blog *)blog
+{
+    __weak __typeof(self) weakSelf = self;
+
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+
+    [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:^{
+
+        [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
+
+            __strong __typeof(weakSelf) strongSelf = weakSelf;
+            id<BlogServiceRemote> remote = [strongSelf remoteForBlog:blog];
+            [remote syncOptionsForBlog:blog success:[strongSelf optionsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+                DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error);
+            }];
+            [remote syncPostFormatsForBlog:blog success:[strongSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
+                DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
+            }];
+
+            CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
+            // Right now, none of the callers care about the results of the sync
+            // We're ignoring the callbacks here but this needs refactoring
+            [commentService syncCommentsForBlog:blog success:nil failure:nil];
+
+            CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
+            [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
+
+        } failure:nil];
+
+    } failure:nil];
+
+}
+
+// Batch requests to sites using basic http auth to avoid auth failures in certain cases.
+// See: https://github.com/wordpress-mobile/WordPress-iOS/issues/3016
+- (BOOL)shouldStaggerRequestsForBlog:(Blog *)blog
+{
+    if (blog.account.isWpcom || blog.jetpackAccount) {
+        return NO;
+    }
+
+    __block BOOL stagger = NO;
+    NSURL *url = [NSURL URLWithString:blog.url];
+    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+            if ([[ps host] isEqualToString:[url host]]) {
+                stagger = YES;
+                *stop = YES;
+            }
+        }];
+    }];
+    return stagger;
 }
 
 - (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure
@@ -547,8 +606,8 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog
 {
-    NSString *timeZoneName = [blog.options stringForKey:@"timezone"];
-    NSNumber *gmtOffSet = [blog.options numberForKey:@"gmt_offset"];
+    NSString *timeZoneName = [blog getOptionValue:@"timezone"];
+    NSNumber *gmtOffSet = [blog getOptionValue:@"gmt_offset"];
     id optionValue = [blog getOptionValue:@"time_zone"];
     
     NSTimeZone *timeZone = nil;

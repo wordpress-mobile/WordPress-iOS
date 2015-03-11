@@ -3,6 +3,8 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "WPAccount.h"
+#import "BlogService.h"
+#import "Blog.h"
 #import "WordPressAppDelegate.h"
 
 NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNotification";
@@ -101,12 +103,20 @@ NSString * const SuggestionListUpdatedNotification = @"SuggestionListUpdatedNoti
     if (!appDelegate.connectionAvailable && !suggestions) {
         return NO;
     }
-    
+        
     // if the suggestion list is already retrieved and there is nothing to show
     if (suggestions && suggestions.count == 0) {
         return NO;
     }
     
+    // if the site is not hosted on WordPress.com
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:siteID];
+    if (! blog.isWPcom) {
+        return NO;
+    }
+        
     return YES;
 }
 

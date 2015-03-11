@@ -23,6 +23,7 @@
 
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 /**
  Array of custom fields. Each value is a dictionary containing {ID, key, value}

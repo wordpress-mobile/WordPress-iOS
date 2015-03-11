@@ -6,38 +6,45 @@
 
 - (void) login
 {
-    [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
 }
 
 - (void) loginOther
 {
-    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
 }
 
 - (void) logout
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester waitForTimeInterval:2];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
-    [tester waitForTimeInterval:3];
+    [tester waitForTimeInterval:1];
 }
+
+- (void) logoutIfNeeded {
+    if(![tester tryFindingViewWithAccessibilityIdentifier:@"Username / Email" error:nil]){
+        [self logout];
+    }
+}
+
 
 @end

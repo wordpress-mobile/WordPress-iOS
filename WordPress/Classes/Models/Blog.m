@@ -51,6 +51,14 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 #pragma mark - NSManagedObject subclass methods
 
+- (void)prepareForDeletion
+{
+    [super prepareForDeletion];
+    
+    // Beware: Lazy getters below. Let's hit directly the ivar
+    [_api.operationQueue cancelAllOperations];
+}
+
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];

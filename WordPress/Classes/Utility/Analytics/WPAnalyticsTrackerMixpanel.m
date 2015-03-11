@@ -8,10 +8,14 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "WPAnalyticsTrackerMixpanel.h"
+#import "AccountServiceRemoteREST.h"
+#import "WPPostViewController.h"
 
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
+NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
+NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (instancetype)init
 {
@@ -26,6 +30,35 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 {
     [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
+    [self flagIfUserHasSeenLegacyEditor];
+}
+
+- (void)flagIfUserHasSeenLegacyEditor
+{
+    NSUserDefaults *standardDefaults = [NSUserDefaults standardUserDefaults];
+    if ([standardDefaults boolForKey:CheckedIfUserHasSeenLegacyEditor]) {
+        return;
+    }
+    
+    NSInteger sessionCount = [self sessionCount];
+    if ([self didUserCreateAccountOnMobile]) {
+        // We want to differentiate between users who created pre 4.6 and those who created after and the way we do this
+        // is by checking if the editor is enabled. The editor would only be enabled for users who created an account after 4.6.
+        [self setSuperProperty:SeenLegacyEditor toValue:@(![WPPostViewController isNewEditorEnabled])];
+    } else if (sessionCount == 0) {
+        // First time users whether they have created an account or are signing in have never seen the legacy editor.
+        [self setSuperProperty:SeenLegacyEditor toValue:@NO];
+    } else {
+        [self setSuperProperty:SeenLegacyEditor toValue:@YES];
+    }
+    
+    [standardDefaults setBool:@YES forKey:CheckedIfUserHasSeenLegacyEditor];
+    [standardDefaults synchronize];
+}
+
+- (BOOL)didUserCreateAccountOnMobile
+{
+    return [[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue];
 }
 
 - (void)track:(WPAnalyticsStat)stat
@@ -70,6 +103,7 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
     superProperties[@"number_of_blogs"] = @([blogService blogCountForAllAccounts]);
+    superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 
     NSString *username = account.username;
@@ -79,6 +113,19 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     }
 
     [self retrieveAndRegisterEmailAddressIfApplicable];
+}
+
+- (void)aliasNewUser
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    [context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account = [accountService defaultWordPressComAccount];
+        NSString *username = account.username;
+        
+        [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
+        [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+    }];
 }
 
 - (void)retrieveAndRegisterEmailAddressIfApplicable
@@ -98,14 +145,14 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         return;
     }
 
-    [[defaultAccount restApi] getUserDetailsWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSDictionary *response = (NSDictionary *)responseObject;
-        if ([[response stringForKey:@"email"] length] > 0) {
-            [[Mixpanel sharedInstance].people set:@"$email" to:[response stringForKey:@"email"]];
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:defaultAccount.restApi];
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
+        if ([[userDetails stringForKey:@"email"] length] > 0) {
+            [[Mixpanel sharedInstance].people set:@"$email" to:[userDetails stringForKey:@"email"]];
             [userDefaults setBool:YES forKey:EmailAddressRetrievedKey];
             [userDefaults synchronize];
         }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint");
     }];
 }
@@ -170,6 +217,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [instructions.peoplePropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         [self setValue:obj forPeopleProperty:key];
     }];
+    
+    [instructions.superPropertiesToAssign enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        [self setSuperProperty:key toValue:obj];
+    }];
 }
 
 - (void)incrementPeopleProperty:(NSString *)property
@@ -192,6 +243,13 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
 }
 
+- (void)setSuperProperty:(NSString *)property toValue:(id)value
+{
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    superProperties[property] = value;
+    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
 - (void)setValue:(id)value forPeopleProperty:(NSString *)property
 {
     [[Mixpanel sharedInstance].people set:@{ property : value } ];
@@ -209,6 +267,10 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
+            break;
+        case WPAnalyticsStatAppInstalled:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Installed"];
+            [instructions setCurrentDateForPeopleProperty:@"application_installed"];
             break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Themes - Accessed Theme Browser"];
@@ -291,6 +353,16 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Scrolled to Bottom"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_scrolled_to_bottom_of_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_scrolled_to_bottom_of_stats"];
+            break;
+        case WPAnalyticsStatEditorUploadMediaFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Upload Media Failed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_upload_media_failed"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_editor_upload_media_failed"];
+            break;
+        case WPAnalyticsStatEditorUploadMediaRetried:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Retried Uploading Media"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_retried_uploading_media"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_editor_retried_uploading_media"];
             break;
         case WPAnalyticsStatEditorCreatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Created Post"];
@@ -396,6 +468,19 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_saved_draft"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_saved_draft"];
             break;
+        case WPAnalyticsStatEditorEditedImage:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Edited Image"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_edited_image"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_edited_image"];
+            break;
+        case WPAnalyticsStatEditorToggledOn:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor On"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(YES)];
+            break;
+        case WPAnalyticsStatEditorToggledOff:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor Off"];
+            [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(NO)];
+            break;
         case WPAnalyticsStatNotificationsAccessed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
@@ -407,31 +492,32 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             [instructions setCurrentDateForPeopleProperty:@"last_time_opened_notification_details"];
             break;
         case WPAnalyticsStatOpenedPosts:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_posts" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Posts"];
             break;
         case WPAnalyticsStatOpenedPages:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_pages" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Pages"];
             break;
         case WPAnalyticsStatOpenedComments:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_comments" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Comments"];
             break;
         case WPAnalyticsStatOpenedViewSite:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_view_site" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened View Site"];
             break;
         case WPAnalyticsStatOpenedViewAdmin:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_view_admin" forStat:WPAnalyticsStatApplicationClosed];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_view_admin"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened View Admin"];
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_media_library" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Media Library"];
             break;
         case WPAnalyticsStatOpenedSettings:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithPropertyIncrementor:@"number_of_times_opened_settings" forStat:WPAnalyticsStatApplicationClosed];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Settings"];
             break;
         case WPAnalyticsStatCreatedAccount:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];
             [instructions setCurrentDateForPeopleProperty:@"$created"];
             [instructions addSuperPropertyToFlag:@"created_account_on_mobile"];
+            [instructions setSuperProperty:@"created_account_on_app_version" toValue:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"]];
+            [self aliasNewUser];
             break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Enabled New Version"];
@@ -564,10 +650,6 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
         case WPAnalyticsStatLowMemoryWarning:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Received Low Memory Warning"];
             break;
-        case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Performed Core Data Migration Fix for 4.5"];
-            [instructions addSuperPropertyToFlag:@"performed_core_data_migration_fix_for_4_5"];
-            break;
         case WPAnalyticsStatAppReviewsSawPrompt:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Saw App Review Prompt"];
             [instructions addSuperPropertyToFlag:@"saw_app_review_prompt"];
@@ -605,6 +687,12 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Reviews - Didn't Like App"];
             [instructions addSuperPropertyToFlag:@"indicated_they_didnt_like_app_when_prompted"];
             [instructions.peoplePropertiesToAssign setValue:@(YES) forKey:@"indicated_they_didnt_like_app_when_prompted"];
+            break;
+        case WPAnalyticsStatLoginFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed Login"];
+            break;
+        case WPAnalyticsStatLoginFailedToGuessXMLRPC:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
             break;
         default:
             break;
@@ -653,12 +741,21 @@ NSString *const EmailAddressRetrievedKey = @"email_address_retrieved";
 
 - (void)incrementSessionCount
 {
-    NSInteger sessionCount = [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    NSInteger sessionCount = [self sessionCount];
     sessionCount++;
+    
+    if (sessionCount == 1) {
+        [WPAnalytics track:WPAnalyticsStatAppInstalled];
+    }
 
     NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
     [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+}
+
+- (NSInteger)sessionCount
+{
+    return [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
 }
 
 @end

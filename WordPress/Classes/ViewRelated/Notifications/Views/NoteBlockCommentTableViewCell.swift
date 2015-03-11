@@ -21,18 +21,27 @@ import Foundation
         }
     }
     public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+        set {
+            nameLabel.text  = newValue
+        }
+        get {
+            return nameLabel.text
         }
     }
     public var timestamp: String? {
-        didSet {
-            timestampLabel.text  = timestamp ?? String()
+        set {
+            timestampLabel.text  = newValue
+        }
+        get {
+            return timestampLabel.text
         }
     }
     public var site: String? {
-        didSet {
-            siteLabel.text = site ?? String()
+        set {
+            siteLabel.text = newValue
+        }
+        get {
+            return siteLabel.text
         }
     }
     public var isReplyEnabled: Bool = false {
@@ -65,15 +74,21 @@ import Foundation
             refreshBottomSpacing()
         }
     }
-    public var isLikeOn: Bool = false {
-        didSet {
-            btnLike.selected = isLikeOn
+    public var isLikeOn: Bool {
+        set {
+            btnLike.selected = newValue
+        }
+        get {
+            return btnLike.selected
         }
     }
-    public var isApproveOn: Bool = false {
-        didSet {
-            btnApprove.selected = isApproveOn
+    public var isApproveOn: Bool {
+        set {
+            btnApprove.selected = newValue
             refreshApprovalColors()
+        }
+        get {
+            return btnApprove.selected
         }
     }
 
@@ -114,9 +129,13 @@ import Foundation
         approvalStatusView.backgroundColor  = WPStyleGuide.Notifications.blockUnapprovedBgColor
         approvalSidebarView.backgroundColor = WPStyleGuide.Notifications.blockUnapprovedSideColor
         
-        // Separator Line should be 1px: Handle Retina!
+        // Separators
+        separatorSmallView.backgroundColor  = WPStyleGuide.Notifications.blockSeparatorColor
+        separatorBigView.backgroundColor    = WPStyleGuide.Notifications.blockUnapprovedSideColor
+
+        // Separator Line(s) should be 1px: Handle Retina!
         let separatorHeightInPixels         = separatorHeight / UIScreen.mainScreen().scale
-        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
+        separatorSmallView.updateConstraint(.Height, constant: separatorHeightInPixels)
 
         // Setup Action Buttons
         let textNormalColor                 = WPStyleGuide.Notifications.blockActionDisabledColor
@@ -233,7 +252,12 @@ import Foundation
         // If Approval is not even enabled, let's consider this as approved!
         let isCommentApproved               = isApproveOn || !isApproveEnabled
         approvalStatusView.hidden           = isCommentApproved
-        separatorView.backgroundColor       = WPStyleGuide.Notifications.blockSeparatorColorForComment(isApproved: isCommentApproved)
+        
+        // Unapproved: Show the big separator
+        separatorSmallView.hidden           = !isCommentApproved
+        separatorBigView.hidden             = isCommentApproved
+        
+        // Refresh Colors
         nameLabel.textColor                 = WPStyleGuide.Notifications.blockTextColorForComment(isApproved: isCommentApproved)
         timestampLabel.textColor            = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
         siteLabel.textColor                 = WPStyleGuide.Notifications.blockTimestampColorForComment(isApproved: isCommentApproved)
@@ -256,12 +280,12 @@ import Foundation
 
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                : CGSize    = CGSize(width: 37.0, height: 37.0)
-    private let separatorHeight                     : CGFloat   = 1
-    private let buttonWidth                         : CGFloat   = 55
-    private let buttonSpacing                       : CGFloat   = 20
-    private let actionsHeight                       : CGFloat   = 34
-    private let actionsTop                          : CGFloat   = 11
+    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
+    private let separatorHeight                     = CGFloat(1)
+    private let buttonWidth                         = CGFloat(55)
+    private let buttonSpacing                       = CGFloat(20)
+    private let actionsHeight                       = CGFloat(34)
+    private let actionsTop                          = CGFloat(11)
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
@@ -274,7 +298,8 @@ import Foundation
     @IBOutlet private weak var nameLabel            : UILabel!
     @IBOutlet private weak var timestampLabel       : UILabel!
     @IBOutlet private weak var siteLabel            : UILabel!
-    @IBOutlet private weak var separatorView        : UIView!
+    @IBOutlet private weak var separatorSmallView   : UIView!
+    @IBOutlet private weak var separatorBigView     : UIView!
     @IBOutlet private weak var btnReply             : UIButton!
     @IBOutlet private weak var btnLike              : UIButton!
     @IBOutlet private weak var btnApprove           : UIButton!

@@ -8,29 +8,33 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <AMPopTip/AMPopTip.h>
 #import <SVProgressHUD.h>
-#import "ContextManager.h"
-#import "Post.h"
-#import "Coordinate.h"
-#import "Media.h"
-#import "WPTableViewCell.h"
 #import "BlogSelectorViewController.h"
-#import "WPBlogSelectorButton.h"
-#import "LocationService.h"
 #import "BlogService.h"
+#import "ContextManager.h"
+#import "Coordinate.h"
+#import "EditImageDetailsViewController.h"
+#import "LocationService.h"
+#import "Media.h"
 #import "MediaBrowserViewController.h"
 #import "MediaService.h"
+#import "NSString+Helpers.h"
+#import "Post.h"
 #import "PostPreviewViewController.h"
 #import "PostService.h"
 #import "PostSettingsViewController.h"
-#import "NSString+Helpers.h"
-#import "WPMediaUploader.h"
-#import "WPButtonForNavigationBar.h"
-#import "WPUploadStatusButton.h"
-#import "WordPressAppDelegate.h"
 #import "PrivateSiteURLProtocol.h"
+#import "WordPressAppDelegate.h"
+#import "WPButtonForNavigationBar.h"
+#import "WPBlogSelectorButton.h"
+#import "WPButtonForNavigationBar.h"
 #import "WPMediaProgressTableViewController.h"
+#import "WPMediaUploader.h"
 #import "WPProgressTableViewCell.h"
+#import "WPTableViewCell.h"
+#import "WPTabBarController.h"
+#import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
@@ -53,6 +57,7 @@ static NSString* const WPProgressMedia = @"WPProgressMedia";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
+NSString* const OnboardingWasShown = @"OnboardingWasShown";
 
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
@@ -79,7 +84,7 @@ static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration>
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, EditImageDetailsViewControllerDelegate>
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
@@ -204,7 +209,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
         
-        if (post.blog.isPrivate) {
+        if (post.blog.isWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
     }
@@ -286,6 +291,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [[UIApplication sharedApplication] setStatusBarHidden:YES
                                                         withAnimation:UIStatusBarAnimationSlide];
             }
+        } else {
+            // Preview mode...show the onboarding hint the first time through only
+            if (!self.wasOnboardingShown) {
+                [self showOnboardingTips];
+                [self setOnboardingShown:YES];
+            }
         }
     }
 
@@ -307,7 +318,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     CGRect frame = self.mediaProgressView.frame;
     frame.size.width = self.view.frame.size.width;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
+    self.mediaProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.mediaProgressView setFrame:frame];
+
 }
 
 #pragma mark - viewDidLoad helpers
@@ -329,27 +342,55 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 															coder:(NSCoder *)coder
 {
     UIViewController* restoredViewController = nil;
+    
+    BOOL restoreOnlyIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
+    
+    if (restoreOnlyIfNewEditorIsEnabled) {
+        restoredViewController = [self restoreViewControllerWithIdentifierPath:identifierComponents
+                                                                         coder:coder];
+    }
+    
+    return restoredViewController;
+}
 
+#pragma mark - Restoration helpers
+
++ (UIViewController*)restoreParentNavigationController
+{
+    UINavigationController *navController = [[UINavigationController alloc] init];
+    navController.restorationIdentifier = WPEditorNavigationRestorationID;
+    navController.restorationClass = self;
+    
+    return navController;
+}
+
++ (UIViewController*)restoreViewControllerWithIdentifierPath:(NSArray *)identifierComponents
+                                                       coder:(NSCoder *)coder
+{
+    UIViewController *restoredViewController = nil;
+    
     if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
         
-        UINavigationController *navController = [[UINavigationController alloc] init];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = self;
-        
-        restoredViewController = navController;
-        
+        restoredViewController = [self restoreParentNavigationController];
     } else if ([self isSelfIdentifierPath:identifierComponents]) {
+        restoredViewController = [self restoreViewControllerWithCoder:coder];
+    }
+    
+    return restoredViewController;
+}
+
++ (UIViewController*)restoreViewControllerWithCoder:(NSCoder *)coder
+{
+    UIViewController *restoredViewController = nil;
+    AbstractPost *restoredPost = [self decodePostFromCoder:coder];
+    
+    if (restoredPost) {
+        WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
         
-        AbstractPost* restoredPost = [self decodePostFromCoder:coder];
-        
-        if (restoredPost) {
-            WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
-            
-            restoredViewController = [[self alloc] initWithPost:restoredPost
-                                                           mode:mode];
-        } else {
-            restoredViewController = [[self alloc] initInFailedStateRestorationMode];
-        }
+        restoredViewController = [[self alloc] initWithPost:restoredPost
+                                                       mode:mode];
+    } else {
+        restoredViewController = [[self alloc] initInFailedStateRestorationMode];
     }
     
     return restoredViewController;
@@ -518,10 +559,64 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [alertView show];
 }
 
+#pragma mark - Onboarding
+
+- (void)setOnboardingShown:(BOOL)wasShown
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:wasShown forKey:OnboardingWasShown];
+    [defaults synchronize];
+}
+
+- (BOOL)wasOnboardingShown
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:OnboardingWasShown];
+}
+
+- (void)showOnboardingTips
+{
+    AMPopTip *popTip = [AMPopTip popTip];
+    CGFloat xValue = IS_IPAD ? CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-20.0 : CGRectGetMaxX(self.view.frame)-NavigationBarButtonRect.size.width-10.0;
+    CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+    [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
+    [[AMPopTip appearance] setTextColor:[UIColor whiteColor]];
+    [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
+    [[AMPopTip appearance] setArrowSize:CGSizeMake(12.0, 8.0)];
+    [[AMPopTip appearance] setEdgeMargin:5.0];
+    [[AMPopTip appearance] setDelayIn:0.5];
+    UIEdgeInsets insets = {6,5,6,5};
+    [[AMPopTip appearance] setEdgeInsets:insets];
+    popTip.shouldDismissOnTap = YES;
+    popTip.shouldDismissOnTapOutside = YES;
+    [popTip showText:NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.")
+           direction:AMPopTipDirectionDown
+            maxWidth:200
+              inView:self.view
+           fromFrame:targetFrame
+            duration:3];
+}
+
 #pragma mark - Actions
 
-- (void)showBlogSelectorPrompt
+/**
+ *	@brief      Handles the UIControlEventTouchUpInside event for the blog selector button.
+ *	@details    This method handles a the touch up inside event for the blog selector button.
+                Since there are two different modes this button can have, we have a few
+                different scenarios to consider:  1) If the user is editing an existing post 
+                exit the screen we are currently on and return. 2) If the user is creating a
+                new post and the post does not have site-specific changes, show the blog selector
+                3) If the user is creating a new post and the post does have site-specific 
+                changes, display a blog change warning.
+ *
+ *	@param      sender The WPBlogSelectorButton triggering this action.
+ */
+- (void)showBlogSelectorPrompt:(WPBlogSelectorButton*)sender
 {
+    if (sender.buttonMode == WPBlogSelectorButtonSingleSite) {
+        [self cancelEditingOrDismiss];
+        return;
+    }
+    
     if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
@@ -676,6 +771,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
 	vc.hidesBottomBarWhenPushed = YES;
+    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -688,6 +784,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
 	vc.hidesBottomBarWhenPushed = YES;
+    [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -792,6 +889,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
+    
+    if (isEnabled) {
+        [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
+    }
+}
+
++ (BOOL)makeNewEditorAvailable
+{
+    BOOL result = NO;
+    BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
+    
+    if (newVisualEditorNotAvailable) {
+        
+        result = YES;
+        [WPPostViewController setNewEditorAvailable:YES];
+        [WPPostViewController setNewEditorEnabled:YES];
+    }
+    
+    return result;
 }
 
 + (BOOL)isNewEditorAvailable
@@ -805,6 +921,15 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 #pragma mark - Instance Methods
+
+- (void)cancelEditingOrDismiss
+{
+    if (self.isEditing) {
+        [self cancelEditing];
+    } else {
+        [self dismissEditView];
+    }
+}
 
 - (UIImage *)tintedImageWithColor:(UIColor *)tintColor image:(UIImage *)image
 {
@@ -888,6 +1013,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return title;
 }
 
+- (NSInteger)currentBlogCount
+{
+    NSInteger blogCount = 0;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    blogCount = [blogService blogCountForAllAccounts];
+    
+    return blogCount;
+}
+
 #pragma mark - UI Manipulation
 
 /**
@@ -907,30 +1042,23 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)refreshNavigationBarLeftButtons:(BOOL)editingChanged
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
+    NSArray* leftBarButtons;
     
     if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelXButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
         [self.navigationItem setLeftBarButtonItems:nil];
-        NSArray* leftBarButtons;
-        if (secondaryleftHandButton) {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        } else {
-            leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton];
-        }
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
 	} else {
+        // Previewing a post (no edit)
         [self.navigationItem setLeftBarButtonItems:nil];
-        [self.navigationItem setLeftBarButtonItem:self.navigationItem.backBarButtonItem animated:NO];
+        leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons];
 	}
 }
 
@@ -1024,6 +1152,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelButton = button;
     return _cancelButton;
 }
@@ -1040,6 +1169,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelButton = button;
+    button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
 	return _cancelButton;
 }
 
@@ -1097,6 +1227,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         button.removeDefaultLeftSpacing = YES;
         button.leftSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
+        _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
 	
 	return _previewBarButtonItem;
@@ -1147,24 +1278,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     UIBarButtonItem *aUIButtonBarItem;
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
     if ([self isMediaUploading]) {
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
-    } else if(blogCount <= 1 || ![self isPostLocal] || [[WordPressAppDelegate sharedWordPressApplicationDelegate] isNavigatingMeTab]) {
-        aUIButtonBarItem = nil;
     } else {
-        UIButton *blogButton = self.blogPickerButton;
+        WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
-                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
+                                                                                      attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
         
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (IS_IPAD) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
+        }
+        
+        // The blog picker is in single site mode if one of the following is true:
+        // editor screen is in preview mode, there is only 1 blog, or the user
+        // is editing an existing post.
+        if (self.currentBlogCount <= 1 || !self.isEditing || (self.isEditing && self.post.hasRemote)) {
+            blogButton.buttonMode = WPBlogSelectorButtonSingleSite;
+        } else {
+            blogButton.buttonMode = WPBlogSelectorButtonMultipleSite;
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
@@ -1178,7 +1312,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (!_blogPickerButton) {
         CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
-        [button addTarget:self action:@selector(showBlogSelectorPrompt) forControlEvents:UIControlEventTouchUpInside];
+        [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
     
@@ -1291,7 +1425,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 		return;
 	}
     
-    [self stopEditing];
 	[self savePostAndDismissVC];
 }
 
@@ -1304,6 +1437,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self showFailedMediaRemovalAlert];
         return;
     }
+    [self stopEditing];
     [self savePost];
     [self dismissEditView];
 }
@@ -1359,7 +1493,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)didSaveNewPost
 {
     if ([self isPostLocal]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchTabToPostsListForPost:self.post];
+        [[WPTabBarController sharedInstance] switchTabToPostsListForPost:self.post];
     }
 }
 
@@ -1468,7 +1602,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
+        if (progress.totalUnitCount != 0){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)cancelMediaUploads
@@ -1568,6 +1707,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
 {
+    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
+    
     NSProgress * progress = self.mediaInProgress[imageUniqueId];
     if (!progress) {
         return;
@@ -1582,9 +1723,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
+        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-        [self stopTrackingProgressOfMediaWithId:imageUniqueId];
-        [self refreshNavigationBarButtons:NO];
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:imageUniqueId];
@@ -1632,9 +1772,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
                 NSProgress *uploadProgress = nil;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
+                    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
                     [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                    [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
-                    [strongSelf refreshNavigationBarButtons:NO];
                 } failure:^(NSError *error) {
                     if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
                         [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
@@ -1643,6 +1782,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                         [media remove];
                     } else {
                         [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
+                        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
                         strongSelf.mediaGlobalProgress.completedUnitCount++;
                         [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
                     }
@@ -1913,7 +2053,35 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self refreshUIForCurrentPost];
 }
 
-- (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url
+- (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
+{
+    [self stopTrackingProgressOfMediaWithId:imageId];
+    [self refreshNavigationBarButtons:NO];
+}
+
+- (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url imageMeta:(WPImageMeta *)imageMeta
+{
+    // Note: imageId is an editor specified data attribute, not the image's ID attribute.
+    if (imageId.length == 0) {
+        [self displayImageDetailsForMeta:imageMeta];
+    } else {
+        [self promptForActionForTappedImage:imageId url:url];
+    }
+}
+
+- (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
+{
+    [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
+    
+    EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
+    controller.delegate = self;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)promptForActionForTappedImage:(NSString *)imageId url:(NSURL *)url
 {
     if (imageId.length == 0) {
         return;
@@ -1966,12 +2134,17 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         // If the image is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This image is currently not available locally to be used in your post. Please try again later.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")];
+                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
-        return picker.selectedAssets.count < MaximumNumberOfPictures;
-    } else {
+        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
+            [WPError showAlertWithTitle:nil
+                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures] withSupportButton:NO];
+            return NO;
+        }
         return YES;
+    } else {
+        return NO;
     }
 }
 
@@ -1985,6 +2158,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else {
         [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
     }
+}
+
+#pragma mark - EditImageDetailsViewControllerDelegate
+
+- (void)editImageDetailsViewController:(EditImageDetailsViewController *)controller didFinishEditingImageDetails:(WPImageMeta *)imageMeta
+{
+    [self.editorView updateCurrentImageMeta:imageMeta];
 }
 
 @end

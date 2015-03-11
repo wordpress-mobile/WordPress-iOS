@@ -34,6 +34,32 @@
           }];
 }
 
+- (void)getDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure
+{
+    NSString *path = @"me";
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  NSString *email = responseObject[@"email"];
+                  NSNumber *primaryBlogId = responseObject[@"primary_blog"];
+                  NSMutableDictionary *userDetails = [NSMutableDictionary new];
+                  if (email) {
+                      userDetails[@"email"] = email;
+                  }
+                  if (primaryBlogId) {
+                      userDetails[@"primary_blog"] = primaryBlogId;
+                  }
+                  success(userDetails);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 #pragma mark - Private Methods
 
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
