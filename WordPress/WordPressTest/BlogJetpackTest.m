@@ -58,7 +58,7 @@
     self.testContextManager.testExpectation = saveExpectation;
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
 
     // Wait on the merge to be completed
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
@@ -149,14 +149,14 @@
     self.testContextManager.testExpectation = saveExpectation;
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
-    [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" password:@"test1" authToken:@"token1"];
+    [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" authToken:@"token1"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
@@ -174,7 +174,7 @@
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" password:@"pass" authToken:@"token"];
+    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
