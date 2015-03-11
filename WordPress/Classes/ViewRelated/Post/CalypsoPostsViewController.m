@@ -8,6 +8,8 @@
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
+#import "UIView+Subviews.h"
+#import "WordPressAppDelegate.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
@@ -17,10 +19,10 @@
 static NSString * const TableViewCellIdentifier = @"PostCardTableViewCell";
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
+static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
 
-@property (nonatomic, strong) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) PostCardTableViewCell *cellForLayout;
@@ -28,6 +30,8 @@ static const NSInteger PostsLoadMoreThreshold = 4;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+
+- (IBAction)refresh:(id)sender;
 
 @end
 
@@ -55,6 +59,13 @@ static const NSInteger PostsLoadMoreThreshold = 4;
     [self configureSyncHelper];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+
+    [self automaticallySyncIfAppropriate];
 }
 
 /*
@@ -97,6 +108,125 @@ static const NSInteger PostsLoadMoreThreshold = 4;
     self.syncHelper = [[WPContentSyncHelper alloc] init];
     self.syncHelper.delegate = self;
 }
+
+
+- (void)configureNoResultsView
+{
+    if (!self.isViewLoaded) {
+        return;
+    }
+
+    if (!self.noResultsView) {
+        self.noResultsView = [[WPNoResultsView alloc] init];
+    }
+
+    if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+
+    // Refresh the NoResultsView Properties
+    self.noResultsView.titleText        = self.noResultsTitleText;
+    self.noResultsView.messageText      = self.noResultsMessageText;
+    self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+
+    // Only add and animate no results view if it isn't already
+    // in the table view
+    if (![self.noResultsView isDescendantOfView:self.tableView]) {
+        [self.tableView addSubviewWithFadeAnimation:self.noResultsView];
+    } else {
+        [self.noResultsView centerInSuperview];
+    }
+
+    [self.tableView sendSubviewToBack:self.noResultsView];
+}
+
+- (NSString *)noResultsTitleText
+{
+    return NSLocalizedString(@"You haven't created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (NSString *)noResultsMessageText {
+    return NSLocalizedString(@"Would you like to create your first post?",  @"Displayed when the user pulls up the posts view and they have no posts");
+}
+
+- (UIView *)noResultsAccessoryView {
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
+}
+
+- (NSString *)noResultsButtonText
+{
+    return NSLocalizedString(@"Create post", @"Button title, encourages users to create their first post on their blog.");
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    [self showAddPostView:nil];
+}
+
+
+#pragma mark - Actions
+
+- (IBAction)refresh:(id)sender
+{
+    [self syncItemsWithUserInteraction:YES];
+}
+
+- (IBAction)showAddPostView:(id)sender
+{
+// TODO: Flag we're adding a new post
+
+    UINavigationController *navController;
+
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
+        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = [WPPostViewController class];
+    } else {
+        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
+    }
+
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+    [self presentViewController:navController animated:YES completion:nil];
+
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+}
+
+#pragma mark - Syncing
+
+- (void)automaticallySyncIfAppropriate
+{
+    // Only automatically refresh if the view is loaded and visible on the screen
+    if (self.isViewLoaded == NO || self.view.window == nil) {
+        DDLogVerbose(@"View is not visible and will not check for auto refresh.");
+        return;
+    }
+
+    // Do not start auto-sync if connection is down
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    if (appDelegate.connectionAvailable == NO) {
+        return;
+    }
+
+    NSDate *lastSynced = self.blog.lastPostsSync;
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > PostsControllerRefreshTimeout) {
+        // Update in the background
+        [self syncItemsWithUserInteraction:NO];
+    }
+}
+
+- (void)syncItemsWithUserInteraction:(BOOL)userInteraction
+{
+    [self configureNoResultsView];
+    [self.syncHelper syncContentWithUserInteraction:userInteraction];
+}
+
 
 
 #pragma mark - Sync Helper Delegate Methods
@@ -187,7 +317,7 @@ static const NSInteger PostsLoadMoreThreshold = 4;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self preloadImagesForCellsAfterIndexPath:indexPath];
+// TODO: Preload images (maybe?)
 
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
@@ -231,51 +361,6 @@ static const NSInteger PostsLoadMoreThreshold = 4;
     [postCell configureCell:post];
 }
 
-
-#pragma mark - Image Caching
-
-- (void)preloadImagesForCellsAfterIndexPath:(NSIndexPath *)indexPath
-{
-    return;
-    NSInteger numberToPreload = 2; // keep the number small else they compete and slow each other down.
-    for (NSInteger i = 1; i <= numberToPreload; i++) {
-        NSIndexPath *nextIndexPath = [NSIndexPath indexPathForRow:indexPath.row + i inSection:indexPath.section];
-        if ([self.tableView numberOfRowsInSection:indexPath.section] > nextIndexPath.row) {
-            Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:nextIndexPath];
-            NSURL *imageURL = [post featuredImageURLForDisplay];
-            if (!imageURL) {
-                // No image to feature.
-                continue;
-            }
-
-            UIImage *image = [self imageForURL:imageURL];
-            if (image) {
-                // already cached.
-                continue;
-            } else {
-                [self.featuredImageSource fetchImageForURL:imageURL
-                                                  withSize:[self sizeForFeaturedImage]
-                                                 indexPath:nextIndexPath
-                                                 isPrivate:post.blog.isPrivate];
-            }
-        }
-    }
-}
-
-- (UIImage *)imageForURL:(NSURL *)imageURL
-{
-    if (!imageURL) {
-        return nil;
-    }
-    return [self.featuredImageSource imageForURL:imageURL withSize:[self sizeForFeaturedImage]];
-}
-
-- (CGSize)sizeForFeaturedImage
-{
-    CGSize imageSize = CGSizeZero;
-    // TODO: return actual sizes for images
-    return imageSize;
-}
 
 #pragma mark - Instance Methods
 
