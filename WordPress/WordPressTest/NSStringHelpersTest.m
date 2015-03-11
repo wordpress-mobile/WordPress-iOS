@@ -58,6 +58,20 @@
     }
 }
 
+- (void)testIsWordPressComPathWithInvalidDotcomRootPaths
+{
+    NSArray *validDotcomUrls = @[
+                                 @"http://Zwordpress.com",
+                                 @"http://www.Zwordpress.com",
+                                 @"http://www.ZWordPress.com",
+                                 @"https://Zwordpress.com"
+                                 ];
+    
+    for (NSString *validDotcomPath in validDotcomUrls) {
+        XCTAssertFalse(validDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
+}
+
 - (void)testIsWordPressComPathWithValidPathsWithSubdomains
 {
     NSArray *validDotcomUrls = @[

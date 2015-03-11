@@ -190,20 +190,20 @@ static NSString *const Ellipsis =  @"\u2026";
 
 - (BOOL)isWordPressComPath
 {
-    NSString *const regexPattern    = @"wordpress\\.com/?$";
+    NSString *const dotcomDomain    = @"wordpress.com";
+    NSString *const dotcomSuffix    = [@"." stringByAppendingString:dotcomDomain];
     NSArray *const validProtocols   = @[ @"http", @"https" ];
     
     NSURLComponents *components     = [[NSURLComponents alloc] initWithString:self];
-    NSRegularExpression *regex      = [NSRegularExpression regularExpressionWithPattern:regexPattern
-                                                                                options:NSRegularExpressionCaseInsensitive
-                                                                                  error:nil];
+    NSString *lowercaseHostname     = components.host.lowercaseString;
     
-    // Validate the Domain + Protocol
-    NSArray *domainMatches          = [regex matchesInString:components.host
-                                                     options:NSRegularExpressionCaseInsensitive
-                                                       range:NSMakeRange(0, components.host.length)];
-
-    return domainMatches.count != 0 && [validProtocols containsObject:components.scheme];
+    // Domain names can be http(s):*.wordpress.com OR http(s)://wordpress.com
+    BOOL isDotcom                   = [lowercaseHostname hasSuffix:dotcomSuffix] ||
+                                      [lowercaseHostname isEqualToString:dotcomDomain];
+    
+    BOOL isProtocolValid            = [validProtocols containsObject:components.scheme];
+    
+    return isDotcom && isProtocolValid;
 }
 
 @end
