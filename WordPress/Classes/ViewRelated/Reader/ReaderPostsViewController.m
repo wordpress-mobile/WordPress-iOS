@@ -239,7 +239,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)checkWPComAccountExists
 {
-    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext] defaultWordPressComAccount] != nil);
+    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]] defaultWordPressComAccount] != nil);
 }
 
 - (void)configureRefreshControl
@@ -427,7 +427,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         topic = nil;
 
     } else {
-        topic = [self topic:readerTopic inContext:self.managedObjectContext];
+        topic = [self topic:readerTopic inContext:[self managedObjectContext]];
     }
 
     if (topic == _readerTopic) {
