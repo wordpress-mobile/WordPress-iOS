@@ -119,8 +119,8 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="gravatarImageView" destination="fja-DW-mzm" id="zzW-cA-ucz"/>
-                                            <outlet property="nameLabel" destination="QIf-EO-cFO" id="MOL-rl-DpI"/>
-                                            <outlet property="snippetLabel" destination="LeI-iE-lkn" id="uoG-Od-v1y"/>
+                                            <outlet property="headerDetailsLabel" destination="LeI-iE-lkn" id="fCV-Gb-rMT"/>
+                                            <outlet property="headerTitleLabel" destination="QIf-EO-cFO" id="mDT-EW-ZsF"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" rowHeight="44" id="8uY-4y-V9f" userLabel="Text" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
