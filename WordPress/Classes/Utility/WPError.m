@@ -1,7 +1,7 @@
 #import "WPError.h"
 #import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
-#import "WPcomLoginViewController.h"
+#import "LoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
 #import "SupportViewController.h"
@@ -82,7 +82,7 @@ NSInteger const SupportButtonIndex = 0;
     } else if ([error.domain isEqualToString:WordPressComApiErrorDomain]) {
         DDLogError(@"wp.com API error: %@: %@", [error.userInfo objectForKey:WordPressComApiErrorCodeKey], [error localizedDescription]);
         if (error.code == WordPressComApiErrorInvalidToken || error.code == WordPressComApiErrorAuthorizationRequired) {
-            [WPcomLoginViewController presentLoginScreen];
+            [LoginViewController presentModalReauthScreen];
             return;
         }
     }

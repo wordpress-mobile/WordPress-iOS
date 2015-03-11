@@ -119,6 +119,17 @@
     return [super leftViewRectForBounds:bounds];
 }
 
+// Right view position
+- (CGRect)rightViewRectForBounds:(CGRect)bounds
+{
+    CGRect textRect = [super rightViewRectForBounds:bounds];
+    textRect.origin.x -= _rightViewPadding.x;
+    textRect.origin.y -= _rightViewPadding.y;
+    
+    return textRect;
+}
+
+
 #pragma mark - Secure Text Entry
 
 - (void)setSecureTextEntry:(BOOL)secureTextEntry

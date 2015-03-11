@@ -82,10 +82,15 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
 
  @param username the WordPress.com username to validate
  @param username the WordPress.com password to validate
+ @param multifactorCode the Multifactor One-Time code associated to the account. Can be nil
  @param success a block called if the username and password are valid and associated to this blog
  @param failure a block called if there is any error. `error` can be any of BlogJetpackErrorCode or the underlying network errors
  */
-- (void)validateJetpackUsername:(NSString *)username password:(NSString *)password success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)validateJetpackUsername:(NSString *)username
+                       password:(NSString *)password
+                multifactorCode:(NSString *)multifactorCode
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure;
 
 /**
  Removes the stored Jetpack credentials for this blog
@@ -94,4 +99,5 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
  This might change in a future version, when we have a more centralized account system
  */
 - (void)removeJetpackCredentials;
+
 @end
