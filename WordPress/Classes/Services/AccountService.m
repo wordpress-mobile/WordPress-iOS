@@ -129,8 +129,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
-
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
@@ -244,6 +242,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
         dispatch_async(dispatch_get_main_queue(), ^{
             [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:account];
+            [WPAnalytics refreshMetadata];
         });
     } failure:^(NSError *error) {
         DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
