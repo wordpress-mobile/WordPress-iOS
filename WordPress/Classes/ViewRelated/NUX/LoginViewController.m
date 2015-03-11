@@ -858,7 +858,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if (url.isWordPressComURL) {
+    if (url.isWordPressComPath) {
         if (siteURL.scheme == nil) {
             url = [NSString stringWithFormat:@"https://%@", url];
         } else {
@@ -1101,7 +1101,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     NSString *password = self.passwordText.text;
     NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
 
-    if (self.userIsDotCom || self.siteUrlText.text.isWordPressComURL) {
+    if (self.userIsDotCom || self.siteUrlText.text.isWordPressComPath) {
         [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
