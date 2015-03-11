@@ -212,15 +212,15 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (BOOL)changedOrientation
 {
-    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
-        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
-            
-            return YES;
-        }
+    if (self.previousOrientation != UIInterfaceOrientationUnknown
+        && UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+    {
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+        
+        return YES;
+    } else {
+        return NO;
     }
-    
-    return NO;
 }
 
 - (BOOL)toggledVisibilityOfWPComAccount
