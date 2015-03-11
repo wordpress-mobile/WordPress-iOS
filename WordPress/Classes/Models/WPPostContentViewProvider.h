@@ -9,6 +9,7 @@
 - (NSString *)gravatarEmailForDisplay;
 - (NSString *)blogNameForDisplay;
 - (NSURL *)blogURL;
+- (NSString *)blogURLForDisplay;
 
 // Content accessors
 - (NSString *)titleForDisplay;
