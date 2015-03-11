@@ -188,13 +188,22 @@ static NSString *const Ellipsis =  @"\u2026";
     return tokens;
 }
 
-- (BOOL)isWordPressComURL
+- (BOOL)isWordPressComPath
 {
-    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSString *trimmed = [self trim];
-    NSArray *result = [protocol matchesInString:trimmed options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, trimmed.length)];
+    NSString *const regexPattern    = @"wordpress\\.com/?$";
+    NSArray *const validProtocols   = @[ @"http", @"https" ];
     
-    return result.count != 0;
+    NSURLComponents *components     = [[NSURLComponents alloc] initWithString:self];
+    NSRegularExpression *regex      = [NSRegularExpression regularExpressionWithPattern:regexPattern
+                                                                                options:NSRegularExpressionCaseInsensitive
+                                                                                  error:nil];
+    
+    // Validate the Domain + Protocol
+    NSArray *domainMatches          = [regex matchesInString:components.host
+                                                     options:NSRegularExpressionCaseInsensitive
+                                                       range:NSMakeRange(0, components.host.length)];
+
+    return domainMatches.count != 0 && [validProtocols containsObject:components.scheme];
 }
 
 @end
