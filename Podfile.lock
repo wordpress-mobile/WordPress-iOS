@@ -108,20 +108,20 @@ PODS:
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (~> 0.0.2)
     - UIAlertView+Blocks
-    - WordPress-iOS-Shared (~> 0.2.0)
+    - WordPress-iOS-Shared (~> 0.3.0)
     - WordPressCom-Analytics-iOS (~> 0.0.4)
-  - WordPress-iOS-Shared (0.2.2):
+  - WordPress-iOS-Shared (0.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
   - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.0.27)
-  - WordPressCom-Stats-iOS (0.2.0):
+  - WordPressCom-Analytics-iOS (0.0.28)
+  - WordPressCom-Stats-iOS (0.2.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.2.0)
+    - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS
   - wpxmlrpc (0.8)
 
@@ -154,11 +154,11 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `27089b8d74efc07e2743de924edd47989a4456d9`)
-  - WordPress-iOS-Shared (= 0.2.2)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `f9d89239a81868a8b748bfb558d91c534bc12634`)
+  - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (= 0.0.27)
-  - WordPressCom-Stats-iOS (= 0.2.0)
+  - WordPressCom-Analytics-iOS (= 0.0.28)
+  - WordPressCom-Stats-iOS (= 0.2.3)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -177,7 +177,7 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 27089b8d74efc07e2743de924edd47989a4456d9
+    :commit: f9d89239a81868a8b748bfb558d91c534bc12634
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 CHECKOUT OPTIONS:
@@ -194,7 +194,7 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 27089b8d74efc07e2743de924edd47989a4456d9
+    :commit: f9d89239a81868a8b748bfb558d91c534bc12634
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 SPEC CHECKSUMS:
@@ -231,11 +231,11 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: 0e53faba113a3b81439226acd4265835fe985bf6
-  WordPress-iOS-Shared: f66cc48dae11681d24c9abf36724a6ec28014409
+  WordPress-iOS-Editor: 290906db721813721b34ff1bdab80e4dce2b29e4
+  WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
   WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
-  WordPressCom-Analytics-iOS: e7cfc141f0a112291f09dd5eefe51d68cce417ad
-  WordPressCom-Stats-iOS: bb023fc4c623cb77c9baa43db228df3a0394a558
+  WordPressCom-Analytics-iOS: 5895f5e051da1f8ada3d861182229b7d8cef350a
+  WordPressCom-Stats-iOS: a441c86acf99c7707dbea239667e9cb1dbc1b980
   wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
 
 COCOAPODS: 0.35.0
