@@ -5,5 +5,17 @@ xcode_scheme: WordPress
 xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
-before_install:
-  - gem install cocoapods
+install:
+- gem install cocoapods && pod install
+- gem install xcpretty --no-rdoc --no-ri --no-document --quiet
+- ./Scripts/install-oclint.sh
+before_script:
+- xctool --version
+script:
+- ./Scripts/build.sh
+after_success:
+- ./Scripts/run-oclint.sh
+
+env:
+  global:
+    secure: Sw3dwkuh9QjVYvvxcVnVN/wHGlhGjAsJjmEfGfqKMJZusdbNCU6tIZ7nmU2cVHDhozoPG4bHK62FgOmc1PhANyEQLe7eICh+G9djr0VP6Rd4/LLbv052dqpSrshwzFLDHCUvjTfEiJsTbQeuQYX2zQqFqvxV5eOnFkMoG4vK7rQ=

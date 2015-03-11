@@ -1,7 +1,13 @@
 import Foundation
 
 
-@objc public class ReplyTextView : UIView, UITextViewDelegate, SuggestableView
+@objc public protocol ReplyTextViewDelegate : UITextViewDelegate
+{
+    optional func textView(textView: UITextView, didTypeWord word: String)
+}
+
+
+@objc public class ReplyTextView : UIView, UITextViewDelegate
 {
     // MARK: - Initializers
     public convenience init(width: CGFloat) {
@@ -21,39 +27,69 @@ import Foundation
     
     
     // MARK: - Public Properties
-    public weak var delegate: UITextViewDelegate?
+    public weak var delegate: ReplyTextViewDelegate?
     
     public var onReply: ((String) -> ())?
     
     public var text: String! {
-        didSet {
-            textView.text = text
+        set {
+            textView.text = newValue ?? String()
             refreshInterface()
+        }
+        get {
+            return textView.text
         }
     }
     public var placeholder: String! {
-        didSet {
-            placeholderLabel.text = placeholder
+        set {
+            placeholderLabel.text = newValue ?? String()
+        }
+        get {
+            return placeholderLabel.text
         }
     }
 
     public var replyText: String! {
-        didSet {
-            replyButton.setTitle(replyText, forState: .Normal)
+        set {
+            replyButton.setTitle(newValue, forState: .Normal)
+        }
+        get {
+            return replyButton.titleForState(.Normal)
         }
     }
     
-    public var autocorrectionType: UITextAutocorrectionType = .Yes {
-        didSet {
-            textView.autocorrectionType = autocorrectionType
+    public var autocorrectionType: UITextAutocorrectionType {
+        set {
+            textView.autocorrectionType = newValue
+        }
+        get {
+            return textView.autocorrectionType
         }
     }
     
-    public var keyboardType: UIKeyboardType = .Default {
-        didSet {
-            textView.keyboardType = keyboardType
+    public var keyboardType: UIKeyboardType {
+        set {
+            textView.keyboardType = newValue
+        }
+        get {
+            return textView.keyboardType
         }
     }
+    
+    public override func isFirstResponder() -> Bool {
+        return textView.isFirstResponder()
+    }
+    
+    
+    // MARK: - Public Methods
+    public func replaceTextAtCaret(text: String!, withText replacement: String!) {
+        let textToReplace: NSString = text ?? NSString();
+        var selectedRange: UITextRange = textView.selectedTextRange!
+        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
+        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
+        textView.replaceRange(newRange, withText: replacement)
+    }
+    
     
     // MARK: - UITextViewDelegate Methods
     public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
@@ -74,21 +110,16 @@ import Foundation
     
     public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
-                
-        if shouldChange {
-            if let suggestionsDelegate = delegate as? SuggestionsTableViewDelegate {
-                if suggestionsDelegate.respondsToSelector(Selector("view:didTypeInWord:")) {
-                    
-                    let textViewText: NSString = textView.text
-                    let prerange = NSMakeRange(0, range.location)
-                    let pretext: NSString = textViewText.substringWithRange(prerange) + text
-                    let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-                    let lastWord: NSString = words.last as NSString
-                
-                    suggestionsDelegate.view?(textView, didTypeInWord: lastWord)
-                    
-                }
-            }
+        let respondsToDidType = delegate?.respondsToSelector(Selector("textView:didTypeWord:")) ?? false
+
+        if shouldChange && respondsToDidType {
+            let textViewText: NSString = textView.text
+            let prerange = NSMakeRange(0, range.location)
+            let pretext: NSString = textViewText.substringWithRange(prerange) + text
+            let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            let lastWord: NSString = words.last as NSString
+            
+            delegate?.textView?(textView, didTypeWord: lastWord)
         }
         
         return shouldChange
@@ -103,14 +134,6 @@ import Foundation
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
-    // MARK: - SuggestableView methods
-    public func replaceTextAtCaret(text: String!, withSuggestion suggestion: String!) {
-        let textToReplace: NSString = text;
-        var selectedRange: UITextRange = textView.selectedTextRange!
-        var newPosition: UITextPosition = textView.positionFromPosition(selectedRange.start, offset: -textToReplace.length)!
-        var newRange: UITextRange = textView.textRangeFromPosition(newPosition, toPosition: selectedRange.start)
-        textView.replaceRange(newRange, withText: suggestion)
-    }
     
     // MARK: - IBActions
     @IBAction private func btnReplyPressed() {

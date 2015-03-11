@@ -6,6 +6,9 @@
 #import "WPAccount.h"
 #import "WPImageSource.h"
 
+static const NSInteger WPTableImageSourceMaxPhotonQuality = 100;
+static const NSInteger WPTableImageSourceMinPhotonQuality = 1;
+
 @implementation WPTableImageSource {
     dispatch_queue_t _processingQueue;
     NSCache *_imageCache;
@@ -28,8 +31,14 @@
         _imageCache = [[NSCache alloc] init];
         _maxSize = CGSizeMake(ceil(size.width), ceil(size.height));
         _forceLargerSizeWhenFetching = YES;
+        _photonQuality = WPTableImageSourceMaxPhotonQuality;
     }
     return self;
+}
+
+- (void)setPhotonQuality:(NSInteger)quality
+{
+    _photonQuality = MIN(MAX(quality, WPTableImageSourceMinPhotonQuality), WPTableImageSourceMaxPhotonQuality);
 }
 
 #pragma mark - Image fetching
@@ -318,6 +327,8 @@
     if (useSSL) {
         queryString = [NSString stringWithFormat:@"%@&ssl=1", queryString];
     }
+
+    queryString = [NSString stringWithFormat:@"quality=%d&%@", self.photonQuality, queryString];
 
     return queryString;
 }

@@ -1,9 +1,8 @@
 #import <UIKit/UIKit.h>
-#import "WPTableViewController.h"
 
 
 
-@interface NotificationsViewController : WPTableViewController
+@interface NotificationsViewController : UITableViewController
 
 - (void)showDetailsForNoteWithID:(NSString *)notificationID;
 

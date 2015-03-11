@@ -18,6 +18,7 @@
 
 @interface ReaderTopicService()
 - (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account;
+- (NSString *)formatTitle:(NSString *)str;
 @end
 
 
@@ -296,6 +297,38 @@
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     count = [context countForFetchRequest:fetchRequest error:&error];
     XCTAssertTrue(count == 0, @"Topic posts were not successfully deleted.");
+}
+
+- (void)testTopicTitleFormatting
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+    NSString *unformatted;
+    NSString *formatted;
+
+    // Capitalized first char assumes the string has correct case
+    unformatted = @"WordPress";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"WordPress should have maintained its case.");
+
+    // Lowercase should be capitalized
+    unformatted = @"art & entertainment";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:@"Art & Entertainment"], @"Lower cased words should be capitalized");
+
+    // Special consideration for the casing of "techy" words like iPhone and ePaper.
+    unformatted = @"iPhone";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"iPhone should have maintained its case.");
+
+    unformatted = @"ePaper";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"ePaper should have maintained its case.");
+
+    // All caps stays all caps.
+    unformatted = @"VINE";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"VINE should have remained all caps.");
 }
 
 @end

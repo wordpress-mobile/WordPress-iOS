@@ -1,6 +1,7 @@
 #import "AboutViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
+#import "NSBundle+VersionNumberHelper.h"
 
 @interface AboutViewController()
 
@@ -33,7 +34,7 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     self.titleLabel.font = [WPStyleGuide largePostTitleFont];
     self.titleLabel.textColor = [WPStyleGuide whisperGrey];
 
-    self.versionLabel.text = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    self.versionLabel.text = [[NSBundle mainBundle] detailedVersionNumber];
     self.versionLabel.font = [WPStyleGuide postTitleFont];
     self.versionLabel.textColor = [WPStyleGuide whisperGrey];
 

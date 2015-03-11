@@ -14,23 +14,23 @@
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
+@dynamic email;
 
 #pragma mark - NSManagedObject subclass methods
 
 - (void)prepareForDeletion
 {
     // Only do these deletions in the primary context (no parent)
-    if (self.managedObjectContext.parentContext) {
+    if (self.managedObjectContext.concurrencyType != NSMainQueueConcurrencyType) {
         return;
     }
 
-    // We check _restApi directly since using the method would regenerate it if nil
-    // There's no need to cancel/reset anything on a fresh api object
-    if (_restApi) {
-        [[[self restApi] operationQueue] cancelAllOperations];
-        [[self restApi] reset];
-    }
+    // Beware: Lazy getters below. Let's hit directly the ivar
+    [_restApi.operationQueue cancelAllOperations];
+    [_restApi reset];
 
+    [_xmlrpcApi.operationQueue cancelAllOperations];
+    
     self.password = nil;
     
     // Fix: Let's make sure we only nuke the authToken when needed. That is, if the deleted account is dotcom.
@@ -43,7 +43,7 @@
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];
-
+    
     _restApi = nil;
     _xmlrpcApi = nil;
 }

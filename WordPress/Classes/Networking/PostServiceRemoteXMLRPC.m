@@ -244,7 +244,9 @@
         if (existingPost) {
             [postParams setValue:@"" forKey:@"wp_post_thumbnail"];
         }
-    } else {
+    } else if (!existingPost || post.isFeaturedImageChanged) {
+        // Do not add this param to existing posts when the featured image has not changed.
+        // Doing so results in a XML-RPC fault: Invalid attachment ID.
         [postParams setValue:post.postThumbnailID forKey:@"wp_post_thumbnail"];
     }
 

@@ -1,14 +1,17 @@
 #import "SuggestionsTableView.h"
+#import "WPStyleGuide+Suggestions.h"
 #import "SuggestionsTableViewCell.h"
 #import "Suggestion.h"
 #import "SuggestionService.h"
 
 NSString * const CellIdentifier = @"SuggestionsTableViewCell";
-CGFloat const RowHeight = 44.0f;
+CGFloat const STVRowHeight = 44.f;
+CGFloat const STVSeparatorHeight = 1.f;
 
 @interface SuggestionsTableView ()
 
 @property (nonatomic, strong) UIView *headerView;
+@property (nonatomic, strong) UIView *separatorView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSNumber *siteID;
 @property (nonatomic, strong) NSArray *suggestions;
@@ -20,6 +23,7 @@ CGFloat const RowHeight = 44.0f;
 
 @implementation SuggestionsTableView
 
+#pragma mark Public methods
 
 - (instancetype)initWithSiteID:(NSNumber *)siteID
 {    
@@ -28,8 +32,9 @@ CGFloat const RowHeight = 44.0f;
         _siteID = siteID;
         _suggestions = [[SuggestionService sharedInstance] suggestionsForSiteID:_siteID];
         _searchText = @"";
+        _enabled = YES;
         _searchResults = [[NSMutableArray alloc] init];
-        
+        _useTransparentHeader = NO;
         [self setupHeaderView];
         [self setupTableView];
         [self setupConstraints];
@@ -38,12 +43,37 @@ CGFloat const RowHeight = 44.0f;
     return self;
 }
 
+- (void)setUseTransparentHeader:(BOOL)useTransparentHeader
+{
+    _useTransparentHeader = useTransparentHeader;
+    [self updateHeaderStyles];
+}
+
+
+#pragma mark Private methods
+
+- (void)updateHeaderStyles
+{
+    if (_useTransparentHeader) {
+        [self.headerView setBackgroundColor: [UIColor clearColor]];
+    } else {
+        [self.headerView setBackgroundColor: [WPStyleGuide suggestionsHeaderSmoke]];
+    }
+    
+}
+
 - (void)setupHeaderView
 {
     _headerView = [[UIView alloc] init];
-    _headerView.backgroundColor = [UIColor colorWithRed:0.f green:0.f blue:0.f alpha:0.3f];
     [_headerView setTranslatesAutoresizingMaskIntoConstraints:NO];
     [self addSubview:_headerView];
+    
+    _separatorView = [[UIView alloc] init];
+    [_separatorView setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [_separatorView setBackgroundColor: [WPStyleGuide suggestionsSeparatorSmoke]];
+    [self addSubview:_separatorView];
+
+    [self updateHeaderStyles];
 }
 
 - (void)setupTableView
@@ -53,7 +83,7 @@ CGFloat const RowHeight = 44.0f;
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     [_tableView setTranslatesAutoresizingMaskIntoConstraints:NO];
-    [_tableView setRowHeight:RowHeight];
+    [_tableView setRowHeight:STVRowHeight];
     // Table separator insets defined to match left edge of username in cell.
     [_tableView setSeparatorInset:UIEdgeInsetsMake(0.f, 47.f, 0.f, 0.f)];
     // iOS8 added and requires the following in order for that separator inset to be used
@@ -67,21 +97,28 @@ CGFloat const RowHeight = 44.0f;
 {
     // Pin the table view to the view's edges
     NSDictionary *views = @{@"headerview": self.headerView,
+                        @"separatorview" : self.separatorView,
                              @"tableview": self.tableView };
+    NSDictionary *metrics = @{@"separatorheight" : @(STVSeparatorHeight)};
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[headerview]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
         
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[separatorview]|"
+                                                                 options:0
+                                                                 metrics:nil
+                                                                   views:views]];
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|[tableview]|"
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
         
     // Vertically arrange the header and table
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][tableview]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[headerview][separatorview(separatorheight)][tableview]|"
                                                                  options:0
-                                                                 metrics:nil
+                                                                 metrics:metrics
                                                                    views:views]];
 
     // Add a height constraint to the table view
@@ -123,22 +160,26 @@ CGFloat const RowHeight = 44.0f;
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    [self setHidden:(self.searchResults.count == 0)];
+    NSUInteger suggestionCount = self.searchResults.count;
+    [self setHidden:(0 == suggestionCount)];
+    if ([self.suggestionsDelegate respondsToSelector:@selector(suggestionsTableView:didChangeTableBounds:)]) {
+        [self.suggestionsDelegate suggestionsTableView:self didChangeTableBounds:self.tableView.bounds];
+    }
 }
 
 - (void)updateConstraints
 {
     // Take the height of the table frame and make it so only whole results are displayed
-    NSUInteger maxRows = floor(self.frame.size.height / RowHeight);
+    NSUInteger maxRows = floor(self.frame.size.height / STVRowHeight);
     
     if (maxRows < 1) {
         maxRows = 1;
     }    
     
     if (self.searchResults.count > maxRows) {
-        self.heightConstraint.constant = maxRows * RowHeight;        
+        self.heightConstraint.constant = maxRows * STVRowHeight;        
     } else {
-        self.heightConstraint.constant = self.searchResults.count * RowHeight;
+        self.heightConstraint.constant = self.searchResults.count * STVRowHeight;
     }
     
     [super updateConstraints];
@@ -165,6 +206,10 @@ CGFloat const RowHeight = 44.0f;
 
 - (BOOL)showSuggestionsForWord:(NSString *)word
 {
+    if (!self.enabled) {
+        return NO;
+    }
+    
     if ([word hasPrefix:@"@"]) {
         self.searchText = [word substringFromIndex:1];
         if (self.searchText.length > 0) {

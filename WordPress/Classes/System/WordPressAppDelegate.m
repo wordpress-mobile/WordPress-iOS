@@ -8,7 +8,6 @@
 #import <HockeySDK/HockeySDK.h>
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import <Simperium/Simperium.h>
-#import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-AppbotX/ABX.h>
 
@@ -32,11 +31,14 @@
 #import "SVProgressHUD.h"
 #import "TodayExtensionService.h"
 
+#import "WPTabBarController.h"
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
+#import "MeViewController.h"
 #import "PostsViewController.h"
 #import "WPPostViewController.h"
 #import "WPLegacyEditPostViewController.h"
+#import "WPWhatsNew.h"
 #import "LoginViewController.h"
 #import "NotificationsViewController.h"
 #import "ReaderPostsViewController.h"
@@ -44,11 +46,13 @@
 #import "StatsViewController.h"
 #import "Constants.h"
 #import "UIImage+Util.h"
+#import "NSBundle+VersionNumberHelper.h"
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import "AppRatingUtility.h"
+#import "HelpshiftUtils.h"
 
 #import "Reachability.h"
 #import "WordPress-Swift.h"
@@ -57,38 +61,17 @@
 #import <Lookback/Lookback.h>
 #endif
 
-#ifdef INTERNAL_BUILD
-#import <NewRelicAgent/NewRelic.h>
-#endif
-
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #endif
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
-static NSString * const WPTabBarRestorationID                   = @"WPTabBarID";
-static NSString * const WPBlogListNavigationRestorationID       = @"WPBlogListNavigationID";
-static NSString * const WPReaderNavigationRestorationID         = @"WPReaderNavigationID";
-static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
+static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
-NSInteger const kReaderTabIndex                                 = 0;
-NSInteger const kNotificationsTabIndex                          = 1;
-NSInteger const kMeTabIndex                                     = 2;
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
-static NSString* const kWPNewPostURLParamTitleKey = @"title";
-static NSString* const kWPNewPostURLParamContentKey = @"content";
-static NSString* const kWPNewPostURLParamTagsKey = @"tags";
-static NSString* const kWPNewPostURLParamImageKey = @"image";
-
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate, HelpshiftDelegate>
-
-@property (nonatomic, strong, readwrite) UINavigationController         *navigationController;
-@property (nonatomic, strong, readwrite) UITabBarController             *tabBarController;
-@property (nonatomic, strong, readwrite) ReaderPostsViewController      *readerPostsViewController;
-@property (nonatomic, strong, readwrite) BlogListViewController         *blogListViewController;
-@property (nonatomic, strong, readwrite) NotificationsViewController    *notificationsViewController;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
 @property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
@@ -98,6 +81,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 @property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
+
+/**
+ *  @brief      Flag that signals wether Whats New is on screen or not.
+ *  @details    Won't be necessary once WPWhatsNew is changed to inherit from UIViewController
+ *              https://github.com/wordpress-mobile/WordPress-iOS/issues/3218
+ */
+@property (nonatomic, assign, readwrite) BOOL                           wasWhatsNewShown;
 
 @end
 
@@ -120,13 +110,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [WordPressAppDelegate fixKeychainAccess];
 
     // Simperium: Wire CoreData Stack
-    [self configureSimperium];
+    [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
     [self configureLogging];
     [self configureHockeySDK];
-    [self configureNewRelic];
     [self configureCrashlytics];
+    [self initializeAppTracking];
 
     // Start Simperium
     [self loginSimperium];
@@ -139,8 +129,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Stats and feedback    
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
-    [Helpshift installForApiKey:[WordPressComApiCredentials helpshiftAPIKey] domainName:[WordPressComApiCredentials helpshiftDomainName] appID:[WordPressComApiCredentials helpshiftAppId]];
-    [[Helpshift sharedInstance] setDelegate:self];
+    [HelpshiftUtils setup];
 
     NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
     if (usage_tracking == nil) {
@@ -184,10 +173,14 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     // Configure Today Widget
     [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
 
+    if ([WPPostViewController makeNewEditorAvailable]) {
+        [self setMustShowWhatsNewPopup:YES];
+    }
+    
     CGRect bounds = [[UIScreen mainScreen] bounds];
     [self.window setFrame:bounds];
     [self.window setBounds:bounds]; // for good measure.
-    self.window.rootViewController = self.tabBarController;
+    self.window.rootViewController = [WPTabBarController sharedInstance];
 
     return YES;
 }
@@ -280,7 +273,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         returnValue = YES;
     }
 
-    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:@"wordpress://"]) {
+    if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
         NSString *URLString = [url absoluteString];
         DDLogInfo(@"Application launched with URL: %@", URLString);
 
@@ -293,11 +286,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
             if (params.count) {
                 NSNumber *blogId = [params numberForKey:@"blogId"];
                 NSNumber *postId = [params numberForKey:@"postId"];
-                
-                [self.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
-                NSInteger readerTabIndex = [[self.tabBarController viewControllers] indexOfObject:self.readerPostsViewController.navigationController];
-                [self.tabBarController setSelectedIndex:readerTabIndex];
-                [self.readerPostsViewController openPost:postId onBlog:blogId];
+
+                WPTabBarController *tabBarController = [WPTabBarController sharedInstance];
+                [tabBarController.readerPostsViewController.navigationController popToRootViewControllerAnimated:NO];
+                [tabBarController showReaderTab];
+                [tabBarController.readerPostsViewController openPost:postId onBlog:blogId];
                 
                 returnValue = YES;
             }
@@ -317,13 +310,13 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                     StatsViewController *statsViewController = [[StatsViewController alloc] init];
                     statsViewController.blog = blog;
                     statsViewController.dismissBlock = ^{
-                        [self.tabBarController dismissViewControllerAnimated:YES completion:nil];
+                        [[WPTabBarController sharedInstance] dismissViewControllerAnimated:YES completion:nil];
                     };
                     
                     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:statsViewController];
                     navController.modalPresentationStyle = UIModalPresentationCurrentContext;
                     navController.navigationBar.translucent = NO;
-                    [self.tabBarController presentViewController:navController animated:YES completion:nil];
+                    [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
                 }
                 
             }
@@ -344,23 +337,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
                     }
                 }
             }
-		} else if ([[url host] isEqualToString:@"editor"]) {
-			NSDictionary* params = [[url query] dictionaryFromQueryString];
-			
-			if (params.count > 0) {
-				BOOL available = [[params objectForKey:kWPEditorConfigURLParamAvailable] boolValue];
-				BOOL enabled = [[params objectForKey:kWPEditorConfigURLParamEnabled] boolValue];
-				
-				[WPPostViewController setNewEditorAvailable:available];
-				[WPPostViewController setNewEditorEnabled:enabled];
-                
-                if (available) {
-                    [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
-                }
-				
-				[self showVisualEditorAvailableInSettingsAnimation:available];
-			}
-        }
+		}
     }
 
     return returnValue;
@@ -410,23 +387,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
         }
     }
 
-    // Check which tab is currently selected
-    NSString *currentlySelectedScreen = @"";
-    switch (self.tabBarController.selectedIndex) {
-        case kReaderTabIndex:
-            currentlySelectedScreen = @"Reader";
-            break;
-        case kNotificationsTabIndex:
-            currentlySelectedScreen = @"Notifications";
-            break;
-        case kMeTabIndex:
-            currentlySelectedScreen = @"Blog List";
-            break;
-        default:
-            break;
-    }
-
-    return currentlySelectedScreen;
+    return [[WPTabBarController sharedInstance] currentlySelectedScreen];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -443,7 +404,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self trackApplicationOpened];
-    [self initializeAppTracking];
+    
+    [self showWhatsNewIfNeeded];
 }
 
 - (BOOL)application:(UIApplication *)application shouldSaveApplicationState:(NSCoder *)coder
@@ -513,7 +475,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     params = [self sanitizeNewPostParameters:params];
     
     if ([params count]) {
-        [self showPostTabWithOptions:params];
+        [[WPTabBarController sharedInstance] showPostTabWithOptions:params];
         handled = YES;
     }
 	
@@ -559,7 +521,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         UIViewController *presenter = self.window.rootViewController;
-        if (presenter.presentedViewController) {
+        // Check if the presentedVC is UIAlertController because in iPad we show a Sign-out button in UIActionSheet
+        // and it's not dismissed before the check and `dismissViewControllerAnimated` does not work for it
+        if (presenter.presentedViewController && ![presenter.presentedViewController isKindOfClass:[UIAlertController class]]) {
             [presenter dismissViewControllerAnimated:animated completion:^{
                 [self showWelcomeScreenAnimated:animated thenEditor:NO];
             }];
@@ -571,13 +535,18 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
+    __weak __typeof(self) weakSelf = self;
+    
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    if (thenEditor) {
-        loginViewController.dismissBlock = ^{
-            [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
-        };
-        loginViewController.showEditorAfterAddingSites = YES;
-    }
+    loginViewController.showEditorAfterAddingSites = thenEditor;
+    loginViewController.cancellable = NO;
+    loginViewController.dismissBlock = ^{
+        
+        __strong __typeof(weakSelf) strongSelf = self;
+        
+        [strongSelf.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
+        [strongSelf showWhatsNewIfNeeded];
+    };
 
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     navigationController.navigationBar.translucent = NO;
@@ -614,7 +583,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName: [WPFontManager openSansBoldFontOfSize:16.0]} ];
 
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
-    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor colorWithHexString:@"007eb1"]]];
+    [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor UIColorFromHex:0x007eb1]]];
 
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
@@ -623,7 +592,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0], NSForegroundColorAttributeName: [WPStyleGuide allTAllShadeGrey]} forState:UIControlStateNormal];
+    [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide wordPressBlue]} forState:UIControlStateSelected];
 
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearanceWhenContainedIn:[UIReferenceLibraryViewController class], nil] setBarTintColor:[WPStyleGuide wordPressBlue]];
@@ -667,8 +637,12 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)initializeAppTracking
 {
     NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    [AppRatingUtility registerSection:@"notifications" withSignificantEventCount:5];
+    [AppRatingUtility setSystemWideSignificantEventsCount:10];
     [AppRatingUtility initializeForVersion:version];
-    [AppRatingUtility setNumberOfSignificantEventsRequiredForPrompt:5];
+    [AppRatingUtility checkIfAppReviewPromptsHaveBeenDisabled:nil failure:^{
+        DDLogError(@"Was unable to retrieve data about throttling");
+    }];
 }
 
 - (void)trackLowMemory
@@ -679,239 +653,6 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 - (void)lowMemoryWarning:(NSNotification *)notification
 {
     [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
-
-#pragma mark - Tab bar methods
-
-- (UITabBarController *)tabBarController
-{
-    if (_tabBarController) {
-        return _tabBarController;
-    }
-
-    UIOffset tabBarTitleOffset = UIOffsetMake(0, 0);
-    if ( IS_IPHONE ) {
-        tabBarTitleOffset = UIOffsetMake(0, -2);
-    }
-    _tabBarController = [[UITabBarController alloc] init];
-    _tabBarController.delegate = self;
-    _tabBarController.restorationIdentifier = WPTabBarRestorationID;
-    [_tabBarController.tabBar setTranslucent:NO];
-    _tabBarController.tabBar.accessibilityIdentifier = @"Main Navigation";
-    // Create a background
-    // (not strictly needed when white, but left here for possible customization)
-    _tabBarController.tabBar.backgroundImage = [UIImage imageWithColor:[UIColor whiteColor]];
-
-    self.readerPostsViewController = [[ReaderPostsViewController alloc] init];
-    UINavigationController *readerNavigationController = [[UINavigationController alloc] initWithRootViewController:self.readerPostsViewController];
-    readerNavigationController.navigationBar.translucent = NO;
-    readerNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-reader"];
-    readerNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-reader-filled"];
-    readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    self.readerPostsViewController.title = NSLocalizedString(@"Reader", nil);
-    [readerNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    
-    UIStoryboard *notificationsStoryboard = [UIStoryboard storyboardWithName:@"Notifications" bundle:nil];
-    self.notificationsViewController = [notificationsStoryboard instantiateInitialViewController];
-    UINavigationController *notificationsNavigationController = [[UINavigationController alloc] initWithRootViewController:self.notificationsViewController];
-    notificationsNavigationController.navigationBar.translucent = NO;
-    notificationsNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-notifications"];
-    notificationsNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-notifications-filled"];
-    notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
-    [notificationsNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-
-    self.blogListViewController = [[BlogListViewController alloc] init];
-    UINavigationController *blogListNavigationController = [[UINavigationController alloc] initWithRootViewController:self.blogListViewController];
-    blogListNavigationController.navigationBar.translucent = NO;
-    blogListNavigationController.tabBarItem.image = [UIImage imageNamed:@"icon-tab-blogs"];
-    blogListNavigationController.tabBarItem.selectedImage = [UIImage imageNamed:@"icon-tab-blogs-filled"];
-    blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    self.blogListViewController.title = NSLocalizedString(@"Me", @"");
-    [blogListNavigationController.tabBarItem setTitlePositionAdjustment:tabBarTitleOffset];
-    blogListNavigationController.tabBarItem.accessibilityIdentifier = @"Me";
-    
-    
-    UIImage *image = [UIImage imageNamed:@"icon-tab-newpost"];
-    image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    UIViewController *postsViewController = [[UIViewController alloc] init];
-    postsViewController.tabBarItem.image = image;
-    postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(5.0, 0, -5, 0);
-    if (IS_IPAD) {
-        postsViewController.tabBarItem.imageInsets = UIEdgeInsetsMake(7.0, 0, -7, 0);
-    }
-
-    /*
-     If title is used, the title will be visible. See #1158
-     If accessibilityLabel/Value are used, the "New Post" text is not read by VoiceOver
-
-     The only apparent solution is to have an actual title, and then move it out of view
-     non-VoiceOver users.
-     */
-    postsViewController.title = NSLocalizedString(@"New Post", @"The accessibility value of the post tab.");
-    postsViewController.tabBarItem.titlePositionAdjustment = UIOffsetMake(0, 20.0);
-
-    _tabBarController.viewControllers = @[readerNavigationController, notificationsNavigationController, blogListNavigationController, postsViewController];
-
-    [_tabBarController setSelectedViewController:readerNavigationController];
-
-    return _tabBarController;
-}
-
-- (void)showTabForIndex:(NSInteger)tabIndex
-{
-    [self.tabBarController setSelectedIndex:tabIndex];
-}
-
-- (void)showPostTab
-{
-    [self showPostTabWithOptions:nil];
-}
-
-- (void)showPostTabWithOptions:(NSDictionary *)options
-{
-    UIViewController *presenter = self.window.rootViewController;
-    if (presenter.presentedViewController) {
-        [presenter dismissViewControllerAnimated:NO completion:nil];
-    }
-
-    UINavigationController *navController;
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *editPostViewController;
-        if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-            editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
-        } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostLegacyViewController;
-        if (!options) {
-            [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-        } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
-        }
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-    }
-        
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-    navController.navigationBar.translucent = NO;
-    [navController setToolbarHidden:NO]; // Make the toolbar visible here to avoid a weird left/right transition when the VC appears.
-    [self.window.rootViewController presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)switchTabToPostsListForPost:(AbstractPost *)post
-{
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:kMeTabIndex];
-
-    // Check which VC is showing.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
-    UIViewController *topVC = blogListNavController.topViewController;
-    if ([topVC isKindOfClass:[PostsViewController class]]) {
-        Blog *blog = ((PostsViewController *)topVC).blog;
-        if ([post.blog.objectID isEqual:blog.objectID]) {
-            // The desired post view controller is already the top viewController for the tab.
-            // Nothing to see here.  Move along.
-            return;
-        }
-    }
-
-    // Build and set the navigation heirarchy for the Me tab.
-    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
-
-    BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
-    blogDetailsViewController.blog = post.blog;
-
-    PostsViewController *postsViewController = [[PostsViewController alloc] init];
-    [postsViewController setBlog:post.blog];
-
-    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, postsViewController]];
-}
-
-- (void)switchMeTabToStatsViewForBlog:(Blog *)blog
-{
-    // Make sure the desired tab is selected.
-    [self showTabForIndex:kMeTabIndex];
-    
-    // Build and set the navigation heirarchy for the Me tab.
-    UINavigationController *blogListNavController = [self.tabBarController.viewControllers objectAtIndex:kMeTabIndex];
-    BlogListViewController *blogListViewController = [blogListNavController.viewControllers objectAtIndex:0];
-
-    BlogDetailsViewController *blogDetailsViewController = [BlogDetailsViewController new];
-    blogDetailsViewController.blog = blog;
-    
-    StatsViewController *statsViewController = [StatsViewController new];
-    statsViewController.blog = blog;
-    
-    [blogListNavController setViewControllers:@[blogListViewController, blogDetailsViewController, statsViewController]];
-}
-
-- (BOOL)isNavigatingMeTab
-{
-    return (self.tabBarController.selectedIndex == kMeTabIndex && [self.blogListViewController.navigationController.viewControllers count] > 1);
-}
-
-#pragma mark - UITabBarControllerDelegate methods.
-
-- (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController
-{
-    if ([tabBarController.viewControllers indexOfObject:viewController] == 3) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        // Ignore taps on the post tab and instead show the modal.
-        if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [self showWelcomeScreenAnimated:YES thenEditor:YES];
-        } else {
-            [self showPostTab];
-        }
-        return NO;
-    } else if ([tabBarController.viewControllers indexOfObject:viewController] == 2) {
-        // If the user has one blog then we don't want to present them with the main "me"
-        // screen where they can see all their blogs. In the case of only one blog just show
-        // the main blog details screen
-
-        // Don't kick of this auto selecting behavior if the user taps the the active tab as it
-        // would break from standard iOS UX
-        if (tabBarController.selectedIndex != 2) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            BlogListViewController *blogListViewController = (BlogListViewController *)navController.viewControllers[0];
-            if ([blogListViewController shouldBypassBlogListViewControllerWhenSelectedFromTabBar]) {
-                if ([navController.visibleViewController isKindOfClass:[blogListViewController class]]) {
-                    [blogListViewController bypassBlogListViewController];
-                }
-            }
-        }
-    }
-
-    // If the current view controller is selected already and it's at its root then scroll to the top
-    if (tabBarController.selectedViewController == viewController) {
-        if ([viewController isKindOfClass:[UINavigationController class]]) {
-            UINavigationController *navController = (UINavigationController *)viewController;
-            if (navController.topViewController == navController.viewControllers.firstObject &&
-                [navController.topViewController.view isKindOfClass:[UITableView class]]) {
-                
-                UITableView *tableView = (UITableView *)[[navController topViewController] view];
-                CGPoint topOffset = CGPointMake(0.0f, -tableView.contentInset.top);
-                [tableView setContentOffset:topOffset animated:YES];
-            }
-        }
-    }
-
-    return YES;
 }
 
 #pragma mark - Application directories
@@ -940,6 +681,8 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
     [Crashlytics setUserName:[defaultAccount username]];
     [self setCommonCrashlyticsParameters];
+
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
 
 #pragma mark - Crash reporting
@@ -1004,21 +747,9 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 #endif
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:[WordPressComApiCredentials hockeyappAppId]
                                                            delegate:self];
-    // Disabling the crash manager as we're using new relic to track crashes
-    [BITHockeyManager sharedHockeyManager].disableCrashManager = YES;
     [[BITHockeyManager sharedHockeyManager].authenticator setIdentificationType:BITAuthenticatorIdentificationTypeDevice];
     [[BITHockeyManager sharedHockeyManager] startManager];
     [[BITHockeyManager sharedHockeyManager].authenticator authenticateInstallation];
-}
-
-- (void)configureNewRelic
-{
-#ifdef INTERNAL_BUILD
-    NSString *applicationToken = [WordPressComApiCredentials newRelicApplicationToken];
-    if (applicationToken.length != 0) {
-        [NewRelicAgent startWithApplicationToken:applicationToken];
-    }
-#endif
 }
 
 #pragma mark - BITCrashManagerDelegate
@@ -1105,7 +836,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     UIWebView *webView = [[UIWebView alloc] init];
     NSString *defaultUA = [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
 
-    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    NSString *appVersion = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     [[NSUserDefaults standardUserDefaults] setObject:appVersion forKey:@"version_preference"];
     NSString *appUA = [NSString stringWithFormat:@"wp-iphone/%@ (%@ %@, %@) Mobile",
                        appVersion,
@@ -1211,10 +942,11 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 
 #pragma mark - Simperium
 
-- (void)configureSimperium
+- (void)configureSimperiumWithLaunchOptions:(NSDictionary *)launchOptions
 {
 	ContextManager* manager         = [ContextManager sharedInstance];
-    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : @"note20" };
+    NSString *bucketName            = [self notificationsBucketNameFromLaunchOptions:launchOptions];
+    NSDictionary *bucketOverrides   = @{ NSStringFromClass([Notification class]) : bucketName };
     
     self.simperium = [[Simperium alloc] initWithModel:manager.managedObjectModel
 											  context:manager.mainContext
@@ -1226,7 +958,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     if (manager.didMigrationFail) {
         [self.simperium resetMetadata];
     }
-    
+
 #ifdef DEBUG
 	self.simperium.verboseLoggingEnabled = false;
 #endif
@@ -1252,6 +984,19 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
 {
     [self.simperium signOutAndRemoveLocalData:YES completion:nil];
 }
+
+- (NSString *)notificationsBucketNameFromLaunchOptions:(NSDictionary *)launchOptions
+{
+    NSURL *launchURL = launchOptions[UIApplicationLaunchOptionsURLKey];
+    NSString *name = nil;
+    
+    if ([launchURL.host isEqualToString:@"notifications"]) {
+        name = [[launchURL.query dictionaryFromQueryString] stringForKey:@"bucket_name"];
+    }
+    
+    return name ?: WPNotificationsBucketName;
+}
+
 
 #pragma mark - Keychain
 
@@ -1320,7 +1065,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     NSArray *blogs = [blogService blogsForAllAccounts];
 
     DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleVersion"]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] detailedVersionNumber]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -1332,7 +1077,7 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     DDLogInfo(@"OS:        %@ %@", [device systemName], [device systemVersion]);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", [device wordpressIdentifier]);
-    DDLogInfo(@"APN token: %@", [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken]);
+    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
 
     if (blogs.count > 0) {
@@ -1512,52 +1257,53 @@ static NSString* const kWPNewPostURLParamImageKey = @"image";
     [service removeTodayWidgetConfiguration];
 }
 
-#pragma mark - GUI animations
+#pragma mark - What's new
 
-- (void)showVisualEditorAvailableInSettingsAnimation:(BOOL)available
+/**
+ *  @brief      Shows the What's New popup if needed.
+ *  @details    Takes care of saving the user defaults that signal that What's New was already
+ *              shown.  Also adds a slight delay before showing anything.  Also does nothing if
+ *              the user is not logged in.
+ */
+- (void)showWhatsNewIfNeeded
 {
-	UIView* notificationView = [[UIView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-	notificationView.backgroundColor = [UIColor colorWithWhite:0.0f alpha:0.5f];
-	notificationView.alpha = 0.0f;
-	
-	[self.window addSubview:notificationView];
-	
-	[UIView animateWithDuration:0.2f animations:^{
-		notificationView.alpha = 1.0f;
-	} completion:^(BOOL finished) {
-		
-		NSString* statusString = nil;
-		
-		if (available) {
-			statusString = NSLocalizedString(@"Visual Editor added to Settings", nil);
-		} else {
-			statusString = NSLocalizedString(@"Visual Editor removed from Settings", nil);
-		}
+    if (!self.wasWhatsNewShown) {
+        BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
         
-        [SVProgressHUD showSuccessWithStatus:statusString maskType:SVProgressHUDMaskTypeNone];
-		
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-			[UIView animateWithDuration:0.2f animations:^{
-				notificationView.alpha = 0.0f;
-			} completion:^(BOOL finished) {
-				[notificationView removeFromSuperview];
-			}];
-		});
-	}];
-}
-
-#pragma mark - Helpshift Delegate
-
-- (void)didReceiveInAppNotificationWithMessageCount:(NSInteger)count;
-{
-    if (count > 0) {
-        [WPAnalytics track:WPAnalyticsStatSupportReceivedResponseFromSupport];
+        if (userIsLoggedIn) {
+            if ([self mustShowWhatsNewPopup]) {
+                
+                static NSString* const WhatsNewUserDefaultsKey = @"WhatsNewUserDefaultsKey";
+                static const CGFloat WhatsNewShowDelay = 1.0f;
+                
+                NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
+                
+                BOOL whatsNewAlreadyShown = [userDefaults boolForKey:WhatsNewUserDefaultsKey];
+                
+                if (!whatsNewAlreadyShown) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(WhatsNewShowDelay * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        self.wasWhatsNewShown = YES;
+                        
+                        WPWhatsNew* whatsNew = [[WPWhatsNew alloc] init];
+                        
+                        [whatsNew showWithDismissBlock:^{
+                            [userDefaults setBool:YES forKey:WhatsNewUserDefaultsKey];
+                        }];
+                    });
+                }
+            }
+        }
     }
 }
 
-- (void)didReceiveNotificationCount:(NSInteger)count
+- (BOOL)mustShowWhatsNewPopup
 {
-    // Note: Empty method, just so silence compiler warning.
+    return [[NSUserDefaults standardUserDefaults] boolForKey:MustShowWhatsNewPopup];
+}
+
+- (void)setMustShowWhatsNewPopup:(BOOL)mustShow
+{
+    [[NSUserDefaults standardUserDefaults] setBool:mustShow forKey:MustShowWhatsNewPopup];
 }
 
 @end

@@ -5,6 +5,8 @@
 #import "Blog.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "BlogService.h"
+#import "TodayExtensionService.h"
+#import "AccountServiceRemoteREST.h"
 
 #import "NSString+XMLExtensions.h"
 
@@ -18,6 +20,7 @@ static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDo
 
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
+NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
 
@@ -228,5 +231,24 @@ NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAc
     return [results firstObject];
 }
 
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
+{
+    if (!account) {
+        return;
+    }
+    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
+        account.email = userDetails[@"email"];
+        NSNumber *primaryBlogId = userDetails[@"primary_blog"];
+        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:account];
+        });
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
+    }];
+}
 
 @end

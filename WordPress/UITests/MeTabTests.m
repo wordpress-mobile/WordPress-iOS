@@ -13,6 +13,7 @@
 
 - (void)beforeAll
 {
+    [self logoutIfNeeded];
     [self login];
 }
 
@@ -27,7 +28,7 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:2];
-    [tester waitForViewWithAccessibilityLabel:@"Blogs"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Blogs"];
 }
 
 - (void)testHideBlog
@@ -38,15 +39,15 @@
     [tester waitForTimeInterval:2];
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
-    [tester setOn:NO forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    [tester setOn:NO forSwitchWithAccessibilityIdentifier:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    
+    [tester tapViewWithAccessibilityLabel:@"Done"];
     
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
-    [tester tapViewWithAccessibilityLabel:@"Edit"];
-    
-    [tester setOn:YES forSwitchWithAccessibilityLabel:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
+    [tester setOn:YES forSwitchWithAccessibilityIdentifier:[NSString stringWithFormat:@"Switch-Visibility-%@", oneStepUser]];
 
-    [tester tapViewWithAccessibilityLabel:@"Edit"];
+    [tester tapViewWithAccessibilityLabel:@"Done"];
 }
 
 - (void)testMeNavigation

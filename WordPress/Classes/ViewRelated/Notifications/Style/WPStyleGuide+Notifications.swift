@@ -43,10 +43,14 @@ extension WPStyleGuide
         //
 
         //  Header
-        public static let headerFont                = WPStyleGuide.tableviewSectionHeaderFont()
+        public static let headerFont                = WPFontManager.openSansBoldFontOfSize(headerFontSize)
         public static let headerTextColor           = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
         public static let headerBackgroundColor     = UIColor(red: 0xFF/255.0, green: 0xFF/255.0, blue: 0xFF/255.0, alpha: 0xEA/255.0)
 
+        public static let headerRegularStyle        = [ NSParagraphStyleAttributeName:  headerParagraph,
+                                                        NSFontAttributeName:            headerFont,
+                                                        NSForegroundColorAttributeName: headerTextColor ]
+        
         //  Blocks
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansBoldFontOfSize(blockFontSize)
@@ -100,10 +104,6 @@ extension WPStyleGuide
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
 
-        public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockSeparatorColor : blockUnapprovedSideColor
-        }
-
         public static func blockTimestampColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedTextColor
         }
@@ -115,7 +115,9 @@ extension WPStyleGuide
         
         // MARK: - Constants
         //
-        
+
+        public static let headerFontSize            = CGFloat(12)
+        public static let headerLineSize            = CGFloat(16)
         public static let subjectFontSize           = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
@@ -128,6 +130,9 @@ extension WPStyleGuide
         //
 
         // ParagraphStyle's
+        private static let headerParagraph          = NSMutableParagraphStyle(
+            minLineHeight: headerLineSize, maxLineHeight: headerLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
+        )
         private static let subjectParagraph         = NSMutableParagraphStyle(
             minLineHeight: subjectLineSize, maxLineHeight: subjectLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )

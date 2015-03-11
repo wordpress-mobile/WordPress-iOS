@@ -26,19 +26,10 @@
 @property (nonatomic, weak) id<WPTableImageSourceDelegate> delegate;
 
 /**
- Initializes the object with the maximum expected image size
-
- @param size the maximum expected size
- @see maxSize
- */
-- (id)initWithMaxSize:(CGSize)size;
-
-/**
  If YES, the image source will resize images on the fly if it has a larger version available.
  Otherwise, you'll need to call fetchImageForURL:withSize:indexPath:andTag: and images will be resized on a background queue
  */
 @property (nonatomic, assign) BOOL resizesImagesSynchronously;
-
 
 /**
  When YES, images requested via the Photon API use the `resize` method with the potential to be resized larger than their native size.
@@ -46,6 +37,20 @@
  The default is `YES`.
  */
 @property (nonatomic, assign) BOOL forceLargerSizeWhenFetching;
+
+/**
+ The compression quality for an image requested via the Photon API. The valid range is 1 to 100.
+ The default is 100.
+ */
+@property (nonatomic, assign) NSInteger photonQuality;
+
+/**
+ Initializes the object with the maximum expected image size
+
+ @param size the maximum expected size
+ @see maxSize
+ */
+- (id)initWithMaxSize:(CGSize)size;
 
 /**
  Returns an image if there's a valid cached copy
