@@ -188,4 +188,29 @@ static NSString *const Ellipsis =  @"\u2026";
     return tokens;
 }
 
+- (BOOL)isWordPressComPath
+{
+    NSString *const dotcomDomain    = @"wordpress.com";
+    NSString *const dotcomSuffix    = [@"." stringByAppendingString:dotcomDomain];
+    NSArray *const validProtocols   = @[ @"http", @"https" ];
+    
+    // NOTE: Whenever the protocol is not specified, the host will be actually found in the Path getter
+    NSURLComponents *components     = [NSURLComponents componentsWithString:self];
+    NSString *lowercaseHostname     = components.host ?: components.path.pathComponents.firstObject;
+    lowercaseHostname               = lowercaseHostname.lowercaseString;
+    
+    // Valid Domain names can be:
+    //  -   wordpress.com
+    //  -   *.wordpress.com
+    //  -   http(s)://wordpress.com
+    //  -   http(s):*.wordpress.com
+
+    BOOL isDotcom                   = [lowercaseHostname hasSuffix:dotcomSuffix] ||
+                                      [lowercaseHostname isEqualToString:dotcomDomain];
+    
+    BOOL isProtocolValid            = components.scheme == nil || [validProtocols containsObject:components.scheme];
+    
+    return isDotcom && isProtocolValid;
+}
+
 @end

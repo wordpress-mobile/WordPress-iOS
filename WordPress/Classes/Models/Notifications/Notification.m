@@ -76,16 +76,19 @@ NSString const *NotePostIdKey           = @"post_id";
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
         _siteID             = [rawRange numberForKey:NoteSiteIdKey];
-        
+
         //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
-        //  ======
-        //  `id` is coupled with the `type
+        //  =====
+        //  `id` is coupled with the `type`. Which, in turn, is also duck typed.
         //
         //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
         //      type = site     => id = site_id
-
+        
+        _type               = (_type == nil && _url != nil) ? (NSString *)NoteRangeTypeSite : _type;
+        _type               = _type ?: [NSString string];
+        
         if ([_type isEqual:NoteRangeTypePost]) {
             _postID         = [rawRange numberForKey:NoteRangeIdKey];
             
