@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -119,8 +119,8 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="gravatarImageView" destination="fja-DW-mzm" id="zzW-cA-ucz"/>
-                                            <outlet property="nameLabel" destination="QIf-EO-cFO" id="MOL-rl-DpI"/>
-                                            <outlet property="snippetLabel" destination="LeI-iE-lkn" id="uoG-Od-v1y"/>
+                                            <outlet property="headerDetailsLabel" destination="LeI-iE-lkn" id="fCV-Gb-rMT"/>
+                                            <outlet property="headerTitleLabel" destination="QIf-EO-cFO" id="mDT-EW-ZsF"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" rowHeight="44" id="8uY-4y-V9f" userLabel="Text" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
@@ -190,7 +190,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
                                                     <rect key="frame" x="54" y="26" width="62" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="cFo-fQ-oUa"/>
@@ -219,7 +219,7 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lkg-nQ-th2" userLabel="Separator Big">
-                                                    <rect key="frame" x="0.0" y="69.5" width="320" height="1"/>
+                                                    <rect key="frame" x="0.0" y="69" width="320" height="1"/>
                                                     <color key="backgroundColor" red="0.67000013589999996" green="0.080549971100000006" blue="0.002051902857" alpha="1" colorSpace="calibratedRGB"/>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khy-Is-MLe" userLabel="Actions">

@@ -139,6 +139,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                                                object:nil];
 
     [HelpshiftUtils refreshUnreadNotificationCount];
+    [WPAnalytics track:WPAnalyticsStatOpenedSupport];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

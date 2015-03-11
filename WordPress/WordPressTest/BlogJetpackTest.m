@@ -74,7 +74,7 @@
     XCTAssertThrows([_blog jetpackPassword], @"WordPress.com blogs don't support Jetpack methods");
     XCTAssertThrows([_blog jetpackBlogID], @"WordPress.com blogs don't support Jetpack methods");
     XCTAssertThrows([_blog removeJetpackCredentials], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog validateJetpackUsername:@"test" password:@"test" success:nil failure:nil], @"WordPress.com blogs don't support Jetpack methods");
+    XCTAssertThrows([_blog validateJetpackUsername:@"test" password:@"test" multifactorCode:nil success:nil failure:nil], @"WordPress.com blogs don't support Jetpack methods");
 }
 
 - (void)testHasJetpack {
@@ -122,7 +122,7 @@
     
     XCTestExpectation *validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
     
-    [_blog validateJetpackUsername:@"test1" password:@"test1" success:^{
+    [_blog validateJetpackUsername:@"test1" password:@"test1" multifactorCode:nil success:^{
         XCTFail(@"User test1 shouldn't have access to test.blog");
         [validateJetpackExpectation fulfill];
     } failure:^(NSError *error) {
@@ -134,7 +134,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
-    [_blog validateJetpackUsername:@"test2" password:@"test2" success:^{
+    [_blog validateJetpackUsername:@"test2" password:@"test2" multifactorCode:nil success:^{
         [validateJetpackExpectation fulfill];
     } failure:^(NSError *error) {
         XCTFail(@"User test2 should have access to test.blog");
