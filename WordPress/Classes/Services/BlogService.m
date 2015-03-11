@@ -332,6 +332,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
+- (BOOL)hasVisibleWPComAccounts
+{
+    return [self blogCountVisibleForWPComAccounts] > 0;
+}
+
 - (NSInteger)blogCountForAllAccounts
 {
     return [self blogCountWithPredicate:nil];
@@ -340,6 +345,12 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 - (NSInteger)blogCountSelfHosted
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@" argumentArray:@[@(NO)]];
+    return [self blogCountWithPredicate:predicate];
+}
+
+- (NSInteger)blogCountVisibleForWPComAccounts
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@ AND visible = %@" argumentArray:@[@(YES), @(YES)]];
     return [self blogCountWithPredicate:predicate];
 }
 
