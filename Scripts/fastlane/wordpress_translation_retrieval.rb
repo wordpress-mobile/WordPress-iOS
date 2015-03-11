@@ -32,6 +32,9 @@ class WordPressTranslationRetrieval
       file_contents.each_with_index do |line, index|
         if line =~ Regexp.new(strings_file_key)
           whats_new_text = file_contents[index+2]
+          if whats_new_text =~ Regexp.new("msgstr\s\"\"")
+            whats_new_text = file_contents[index+1]
+          end
         end
       end
 
