@@ -148,6 +148,7 @@
     [self.likeButton setSelected:self.post.isLiked];
     [self.reblogButton setSelected:self.post.isReblogged];
     [self.reblogButton setNeedsLayout];
+    [self.reblogButton setHidden:self.shouldHideReblogButton];
 
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;

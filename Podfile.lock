@@ -21,7 +21,7 @@ PODS:
   - AFNetworking/UIKit (2.5.1):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AMPopTip (0.7)
+  - AMPopTip (0.7.1)
   - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
@@ -101,24 +101,24 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.5):
+  - WordPress-iOS-Editor (0.4):
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (~> 0.0.2)
     - UIAlertView+Blocks
-    - WordPress-iOS-Shared (~> 0.2.0)
+    - WordPress-iOS-Shared (~> 0.3.0)
     - WordPressCom-Analytics-iOS (~> 0.0.4)
-  - WordPress-iOS-Shared (0.2.2):
+  - WordPress-iOS-Shared (0.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
-  - WordPressApi (0.3.1):
+  - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.28)
-  - WordPressCom-Stats-iOS (0.2.0):
+  - WordPressCom-Stats-iOS (0.2.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (= 0.0.2)
-    - WordPress-iOS-Shared (~> 0.2.0)
+    - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS
   - wpxmlrpc (0.8)
 
@@ -150,11 +150,11 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (= 0.5)
-  - WordPress-iOS-Shared (= 0.2.2)
-  - WordPressApi (= 0.3.1)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `f9d89239a81868a8b748bfb558d91c534bc12634`)
+  - WordPress-iOS-Shared (= 0.3)
+  - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.28)
-  - WordPressCom-Stats-iOS (= 0.2.0)
+  - WordPressCom-Stats-iOS (= 0.2.3)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -172,6 +172,9 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: f9d89239a81868a8b748bfb558d91c534bc12634
+    :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 CHECKOUT OPTIONS:
   MGImageUtilities:
@@ -186,11 +189,14 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: f9d89239a81868a8b748bfb558d91c534bc12634
+    :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 SPEC CHECKSUMS:
   1PasswordExtension: 38b5be7dd6dbe786c98f15d51d50ad21150db60a
   AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
-  AMPopTip: dc5bdb3a88bc2ed0a7ac9799e0a5d47c5211721f
+  AMPopTip: 2c103e376d068f9c8eeb1ddbddd27a23e89db0bc
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
   CrashlyticsLumberjack: 192a08e07648e4e09d44052356b53ab839cc8a1b
   CTAssetsPickerController: 319a91106b7b323446b39ab944a3f14db0a1ca46
@@ -220,11 +226,11 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: b5425fc45417f61490d0cd660d3bae95ec33d724
-  WordPress-iOS-Shared: f66cc48dae11681d24c9abf36724a6ec28014409
-  WordPressApi: 95a1b20372c3a5052f4d3bc4d333f72009c3d986
+  WordPress-iOS-Editor: 290906db721813721b34ff1bdab80e4dce2b29e4
+  WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
+  WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
   WordPressCom-Analytics-iOS: 5895f5e051da1f8ada3d861182229b7d8cef350a
-  WordPressCom-Stats-iOS: bb023fc4c623cb77c9baa43db228df3a0394a558
+  WordPressCom-Stats-iOS: a441c86acf99c7707dbea239667e9cb1dbc1b980
   wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
 
 COCOAPODS: 0.35.0

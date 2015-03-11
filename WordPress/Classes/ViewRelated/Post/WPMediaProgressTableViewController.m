@@ -2,6 +2,7 @@
 #import "WPProgressTableViewCell.h"
 
 static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
+static CGFloat const WPProgressCellHeight = 74.0f;
 
 @interface WPMediaProgressTableViewController ()
 
@@ -25,7 +26,7 @@ static NSString * const WPProgressCellIdentifier = @"WPProgressCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    self.tableView.rowHeight = WPProgressCellHeight;
     if (IS_IPHONE) {
         // Remove one-pixel gap resulting from a top-aligned grouped table view
         UIEdgeInsets tableInset = [self.tableView contentInset];
