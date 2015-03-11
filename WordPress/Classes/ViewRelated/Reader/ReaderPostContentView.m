@@ -9,6 +9,7 @@
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
+@property (nonatomic) BOOL shouldShowActionButtons;
 
 @end
 
@@ -20,6 +21,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        _canShowActionButtons = YES;
+        _shouldShowAttributionButton = YES;
+
         // Action buttons
         _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
         [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -47,7 +51,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
-    self.shouldShowActions = post.isWPCom;
+    self.shouldShowActionButtons = (post.isWPCom && self.canShowActionButtons);
     self.contentProvider = post;
 }
 
@@ -82,7 +86,7 @@
 
 - (void)configureActionButtons
 {
-    if (!self.shouldShowActions) {
+    if (!self.shouldShowActionButtons) {
         self.actionButtons = @[];
         return;
     }
@@ -93,7 +97,7 @@
         [actionButtons addObject:self.likeButton];
     }
 
-    if (self.post.commentsOpen) {
+    if (self.post.commentsOpen && !self.shouldHideComments) {
         [actionButtons addObject:self.commentButton];
     }
 
@@ -109,7 +113,7 @@
 
 - (void)updateActionButtons
 {
-    if (!self.shouldShowActions) {
+    if (!self.shouldShowActionButtons) {
         return;
     }
 
@@ -149,6 +153,8 @@
 {
     [super configureAttributionView];
     [self.attributionView selectAttributionButton:self.post.isFollowing];
+
+    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
 
     BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
     [self.attributionView hideAttributionMenu:hide];

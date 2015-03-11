@@ -15,6 +15,7 @@
 #import "WordPress-Swift.h"
 
 static CGFloat const VerticalMargin = 40;
+static NSInteger const ReaderPostDetailImageQuality = 65;
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
@@ -122,7 +123,13 @@ static CGFloat const VerticalMargin = 40;
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
+    self.postView.shouldHideComments = self.shouldHideComments;
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    self.postView.canShowActionButtons = isLoggedIn;
+    self.postView.shouldShowAttributionButton = isLoggedIn;
+    
     [self.scrollView addSubview:self.postView];
 }
 
@@ -208,7 +215,6 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
@@ -327,6 +333,7 @@ static CGFloat const VerticalMargin = 40;
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
+        self.featuredImageSource.photonQuality = ReaderPostDetailImageQuality;
     }
     
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);

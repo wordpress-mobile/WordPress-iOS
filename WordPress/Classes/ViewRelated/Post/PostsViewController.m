@@ -141,6 +141,11 @@
     return nil;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NSLocalizedString(@"Trash", @"The text that appears when a user swipes to 'delete' a post from the Posts list");
+}
+
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    
     Post *apost = (Post*) [self.resultsController objectAtIndexPath:indexPath];
     cell.contentProvider = apost;

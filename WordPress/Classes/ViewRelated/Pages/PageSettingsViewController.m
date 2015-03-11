@@ -10,14 +10,16 @@
 
 - (void)addPostPropertiesObserver
 {
-    // noop
-    // No need to observe properties for page settings
+    [self.apost addObserver:self
+                forKeyPath:NSStringFromSelector(@selector(post_thumbnail))
+                   options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                   context:nil];
+
 }
 
 - (void)removePostPropertiesObserver
 {
-    // noop
-    // No need to observe properties for page settings
+    [self.apost removeObserver:self forKeyPath:NSStringFromSelector(@selector(post_thumbnail))];
 }
 
 - (void)configureSections

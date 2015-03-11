@@ -36,41 +36,58 @@ import Foundation
     
     
     // MARK: - Properties    
-    public var contentInset: UIEdgeInsets = UIEdgeInsetsZero {
-        didSet {
-            textView?.contentInset = contentInset
+    public var contentInset: UIEdgeInsets {
+        set {
+            textView.contentInset = newValue
+        }
+        get {
+            return textView.contentInset
         }
     }
 
-    public var textContainerInset: UIEdgeInsets = UIEdgeInsetsZero {
-        didSet {
-            textView?.textContainerInset = textContainerInset
+    public var textContainerInset: UIEdgeInsets {
+        set {
+            textView.textContainerInset = newValue
+        }
+        get {
+            return textView.textContainerInset
         }
     }
     
     public var attributedText: NSAttributedString! {
-        didSet {
-            assert(textView != nil)
-            textView.attributedText = attributedText ??  NSAttributedString()
+        set {
+            textView.attributedText = newValue
             renderAttachments()
+        }
+        get {
+            return textView.attributedText
         }
     }
     
-    public var editable: Bool = false {
-        didSet {
-            textView?.editable = editable
+    public var editable: Bool {
+        set {
+            textView.editable = newValue
+        }
+        get {
+            return textView.editable
         }
     }
 
-    public var selectable: Bool = true {
-        didSet {
-            textView?.selectable = selectable
+    public var selectable: Bool {
+        set {
+            textView.selectable = newValue
+        }
+        get {
+            return textView.selectable
         }
     }
     
-    public var dataDetectorTypes: UIDataDetectorTypes = .None {
-        didSet {
-            textView?.dataDetectorTypes = dataDetectorTypes
+    public var dataDetectorTypes: UIDataDetectorTypes {
+        set {
+            textView.dataDetectorTypes = newValue
+        }
+        get {
+            return textView.dataDetectorTypes
         }
     }
     
@@ -81,8 +98,11 @@ import Foundation
     }
     
     public var linkTextAttributes: [NSObject : AnyObject]! {
-        didSet {
-            textView?.linkTextAttributes = linkTextAttributes
+        set {
+            textView.linkTextAttributes = newValue
+        }
+        get {
+            return textView.linkTextAttributes
         }
     }
     

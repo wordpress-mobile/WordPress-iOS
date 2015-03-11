@@ -28,6 +28,8 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section;
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section;
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section;
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath;
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView;
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView;

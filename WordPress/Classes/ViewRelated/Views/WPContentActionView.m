@@ -19,6 +19,7 @@ const CGFloat WPContentActionViewButtonSpacing = 32.0;
 @implementation WPContentActionView
 
 #pragma mark - Life Cycle Methods
+
 - (void)dealloc
 {
     [self.dateRefreshTimer invalidate];

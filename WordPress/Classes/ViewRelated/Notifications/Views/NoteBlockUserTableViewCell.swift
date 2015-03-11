@@ -9,25 +9,37 @@ import Foundation
     public var onFollowClick:      EventHandler?
     public var onUnfollowClick:    EventHandler?
     
-    public var isFollowEnabled: Bool = false {
-        didSet {
-            btnFollow.hidden  = !isFollowEnabled
+    public var isFollowEnabled: Bool {
+        set {
+            btnFollow.hidden = !newValue
+        }
+        get {
+            return !btnFollow.hidden
         }
     }
-    public var isFollowOn: Bool = false {
-        didSet {
-            btnFollow.selected = isFollowOn
+    public var isFollowOn: Bool {
+        set {
+            btnFollow.selected = newValue
+        }
+        get {
+            return btnFollow.selected
         }
     }
     
     public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+        set {
+            nameLabel.text  = newValue
+        }
+        get {
+            return nameLabel.text
         }
     }
     public var blogTitle: String? {
-        didSet {
-            blogLabel.text  = blogTitle ?? String()
+        set {
+            blogLabel.text  = newValue
+        }
+        get {
+            return blogLabel.text
         }
     }
     

@@ -1,7 +1,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "LoginViewController.h"
 #import "CreateAccountAndBlogViewController.h"
-#import "WordPressAppDelegate.h"
+#import "WPTabBarController.h"
 #import "SupportViewController.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
@@ -22,12 +22,13 @@
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <NSURL+IDN.h>
+#import "HelpshiftUtils.h"
 
 static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
-@interface LoginViewController () <UITextFieldDelegate, HelpshiftDelegate> {
+@interface LoginViewController () <UITextFieldDelegate> {
 
     // Views
     UIView *_mainView;
@@ -105,10 +106,21 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-    [[Helpshift sharedInstance] setDelegate:self];
-    [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(helpshiftUnreadCountUpdated:)
+                                                 name:HelpshiftUnreadCountUpdatedNotification
+                                               object:nil];
+
+    [HelpshiftUtils refreshUnreadNotificationCount];
 
     [self layoutControls];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -419,7 +431,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         _helpBadge.layer.masksToBounds = YES;
         _helpBadge.layer.cornerRadius = 6;
         _helpBadge.textAlignment = NSTextAlignmentCenter;
-        _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
+        _helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
         _helpBadge.textColor = [UIColor whiteColor];
         _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
         _helpBadge.hidden = YES;
@@ -500,7 +512,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
 
     // Add Cancel Button
-    if (self.dismissBlock && _cancelButton == nil) {
+    if (self.cancellable && _cancelButton == nil) {
         _cancelButton = [[WPNUXSecondaryButton alloc] init];
         [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
         [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -643,11 +655,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)dismiss
 {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-
     // If we were invoked from the post tab proceed to the editor. Our work here is done.
     if (_showEditorAfterAddingSites) {
-        [delegate showPostTab];
+        [[WPTabBarController sharedInstance] showPostTab];
         return;
     }
 
@@ -658,11 +668,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     if (!defaultAccount) {
-        [delegate showTabForIndex:kMeTabIndex];
+        [[WPTabBarController sharedInstance] showMySitesTab];
     }
 
-    self.parentViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self.parentViewController dismissViewControllerAnimated:YES completion:nil];
+    if (self.dismissBlock) {
+        self.dismissBlock();
+    }
 }
 
 - (void)showCreateAccountView
@@ -872,12 +883,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
+            [WPAnalytics track:WPAnalyticsStatLoginFailed];
             [self setAuthenticating:NO withStatusMessage:nil];
             [self displayRemoteError:error];
         }];
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
+        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
         [self handleGuessXMLRPCURLFailure:error];
     };
 
@@ -898,6 +911,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                  _userIsDotCom = YES;
                                  [self createWordPressComAccountForUsername:username password:password authToken:authToken];
                              } failure:^(NSError *error) {
+                                 [WPAnalytics track:WPAnalyticsStatLoginFailed];
                                  [self setAuthenticating:NO withStatusMessage:nil];
                                  [self displayRemoteError:error];
                              }];
@@ -920,6 +934,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                     [self dismiss];
                                     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
                                     [WPAnalytics refreshMetadata];
+
+                                    // once blogs for the accounts are synced, we want to update account details for it
+                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
                                 }
                                 failure:^(NSError *error) {
                                     [self setAuthenticating:NO withStatusMessage:nil];
@@ -1004,7 +1021,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                 _numberOfTimesLoginFailed++;
             }
 
-            if ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
+            if ([HelpshiftUtils isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2) {
                 [self displayGenericErrorMessageWithHelpshiftButton:message];
             } else {
                 [self displayGenericErrorMessage:message];
@@ -1098,19 +1115,18 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return controlsToHide;
 }
 
-#pragma mark - Helpshift Delegate
+#pragma mark - Helpshift Notifications
 
-- (void)didReceiveNotificationCount:(NSInteger)count
+- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (count > 0) {
-            _helpBadge.text = [NSString stringWithFormat:@"%d", count];
-            _helpBadge.hidden = NO;
-        } else {
-            _helpBadge.text = @"0";
-            _helpBadge.hidden = YES;
-        }
-    });
+    NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
+    if (unreadCount > 0) {
+        _helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
+        _helpBadge.hidden = NO;
+    } else {
+        _helpBadge.text = @"0";
+        _helpBadge.hidden = YES;
+    }
 }
 
 @end

@@ -4,7 +4,8 @@
 
 @interface ReaderPostDetailViewController : UIViewController
 
-@property (nonatomic, strong, readonly) ReaderPost *post;
+@property (nonatomic, strong,  readonly) ReaderPost *post;
+@property (nonatomic, assign, readwrite) BOOL shouldHideComments;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID;
 
