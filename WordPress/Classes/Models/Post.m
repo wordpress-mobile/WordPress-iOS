@@ -176,7 +176,12 @@
 
 - (NSURL *)blogURL
 {
-    return nil;
+    return [NSURL URLWithString:self.blog.url];
+}
+
+- (NSString *)blogURLForDisplay
+{
+    return self.blog.displayURL;
 }
 
 - (NSInteger)commentCount
