@@ -130,21 +130,22 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     NSString *large = NSLocalizedString(@"Large", @"Large image size. Should be the same as in core WP.");
     NSString *full = NSLocalizedString(@"Full Size", @"Full size image. (default). Should be the same as in core WP.");
 
-    CGFloat ratio = [self.imageDetails.width floatValue] / [self.imageDetails.height floatValue];
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
-    CGSize size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        size = [self sizeForSize:size constrainedToRatio:ratio];
+    CGSize imageSize = [self imageSize];
+    CGSize size = CGSizeZero;
+    CGSize maxSize = [[sizes valueForKey:@"smallSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         thumbnail = [NSString stringWithFormat:@"%@ - %d x %d", thumbnail, (NSInteger)size.width, (NSInteger)size.height];
     }
-    size = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        size = [self sizeForSize:size constrainedToRatio:ratio];
+    maxSize = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         medium = [NSString stringWithFormat:@"%@ - %d x %d", medium, (NSInteger)size.width, (NSInteger)size.height];
     }
-    size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
-    if (!CGSizeEqualToSize(size, CGSizeZero)) {
-        size = [self sizeForSize:size constrainedToRatio:ratio];
+    maxSize = [[sizes valueForKey:@"largeSize"] CGSizeValue];
+    if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+        size = [self sizeForSize:imageSize withMaxSize:maxSize];
         large = [NSString stringWithFormat:@"%@ - %d x %d", large, (NSInteger)size.width, (NSInteger)size.height];
     }
 
@@ -152,13 +153,19 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     return _sizeTitles;
 }
 
-- (CGSize)sizeForSize:(CGSize)size constrainedToRatio:(CGFloat)ratio
+- (CGSize)sizeForSize:(CGSize)size withMaxSize:(CGSize)maxSize
 {
     CGSize newSize = size;
-    if (size.width > size.height) {
-        newSize.height = size.width / ratio;
-    } else {
-        newSize.width = size.height * ratio;
+    CGFloat ratio = size.width / size.height;
+
+    if (size.width > maxSize.width) {
+        newSize.width = maxSize.width;
+        newSize.height = newSize.width / ratio;
+    }
+
+    if (size.height > maxSize.height) {
+        newSize.height = maxSize.height;
+        newSize.width = newSize.height * ratio;
     }
 
     return newSize;
@@ -176,6 +183,11 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
                     @"full"
                     ];
     return _sizeValues;
+}
+
+- (CGSize)imageSize
+{
+    return CGSizeMake([self.imageDetails.naturalWidth floatValue], [self.imageDetails.naturalHeight floatValue]);
 }
 
 #pragma mark - Configuration
@@ -546,23 +558,23 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
     vc.onItemSelected = ^(NSString *status) {
-        CGSize size = CGSizeZero;
+        CGSize maxSize = CGSizeZero;
 
         if ([status isEqualToString:@"thumbnail"]) {
-            size = [[sizes valueForKey:@"smallSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"smallSize"] CGSizeValue];
         } else if ([status isEqualToString:@"medium"]) {
-            size = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"mediumSize"] CGSizeValue];
         } else if ([status isEqualToString:@"large"]) {
-            size = [[sizes valueForKey:@"largeSize"] CGSizeValue];
+            maxSize = [[sizes valueForKey:@"largeSize"] CGSizeValue];
         }
 
-        CGFloat ratio = [self.imageDetails.width floatValue] / [self.imageDetails.height floatValue];
         self.imageDetails.width = @"";
         self.imageDetails.height = @"";
 
         // Don't set width/height if full size was selected.
-        if (!CGSizeEqualToSize(size, CGSizeZero)) {
-            size = [self sizeForSize:size constrainedToRatio:ratio];
+        if (!CGSizeEqualToSize(maxSize, CGSizeZero)) {
+            CGSize imageSize = [self imageSize];
+            CGSize size = [self sizeForSize:imageSize withMaxSize:maxSize];
             if (size.width) {
                 self.imageDetails.width = [NSString stringWithFormat:@"%d", (NSInteger)size.width];
             }
