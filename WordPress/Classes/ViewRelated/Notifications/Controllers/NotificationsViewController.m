@@ -59,7 +59,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 @property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
-@property (nonatomic, strong) UINib                 *tableViewCellNib;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
 @end
 
@@ -107,8 +106,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     // Register the cells
     NSString *cellNibName = [NoteTableViewCell classNameWithoutNamespaces];
-    self.tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:_tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
+    UINib *tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
     
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
@@ -560,8 +559,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     // Load the Subject + Snippet
     Notification *note          = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    NSAttributedString *subject = note.subjectBlock.subjectAttributedText;
-    NSAttributedString *snippet = note.snippetBlock.snippetAttributedText;
+    NSAttributedString *subject = note.subjectBlock.attributedSubjectText;
+    NSAttributedString *snippet = note.snippetBlock.attributedSnippetText;
     
     // Old School Height Calculation
     CGFloat tableWidth          = CGRectGetWidth(self.tableView.bounds);
@@ -626,8 +625,8 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     
     Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    cell.attributedSubject                  = note.subjectBlock.subjectAttributedText;
-    cell.attributedSnippet                  = note.snippetBlock.snippetAttributedText;
+    cell.attributedSubject                  = note.subjectBlock.attributedSubjectText;
+    cell.attributedSnippet                  = note.snippetBlock.attributedSnippetText;
     cell.read                               = note.read.boolValue;
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;

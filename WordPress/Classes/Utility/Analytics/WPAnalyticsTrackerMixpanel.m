@@ -516,6 +516,9 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         case WPAnalyticsStatOpenedSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Settings"];
             break;
+        case WPAnalyticsStatOpenedSupport:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Accessed"];
+            break;
         case WPAnalyticsStatCreatedAccount:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Created Account"];
             [instructions setCurrentDateForPeopleProperty:@"$created"];
@@ -700,6 +703,12 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             break;
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Login - Failed To Guess XMLRPC"];
+            break;
+        case WPAnalyticsStatTwoFactorSentSMS:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Sent Verification Code SMS"];
+            break;
+        case WPAnalyticsStatTwoFactorCodeRequested:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Two Factor - Requested Verification Code"];
             break;
         default:
             break;

@@ -574,8 +574,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
     
-    cell.name                           = gravatarBlock.text;
-    cell.snippet                        = snippetBlock.text;
+    cell.attributedHeaderTitle          = gravatarBlock.attributedHeaderTitleText;
+    cell.headerDetails                  = snippetBlock.text;
     
     if ([self isLayoutCell:cell]) {
         return;
@@ -644,7 +644,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
     
     cell.name                       = userBlock.text;
-    cell.attributedCommentText      = [commentBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     cell.timestamp                  = timestamp;
     cell.site                       = site;
     
@@ -723,8 +723,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
+    // Load the attributedText
+    NSAttributedString *text        = textBlock.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText;
+    
     // Setup the Cell
-    cell.attributedText             = [textBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedText             = [text stringByEmbeddingImageAttachments:mediaRanges];
     cell.isBadge                    = textBlock.isBadge;
     
     // Setup the Callbacks

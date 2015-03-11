@@ -67,7 +67,7 @@ static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
+static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (id)init
 {
@@ -312,13 +312,9 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
         [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
         [_onePasswordButton addTarget:self action:@selector(saveLoginToOnePassword:) forControlEvents:UIControlEventTouchUpInside];
         [_onePasswordButton sizeToFit];
-        
-        CGRect containerFrame = _onePasswordButton.frame;
-        containerFrame.size.width += CreateAccountAndBlogOnePasswordPaddingX;
-        
-        UIView *containerView = [[UIView alloc] initWithFrame:containerFrame];
-        [containerView addSubview:_onePasswordButton];
-        _passwordField.rightView = containerView;
+    
+        _passwordField.rightView = _onePasswordButton;
+        _passwordField.rightViewPadding = CreateAccountAndBlogOnePasswordPadding;
     }
     
     BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
@@ -778,9 +774,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text
-                                                                            password:_passwordField.text
-                                                                           authToken:authToken];
+            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text authToken:authToken];
             _account.email = _emailField.text;
             if (![accountService defaultWordPressComAccount]) {
                 [accountService setDefaultWordPressComAccount:_account];
@@ -799,6 +793,7 @@ static CGFloat const CreateAccountAndBlogOnePasswordPaddingX = 9.0;
         WordPressComOAuthClient *client = [WordPressComOAuthClient client];
         [client authenticateWithUsername:_usernameField.text
                                 password:_passwordField.text
+                         multifactorCode:nil
                                  success:signInSuccess
                                  failure:signInFailure];
     }];
