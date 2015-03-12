@@ -131,9 +131,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
