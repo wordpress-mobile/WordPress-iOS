@@ -4,8 +4,7 @@
 @class Blog;
 @class WPAccount;
 
-@interface BlogService : NSObject <LocalCoreDataService>
-
+@interface BlogService : NSObject<LocalCoreDataService>
 
 /**
  Returns the blog that matches with a given blogID
