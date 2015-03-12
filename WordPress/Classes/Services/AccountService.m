@@ -103,6 +103,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (void)removeDefaultWordPressComAccount
 {
+    NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
+    
     [NotificationsManager unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
@@ -110,16 +112,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [self.managedObjectContext deleteObject:account];
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        [WPAnalytics refreshMetadata];
-        
-        // Make sure this notification gets posted on the main thread: the managedObjectContext might be running
-        // a private GCD queue, and we shouldn't really execute our own non-coredata code there.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        });
-    }];
-
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    
     // Clear WordPress.com cookies
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in wpcomCookies) {
@@ -135,6 +129,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [WPAnalytics refreshMetadata];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
 }
 
 ///-----------------------
