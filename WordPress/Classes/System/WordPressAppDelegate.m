@@ -682,28 +682,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
-#pragma mark - Notifications
-
-- (void)defaultAccountDidChange:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [Crashlytics setUserName:[defaultAccount username]];
-    [self setCommonCrashlyticsParameters];
-
-    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
-}
-
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics
 {
-#if DEBUG
-    return;
-#endif
-#ifdef INTERNAL_BUILD
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
 
@@ -714,18 +697,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    BOOL hasCredentials = (defaultAccount != nil);
     [self setCommonCrashlyticsParameters];
-
-    if (hasCredentials && [defaultAccount username] != nil) {
-        [Crashlytics setUserName:[defaultAccount username]];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -740,12 +712,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setCommonCrashlyticsParameters
 {
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
+    return;
+#endif
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     BOOL loggedIn = defaultAccount != nil;
+    [Crashlytics setUserName:defaultAccount.username];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
@@ -1265,7 +1242,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     [self toggleExtraDebuggingIfNeeded];
+    [self setCommonCrashlyticsParameters];
     [self setupSingleSignOn];
+    
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
 
 #pragma mark - Today Extension
