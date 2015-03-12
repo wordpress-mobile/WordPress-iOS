@@ -80,7 +80,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
-@property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
 /**
@@ -122,6 +121,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Start Simperium
     [self loginSimperium];
 
+    // Listen to Local Notifications
+    [self hookLocalNotifications];
+    
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
@@ -164,7 +166,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-    [self trackLowMemory];
     
     // Push notifications
     [NotificationsManager registerForPushNotifications];
@@ -656,15 +657,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }];
 }
 
-- (void)trackLowMemory
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-}
-
-- (void)lowMemoryWarning:(NSNotification *)notification
-{
-    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
 
 #pragma mark - Application directories
 
@@ -1181,11 +1173,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)toggleExtraDebuggingIfNeeded
 {
-    if (!_listeningForBlogChanges) {
-        _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    }
-
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1215,9 +1202,16 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
 }
 
-#pragma mark - Notifications
+#pragma mark - Local Notifications Helpers
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
+- (void)hookLocalNotifications
+{
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+    [nc addObserver:self selector:@selector(handleLowMemoryWarningNote:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)notification
 {
     // If the notification object is not nil, then it's a login
     if (notification.object) {
@@ -1247,6 +1241,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
+
+- (void)handleLowMemoryWarningNote:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
 
 #pragma mark - Today Extension
 
