@@ -374,7 +374,8 @@ NSString const *NotePostIdKey           = @"post_id";
             
             // TODO:
             // We've received crashlogs caused by a missing mediaURL field. This assert will only affect debug builds,
-            // and will help us troubleshoot the issue. Please: Feel free to remove this snippet once the invalid.
+            // and will help us troubleshoot the issue. Please: Feel free to remove this snippet once the bug has been
+            // fixed backend side.
             //
             NSAssert(media.mediaURL, @"Missing mediaURL for Notification with SimperiumKey %@", notification.simperiumKey);
         }
