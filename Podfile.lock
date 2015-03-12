@@ -42,6 +42,7 @@ PODS:
   - DTFoundation/UIKit (1.7.5):
     - DTFoundation/Core
   - EmailChecker (0.1)
+  - Expecta (0.3.2)
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.8.0)
@@ -97,6 +98,7 @@ PODS:
     - JRSwizzle
     - SocketRocket
   - SocketRocket (0.3.1-beta2)
+  - Specta (0.4.0)
   - SVProgressHUD (1.1.1)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
@@ -131,6 +133,7 @@ DEPENDENCIES:
   - CTAssetsPickerController (~> 2.7.0)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
+  - Expecta
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.8.0)
   - HockeySDK (~> 3.6.0)
@@ -147,6 +150,7 @@ DEPENDENCIES:
   - Reachability (= 3.1.1)
   - Simperium (= 0.7.8)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
+  - Specta
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
@@ -203,6 +207,7 @@ SPEC CHECKSUMS:
   DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
   DTFoundation: bea4e07459f0f88a5aa3b8258fab1576bbe2e58c
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
+  Expecta: ee641011fe10aa1855d487b40e4976dac50ec342
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
   google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
@@ -222,6 +227,7 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  Specta: 1df326d6ec48603c77f507a0ab1f89ad2df1c582
   SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
