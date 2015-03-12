@@ -93,6 +93,13 @@ PODS:
   - OCMock (3.1.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
+  - ReactiveCocoa (2.4.7):
+    - ReactiveCocoa/UI (= 2.4.7)
+  - ReactiveCocoa/Core (2.4.7):
+    - ReactiveCocoa/no-arc
+  - ReactiveCocoa/no-arc (2.4.7)
+  - ReactiveCocoa/UI (2.4.7):
+    - ReactiveCocoa/Core
   - Simperium (0.7.8):
     - Google-Diff-Match-Patch
     - JRSwizzle
@@ -148,6 +155,7 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
+  - ReactiveCocoa (~> 2.4.7)
   - Simperium (= 0.7.8)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
   - Specta
@@ -225,6 +233,7 @@ SPEC CHECKSUMS:
   OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
+  ReactiveCocoa: 313fc53cc9aeb2bbbc3f5f13c7eac16478d9af8f
   Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   Specta: 1df326d6ec48603c77f507a0ab1f89ad2df1c582
