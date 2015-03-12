@@ -112,6 +112,9 @@
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
     }
+    
+    // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
+    _restApi = nil;
 }
 
 - (NSArray *)visibleBlogs

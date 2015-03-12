@@ -59,6 +59,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)validateJetpackUsername:(NSString *)username
                        password:(NSString *)password
+                multifactorCode:(NSString *)multifactorCode
                         success:(void (^)())success
                         failure:(void (^)(NSError *))failure
 {
@@ -104,12 +105,14 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
         }]];
 
         if ([foundBlogs count] > 0) {
-            [self saveJetpackUsername:username andPassword:password success:success failure:failure];
+            [self saveJetpackUsername:username andPassword:password multifactorCode:multifactorCode success:success failure:failure];
         } else {
             NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
                                                  code:BlogJetpackErrorCodeNoRecordForBlog
                                              userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
-            if (failure) failure(error);
+            if (failure) {
+                failure(error);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
@@ -147,14 +150,16 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username
                 andPassword:(NSString *)password
+            multifactorCode:(NSString *)multifactorCode
                     success:(void (^)())success
                     failure:(void (^)(NSError *))failure
 {
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
+    NSAssert(!self.isWPcom, @"Blog+Jetpack doesn't support WordPress.com blogs");
 
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:multifactorCode
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                  WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
