@@ -9,5 +9,6 @@
 - (NSString *)stringByStrippingHTML;
 - (NSString *)stringByEllipsizingWithMaxLength:(NSInteger)lengthlimit preserveWords:(BOOL)preserveWords;
 - (NSString *)hostname;
+- (BOOL)isWordPressComPath;
 
 @end
