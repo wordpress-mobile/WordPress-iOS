@@ -124,6 +124,11 @@ extension NotificationBlock
         var ranges = [NSValue: UIImage]()
         
         for theMedia in media as [NotificationMedia] {
+            // Failsafe: if the mediaURL couldn't be parsed, don't proceed
+            if theMedia.mediaURL == nil {
+                continue
+            }
+            
             if let image = mediaMap![theMedia.mediaURL] {
                 let rangeValue      = NSValue(range: theMedia.range)
                 ranges[rangeValue]  = image
