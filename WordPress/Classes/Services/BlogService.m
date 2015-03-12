@@ -20,13 +20,19 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 
+NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
+NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
+NSString *const WPComGetFeatures = @"wpcom.getFeatures";
+NSString *const VideopressEnabled = @"videopress_enabled";
+NSString *const MinimumVersion = @"3.6";
+NSString *const HttpsPrefix = @"https://";
+CGFloat const OneHourInSeconds = 60.0 * 60.0;
+
 @interface BlogService ()
 
 @property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
 
 @end
-
-NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 
 @implementation BlogService
 
@@ -96,7 +102,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     if (!url) {
         // Check for the old key and migrate the value if it exists.
         // TODO: We can probably discard this in the 4.2 release.
-        NSString *oldKey = @"EditPostViewControllerLastUsedBlogURL";
+        NSString *oldKey = EditPostViewControllerLastUsedBlogURLOldKey;
         url = [defaults stringForKey:oldKey];
         if (url) {
             [defaults setObject:url
@@ -350,14 +356,14 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:@"wpcom.getFeatures"
+    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:WPComGetFeatures
                                                       parameters:parameters];
     WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
         BOOL videoEnabled = YES;
         if (([responseObject isKindOfClass:[NSDictionary class]])
-            && ([responseObject objectForKey:@"videopress_enabled"] != nil))
+            && ([responseObject objectForKey:VideopressEnabled] != nil))
         {
-            videoEnabled = [[responseObject objectForKey:@"videopress_enabled"] boolValue];
+            videoEnabled = [[responseObject objectForKey:VideopressEnabled] boolValue];
         } else {
             videoEnabled = YES;
         }
@@ -445,7 +451,7 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
         Blog *blogToReturn = [foundBlogs anyObject];
         for (Blog *b in foundBlogs) {
             // Choose blogs with URL not starting with https to account for a glitch in the API in early 2014
-            if (!([b.url hasPrefix:@"https://"])) {
+            if (!([b.url hasPrefix:HttpsPrefix])) {
                 blogToReturn = b;
                 break;
             }
@@ -635,16 +641,15 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
                                                                            error:nil];
             if (blog) {
                 blog.options = [NSDictionary dictionaryWithDictionary:options];
-                NSString *minimumVersion = @"3.6";
                 float version = [[blog version] floatValue];
-                if (version < [minimumVersion floatValue]) {
+                if (version < [MinimumVersion floatValue]) {
                     if (blog.lastUpdateWarning == nil
-                        || [blog.lastUpdateWarning floatValue] < [minimumVersion floatValue])
+                        || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
                     {
                         // TODO :: Remove UI call from service layer
                         [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], minimumVersion]];
-                        blog.lastUpdateWarning = minimumVersion;
+                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
+                        blog.lastUpdateWarning = MinimumVersion;
                     }
                 }
 
@@ -695,11 +700,11 @@ NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
     }
     
     if (!timeZone && gmtOffSet != nil) {
-        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * 60.0 * 60.0)];
+        timeZone = [NSTimeZone timeZoneForSecondsFromGMT:(gmtOffSet.floatValue * OneHourInSeconds)];
     }
     
     if (!timeZone && optionValue != nil) {
-        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * 60.0 * 60.0;
+        NSInteger timeZoneOffsetSeconds = [optionValue floatValue] * OneHourInSeconds;
         timeZone = [NSTimeZone timeZoneForSecondsFromGMT:timeZoneOffsetSeconds];
     }
     
