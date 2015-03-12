@@ -1182,7 +1182,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     
-    if (![accountService.defaultWordPressComAccount isEqual:newUsername]) {
+    if (![accountService.defaultWordPressComAccount.username isEqual:newUsername]) {
         [accountService removeDefaultWordPressComAccount];
     }
 }
