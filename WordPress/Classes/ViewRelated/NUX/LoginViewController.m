@@ -1149,6 +1149,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                              success:^(NSString *authToken) {
                                  
                                  [self finishedAuthenticating];
+                                 [self removeLegacyAccountIfNeeded:username];
                                  [self createWordPressComAccountForUsername:username authToken:authToken];
                                  
                              } failure:^(NSError *error) {
@@ -1166,6 +1167,24 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                      [self displayRemoteError:error];
                                  }
                              }];
+}
+
+- (void)removeLegacyAccountIfNeeded:(NSString *)newUsername
+{
+    NSParameterAssert(newUsername);
+    
+    //  Note:
+    //  Reauthentication Mode + Old Username != New Username: In this case, we should nuke the "legacy" defaultAccount
+    if (!self.shouldReauthenticateDefaultAccount) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    
+    if (![accountService.defaultWordPressComAccount isEqual:newUsername]) {
+        [accountService removeDefaultWordPressComAccount];
+    }
 }
 
 - (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
