@@ -679,35 +679,35 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.signInButton showActivityIndicator:self.authenticating];
     
     // One Password
-    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
-    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    BOOL isOnePasswordAvailable = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    self.usernameText.rightViewMode = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
     
     // TextFields
-    self.usernameText.alpha                 = self.usernameAlpha;
-    self.passwordText.alpha                 = self.passwordAlpha;
-    self.siteUrlText.alpha                  = self.siteAlpha;
-    self.multifactorText.alpha              = self.multifactorAlpha;
+    self.usernameText.alpha = self.usernameAlpha;
+    self.passwordText.alpha = self.passwordAlpha;
+    self.siteUrlText.alpha = self.siteAlpha;
+    self.multifactorText.alpha = self.multifactorAlpha;
     
-    self.usernameText.enabled               = self.isUsernameEnabled;
-    self.passwordText.enabled               = self.isPasswordEnabled;
-    self.siteUrlText.enabled                = self.isSiteUrlEnabled;
-    self.multifactorText.enabled            = self.isMultifactorEnabled;
+    self.usernameText.enabled = self.isUsernameEnabled;
+    self.passwordText.enabled = self.isPasswordEnabled;
+    self.siteUrlText.enabled = self.isSiteUrlEnabled;
+    self.multifactorText.enabled = self.isMultifactorEnabled;
     
     // Buttons
-    self.cancelButton.hidden                = !self.cancellable;
-    self.forgotPassword.hidden              = self.isForgotPasswordHidden;
-    self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
-    self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
+    self.cancelButton.hidden = !self.cancellable;
+    self.forgotPassword.hidden = self.isForgotPasswordHidden;
+    self.sendVerificationCodeButton.hidden = self.isSendCodeHidden;
+    self.skipToCreateAccount.hidden = self.isAccountCreationHidden;
     
     // SignIn Button
-    NSString *signInTitle                   = self.signInButtonTitle;
-    self.signInButton.enabled               = self.isSignInEnabled;
+    NSString *signInTitle = self.signInButtonTitle;
+    self.signInButton.enabled = self.isSignInEnabled;
     self.signInButton.accessibilityIdentifier = signInTitle;
     [self.signInButton setTitle:signInTitle forState:UIControlStateNormal];
     
     // Dotcom / SelfHosted Button
-    NSString *toggleTitle                   = self.toggleSignInButtonTitle;
-    self.toggleSignInForm.hidden            = self.isSignInToggleHidden;
+    NSString *toggleTitle = self.toggleSignInButtonTitle;
+    self.toggleSignInForm.hidden = self.isSignInToggleHidden;
     self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
     [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
 }
