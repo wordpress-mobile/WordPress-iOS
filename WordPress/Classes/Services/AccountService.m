@@ -8,6 +8,7 @@
 #import "TodayExtensionService.h"
 #import "AccountServiceRemoteREST.h"
 
+#import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
@@ -123,7 +124,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     // Clear WordPress.com cookies
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in wpcomCookies) {
-        if ([cookie.domain hasSuffix:@"wordpress.com"]) {
+        if (cookie.domain.isWordPressComPath) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
         }
     }
