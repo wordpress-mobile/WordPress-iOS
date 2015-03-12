@@ -2,6 +2,7 @@
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <1PasswordExtension/OnePasswordExtension.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"
 #import "SupportViewController.h"
@@ -34,11 +35,52 @@
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
+#import "LoginViewModel.h"
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
+@interface LoginViewController () <UITextFieldDelegate, LoginViewModelDelegate>
+
+// Views
+@property (nonatomic, strong) UIView                    *mainView;
+@property (nonatomic, strong) WPNUXSecondaryButton      *skipToCreateAccount;
+@property (nonatomic, strong) WPNUXSecondaryButton      *toggleSignInForm;
+@property (nonatomic, strong) WPNUXSecondaryButton      *forgotPassword;
+@property (nonatomic, strong) UIButton                  *helpButton;
+@property (nonatomic, strong) WPNUXHelpBadgeLabel       *helpBadge;
+@property (nonatomic, strong) UIImageView               *icon;
+@property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
+@property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
+@property (nonatomic, strong) UIButton                  *onePasswordButton;
+@property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
+@property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
+@property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
+@property (nonatomic, strong) UILabel                   *statusLabel;
+@property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
+@property (nonatomic, strong) LoginViewModel *viewModel;
+
+
+// Measurements
+@property (nonatomic, strong) Blog                      *blog;
+@property (nonatomic, assign) CGFloat                   keyboardOffset;
+@property (nonatomic, assign) BOOL                      userIsDotCom;
+@property (nonatomic, assign) BOOL                      hasDefaultAccount;
+@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+@property (nonatomic, assign) BOOL                      authenticating;
+
+
+@end
 
 
 #pragma mark ====================================================================================
-#pragma mark Constants
+#pragma mark LoginViewController
 #pragma mark ====================================================================================
+
+@implementation LoginViewController
 
 static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
 static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
@@ -60,52 +102,23 @@ static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
 static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
-
-#pragma mark ====================================================================================
-#pragma mark Private
-#pragma mark ====================================================================================
-
-@interface LoginViewController () <UITextFieldDelegate>
-
-// Views
-@property (nonatomic, strong) UIView                    *mainView;
-@property (nonatomic, strong) WPNUXSecondaryButton      *skipToCreateAccount;
-@property (nonatomic, strong) WPNUXSecondaryButton      *toggleSignInForm;
-@property (nonatomic, strong) WPNUXSecondaryButton      *forgotPassword;
-@property (nonatomic, strong) UIButton                  *helpButton;
-@property (nonatomic, strong) WPNUXHelpBadgeLabel       *helpBadge;
-@property (nonatomic, strong) UIImageView               *icon;
-@property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
-@property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
-@property (nonatomic, strong) UIButton                  *onePasswordButton;
-@property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
-@property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
-@property (nonatomic, strong) WPNUXMainButton           *signInButton;
-@property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
-@property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
-@property (nonatomic, strong) UILabel                   *statusLabel;
-@property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
-
-// Measurements
-@property (nonatomic, strong) Blog                      *blog;
-@property (nonatomic, assign) CGFloat                   keyboardOffset;
-@property (nonatomic, assign) BOOL                      userIsDotCom;
-@property (nonatomic, assign) BOOL                      hasDefaultAccount;
-@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
-@property (nonatomic, assign) BOOL                      authenticating;
-
-@end
-
-
-#pragma mark ====================================================================================
-#pragma mark LoginViewController
-#pragma mark ====================================================================================
-
-@implementation LoginViewController
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        [self initializeViewModel];
+    }
+    return self;
+}
+
+- (void)initializeViewModel
+{
+    _viewModel = [[LoginViewModel alloc] init];
+    _viewModel.delegate = self;
 }
 
 - (void)viewDidLoad
@@ -126,6 +139,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     // Initialize Interface
     [self addMainView];
     [self addControls];
+    [self bindToViewModel];
     
     // Reauth: Pre-populate username. If needed
     if (!self.shouldReauthenticateDefaultAccount) {
@@ -134,6 +148,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     self.usernameText.text = defaultAccount.username;
     self.userIsDotCom = YES;
+    
+}
+
+- (void)bindToViewModel
+{
+    RAC(self.viewModel, authenticating) = RACObserve(self, authenticating);
+    RAC(self.viewModel, shouldDisplayMultifactor) = RACObserve(self, shouldDisplayMultifactor);
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -196,15 +217,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return YES;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    return YES;
-}
 
 - (void)textFieldDidChange:(NSNotification *)note
 {
@@ -523,6 +535,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     usernameText.rightView = onePasswordButton;
     usernameText.rightViewPadding = LoginOnePasswordPadding;
     
+    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
     passwordText.backgroundColor = [UIColor whiteColor];
@@ -675,15 +690,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
-    // Spinner!
-    [self.signInButton showActivityIndicator:self.authenticating];
-    
-    // One Password
-    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
-    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
-    
     // TextFields
-    self.usernameText.alpha                 = self.usernameAlpha;
     self.passwordText.alpha                 = self.passwordAlpha;
     self.siteUrlText.alpha                  = self.siteAlpha;
     self.multifactorText.alpha              = self.multifactorAlpha;
@@ -972,11 +979,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isMultifactorEnabled
 {
     return self.shouldDisplayMultifactor;
-}
-
-- (CGFloat)usernameAlpha
-{
-    return self.isUsernameEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
 }
 
 - (CGFloat)passwordAlpha
@@ -1437,6 +1439,18 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - LoginViewModelDelegate
+
+- (void)showActivityIndicator:(BOOL)show
+{
+    [self.signInButton showActivityIndicator:show];
+}
+
+- (void)setUsernameAlpha:(CGFloat)alpha
+{
+    self.usernameText.alpha = alpha;
 }
 
 @end
