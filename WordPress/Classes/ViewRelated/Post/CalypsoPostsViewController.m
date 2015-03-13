@@ -22,6 +22,7 @@ static NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
+static const NSInteger PostsFetchRequestBatchSize = 10;
 
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration>
 
@@ -378,7 +379,7 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"remoteStatusNumber" ascending:YES];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorLocal, sortDescriptorDate];
-    fetchRequest.fetchBatchSize = 10;
+    fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
     return fetchRequest;
 }
 
