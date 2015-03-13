@@ -121,8 +121,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Start Simperium
     [self loginSimperium];
 
-    // Listen to Local Notifications
-    [self hookLocalNotifications];
+    // Local Notifications
+    [self listenLocalNotifications];
     
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
@@ -1204,11 +1204,19 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Local Notifications Helpers
 
-- (void)hookLocalNotifications
+- (void)listenLocalNotifications
 {
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    [nc addObserver:self selector:@selector(handleLowMemoryWarningNote:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleDefaultAccountChangedNote:)
+                               name:WPAccountDefaultWordPressComAccountChangedNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleLowMemoryWarningNote:)
+                               name:UIApplicationDidReceiveMemoryWarningNotification
+                             object:nil];
 }
 
 - (void)handleDefaultAccountChangedNote:(NSNotification *)notification
