@@ -6,7 +6,6 @@ extern NSString *const WPMobileReaderFFURL;
 
 extern NSString *const WPComXMLRPCUrl;
 extern NSString *const WPComDefaultAccountUrlKey;
-extern NSString *const WPComDefaultAccountUsernameKey;
 
 extern NSString *const WPNotificationsBucketName;
 extern NSString *const WPNotificationsJetpackInformationURL;
