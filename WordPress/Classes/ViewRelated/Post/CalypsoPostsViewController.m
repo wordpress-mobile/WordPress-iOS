@@ -4,12 +4,13 @@
 
 #import "Blog.h"
 #import "ContextManager.h"
-#import "WPLegacyEditPostViewController.h"
+#import "EditSiteViewController.h"
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
+#import "WPLegacyEditPostViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
@@ -17,11 +18,12 @@
 #import "WordPress-Swift.h"
 
 static NSString * const TableViewCellIdentifier = @"PostCardTableViewCell";
+static NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 
-@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
+@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
@@ -47,6 +49,34 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     return controller;
 }
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
+    if (!blogID) {
+        return nil;
+    }
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
+    if (!objectID) {
+        return nil;
+    }
+
+    NSError *error = nil;
+    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
+    if (error || !restoredBlog) {
+        return nil;
+    }
+
+    return [self controllerWithBlog:restoredBlog];
+}
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogRestorationKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -59,6 +89,19 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     [self configureSyncHelper];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+
+    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
+    // this VC's title.
+    //
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+//TODO: If a new post was created, scroll to the top so it is visible.
+// But how does this work if it is a draft, scheduled, etc. and the list has filters?
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -108,7 +151,6 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     self.syncHelper = [[WPContentSyncHelper alloc] init];
     self.syncHelper.delegate = self;
 }
-
 
 - (void)configureNoResultsView
 {
@@ -247,6 +289,9 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
         if (failure) {
             failure(error);
         }
+        if (userInteraction) {
+            [self handleSyncFailure:error];
+        }
     }];
 }
 
@@ -262,6 +307,7 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
         if (failure) {
             failure(error);
         }
+        [self handleSyncFailure:error];
     }];
 }
 
@@ -278,6 +324,43 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
         // It will be redisplayed if necessary.
         [self performSelector:@selector(configureNoResultsView) withObject:self afterDelay:0.1];
     }
+}
+
+- (void)handleSyncFailure:(NSError *)error
+{
+    if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
+        if (error.code == 403) {
+            [self promptForPasswordWithMessage:nil];
+            return;
+        } else if (error.code == 425) {
+            [self promptForPasswordWithMessage:[error localizedDescription]];
+            return;
+        }
+    }
+    [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.")];
+}
+
+- (void)promptForPasswordWithMessage:(NSString *)message
+{
+    // TODO: Needs testing!!!
+    if (message == nil) {
+        message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
+    }
+    [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Connect", @"") message:message];
+
+    // bad login/pass combination
+    EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+    editSiteViewController.isCancellable = YES;
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
+    navController.navigationBar.translucent = NO;
+
+    if (IS_IPAD) {
+        navController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    }
+
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 
