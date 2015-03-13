@@ -62,6 +62,13 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }] subscribeNext:^(NSNumber *forgotPasswordHidden) {
         [self.delegate setForgotPasswordHidden:[forgotPasswordHidden boolValue]];
     }];
+    
+    // Setup monitoring for whether to show/hide the send verification code button
+    [[[RACSignal combineLatest:@[RACObserve(self, shouldDisplayMultifactor), RACObserve(self, authenticating)]] reduceEach:^id(NSNumber *shouldDisplayMultifactor, NSNumber *authenticating){
+        return @(![shouldDisplayMultifactor boolValue] || [authenticating boolValue]);
+    }] subscribeNext:^(NSNumber *sendVerificationCodeButtonHidden) {
+        [self.delegate setSendVerificationCodeButtonHidden:[sendVerificationCodeButtonHidden boolValue]];
+    }];
 }
 
 - (void)handleShouldDisplayMultifactorChanged:(NSNumber *)shouldDisplayMultifactor {

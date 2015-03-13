@@ -283,4 +283,42 @@ describe(@"forgot password button's visibility", ^{
     });
 });
 
+describe(@"sendVerificationCodeButton visibility", ^{
+    
+    context(@"when authenticating", ^{
+        
+        it(@"should not be visible if the multifactor controls enabled", ^{
+            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            viewModel.authenticating = YES;
+            viewModel.shouldDisplayMultifactor = YES;
+            [mockDelegate verify];
+        });
+        
+        it(@"should not be visible if the multifactor controls aren't enabled", ^{
+            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            viewModel.authenticating = YES;
+            viewModel.shouldDisplayMultifactor = NO;
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"when not authenticating", ^{
+        
+        it(@"should be visible if multifactor controls are enabled", ^{
+            [[mockDelegate expect] setSendVerificationCodeButtonHidden:NO];
+            viewModel.authenticating = NO;
+            viewModel.shouldDisplayMultifactor = YES;
+            [mockDelegate verify];
+        });
+        
+        it(@"should not be visible if multifactor controls aren't enabled", ^{
+            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            viewModel.authenticating = NO;
+            viewModel.shouldDisplayMultifactor = NO;
+            [mockDelegate verify];
+        });
+    });
+    
+});
+
 SpecEnd

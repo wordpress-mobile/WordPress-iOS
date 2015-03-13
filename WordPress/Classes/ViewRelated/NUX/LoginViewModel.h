@@ -34,5 +34,6 @@
 - (void)setMultifactorEnabled:(BOOL)enabled;
 - (void)setCancelButtonHidden:(BOOL)hidden;
 - (void)setForgotPasswordHidden:(BOOL)hidden;
+- (void)setSendVerificationCodeButtonHidden:(BOOL)hidden;
 
 @end

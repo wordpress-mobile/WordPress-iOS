@@ -697,7 +697,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)updateControls
 {
     // Buttons
-    self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
     self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
     
     // SignIn Button
@@ -963,11 +962,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isSignInToggleHidden
 {
     return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
-}
-
-- (BOOL)isSendCodeHidden
-{
-    return !self.shouldDisplayMultifactor || self.authenticating;
 }
 
 - (BOOL)isAccountCreationHidden
@@ -1442,6 +1436,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setForgotPasswordHidden:(BOOL)hidden
 {
     self.forgotPassword.hidden = hidden;
+}
+
+- (void)setSendVerificationCodeButtonHidden:(BOOL)hidden
+{
+    self.sendVerificationCodeButton.hidden = hidden;
 }
 
 @end
