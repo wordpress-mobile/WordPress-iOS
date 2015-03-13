@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 @interface WPStyleGuide (Posts)
 

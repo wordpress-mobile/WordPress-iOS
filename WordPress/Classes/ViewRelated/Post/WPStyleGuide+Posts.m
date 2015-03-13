@@ -1,5 +1,4 @@
 #import "WPStyleGuide+Posts.h"
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 
