@@ -8,7 +8,7 @@
 
 @implementation LoginViewModel
 
-//static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
+static CGFloat const LoginViewModelAlphaHidden              = 0.0f;
 static CGFloat const LoginViewModelAlphaDisabled            = 0.5f;
 static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
@@ -25,11 +25,25 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     [RACObserve(self, authenticating) subscribeNext:^(NSNumber *authenticating) {
         [self.delegate showActivityIndicator:[authenticating boolValue]];
     }];
+    
     [RACObserve(self, shouldDisplayMultifactor) subscribeNext:^(NSNumber *shouldDisplayMultifactor) {
         if ([shouldDisplayMultifactor boolValue]) {
             [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
+            [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
+            
+            if (self.isSiteUrlEnabled) {
+                [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
+            }
         } else {
             [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
+            [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
+            if (self.isSiteUrlEnabled) {
+                [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
+            }
+        }
+        
+        if (!self.isSiteUrlEnabled) {
+            [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
         }
     }];
 }

@@ -691,8 +691,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)updateControls
 {
     // TextFields
-    self.passwordText.alpha                 = self.passwordAlpha;
-    self.siteUrlText.alpha                  = self.siteAlpha;
     self.multifactorText.alpha              = self.multifactorAlpha;
     
     self.usernameText.enabled               = self.isUsernameEnabled;
@@ -979,20 +977,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isMultifactorEnabled
 {
     return self.shouldDisplayMultifactor;
-}
-
-- (CGFloat)passwordAlpha
-{
-    return self.isPasswordEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
-}
-
-- (CGFloat)siteAlpha
-{
-    if (self.isSiteUrlEnabled) {
-        return self.isMultifactorEnabled ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    }
-    
-    return GeneralWalkthroughAlphaHidden;
 }
 
 - (CGFloat)multifactorAlpha
@@ -1451,6 +1435,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setUsernameAlpha:(CGFloat)alpha
 {
     self.usernameText.alpha = alpha;
+}
+
+- (void)setPasswordAlpha:(CGFloat)alpha
+{
+    self.passwordText.alpha = alpha;
+}
+
+- (void)setSiteAlpha:(CGFloat)alpha
+{
+    self.siteUrlText.alpha = alpha;
 }
 
 @end
