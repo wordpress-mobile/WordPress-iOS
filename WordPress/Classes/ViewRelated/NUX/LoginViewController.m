@@ -691,8 +691,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)updateControls
 {
     // TextFields
-    self.multifactorText.alpha              = self.multifactorAlpha;
-    
     self.usernameText.enabled               = self.isUsernameEnabled;
     self.passwordText.enabled               = self.isPasswordEnabled;
     self.siteUrlText.enabled                = self.isSiteUrlEnabled;
@@ -978,12 +976,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     return self.shouldDisplayMultifactor;
 }
-
-- (CGFloat)multifactorAlpha
-{
-    return self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
-}
-
 
 #pragma mark - Interface Helpers: Buttons
 
@@ -1445,6 +1437,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setSiteAlpha:(CGFloat)alpha
 {
     self.siteUrlText.alpha = alpha;
+}
+
+- (void)setMultiFactorAlpha:(CGFloat)alpha
+{
+    self.multifactorText.alpha = alpha;
 }
 
 @end

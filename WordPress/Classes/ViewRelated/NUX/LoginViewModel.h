@@ -19,5 +19,6 @@
 - (void)setUsernameAlpha:(CGFloat)alpha;
 - (void)setPasswordAlpha:(CGFloat)alpha;
 - (void)setSiteAlpha:(CGFloat)alpha;
+- (void)setMultiFactorAlpha:(CGFloat)alpha;
 
 @end

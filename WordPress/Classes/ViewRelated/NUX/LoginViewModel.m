@@ -35,6 +35,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     if ([shouldDisplayMultifactor boolValue]) {
         [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
         [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
+        [self.delegate setMultiFactorAlpha:LoginViewModelAlphaEnabled];
         
         if (self.isSiteUrlEnabled) {
             [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
@@ -42,6 +43,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     } else {
         [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
         [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
+        [self.delegate setMultiFactorAlpha:LoginViewModelAlphaHidden];
         if (self.isSiteUrlEnabled) {
             [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
         }

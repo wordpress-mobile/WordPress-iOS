@@ -45,6 +45,12 @@ describe(@"shouldDisplayMultifactor", ^{
             [mockDelegate verify];
         });
         
+        it(@"should set multifactor's alpha to 1.0", ^{
+            [[mockDelegate expect] setMultiFactorAlpha:1.0];
+            viewModel.shouldDisplayMultifactor = YES;
+            [mockDelegate verify];
+        });
+        
         it(@"and isSiteText is enabled it should set the site's alpha to 0.5", ^{
             [[mockDelegate expect] setSiteAlpha:0.5];
             viewModel.isSiteUrlEnabled = YES;
@@ -70,6 +76,12 @@ describe(@"shouldDisplayMultifactor", ^{
         
         it(@"should set the password's alpha to 1.0", ^{
             [[mockDelegate expect] setPasswordAlpha:1.0];
+            viewModel.shouldDisplayMultifactor = NO;
+            [mockDelegate verify];
+        });
+        
+        it(@"should set multifactor's alpha to 0.0", ^{
+            [[mockDelegate expect] setMultiFactorAlpha:0.0];
             viewModel.shouldDisplayMultifactor = NO;
             [mockDelegate verify];
         });
