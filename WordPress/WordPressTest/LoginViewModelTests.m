@@ -191,4 +191,96 @@ describe(@"isMultifactorEnabled", ^{
     });
 });
 
+describe(@"cancellable", ^{
+    
+    it(@"when it's true it should display the cancel button", ^{
+        [[mockDelegate expect] setCancelButtonHidden:NO];
+        viewModel.cancellable = YES;
+        [mockDelegate verify];
+    });
+    
+    it(@"when it's false it should hide the cancel button", ^{
+        [[mockDelegate expect] setCancelButtonHidden:YES];
+        viewModel.cancellable = NO;
+        [mockDelegate verify];
+    });
+});
+
+describe(@"forgot password button's visibility", ^{
+    
+    context(@"for a .com user", ^{
+        
+        beforeEach(^{
+            viewModel.userIsDotCom = YES;
+        });
+        
+        context(@"who is authenticating", ^{
+        
+            it(@"should not be visible", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                viewModel.authenticating = YES;
+                [mockDelegate verify];
+            });
+        });
+        
+        context(@"who isn't authenticating", ^{
+            
+            it(@"should be visible", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:NO];
+                viewModel.authenticating = NO;
+                [mockDelegate verify];
+            });
+            
+            it(@"should not be visibile if multifactor auth controls are visible", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                viewModel.isMultifactorEnabled = YES;
+                viewModel.authenticating = NO;
+                [mockDelegate verify];
+            });
+        });
+    });
+    
+    context(@"for a self hosted user", ^{
+        
+        context(@"who isn't authenticating", ^{
+            
+            beforeEach(^{
+                viewModel.authenticating = NO;
+            });
+            
+            it(@"should not be visible if a url is not present", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                viewModel.siteUrl = @"";
+                [mockDelegate verify];
+            });
+            
+            
+            it(@"should be visible if a url is present", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:NO];
+                viewModel.siteUrl = @"http://www.selfhosted.com";
+                [mockDelegate verify];
+            });
+            
+            it(@"should not be visible if multifactor controls are visible", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                viewModel.isMultifactorEnabled = YES;
+                [mockDelegate verify];
+            });
+        });
+        
+        context(@"who is authenticating", ^{
+            
+            beforeEach(^{
+                viewModel.authenticating = YES;
+            });
+            
+            it(@"should not be visible if a url is present", ^{
+                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                viewModel.siteUrl = @"http://www.selfhosted.com";
+                [mockDelegate verify];
+            });
+        });
+    });
+});
+
 SpecEnd

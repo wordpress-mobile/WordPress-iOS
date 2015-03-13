@@ -156,6 +156,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     RAC(self.viewModel, authenticating) = RACObserve(self, authenticating);
     RAC(self.viewModel, shouldDisplayMultifactor) = RACObserve(self, shouldDisplayMultifactor);
     RAC(self.viewModel, userIsDotCom) = RACObserve(self, userIsDotCom);
+    RAC(self.viewModel, cancellable) = RACObserve(self, cancellable);
+    RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
     
     // TODO: Remove userIsDotCom from this class
     self.userIsDotCom = YES;
@@ -695,8 +697,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)updateControls
 {
     // Buttons
-    self.cancelButton.hidden                = !self.cancellable;
-    self.forgotPassword.hidden              = self.isForgotPasswordHidden;
     self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
     self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
     
@@ -973,12 +973,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isAccountCreationHidden
 {
     return self.hasDefaultAccount || self.authenticating;
-}
-
-- (BOOL)isForgotPasswordHidden
-{
-    BOOL isEnabled = self.userIsDotCom || self.isUrlValid;
-    return !isEnabled || self.authenticating || self.shouldDisplayMultifactor;
 }
 
 
@@ -1438,6 +1432,16 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setMultifactorEnabled:(BOOL)enabled
 {
     self.multifactorText.enabled = enabled;
+}
+
+- (void)setCancelButtonHidden:(BOOL)hidden
+{
+    self.cancelButton.hidden = hidden;
+}
+
+- (void)setForgotPasswordHidden:(BOOL)hidden
+{
+    self.forgotPassword.hidden = hidden;
 }
 
 @end

@@ -11,6 +11,8 @@
 @property (nonatomic, assign) BOOL isUsernameEnabled;
 @property (nonatomic, assign) BOOL isPasswordEnabled;
 @property (nonatomic, assign) BOOL isMultifactorEnabled;
+@property (nonatomic, assign) BOOL cancellable;
+@property (nonatomic, strong) NSString *siteUrl;
 
 
 @property (nonatomic, assign) id<LoginViewModelDelegate> delegate;
@@ -30,5 +32,7 @@
 - (void)setPasswordEnabled:(BOOL)enabled;
 - (void)setSiteUrlEnabled:(BOOL)enabled;
 - (void)setMultifactorEnabled:(BOOL)enabled;
+- (void)setCancelButtonHidden:(BOOL)hidden;
+- (void)setForgotPasswordHidden:(BOOL)hidden;
 
 @end

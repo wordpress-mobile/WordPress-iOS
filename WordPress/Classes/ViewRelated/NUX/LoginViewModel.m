@@ -1,5 +1,6 @@
-#import <ReactiveCocoa/ReactiveCocoa.h>
 #import "LoginViewModel.h"
+#import "NSURL+IDN.h"
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 @interface LoginViewModel()
 
@@ -49,6 +50,18 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     [RACObserve(self, isMultifactorEnabled) subscribeNext:^(NSNumber *isMultifactorEnabled) {
         [self.delegate setMultifactorEnabled:[isMultifactorEnabled boolValue]];
     }];
+    
+    [RACObserve(self, cancellable) subscribeNext:^(NSNumber *cancellable) {
+        [self.delegate setCancelButtonHidden:![cancellable boolValue]];
+    }];
+    
+    // Setup monitoring for whether to show/hide the forgot password button
+    [[[RACSignal combineLatest:@[RACObserve(self, userIsDotCom), RACObserve(self, siteUrl), RACObserve(self, authenticating), RACObserve(self, isMultifactorEnabled)]] reduceEach:^id(NSNumber *userIsDotCom, NSString *siteUrl, NSNumber *authenticating, NSNumber *isMultifactorEnabled){
+        BOOL isEnabled = [userIsDotCom boolValue] || [self isUrlValid:siteUrl];
+        return @(!isEnabled || [authenticating boolValue] || [isMultifactorEnabled boolValue]);
+    }] subscribeNext:^(NSNumber *forgotPasswordHidden) {
+        [self.delegate setForgotPasswordHidden:[forgotPasswordHidden boolValue]];
+    }];
 }
 
 - (void)handleShouldDisplayMultifactorChanged:(NSNumber *)shouldDisplayMultifactor {
@@ -81,6 +94,16 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
         [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
     }
     [self.delegate setSiteUrlEnabled:siteUrlEnabled];
+}
+
+- (BOOL)isUrlValid:(NSString *)url
+{
+    if (url.length == 0) {
+        return NO;
+    }
+    
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:url]];
+    return siteURL != nil;
 }
 
 @end
