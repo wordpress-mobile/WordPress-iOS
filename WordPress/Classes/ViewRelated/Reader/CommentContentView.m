@@ -282,6 +282,8 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 - (UIView *)viewForCommentMeta
 {
+    // The initial frame width is arbitrary. Constraints will size as appropriate.
+    // The height is the same as the constraint for context.
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, CommentContentViewMetaHeight)];
     view.translatesAutoresizingMaskIntoConstraints = NO;
     view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
