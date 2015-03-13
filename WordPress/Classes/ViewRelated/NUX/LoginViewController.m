@@ -157,6 +157,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     RAC(self.viewModel, shouldDisplayMultifactor) = RACObserve(self, shouldDisplayMultifactor);
     RAC(self.viewModel, userIsDotCom) = RACObserve(self, userIsDotCom);
     RAC(self.viewModel, cancellable) = RACObserve(self, cancellable);
+    RAC(self.viewModel, hasDefaultAccount) = RACObserve(self, hasDefaultAccount);
+    RAC(self.viewModel, username) = self.usernameText.rac_textSignal;
+    RAC(self.viewModel, password) = self.passwordText.rac_textSignal;
+    RAC(self.viewModel, multifactorCode) = self.multifactorText.rac_textSignal;
     RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
     
     // TODO: Remove userIsDotCom from this class
@@ -696,14 +700,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
-    // Buttons
-    self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
-    
-    // SignIn Button
-    NSString *signInTitle                   = self.signInButtonTitle;
-    self.signInButton.enabled               = self.isSignInEnabled;
-    self.signInButton.accessibilityIdentifier = signInTitle;
-    [self.signInButton setTitle:signInTitle forState:UIControlStateNormal];
     
     // Dotcom / SelfHosted Button
     NSString *toggleTitle                   = self.toggleSignInButtonTitle;
@@ -962,25 +958,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (BOOL)isSignInToggleHidden
 {
     return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
-}
-
-- (BOOL)isAccountCreationHidden
-{
-    return self.hasDefaultAccount || self.authenticating;
-}
-
-
-#pragma mark - Text Helpers
-
-- (NSString *)signInButtonTitle
-{
-    if (self.shouldDisplayMultifactor) {
-        return NSLocalizedString(@"Verify", @"Button title for Two Factor code verification");
-    } else if (self.userIsDotCom) {
-        return NSLocalizedString(@"Sign In", @"Button title for Sign In Action");
-    }
-    
-    return NSLocalizedString(@"Add Site", @"Button title for Add SelfHosted Site");
 }
 
 - (NSString *)toggleSignInButtonTitle
@@ -1441,6 +1418,22 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setSendVerificationCodeButtonHidden:(BOOL)hidden
 {
     self.sendVerificationCodeButton.hidden = hidden;
+}
+
+- (void)setAccountCreationButtonHidden:(BOOL)hidden
+{
+    self.skipToCreateAccount.hidden = hidden;
+}
+
+- (void)setSignInButtonEnabled:(BOOL)enabled
+{
+    self.signInButton.enabled = enabled;
+}
+
+- (void)setSignInButtonTitle:(NSString *)title
+{
+    self.signInButton.accessibilityIdentifier = title;
+    [self.signInButton setTitle:title forState:UIControlStateNormal];
 }
 
 @end

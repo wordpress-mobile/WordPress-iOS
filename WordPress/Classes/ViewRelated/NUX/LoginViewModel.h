@@ -12,8 +12,13 @@
 @property (nonatomic, assign) BOOL isPasswordEnabled;
 @property (nonatomic, assign) BOOL isMultifactorEnabled;
 @property (nonatomic, assign) BOOL cancellable;
-@property (nonatomic, strong) NSString *siteUrl;
+@property (nonatomic, assign) BOOL hasDefaultAccount;
+@property (nonatomic, readonly) NSString *signInButtonTitle;
 
+@property (nonatomic, strong) NSString *siteUrl;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *multifactorCode;
 
 @property (nonatomic, assign) id<LoginViewModelDelegate> delegate;
 
@@ -35,5 +40,8 @@
 - (void)setCancelButtonHidden:(BOOL)hidden;
 - (void)setForgotPasswordHidden:(BOOL)hidden;
 - (void)setSendVerificationCodeButtonHidden:(BOOL)hidden;
+- (void)setAccountCreationButtonHidden:(BOOL)hidden;
+- (void)setSignInButtonEnabled:(BOOL)enabled;
+- (void)setSignInButtonTitle:(NSString *)title;
 
 @end

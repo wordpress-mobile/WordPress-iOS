@@ -283,6 +283,258 @@ describe(@"forgot password button's visibility", ^{
     });
 });
 
+describe(@"skipToCreateAccountButton visibility", ^{
+    
+    context(@"when authenticating", ^{
+        
+        it(@"should not be visible if the user has an account", ^{
+            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            viewModel.authenticating = YES;
+            viewModel.hasDefaultAccount = YES;
+            [mockDelegate verify];
+        });
+        
+        it(@"should not be visible if the user doesn't have an account", ^{
+            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            viewModel.authenticating = YES;
+            viewModel.hasDefaultAccount = NO;
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"when not authenticating", ^{
+        
+        it(@"should not be visible if the user has an account", ^{
+            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            viewModel.authenticating = NO;
+            viewModel.hasDefaultAccount = YES;
+            [mockDelegate verify];
+        });
+        
+        it(@"should be visible if the user doesn't have an account", ^{
+            [[mockDelegate expect] setAccountCreationButtonHidden:NO];
+            viewModel.authenticating = NO;
+            viewModel.hasDefaultAccount = NO;
+            [mockDelegate verify];
+        });
+    });
+});
+
+describe(@"signInButtonTitle", ^{
+    
+    context(@"when multifactor controls are visible", ^{
+        
+        beforeEach(^{
+            viewModel.shouldDisplayMultifactor = YES;
+        });
+        
+        it(@"should be 'Verify'", ^{
+            expect(viewModel.signInButtonTitle).to.equal(@"Verify");
+        });
+        
+        it(@"should set the sign in button title to 'Verify'", ^{
+            [[mockDelegate expect] setSignInButtonTitle:@"Verify"];
+            
+            viewModel.shouldDisplayMultifactor = YES;
+            
+            [mockDelegate verify];
+        });
+        
+        it(@"should be 'Verify' even if user is a .com user", ^{
+            viewModel.userIsDotCom = YES;
+            expect(viewModel.signInButtonTitle).to.equal(@"Verify");
+        });
+        
+        it(@"should set the sign in button title to 'Verify' even if the user is a .com user", ^{
+            [[mockDelegate expect] setSignInButtonTitle:@"Verify"];
+            
+            viewModel.shouldDisplayMultifactor = YES;
+            viewModel.userIsDotCom = YES;
+            
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"when multifactor controls aren't visible", ^{
+        beforeEach(^{
+            viewModel.shouldDisplayMultifactor = NO;
+        });
+        
+        it(@"should be 'Sign In' if user is a .com user", ^{
+            viewModel.userIsDotCom = YES;
+            expect(viewModel.signInButtonTitle).to.equal(@"Sign In");
+        });
+        
+        it(@"should set the sign in button title to 'Sign In' if user is a .com user", ^{
+            [[mockDelegate expect] setSignInButtonTitle:@"Sign In"];
+            
+            viewModel.userIsDotCom = YES;
+            
+            [mockDelegate verify];
+        });
+        
+        it(@"should be 'Add Site' if user isn't a .com user", ^{
+            viewModel.userIsDotCom = NO;
+            expect(viewModel.signInButtonTitle).to.equal(@"Add Site");
+        });
+        
+        it(@"should set the sign in button title to 'Add Site' if user isn't a .com user", ^{
+            [[mockDelegate expect] setSignInButtonTitle:@"Add Site"];
+            
+            viewModel.userIsDotCom = NO;
+            
+            [mockDelegate verify];
+        });
+    });
+});
+
+describe(@"signInButton", ^{
+    
+    context(@"for a .com user", ^{
+        
+        before(^{
+            viewModel.userIsDotCom = YES;
+        });
+        
+        
+        context(@"when multifactor authentication controls are not visible", ^{
+            before(^{
+                viewModel.shouldDisplayMultifactor = NO;
+            });
+            
+            it(@"should be disabled if username and password are blank", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.username = @"";
+                viewModel.password = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be disabled if password is blank", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.username = @"username";
+                viewModel.password = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be enabled if username and password are filled", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                
+                viewModel.username = @"username";
+                viewModel.password = @"password";
+                
+                [mockDelegate verify];
+            });
+        });
+        
+        context(@"when multifactor authentication controls are visible", ^{
+            before(^{
+                viewModel.shouldDisplayMultifactor = YES;
+                viewModel.username = @"username";
+                viewModel.password = @"password";
+            });
+            
+            it(@"should not be enabled if the multifactor code isn't entered", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.multifactorCode = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be enabled if the multifactor code is entered", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                
+                viewModel.multifactorCode = @"123456";
+                
+                [mockDelegate verify];
+            });
+        });
+    });
+    
+    context(@"for a self hosted user", ^{
+        
+        before(^{
+            viewModel.userIsDotCom = NO;
+        });
+        
+        context(@"when multifactor authentication controls are not visible", ^{
+            
+            before(^{
+                viewModel.shouldDisplayMultifactor = NO;
+            });
+            
+            it(@"should be disabled if username, password and siteUrl are blank", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.username = @"";
+                viewModel.password = @"";
+                viewModel.siteUrl = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be disabled if password and siteUrl are blank", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.username = @"username";
+                viewModel.password = @"";
+                viewModel.siteUrl = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be disabled if siteUrl is blank", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.username = @"username";
+                viewModel.password = @"password";
+                viewModel.siteUrl = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be enabled if username, password and siteUrl are filled", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                
+                viewModel.username = @"username";
+                viewModel.password = @"password";
+                viewModel.siteUrl = @"http://www.selfhosted.com";
+                
+                [mockDelegate verify];
+            });
+        });
+        
+        context(@"when multifactor authentication controls are visible", ^{
+            before(^{
+                viewModel.shouldDisplayMultifactor = YES;
+                viewModel.username = @"username";
+                viewModel.password = @"password";
+                viewModel.siteUrl = @"http://www.selfhosted.com";
+            });
+            
+            it(@"should not be enabled if the multifactor code isn't entered", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                
+                viewModel.multifactorCode = @"";
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should be enabled if the multifactor code is entered", ^{
+                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                
+                viewModel.multifactorCode = @"123456";
+                
+                [mockDelegate verify];
+            });
+        });
+    });
+});
+
 describe(@"sendVerificationCodeButton visibility", ^{
     
     context(@"when authenticating", ^{
