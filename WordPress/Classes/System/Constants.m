@@ -6,7 +6,6 @@ NSString *const WPMobileReaderFFURL                                 = @"https://
 
 NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
-NSString *const WPComDefaultAccountUsernameKey                      = @"wpcom_username_preference";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
 NSString *const WPNotificationsJetpackInformationURL                = @"http://jetpack.me/about/";
