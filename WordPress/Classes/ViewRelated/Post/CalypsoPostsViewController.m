@@ -227,16 +227,21 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
+- (BOOL)hasMoreContent
+{
+    return [self.blog.hasOlderPosts boolValue];
+}
 
 
 #pragma mark - Sync Helper Delegate Methods
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:^{
         if  (success) {
-//TODO:
+            success([weakSelf hasMoreContent]);
         }
     } failure:^(NSError *error) {
         if (failure) {
@@ -245,12 +250,13 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
     }];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [postService loadMorePostsOfType:PostServiceTypePost forBlog:self.blog success:^{
         if (success) {
-//TODO:
+            success([weakSelf hasMoreContent]);
         }
     } failure:^(NSError *error) {
         if (failure) {
