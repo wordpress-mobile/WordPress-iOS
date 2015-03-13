@@ -27,25 +27,29 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }];
     
     [RACObserve(self, shouldDisplayMultifactor) subscribeNext:^(NSNumber *shouldDisplayMultifactor) {
-        if ([shouldDisplayMultifactor boolValue]) {
-            [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
-            [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
-            
-            if (self.isSiteUrlEnabled) {
-                [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
-            }
-        } else {
-            [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
-            [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
-            if (self.isSiteUrlEnabled) {
-                [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
-            }
-        }
-        
-        if (!self.isSiteUrlEnabled) {
-            [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
-        }
+        [self handleShouldDisplayMultifactorChanging:shouldDisplayMultifactor];
     }];
+}
+
+- (void)handleShouldDisplayMultifactorChanging:(NSNumber *)shouldDisplayMultifactor {
+    if ([shouldDisplayMultifactor boolValue]) {
+        [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
+        [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
+        
+        if (self.isSiteUrlEnabled) {
+            [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
+        }
+    } else {
+        [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
+        [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
+        if (self.isSiteUrlEnabled) {
+            [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
+        }
+    }
+    
+    if (!self.isSiteUrlEnabled) {
+        [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
+    }
 }
 
 @end
