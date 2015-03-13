@@ -379,6 +379,9 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
+        case WPAnalyticsStatPushNotificationAlertPressed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"PushNotification - Alert Tapped"];
+            break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_updated_post"];
