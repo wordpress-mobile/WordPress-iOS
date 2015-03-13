@@ -317,7 +317,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     if (notification) {
         DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
         
-        NSDictionary *properties = @{ @"type" : (notification.type ?: [NSString string]) };
+        NSDictionary *properties = notification.type ? @{ @"type" : notification.type } : nil;
         [WPAnalytics track:WPAnalyticsStatPushNotificationAlertPressed withProperties:properties];
         
         [self showDetailsForNotification:notification];
