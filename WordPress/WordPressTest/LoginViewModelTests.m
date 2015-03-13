@@ -12,12 +12,11 @@ beforeEach(^{
     mockDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
     viewModel = [LoginViewModel new];
     viewModel.delegate = mockDelegate;
-    
 });
 
 describe(@"authenticating", ^{
     
-    it(@"should call the delegate's showActivityIndicatoer method when the value changes", ^{
+    it(@"should call the delegate's showActivityIndicator method when the value changes", ^{
         [[mockDelegate expect] showActivityIndicator:YES];
         viewModel.authenticating = YES;
         [mockDelegate verify];

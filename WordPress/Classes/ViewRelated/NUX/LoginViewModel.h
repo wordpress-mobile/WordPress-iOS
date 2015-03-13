@@ -12,6 +12,7 @@
 @property (nonatomic, assign) BOOL isPasswordEnabled;
 @property (nonatomic, assign) BOOL isMultifactorEnabled;
 
+
 @property (nonatomic, assign) id<LoginViewModelDelegate> delegate;
 
 @end
