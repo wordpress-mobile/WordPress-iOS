@@ -155,6 +155,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     RAC(self.viewModel, authenticating) = RACObserve(self, authenticating);
     RAC(self.viewModel, shouldDisplayMultifactor) = RACObserve(self, shouldDisplayMultifactor);
+    RAC(self.viewModel, userIsDotCom) = RACObserve(self, userIsDotCom);
+    
+    // TODO: Remove userIsDotCom from this class
+    self.userIsDotCom = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -690,12 +694,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
-    // TextFields
-    self.usernameText.enabled               = self.isUsernameEnabled;
-    self.passwordText.enabled               = self.isPasswordEnabled;
-    self.siteUrlText.enabled                = self.isSiteUrlEnabled;
-    self.multifactorText.enabled            = self.isMultifactorEnabled;
-    
     // Buttons
     self.cancelButton.hidden                = !self.cancellable;
     self.forgotPassword.hidden              = self.isForgotPasswordHidden;
@@ -954,28 +952,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return [reservedUserNames containsObject:username];
 }
 
-
-#pragma mark - Interface Helpers: TextFields
-
-- (BOOL)isUsernameEnabled
-{
-    return !self.shouldDisplayMultifactor;
-}
-
-- (BOOL)isPasswordEnabled
-{
-    return !self.shouldDisplayMultifactor;
-}
-
-- (BOOL)isSiteUrlEnabled
-{
-    return !self.userIsDotCom;
-}
-
-- (BOOL)isMultifactorEnabled
-{
-    return self.shouldDisplayMultifactor;
-}
 
 #pragma mark - Interface Helpers: Buttons
 
@@ -1442,6 +1418,26 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setMultiFactorAlpha:(CGFloat)alpha
 {
     self.multifactorText.alpha = alpha;
+}
+
+- (void)setUsernameEnabled:(BOOL)enabled
+{
+    self.usernameText.enabled = enabled;
+}
+
+- (void)setPasswordEnabled:(BOOL)enabled
+{
+    self.passwordText.enabled = enabled;
+}
+
+- (void)setSiteUrlEnabled:(BOOL)enabled
+{
+    self.siteUrlText.enabled = enabled;
+}
+
+- (void)setMultifactorEnabled:(BOOL)enabled
+{
+    self.multifactorText.enabled = enabled;
 }
 
 @end

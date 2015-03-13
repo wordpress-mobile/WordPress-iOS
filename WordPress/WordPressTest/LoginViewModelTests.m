@@ -50,20 +50,6 @@ describe(@"shouldDisplayMultifactor", ^{
             viewModel.shouldDisplayMultifactor = YES;
             [mockDelegate verify];
         });
-        
-        it(@"and isSiteText is enabled it should set the site's alpha to 0.5", ^{
-            [[mockDelegate expect] setSiteAlpha:0.5];
-            viewModel.isSiteUrlEnabled = YES;
-            viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
-        });
-        
-        it(@"and isSiteText is disabled it should set the site's alpha to 0.0", ^{
-            [[mockDelegate expect] setSiteAlpha:0.0];
-            viewModel.isSiteUrlEnabled = NO;
-            viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
-        });
     });
     
     context(@"when it's false", ^{
@@ -85,22 +71,125 @@ describe(@"shouldDisplayMultifactor", ^{
             viewModel.shouldDisplayMultifactor = NO;
             [mockDelegate verify];
         });
-        
-        it(@"and isSiteText is enabled it should set the site's alpha to 1.0", ^{
-            [[mockDelegate expect] setSiteAlpha:1.0];
-            viewModel.isSiteUrlEnabled = YES;
-            viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
-        });
-        
-        it(@"and isSiteText is disabled it should set the site's alpha to 0.0", ^{
-            [[mockDelegate expect] setSiteAlpha:0.0];
-            viewModel.isSiteUrlEnabled = NO;
-            viewModel.shouldDisplayMultifactor = NO;
+    });
+});
+
+describe(@"isUsernameEnabled", ^{
+    
+    context(@"when it's true", ^{
+        it(@"should enable the username text field", ^{
+            [[mockDelegate expect] setUsernameEnabled:YES];
+            viewModel.isUsernameEnabled = YES;
             [mockDelegate verify];
         });
     });
     
+    context(@"when it's false", ^{
+        it(@"should disable the username text field" , ^{
+            [[mockDelegate expect] setUsernameEnabled:NO];
+            viewModel.isUsernameEnabled = NO;
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"dependency on shouldDisplayMultifactor", ^{
+        
+        it(@"should result in the value being true when shouldDisplayMultifactor is false", ^{
+            viewModel.shouldDisplayMultifactor = NO;
+            expect(viewModel.isUsernameEnabled).to.beTruthy();
+        });
+        
+        it(@"should result in the value being false when shouldDisplayMultifactor is true", ^{
+            viewModel.shouldDisplayMultifactor = YES;
+            expect(viewModel.isUsernameEnabled).to.beFalsy();
+        });
+    });
+});
+
+describe(@"isPasswordEnabled", ^{
+    context(@"when it's true", ^{
+        it(@"should enable the password text field", ^{
+            [[mockDelegate expect] setPasswordEnabled:YES];
+            viewModel.isPasswordEnabled = YES;
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"when it's false", ^{
+        it(@"should disable the password text field" , ^{
+            [[mockDelegate expect] setPasswordEnabled:NO];
+            viewModel.isPasswordEnabled = NO;
+            [mockDelegate verify];
+        });
+    });
+    
+    context(@"dependency on shouldDisplayMultifactor", ^{
+        
+        it(@"should result in the value being true when shouldDisplayMultifactor is false", ^{
+            viewModel.shouldDisplayMultifactor = NO;
+            expect(viewModel.isPasswordEnabled).to.beTruthy();
+        });
+        
+        it(@"should result in the value being false when shouldDisplayMultifactor is true", ^{
+            viewModel.shouldDisplayMultifactor = YES;
+            expect(viewModel.isPasswordEnabled).to.beFalsy();
+        });
+    });
+});
+
+describe(@"isSiteUrlEnabled", ^{
+    
+    it(@"when it's true it should enable the site url field", ^{
+        [[mockDelegate expect] setSiteUrlEnabled:YES];
+        viewModel.isSiteUrlEnabled = YES;
+        [mockDelegate verify];
+    });
+    
+    it(@"when it's false it should disable the site url field", ^{
+        [[mockDelegate expect] setSiteUrlEnabled:NO];
+        viewModel.isSiteUrlEnabled = NO;
+        [mockDelegate verify];
+    });
+    
+    context(@"depdendency on isUserDotCom", ^{
+        
+        it(@"should result in the value being false when isUserDotCom is true", ^{
+            viewModel.userIsDotCom = YES;
+            expect(viewModel.isSiteUrlEnabled).to.beFalsy();
+        });
+        
+        it(@"should result in the value being true when isUserDotCom is false", ^{
+            viewModel.userIsDotCom = NO;
+            expect(viewModel.isSiteUrlEnabled).to.beTruthy();
+        });
+    });
+});
+
+describe(@"isMultifactorEnabled", ^{
+    it(@"when it's true it should enable the multifactor text field", ^{
+        [[mockDelegate expect] setMultifactorEnabled:YES];
+        viewModel.isMultifactorEnabled = YES;
+        [mockDelegate verify];
+    });
+    
+    it(@"when it's false it should disable the multifactor text field", ^{
+        [[mockDelegate expect] setMultifactorEnabled:NO];
+        viewModel.isMultifactorEnabled = NO;
+        [mockDelegate verify];
+    });
+    
+    context(@"dependency on shouldDisplayMultifactor", ^{
+        
+        it(@"should result in the value being true when shouldDisplayMultifactor is true", ^{
+            viewModel.shouldDisplayMultifactor = YES;
+            expect(viewModel.isMultifactorEnabled).to.beTruthy();
+        });
+        
+        it(@"should result in the value being false when shouldDisplayMultifactor is false", ^{
+            viewModel.shouldDisplayMultifactor = NO;
+            expect(viewModel.isMultifactorEnabled).to.beFalsy();
+        });
+    });
 });
 
 SpecEnd

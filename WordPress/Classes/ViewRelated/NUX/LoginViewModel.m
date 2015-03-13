@@ -27,31 +27,60 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }];
     
     [RACObserve(self, shouldDisplayMultifactor) subscribeNext:^(NSNumber *shouldDisplayMultifactor) {
-        [self handleShouldDisplayMultifactorChanging:shouldDisplayMultifactor];
+        [self handleShouldDisplayMultifactorChanged:shouldDisplayMultifactor];
+    }];
+    
+    [RACObserve(self, isUsernameEnabled) subscribeNext:^(NSNumber *isUsernameEnabled) {
+        [self.delegate setUsernameEnabled:[isUsernameEnabled boolValue]];
+    }];
+    
+    [RACObserve(self, isPasswordEnabled) subscribeNext:^(NSNumber *isPasswordEnabled) {
+        [self.delegate setPasswordEnabled:[isPasswordEnabled boolValue]];
+    }];
+    
+    [RACObserve(self, userIsDotCom) subscribeNext:^(NSNumber *userIsDotCom) {
+        self.isSiteUrlEnabled = ![userIsDotCom boolValue];
+    }];
+    
+    [RACObserve(self, isSiteUrlEnabled) subscribeNext:^(NSNumber *isSiteUrlEnabled) {
+        [self handleSiteUrlEnabledChanged:isSiteUrlEnabled];
+    }];
+    
+    [RACObserve(self, isMultifactorEnabled) subscribeNext:^(NSNumber *isMultifactorEnabled) {
+        [self.delegate setMultifactorEnabled:[isMultifactorEnabled boolValue]];
     }];
 }
 
-- (void)handleShouldDisplayMultifactorChanging:(NSNumber *)shouldDisplayMultifactor {
-    if ([shouldDisplayMultifactor boolValue]) {
+- (void)handleShouldDisplayMultifactorChanged:(NSNumber *)shouldDisplayMultifactor {
+    BOOL displayMultifactor = [shouldDisplayMultifactor boolValue];
+    if (displayMultifactor) {
         [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
         [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
         [self.delegate setMultiFactorAlpha:LoginViewModelAlphaEnabled];
-        
-        if (self.isSiteUrlEnabled) {
-            [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
-        }
     } else {
         [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
         [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
         [self.delegate setMultiFactorAlpha:LoginViewModelAlphaHidden];
-        if (self.isSiteUrlEnabled) {
-            [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
-        }
     }
     
-    if (!self.isSiteUrlEnabled) {
+    self.isUsernameEnabled = !displayMultifactor;
+    self.isPasswordEnabled = !displayMultifactor;
+    self.isMultifactorEnabled = displayMultifactor;
+}
+
+- (void)handleSiteUrlEnabledChanged:(NSNumber *)isSiteUrlEnabled
+{
+    BOOL siteUrlEnabled = [isSiteUrlEnabled boolValue];
+    if (siteUrlEnabled) {
+        if (self.shouldDisplayMultifactor) {
+            [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
+        } else {
+            [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
+        }
+    } else {
         [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
     }
+    [self.delegate setSiteUrlEnabled:siteUrlEnabled];
 }
 
 @end
