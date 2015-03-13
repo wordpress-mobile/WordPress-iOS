@@ -78,7 +78,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
-@property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
 /**
@@ -120,6 +119,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Start Simperium
     [self loginSimperium];
 
+    // Local Notifications
+    [self listenLocalNotifications];
+    
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
@@ -162,7 +164,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-    [self trackLowMemory];
     
     // Push notifications
     [NotificationsManager registerForPushNotifications];
@@ -654,15 +655,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }];
 }
 
-- (void)trackLowMemory
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-}
-
-- (void)lowMemoryWarning:(NSNotification *)notification
-{
-    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
 
 #pragma mark - Application directories
 
@@ -680,28 +672,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
-#pragma mark - Notifications
-
-- (void)defaultAccountDidChange:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [Crashlytics setUserName:[defaultAccount username]];
-    [self setCommonCrashlyticsParameters];
-
-    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
-}
-
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics
 {
-#if DEBUG
-    return;
-#endif
-#ifdef INTERNAL_BUILD
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
 
@@ -712,18 +687,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    BOOL hasCredentials = (defaultAccount != nil);
     [self setCommonCrashlyticsParameters];
-
-    if (hasCredentials && [defaultAccount username] != nil) {
-        [Crashlytics setUserName:[defaultAccount username]];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -738,12 +702,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setCommonCrashlyticsParameters
 {
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
+    return;
+#endif
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     BOOL loggedIn = defaultAccount != nil;
+    [Crashlytics setUserName:defaultAccount.username];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
@@ -1170,11 +1139,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)toggleExtraDebuggingIfNeeded
 {
-    if (!_listeningForBlogChanges) {
-        _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    }
-
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1204,9 +1168,24 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
 }
 
-#pragma mark - Notifications
+#pragma mark - Local Notifications Helpers
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
+- (void)listenLocalNotifications
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleDefaultAccountChangedNote:)
+                               name:WPAccountDefaultWordPressComAccountChangedNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleLowMemoryWarningNote:)
+                               name:UIApplicationDidReceiveMemoryWarningNotification
+                             object:nil];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)notification
 {
     // If the notification object is not nil, then it's a login
     if (notification.object) {
@@ -1231,8 +1210,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     [self toggleExtraDebuggingIfNeeded];
+    [self setCommonCrashlyticsParameters];
     [self setupSingleSignOn];
+    
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
+
+- (void)handleLowMemoryWarningNote:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
 
 #pragma mark - Today Extension
 
