@@ -30,7 +30,7 @@ pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilit
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'WordPressApi', '~> 0.3.4'
 pod 'WordPress-iOS-Shared', '0.3'
-pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => '0b3940661d7de31badee88ac3d943656d7eb8f78'
+pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => '13fd02876dd847025e6ca15568db69e4cf0404dd'
 pod 'WordPressCom-Stats-iOS', '0.3.0'
 pod 'WordPressCom-Analytics-iOS', '0.0.29'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
