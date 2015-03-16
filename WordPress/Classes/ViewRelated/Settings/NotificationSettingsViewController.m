@@ -6,8 +6,12 @@
 #import "NSString+XMLExtensions.h"
 #import "DateUtils.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionFooterView.h"
 #import "WPAccount.h"
 #import "NotificationsManager.h"
+#import "NSDate+StringFormatting.h"
+
+#import <Simperium/Simperium.h>
 
 
 
@@ -20,6 +24,7 @@ static NSString* NotificationSettingValueKey        = @"value";
 static NSString* NotificationSettingMutedBlogsKey   = @"muted_blogs";
 static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 static NSString* NotificationSettingForever         = @"forever";
+static CGFloat NotificationFooterExtraPadding       = 10.0f;
 
 
 #pragma mark ==========================================================================================
@@ -223,7 +228,6 @@ static NSString* NotificationSettingForever         = @"forever";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if (indexPath.section == 0) {
         static NSString *CellIdentifier = @"NotficationSettingsCellOnOff";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -298,9 +302,23 @@ static NSString* NotificationSettingForever         = @"forever";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
     header.title = [self titleForHeaderInSection:section];
     return header;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
+    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
+    WPTableViewSectionFooterView *footer = [[WPTableViewSectionFooterView alloc] initWithFrame:frame];
+    footer.title = title;
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -308,6 +326,22 @@ static NSString* NotificationSettingForever         = @"forever";
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return CGFLOAT_MIN;
+    }
+
+    CGFloat calculatedHeight = [WPTableViewSectionFooterView heightForTitle:title
+                                                                   andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    return calculatedHeight + NotificationFooterExtraPadding;
+}
+
+
+#pragma mark - Helpers
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
@@ -318,6 +352,19 @@ static NSString* NotificationSettingForever         = @"forever";
     }
 
     return NSLocalizedString(@"Sites", @"");
+}
+
+- (NSString *)titleForFooterInSection:(NSInteger)section
+{
+    NSInteger lastSection = self.tableView.numberOfSections - 1;
+    if (section != lastSection) {
+        return nil;
+    }
+    
+    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    NSString *lastSeen = [simperium.networkLastSeenTime shortString] ?: [NSString string];
+    NSString *status = [NSString stringWithFormat:@"Network Last Seen: %@ [%@]", lastSeen, simperium.networkStatus];
+    return status;
 }
 
 
