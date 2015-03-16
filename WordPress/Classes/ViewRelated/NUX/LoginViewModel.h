@@ -1,7 +1,9 @@
 #import <Foundation/Foundation.h>
 
 @protocol LoginViewModelDelegate;
+@protocol ReachabilityService;
 @class RACSignal;
+
 @interface LoginViewModel : NSObject
 
 @property (nonatomic, assign) BOOL authenticating;
@@ -22,6 +24,11 @@
 @property (nonatomic, strong) NSString *multifactorCode;
 
 @property (nonatomic, assign) id<LoginViewModelDelegate> delegate;
+
+- (instancetype)initWithReachabilityService:(id<ReachabilityService>)reachabilityService;
+
+- (void)signInButtonAction;
+- (void)toggleSignInFormAction;
 
 @end
 
@@ -46,5 +53,14 @@
 - (void)setSignInButtonTitle:(NSString *)title;
 - (void)setToggleSignInButtonTitle:(NSString *)title;
 - (void)setToggleSignInButtonHidden:(BOOL)hidden;
+- (void)setPasswordTextReturnKeyType:(UIReturnKeyType)returnKeyType;
+
+- (void)displayErrorMessageForInvalidOrMissingFields;
+- (void)displayReservedNameErrorMessage;
+- (void)reloadInterfaceWithAnimation:(BOOL)animated;
+- (void)setFocusToSiteUrlText;
+
+- (void)signIn;
+
 
 @end

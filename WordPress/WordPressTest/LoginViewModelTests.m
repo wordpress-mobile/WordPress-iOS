@@ -3,14 +3,17 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import "LoginViewModel.h"
+#import "ReachabilityService.h"
 
 SpecBegin(LoginViewModelTests)
 
 __block LoginViewModel *viewModel;
 __block id mockDelegate;
+__block id mockReachabilityService;
 beforeEach(^{
     mockDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
-    viewModel = [LoginViewModel new];
+    mockReachabilityService = [OCMockObject niceMockForProtocol:@protocol(ReachabilityService)];
+    viewModel = [[LoginViewModel alloc] initWithReachabilityService:mockReachabilityService];
     viewModel.delegate = mockDelegate;
 });
 
@@ -593,6 +596,242 @@ describe(@"toggleSignInButton visibility", ^{
         
         [mockDelegate verify];
     });
+});
+
+describe(@"signInButtonAction", ^{
+    
+    context(@"the checking of the user's internet connection", ^{
+        
+        it(@"should not show an error message about the internet connection if it's down", ^{
+            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            [[mockReachabilityService reject] showAlertNoInternetConnection];
+            
+            [viewModel signInButtonAction];
+            
+            [mockReachabilityService verify];
+        });
+        
+        it(@"should show an error message about the internet connection if it's down", ^{
+            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(NO)];
+            [[mockReachabilityService expect] showAlertNoInternetConnection];
+            
+            [viewModel signInButtonAction];
+            
+            [mockReachabilityService verify];
+        });
+    });
+    
+    context(@"user field validation", ^{
+        
+        beforeEach(^{
+            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            
+            viewModel.username = @"username";
+            viewModel.password = @"password";
+            viewModel.siteUrl = @"http://www.selfhosted.com";
+        });
+        
+        sharedExamplesFor(@"username and password validation", ^(NSDictionary *data) {
+            
+            it(@"should display an error message if the username and password are blank", ^{
+                viewModel.username = @"";
+                viewModel.password = @"";
+                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should display an error message if the username is blank", ^{
+                viewModel.username = @"";
+                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should display an error message if the password is blank", ^{
+                viewModel.password = @"";
+                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should not display an error message if the fields are filled", ^{
+                [[mockDelegate reject] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+        });
+        
+        context(@"for a .com user", ^{
+            
+            beforeEach(^{
+                viewModel.userIsDotCom = YES;
+            });
+            
+            itShouldBehaveLike(@"username and password validation", @{});
+        });
+        
+        context(@"for a self hosted user", ^{
+            beforeEach(^{
+                viewModel.userIsDotCom = NO;
+            });
+            
+            itShouldBehaveLike(@"username and password validation", @{});
+            
+            it(@"should display an error if the username, password and siteUrl are blank", ^{
+                viewModel.username = @"";
+                viewModel.password = @"";
+                viewModel.siteUrl = @"";
+                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+            
+            it(@"should not display an error if the fields are filled", ^{
+                [[mockDelegate reject] displayErrorMessageForInvalidOrMissingFields];
+                
+                [viewModel signInButtonAction];
+                
+                [mockDelegate verify];
+            });
+        });
+    });
+    
+    context(@"verification of non reserved username", ^{
+        
+        beforeEach(^{
+            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            
+            viewModel.username = @"username";
+            viewModel.password = @"password";
+            viewModel.siteUrl = @"http://www.selfhosted.com";
+        });
+       
+        NSArray *reservedNames = @[@"admin", @"administrator", @"root"];
+        for (NSString *reservedName in reservedNames) {
+            context(@"for a .com user", ^{
+                
+                beforeEach(^{
+                    viewModel.userIsDotCom = YES;
+                    viewModel.username = reservedName;
+                });
+                
+                NSString *testName = [NSString stringWithFormat:@"should display the error message if the username is '%@'", reservedName];
+                it(testName, ^{
+                    [[mockDelegate expect] displayReservedNameErrorMessage];
+                    
+                    [viewModel signInButtonAction];
+                    
+                    [mockDelegate verify];
+                });
+                
+                testName = [NSString stringWithFormat:@"should bring focus to siteUrlText if the username is '%@'", reservedName];
+                it(testName, ^{
+                    [[mockDelegate expect] setFocusToSiteUrlText];
+                    
+                    [viewModel signInButtonAction];
+                    
+                    [mockDelegate verify];
+                });
+                
+                testName = [NSString stringWithFormat:@"should adjust passwordText's return key type to UIReturnKeyNext"];
+                it(testName, ^{
+                    [mockDelegate setPasswordTextReturnKeyType:UIReturnKeyNext];
+                    
+                    [viewModel signInButtonAction];
+                    
+                    [mockDelegate verify];
+                });
+                
+                testName = [NSString stringWithFormat:@"should reload the interface"];
+                it(testName, ^{
+                    [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+                    
+                    [viewModel signInButtonAction];
+                    
+                    [mockDelegate verify];
+                });
+                
+            });
+            
+            context(@"for a self hosted user", ^{
+                
+                beforeEach(^{
+                    viewModel.userIsDotCom = NO;
+                    viewModel.username = reservedName;
+                });
+                
+                NSString *testName = [NSString stringWithFormat:@"should not display the error message if the username is '%@'", reservedName];
+                it(testName, ^{
+                    viewModel.username = reservedName;
+                    [[mockDelegate reject] displayReservedNameErrorMessage];
+                    
+                    [viewModel signInButtonAction];
+                    
+                    [mockDelegate verify];
+                });
+            });
+            
+        }
+    });
+});
+
+describe(@"toggleSignInFormAction", ^{
+    
+    it(@"should flag shoulDisplayMultifactorToFalse", ^{
+        viewModel.shouldDisplayMultifactor = YES;
+        
+        [viewModel toggleSignInFormAction];
+        
+        expect(viewModel.shouldDisplayMultifactor).to.equal(NO);
+    });
+    
+    it(@"should toggle userIsDotCom", ^{
+        viewModel.userIsDotCom = YES;
+        
+        [viewModel toggleSignInFormAction];
+        expect(viewModel.userIsDotCom).to.equal(NO);
+        
+        [viewModel toggleSignInFormAction];
+        expect(viewModel.userIsDotCom).to.equal(YES);
+    });
+    
+    it(@"should set the returnKeyType of passwordText to UIReturnKeyDone when the user is a self hosted user", ^{
+        viewModel.userIsDotCom = NO;
+        [[mockDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyDone];
+        
+        [viewModel toggleSignInFormAction];
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should set the returnKeyType of passwordText to UIReturnKeyNext when the user is a .com user", ^{
+        viewModel.userIsDotCom = YES;
+        [[mockDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyNext];
+        
+        [viewModel toggleSignInFormAction];
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should tell the view to reload it's interface", ^{
+        [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+        
+        [viewModel toggleSignInFormAction];
+        
+        [mockDelegate verify];
+    });
+    
 });
 
 describe(@"sendVerificationCodeButton visibility", ^{

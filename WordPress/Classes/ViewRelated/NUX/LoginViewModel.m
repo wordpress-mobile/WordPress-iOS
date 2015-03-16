@@ -1,6 +1,8 @@
 #import "LoginViewModel.h"
 #import "NSURL+IDN.h"
+#import "ReachabilityService.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import "NSString+Helpers.h"
 
 
 @interface LoginFields : NSObject
@@ -9,20 +11,25 @@
 @property (nonatomic, copy) NSString *password;
 @property (nonatomic, copy) NSString *siteUrl;
 @property (nonatomic, copy) NSString *multifactorCode;
+@property (nonatomic, assign) BOOL userIsDotCom;
+@property (nonatomic, assign) BOOL shouldDisplayMultifactor;
 
-+ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode;
+
++ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode userIsDotCom:(BOOL)userIsDotCom shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor;
 
 @end
 
 @implementation LoginFields
 
-+ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode
++ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode userIsDotCom:(BOOL)userIsDotCom shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor
 {
     LoginFields *loginFields = [LoginFields new];
     loginFields.username = username;
     loginFields.password = password;
     loginFields.siteUrl = siteUrl;
     loginFields.multifactorCode = multifactorCode;
+    loginFields.userIsDotCom = userIsDotCom;
+    loginFields.shouldDisplayMultifactor = shouldDisplayMultifactor;
     
     return loginFields;
 }
@@ -32,6 +39,7 @@
 @interface LoginViewModel()
 
 @property (nonatomic, strong) NSString *signInButtonTitle;
+@property (nonatomic, strong) id<ReachabilityService> reachabilityService;
 
 @end
 
@@ -41,9 +49,11 @@ static CGFloat const LoginViewModelAlphaHidden              = 0.0f;
 static CGFloat const LoginViewModelAlphaDisabled            = 0.5f;
 static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
-- (instancetype)init
+- (instancetype)initWithReachabilityService:(id<ReachabilityService>)reachabilityService
 {
+    
     if (self = [super init]) {
+        _reachabilityService = reachabilityService;
         [self setup];
     }
     return self;
@@ -51,6 +61,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
 - (void)setup
 {
+    // TODO : Set default values to kick off this logic
     [RACObserve(self, authenticating) subscribeNext:^(NSNumber *authenticating) {
         [self.delegate showActivityIndicator:[authenticating boolValue]];
     }];
@@ -110,6 +121,58 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     [self setupSignInButtonTitle];
     [self setupSignInButtonEnabled];
     [self setupToggleSignInButtonHidden];
+}
+
+- (void)signInButtonAction
+{
+    if (![self.reachabilityService isInternetReachable]) {
+        [self.reachabilityService showAlertNoInternetConnection];
+        return;
+    }
+    
+    LoginFields *loginFields = [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:self.multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+    if (![self areFieldsValid:loginFields]) {
+        [self.delegate displayErrorMessageForInvalidOrMissingFields];
+        return;
+    }
+    
+    if (loginFields.userIsDotCom && [self isUsernameReserved:loginFields.username]) {
+        [self.delegate displayReservedNameErrorMessage];
+        [self toggleSignInFormAction];
+        [self.delegate setFocusToSiteUrlText];
+        return;
+    }
+    
+    [self.delegate signIn];
+}
+
+- (BOOL)isUsernameReserved:(NSString *)username
+{
+    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
+    return [reservedUserNames containsObject:[[username trim] lowercaseString]];
+}
+
+- (void)toggleSignInFormAction
+{
+    self.shouldDisplayMultifactor = false;
+    self.userIsDotCom = !self.userIsDotCom;
+    
+    if (self.userIsDotCom) {
+        [self.delegate setPasswordTextReturnKeyType:UIReturnKeyDone];
+    } else {
+        [self.delegate setPasswordTextReturnKeyType:UIReturnKeyNext];
+    }
+    
+    [self.delegate reloadInterfaceWithAnimation:YES];
+}
+
+- (BOOL)areFieldsValid:(LoginFields *)loginFields
+{
+    if ([self areSelfHostedFieldsFilled:loginFields] && !loginFields.userIsDotCom) {
+        return [self isUrlValid:loginFields.siteUrl];
+    }
+    
+    return [self areDotComFieldsFilled:loginFields];
 }
 
 - (void)handleShouldDisplayMultifactorChanged:(NSNumber *)shouldDisplayMultifactor {
@@ -172,12 +235,12 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 - (void)setupSignInButtonEnabled
 {
     [[[RACSignal combineLatest:@[RACObserve(self, userIsDotCom), RACObserve(self, username), RACObserve(self, password), RACObserve(self, siteUrl), RACObserve(self, multifactorCode), RACObserve(self, shouldDisplayMultifactor)]] reduceEach:^id(NSNumber *userIsDotCom, NSString *username, NSString *password, NSString *siteUrl, NSString *multifactorCode, NSNumber *shouldDisplayMultifactor){
-        LoginFields *loginFields = [LoginFields loginFieldsWithUsername:username password:password siteUrl:siteUrl multifactorCode:multifactorCode];
+        LoginFields *loginFields = [LoginFields loginFieldsWithUsername:username password:password siteUrl:siteUrl multifactorCode:multifactorCode userIsDotCom:userIsDotCom shouldDisplayMultiFactor:shouldDisplayMultifactor];
         
         if ([userIsDotCom boolValue]) {
-            return @([self areDotComFieldsFilled:loginFields shouldDisplayMultifactor:[shouldDisplayMultifactor boolValue]]);
+            return @([self areDotComFieldsFilled:loginFields]);
         } else {
-            return @([self areSelfHostedFieldsFilled:loginFields shouldDisplayMultifactor:[shouldDisplayMultifactor boolValue]]);
+            return @([self areSelfHostedFieldsFilled:loginFields]);
         }
     }] subscribeNext:^(NSNumber *signInButtonEnabled) {
         [self.delegate setSignInButtonEnabled:[signInButtonEnabled boolValue]];
@@ -203,11 +266,11 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     return siteURL != nil;
 }
 
-- (BOOL)areDotComFieldsFilled:(LoginFields *)loginFields shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+- (BOOL)areDotComFieldsFilled:(LoginFields *)loginFields
 {
     BOOL areCredentialsFilled = [self isUsernameFilled:loginFields.username] && [self isPasswordFilled:loginFields.password];
     
-    if (!shouldDisplayMultifactor) {
+    if (!loginFields.shouldDisplayMultifactor) {
         return areCredentialsFilled;
     }
     
@@ -229,9 +292,9 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     return multifactorCode.isEmpty == NO;
 }
 
-- (BOOL)areSelfHostedFieldsFilled:(LoginFields *)loginFields shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+- (BOOL)areSelfHostedFieldsFilled:(LoginFields *)loginFields
 {
-    return [self areDotComFieldsFilled:loginFields shouldDisplayMultifactor:shouldDisplayMultifactor] && [self isSiteUrlFilled:loginFields.siteUrl];
+    return [self areDotComFieldsFilled:loginFields] && [self isSiteUrlFilled:loginFields.siteUrl];
 }
 
 - (BOOL)isSiteUrlFilled:(NSString *)siteUrl
