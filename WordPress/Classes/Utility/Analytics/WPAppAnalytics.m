@@ -14,6 +14,8 @@
 #import "WordPressComApiCredentials.h"
 
 NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enabled";
+static NSString* const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_screen";
+static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 @interface WPAppAnalytics ()
 @property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
@@ -65,13 +67,13 @@ NSString* const WPAppAnalyticsDefaultsKeyUsageTracking = @"usage_tracking_enable
     NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
     
     if (lastVisibleScreen) {
-        analyticsProperties[@"last_visible_screen"] = lastVisibleScreen;
+        analyticsProperties[WPAppAnalyticsKeyLastVisibleScreen] = lastVisibleScreen;
     }
     
     if (self.applicationOpenedTime != nil) {
         NSDate *applicationClosedTime = [NSDate date];
         NSTimeInterval timeInApp = round([applicationClosedTime timeIntervalSinceDate:self.applicationOpenedTime]);
-        analyticsProperties[@"time_in_app"] = @(timeInApp);
+        analyticsProperties[WPAppAnalyticsKeyTimeInApp] = @(timeInApp);
         self.applicationOpenedTime = nil;
     }
     
