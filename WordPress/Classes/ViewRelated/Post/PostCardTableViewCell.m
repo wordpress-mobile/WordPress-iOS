@@ -34,14 +34,6 @@
     self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
 }
 
-//- (void)layoutSubviews
-//{
-//    CGFloat preferredWidth = [self innerWidthForSize:self.frame.size];
-//    self.titleLabel.preferredMaxLayoutWidth = preferredWidth;
-//    self.snippetLabel.preferredMaxLayoutWidth = preferredWidth;
-//    [super layoutSubviews];
-//}
-
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGFloat innerWidth = [self innerWidthForSize:size];
