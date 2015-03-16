@@ -38,6 +38,9 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 #pragma mark - Init helpers
 
+/**
+ *  @brief      Initializes analytics tracking for WPiOS.
+ */
 - (void)initializeAppTracking
 {
     NSNumber* usageTracking = [[NSUserDefaults standardUserDefaults] valueForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
