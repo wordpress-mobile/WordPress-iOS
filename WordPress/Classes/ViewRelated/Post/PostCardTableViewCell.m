@@ -116,7 +116,7 @@ static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
 
 - (void)configureTitle
 {
-    NSString *str = [self.contentProvider titleForDisplay];
+    NSString *str = [self.contentProvider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? PostCardTitleLowerConstraintConstant : 0.0;
