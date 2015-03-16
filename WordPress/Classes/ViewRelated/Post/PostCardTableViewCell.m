@@ -6,13 +6,13 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const CGFloat PostCardHeaderHeightConstraintConstant = 32.0;
-static const CGFloat PostCardHeaderLowerConstraintConstant = 10.0;
-static const CGFloat PostCardTitleLowerConstraintConstant = 4.0;
+static const CGFloat PostCardHeaderHeightConstraintConstant = 34.0;
+static const CGFloat PostCardHeaderLowerConstraintConstant = 16.0;
+static const CGFloat PostCardTitleLowerConstraintConstant = 6.0;
 static const CGFloat PostCardSnippetLowerConstraintConstant = 8.0;
 static const CGFloat PostCardDateLowerConstraintConstant = 8.0;
 static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
-static const CGFloat PostCardStatusLowerConstraintConstant = 18.0;
+static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
 
 @interface PostCardTableViewCell()
 @property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
