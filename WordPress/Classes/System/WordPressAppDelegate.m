@@ -48,9 +48,7 @@
 #import "UIImage+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
-
-#import "WPAnalyticsTrackerMixpanel.h"
-#import "WPAnalyticsTrackerWPCom.h"
+#import "WPAppAnalytics.h"
 
 #import "AppRatingUtility.h"
 #import "HelpshiftUtils.h"
@@ -68,7 +66,6 @@
 #endif
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
-static NSString * const kUsageTrackingDefaultsKey               = @"usage_tracking_enabled";
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -80,7 +77,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
-@property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
+@property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -116,7 +113,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self configureLogging];
     [self configureHockeySDK];
     [self configureCrashlytics];
-    [self initializeAppTracking];
+    [self initializeAppRatingUtility];
+    
+    // Analytics
+    self.analytics = [[WPAppAnalytics alloc] init];
 
     // Start Simperium
     [self loginSimperium];
@@ -136,26 +136,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SupportViewController checkIfFeedbackShouldBeEnabled];
 
     [HelpshiftUtils setup];
-
-    NSNumber *usage_tracking = [[NSUserDefaults standardUserDefaults] valueForKey:kUsageTrackingDefaultsKey];
-    if (usage_tracking == nil) {
-        // check if usage_tracking bool is set
-        // default to YES
-
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:kUsageTrackingDefaultsKey];
-        [NSUserDefaults resetStandardUserDefaults];
-    }
-
-    if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
-        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
-    }
-    [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey]) {
-        DDLogInfo(@"WPAnalytics session started");
-
-        [WPAnalytics beginSession];
-    }
 
     [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
 
@@ -359,7 +339,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     
-    [self trackApplicationClosed];
+    [self.analytics trackApplicationClosed:[self currentlySelectedScreen]];
 
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -410,7 +390,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [self trackApplicationOpened];
+    [self.analytics trackApplicationOpened];
     
     [self showWhatsNewIfNeeded];
 }
@@ -618,30 +598,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
 }
 
-#pragma mark - Tracking methods
+#pragma mark - App Rating
 
-- (void)trackApplicationClosed
-{
-    NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
-    analyticsProperties[@"last_visible_screen"] = [self currentlySelectedScreen];
-    if (self.applicationOpenedTime != nil) {
-        NSDate *applicationClosedTime = [NSDate date];
-        NSTimeInterval timeInApp = round([applicationClosedTime timeIntervalSinceDate:self.applicationOpenedTime]);
-        analyticsProperties[@"time_in_app"] = @(timeInApp);
-        self.applicationOpenedTime = nil;
-    }
-    
-    [WPAnalytics track:WPAnalyticsStatApplicationClosed withProperties:analyticsProperties];
-    [WPAnalytics endSession];
-}
-
-- (void)trackApplicationOpened
-{
-    self.applicationOpenedTime = [NSDate date];
-    [WPAnalytics track:WPAnalyticsStatApplicationOpened];
-}
-
-- (void)initializeAppTracking
+- (void)initializeAppRatingUtility
 {
     // Dont start App Tracking if we are running the test suite
     if ([NSProcessInfo isRunningTests]) {
@@ -656,7 +615,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         DDLogError(@"Was unable to retrieve data about throttling");
     }];
 }
-
 
 #pragma mark - Application directories
 
