@@ -17,10 +17,10 @@
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
 #import "WPTabBarController.h"
+#import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
