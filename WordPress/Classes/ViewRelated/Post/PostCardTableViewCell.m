@@ -6,10 +6,13 @@
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
+static const CGFloat PostCardHeaderHeightConstraintConstant = 32.0;
+static const CGFloat PostCardHeaderLowerConstraintConstant = 10.0;
 static const CGFloat PostCardTitleLowerConstraintConstant = 4.0;
 static const CGFloat PostCardSnippetLowerConstraintConstant = 8.0;
-static const CGFloat PostCardStatusUpperConstraintConstant = 8.0;
+static const CGFloat PostCardDateLowerConstraintConstant = 8.0;
 static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
+static const CGFloat PostCardStatusLowerConstraintConstant = 18.0;
 
 @interface PostCardTableViewCell()
 @property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
@@ -23,34 +26,47 @@ static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat horizontalMargin = CGRectGetMinX(self.avatarImageView.frame) + CGRectGetMinX(self.postContentView.frame);
+    CGFloat horizontalMargin = CGRectGetMinX(self.postContentView.frame) + CGRectGetMinX(self.headerView.frame);
     CGFloat innerWidth = size.width - (horizontalMargin * 2.0);
     CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
 
     // Add up all the things.
     CGFloat height = CGRectGetMinY(self.postContentView.frame);
-    height += CGRectGetMinY(self.avatarImageView.frame);
-    height += CGRectGetHeight(self.avatarImageView.frame);
-    height += [self.titleLabel sizeThatFits:innerSize].height;
-    height += [self.snippetLabel sizeThatFits:innerSize].height;
-    height += CGRectGetHeight(self.dateView.frame);
-    height += self.statusHeightConstraint.constant;
 
-    height += self.avatarImageViewLowerConstraint.constant;
+    height += CGRectGetMinY(self.headerView.frame);
+    height += self.headerViewHeightConstraint.constant;
+    height += self.headerViewLowerConstraint.constant;
+
+    height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
+
+    height += [self.snippetLabel sizeThatFits:innerSize].height;
     height += self.snippetLowerConstraint.constant;
+
+    height += CGRectGetHeight(self.dateView.frame);
     height += self.dateViewLowerConstraint.constant;
+
+    height += self.statusHeightConstraint.constant;
     height += self.statusViewLowerConstraint.constant;
-    height += self.wrapperViewLowerConstraint.constant;
-    height += 8.0; // Standard content view bottom margin.
+
+    height += CGRectGetHeight(self.actionBar.frame);
+
+    height += self.postContentBottomConstraint.constant;
 
     return CGSizeMake(size.width, height);
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.innerContentView.backgroundColor = backgroundColor;
 }
 
 - (void)applyStyles
 {
     [WPStyleGuide applyPostCardStyle:self];
-    [WPStyleGuide applyPostAuthorNameStyle:self.authorLabel];
+    [WPStyleGuide applyPostAuthorSiteStyle:self.authorBlogLabel];
+    [WPStyleGuide applyPostAuthorNameStyle:self.authorNameLabel];
     [WPStyleGuide applyPostTitleStyle:self.titleLabel];
     [WPStyleGuide applyPostSnippetStyle:self.snippetLabel];
     [WPStyleGuide applyPostDateStyle:self.dateLabel];
@@ -70,7 +86,7 @@ static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
 - (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
 {
     _contentProvider = contentProvider;
-    [self configureAuthor];
+    [self configureHeader];
     [self configureFeaturedImage];
     [self configureTitle];
     [self configureSnippet];
@@ -79,9 +95,10 @@ static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
     [self configureMetaButtons];
 }
 
-- (void)configureAuthor
+- (void)configureHeader
 {
-    self.authorLabel.text = [self.contentProvider authorNameForDisplay];
+    self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
+    self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
     [self.avatarImageView sd_setImageWithURL:[self blavatarURL]
                             placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
 }
