@@ -162,6 +162,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     RAC(self.viewModel, password) = self.passwordText.rac_textSignal;
     RAC(self.viewModel, multifactorCode) = self.multifactorText.rac_textSignal;
     RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
+    RAC(self.viewModel, onlyDotComAllowed) = RACObserve(self, onlyDotComAllowed);
     
     // TODO: Remove userIsDotCom from this class
     self.userIsDotCom = YES;
@@ -700,12 +701,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)updateControls
 {
-    
-    // Dotcom / SelfHosted Button
-    NSString *toggleTitle                   = self.toggleSignInButtonTitle;
-    self.toggleSignInForm.hidden            = self.isSignInToggleHidden;
-    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
-    [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
+    // TODO :Remove this method entirely
 }
 
 - (void)layoutControls
@@ -949,25 +945,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 
 #pragma mark - Interface Helpers: Buttons
-
-- (BOOL)isSignInEnabled
-{
-    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
-}
-
-- (BOOL)isSignInToggleHidden
-{
-    return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
-}
-
-- (NSString *)toggleSignInButtonTitle
-{
-    if (self.userIsDotCom) {
-        return NSLocalizedString(@"Add Self-Hosted Site", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
-    }
-    
-    return NSLocalizedString(@"Sign in to WordPress.com", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
-}
 
 - (CGFloat)lastTextfieldMaxY
 {
@@ -1434,6 +1411,17 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     self.signInButton.accessibilityIdentifier = title;
     [self.signInButton setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)setToggleSignInButtonTitle:(NSString *)title
+{
+    self.toggleSignInForm.accessibilityIdentifier = title;
+    [self.toggleSignInForm setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)setToggleSignInButtonHidden:(BOOL)hidden
+{
+    self.toggleSignInForm.hidden = hidden;
 }
 
 @end

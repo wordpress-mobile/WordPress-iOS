@@ -68,7 +68,15 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }];
     
     [RACObserve(self, userIsDotCom) subscribeNext:^(NSNumber *userIsDotCom) {
-        self.isSiteUrlEnabled = ![userIsDotCom boolValue];
+        BOOL dotComUser = [userIsDotCom boolValue];
+        
+        self.isSiteUrlEnabled = !dotComUser;
+        
+        if (dotComUser) {
+            [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
+        } else {
+            [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
+        }
     }];
     
     [RACObserve(self, isSiteUrlEnabled) subscribeNext:^(NSNumber *isSiteUrlEnabled) {
@@ -101,6 +109,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     [self setupCreateAccountButton];
     [self setupSignInButtonTitle];
     [self setupSignInButtonEnabled];
+    [self setupToggleSignInButtonHidden];
 }
 
 - (void)handleShouldDisplayMultifactorChanged:(NSNumber *)shouldDisplayMultifactor {
@@ -172,6 +181,15 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
         }
     }] subscribeNext:^(NSNumber *signInButtonEnabled) {
         [self.delegate setSignInButtonEnabled:[signInButtonEnabled boolValue]];
+    }];
+}
+
+- (void)setupToggleSignInButtonHidden
+{
+    [[[RACSignal combineLatest:@[RACObserve(self, onlyDotComAllowed), RACObserve(self, hasDefaultAccount), RACObserve(self, authenticating)]] reduceEach:^id(NSNumber *onlyDotComAllowed, NSNumber *hasDefaultAccount, NSNumber *authenticating){
+        return @([onlyDotComAllowed boolValue] || [hasDefaultAccount boolValue] || [authenticating boolValue]);
+    }] subscribeNext:^(NSNumber *toggleSignInButtonHidden) {
+        [self.delegate setToggleSignInButtonHidden:[toggleSignInButtonHidden boolValue]];
     }];
 }
 

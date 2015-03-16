@@ -13,6 +13,7 @@
 @property (nonatomic, assign) BOOL isMultifactorEnabled;
 @property (nonatomic, assign) BOOL cancellable;
 @property (nonatomic, assign) BOOL hasDefaultAccount;
+@property (nonatomic, assign) BOOL onlyDotComAllowed;
 @property (nonatomic, readonly) NSString *signInButtonTitle;
 
 @property (nonatomic, strong) NSString *siteUrl;
@@ -43,5 +44,7 @@
 - (void)setAccountCreationButtonHidden:(BOOL)hidden;
 - (void)setSignInButtonEnabled:(BOOL)enabled;
 - (void)setSignInButtonTitle:(NSString *)title;
+- (void)setToggleSignInButtonTitle:(NSString *)title;
+- (void)setToggleSignInButtonHidden:(BOOL)hidden;
 
 @end

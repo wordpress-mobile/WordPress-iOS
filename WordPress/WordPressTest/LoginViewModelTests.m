@@ -539,6 +539,62 @@ describe(@"signInButton", ^{
     });
 });
 
+describe(@"toggleSignInButtonTitle", ^{
+    
+    it(@"should set the title to 'Add Self-Hosted Site' for a .com user", ^{
+        [[mockDelegate expect] setToggleSignInButtonTitle:@"Add Self-Hosted Site"];
+        
+        viewModel.userIsDotCom = YES;
+       
+        [mockDelegate verify];
+    });
+    
+    it(@"should set the title to 'Sign in to WordPress.com' for a self hosted user", ^{
+        [[mockDelegate expect] setToggleSignInButtonTitle:@"Sign in to WordPress.com"];
+        
+        viewModel.userIsDotCom = NO;
+       
+        [mockDelegate verify];
+    });
+});
+
+describe(@"toggleSignInButton visibility", ^{
+    
+    it(@"should be hidden if onlyDotComAllowed is true", ^{
+        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        
+        viewModel.onlyDotComAllowed = YES;
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should be hidden if hasDefaultAccount is true", ^{
+        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        
+        viewModel.hasDefaultAccount = YES;
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should be hidden during authentication", ^{
+        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        
+        viewModel.authenticating = YES;;
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should be visible if onlyDotComAllowed, hasDefaultAccount, and authenticating are all false", ^{
+        [[mockDelegate expect] setToggleSignInButtonHidden:NO];
+        
+        viewModel.onlyDotComAllowed = NO;
+        viewModel.hasDefaultAccount = NO;
+        viewModel.authenticating = NO;
+        
+        [mockDelegate verify];
+    });
+});
+
 describe(@"sendVerificationCodeButton visibility", ^{
     
     context(@"when authenticating", ^{
