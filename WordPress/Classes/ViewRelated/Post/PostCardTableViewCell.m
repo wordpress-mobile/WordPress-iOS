@@ -3,39 +3,56 @@
 #import "UIImageView+Gravatar.h"
 #import "WPStyleGuide+Posts.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "Wordpress-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
-static const CGFloat PostCardHeaderHeightConstraintConstant = 34.0;
-static const CGFloat PostCardHeaderLowerConstraintConstant = 16.0;
-static const CGFloat PostCardTitleLowerConstraintConstant = 6.0;
-static const CGFloat PostCardSnippetLowerConstraintConstant = 8.0;
-static const CGFloat PostCardDateLowerConstraintConstant = 8.0;
-static const CGFloat PostCardStatusHeightConstraintConstant = 18.0;
-static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
-
 @interface PostCardTableViewCell()
+
 @property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
+@property (nonatomic, assign) CGFloat headerViewHeight;
+@property (nonatomic, assign) CGFloat headerViewLowerMargin;
+@property (nonatomic, assign) CGFloat titleViewLowerMargin;
+@property (nonatomic, assign) CGFloat snippetViewLowerMargin;
+@property (nonatomic, assign) CGFloat dateViewLowerMargin;
+@property (nonatomic, assign) CGFloat statusViewHeight;
+@property (nonatomic, assign) CGFloat statusViewLowerMargin;
+
 @end
 
 @implementation PostCardTableViewCell
 
 - (void)awakeFromNib {
     [self applyStyles];
+
+    self.headerViewHeight = self.headerViewHeightConstraint.constant;
+    self.headerViewLowerMargin = self.headerViewLowerConstraint.constant;
+    self.titleViewLowerMargin = self.titleLowerConstraint.constant;
+    self.snippetViewLowerMargin = self.snippetLowerConstraint.constant;
+    self.dateViewLowerMargin = self.dateViewLowerConstraint.constant;
+    self.statusViewHeight = self.statusHeightConstraint.constant;
+    self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
 }
+
+//- (void)layoutSubviews
+//{
+//    CGFloat preferredWidth = [self innerWidthForSize:self.frame.size];
+//    self.titleLabel.preferredMaxLayoutWidth = preferredWidth;
+//    self.snippetLabel.preferredMaxLayoutWidth = preferredWidth;
+//    [super layoutSubviews];
+//}
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat horizontalMargin = CGRectGetMinX(self.postContentView.frame) + CGRectGetMinX(self.headerView.frame);
-    CGFloat innerWidth = size.width - (horizontalMargin * 2.0);
+    CGFloat innerWidth = [self innerWidthForSize:size];
     CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
 
     // Add up all the things.
     CGFloat height = CGRectGetMinY(self.postContentView.frame);
 
     height += CGRectGetMinY(self.headerView.frame);
-    height += self.headerViewHeightConstraint.constant;
-    height += self.headerViewLowerConstraint.constant;
+    height += self.headerViewHeight;
+    height += self.headerViewLowerMargin;
 
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
@@ -60,6 +77,18 @@ static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
 {
     [super setBackgroundColor:backgroundColor];
     self.innerContentView.backgroundColor = backgroundColor;
+}
+
+- (CGFloat)innerWidthForSize:(CGSize)size
+{
+    CGFloat width = 0.0;
+    if (self.maxIPadWidthConstraint.isActive) {
+        width = self.maxIPadWidthConstraint.constant;
+    } else {
+        CGFloat horizontalMargin = CGRectGetMinX(self.postContentView.frame) + CGRectGetMinX(self.headerView.frame);
+        width = size.width - (horizontalMargin * 2.0);
+    }
+    return width;
 }
 
 - (void)applyStyles
@@ -119,7 +148,7 @@ static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
     NSString *str = [self.contentProvider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.titleLowerConstraint.constant = ([str length] > 0) ? PostCardTitleLowerConstraintConstant : 0.0;
+    self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
 }
 
 - (void)configureSnippet
@@ -127,7 +156,7 @@ static const CGFloat PostCardStatusLowerConstraintConstant = 16.0;
     NSString *str = [self.contentProvider contentPreviewForDisplay];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    self.snippetLowerConstraint.constant = ([str length] > 0) ? PostCardSnippetLowerConstraintConstant : 0.0;
+    self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
 }
 
 - (void)configureDate
