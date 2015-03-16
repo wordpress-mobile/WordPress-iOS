@@ -6,11 +6,10 @@ xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
 install:
-- gem install cocoapods && pod install
+- gem install cocoapods -v 0.35.0 && pod install
 - ./Scripts/install-oclint.sh
 before_script:
 - xctool --version
-- gem install cocoapods -v '0.35.0'
 script:
 - ./Scripts/build.sh
 after_success:
