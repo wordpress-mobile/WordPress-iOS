@@ -32,6 +32,7 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *statusViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider;
 
