@@ -106,7 +106,9 @@ describe(@"isUsernameEnabled", ^{
 });
 
 describe(@"isPasswordEnabled", ^{
+    
     context(@"when it's true", ^{
+        
         it(@"should enable the password text field", ^{
             [[mockDelegate expect] setPasswordEnabled:YES];
             viewModel.isPasswordEnabled = YES;
@@ -115,6 +117,7 @@ describe(@"isPasswordEnabled", ^{
     });
     
     context(@"when it's false", ^{
+        
         it(@"should disable the password text field" , ^{
             [[mockDelegate expect] setPasswordEnabled:NO];
             viewModel.isPasswordEnabled = NO;
@@ -165,6 +168,7 @@ describe(@"isSiteUrlEnabled", ^{
 });
 
 describe(@"isMultifactorEnabled", ^{
+    
     it(@"when it's true it should enable the multifactor text field", ^{
         [[mockDelegate expect] setMultifactorEnabled:YES];
         viewModel.isMultifactorEnabled = YES;
