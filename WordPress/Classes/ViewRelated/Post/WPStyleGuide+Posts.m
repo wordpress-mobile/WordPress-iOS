@@ -21,7 +21,7 @@
 + (void)applyPostAuthorNameStyle:(UILabel *)label
 {
     label.font = [WPFontManager openSansRegularFontOfSize:12.0];
-    label.textColor = [self grey];
+    label.textColor = [self greyDarken20];
 }
 
 + (void)applyPostTitleStyle:(UILabel *)label
