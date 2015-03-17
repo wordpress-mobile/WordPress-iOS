@@ -46,6 +46,11 @@
     height += self.headerViewHeight;
     height += self.headerViewLowerMargin;
 
+    if (self.postCardImageView) {
+        height += CGRectGetHeight(self.postCardImageView.frame);
+        height += self.postCardImageViewBottomConstraint.constant;
+    }
+
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
 
