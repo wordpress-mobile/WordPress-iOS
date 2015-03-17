@@ -93,7 +93,6 @@
     [WPStyleGuide applyPostDateStyle:self.dateLabel];
     [WPStyleGuide applyPostStatusStyle:self.statusLabel];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
-    [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonCenter];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
     self.shadowView.backgroundColor = [WPStyleGuide greyLighten20];
@@ -114,6 +113,8 @@
     [self configureDate];
     [self configureStatusView];
     [self configureMetaButtons];
+
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)configureHeader
@@ -158,15 +159,22 @@
 
 - (void)configureStatusView
 {
-    self.statusLabel.text = [self.contentProvider statusForDisplay];
-    self.dateViewLowerConstraint.constant = 0.0;
-    self.statusHeightConstraint.constant = 0.0;
+    NSString *str = [self.contentProvider statusForDisplay];
+    self.statusLabel.text = str;
+    self.statusView.hidden = ([str length] == 0);
+    if (self.statusView.hidden) {
+        self.dateViewLowerConstraint.constant = 0.0;
+        self.statusHeightConstraint.constant = 0.0;
+    } else {
+        self.dateViewLowerConstraint.constant = self.dateViewLowerMargin;
+        self.statusHeightConstraint.constant = self.statusViewHeight;
+    }
+    [self.statusView setNeedsUpdateConstraints];
 }
 
 - (void)configureMetaButtons
 {
     [self resetMetaButton:self.metaButtonRight];
-    [self resetMetaButton:self.metaButtonCenter];
     [self resetMetaButton:self.metaButtonLeft];
 //TODO:
 //    NSArray *buttons = @[self.metaButtonRight, self.metaButtonCenter, self.metaButtonLeft];
