@@ -6,6 +6,8 @@
  */
 @interface WPUserAgent : NSObject
 
+#pragma mark - Changing the user agent
+
 /**
  *  @brief      Sets the App's user agent to be the default one.
  */
@@ -14,7 +16,9 @@
 /**
  *  @brief      Sets the App's user agent to be the WordPress one.
  */
-- (void)useAppUserAgent;
+- (void)useWordPressUserAgent;
+
+#pragma mark - Getting the user agent
 
 /**
  *  @brief      Call this method to get the current user agent.

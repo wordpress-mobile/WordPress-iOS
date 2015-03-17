@@ -35,7 +35,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
 }
 
-#pragma mark -
+#pragma mark - WordPress User-Agent
 
 - (NSString *)wordPressUserAgent
 {
@@ -50,7 +50,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     return userAgent;
 }
 
-#pragma mark - User agents
+#pragma mark - Changing the user agent
 
 - (void)useDefaultUserAgent
 {
@@ -59,19 +59,12 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     [self setUserAgent:ua];
 }
 
-- (void)useAppUserAgent
+- (void)useWordPressUserAgent
 {
     NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:WPUserAgentKeyWordPressUserAgent];
     
     [self setUserAgent:ua];
 }
-
-- (NSString *)applicationUserAgent
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
-}
-
-#pragma mark - Setter
 
 - (void)setUserAgent:(NSString*)userAgent
 {
@@ -82,6 +75,13 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
     
     DDLogVerbose(@"User-Agent set to: %@", userAgent);
+}
+
+#pragma mark - Getting the user agent
+
+- (NSString *)applicationUserAgent
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
 }
 
 
