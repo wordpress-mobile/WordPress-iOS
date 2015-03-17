@@ -24,6 +24,15 @@ extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
 
 #pragma mark - Init
 
+/**
+ *  @brief      Default initializer.
+ *
+ *  @param      lastVisibleScreenCallback       This block will be executed whenever this object
+ *                                              needs to know the last visible screen for tracking
+ *                                              purposes.
+ *
+ *  @returns    The initialized object.
+ */
 - (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
 
 #pragma mark - Usage tracking
