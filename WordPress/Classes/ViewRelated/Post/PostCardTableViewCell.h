@@ -10,7 +10,7 @@
 @property (nonatomic, strong) IBOutlet UIImageView *avatarImageView;
 @property (nonatomic, strong) IBOutlet UILabel *authorBlogLabel;
 @property (nonatomic, strong) IBOutlet UILabel *authorNameLabel;
-@property (nonatomic, strong) IBOutlet UIImageView *featuredImageView;
+@property (nonatomic, strong) IBOutlet UIImageView *postCardImageView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UILabel *snippetLabel;
 @property (nonatomic, strong) IBOutlet UIView *dateView;
