@@ -7,9 +7,11 @@
 @class AbstractPost;
 @class Simperium;
 @class Blog;
+@class WPAppAnalytics;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
 
+@property (nonatomic, strong,  readonly) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) IBOutlet UIWindow              *window;
 @property (nonatomic, strong,  readonly) Reachability                   *internetReachability;
 @property (nonatomic, strong,  readonly) Reachability                   *wpcomReachability;
