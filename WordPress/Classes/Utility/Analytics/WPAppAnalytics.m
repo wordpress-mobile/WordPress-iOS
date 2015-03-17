@@ -113,25 +113,19 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 - (void)applicationDidEnterBackground:(NSNotification*)notification
 {
-    NSString* lastVisibleScreen = self.lastVisibleScreenCallback();
-    
-    [self trackApplicationClosed:lastVisibleScreen];
+    [self trackApplicationClosed];
 }
 
 #pragma mark - App Tracking
 
 /**
  *  @brief      Tracks that the application has been closed.
- *
- *  @param      lastVisibleScreen       The name of the last visible screen.  Can be nil.
  */
-- (void)trackApplicationClosed:(NSString*)lastVisibleScreen
+- (void)trackApplicationClosed
 {
     NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
     
-    if (lastVisibleScreen) {
-        analyticsProperties[WPAppAnalyticsKeyLastVisibleScreen] = lastVisibleScreen;
-    }
+    analyticsProperties[WPAppAnalyticsKeyLastVisibleScreen] = self.lastVisibleScreenCallback();
     
     if (self.applicationOpenedTime != nil) {
         NSDate *applicationClosedTime = [NSDate date];
