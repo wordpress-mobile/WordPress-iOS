@@ -116,7 +116,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self initializeAppRatingUtility];
     
     // Analytics
-    self.analytics = [[WPAppAnalytics alloc] init];
+    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
+        return [self currentlySelectedScreen];
+    }];
 
     // Start Simperium
     [self loginSimperium];
@@ -338,8 +340,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    
-    [self.analytics trackApplicationClosed:[self currentlySelectedScreen]];
 
     // Let the app finish any uploads that are in progress
     UIApplication *app = [UIApplication sharedApplication];
@@ -390,7 +390,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [self.analytics trackApplicationOpened];
     
     [self showWhatsNewIfNeeded];
 }
