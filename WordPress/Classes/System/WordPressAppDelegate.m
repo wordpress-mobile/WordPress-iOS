@@ -164,7 +164,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
-    self.userAgent = [WPUserAgent init];
+    self.userAgent = [[WPUserAgent alloc] init];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
