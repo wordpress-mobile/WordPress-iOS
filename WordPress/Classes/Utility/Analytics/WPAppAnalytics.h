@@ -20,7 +20,7 @@ extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
  */
 @interface WPAppAnalytics : NSObject
 
-#pragma mark - App Tracking
+#pragma mark - App Tracking Events
 
 /**
  *  @brief      Tracks that the application has been closed.
@@ -33,5 +33,21 @@ extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
  *  @brief      Tracks that the application has been opened.
  */
 - (void)trackApplicationOpened;
+
+#pragma mark - Usage tracking
+
+/**
+ *  @brief      Call this method to know if usage is being tracked.
+ *
+ *  @returns    YES if usage is being tracked, NO otherwise.
+ */
+- (BOOL)isTrackingUsage;
+
+/**
+ *  @brief      Sets usage tracking ON or OFF
+ *
+ *  @param      trackingUsage   The new status for usage tracking.
+ */
+- (void)setTrackingUsage:(BOOL)trackingUsage;
 
 @end

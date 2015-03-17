@@ -7,6 +7,9 @@
 //
 
 #import <OCMock/OCMock.h>
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>
+#import <XCTest/XCTest.h>
+
 #import "WPAppAnalytics.h"
 
 @interface WPAppAnalyticsTests : XCTestCase
@@ -16,7 +19,17 @@
 
 - (void)testInitialization
 {
-    //WPAppAnalytics* analytics = [[WPAppAnalytics alloc] init];
+    id analyticsClassMock = [OCMockObject mockForClass:[WPAnalytics class]];
+    
+    [[analyticsClassMock expect] registerTracker:OCMOCK_ANY];
+    
+    WPAppAnalytics *analytics = nil;
+    
+    XCTAssertNoThrow(analytics = [[WPAppAnalytics alloc] init],
+                     @"Allocating or initializing this object shouldn't throw an exception");
+    XCTAssert([analytics isKindOfClass:[WPAppAnalytics class]]);
+    
+    [analyticsClassMock verify];
 }
 
 @end
