@@ -109,6 +109,8 @@
 		5D44EB351986D695008B7175 /* ReaderSiteServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB341986D695008B7175 /* ReaderSiteServiceRemote.m */; };
 		5D44EB381986D8BA008B7175 /* ReaderSiteService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D44EB371986D8BA008B7175 /* ReaderSiteService.m */; };
 		5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D49B03A19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m */; };
+		5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */; };
+		5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D4C89FF1AB88F58007464B3 /* PostCardImageCell.xib */; };
 		5D4E30D11AA4B41A000D9904 /* WPStyleGuide+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Posts.m */; };
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
@@ -696,6 +698,8 @@
 		5D44EB371986D8BA008B7175 /* ReaderSiteService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSiteService.m; sourceTree = "<group>"; };
 		5D49B03919BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SafeReaderTopicToReaderTopic.h; path = "20-21/SafeReaderTopicToReaderTopic.h"; sourceTree = "<group>"; };
 		5D49B03A19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SafeReaderTopicToReaderTopic.m; path = "20-21/SafeReaderTopicToReaderTopic.m"; sourceTree = "<group>"; };
+		5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardTextCell.xib; sourceTree = "<group>"; };
+		5D4C89FF1AB88F58007464B3 /* PostCardImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardImageCell.xib; sourceTree = "<group>"; };
 		5D4E30CF1AA4B41A000D9904 /* WPStyleGuide+Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Posts.h"; sourceTree = "<group>"; };
 		5D4E30D01AA4B41A000D9904 /* WPStyleGuide+Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Posts.m"; sourceTree = "<group>"; };
 		5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-20-21.xcmappingmodel"; sourceTree = "<group>"; };
@@ -1960,6 +1964,8 @@
 				5DF3DD701A9378F50051A229 /* PostTableViewCell.xib */,
 				5D17530D1A97D2CA0031A082 /* PostCardTableViewCell.h */,
 				5D17530E1A97D2CA0031A082 /* PostCardTableViewCell.m */,
+				5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */,
+				5D4C89FF1AB88F58007464B3 /* PostCardImageCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3126,6 +3132,7 @@
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
 				5DBFC8A91A9BE07B00E00DE4 /* Calypso.storyboard in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
+				5D4C89FE1AB88EF7007464B3 /* PostCardTextCell.xib in Resources */,
 				595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */,
 				5DF3DD711A9378F50051A229 /* PostTableViewCell.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
@@ -3146,6 +3153,7 @@
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
 				3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */,
 				313AE4A319E3F20400AAFABE /* CommentTableViewHeaderCell.xib in Resources */,
+				5D4C8A001AB88F58007464B3 /* PostCardImageCell.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
