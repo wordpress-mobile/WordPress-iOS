@@ -7,6 +7,7 @@
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "WPUserAgent.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -77,7 +78,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
     AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent applicationUserAgent];
 
     operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
