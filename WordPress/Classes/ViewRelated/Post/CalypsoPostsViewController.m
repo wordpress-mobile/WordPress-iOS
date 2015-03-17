@@ -17,7 +17,10 @@
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
 
-static NSString * const TableViewCellIdentifier = @"PostCardTableViewCell";
+static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
+static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
+static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
+static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
 static NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
@@ -132,7 +135,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (void)configureCellForLayout
 {
-    self.cellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:@"PostTableViewCell" owner:nil options:nil] firstObject];
+    self.cellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
 }
 
 - (void)configureTableView
@@ -142,8 +145,8 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     // Register the cells
-    UINib *postCardCellNib = [UINib nibWithNibName:@"PostTableViewCell" bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:postCardCellNib forCellReuseIdentifier:TableViewCellIdentifier];
+    UINib *postCardCellNib = [UINib nibWithNibName:PostCardTextCellNibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:postCardCellNib forCellReuseIdentifier:PostCardTextCellIdentifier];
 }
 
 - (void)configureTableViewHandler
@@ -410,7 +413,6 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
     CGFloat height = ceil(size.height);
-NSLog(@"Row: %d, Height: %f", indexPath.row, height);
     return height;
 }
 
@@ -444,7 +446,7 @@ NSLog(@"Row: %d, Height: %f", indexPath.row, height);
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewCellIdentifier];
+    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardTextCellIdentifier];
 
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
