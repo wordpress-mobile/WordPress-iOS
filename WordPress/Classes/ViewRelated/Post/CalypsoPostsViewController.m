@@ -18,13 +18,13 @@
 #import "WordPress-Swift.h"
 
 static NSString * const TableViewCellIdentifier = @"PostCardTableViewCell";
-static NSString *const WPBlogRestorationKey = @"WPBlogRestorationKey";
+static NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 static const NSInteger PostsFetchRequestBatchSize = 10;
 
-@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration>
+@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, WPNoResultsViewDelegate>
 
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
@@ -122,6 +122,12 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 }
 */
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+}
+
 #pragma mark - Configuration
 
 - (void)configureCellForLayout
@@ -161,6 +167,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
     if (!self.noResultsView) {
         self.noResultsView = [[WPNoResultsView alloc] init];
+        self.noResultsView.delegate = self;
     }
 
     if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
@@ -172,6 +179,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     self.noResultsView.titleText        = self.noResultsTitleText;
     self.noResultsView.messageText      = self.noResultsMessageText;
     self.noResultsView.accessoryView    = self.noResultsAccessoryView;
+    self.noResultsView.buttonTitle      = self.noResultsButtonText;
 
     // Only add and animate no results view if it isn't already
     // in the table view
@@ -393,7 +401,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CGFloat width = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.tableView.bounds);
+    CGFloat width = CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
@@ -402,6 +410,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self configureCell:self.cellForLayout atIndexPath:indexPath];
     CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
     CGFloat height = ceil(size.height);
+NSLog(@"Row: %d, Height: %f", indexPath.row, height);
     return height;
 }
 
