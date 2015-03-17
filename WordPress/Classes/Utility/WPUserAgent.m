@@ -79,7 +79,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 
 #pragma mark - Getting the user agent
 
-- (NSString *)applicationUserAgent
+- (NSString *)currentUserAgent
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:WPUserAgentKeyUserAgent];
 }
