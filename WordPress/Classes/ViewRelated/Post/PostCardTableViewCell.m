@@ -107,7 +107,7 @@
 {
     _contentProvider = contentProvider;
     [self configureHeader];
-    [self configureFeaturedImage];
+    [self configureCardImage];
     [self configureTitle];
     [self configureSnippet];
     [self configureDate];
@@ -131,7 +131,7 @@
     return [self.avatarImageView blavatarURLForHost:[self.contentProvider blogURLForDisplay] withSize:size];
 }
 
-- (void)configureFeaturedImage
+- (void)configureCardImage
 {
     // TODO:
 }
