@@ -18,19 +18,47 @@ static NSString* const WPAppAnalyticsKeyLastVisibleScreen = @"last_visible_scree
 static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 @interface WPAppAnalytics ()
+
+/**
+ *  @brief      Timestamp of the app's opening time.
+ */
 @property (nonatomic, strong, readwrite) NSDate* applicationOpenedTime;
+
+/**
+ *  @brief      If set, this block will be called whenever this object needs to know what the last
+ *              visible screen was, for tracking purposes.
+ */
+@property (nonatomic, copy, readwrite) WPAppAnalyticsLastVisibleScreenCallback lastVisibleScreenCallback;
 @end
 
 @implementation WPAppAnalytics
+
+#pragma mark - Dealloc
+
+- (void)dealloc
+{
+    [self stopObservingNotifications];
+}
 
 #pragma mark - Init
 
 - (instancetype)init
 {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback
+{
+    NSParameterAssert(lastVisibleScreenCallback);
+    
     self = [super init];
     
     if (self) {
+        _lastVisibleScreenCallback = lastVisibleScreenCallback;
+        
         [self initializeAppTracking];
+        [self startObservingNotifications];
     }
     
     return self;
@@ -52,10 +80,42 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
 
     if ([self isTrackingUsage]) {
-        DDLogInfo(@"WPAnalytics session started");
-        
-        [WPAnalytics beginSession];
+        [self beginSession];
     }
+}
+
+#pragma mark - Notifications
+
+- (void)startObservingNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidBecomeActive:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationDidEnterBackground:)
+                                                 name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+}
+
+- (void)stopObservingNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark - Notifications
+
+- (void)applicationDidBecomeActive:(NSNotification*)notification
+{
+    [self trackApplicationOpened];
+}
+
+- (void)applicationDidEnterBackground:(NSNotification*)notification
+{
+    NSString* lastVisibleScreen = self.lastVisibleScreenCallback();
+    
+    [self trackApplicationClosed:lastVisibleScreen];
 }
 
 #pragma mark - App Tracking
@@ -114,15 +174,27 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
                                                 forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
         
         if (trackingUsage) {
-            DDLogInfo(@"WPAnalytics session started");
-            
-            [WPAnalytics beginSession];
+            [self beginSession];
         } else {
-            DDLogInfo(@"WPAnalytics session stopped");
-            
-            [WPAnalytics endSession];
+            [self endSession];
         }
     }
+}
+
+#pragma mark - Session
+
+- (void)beginSession
+{
+    DDLogInfo(@"WPAnalytics session started");
+    
+    [WPAnalytics beginSession];
+}
+
+- (void)endSession
+{
+    DDLogInfo(@"WPAnalytics session stopped");
+    
+    [WPAnalytics endSession];
 }
 
 @end
