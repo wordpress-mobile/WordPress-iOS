@@ -25,6 +25,6 @@
  *
  *  @returns    The current user agent.
  */
-- (NSString *)applicationUserAgent;
+- (NSString *)currentUserAgent;
 
 @end
