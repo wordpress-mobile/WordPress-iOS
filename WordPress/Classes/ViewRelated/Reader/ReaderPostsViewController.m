@@ -917,10 +917,14 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     NSPredicate *predicate;
 
-    if ([self.postIDsForUndoBlockCells count]) {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
+    if (self.isInReadItLaterMode) {
+        predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
     } else {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
+        if ([self.postIDsForUndoBlockCells count]) {
+            predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
+        } else {
+            predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
+        }
     }
 
     return predicate;
