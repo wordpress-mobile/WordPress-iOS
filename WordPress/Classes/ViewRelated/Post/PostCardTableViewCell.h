@@ -21,7 +21,6 @@
 @property (nonatomic, strong) IBOutlet UILabel *statusLabel;
 @property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
-@property (nonatomic, strong) IBOutlet UIButton *metaButtonCenter;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
 @property (nonatomic, strong) IBOutlet UIView *actionBar;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
