@@ -2,9 +2,14 @@
 
 @protocol LoginViewModelDelegate;
 @protocol ReachabilityService;
+@protocol LoginService;
 @class RACSignal;
 
 @interface LoginViewModel : NSObject
+
+// Services
+@property (nonatomic, strong) id<ReachabilityService> reachabilityService;
+@property (nonatomic, strong) id<LoginService> loginService;
 
 @property (nonatomic, assign) BOOL authenticating;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
@@ -23,12 +28,11 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *multifactorCode;
 
-@property (nonatomic, assign) id<LoginViewModelDelegate> delegate;
-
-- (instancetype)initWithReachabilityService:(id<ReachabilityService>)reachabilityService;
+@property (nonatomic, weak) id<LoginViewModelDelegate> delegate;
 
 - (void)signInButtonAction;
 - (void)toggleSignInFormAction;
+- (void)displayMultifactorTextField;
 
 @end
 
@@ -54,13 +58,18 @@
 - (void)setToggleSignInButtonTitle:(NSString *)title;
 - (void)setToggleSignInButtonHidden:(BOOL)hidden;
 - (void)setPasswordTextReturnKeyType:(UIReturnKeyType)returnKeyType;
+- (void)setFocusToSiteUrlText;
+- (void)setFocusToMultifactorText;
 
 - (void)displayErrorMessageForInvalidOrMissingFields;
 - (void)displayReservedNameErrorMessage;
 - (void)reloadInterfaceWithAnimation:(BOOL)animated;
-- (void)setFocusToSiteUrlText;
 
-- (void)signIn;
-
+// Ones we forward from LoginService
+- (void)displayLoginMessage:(NSString *)message;
+- (void)dismissLoginMessage;
+- (void)displayRemoteError:(NSError *)error;
+- (void)dismissLoginView;
+- (void)showJetpackAuthentication;
 
 @end

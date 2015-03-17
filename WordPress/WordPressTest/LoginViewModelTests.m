@@ -4,16 +4,29 @@
 #import <OCMock/OCMock.h>
 #import "LoginViewModel.h"
 #import "ReachabilityService.h"
+#import "LoginService.h"
+#import "WordPressComOAuthClientService.h"
 
 SpecBegin(LoginViewModelTests)
 
 __block LoginViewModel *viewModel;
 __block id mockDelegate;
 __block id mockReachabilityService;
+__block id mockLoginService;
+__block id mockLoginServiceDelegate;
+__block id mockOAuthService;
 beforeEach(^{
     mockDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
     mockReachabilityService = [OCMockObject niceMockForProtocol:@protocol(ReachabilityService)];
-    viewModel = [[LoginViewModel alloc] initWithReachabilityService:mockReachabilityService];
+    mockLoginService = [OCMockObject niceMockForProtocol:@protocol(LoginService)];
+    mockLoginServiceDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginServiceDelegate)];
+    mockOAuthService = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientService)];
+    [OCMStub([mockLoginService wordpressComOAuthClientService]) andReturn:mockOAuthService];
+    [OCMStub([mockLoginService delegate]) andReturn:mockLoginServiceDelegate];
+    
+    viewModel = [LoginViewModel new];
+    viewModel.loginService = mockLoginService;
+    viewModel.reachabilityService = mockReachabilityService;
     viewModel.delegate = mockDelegate;
 });
 
@@ -832,6 +845,33 @@ describe(@"toggleSignInFormAction", ^{
         [mockDelegate verify];
     });
     
+});
+
+describe(@"displayMultifactorTextField", ^{
+    
+    it(@"should set shouldDisplayMultifactor to true", ^{
+        viewModel.shouldDisplayMultifactor = NO;
+        
+        [viewModel displayMultifactorTextField];
+        
+        expect(viewModel.shouldDisplayMultifactor).to.equal(YES);
+    });
+    
+    it(@"should reload the interface", ^{
+        [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+        
+        [viewModel displayMultifactorTextField];
+        
+        [mockDelegate verify];
+    });
+    
+    it(@"should set the focus to the multifactor text field", ^{
+        [[mockDelegate expect] setFocusToMultifactorText];
+        
+        [viewModel displayMultifactorTextField];
+        
+        [mockDelegate verify];
+    });
 });
 
 describe(@"sendVerificationCodeButton visibility", ^{

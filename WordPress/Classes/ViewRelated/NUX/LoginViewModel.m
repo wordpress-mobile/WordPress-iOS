@@ -3,43 +3,12 @@
 #import "ReachabilityService.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "NSString+Helpers.h"
+#import "LoginFields.h"
+#import "LoginService.h"
 
-
-@interface LoginFields : NSObject
-
-@property (nonatomic, copy) NSString *username;
-@property (nonatomic, copy) NSString *password;
-@property (nonatomic, copy) NSString *siteUrl;
-@property (nonatomic, copy) NSString *multifactorCode;
-@property (nonatomic, assign) BOOL userIsDotCom;
-@property (nonatomic, assign) BOOL shouldDisplayMultifactor;
-
-
-+ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode userIsDotCom:(BOOL)userIsDotCom shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor;
-
-@end
-
-@implementation LoginFields
-
-+ (instancetype)loginFieldsWithUsername:(NSString *)username password:(NSString *)password siteUrl:(NSString *)siteUrl multifactorCode:(NSString *)multifactorCode userIsDotCom:(BOOL)userIsDotCom shouldDisplayMultiFactor:(BOOL)shouldDisplayMultifactor
-{
-    LoginFields *loginFields = [LoginFields new];
-    loginFields.username = username;
-    loginFields.password = password;
-    loginFields.siteUrl = siteUrl;
-    loginFields.multifactorCode = multifactorCode;
-    loginFields.userIsDotCom = userIsDotCom;
-    loginFields.shouldDisplayMultifactor = shouldDisplayMultifactor;
-    
-    return loginFields;
-}
-
-@end
-
-@interface LoginViewModel()
+@interface LoginViewModel() <LoginServiceDelegate>
 
 @property (nonatomic, strong) NSString *signInButtonTitle;
-@property (nonatomic, strong) id<ReachabilityService> reachabilityService;
 
 @end
 
@@ -49,14 +18,23 @@ static CGFloat const LoginViewModelAlphaHidden              = 0.0f;
 static CGFloat const LoginViewModelAlphaDisabled            = 0.5f;
 static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
-- (instancetype)initWithReachabilityService:(id<ReachabilityService>)reachabilityService
+- (instancetype)init
 {
-    
     if (self = [super init]) {
-        _reachabilityService = reachabilityService;
+        [self initializeServices];
         [self setup];
     }
     return self;
+}
+
+- (void)initializeServices
+{
+    ReachabilityService *reachabilityService = [ReachabilityService new];
+    _reachabilityService = reachabilityService;
+    
+    LoginService *loginService = [LoginService new];
+    loginService.delegate = self;
+    _loginService = loginService;
 }
 
 - (void)setup
@@ -142,8 +120,8 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
         [self.delegate setFocusToSiteUrlText];
         return;
     }
-    
-    [self.delegate signIn];
+   
+    [self.loginService signInWithLoginFields:loginFields];
 }
 
 - (BOOL)isUsernameReserved:(NSString *)username
@@ -154,7 +132,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
 - (void)toggleSignInFormAction
 {
-    self.shouldDisplayMultifactor = false;
+    self.shouldDisplayMultifactor = NO;
     self.userIsDotCom = !self.userIsDotCom;
     
     if (self.userIsDotCom) {
@@ -164,6 +142,13 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }
     
     [self.delegate reloadInterfaceWithAnimation:YES];
+}
+
+- (void)displayMultifactorTextField
+{
+    self.shouldDisplayMultifactor = YES;
+    [self.delegate reloadInterfaceWithAnimation:YES];
+    [self.delegate setFocusToMultifactorText];
 }
 
 - (BOOL)areFieldsValid:(LoginFields *)loginFields
@@ -235,7 +220,7 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 - (void)setupSignInButtonEnabled
 {
     [[[RACSignal combineLatest:@[RACObserve(self, userIsDotCom), RACObserve(self, username), RACObserve(self, password), RACObserve(self, siteUrl), RACObserve(self, multifactorCode), RACObserve(self, shouldDisplayMultifactor)]] reduceEach:^id(NSNumber *userIsDotCom, NSString *username, NSString *password, NSString *siteUrl, NSString *multifactorCode, NSNumber *shouldDisplayMultifactor){
-        LoginFields *loginFields = [LoginFields loginFieldsWithUsername:username password:password siteUrl:siteUrl multifactorCode:multifactorCode userIsDotCom:userIsDotCom shouldDisplayMultiFactor:shouldDisplayMultifactor];
+        LoginFields *loginFields = [LoginFields loginFieldsWithUsername:username password:password siteUrl:siteUrl multifactorCode:multifactorCode userIsDotCom:[userIsDotCom boolValue] shouldDisplayMultiFactor:[shouldDisplayMultifactor boolValue]];
         
         if ([userIsDotCom boolValue]) {
             return @([self areDotComFieldsFilled:loginFields]);
@@ -300,6 +285,38 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 - (BOOL)isSiteUrlFilled:(NSString *)siteUrl
 {
     return [siteUrl trim].length != 0;
+}
+
+#pragma LoginServiceDelegate methods
+
+- (void)displayLoginMessage:(NSString *)message
+{
+    [self.delegate displayLoginMessage:message];
+}
+
+- (void)dismissLoginMessage
+{
+    [self.delegate dismissLoginMessage];
+}
+
+- (void)needsMultifactorCode
+{
+    [self displayMultifactorTextField];
+}
+
+- (void)displayRemoteError:(NSError *)error
+{
+    [self.delegate displayRemoteError:error];
+}
+
+- (void)showJetpackAuthentication
+{
+    [self.delegate showJetpackAuthentication];
+}
+
+- (void)finishedLogin
+{
+    [self.delegate dismissLoginView];
 }
 
 @end

@@ -31,7 +31,6 @@
 #import "NSURL+IDN.h"
 
 #import "Constants.h"
-#import "ReachabilityService.h"
 #import "ReachabilityUtils.h"
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
@@ -116,8 +115,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)initializeViewModel
 {
-    ReachabilityService *reachabilityService = [ReachabilityService new];
-    _viewModel = [[LoginViewModel alloc] initWithReachabilityService:reachabilityService];
+    _viewModel = [LoginViewModel new];
     _viewModel.delegate = self;
 }
 
@@ -149,7 +147,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     self.usernameText.text = defaultAccount.username;
     self.viewModel.userIsDotCom = YES;
-    
 }
 
 - (void)bindToViewModel
@@ -375,7 +372,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)toggleSignInFormAction:(id)sender
 {
-    self.viewModel.shouldDisplayMultifactor = false;
+    self.viewModel.shouldDisplayMultifactor = NO;
     self.viewModel.userIsDotCom = !self.viewModel.userIsDotCom;
     self.passwordText.returnKeyType = self.viewModel.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
 
@@ -428,7 +425,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         self.passwordText.text = loginDict[AppExtensionPasswordKey];
                                                            
         [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
-        [self signIn];
+        [self.viewModel signInButtonAction];
     }];
 }
 
@@ -897,182 +894,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self updateControls];
 }
 
-
 #pragma mark - Backend Helpers
-
-- (void)signIn
-{
-    NSString *username = self.usernameText.text;
-    NSString *password = self.passwordText.text;
-    NSString *multifactor = self.viewModel.shouldDisplayMultifactor ? self.multifactorText.text : nil;
-
-    if (self.viewModel.userIsDotCom || self.siteUrlText.text.isWordPressComPath) {
-        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
-        return;
-    }
-
-    void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRPCURL username:username password:password];
-
-        [api getBlogOptionsWithSuccess:^(id options){
-            [self finishedAuthenticating];
-
-            if ([options objectForKey:@"wordpress.com"] != nil) {
-                [self signInWithWPComForUsername:username password:password multifactor:multifactor];
-            } else {
-                NSString *xmlrpc = [xmlRPCURL absoluteString];
-                [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            }
-        } failure:^(NSError *error){
-            [WPAnalytics track:WPAnalyticsStatLoginFailed];
-            [self finishedAuthenticating];
-            [self displayRemoteError:error];
-        }];
-    };
-
-    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
-        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
-        [self handleGuessXMLRPCURLFailure:error];
-    };
-
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Authenticating", nil)];
-    
-    NSString *siteUrl = [NSURL IDNEncodedURL:self.siteUrlText.text];
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
-}
-
-- (void)signInWithWPComForUsername:(NSString *)username
-                          password:(NSString *)password
-                       multifactor:(NSString *)multifactor
-{
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
-
-    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
-    [client authenticateWithUsername:username
-                            password:password
-                     multifactorCode:multifactor
-                             success:^(NSString *authToken) {
-                                 
-                                 [self finishedAuthenticating];
-                                 [self createWordPressComAccountForUsername:username authToken:authToken];
-                                 
-                             } failure:^(NSError *error) {
-                                 
-                                 // Remove the Spinner + Status Message
-                                 [self finishedAuthenticating];
-                                 
-                                 // If needed, show the multifactor field
-                                 if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
-                                     [self displayMultifactorTextfield];
-                                 } else {
-                                     NSDictionary *properties = @{ @"multifactor" : @(self.viewModel.shouldDisplayMultifactor) };
-                                     [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
-                                     
-                                     [self displayRemoteError:error];
-                                 }
-                             }];
-}
-
-- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
-{
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
-    
-    self.viewModel.userIsDotCom = YES;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlogsForAccount:account
-                                success:^{
-                                    // Dismiss the UI
-                                    [self finishedAuthenticating];
-                                    [self dismiss];
-                                    
-                                    // Hit the Tracker
-                                    NSDictionary *properties = @{
-                                        @"multifactor" : @(self.viewModel.shouldDisplayMultifactor),
-                                        @"dotcom_user" : @(YES)
-                                    };
-                                    
-                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
-                                    [WPAnalytics refreshMetadata];
-
-                                    // once blogs for the accounts are synced, we want to update account details for it
-                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
-                                }
-                                failure:^(NSError *error) {
-                                    [self finishedAuthenticating];
-                                    [self displayRemoteError:error];
-                                }];
-}
-
-- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username
-                                          password:(NSString *)password
-                                            xmlrpc:(NSString *)xmlrpc
-                                           options:(NSDictionary *)options
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
-    NSString *url = [options stringForKeyPath:@"home_url.value"];
-    if (!url) {
-        url = [options stringForKeyPath:@"blog_url.value"];
-    }
-    self.blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
-    if (!self.blog) {
-        self.blog = [blogService createBlogWithAccount:account];
-        if (url) {
-            self.blog.url = url;
-        }
-        if (blogName) {
-            self.blog.blogName = [blogName stringByDecodingXMLCharacters];
-        }
-    }
-    self.blog.xmlrpc = xmlrpc;
-    self.blog.options = options;
-    [self.blog dataSave];
-    [blogService syncBlog:self.blog success:nil failure:nil];
-
-    if ([self.blog hasJetpack]) {
-        if ([self.blog hasJetpackAndIsConnectedToWPCom]) {
-            [self showJetpackAuthentication];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
-            [self dismiss];
-        }
-    } else {
-        [self dismiss];
-    }
-
-    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
-    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
-    [WPAnalytics refreshMetadata];
-}
-
-- (void)handleGuessXMLRPCURLFailure:(NSError *)error
-{
-    [self finishedAuthenticating];
-    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-        [self displayRemoteError:nil];
-    } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
-        [self displayRemoteError:error];
-    } else if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
-        NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", nil), [error localizedDescription]];
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
-        NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
-        [self displayRemoteError:err];
-    } else {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", nil)};
-        NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
-        [self displayRemoteError:err];
-    }
-}
 
 - (void)displayRemoteError:(NSError *)error
 {
@@ -1359,9 +1181,30 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     }
 }
 
+
+- (void)displayLoginMessage:(NSString *)message
+{
+    [self startedAuthenticatingWithMessage:message];
+}
+
+- (void)dismissLoginMessage
+{
+    [self finishedAuthenticating];
+}
+
 - (void)setFocusToSiteUrlText
 {
     [self.siteUrlText becomeFirstResponder];
+}
+
+- (void)setFocusToMultifactorText
+{
+    [self.multifactorText becomeFirstResponder];
+}
+
+- (void)dismissLoginView
+{
+    [self dismiss];
 }
 
 @end
