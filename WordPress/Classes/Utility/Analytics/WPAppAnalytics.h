@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
+
 extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
 
 /**
@@ -19,6 +21,10 @@ extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
  *              our app delegate class.
  */
 @interface WPAppAnalytics : NSObject
+
+#pragma mark - Init
+
+- (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
 
 #pragma mark - App Tracking Events
 
