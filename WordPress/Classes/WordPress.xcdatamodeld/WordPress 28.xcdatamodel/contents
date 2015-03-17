@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6254" systemVersion="14C109" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="14C1510" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
@@ -325,6 +325,7 @@
         <attribute name="isFollowing" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLiked" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isLikesEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isReadItLater" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isReblogged" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSharingEnabled" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isSiteBlocked" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
@@ -388,7 +389,7 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="148"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="210"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
