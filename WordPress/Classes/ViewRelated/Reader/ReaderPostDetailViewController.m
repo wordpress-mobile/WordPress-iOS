@@ -135,6 +135,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
     self.postView.shouldHideComments = self.shouldHideComments;
+    self.post.isReadItLater = NO;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
