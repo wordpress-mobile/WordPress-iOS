@@ -18,7 +18,7 @@
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
 @property (nonatomic, assign,  readonly) BOOL                           wpcomAvailable;
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
++ (WordPressAppDelegate *)sharedInstance;
 
 ///---------------------------
 /// @name User agent switching
