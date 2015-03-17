@@ -10,6 +10,7 @@
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <XCTest/XCTest.h>
 
+#import "WordPressAppDelegate.h"
 #import "WordPressComApiCredentials.h"
 #import "WPAppAnalytics.h"
 #import "WPAnalyticsTrackerMixpanel.h"
@@ -66,7 +67,6 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [analyticsMock stopMocking];
 }
 
-
 - (void)testInitializationWithWPComTracker
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
@@ -98,7 +98,6 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [apiCredentialsMock verify];
     [analyticsMock verify];
 }
-
 
 - (void)testInitializationWithMixPanelAndWPComTrackerButNoUsageTracking
 {
@@ -142,6 +141,24 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     
     [apiCredentialsMock stopMocking];
     [analyticsMock stopMocking];
+}
+
+- (void)testIsTrackingUsage
+{
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    
+    [analytics setTrackingUsage:YES];
+    
+    XCTAssertTrue([analytics isTrackingUsage]);
+}
+
+- (void)testIsNotTrackingUsage
+{
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    
+    [analytics setTrackingUsage:NO];
+    
+    XCTAssertFalse([analytics isTrackingUsage]);
 }
 
 @end

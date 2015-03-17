@@ -26,20 +26,6 @@ extern NSString* const WPAppAnalyticsDefaultsKeyUsageTracking;
 
 - (instancetype)initWithLastVisibleScreenBlock:(WPAppAnalyticsLastVisibleScreenCallback)lastVisibleScreenCallback;
 
-#pragma mark - App Tracking Events
-
-/**
- *  @brief      Tracks that the application has been closed.
- *  
- *  @param      lastVisibleScreen       The name of the last visible screen.  Can be nil.
- */
-- (void)trackApplicationClosed:(NSString*)lastVisibleScreen;
-
-/**
- *  @brief      Tracks that the application has been opened.
- */
-- (void)trackApplicationOpened;
-
 #pragma mark - Usage tracking
 
 /**
