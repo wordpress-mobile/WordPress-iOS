@@ -43,20 +43,15 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
  */
 - (void)initializeAppTracking
 {
-    NSNumber* usageTracking = [[NSUserDefaults standardUserDefaults] valueForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
-    
-    if (usageTracking == nil) {        
-        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
-        [NSUserDefaults resetStandardUserDefaults];
-    }
+    [self initializeUsageTrackingIfNecessary];
     
     if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
         [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
     }
-    
+
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking]) {
+
+    if ([self isTrackingUsage]) {
         DDLogInfo(@"WPAnalytics session started");
         
         [WPAnalytics beginSession];
@@ -88,6 +83,46 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 {
     self.applicationOpenedTime = [NSDate date];
     [WPAnalytics track:WPAnalyticsStatApplicationOpened];
+}
+
+#pragma mark - Usage tracking initialization
+
+- (void)initializeUsageTrackingIfNecessary
+{
+    if (![self isUsageTrackingInitialized]) {
+        [self setTrackingUsage:YES];
+        [NSUserDefaults resetStandardUserDefaults];
+    }
+}
+
+- (BOOL)isUsageTrackingInitialized
+{
+    return [[NSUserDefaults standardUserDefaults] valueForKey:WPAppAnalyticsDefaultsKeyUsageTracking] != nil;
+}
+
+#pragma mark - Usage tracking
+
+- (BOOL)isTrackingUsage
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+}
+
+- (void)setTrackingUsage:(BOOL)trackingUsage
+{
+    if (trackingUsage != [self isTrackingUsage]) {
+        [[NSUserDefaults standardUserDefaults] setBool:trackingUsage
+                                                forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
+        
+        if (trackingUsage) {
+            DDLogInfo(@"WPAnalytics session started");
+            
+            [WPAnalytics beginSession];
+        } else {
+            DDLogInfo(@"WPAnalytics session stopped");
+            
+            [WPAnalytics endSession];
+        }
+    }
 }
 
 @end
