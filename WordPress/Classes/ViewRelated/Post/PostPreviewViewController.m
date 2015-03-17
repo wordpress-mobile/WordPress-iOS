@@ -22,7 +22,7 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -66,7 +66,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useAppUserAgent];
+    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 
