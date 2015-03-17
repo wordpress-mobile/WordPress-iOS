@@ -351,7 +351,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         // Ignore taps on the post tab and instead show the modal.
         if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenAnimated:YES thenEditor:YES];
+            [[WordPressAppDelegate sharedInstance] showWelcomeScreenAnimated:YES thenEditor:YES];
         } else {
             [self showPostTab];
         }
