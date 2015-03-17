@@ -864,17 +864,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setupReachability
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
     // Setup Reachability
     self.internetReachability = [Reachability reachabilityForInternetConnection];
 
+    __weak __typeof(self) weakSelf = self;
+    
     void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
         NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
         NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
 
         DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
-        self.connectionAvailable = reach.isReachable;
+        weakSelf.connectionAvailable = reach.isReachable;
     };
     self.internetReachability.reachableBlock = internetReachabilityBlock;
     self.internetReachability.unreachableBlock = internetReachabilityBlock;
@@ -883,7 +883,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self.internetReachability startNotifier];
     
     self.connectionAvailable = [self.internetReachability isReachable];
-#pragma clang diagnostic pop
 }
 
 #pragma mark - Simperium
