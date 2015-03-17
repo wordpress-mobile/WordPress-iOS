@@ -48,6 +48,7 @@
 #import "UIImage+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
+#import "WPUserAgent.h"
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -81,6 +82,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
+@property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -162,7 +164,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
-    [self setupUserAgent];
+    self.userAgent = [WPUserAgent init];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -808,49 +810,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }
     }];
 }
-
-
-
-#pragma mark - User agents
-
-- (void)setupUserAgent
-{
-    // Keep a copy of the original userAgent for use with certain webviews in the app.
-    NSString *defaultUA = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    NSString *wordPressUserAgent = [[UIDevice currentDevice] wordPressUserAgent];
-
-    NSDictionary *dictionary = @{
-        @"UserAgent"        : wordPressUserAgent,
-        @"DefaultUserAgent" : defaultUA,
-        @"AppUserAgent"     : wordPressUserAgent
-    };
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)useDefaultUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (void)useAppUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (NSString *)applicationUserAgent
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
-}
-
 
 #pragma mark - Networking setup
 
