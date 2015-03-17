@@ -120,6 +120,11 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
 
 #pragma mark - App Tracking
 
+/**
+ *  @brief      Tracks that the application has been closed.
+ *
+ *  @param      lastVisibleScreen       The name of the last visible screen.  Can be nil.
+ */
 - (void)trackApplicationClosed:(NSString*)lastVisibleScreen
 {
     NSMutableDictionary *analyticsProperties = [NSMutableDictionary new];
@@ -139,6 +144,9 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     [WPAnalytics endSession];
 }
 
+/**
+ *  @brief      Tracks that the application has been opened.
+ */
 - (void)trackApplicationOpened
 {
     self.applicationOpenedTime = [NSDate date];
