@@ -691,7 +691,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 - (void)syncIfAppropriate
 {
     // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }

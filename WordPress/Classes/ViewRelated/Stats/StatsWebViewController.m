@@ -92,7 +92,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( appDelegate.connectionAvailable == YES ) {
         [self.webView showRefreshingState];
     }
@@ -190,7 +190,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     if (blog) {
         DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
-        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
         if ( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             __weak StatsWebViewController *weakSelf = self;
@@ -336,7 +336,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( !appDelegate.connectionAvailable ) {
         __weak StatsWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{

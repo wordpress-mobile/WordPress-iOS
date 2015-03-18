@@ -88,7 +88,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 @implementation WordPressAppDelegate
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate
++ (WordPressAppDelegate *)sharedInstance
 {
     return (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
 }
