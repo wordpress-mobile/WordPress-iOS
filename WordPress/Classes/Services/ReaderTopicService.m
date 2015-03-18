@@ -13,6 +13,7 @@
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
+NSString * const ReaderTopicReadItLaterTitle = @"Read It Later";
 static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
 static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
@@ -500,7 +501,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSArray *currentTopics = [self allMenuTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
-
+    
+    [self addReadItLaterToArray:topicsToKeep];
+    
     for (RemoteReaderTopic *remoteTopic in topics) {
         ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
         newTopic.account = account;
@@ -510,7 +513,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             DDLogInfo(@"%@ returned a nil topic: %@", NSStringFromSelector(_cmd), remoteTopic);
         }
     }
-
+    
     if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
             if (![topic.type isEqualToString:ReaderTopicTypeSite] && ![topicsToKeep containsObject:topic]) {
@@ -577,6 +580,33 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
+}
+
+- (void)addReadItLaterToArray:(NSMutableArray *)topicsToKeep
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    
+    if (error || results.count == 0) {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"ReaderTopic"
+                                                  inManagedObjectContext:self.managedObjectContext];
+        ReaderTopic *topic = [[ReaderTopic alloc] initWithEntity:entity
+                                  insertIntoManagedObjectContext:self.managedObjectContext];
+        
+        topic.isReadItLater = YES;
+        topic.type = ReaderTopicTypeList;
+        topic.lastSynced = [[NSDate alloc] init];
+        topic.title = ReaderTopicReadItLaterTitle;
+        topic.isMenuItem = YES;
+        topic.path = @"";
+        
+        [topicsToKeep addObject:topic];
+    } else {
+        [topicsToKeep addObject:results[0]];
+    }
 }
 
 @end
