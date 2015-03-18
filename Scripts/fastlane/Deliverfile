@@ -16,8 +16,8 @@ screenshots_path "./screenshots/"
 app_identifier "org.wordpress"
 
 # Make sure to update these keys for a new version
-version "4.8"
-glotpress_whats_new_key = "v4.8-whats-new"
+version "4.9"
+glotpress_whats_new_key = "v4.9-whats-new"
 
 changelog({
     "en-US" => WordPressTranslationRetrieval.get_version_text("en-US", glotpress_whats_new_key),

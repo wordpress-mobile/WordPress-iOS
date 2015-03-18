@@ -24,6 +24,16 @@
 @property (nonatomic, weak) id<WPCommentContentViewProvider> contentProvider;
 
 /**
+ A Boolean value whether the like button should be present.
+ */
+@property (nonatomic) BOOL shouldEnableLoggedinFeatures;
+
+/**
+ A Boolean value whether the reply button should present.
+ */
+@property (nonatomic) BOOL shouldShowReply;
+
+/**
  Resets the content view's appearance.
  */
 - (void)reset;
