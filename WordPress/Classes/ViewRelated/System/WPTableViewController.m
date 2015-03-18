@@ -190,7 +190,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
     self.resultsController = nil;
     [self.tableView reloadData];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (!(appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing])) {
         [self configureNoResultsView];
     }
@@ -515,7 +515,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }

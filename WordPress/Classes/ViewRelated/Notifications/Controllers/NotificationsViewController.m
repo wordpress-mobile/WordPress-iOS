@@ -310,7 +310,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showDetailsForNoteWithID:(NSString *)notificationID
 {
-    Simperium *simperium        = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium        = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
     Notification *notification  = [notesBucket objectForKey:notificationID];
     
@@ -337,7 +337,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)startSyncTimeoutTimer
 {
     // Don't proceed if we're not even connected
-    BOOL isConnected = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
+    BOOL isConnected = [[WordPressAppDelegate sharedInstance] connectionAvailable];
     if (!isConnected) {
         return;
     }
@@ -361,7 +361,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)setupNotificationsBucketDelegate
 {
-    Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
     notesBucket.delegate            = self;
     notesBucket.notifyWhileIndexing = YES;
@@ -392,7 +392,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     }
 
     NSString *bucketName    = NSStringFromClass([Meta class]);
-    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
     Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
     if (!metadata) {
         return;
@@ -418,7 +418,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     // This is only required for debugging:
     // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
     NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
     if ([name isEqualToString:WPNotificationsBucketName]) {
         return;

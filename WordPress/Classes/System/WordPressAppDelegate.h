@@ -19,7 +19,7 @@
 @property (nonatomic, strong,  readonly) Simperium                      *simperium;
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
++ (WordPressAppDelegate *)sharedInstance;
 
 ///---------------------------
 /// @name User agent switching
