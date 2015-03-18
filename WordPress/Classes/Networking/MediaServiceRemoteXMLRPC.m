@@ -40,24 +40,39 @@
                  }];
 }
 
-/** Adds a basic auth header to a request if a credential is stored for that specific host.
+- (NSURLCredential *)findCredentialForHost:(NSString *)host port:(NSInteger)port
+{
+    __block NSURLCredential *foundCredential = nil;
+    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+            if ([[ps host] isEqualToString:host] && [ps port] == port)
+            
+            {
+                foundCredential = credential;
+                *stop = YES;
+            }
+        }];
+        if (foundCredential) {
+            *stop = YES;
+        }
+    }];
+    return foundCredential;
+}
+
+/** 
+ Adds a basic auth header to a request if a credential is stored for that specific host.
  
  The credentials will only be added if a set of credentials for the request host are stored on the shared credential storage
  @param request, the request to where the authentication information will be added.
  */
 - (void)addBasicAuthCredentialsIfAvailableToRequest:(NSMutableURLRequest *)request
 {
-    NSURLCredentialStorage *credentialStorage = [NSURLCredentialStorage sharedCredentialStorage];
     NSInteger port = [[request.URL port] integerValue];
     if (port == 0) {
         port = 80;
     }
-    NSURLProtectionSpace *protectionSpace = [[NSURLProtectionSpace alloc] initWithHost:[request.URL host]
-                                                                                  port:port
-                                                                              protocol:[request.URL scheme]
-                                                                                 realm:@"Restricted Area"
-                                                                  authenticationMethod:nil];
-    NSURLCredential *credential = [credentialStorage defaultCredentialForProtectionSpace:protectionSpace];
+
+    NSURLCredential *credential = [self findCredentialForHost:request.URL.host port:port];
     if (credential) {
         NSString *authStr = [NSString stringWithFormat:@"%@:%@", [credential user], [credential password]];
         NSData *authData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
