@@ -1,22 +1,12 @@
 #import "LoginViewModel.h"
+#import "AccountCreationService.h"
+#import "BlogSyncService.h"
+#import "LoginFields.h"
+#import "LoginService.h"
+#import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
 #import "ReachabilityService.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
-#import "NSString+Helpers.h"
-#import "LoginFields.h"
-#import "LoginService.h"
-
-#import "AccountService.h"
-#import "BlogService.h"
-#import "WPAccount.h"
-#import "ContextManager.h"
-#import <NSDictionary+SafeExpectations.h>
-#import <NSString+XMLExtensions.h>
-#import "Blog.h"
-#import "NSString+Helpers.h"
-#import "NSString+XMLExtensions.h"
-#import "Blog+Jetpack.h"
-
 
 @interface LoginViewModel() <LoginServiceDelegate>
 
@@ -41,12 +31,13 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
 - (void)initializeServices
 {
-    ReachabilityService *reachabilityService = [ReachabilityService new];
-    _reachabilityService = reachabilityService;
-    
     LoginService *loginService = [LoginService new];
     loginService.delegate = self;
     _loginService = loginService;
+    
+    _reachabilityService = [ReachabilityService new];
+    _accountCreationService = [AccountCreationService new];
+    _blogSyncService = [BlogSyncService new];
 }
 
 - (void)setup
@@ -349,34 +340,27 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 {
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlogsForAccount:account
-                                success:^{
-                                    // Dismiss the UI
-                                    [self dismissLoginMessage];
-                                    [self finishedLogin];
-                                    
-                                    // Hit the Tracker
-                                    NSDictionary *properties = @{
-                                        @"multifactor" : @(shouldDisplayMultifactor),
-                                        @"dotcom_user" : @(YES)
-                                    };
-                                    
-                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
-                                    [WPAnalytics refreshMetadata];
-
-                                    // once blogs for the accounts are synced, we want to update account details for it
-                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
-                                }
-                                failure:^(NSError *error) {
-                                    [self.delegate dismissLoginMessage];
-                                    [self.delegate displayRemoteError:error];
-                                }];
+    WPAccount *account = [self.accountCreationService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+    [self.blogSyncService syncBlogsForAccount:account success:^{
+        // Dismiss the UI
+        [self dismissLoginMessage];
+        [self finishedLogin];
+        
+        // Hit the Tracker
+        NSDictionary *properties = @{
+                                     @"multifactor" : @(shouldDisplayMultifactor),
+                                     @"dotcom_user" : @(YES)
+                                     };
+        
+        [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
+        [WPAnalytics refreshMetadata];
+        
+        // once blogs for the accounts are synced, we want to update account details for it
+        [self.accountCreationService updateEmailAndDefaultBlogForWordPressComAccount:account];
+    } failure:^(NSError *error) {
+        [self dismissLoginMessage];
+        [self displayRemoteError:error];
+    }];
 }
 
 
@@ -385,45 +369,12 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
                                             xmlrpc:(NSString *)xmlrpc
                                            options:(NSDictionary *)options
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
-    NSString *url = [options stringForKeyPath:@"home_url.value"];
-    if (!url) {
-        url = [options stringForKeyPath:@"blog_url.value"];
-    }
-    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
-    if (!blog) {
-        blog = [blogService createBlogWithAccount:account];
-        if (url) {
-            blog.url = url;
-        }
-        if (blogName) {
-            blog.blogName = [blogName stringByDecodingXMLCharacters];
-        }
-    }
-    blog.xmlrpc = xmlrpc;
-    blog.options = options;
-    [blog dataSave];
-    [blogService syncBlog:blog success:nil failure:nil];
-
-    if ([blog hasJetpack]) {
-        if ([blog hasJetpackAndIsConnectedToWPCom]) {
-            [self.delegate showJetpackAuthentication];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
-            [self finishedLogin];
-        }
-    } else {
+    WPAccount *account = [self.accountCreationService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    [self.blogSyncService syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^{
+        [self showJetpackAuthentication];
+    } finishedSync:^{
         [self finishedLogin];
-    }
-
-    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
-    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
-    [WPAnalytics refreshMetadata];
+    }];
 }
 
 @end

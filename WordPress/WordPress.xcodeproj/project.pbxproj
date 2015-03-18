@@ -224,6 +224,8 @@
 		857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 857610D518C0377300EDF406 /* StatsWebViewController.m */; };
 		8583606F1AB7685F00379901 /* ReachabilityService.m in Sources */ = {isa = PBXBuildFile; fileRef = 8583606E1AB7685F00379901 /* ReachabilityService.m */; };
 		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
+		858EEC801ABA2D700007B3B6 /* AccountCreationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC7F1ABA2D700007B3B6 /* AccountCreationService.m */; };
+		858EEC831ABA30190007B3B6 /* BlogSyncService.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC821ABA30190007B3B6 /* BlogSyncService.m */; };
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
 		85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */; };
 		85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */; };
@@ -917,6 +919,10 @@
 		8583606E1AB7685F00379901 /* ReachabilityService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityService.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		858EEC7E1ABA2D700007B3B6 /* AccountCreationService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCreationService.h; sourceTree = "<group>"; };
+		858EEC7F1ABA2D700007B3B6 /* AccountCreationService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCreationService.m; sourceTree = "<group>"; };
+		858EEC811ABA30190007B3B6 /* BlogSyncService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSyncService.h; sourceTree = "<group>"; };
+		858EEC821ABA30190007B3B6 /* BlogSyncService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSyncService.m; sourceTree = "<group>"; };
 		859F761B18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerMixpanelInstructionsForStat.h; sourceTree = "<group>"; };
 		859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerMixpanelInstructionsForStat.m; sourceTree = "<group>"; };
 		85AD6AEA173CCF9E002CB896 /* WPNUXPrimaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXPrimaryButton.h; sourceTree = "<group>"; };
@@ -2344,6 +2350,10 @@
 				856C7C5F1AB8CE9E0057E2F7 /* WordPressComOAuthClientService.m */,
 				856C7C611AB8D32A0057E2F7 /* WordPressXMLRPCApiService.h */,
 				856C7C621AB8D32A0057E2F7 /* WordPressXMLRPCApiService.m */,
+				858EEC7E1ABA2D700007B3B6 /* AccountCreationService.h */,
+				858EEC7F1ABA2D700007B3B6 /* AccountCreationService.m */,
+				858EEC811ABA30190007B3B6 /* BlogSyncService.h */,
+				858EEC821ABA30190007B3B6 /* BlogSyncService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3468,6 +3478,7 @@
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
 				8350E49611D2C71E00A7B073 /* Media.m in Sources */,
+				858EEC831ABA30190007B3B6 /* BlogSyncService.m in Sources */,
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
 				5DA5BF4518E32DCF005F11F9 /* ThemeBrowserCell.m in Sources */,
 				93C486501810442200A24725 /* SupportViewController.m in Sources */,
@@ -3529,6 +3540,7 @@
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
+				858EEC801ABA2D700007B3B6 /* AccountCreationService.m in Sources */,
 				5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,

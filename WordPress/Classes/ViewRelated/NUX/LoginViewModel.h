@@ -3,6 +3,8 @@
 @protocol LoginViewModelDelegate;
 @protocol ReachabilityService;
 @protocol LoginService;
+@protocol AccountCreationService;
+@protocol BlogSyncService;
 @class RACSignal;
 
 @interface LoginViewModel : NSObject
@@ -10,6 +12,8 @@
 // Services
 @property (nonatomic, strong) id<ReachabilityService> reachabilityService;
 @property (nonatomic, strong) id<LoginService> loginService;
+@property (nonatomic, strong) id<AccountCreationService> accountCreationService;
+@property (nonatomic, strong) id<BlogSyncService> blogSyncService;
 
 @property (nonatomic, assign) BOOL authenticating;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
