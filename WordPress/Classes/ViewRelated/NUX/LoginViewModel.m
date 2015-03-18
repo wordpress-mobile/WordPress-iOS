@@ -6,6 +6,18 @@
 #import "LoginFields.h"
 #import "LoginService.h"
 
+#import "AccountService.h"
+#import "BlogService.h"
+#import "WPAccount.h"
+#import "ContextManager.h"
+#import <NSDictionary+SafeExpectations.h>
+#import <NSString+XMLExtensions.h>
+#import "Blog.h"
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+#import "Blog+Jetpack.h"
+
+
 @interface LoginViewModel() <LoginServiceDelegate>
 
 @property (nonatomic, strong) NSString *signInButtonTitle;
@@ -301,11 +313,13 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 
 - (void)needsMultifactorCode
 {
+    [self dismissLoginMessage];
     [self displayMultifactorTextField];
 }
 
 - (void)displayRemoteError:(NSError *)error
 {
+    [self.delegate dismissLoginMessage];
     [self.delegate displayRemoteError:error];
 }
 
@@ -317,6 +331,99 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 - (void)finishedLogin
 {
     [self.delegate dismissLoginView];
+}
+
+- (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+{
+    [self dismissLoginMessage];
+    [self createWordPressComAccountForUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+}
+
+- (void)finishedLoginWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+{
+    [self dismissLoginMessage];
+    [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
+}
+
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+{
+    [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService syncBlogsForAccount:account
+                                success:^{
+                                    // Dismiss the UI
+                                    [self dismissLoginMessage];
+                                    [self finishedLogin];
+                                    
+                                    // Hit the Tracker
+                                    NSDictionary *properties = @{
+                                        @"multifactor" : @(shouldDisplayMultifactor),
+                                        @"dotcom_user" : @(YES)
+                                    };
+                                    
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
+                                    [WPAnalytics refreshMetadata];
+
+                                    // once blogs for the accounts are synced, we want to update account details for it
+                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
+                                }
+                                failure:^(NSError *error) {
+                                    [self.delegate dismissLoginMessage];
+                                    [self.delegate displayRemoteError:error];
+                                }];
+}
+
+
+- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username
+                                          password:(NSString *)password
+                                            xmlrpc:(NSString *)xmlrpc
+                                           options:(NSDictionary *)options
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+
+    WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
+    NSString *url = [options stringForKeyPath:@"home_url.value"];
+    if (!url) {
+        url = [options stringForKeyPath:@"blog_url.value"];
+    }
+    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!blog) {
+        blog = [blogService createBlogWithAccount:account];
+        if (url) {
+            blog.url = url;
+        }
+        if (blogName) {
+            blog.blogName = [blogName stringByDecodingXMLCharacters];
+        }
+    }
+    blog.xmlrpc = xmlrpc;
+    blog.options = options;
+    [blog dataSave];
+    [blogService syncBlog:blog success:nil failure:nil];
+
+    if ([blog hasJetpack]) {
+        if ([blog hasJetpackAndIsConnectedToWPCom]) {
+            [self.delegate showJetpackAuthentication];
+        } else {
+            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
+            [self finishedLogin];
+        }
+    } else {
+        [self finishedLogin];
+    }
+
+    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
+    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
+    [WPAnalytics refreshMetadata];
 }
 
 @end
