@@ -351,6 +351,7 @@
     </entity>
     <entity name="ReaderTopic" representedClassName="ReaderTopic" syncable="YES">
         <attribute name="isMenuItem" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
+        <attribute name="isReadItLater" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isRecommended" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="isSubscribed" optional="YES" attributeType="Boolean" defaultValueString="NO" indexed="YES" syncable="YES"/>
         <attribute name="lastSynced" optional="YES" attributeType="Date" syncable="YES"/>
@@ -391,7 +392,7 @@
         <element name="Post" positionX="0" positionY="0" width="128" height="148"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
-        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="210"/>
+        <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>

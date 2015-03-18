@@ -13,6 +13,7 @@ extern NSString *const ReaderTopicTypeSite;
 @property (nonatomic) BOOL isMenuItem;
 @property (nonatomic) BOOL isRecommended;
 @property (nonatomic) BOOL isSubscribed;
+@property (nonatomic) BOOL isReadItLater;
 @property (nonatomic, strong) NSDate *lastSynced;
 @property (nonatomic, strong) NSString *path;
 @property (nonatomic, strong) NSArray *posts;

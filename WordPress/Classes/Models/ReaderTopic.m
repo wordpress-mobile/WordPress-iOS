@@ -11,6 +11,7 @@ NSString *const ReaderTopicTypeSite = @"site";
 @dynamic isMenuItem;
 @dynamic isRecommended;
 @dynamic isSubscribed;
+@dynamic isReadItLater;
 @dynamic lastSynced;
 @dynamic path;
 @dynamic posts;
