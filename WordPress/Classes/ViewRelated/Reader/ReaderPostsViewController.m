@@ -925,7 +925,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     NSPredicate *predicate;
 
-    if (self.isInReadItLaterMode) {
+    if (self.readerTopic.isReadItLater) {
         predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
     } else {
         if ([self.postIDsForUndoBlockCells count]) {
