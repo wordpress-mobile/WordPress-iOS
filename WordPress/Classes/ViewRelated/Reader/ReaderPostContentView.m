@@ -9,7 +9,6 @@
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UIButton *reblogButton;
-@property (nonatomic, strong) UIButton *readItLaterButton;
 @property (nonatomic) BOOL shouldShowActionButtons;
 
 @end
@@ -69,11 +68,6 @@
 {
     self.shouldShowAttributionButton = YES;
 
-    self.readItLaterButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
-    [self.readItLaterButton addTarget:self action:@selector(readItLaterAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.readItLaterButton.accessibilityLabel = NSLocalizedString(@"Read It Later", @"Accessibility  Label for the Reblog Button in the Reader. Tapping shows a screen that allows the user to reblog a post.");
-    self.readItLaterButton.accessibilityIdentifier = @"Read It Later";
-    
     // Action buttons
     self.reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
     [self.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
@@ -91,7 +85,7 @@
     self.likeButton.accessibilityIdentifier = @"Like";
 
     // Optimistically set action buttons and prime constraints for scrolling performance.
-    self.actionButtons = @[self.likeButton, self.commentButton, self.reblogButton, self.readItLaterButton];
+    self.actionButtons = @[self.likeButton, self.commentButton, self.reblogButton];
 }
 
 - (void)configureActionButtons
@@ -115,8 +109,6 @@
     if (![self privateContent] && self.shouldEnableLoggedinFeatures) {
         [actionButtons addObject:self.reblogButton];
     }
-    
-    [actionButtons addObject:self.readItLaterButton];
 
     self.actionButtons = actionButtons;
 
@@ -157,7 +149,7 @@
     [self.reblogButton setSelected:self.post.isReblogged];
     [self.reblogButton setNeedsLayout];
     [self.reblogButton setHidden:self.shouldHideReblogButton];
-
+    
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
 
@@ -211,11 +203,6 @@
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveLikeAction:)]) {
         [self.delegate postView:self didReceiveLikeAction:sender];
     }
-}
-
-- (void)readItLaterAction:(id)sender
-{
-    self.post.isReadItLater = YES;
 }
 
 @end
