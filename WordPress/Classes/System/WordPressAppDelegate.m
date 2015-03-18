@@ -71,13 +71,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
 @property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
-@property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
-@property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -575,6 +572,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
     
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -823,58 +821,25 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setupReachability
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-    // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
-    self.wpcomAvailable = YES;
-    // Same for general internet connection
-    self.connectionAvailable = YES;
-
-    // allocate the internet reachability object
+    // Setup Reachability
     self.internetReachability = [Reachability reachabilityForInternetConnection];
 
-    // set the blocks
+    __weak __typeof(self) weakSelf = self;
+    
     void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
         NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
         NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
 
         DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
-        self.connectionAvailable = reach.isReachable;
+        weakSelf.connectionAvailable = reach.isReachable;
     };
     self.internetReachability.reachableBlock = internetReachabilityBlock;
     self.internetReachability.unreachableBlock = internetReachabilityBlock;
 
-    // start the notifier which will cause the reachability object to retain itself!
+    // Start the Notifier
     [self.internetReachability startNotifier];
+    
     self.connectionAvailable = [self.internetReachability isReachable];
-
-    // allocate the WP.com reachability object
-    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
-
-    // set the blocks
-    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
-        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
-        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
-        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
-        CTCarrier *carrier = [netInfo subscriberCellularProvider];
-        NSString *type = nil;
-        if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
-            type = [netInfo currentRadioAccessTechnology];
-        }
-        NSString *carrierName = nil;
-        if (carrier) {
-            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
-        }
-
-        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
-        self.wpcomAvailable = reach.isReachable;
-    };
-    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
-    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
-
-    // start the notifier which will cause the reachability object to retain itself!
-    [self.wpcomReachability startNotifier];
-#pragma clang diagnostic pop
 }
 
 #pragma mark - Simperium
