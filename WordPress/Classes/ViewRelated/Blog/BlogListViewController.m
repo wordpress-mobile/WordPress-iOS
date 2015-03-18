@@ -320,7 +320,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
                 if (!defaultAccount) {
                     [WPAnalytics track:WPAnalyticsStatLogout];
-                    [[WordPressAppDelegate sharedWordPressApplicationDelegate] showWelcomeScreenIfNeededAnimated:YES];
+                    [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
                 }
             });
         }

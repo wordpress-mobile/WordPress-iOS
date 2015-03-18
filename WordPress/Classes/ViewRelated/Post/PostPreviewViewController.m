@@ -22,7 +22,7 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useWordPressUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -56,7 +56,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useDefaultUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
     if (self.shouldHideStatusBar && !IS_IPAD) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
     }
@@ -66,7 +66,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent useWordPressUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 
@@ -208,7 +208,7 @@
 
     NSString *link = self.apost.permaLink;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
 
     if (appDelegate.connectionAvailable == NO) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];

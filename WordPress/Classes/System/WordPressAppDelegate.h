@@ -21,7 +21,7 @@
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
 @property (nonatomic, strong,  readonly) WPUserAgent                    *userAgent;
 
-+ (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
++ (WordPressAppDelegate *)sharedInstance;
 
 ///-----------
 /// @name NUX
