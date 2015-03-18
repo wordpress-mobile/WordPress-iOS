@@ -18,7 +18,6 @@
 @property (nonatomic, strong,  readonly) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong,  readonly) Simperium                      *simperium;
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
-@property (nonatomic, assign,  readonly) BOOL                           wpcomAvailable;
 
 + (WordPressAppDelegate *)sharedWordPressApplicationDelegate;
 
