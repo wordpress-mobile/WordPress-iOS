@@ -1292,13 +1292,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
-    
-    NSString *readItLater;
-    if (self.postForMenuActionSheet.isReadItLater) {
-        readItLater = NSLocalizedString(@"Remove From Read It Later", @"The title of a button that removed a post from reading later.");
-    } else {
-        readItLater = NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
-    }
+    NSString *readItLater = [self stringForReadItLaterOptionForPost];
     
     UIActionSheet *actionSheet;
     if (self.hasWPComAccount) {
@@ -1315,14 +1309,28 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
                                          otherButtonTitles:readItLater, nil];
     }
     
+    [self configureViewOptionsOfActionSheet:actionSheet fromSender:sender];
+    
+    return actionSheet;
+}
+
+- (NSString *)stringForReadItLaterOptionForPost
+{
+    if (self.postForMenuActionSheet.isReadItLater) {
+        return NSLocalizedString(@"Remove From Read It Later", @"The title of a button that removed a post from reading later.");
+    } else {
+        return NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
+    }
+}
+
+- (void)configureViewOptionsOfActionSheet:(UIActionSheet *)actionSheet fromSender:(id)sender
+{
     if ([UIDevice isPad]) {
         UIView *view = (UIView *)sender;
         [actionSheet showFromRect:view.bounds inView:view animated:YES];
     } else {
         [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
-    
-    return actionSheet;
 }
 
 @end
