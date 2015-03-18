@@ -61,7 +61,7 @@ def removeFileIfNecessary(file):
 
 def xcodeBuildOperation(operation, simulator):
     assert operation
-    print "AHOI: " + simulator
+
     return subprocess.call(["xcodebuild",
                             operation,
                             "-workspace",

@@ -17,6 +17,7 @@
 #import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
+#import "StatsViewAllTableViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
 
@@ -47,6 +48,7 @@ static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0
 static UIEdgeInsets NotificationHeaderSeparatorInsets   = {0.0f,  0.0f,  0.0f, 0.0f};
 static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
+static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
 
 static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
@@ -507,12 +509,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
-
-        if (self.note.isComment) {
-            [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
-        } else {
-            [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
-        }
+        
+        [self openNotificationHeader:group];
     }
 }
 
@@ -738,7 +736,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 }
 
 
-#pragma mark - Helpers
+#pragma mark - Associated Resources
 
 - (void)openURL:(NSURL *)url
 {
@@ -765,6 +763,39 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [self.tableView deselectSelectedRowWithAnimation:YES];
     }
 }
+
+- (void)openNotificationHeader:(NotificationBlockGroup *)header
+{
+    NSParameterAssert(header);
+    NSParameterAssert(header.type == NoteBlockGroupTypeHeader);
+    
+    BOOL success = false;
+    
+    if (!success && self.note.isFollow) {
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+        success = YES;
+    }
+    
+    if (!success && self.note.metaCommentID) {
+        success = [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        success = [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayWebViewWithURL:resourceURL];
+    }
+    
+    if (!success) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
+
+
+#pragma mark - Helpers
 
 - (BOOL)displayReaderWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
@@ -812,6 +843,41 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [self.navigationController pushViewController:vc animated:YES];
     }
     return success;
+}
+
+- (BOOL)displayFollowersWithSiteID:(NSNumber *)siteID
+{
+    if (!siteID) {
+        return false;
+    }
+    
+    // Load the blog
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:siteID];
+
+    if (!blog || !blog.isWPcom) {
+        return NO;
+    }
+
+    // Push the Stats ViewController
+    NSString *identifier            = NSStringFromClass([StatsViewAllTableViewController class]);
+    
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:@"SiteStats" bundle:nil];
+    StatsViewAllTableViewController *vc = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
+    NSAssert(vc, @"Couldn't instantiate StatsViewAllTableViewController");
+    
+    vc.selectedDate                = [NSDate date];
+    vc.statsSection                = StatsSectionFollowers;
+    vc.statsSubSection             = StatsSubSectionFollowersDotCom;
+    vc.statsService                = [[WPStatsService alloc] initWithSiteId:blog.blogID
+                                                               siteTimeZone:[service timeZoneForBlog:blog]
+                                                                oauth2Token:blog.authToken
+                                                 andCacheExpirationInterval:NotificationFiveMinutes];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)displayWebViewWithURL:(NSURL *)url
