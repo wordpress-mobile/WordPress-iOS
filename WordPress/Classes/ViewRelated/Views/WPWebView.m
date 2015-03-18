@@ -124,7 +124,7 @@ NSString *refreshedWithOutValidRequestNotification = @"refreshedWithOutValidRequ
     [self setDefaultHeader:@"Accept-Language" value:[NSString stringWithFormat:@"%@, en-us;q=0.8", preferredLanguageCodes]];
 
     // User-Agent Header; see http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.43
-    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate].userAgent currentUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
     [self setDefaultHeader:@"User-Agent" value:userAgent];
 }
 

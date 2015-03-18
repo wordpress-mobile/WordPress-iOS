@@ -361,7 +361,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
         return nil;
     }
     
-    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
     NSString *lastSeen = [simperium.networkLastSeenTime shortString] ?: [NSString string];
     NSString *status = [NSString stringWithFormat:@"Network Last Seen: %@ [%@]", lastSeen, simperium.networkStatus];
     return status;
