@@ -685,9 +685,9 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self syncItemsWithUserInteraction:YES];
 }
 
-- (void)saveForReadItLater:(ReaderPost *)post
+- (void)toggleReadItLater:(ReaderPost *)post
 {
-    post.isReadItLater = YES;
+    post.isReadItLater = !post.isReadItLater;
 }
 
 #pragma mark - Sync methods
@@ -1249,7 +1249,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     } else if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self blockSite:post];
     } else {
-        [self saveForReadItLater:post];
+        [self toggleReadItLater:post];
     }
 }
 
@@ -1291,11 +1291,16 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 - (UIActionSheet *)actionSheetForAccount:(id)sender
 {
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
-    NSString *readItLater = NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
     
-    UIActionSheet *actionSheet;
+    NSString *readItLater;
+    if (self.postForMenuActionSheet.isReadItLater) {
+        readItLater = NSLocalizedString(@"Remove From Read It Later", @"The title of a button that removed a post from reading later.");
+    } else {
+        readItLater = NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
+    }
     
+    UIActionSheet *actionSheet;
     if (self.hasWPComAccount) {
         actionSheet = [[UIActionSheet alloc] initWithTitle:nil
                                                   delegate:self
