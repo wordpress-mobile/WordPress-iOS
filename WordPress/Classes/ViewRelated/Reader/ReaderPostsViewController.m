@@ -685,6 +685,10 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self syncItemsWithUserInteraction:YES];
 }
 
+- (void)saveForReadItLater:(ReaderPost *)post
+{
+    post.isReadItLater = YES;
+}
 
 #pragma mark - Sync methods
 
@@ -1242,9 +1246,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     self.postForMenuActionSheet = nil;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
+    } else if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self blockSite:post];
+    } else {
+        [self saveForReadItLater:post];
     }
-
-    [self blockSite:post];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
