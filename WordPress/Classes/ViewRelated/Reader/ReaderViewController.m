@@ -105,19 +105,7 @@
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
     navigationItem.rightBarButtonItem = button;
     
-    // Read It Later button
-    UIImage *readItLaterImage = [UIImage imageNamed:@"icon-reader-topics"];
-    CustomHighlightButton *readItLaterButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
-    readItLaterButton.tintColor = [WPStyleGuide navbarButtonTintColor];
-    [readItLaterButton setImage:readItLaterImage forState:UIControlStateNormal];
-    readItLaterButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    [readItLaterButton addTarget:self action:@selector(readItLaterAction:) forControlEvents:UIControlEventTouchUpInside];
-    
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc] initWithCustomView:readItLaterButton];
-    [button setAccessibilityLabel:NSLocalizedString(@"Read It Later", @"Accessibility label for the read it later button. The user does not see this text but it can be spoken by a screen reader.")];
-
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:navigationItem];
-    [WPStyleGuide setLeftBarButtonItemWithCorrectSpacing:leftButton forNavigationItem:navigationItem];
 }
 
 - (void)configurePostsViewController
@@ -199,32 +187,11 @@
     [self presentViewController:navController animated:YES completion:nil];
 }
 
-- (void)readItLaterAction:(id)sender
-{
-    [self toggleIsInReadItLaterMode];
-    
-    if (self.postsViewController.isInReadItLaterMode) {
-        self.title = NSLocalizedString(@"Read It Later", @"Description of the Reader tab in Read It Later Mode");
-        [self.postsViewController readerDidEnterReadItLaterMode];
-    } else {
-        [self readerTopicDidChange:nil];
-        [self.postsViewController readerTopicDidChange];
-    }
-
-}
-
 #pragma mark - Scrollable Controller
 
 - (void)scrollViewToTop
 {
     [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
-}
-
-#pragma mark - Private Helper Methods
-
-- (void)toggleIsInReadItLaterMode
-{
-    self.postsViewController.isInReadItLaterMode = !self.postsViewController.isInReadItLaterMode;
 }
 
 @end

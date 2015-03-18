@@ -454,12 +454,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self readerTopicDidChange];
 }
 
-- (void)readerDidEnterReadItLaterMode
-{
-    self.title = NSLocalizedString(@"Read It Later", @"Description of the Reader tab in Read It Later Mode");
-    [self updateReaderTableView];
-}
-
 - (void)readerTopicDidChange
 {
     [self updateTitle];
