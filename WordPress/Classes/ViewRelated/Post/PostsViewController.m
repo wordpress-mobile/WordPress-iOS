@@ -101,7 +101,6 @@
         [self.tableView setContentOffset:CGPointZero animated:NO];
         self.addingNewPost = NO;
     }
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -115,6 +114,15 @@
 
 #pragma mark -
 #pragma mark Syncs methods
+
+- (void)automaticallyRefreshIfAppropriate
+{
+    AbstractPost *apost = [self.resultsController.fetchedObjects firstObject];
+    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
+        return;
+    }
+    [super automaticallyRefreshIfAppropriate];
+}
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingPosts;

@@ -145,4 +145,10 @@
  */
 - (void)resetResultsController;
 
+/**
+ Checks to see if a refresh should occur. Subclasses may override to apply additional
+ logic, and then call the super to trigger the sync (if appropriate).
+ */
+- (void)automaticallyRefreshIfAppropriate;
+
 @end
