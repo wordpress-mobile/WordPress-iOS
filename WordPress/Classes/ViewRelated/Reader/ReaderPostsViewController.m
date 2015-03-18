@@ -1193,22 +1193,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     ReaderPost *post = [self postFromCellSubview:sender];
     self.postForMenuActionSheet = post;
 
-    NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
-    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:cancel
-                                               destructiveButtonTitle:blockSite
-                                                    otherButtonTitles:nil, nil];
-    if ([UIDevice isPad]) {
-        UIView *view = (UIView *)sender;
-        [actionSheet showFromRect:view.bounds inView:view animated:YES];
-    } else {
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-    }
-
-    self.actionSheet = actionSheet;
+    self.actionSheet = [self actionSheetForAccount:sender];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -1293,6 +1278,40 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (self.contextForSync) {
         [self saveContextForSync];
     }
+}
+
+#pragma mark - Private Helper Methods
+
+- (UIActionSheet *)actionSheetForAccount:(id)sender
+{
+    NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
+    NSString *readItLater = NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
+    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
+    
+    UIActionSheet *actionSheet;
+    
+    if (self.hasWPComAccount) {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                  delegate:self
+                                         cancelButtonTitle:cancel
+                                    destructiveButtonTitle:blockSite
+                                         otherButtonTitles:readItLater, nil];
+    } else {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                  delegate:self
+                                         cancelButtonTitle:cancel
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:readItLater, nil];
+    }
+    
+    if ([UIDevice isPad]) {
+        UIView *view = (UIView *)sender;
+        [actionSheet showFromRect:view.bounds inView:view animated:YES];
+    } else {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
+    }
+    
+    return actionSheet;
 }
 
 @end

@@ -168,13 +168,15 @@
 - (void)configureAttributionView
 {
     [super configureAttributionView];
-    [self.attributionView selectAttributionButton:self.post.isFollowing];
-
-    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
-
-    BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
-    [self.attributionView hideAttributionMenu:hide];
+    [self configureFollowAttributeButton];
 }
+
+- (void)configureFollowAttributeButton
+{
+    [self.attributionView selectAttributionButton:self.post.isFollowing];
+    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
+}
+
 
 - (void)buildAttributionView
 {
