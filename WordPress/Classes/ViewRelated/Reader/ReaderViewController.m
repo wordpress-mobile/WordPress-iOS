@@ -201,17 +201,30 @@
 
 - (void)readItLaterAction:(id)sender
 {
-    self.postsViewController.isInReadItLaterMode = !self.postsViewController.isInReadItLaterMode;
+    [self toggleIsInReadItLaterMode];
     
-    [self.postsViewController readerTopicDidChange];
-}
+    if (self.postsViewController.isInReadItLaterMode) {
+        self.title = NSLocalizedString(@"Read It Later", @"Description of the Reader tab in Read It Later Mode");
+        [self.postsViewController readerDidEnterReadItLaterMode];
+    } else {
+        [self readerTopicDidChange:nil];
+        [self.postsViewController readerTopicDidChange];
+    }
 
+}
 
 #pragma mark - Scrollable Controller
 
 - (void)scrollViewToTop
 {
     [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+}
+
+#pragma mark - Private Helper Methods
+
+- (void)toggleIsInReadItLaterMode
+{
+    self.postsViewController.isInReadItLaterMode = !self.postsViewController.isInReadItLaterMode;
 }
 
 @end

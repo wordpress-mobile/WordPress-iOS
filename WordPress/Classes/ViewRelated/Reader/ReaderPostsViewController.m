@@ -454,20 +454,30 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self readerTopicDidChange];
 }
 
+- (void)readerDidEnterReadItLaterMode
+{
+    self.title = NSLocalizedString(@"Read It Later", @"Description of the Reader tab in Read It Later Mode");
+    [self updateReaderTableView];
+}
+
 - (void)readerTopicDidChange
 {
     [self updateTitle];
-
-    [self.tableView setContentOffset:CGPointZero animated:NO];
-    [self.tableViewHandler clearCachedRowHeights];
-    [self updateAndPerformFetchRequest];
-    [self.tableView reloadData];
-    [self syncItemsWithUserInteraction:NO];
+    [self updateReaderTableView];
 
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTopicFreshlyPressed]) {
         [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
     }
+}
+
+- (void)updateReaderTableView
+{
+    [self.tableView setContentOffset:CGPointZero animated:NO];
+    [self.tableViewHandler clearCachedRowHeights];
+    [self updateAndPerformFetchRequest];
+    [self.tableView reloadData];
+    [self syncItemsWithUserInteraction:NO];
 }
 
 - (void)updateTitle

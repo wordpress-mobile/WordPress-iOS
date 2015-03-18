@@ -15,5 +15,7 @@ typedef NS_ENUM(NSUInteger, ReaderViewStyle) {
 @property (nonatomic) BOOL isInReadItLaterMode;
 
 - (void)setTableHeaderView:(UIView *)view;
+- (void)readerDidEnterReadItLaterMode;
 - (void)readerTopicDidChange;
+
 @end
