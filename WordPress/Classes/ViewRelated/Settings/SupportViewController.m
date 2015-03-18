@@ -347,7 +347,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[WordPressAppDelegate sharedWordPressApplicationDelegate].analytics isTrackingUsage];
+            aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
         } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -430,7 +430,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
         [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
     } else {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate].analytics setTrackingUsage:aSwitch.on];
+        [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }
 }
 
