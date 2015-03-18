@@ -102,6 +102,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         _syncHelper.delegate = self;
 
         _postIDsForUndoBlockCells = [NSMutableArray array];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
     }
     return self;
 }
@@ -205,6 +207,15 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }
 
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+}
+
+
+#pragma mark - Notifications
+
+- (void)didChangeAccount:(NSNotification *)notification
+{
+    [self checkWPComAccountExists];
+    [self.tableView reloadData];
 }
 
 
@@ -961,8 +972,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.readerTopic.type != ReaderTopicTypeList)) ? YES : NO;
-    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
-    cell.postView.canShowActionButtons = self.hasWPComAccount;
+    cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
+    cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
     cell.postView.shouldHideReblogButton = !self.hasVisibleWPComAccount;
     [cell configureCell:post];

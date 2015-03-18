@@ -31,7 +31,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
-    self.shouldShowActionButtons = (post.isWPCom && self.canShowActionButtons);
+    self.shouldShowActionButtons = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -66,7 +66,6 @@
 
 - (void)buildActionButtons
 {
-    self.canShowActionButtons = YES;
     self.shouldShowAttributionButton = YES;
 
     // Action buttons
@@ -102,12 +101,12 @@
         [actionButtons addObject:self.likeButton];
     }
 
-    if (self.post.commentsOpen && !self.shouldHideComments) {
+    if (!self.shouldHideComments && (self.post.commentsOpen || [self.post.commentCount integerValue] > 0)) {
         [actionButtons addObject:self.commentButton];
     }
 
     // Reblogging just for non private blogs
-    if (![self privateContent]) {
+    if (![self privateContent] && self.shouldEnableLoggedinFeatures) {
         [actionButtons addObject:self.reblogButton];
     }
 
@@ -153,6 +152,9 @@
 
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
+
+    // Enable/Disable like button. Set userInteractionEnabled to avoid the default disabled tint. 
+    self.likeButton.userInteractionEnabled = self.shouldEnableLoggedinFeatures;
 }
 
 - (void)configureAttributionView

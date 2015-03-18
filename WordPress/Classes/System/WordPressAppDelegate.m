@@ -74,13 +74,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) Reachability                   *wpcomReachability;
 @property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
-@property (nonatomic, assign, readwrite) BOOL                           wpcomAvailable;
-@property (nonatomic, assign, readwrite) BOOL                           listeningForBlogChanges;
 @property (nonatomic, strong, readwrite) NSDate                         *applicationOpenedTime;
 
 /**
@@ -122,6 +119,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Start Simperium
     [self loginSimperium];
 
+    // Local Notifications
+    [self listenLocalNotifications];
+    
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
     [self toggleExtraDebuggingIfNeeded];
@@ -164,7 +164,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-    [self trackLowMemory];
     
     // Push notifications
     [NotificationsManager registerForPushNotifications];
@@ -595,6 +594,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
     
+    [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
@@ -656,15 +656,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }];
 }
 
-- (void)trackLowMemory
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(lowMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-}
-
-- (void)lowMemoryWarning:(NSNotification *)notification
-{
-    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
-}
 
 #pragma mark - Application directories
 
@@ -682,28 +673,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
-#pragma mark - Notifications
-
-- (void)defaultAccountDidChange:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    [Crashlytics setUserName:[defaultAccount username]];
-    [self setCommonCrashlyticsParameters];
-
-    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
-}
-
 #pragma mark - Crash reporting
 
 - (void)configureCrashlytics
 {
-#if DEBUG
-    return;
-#endif
-#ifdef INTERNAL_BUILD
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
 
@@ -714,18 +688,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
     [[Crashlytics sharedInstance] setDelegate:self];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    BOOL hasCredentials = (defaultAccount != nil);
     [self setCommonCrashlyticsParameters];
-
-    if (hasCredentials && [defaultAccount username] != nil) {
-        [Crashlytics setUserName:[defaultAccount username]];
-    }
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(defaultAccountDidChange:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
 }
 
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
@@ -740,12 +703,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setCommonCrashlyticsParameters
 {
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
+    return;
+#endif
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     BOOL loggedIn = defaultAccount != nil;
+    [Crashlytics setUserName:defaultAccount.username];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
     [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
     [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
@@ -897,58 +865,25 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)setupReachability
 {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-    // Set the wpcom availability to YES to avoid issues with lazy reachibility notifier
-    self.wpcomAvailable = YES;
-    // Same for general internet connection
-    self.connectionAvailable = YES;
-
-    // allocate the internet reachability object
+    // Setup Reachability
     self.internetReachability = [Reachability reachabilityForInternetConnection];
 
-    // set the blocks
+    __weak __typeof(self) weakSelf = self;
+    
     void (^internetReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
         NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
         NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
 
         DDLogInfo(@"Reachability - Internet - WiFi: %@  WWAN: %@", wifi, wwan);
-        self.connectionAvailable = reach.isReachable;
+        weakSelf.connectionAvailable = reach.isReachable;
     };
     self.internetReachability.reachableBlock = internetReachabilityBlock;
     self.internetReachability.unreachableBlock = internetReachabilityBlock;
 
-    // start the notifier which will cause the reachability object to retain itself!
+    // Start the Notifier
     [self.internetReachability startNotifier];
+    
     self.connectionAvailable = [self.internetReachability isReachable];
-
-    // allocate the WP.com reachability object
-    self.wpcomReachability = [Reachability reachabilityWithHostname:@"wordpress.com"];
-
-    // set the blocks
-    void (^wpcomReachabilityBlock)(Reachability *) = ^(Reachability *reach) {
-        NSString *wifi = reach.isReachableViaWiFi ? @"Y" : @"N";
-        NSString *wwan = reach.isReachableViaWWAN ? @"Y" : @"N";
-        CTTelephonyNetworkInfo *netInfo = [CTTelephonyNetworkInfo new];
-        CTCarrier *carrier = [netInfo subscriberCellularProvider];
-        NSString *type = nil;
-        if ([netInfo respondsToSelector:@selector(currentRadioAccessTechnology)]) {
-            type = [netInfo currentRadioAccessTechnology];
-        }
-        NSString *carrierName = nil;
-        if (carrier) {
-            carrierName = [NSString stringWithFormat:@"%@ [%@/%@/%@]", carrier.carrierName, [carrier.isoCountryCode uppercaseString], carrier.mobileCountryCode, carrier.mobileNetworkCode];
-        }
-
-        DDLogInfo(@"Reachability - WordPress.com - WiFi: %@  WWAN: %@  Carrier: %@  Type: %@", wifi, wwan, carrierName, type);
-        self.wpcomAvailable = reach.isReachable;
-    };
-    self.wpcomReachability.reachableBlock = wpcomReachabilityBlock;
-    self.wpcomReachability.unreachableBlock = wpcomReachabilityBlock;
-
-    // start the notifier which will cause the reachability object to retain itself!
-    [self.wpcomReachability startNotifier];
-#pragma clang diagnostic pop
 }
 
 #pragma mark - Simperium
@@ -1204,11 +1139,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)toggleExtraDebuggingIfNeeded
 {
-    if (!_listeningForBlogChanges) {
-        _listeningForBlogChanges = YES;
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleDefaultAccountChangedNotification:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-    }
-
     if ([self noBlogsAndNoWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
@@ -1238,9 +1168,24 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
 }
 
-#pragma mark - Notifications
+#pragma mark - Local Notifications Helpers
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
+- (void)listenLocalNotifications
+{
+    NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleDefaultAccountChangedNote:)
+                               name:WPAccountDefaultWordPressComAccountChangedNotification
+                             object:nil];
+    
+    [notificationCenter addObserver:self
+                           selector:@selector(handleLowMemoryWarningNote:)
+                               name:UIApplicationDidReceiveMemoryWarningNotification
+                             object:nil];
+}
+
+- (void)handleDefaultAccountChangedNote:(NSNotification *)notification
 {
     // If the notification object is not nil, then it's a login
     if (notification.object) {
@@ -1265,8 +1210,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     [self toggleExtraDebuggingIfNeeded];
+    [self setCommonCrashlyticsParameters];
     [self setupSingleSignOn];
+    
+    [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
 }
+
+- (void)handleLowMemoryWarningNote:(NSNotification *)notification
+{
+    [WPAnalytics track:WPAnalyticsStatLowMemoryWarning];
+}
+
 
 #pragma mark - Today Extension
 
