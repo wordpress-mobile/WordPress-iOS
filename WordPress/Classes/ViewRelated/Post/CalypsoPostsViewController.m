@@ -449,7 +449,6 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     }
 
     [self viewPost:post];
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
