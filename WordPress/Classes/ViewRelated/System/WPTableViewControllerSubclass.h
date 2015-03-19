@@ -145,4 +145,9 @@
  */
 - (void)resetResultsController;
 
+/**
+ Checks to see if a refresh should occur. 
+ */
+- (BOOL)userCanRefresh;
+
 @end
