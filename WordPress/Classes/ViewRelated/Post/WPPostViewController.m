@@ -1682,20 +1682,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-- (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
+- (void)uploadMedia:(Media *)media trackingId:(NSString *)imageUniqueId
 {
-    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
-    
-    NSProgress * progress = self.mediaInProgress[imageUniqueId];
-    if (!progress) {
-        return;
-    }
-    Media * media = progress.userInfo[WPProgressMedia];
-    if (!media) {
-        return;
-    }
-    [self prepareMediaProgressForNumberOfAssets:1];
-    
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
@@ -1711,7 +1699,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             [self.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
-        }        
+        }
     }];
     [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
@@ -1719,21 +1707,40 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaGlobalProgress resignCurrent];
 }
 
-- (void)addMediaAssets:(NSArray *)assets {
+- (void)retryUploadOfMediaWithId:(NSString *)imageUniqueId
+{
+    [WPAnalytics track:WPAnalyticsStatEditorUploadMediaRetried];
+
+    NSProgress *progress = self.mediaInProgress[imageUniqueId];
+    if (!progress) {
+        return;
+    }
     
+    Media *media = progress.userInfo[WPProgressMedia];
+    if (!media) {
+        return;
+    }
+    
+    [self prepareMediaProgressForNumberOfAssets:1];
+    [self uploadMedia:media trackingId:imageUniqueId];
+}
+
+- (void)addMediaAssets:(NSArray *)assets
+{
+
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-    
+
     for (ALAsset *asset in assets) {
         if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
             // Could handle videos here
         } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
             MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             __weak __typeof__(self) weakSelf = self;
-            NSString* imageUniqueId = [self uniqueIdForMedia];
+            NSString *imageUniqueId = [self uniqueIdForMedia];
             NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
             createMediaProgress.totalUnitCount = 2;
             [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
                 __typeof__(self) strongSelf = weakSelf;
                 if (!strongSelf) {
                     return;
@@ -1746,35 +1753,11 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
                 [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
                 
-                [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
-                NSProgress *uploadProgress = nil;
-                [mediaService uploadMedia:media progress:&uploadProgress success:^{
-                    [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
-                    [strongSelf.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
-                } failure:^(NSError *error) {
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
-                        [strongSelf.editorView removeImage:imageUniqueId];
-                        [strongSelf autosaveContent];
-                        [media remove];
-                    } else {
-                        [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
-                        [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
-                        strongSelf.mediaGlobalProgress.completedUnitCount++;
-                        [strongSelf.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];                            
-                    }
-                    [strongSelf refreshNavigationBarButtons:NO];
-                }];
-                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
-                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
-                [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
-                [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
-                [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
-                [strongSelf.mediaGlobalProgress resignCurrent];
+                [self uploadMedia:media trackingId:imageUniqueId];
             }];
         }
     }
-    
+
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
