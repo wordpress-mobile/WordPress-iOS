@@ -34,6 +34,15 @@
     self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
 }
 
+- (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
+{
+    // Don't respond to taps in margins.
+    if (!CGRectContainsPoint(self.postContentView.frame, point)) {
+        return nil;
+    }
+    return [super hitTest:point withEvent:event];
+}
+
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGFloat innerWidth = [self innerWidthForSize:size];
