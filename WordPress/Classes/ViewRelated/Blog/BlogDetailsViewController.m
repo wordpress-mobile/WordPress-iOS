@@ -158,11 +158,6 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
                                                                   attribute:NSLayoutAttributeCenterX
                                                                  multiplier:1.f
                                                                    constant:0.f]];
-        // Then, horizontally constrain the headerWrapper
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[headerWrapper]-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
         
     } else {
         // Pin the headerWrapper to its superview AND wrap the headerView in horizontal margins
