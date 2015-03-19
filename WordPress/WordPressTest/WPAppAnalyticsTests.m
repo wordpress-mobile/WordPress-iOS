@@ -145,7 +145,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 - (void)testIsTrackingUsage
 {
-    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedInstance].analytics;
     
     [analytics setTrackingUsage:YES];
     
@@ -154,7 +154,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 - (void)testIsNotTrackingUsage
 {
-    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedInstance].analytics;
     
     [analytics setTrackingUsage:NO];
     
