@@ -9,7 +9,7 @@
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
 
-SpecBegin(LoginViewModelTests)
+SpecBegin(LoginViewModel)
 
 __block LoginViewModel *viewModel;
 __block id mockViewModelDelegate;
