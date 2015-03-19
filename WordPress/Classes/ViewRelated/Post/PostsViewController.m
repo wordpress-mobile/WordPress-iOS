@@ -115,13 +115,13 @@
 #pragma mark -
 #pragma mark Syncs methods
 
-- (void)automaticallyRefreshIfAppropriate
+- (BOOL)userCanRefresh
 {
     AbstractPost *apost = [self.resultsController.fetchedObjects firstObject];
     if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
-        return;
+        return NO;
     }
-    [super automaticallyRefreshIfAppropriate];
+    return [super userCanRefresh];
 }
 
 - (BOOL)isSyncing {
