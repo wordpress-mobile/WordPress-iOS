@@ -79,12 +79,17 @@
 - (CGFloat)innerWidthForSize:(CGSize)size
 {
     CGFloat width = 0.0;
-    if (self.maxIPadWidthConstraint.isActive) {
+    CGFloat horizontalMargin = CGRectGetMinX(self.headerView.frame);
+    // FIXME: Ideally we'd check `self.maxIPadWidthConstraint.isActive` but that
+    // property is iOS 8 only. When iOS 7 support is ended update this and check
+    // the constraint. 
+    if ([UIDevice isPad]) {
         width = self.maxIPadWidthConstraint.constant;
     } else {
-        CGFloat horizontalMargin = CGRectGetMinX(self.postContentView.frame) + CGRectGetMinX(self.headerView.frame);
-        width = size.width - (horizontalMargin * 2.0);
+        width = size.width;
+        horizontalMargin += CGRectGetMinX(self.postContentView.frame);
     }
+    width -= (horizontalMargin * 2);
     return width;
 }
 
