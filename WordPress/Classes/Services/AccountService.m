@@ -1,6 +1,6 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-#import "NotificationsManager.h"
+#import "RemoteNotificationsManager.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAnalyticsTrackerMixpanel.h"
@@ -92,7 +92,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
 
-        [NotificationsManager registerForPushNotifications];
+        [RemoteNotificationsManager registerForPushNotifications];
     });
 }
 
@@ -104,7 +104,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (void)removeDefaultWordPressComAccount
 {
-    [NotificationsManager unregisterDeviceToken];
+    [RemoteNotificationsManager unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account) {

@@ -15,7 +15,7 @@
 #import "ContextManager.h"
 #import "Media.h"
 #import "Notification.h"
-#import "NotificationsManager.h"
+#import "RemoteNotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "NSString+HTML.h"
 #import "PocketAPI.h"
@@ -148,7 +148,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self customizeAppearance];
     
     // Push notifications
-    [NotificationsManager registerForPushNotifications];
+    [RemoteNotificationsManager registerForPushNotifications];
 
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -178,7 +178,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     // Launched by tapping a notification
     if (application.applicationState == UIApplicationStateActive) {
-        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+        [RemoteNotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
 
     [self.window makeKeyAndVisible];
@@ -406,33 +406,33 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [NotificationsManager registerDeviceToken:deviceToken];
+    [RemoteNotificationsManager registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [NotificationsManager registrationDidFail:error];
+    [RemoteNotificationsManager registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogMethod();
 
-    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
+    [RemoteNotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
 
-    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
+    [RemoteNotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    [RemoteNotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
     
     completionHandler();
 }

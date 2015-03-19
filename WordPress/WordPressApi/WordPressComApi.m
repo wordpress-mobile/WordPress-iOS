@@ -4,7 +4,7 @@
 #import <UIDeviceHardware.h>
 #import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
-#import "NotificationsManager.h"
+#import "RemoteNotificationsManager.h"
 
 static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";

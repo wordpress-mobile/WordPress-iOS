@@ -24,7 +24,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
-#import "NotificationsManager.h"
+#import "RemoteNotificationsManager.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPImageOptimizer.h"
