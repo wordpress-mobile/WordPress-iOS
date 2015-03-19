@@ -146,9 +146,8 @@
 - (void)resetResultsController;
 
 /**
- Checks to see if a refresh should occur. Subclasses may override to apply additional
- logic, and then call the super to trigger the sync (if appropriate).
+ Checks to see if a refresh should occur. 
  */
-- (void)automaticallyRefreshIfAppropriate;
+- (BOOL)userCanRefresh;
 
 @end
