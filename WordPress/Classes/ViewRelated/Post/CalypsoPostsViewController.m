@@ -131,11 +131,18 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
 }
 
+
 #pragma mark - Configuration
 
 - (void)configureCellForLayout
 {
     self.cellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+    // Force a layout pass to ensure that constrants are configured for the
+    // proper size class.
+    [self.view addSubview:self.cellForLayout];
+    [self.cellForLayout updateConstraintsIfNeeded];
+    [self.cellForLayout layoutIfNeeded];
+    [self.cellForLayout removeFromSuperview];
 }
 
 - (void)configureTableView
@@ -251,6 +258,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
+
 
 #pragma mark - Syncing
 
@@ -484,6 +492,5 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
-
 
 @end
