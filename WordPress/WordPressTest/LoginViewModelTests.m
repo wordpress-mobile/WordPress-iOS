@@ -6,40 +6,49 @@
 #import "ReachabilityService.h"
 #import "LoginService.h"
 #import "WordPressComOAuthClientService.h"
+#import "AccountCreationService.h"
+#import "BlogSyncService.h"
 
 SpecBegin(LoginViewModelTests)
 
 __block LoginViewModel *viewModel;
-__block id mockDelegate;
+__block id mockViewModelDelegate;
 __block id mockReachabilityService;
 __block id mockLoginService;
 __block id mockLoginServiceDelegate;
 __block id mockOAuthService;
+__block id mockAccountCreationService;
+__block id mockBlogSyncService;
+
 beforeEach(^{
-    mockDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
+    mockViewModelDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
     mockReachabilityService = [OCMockObject niceMockForProtocol:@protocol(ReachabilityService)];
     mockLoginService = [OCMockObject niceMockForProtocol:@protocol(LoginService)];
     mockLoginServiceDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginServiceDelegate)];
     mockOAuthService = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientService)];
+    mockAccountCreationService = [OCMockObject niceMockForProtocol:@protocol(AccountCreationService)];
+    mockBlogSyncService = [OCMockObject niceMockForProtocol:@protocol(BlogSyncService)];
     [OCMStub([mockLoginService wordpressComOAuthClientService]) andReturn:mockOAuthService];
     [OCMStub([mockLoginService delegate]) andReturn:mockLoginServiceDelegate];
     
     viewModel = [LoginViewModel new];
     viewModel.loginService = mockLoginService;
     viewModel.reachabilityService = mockReachabilityService;
-    viewModel.delegate = mockDelegate;
+    viewModel.delegate = mockViewModelDelegate;
+    viewModel.accountCreationService = mockAccountCreationService;
+    viewModel.blogSyncService = mockBlogSyncService;
 });
 
 describe(@"authenticating", ^{
     
     it(@"should call the delegate's showActivityIndicator method when the value changes", ^{
-        [[mockDelegate expect] showActivityIndicator:YES];
+        [[mockViewModelDelegate expect] showActivityIndicator:YES];
         viewModel.authenticating = YES;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
         
-        [[mockDelegate expect] showActivityIndicator:NO];
+        [[mockViewModelDelegate expect] showActivityIndicator:NO];
         viewModel.authenticating = NO;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
 });
@@ -49,42 +58,42 @@ describe(@"shouldDisplayMultifactor", ^{
     context(@"when it's true", ^{
         
         it(@"should set the username's alpha to 0.5", ^{
-            [[mockDelegate expect] setUsernameAlpha:0.5];
+            [[mockViewModelDelegate expect] setUsernameAlpha:0.5];
             viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should set the password's alpha to 0.5", ^{
-            [[mockDelegate expect] setPasswordAlpha:0.5];
+            [[mockViewModelDelegate expect] setPasswordAlpha:0.5];
             viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should set multifactor's alpha to 1.0", ^{
-            [[mockDelegate expect] setMultiFactorAlpha:1.0];
+            [[mockViewModelDelegate expect] setMultiFactorAlpha:1.0];
             viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
     context(@"when it's false", ^{
         
         it(@"it should set the username's alpha to 1.0", ^{
-            [[mockDelegate expect] setUsernameAlpha:1.0];
+            [[mockViewModelDelegate expect] setUsernameAlpha:1.0];
             viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should set the password's alpha to 1.0", ^{
-            [[mockDelegate expect] setPasswordAlpha:1.0];
+            [[mockViewModelDelegate expect] setPasswordAlpha:1.0];
             viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should set multifactor's alpha to 0.0", ^{
-            [[mockDelegate expect] setMultiFactorAlpha:0.0];
+            [[mockViewModelDelegate expect] setMultiFactorAlpha:0.0];
             viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
 });
@@ -93,17 +102,17 @@ describe(@"isUsernameEnabled", ^{
     
     context(@"when it's true", ^{
         it(@"should enable the username text field", ^{
-            [[mockDelegate expect] setUsernameEnabled:YES];
+            [[mockViewModelDelegate expect] setUsernameEnabled:YES];
             viewModel.isUsernameEnabled = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
     context(@"when it's false", ^{
         it(@"should disable the username text field" , ^{
-            [[mockDelegate expect] setUsernameEnabled:NO];
+            [[mockViewModelDelegate expect] setUsernameEnabled:NO];
             viewModel.isUsernameEnabled = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
@@ -126,18 +135,18 @@ describe(@"isPasswordEnabled", ^{
     context(@"when it's true", ^{
         
         it(@"should enable the password text field", ^{
-            [[mockDelegate expect] setPasswordEnabled:YES];
+            [[mockViewModelDelegate expect] setPasswordEnabled:YES];
             viewModel.isPasswordEnabled = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
     context(@"when it's false", ^{
         
         it(@"should disable the password text field" , ^{
-            [[mockDelegate expect] setPasswordEnabled:NO];
+            [[mockViewModelDelegate expect] setPasswordEnabled:NO];
             viewModel.isPasswordEnabled = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
@@ -158,15 +167,15 @@ describe(@"isPasswordEnabled", ^{
 describe(@"isSiteUrlEnabled", ^{
     
     it(@"when it's true it should enable the site url field", ^{
-        [[mockDelegate expect] setSiteUrlEnabled:YES];
+        [[mockViewModelDelegate expect] setSiteUrlEnabled:YES];
         viewModel.isSiteUrlEnabled = YES;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should disable the site url field", ^{
-        [[mockDelegate expect] setSiteUrlEnabled:NO];
+        [[mockViewModelDelegate expect] setSiteUrlEnabled:NO];
         viewModel.isSiteUrlEnabled = NO;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     context(@"depdendency on isUserDotCom", ^{
@@ -186,15 +195,15 @@ describe(@"isSiteUrlEnabled", ^{
 describe(@"isMultifactorEnabled", ^{
     
     it(@"when it's true it should enable the multifactor text field", ^{
-        [[mockDelegate expect] setMultifactorEnabled:YES];
+        [[mockViewModelDelegate expect] setMultifactorEnabled:YES];
         viewModel.isMultifactorEnabled = YES;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should disable the multifactor text field", ^{
-        [[mockDelegate expect] setMultifactorEnabled:NO];
+        [[mockViewModelDelegate expect] setMultifactorEnabled:NO];
         viewModel.isMultifactorEnabled = NO;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     context(@"dependency on shouldDisplayMultifactor", ^{
@@ -214,15 +223,15 @@ describe(@"isMultifactorEnabled", ^{
 describe(@"cancellable", ^{
     
     it(@"when it's true it should display the cancel button", ^{
-        [[mockDelegate expect] setCancelButtonHidden:NO];
+        [[mockViewModelDelegate expect] setCancelButtonHidden:NO];
         viewModel.cancellable = YES;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should hide the cancel button", ^{
-        [[mockDelegate expect] setCancelButtonHidden:YES];
+        [[mockViewModelDelegate expect] setCancelButtonHidden:YES];
         viewModel.cancellable = NO;
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
 });
 
@@ -237,25 +246,25 @@ describe(@"forgot password button's visibility", ^{
         context(@"who is authenticating", ^{
         
             it(@"should not be visible", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
                 viewModel.authenticating = YES;
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
         
         context(@"who isn't authenticating", ^{
             
             it(@"should be visible", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:NO];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:NO];
                 viewModel.authenticating = NO;
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should not be visibile if multifactor auth controls are visible", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
                 viewModel.isMultifactorEnabled = YES;
                 viewModel.authenticating = NO;
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
     });
@@ -269,22 +278,22 @@ describe(@"forgot password button's visibility", ^{
             });
             
             it(@"should not be visible if a url is not present", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
                 viewModel.siteUrl = @"";
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             
             it(@"should be visible if a url is present", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:NO];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:NO];
                 viewModel.siteUrl = @"http://www.selfhosted.com";
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should not be visible if multifactor controls are visible", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
                 viewModel.isMultifactorEnabled = YES;
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
         
@@ -295,9 +304,9 @@ describe(@"forgot password button's visibility", ^{
             });
             
             it(@"should not be visible if a url is present", ^{
-                [[mockDelegate expect] setForgotPasswordHidden:YES];
+                [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
                 viewModel.siteUrl = @"http://www.selfhosted.com";
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
     });
@@ -308,34 +317,34 @@ describe(@"skipToCreateAccountButton visibility", ^{
     context(@"when authenticating", ^{
         
         it(@"should not be visible if the user has an account", ^{
-            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
             viewModel.authenticating = YES;
             viewModel.hasDefaultAccount = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if the user doesn't have an account", ^{
-            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
             viewModel.authenticating = YES;
             viewModel.hasDefaultAccount = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
     context(@"when not authenticating", ^{
         
         it(@"should not be visible if the user has an account", ^{
-            [[mockDelegate expect] setAccountCreationButtonHidden:YES];
+            [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
             viewModel.authenticating = NO;
             viewModel.hasDefaultAccount = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should be visible if the user doesn't have an account", ^{
-            [[mockDelegate expect] setAccountCreationButtonHidden:NO];
+            [[mockViewModelDelegate expect] setAccountCreationButtonHidden:NO];
             viewModel.authenticating = NO;
             viewModel.hasDefaultAccount = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
 });
@@ -353,11 +362,11 @@ describe(@"signInButtonTitle", ^{
         });
         
         it(@"should set the sign in button title to 'Verify'", ^{
-            [[mockDelegate expect] setSignInButtonTitle:@"Verify"];
+            [[mockViewModelDelegate expect] setSignInButtonTitle:@"Verify"];
             
             viewModel.shouldDisplayMultifactor = YES;
             
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should be 'Verify' even if user is a .com user", ^{
@@ -366,12 +375,12 @@ describe(@"signInButtonTitle", ^{
         });
         
         it(@"should set the sign in button title to 'Verify' even if the user is a .com user", ^{
-            [[mockDelegate expect] setSignInButtonTitle:@"Verify"];
+            [[mockViewModelDelegate expect] setSignInButtonTitle:@"Verify"];
             
             viewModel.shouldDisplayMultifactor = YES;
             viewModel.userIsDotCom = YES;
             
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
@@ -386,11 +395,11 @@ describe(@"signInButtonTitle", ^{
         });
         
         it(@"should set the sign in button title to 'Sign In' if user is a .com user", ^{
-            [[mockDelegate expect] setSignInButtonTitle:@"Sign In"];
+            [[mockViewModelDelegate expect] setSignInButtonTitle:@"Sign In"];
             
             viewModel.userIsDotCom = YES;
             
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should be 'Add Site' if user isn't a .com user", ^{
@@ -399,11 +408,11 @@ describe(@"signInButtonTitle", ^{
         });
         
         it(@"should set the sign in button title to 'Add Site' if user isn't a .com user", ^{
-            [[mockDelegate expect] setSignInButtonTitle:@"Add Site"];
+            [[mockViewModelDelegate expect] setSignInButtonTitle:@"Add Site"];
             
             viewModel.userIsDotCom = NO;
             
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
 });
@@ -423,30 +432,30 @@ describe(@"signInButton", ^{
             });
             
             it(@"should be disabled if username and password are blank", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.username = @"";
                 viewModel.password = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be disabled if password is blank", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.username = @"username";
                 viewModel.password = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be enabled if username and password are filled", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:YES];
                 
                 viewModel.username = @"username";
                 viewModel.password = @"password";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
         
@@ -458,19 +467,19 @@ describe(@"signInButton", ^{
             });
             
             it(@"should not be enabled if the multifactor code isn't entered", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.multifactorCode = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be enabled if the multifactor code is entered", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:YES];
                 
                 viewModel.multifactorCode = @"123456";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
     });
@@ -488,43 +497,43 @@ describe(@"signInButton", ^{
             });
             
             it(@"should be disabled if username, password and siteUrl are blank", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.username = @"";
                 viewModel.password = @"";
                 viewModel.siteUrl = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be disabled if password and siteUrl are blank", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.username = @"username";
                 viewModel.password = @"";
                 viewModel.siteUrl = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be disabled if siteUrl is blank", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.username = @"username";
                 viewModel.password = @"password";
                 viewModel.siteUrl = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be enabled if username, password and siteUrl are filled", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:YES];
                 
                 viewModel.username = @"username";
                 viewModel.password = @"password";
                 viewModel.siteUrl = @"http://www.selfhosted.com";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
         
@@ -537,19 +546,19 @@ describe(@"signInButton", ^{
             });
             
             it(@"should not be enabled if the multifactor code isn't entered", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:NO];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:NO];
                 
                 viewModel.multifactorCode = @"";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should be enabled if the multifactor code is entered", ^{
-                [[mockDelegate expect] setSignInButtonEnabled:YES];
+                [[mockViewModelDelegate expect] setSignInButtonEnabled:YES];
                 
                 viewModel.multifactorCode = @"123456";
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
     });
@@ -558,56 +567,56 @@ describe(@"signInButton", ^{
 describe(@"toggleSignInButtonTitle", ^{
     
     it(@"should set the title to 'Add Self-Hosted Site' for a .com user", ^{
-        [[mockDelegate expect] setToggleSignInButtonTitle:@"Add Self-Hosted Site"];
+        [[mockViewModelDelegate expect] setToggleSignInButtonTitle:@"Add Self-Hosted Site"];
         
         viewModel.userIsDotCom = YES;
        
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should set the title to 'Sign in to WordPress.com' for a self hosted user", ^{
-        [[mockDelegate expect] setToggleSignInButtonTitle:@"Sign in to WordPress.com"];
+        [[mockViewModelDelegate expect] setToggleSignInButtonTitle:@"Sign in to WordPress.com"];
         
         viewModel.userIsDotCom = NO;
        
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
 });
 
 describe(@"toggleSignInButton visibility", ^{
     
     it(@"should be hidden if onlyDotComAllowed is true", ^{
-        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        [[mockViewModelDelegate expect] setToggleSignInButtonHidden:YES];
         
         viewModel.onlyDotComAllowed = YES;
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should be hidden if hasDefaultAccount is true", ^{
-        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        [[mockViewModelDelegate expect] setToggleSignInButtonHidden:YES];
         
         viewModel.hasDefaultAccount = YES;
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should be hidden during authentication", ^{
-        [[mockDelegate expect] setToggleSignInButtonHidden:YES];
+        [[mockViewModelDelegate expect] setToggleSignInButtonHidden:YES];
         
         viewModel.authenticating = YES;;
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should be visible if onlyDotComAllowed, hasDefaultAccount, and authenticating are all false", ^{
-        [[mockDelegate expect] setToggleSignInButtonHidden:NO];
+        [[mockViewModelDelegate expect] setToggleSignInButtonHidden:NO];
         
         viewModel.onlyDotComAllowed = NO;
         viewModel.hasDefaultAccount = NO;
         viewModel.authenticating = NO;
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
 });
 
@@ -649,37 +658,37 @@ describe(@"signInButtonAction", ^{
             it(@"should display an error message if the username and password are blank", ^{
                 viewModel.username = @"";
                 viewModel.password = @"";
-                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate expect] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should display an error message if the username is blank", ^{
                 viewModel.username = @"";
-                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate expect] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should display an error message if the password is blank", ^{
                 viewModel.password = @"";
-                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate expect] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should not display an error message if the fields are filled", ^{
-                [[mockDelegate reject] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate reject] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
         
@@ -703,19 +712,19 @@ describe(@"signInButtonAction", ^{
                 viewModel.username = @"";
                 viewModel.password = @"";
                 viewModel.siteUrl = @"";
-                [[mockDelegate expect] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate expect] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
             
             it(@"should not display an error if the fields are filled", ^{
-                [[mockDelegate reject] displayErrorMessageForInvalidOrMissingFields];
+                [[mockViewModelDelegate reject] displayErrorMessageForInvalidOrMissingFields];
                 
                 [viewModel signInButtonAction];
                 
-                [mockDelegate verify];
+                [mockViewModelDelegate verify];
             });
         });
     });
@@ -741,38 +750,38 @@ describe(@"signInButtonAction", ^{
                 
                 NSString *testName = [NSString stringWithFormat:@"should display the error message if the username is '%@'", reservedName];
                 it(testName, ^{
-                    [[mockDelegate expect] displayReservedNameErrorMessage];
+                    [[mockViewModelDelegate expect] displayReservedNameErrorMessage];
                     
                     [viewModel signInButtonAction];
                     
-                    [mockDelegate verify];
+                    [mockViewModelDelegate verify];
                 });
                 
                 testName = [NSString stringWithFormat:@"should bring focus to siteUrlText if the username is '%@'", reservedName];
                 it(testName, ^{
-                    [[mockDelegate expect] setFocusToSiteUrlText];
+                    [[mockViewModelDelegate expect] setFocusToSiteUrlText];
                     
                     [viewModel signInButtonAction];
                     
-                    [mockDelegate verify];
+                    [mockViewModelDelegate verify];
                 });
                 
                 testName = [NSString stringWithFormat:@"should adjust passwordText's return key type to UIReturnKeyNext"];
                 it(testName, ^{
-                    [mockDelegate setPasswordTextReturnKeyType:UIReturnKeyNext];
+                    [mockViewModelDelegate setPasswordTextReturnKeyType:UIReturnKeyNext];
                     
                     [viewModel signInButtonAction];
                     
-                    [mockDelegate verify];
+                    [mockViewModelDelegate verify];
                 });
                 
                 testName = [NSString stringWithFormat:@"should reload the interface"];
                 it(testName, ^{
-                    [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+                    [[mockViewModelDelegate expect] reloadInterfaceWithAnimation:YES];
                     
                     [viewModel signInButtonAction];
                     
-                    [mockDelegate verify];
+                    [mockViewModelDelegate verify];
                 });
                 
             });
@@ -787,16 +796,306 @@ describe(@"signInButtonAction", ^{
                 NSString *testName = [NSString stringWithFormat:@"should not display the error message if the username is '%@'", reservedName];
                 it(testName, ^{
                     viewModel.username = reservedName;
-                    [[mockDelegate reject] displayReservedNameErrorMessage];
+                    [[mockViewModelDelegate reject] displayReservedNameErrorMessage];
                     
                     [viewModel signInButtonAction];
                     
-                    [mockDelegate verify];
+                    [mockViewModelDelegate verify];
+                });
+            });
+        }
+    });
+    
+    context(@"when all fields are valid", ^{
+        beforeEach(^{
+            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            
+            viewModel.username = @"username";
+            viewModel.password = @"password";
+            viewModel.siteUrl = @"http://www.selfhosted.com";
+        });
+        
+        context(@"for a .com user", ^{
+            
+            beforeEach(^{
+                viewModel.userIsDotCom = YES;
+            });
+            
+            it(@"should login", ^{
+                [[mockLoginService expect] signInWithLoginFields:OCMOCK_ANY];
+                
+                [viewModel signInButtonAction];
+                
+                [mockLoginService verify];
+            });
+        });
+        
+        context(@"for a self hosted user", ^{
+            beforeEach(^{
+                viewModel.userIsDotCom = NO;
+            });
+            
+            it(@"should login", ^{
+                [[mockLoginService expect] signInWithLoginFields:OCMOCK_ANY];
+                
+                [viewModel signInButtonAction];
+                
+                [mockLoginService verify];
+            });
+        });
+    });
+});
+
+describe(@"LoginServiceDelegate methods", ^{
+    
+    context(@"displayLoginMessage", ^{
+        
+        it(@"should be passed on to the LoginViewModelDelegate", ^{
+            [[mockViewModelDelegate expect] displayLoginMessage:@"Test"];
+            
+            [viewModel displayLoginMessage:@"Test"];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    context(@"needsMultifactorCode", ^{
+        
+        it(@"should result in the multifactor field being displayed", ^{
+            OCMExpect([viewModel displayMultifactorTextField]);
+            
+            [viewModel needsMultifactorCode];
+            
+            OCMVerify([viewModel displayMultifactorTextField]);
+        });
+        
+        it(@"should dismiss the login message", ^{
+            [[mockViewModelDelegate expect] dismissLoginMessage];
+            
+            [viewModel needsMultifactorCode];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    context(@"displayRemoteError:", ^{
+        
+        it(@"should be passed on to the LoginViewModelDelegate", ^{
+            [[mockViewModelDelegate expect] displayRemoteError:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:nil];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should dismiss the login message", ^{
+            [[mockViewModelDelegate expect] dismissLoginMessage];
+            
+            [viewModel displayRemoteError:nil];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    context(@"showJetpackAuthentication", ^{
+        
+        it(@"should be passed on to the LoginViewModelDelegate", ^{
+            [[mockViewModelDelegate expect] showJetpackAuthentication];
+            
+            [viewModel showJetpackAuthentication];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    context(@"finishedLoginWithUsername:authToken:shouldDisplayMultifactor:", ^{
+        
+        __block NSString *username;
+        __block NSString *authToken;
+        __block BOOL shouldDisplayMultifactor;
+        
+        beforeEach(^{
+            username = @"username";
+            authToken = @"authtoken";
+            shouldDisplayMultifactor = NO;
+        });
+        
+        it(@"should dismiss the login message", ^{
+            [[mockViewModelDelegate expect] dismissLoginMessage];
+            
+            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display a message about getting account information", ^{
+            [[mockViewModelDelegate expect] displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
+            
+            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should create a WPAccount for a .com site", ^{
+            [[mockAccountCreationService expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+            
+            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        context(@"the syncing of the newly added blogs", ^{
+            
+            it(@"should occur", ^{
+                [[mockBlogSyncService expect] syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
+                
+                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            context(@"when successful", ^{
+                
+                beforeEach(^{
+                    // Retrieve success block and execute it when appropriate
+                    [OCMStub([mockBlogSyncService syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                        void (^ __unsafe_unretained successStub)(void);
+                        [invocation getArgument:&successStub atIndex:3];
+                        
+                        successStub();
+                    }];
+                });
+                
+                it(@"should dismiss the login message", ^{
+                    [[mockViewModelDelegate expect] dismissLoginMessage];
+                    
+                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    
+                    [mockViewModelDelegate verify];
+                });
+                
+                it(@"should indicate dismiss the login view", ^{
+                    [[mockViewModelDelegate expect] dismissLoginView];
+                    
+                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    
+                    [mockViewModelDelegate verify];
+                });
+                
+                it(@"should update the email and default blog for the newly created account", ^{
+                    [[mockAccountCreationService expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
+                    
+                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    
+                    [mockAccountCreationService verify];
                 });
             });
             
-        }
+            context(@"when not successful", ^{
+                
+                __block NSError *error;
+                
+                beforeEach(^{
+                    // Retrieve failure block and execute it when appropriate
+                    [OCMStub([mockBlogSyncService syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                        void (^ __unsafe_unretained failureStub)(NSError *);
+                        [invocation getArgument:&failureStub atIndex:4];
+                        
+                        error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again starscream" }];
+                        failureStub(error);
+                    }];
+                });
+                
+                it(@"should dismiss the login message", ^{
+                    [[mockViewModelDelegate expect] dismissLoginMessage];
+                    
+                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    
+                    [mockViewModelDelegate verify];
+                });
+                
+                it(@"should display the error", ^{
+                    [[mockViewModelDelegate expect] displayRemoteError:error];
+                    
+                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    
+                    [mockViewModelDelegate verify];
+                });
+            });
+        });
     });
+
+    context(@"finishedLoginWithUsername:password:xmlrpc:options:", ^{
+        
+        __block NSString *username;
+        __block NSString *password;
+        __block NSString *xmlrpc;
+        __block NSDictionary *options;
+        
+        beforeEach(^{
+            username = @"username";
+            password = @"password";
+            xmlrpc = @"www.wordpress.com/xmlrpc.php";
+            options = @{};
+        });
+        
+        it(@"should dismiss the login message", ^{
+            [[mockViewModelDelegate expect] dismissLoginMessage];
+            
+            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should create a WPAccount for a self hosted site", ^{
+            [[mockAccountCreationService expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+            
+            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
+            
+            [mockAccountCreationService verify];
+        });
+        
+        it(@"should sync the newly added site", ^{
+            [[mockBlogSyncService expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY];
+            
+            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
+            
+            [mockBlogSyncService verify];
+        });
+        
+        it(@"should show jetpack authentication when the blog syncing service tells it to", ^{
+            [[mockViewModelDelegate expect] showJetpackAuthentication];
+            
+            // Retrieve jetpack block and execute it when appropriate
+            [OCMStub([mockBlogSyncService syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                void (^ __unsafe_unretained jetpackStub)(void);
+                [invocation getArgument:&jetpackStub atIndex:7];
+                
+                jetpackStub();
+            }];
+            
+            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should dismiss the login view", ^{
+            [[mockViewModelDelegate expect] dismissLoginView];
+            
+            // Retrieve finishedSync block and execute it when appropriate
+            [OCMStub([mockBlogSyncService syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                void (^ __unsafe_unretained finishedSyncStub)(void);
+                [invocation getArgument:&finishedSyncStub atIndex:8];
+                
+                finishedSyncStub();
+            }];
+            
+            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
 });
 
 describe(@"toggleSignInFormAction", ^{
@@ -821,28 +1120,28 @@ describe(@"toggleSignInFormAction", ^{
     
     it(@"should set the returnKeyType of passwordText to UIReturnKeyDone when the user is a self hosted user", ^{
         viewModel.userIsDotCom = NO;
-        [[mockDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyDone];
+        [[mockViewModelDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyDone];
         
         [viewModel toggleSignInFormAction];
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should set the returnKeyType of passwordText to UIReturnKeyNext when the user is a .com user", ^{
         viewModel.userIsDotCom = YES;
-        [[mockDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyNext];
+        [[mockViewModelDelegate expect] setPasswordTextReturnKeyType:UIReturnKeyNext];
         
         [viewModel toggleSignInFormAction];
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should tell the view to reload it's interface", ^{
-        [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+        [[mockViewModelDelegate expect] reloadInterfaceWithAnimation:YES];
         
         [viewModel toggleSignInFormAction];
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
 });
@@ -858,19 +1157,19 @@ describe(@"displayMultifactorTextField", ^{
     });
     
     it(@"should reload the interface", ^{
-        [[mockDelegate expect] reloadInterfaceWithAnimation:YES];
+        [[mockViewModelDelegate expect] reloadInterfaceWithAnimation:YES];
         
         [viewModel displayMultifactorTextField];
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
     
     it(@"should set the focus to the multifactor text field", ^{
-        [[mockDelegate expect] setFocusToMultifactorText];
+        [[mockViewModelDelegate expect] setFocusToMultifactorText];
         
         [viewModel displayMultifactorTextField];
         
-        [mockDelegate verify];
+        [mockViewModelDelegate verify];
     });
 });
 
@@ -879,34 +1178,34 @@ describe(@"sendVerificationCodeButton visibility", ^{
     context(@"when authenticating", ^{
         
         it(@"should not be visible if the multifactor controls enabled", ^{
-            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
             viewModel.authenticating = YES;
             viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if the multifactor controls aren't enabled", ^{
-            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
             viewModel.authenticating = YES;
             viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     
     context(@"when not authenticating", ^{
         
         it(@"should be visible if multifactor controls are enabled", ^{
-            [[mockDelegate expect] setSendVerificationCodeButtonHidden:NO];
+            [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:NO];
             viewModel.authenticating = NO;
             viewModel.shouldDisplayMultifactor = YES;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if multifactor controls aren't enabled", ^{
-            [[mockDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
             viewModel.authenticating = NO;
             viewModel.shouldDisplayMultifactor = NO;
-            [mockDelegate verify];
+            [mockViewModelDelegate verify];
         });
     });
     

@@ -1,4 +1,5 @@
 #import <Foundation/Foundation.h>
+#import "LoginService.h"
 
 @protocol LoginViewModelDelegate;
 @protocol ReachabilityService;
@@ -7,7 +8,7 @@
 @protocol BlogSyncService;
 @class RACSignal;
 
-@interface LoginViewModel : NSObject
+@interface LoginViewModel : NSObject <LoginServiceDelegate>
 
 // Services
 @property (nonatomic, strong) id<ReachabilityService> reachabilityService;

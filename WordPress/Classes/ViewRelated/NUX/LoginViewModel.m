@@ -2,13 +2,12 @@
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
 #import "LoginFields.h"
-#import "LoginService.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
 #import "ReachabilityService.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
-@interface LoginViewModel() <LoginServiceDelegate>
+@interface LoginViewModel()
 
 @property (nonatomic, strong) NSString *signInButtonTitle;
 
@@ -290,16 +289,21 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     return [siteUrl trim].length != 0;
 }
 
+- (void)dismissLoginMessage
+{
+    [self.delegate dismissLoginMessage];
+}
+
+- (void)finishedLogin
+{
+    [self.delegate dismissLoginView];
+}
+
 #pragma LoginServiceDelegate methods
 
 - (void)displayLoginMessage:(NSString *)message
 {
     [self.delegate displayLoginMessage:message];
-}
-
-- (void)dismissLoginMessage
-{
-    [self.delegate dismissLoginMessage];
 }
 
 - (void)needsMultifactorCode
@@ -317,11 +321,6 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
 - (void)showJetpackAuthentication
 {
     [self.delegate showJetpackAuthentication];
-}
-
-- (void)finishedLogin
-{
-    [self.delegate dismissLoginView];
 }
 
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
