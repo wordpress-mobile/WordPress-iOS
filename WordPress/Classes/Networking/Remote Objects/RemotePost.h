@@ -18,8 +18,12 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSNumber *parentID;
 @property (nonatomic, strong) NSNumber *postThumbnailID;
+@property (nonatomic, strong) NSString *postThumbnailPath;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *format;
+
+@property (nonatomic, strong) NSNumber *commentCount;
+@property (nonatomic, strong) NSNumber *likeCount;
 
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *tags;
