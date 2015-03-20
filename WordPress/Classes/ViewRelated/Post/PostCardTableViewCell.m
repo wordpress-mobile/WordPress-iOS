@@ -152,7 +152,30 @@
 
 - (void)configureCardImage
 {
-    // TODO:
+    if (!self.postCardImageView) {
+        return;
+    }
+
+    if (![self.contentProvider featuredImageURLForDisplay]) {
+        self.postCardImageView.image = nil;
+    }
+
+    NSURL *url = [self.contentProvider featuredImageURLForDisplay];
+    // if not private create photon url
+    if (![self.contentProvider isPrivate]) {
+        url = [self photonURLForURL:url];
+    }
+
+    [self.postCardImageView sd_setImageWithURL:url placeholderImage:nil];
+}
+
+- (NSURL *)photonURLForURL:(NSURL *)url
+{
+    CGSize size = self.postCardImageView.frame.size;
+    NSString *imagePath = [NSString stringWithFormat:@"http://%@/%@", url.host, url.path];
+    NSString *queryStr = [NSString stringWithFormat:@"resize=%i,%i&quality=80", size.width, size.height];
+    NSString *photonStr = [NSString stringWithFormat:@"https://i0.wp.com/%@?%@", imagePath, queryStr];
+    return [NSURL URLWithString:photonStr];
 }
 
 - (void)configureTitle
@@ -195,12 +218,26 @@
 {
     [self resetMetaButton:self.metaButtonRight];
     [self resetMetaButton:self.metaButtonLeft];
-//TODO:
-//    NSArray *buttons = @[self.metaButtonRight, self.metaButtonCenter, self.metaButtonLeft];
-//    NSInteger index = 0;
-    // If comment count
-    // If like count
-    // If reblogged?
+
+    // We don't have comment and like counts for self-hosted sites.
+    if (![self.contentProvider isWPcom]) {
+        return;
+    }
+
+    NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
+    if ([self.contentProvider commentCount] > 0) {
+        UIButton *button = [mButtons lastObject];
+        [mButtons removeLastObject];
+        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider commentCount]];
+        [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
+    }
+
+    if ([self.contentProvider likeCount] > 0) {
+        UIButton *button = [mButtons lastObject];
+        [mButtons removeLastObject];
+        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider likeCount]];
+        [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-like"]];
+    }
 }
 
 - (void)resetMetaButton:(UIButton *)metaButton
@@ -209,6 +246,14 @@
     [metaButton setImage:nil forState:UIControlStateNormal | UIControlStateSelected];
     metaButton.selected = NO;
     metaButton.hidden = YES;
+}
+
+- (void)configureMetaButton:(UIButton *)metaButton withTitle:(NSString *)title andImage:(UIImage *)image
+{
+    [metaButton setTitle:title forState:UIControlStateNormal | UIControlStateSelected];
+    [metaButton setImage:image forState:UIControlStateNormal | UIControlStateSelected];
+    metaButton.selected = NO;
+    metaButton.hidden = NO;
 }
 
 @end
