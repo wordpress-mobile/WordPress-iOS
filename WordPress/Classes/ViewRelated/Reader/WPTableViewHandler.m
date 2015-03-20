@@ -693,6 +693,9 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (NSIndexPath *)indexPathForFirstObjectPrecedingPreservedVisibleIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = [self.fetchedResultsIndexPathsBeforeChange indexOfObject:indexPath];
+    if (NSNotFound == index) {
+        return nil;
+    }
     NSArray *arr = [self.fetchedResultsIndexPathsBeforeChange subarrayWithRange:NSMakeRange(0, index)];
     for (NSInteger  i = [arr count] -1; i > 0; i-- ) {
         NSManagedObject *obj = self.fetchedResultsBeforeChange[i];
