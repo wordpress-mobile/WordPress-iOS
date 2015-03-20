@@ -70,7 +70,7 @@ static NSString* const WPUserAgentKeyWordPressUserAgent = @"AppUserAgent";
 {
     NSParameterAssert([userAgent isKindOfClass:[NSString class]]);
     
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:userAgent, WPUserAgentKeyUserAgent, nil];
+    NSDictionary *dictionary = @{WPUserAgentKeyUserAgent: userAgent};
     // We have to call registerDefaults else the change isn't picked up by UIWebViews.
     [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
     
