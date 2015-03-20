@@ -7,6 +7,7 @@
 @class AbstractPost;
 @class Simperium;
 @class Blog;
+@class WPUserAgent;
 @class WPAppAnalytics;
 
 @interface WordPressAppDelegate : NSObject <UIApplicationDelegate>
@@ -18,15 +19,9 @@
 @property (nonatomic, strong,  readonly) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong,  readonly) Simperium                      *simperium;
 @property (nonatomic, assign,  readonly) BOOL                           connectionAvailable;
+@property (nonatomic, strong,  readonly) WPUserAgent                    *userAgent;
 
 + (WordPressAppDelegate *)sharedInstance;
-
-///---------------------------
-/// @name User agent switching
-///---------------------------
-- (void)useDefaultUserAgent;
-- (void)useAppUserAgent;
-- (NSString *)applicationUserAgent;
 
 ///-----------
 /// @name NUX
