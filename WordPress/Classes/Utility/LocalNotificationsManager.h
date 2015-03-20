@@ -2,4 +2,7 @@
 
 @interface LocalNotificationsManager : NSObject
 
+- (void)clearAndScheduleLocalReadItLaterNotification;
+- (void)clearAllNotifications;
+
 @end
