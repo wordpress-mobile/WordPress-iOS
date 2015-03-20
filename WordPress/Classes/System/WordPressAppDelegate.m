@@ -991,7 +991,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
+    DDLogInfo(@"APN token: %@", [RemoteNotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
 
     if (blogs.count > 0) {
