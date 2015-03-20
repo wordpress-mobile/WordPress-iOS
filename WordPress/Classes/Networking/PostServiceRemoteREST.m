@@ -177,8 +177,12 @@
     // post_thumbnail can be null, which will transform to NSNull, so we need to add the extra check
     NSDictionary *postThumbnail = [jsonPost dictionaryForKey:@"post_thumbnail"];
     post.postThumbnailID = [postThumbnail numberForKey:@"ID"];
+    post.postThumbnailPath = [postThumbnail stringForKeyPath:@"URL"];
     post.type = jsonPost[@"type"];
     post.format = jsonPost[@"format"];
+
+    post.commentCount = [jsonPost numberForKeyPath:@"discussion.comment_count"] ?: @0;
+    post.likeCount = [jsonPost numberForKeyPath:@"like_count"] ?: @0;
 
     // FIXME: remove conversion once API is fixed #38-io
     // metadata should always be an array but it's returning false when there are no custom fields
