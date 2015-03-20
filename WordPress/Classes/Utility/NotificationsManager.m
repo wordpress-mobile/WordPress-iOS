@@ -189,7 +189,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
-            Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+            Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
             [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
                 if (result == UIBackgroundFetchResultNewData) {
                     DDLogVerbose(@"Background Fetch Completed with New Data!");
