@@ -31,7 +31,8 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
-@property (nonatomic, strong) PostCardTableViewCell *cellForLayout;
+@property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
+@property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -87,7 +88,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
 
-    [self configureCellForLayout];
+    [self configureCellsForLayout];
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureSyncHelper];
@@ -134,15 +135,23 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 #pragma mark - Configuration
 
-- (void)configureCellForLayout
+- (void)configureCellsForLayout
 {
-    self.cellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+    self.textCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+    [self configureCellForLayout:self.textCellForLayout];
+
+    self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
+    [self configureCellForLayout:self.imageCellForLayout];
+}
+
+- (void)configureCellForLayout:(PostCardTableViewCell *)cellForLayout
+{
     // Force a layout pass to ensure that constrants are configured for the
     // proper size class.
-    [self.view addSubview:self.cellForLayout];
-    [self.cellForLayout updateConstraintsIfNeeded];
-    [self.cellForLayout layoutIfNeeded];
-    [self.cellForLayout removeFromSuperview];
+    [self.view addSubview:cellForLayout];
+    [cellForLayout updateConstraintsIfNeeded];
+    [cellForLayout layoutIfNeeded];
+    [cellForLayout removeFromSuperview];
 }
 
 - (void)configureTableView
@@ -152,8 +161,11 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 
     // Register the cells
-    UINib *postCardCellNib = [UINib nibWithNibName:PostCardTextCellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:postCardCellNib forCellReuseIdentifier:PostCardTextCellIdentifier];
+    UINib *postCardTextCellNib = [UINib nibWithNibName:PostCardTextCellNibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:postCardTextCellNib forCellReuseIdentifier:PostCardTextCellIdentifier];
+
+    UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellIdentifier bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:postCardImageCellNib forCellReuseIdentifier:PostCardImageCellIdentifier];
 }
 
 - (void)configureTableViewHandler
@@ -418,8 +430,15 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    [self configureCell:self.cellForLayout atIndexPath:indexPath];
-    CGSize size = [self.cellForLayout sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
+    PostCardTableViewCell *cell;
+    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([post featuredImageURLForDisplay]) {
+        cell = self.imageCellForLayout;
+    } else {
+        cell = self.textCellForLayout;
+    }
+    [self configureCell:cell atIndexPath:indexPath];
+    CGSize size = [cell sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
     CGFloat height = ceil(size.height);
     return height;
 }
@@ -453,8 +472,13 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardTextCellIdentifier];
-
+    PostCardTableViewCell *cell;
+    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([post featuredImageURLForDisplay]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardImageCellIdentifier];
+    } else {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardTextCellIdentifier];
+    }
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
