@@ -77,7 +77,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
     AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance] applicationUserAgent];
 
     operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
