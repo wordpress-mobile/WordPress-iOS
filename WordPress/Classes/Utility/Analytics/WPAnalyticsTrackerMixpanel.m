@@ -380,7 +380,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post"];
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"PushNotification - Alert Tapped"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Notification - Alert Tapped"];
             break;
         case WPAnalyticsStatEditorUpdatedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Updated Post"];
