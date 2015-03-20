@@ -274,23 +274,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                    failure:nil];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    // FIXME: this is hacky, but XML-RPC doesn't support fetching "any" type of post
-    // Ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
-    if (blog.restApi) {
-        [postService syncPostsOfType:PostServiceTypeAny
-                             forBlog:blog
-                             success:nil
-                             failure:nil];
-    } else {
-        [postService syncPostsOfType:PostServiceTypePost
-                             forBlog:blog
-                             success:nil
-                             failure:nil];
-        [postService syncPostsOfType:PostServiceTypePage
-                             forBlog:blog
-                             success:nil
-                             failure:nil];
-    }
+    // FIXME: this is hacky, ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
+    [postService syncPostsOfType:PostServiceTypePost
+                         forBlog:blog
+                         success:nil
+                         failure:nil];
+    [postService syncPostsOfType:PostServiceTypePage
+                         forBlog:blog
+                         success:nil
+                         failure:nil];
+
 }
 
 - (void)syncBlogStaggeringRequests:(Blog *)blog
