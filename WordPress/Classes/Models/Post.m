@@ -244,4 +244,22 @@
     return nil;
 }
 
+- (BOOL)isWPcom
+{
+    return self.blog.isWPcom;
+}
+
+- (BOOL)isPrivate
+{
+    return self.blog.isPrivate;
+}
+
+- (NSURL *)featuredImageURLForDisplay
+{
+    if ([self.featuredImage remoteURL]) {
+        return [NSURL URLWithString:[self.featuredImage remoteURL]];
+    }
+    return nil;
+}
+
 @end

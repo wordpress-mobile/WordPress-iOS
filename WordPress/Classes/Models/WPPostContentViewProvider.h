@@ -25,5 +25,7 @@
 - (NSInteger)likeCount;
 - (BOOL)hasLiked;
 - (BOOL)hasCommented;
+- (BOOL)isWPcom;
+- (BOOL)isPrivate;
 
 @end
