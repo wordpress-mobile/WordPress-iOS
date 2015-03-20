@@ -193,7 +193,9 @@
     }
     post.parentID = [xmlrpcDictionary numberForKey:@"post_parent"];
     // When there is no featured image, post_thumbnail is an empty array :(
-    post.postThumbnailID = [[xmlrpcDictionary dictionaryForKey:@"post_thumbnail"] numberForKey:@"attachment_id"];
+    NSDictionary *thumbnailDict = [xmlrpcDictionary dictionaryForKey:@"post_thumbnail"];
+    post.postThumbnailID = [thumbnailDict numberForKey:@"attachment_id"];
+    post.postThumbnailPath = [thumbnailDict stringForKey:@"link"];
     post.type = xmlrpcDictionary[@"post_type"];
     post.format = xmlrpcDictionary[@"post_format"];
 
