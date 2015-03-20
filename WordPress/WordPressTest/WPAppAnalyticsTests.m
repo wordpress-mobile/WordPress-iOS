@@ -1,11 +1,3 @@
-//
-//  WPAppAnalyticsTests.m
-//  WordPress
-//
-//  Created by Diego E. Rey Mendez on 3/16/15.
-//  Copyright (c) 2015 WordPress. All rights reserved.
-//
-
 #import <OCMock/OCMock.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <XCTest/XCTest.h>
@@ -23,7 +15,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 @implementation WPAppAnalyticsTests
 
-- (void)testInitializationWithMixPanelAndWPComTracker
+- (void)testInitializationWithMixpanelAndWPComTracker
 {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
     
@@ -99,7 +91,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
     [analyticsMock verify];
 }
 
-- (void)testInitializationWithMixPanelAndWPComTrackerButNoUsageTracking
+- (void)testInitializationWithMixpanelAndWPComTrackerButNoUsageTracking
 {
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:WPAppAnalyticsDefaultsKeyUsageTracking];
     
@@ -145,7 +137,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 - (void)testIsTrackingUsage
 {
-    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedInstance].analytics;
     
     [analytics setTrackingUsage:YES];
     
@@ -154,7 +146,7 @@ typedef void(^OCMockInvocationBlock)(NSInvocation* invocation);
 
 - (void)testIsNotTrackingUsage
 {
-    WPAppAnalytics* analytics = [WordPressAppDelegate sharedWordPressApplicationDelegate].analytics;
+    WPAppAnalytics* analytics = [WordPressAppDelegate sharedInstance].analytics;
     
     [analytics setTrackingUsage:NO];
     
