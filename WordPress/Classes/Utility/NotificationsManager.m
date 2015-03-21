@@ -459,9 +459,11 @@ static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 
     localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:oneDayInSeconds];
     localNotification.alertTitle = @"WordPress";
     localNotification.alertBody = NSLocalizedString(@"Read it later!", @"Notification body for their Read It Later");
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
 
-+ (void)clearAllNotifications
++ (void)clearAllLocalNotifications
 {
     [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }

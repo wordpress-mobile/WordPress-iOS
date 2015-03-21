@@ -96,4 +96,6 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
 
 + (void)clearAndScheduleLocalReadItLaterNotification;
 
++ (void)clearAllLocalNotifications;
+
 @end
