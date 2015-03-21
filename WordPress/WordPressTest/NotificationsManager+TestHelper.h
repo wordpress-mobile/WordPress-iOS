@@ -1,8 +1,8 @@
 #import <Foundation/Foundation.h>
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 
 
-@interface RemoteNotificationsManager (TestHelper)
+@interface NotificationsManager (TestHelper)
 
 + (void)setDummyDeviceToken;
 + (void)removeDummyDeviceToken;

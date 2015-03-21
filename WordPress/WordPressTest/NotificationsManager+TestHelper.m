@@ -4,7 +4,7 @@
 static NSString *const NotificationsDeviceToken = @"apnsDeviceToken";
 
 
-@implementation RemoteNotificationsManager (TestHelper)
+@implementation NotificationsManager (TestHelper)
 
 + (void)setDummyDeviceToken
 {

@@ -1,6 +1,6 @@
 #import "AccountService.h"
 #import "WPAccount.h"
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAnalyticsTrackerMixpanel.h"
@@ -92,7 +92,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     dispatch_async(dispatch_get_main_queue(), ^{
         [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
 
-        [RemoteNotificationsManager registerForPushNotifications];
+        [NotificationsManager registerForPushNotifications];
     });
 }
 
@@ -106,7 +106,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 {
     NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
     
-    [RemoteNotificationsManager unregisterDeviceToken];
+    [NotificationsManager unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
     if (account) {

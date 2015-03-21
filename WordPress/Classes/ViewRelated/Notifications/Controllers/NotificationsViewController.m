@@ -13,7 +13,7 @@
 #import "Notification.h"
 #import "Meta.h"
 
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
 #import "NotificationSettingsViewController.h"
 
@@ -404,7 +404,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showManageButtonIfNeeded
 {
-    if (![RemoteNotificationsManager deviceRegisteredForPushNotifications]) {
+    if (![NotificationsManager deviceRegisteredForPushNotifications]) {
         return;
     }
 

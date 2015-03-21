@@ -15,7 +15,7 @@
 #import "ContextManager.h"
 #import "Media.h"
 #import "Notification.h"
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "NSString+Helpers.h"
 #import "NSString+HTML.h"
 #import "PocketAPI.h"
@@ -150,7 +150,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self customizeAppearance];
     
     // Push notifications
-    [RemoteNotificationsManager registerForPushNotifications];
+    [NotificationsManager registerForPushNotifications];
 
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
@@ -180,7 +180,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     // Launched by tapping a notification
     if (application.applicationState == UIApplicationStateActive) {
-        [RemoteNotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
 
     [self.window makeKeyAndVisible];
@@ -408,33 +408,33 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    [RemoteNotificationsManager registerDeviceToken:deviceToken];
+    [NotificationsManager registerDeviceToken:deviceToken];
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error
 {
-    [RemoteNotificationsManager registrationDidFail:error];
+    [NotificationsManager registrationDidFail:error];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
     DDLogMethod();
 
-    [RemoteNotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
+    [NotificationsManager handleNotification:userInfo forState:application.applicationState completionHandler:nil];
 }
 
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
 {
     DDLogMethod();
 
-    [RemoteNotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
+    [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
                                         forRemoteNotification:(NSDictionary *)remoteNotification
                                             completionHandler:(void (^)())completionHandler
 {
-    [RemoteNotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
+    [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
     
     completionHandler();
 }
@@ -962,7 +962,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"OS:        %@ %@", device.systemName, device.systemVersion);
     DDLogInfo(@"Language:  %@", currentLanguage);
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
-    DDLogInfo(@"APN token: %@", [RemoteNotificationsManager registeredPushNotificationsToken]);
+    DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
 
     if (blogs.count > 0) {

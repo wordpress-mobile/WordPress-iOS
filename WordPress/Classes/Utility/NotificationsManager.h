@@ -7,7 +7,7 @@ extern NSString *const NotificationsManagerDidRegisterDeviceToken;
 extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
 
 
-@interface RemoteNotificationsManager : NSObject
+@interface NotificationsManager : NSObject
 
 ///--------------------------------
 /// @name Device Token registration

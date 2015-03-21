@@ -8,11 +8,11 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "AccountService.h"
 #import "ContextManager.h"
 
@@ -88,7 +88,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
         _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
         if (!_notificationPreferences) {
-            [RemoteNotificationsManager fetchNotificationSettingsWithSuccess:^{
+            [NotificationsManager fetchNotificationSettingsWithSuccess:^{
                 [self reloadNotificationSettings];
             } failure:^(NSError *error) {
                 [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
@@ -423,7 +423,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     return self.blog &&
         ([self.blog isWPcom] || [self.blog hasJetpack]) &&
         [[defaultAccount restApi] hasCredentials] &&
-        [RemoteNotificationsManager deviceRegisteredForPushNotifications];
+        [NotificationsManager deviceRegisteredForPushNotifications];
 }
 
 - (void)toggleGeolocation:(id)sender
@@ -457,7 +457,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
                 [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
 
                 // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [RemoteNotificationsManager saveNotificationSettings];
+                [NotificationsManager saveNotificationSettings];
                 return;
             }
         }

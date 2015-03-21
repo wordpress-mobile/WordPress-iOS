@@ -1,4 +1,4 @@
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "NotificationsViewController.h"
 #import "WPTabBarController.h"
 
@@ -46,7 +46,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 #pragma mark NotificationsManager
 #pragma mark ====================================================================================
 
-@implementation RemoteNotificationsManager
+@implementation NotificationsManager
 
 + (void)registerForPushNotifications
 {
@@ -313,7 +313,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 + (void)saveNotificationSettings
 {
-    NSDictionary *settings          = [RemoteNotificationsManager notificationSettingsDictionary];
+    NSDictionary *settings          = [NotificationsManager notificationSettingsDictionary];
     if (!settings) {
         DDLogError(@"%@ %@ returning early because of blank notifications setting dictionary", self, NSStringFromSelector(_cmd));
         return;

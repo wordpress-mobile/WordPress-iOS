@@ -8,7 +8,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewSectionFooterView.h"
 #import "WPAccount.h"
-#import "RemoteNotificationsManager.h"
+#import "NotificationsManager.h"
 #import "NSDate+StringFormatting.h"
 
 #import <Simperium/Simperium.h>
@@ -85,7 +85,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
 
 - (void)refreshNotificationSettings
 {
-    [RemoteNotificationsManager fetchNotificationSettingsWithSuccess:^{
+    [NotificationsManager fetchNotificationSettingsWithSuccess:^{
         [self notificationsDidFinishRefreshingWithError:nil];
     } failure:^(NSError *error) {
         [self notificationsDidFinishRefreshingWithError:error];
@@ -148,7 +148,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
 {
     self.navigationController.toolbarHidden = YES;
     if (self.hasChanges){
-        [RemoteNotificationsManager saveNotificationSettings];
+        [NotificationsManager saveNotificationSettings];
     }
     [super viewWillDisappear:animated];
 }
