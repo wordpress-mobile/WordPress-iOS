@@ -375,6 +375,10 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
+    
+    if (self.readerTopic.isReadItLater) {
+        return NSLocalizedString(@"No posts saved for later.", @"Message shown to user when the reader list is empty because they have not saved any posts to Read It Later.");
+    }
 
     NSRange range = [self.readerTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
@@ -394,6 +398,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (self.syncHelper.isSyncing) {
         return @"";
     }
+    
+    if (self.readerTopic.isReadItLater) {
+        return NSLocalizedString(@"Tap the '...' option on any post and select 'Read It Later' to save posts you want to check out later!", @"Message shown when there are no saved posts to Read It Later.");
+    }
+    
     if (self.readerViewStyle == ReaderViewStyleSitePreview) {
         return NSLocalizedString(@"We were unable to load any posts for this site.", @"Message shown when wwe were unable to load posts for a site being previewed in the reader. ");
     }
