@@ -50,10 +50,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 + (void)registerForPushNotifications
 {
-#if TARGET_IPHONE_SIMULATOR
-    return;
-#endif
-
     BOOL canRegisterUserNotifications = [[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)];
     if (!canRegisterUserNotifications) {
         // iOS 7 notifications registration
