@@ -46,7 +46,6 @@ PODS:
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.8.0)
   - HockeySDK (3.6.2)
-  - JRSwizzle (1.0)
   - KIF/IdentifierTests (3.1.2):
     - KIF/XCTest
   - KIF/XCTest (3.1.2)
@@ -92,11 +91,8 @@ PODS:
   - OCMock (3.1.2)
   - OHHTTPStubs (1.1.1)
   - Reachability (3.1.1)
-  - Simperium (0.7.8):
+  - Simperium (0.7.9):
     - Google-Diff-Match-Patch
-    - JRSwizzle
-    - SocketRocket
-  - SocketRocket (0.3.1-beta2)
   - SVProgressHUD (1.1.1)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
@@ -145,12 +141,11 @@ DEPENDENCIES:
   - OCMock
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
-  - Simperium (= 0.7.8)
-  - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
+  - Simperium (= 0.7.9)
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `13fd02876dd847025e6ca15568db69e4cf0404dd`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `983b2483bb68fa499cef5f2b1757550d07770d1b`)
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.29)
@@ -163,9 +158,6 @@ EXTERNAL SOURCES:
   MGImageUtilities:
     :branch: gifsupport
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
-  SocketRocket:
-    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
-    :git: https://github.com/jleandroperez/SocketRocket.git
   SVProgressHUD:
     :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
     :git: https://github.com/TransitApp/SVProgressHUD.git
@@ -173,16 +165,13 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 13fd02876dd847025e6ca15568db69e4cf0404dd
+    :commit: 983b2483bb68fa499cef5f2b1757550d07770d1b
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 CHECKOUT OPTIONS:
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
-  SocketRocket:
-    :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
-    :git: https://github.com/jleandroperez/SocketRocket.git
   SVProgressHUD:
     :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
     :git: https://github.com/TransitApp/SVProgressHUD.git
@@ -190,7 +179,7 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 13fd02876dd847025e6ca15568db69e4cf0404dd
+    :commit: 983b2483bb68fa499cef5f2b1757550d07770d1b
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 SPEC CHECKSUMS:
@@ -207,7 +196,6 @@ SPEC CHECKSUMS:
   google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
   Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
-  JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
   Lookback: 1c2f89df8d08440460c93ad180f47c8608ad4cea
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
@@ -220,8 +208,7 @@ SPEC CHECKSUMS:
   OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
-  SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  Simperium: 7d0a207d7f0ce918b36ba9e690cdb0d0d730cc28
   SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f

@@ -87,6 +87,6 @@ class AccountServiceTests: XCTestCase {
         accountService.removeDefaultWordPressComAccount()
         
         XCTAssertNil(accountService.defaultWordPressComAccount(), "No default account should be set")
-        XCTAssertTrue(account.deleted, "Account should be deleted")
+        XCTAssertTrue(account.fault, "Account should be deleted")
     }
 }
