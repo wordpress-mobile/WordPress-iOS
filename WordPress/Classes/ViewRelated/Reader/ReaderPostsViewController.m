@@ -470,6 +470,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTopicFreshlyPressed]) {
         [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
+    } else if (self.readerTopic.isReadItLater) {
+        [NotificationsManager clearAllLocalNotifications];
     }
 }
 
