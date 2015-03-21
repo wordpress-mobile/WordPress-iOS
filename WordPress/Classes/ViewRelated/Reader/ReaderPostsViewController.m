@@ -29,11 +29,10 @@
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
 #import "BlogService.h"
-#import "LocalNotificationsManager.h"
+#import "NotificationsManager.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
-
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
@@ -58,7 +57,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
                                         WPTableViewHandlerDelegate,
                                         ReaderPostContentViewDelegate>
 
-@property (nonatomic, strong) LocalNotificationsManager *localNotificationsManager;
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
@@ -89,7 +87,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     _syncHelper.delegate = nil;
     _tableViewHandler.delegate = nil;
-    _localNotificationsManager = nil;
 }
 
 - (instancetype)init
@@ -103,7 +100,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
 
-        _localNotificationsManager = [[LocalNotificationsManager alloc] init];
         _postIDsForUndoBlockCells = [NSMutableArray array];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
@@ -706,7 +702,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     post.isReadItLater = !post.isReadItLater;
     
     if (post.isReadItLater) {
-        [self.localNotificationsManager clearAndScheduleLocalReadItLaterNotification];
+        [NotificationsManager clearAndScheduleLocalReadItLaterNotification];
     }
 }
 

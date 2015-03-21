@@ -41,6 +41,7 @@ static NSString *const NotificationActionCommentReply               = @"COMMENT_
 static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
 static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
 
+static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 24;
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsManager
@@ -448,6 +449,21 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     if (blog != nil && [blog isWPcom]) {
         [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
+}
+
++ (void)clearAndScheduleLocalReadItLaterNotification
+{
+    [self clearAllNotifications];
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    
+    localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:oneDayInSeconds];
+    localNotification.alertTitle = @"WordPress";
+    localNotification.alertBody = NSLocalizedString(@"Read it later!", @"Notification body for their Read It Later");
+}
+
++ (void)clearAllNotifications
+{
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 @end
