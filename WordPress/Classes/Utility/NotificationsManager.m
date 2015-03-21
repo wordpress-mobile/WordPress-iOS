@@ -453,7 +453,7 @@ static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 
 
 + (void)clearAndScheduleLocalReadItLaterNotification
 {
-    [self clearAllNotifications];
+    [self clearAllLocalNotifications];
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     
     localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:oneDayInSeconds];
