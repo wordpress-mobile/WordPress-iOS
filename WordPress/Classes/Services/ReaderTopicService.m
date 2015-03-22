@@ -633,7 +633,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.lastSynced = [[NSDate alloc] init];
         topic.title = ReaderTopicReadItLaterTitle;
         topic.isMenuItem = YES;
-        topic.path = @"";
+        topic.path = @"ReadItLater";
         
         [topicsToKeep addObject:topic];
     } else {
