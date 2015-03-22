@@ -454,11 +454,14 @@ static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 
 + (void)clearAndScheduleLocalReadItLaterNotification
 {
     [self clearAllLocalNotifications];
+    
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     
+    localNotification.timeZone = [NSTimeZone localTimeZone];
     localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:oneDayInSeconds];
     localNotification.alertTitle = @"WordPress";
     localNotification.alertBody = NSLocalizedString(@"Read it later!", @"Notification body for their Read It Later");
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
     
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
 }
