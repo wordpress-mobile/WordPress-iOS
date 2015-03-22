@@ -617,7 +617,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 - (void)addReadItLaterToArray:(NSMutableArray *)topicsToKeep
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
     
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
