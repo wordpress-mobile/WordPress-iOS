@@ -92,6 +92,24 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return topic;
 }
 
+- (ReaderTopic *)readItLaterTopic
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderTopic class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+    
+    if ([topics count] == 0) {
+        return nil;
+    } else {
+        return topics[0];
+    }
+}
+
 - (ReaderTopic *)currentTopicFromSavedPath
 {
     ReaderTopic *topic;

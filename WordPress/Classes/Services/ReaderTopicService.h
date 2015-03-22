@@ -17,6 +17,8 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 @property (nonatomic) ReaderTopic *currentTopic;
 
+- (ReaderTopic *)readItLaterTopic;
+
 /**
  Fetches the topics for the reader's menu.
  
