@@ -4,6 +4,7 @@
 extern NSString * const ReaderTopicDidChangeViaUserInteractionNotification;
 extern NSString * const ReaderTopicDidChangeNotification;
 extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
+extern NSString * const ReaderTopicCurrentTopicPathKey;
 
 @class ReaderTopic;
 @class ReaderSite;

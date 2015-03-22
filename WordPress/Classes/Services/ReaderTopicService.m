@@ -15,7 +15,7 @@ NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotifi
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 NSString * const ReaderTopicReadItLaterTitle = @"Read It Later";
 static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
-static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
+NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
 @interface ReaderTopicService ()
 
