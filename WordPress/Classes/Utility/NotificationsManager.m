@@ -216,7 +216,7 @@ static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 
 
 + (void)handleLocalReadItLaterNotification
 {
-    [[WPTabBarController sharedInstance] showNotificationsTab];
+    [[WPTabBarController sharedInstance] showReaderTabWithReadItLaterTopic];
 }
 
 + (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification
