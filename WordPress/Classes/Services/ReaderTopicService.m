@@ -195,20 +195,6 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
     return count;
 }
 
-- (NSUInteger)numberOfReadItLaterPosts
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", ReaderTopicReadItLaterPath];
-    NSError *error;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
-        return 0;
-    }
-    
-    return count;
-}
-
 - (void)deleteAllTopics
 {
     [self setCurrentTopic:nil];

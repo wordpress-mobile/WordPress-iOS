@@ -35,11 +35,6 @@ extern NSString * const ReaderTopicCurrentTopicPathKey;
 - (NSUInteger)numberOfSubscribedTopics;
 
 /**
- @return the number of posts in ReaderItLater topic.
- */
-- (NSUInteger)numberOfReadItLaterPosts;
-
-/**
  Deletes all topics from core data and saves the context. Call when switching accounts.
  */
 - (void)deleteAllTopics;

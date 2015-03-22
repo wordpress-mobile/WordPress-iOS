@@ -711,8 +711,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (post.isReadItLater) {
         [NotificationsManager clearAndScheduleLocalReadItLaterNotification];
     } else {
-        ReaderTopicService *readerTopicService = [[ReaderTopicService alloc] initWithManagedObjectContext:self.managedObjectContext];
-        if ([readerTopicService numberOfReadItLaterPosts] == 0) {
+        ReaderPostService *readerPostService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        if ([readerPostService numberOfReadItLaterPosts] == 0) {
             [NotificationsManager clearAllLocalNotifications];
         }
     }
