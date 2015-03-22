@@ -238,7 +238,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
 - (void)showReaderTabWithReadItLaterTopic
 {
-    [[NSUserDefaults standardUserDefaults] setValue:@"ReadItLater" forKey:@"ReadItLater"];
+    [[NSUserDefaults standardUserDefaults] setValue:@"ReadItLater" forKey:ReaderTopicCurrentTopicPathKey];
     [self showReaderTab];
 }
 
