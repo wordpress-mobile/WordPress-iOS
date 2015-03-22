@@ -433,7 +433,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 - (NSUInteger)numberOfReadItLaterPosts
 {
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
