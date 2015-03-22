@@ -437,6 +437,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     completionHandler();
 }
 
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (application.applicationState == UIApplicationStateInactive) {
+        [NotificationsManager handleLocalReadItLaterNotification];
+    }
+}
+
 #pragma mark - OpenURL helpers
 
 /**
