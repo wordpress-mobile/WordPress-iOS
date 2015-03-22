@@ -34,6 +34,9 @@ extern NSString * const ReaderTopicCurrentTopicPathKey;
  */
 - (NSUInteger)numberOfSubscribedTopics;
 
+/**
+ @return the number of posts in ReaderItLater topic.
+ */
 - (NSUInteger)numberOfReadItLaterPosts;
 
 /**

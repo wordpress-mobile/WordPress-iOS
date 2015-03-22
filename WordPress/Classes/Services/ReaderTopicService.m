@@ -182,6 +182,19 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
     }
 }
 
+- (NSUInteger)numberOfSubscribedTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed = YES AND type = %@", ReaderTopicTypeTag];
+    NSError *error;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
+        return 0;
+    }
+    return count;
+}
+
 - (NSUInteger)numberOfReadItLaterPosts
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
@@ -193,19 +206,6 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
         return 0;
     }
     
-    return count;
-}
-
-- (NSUInteger)numberOfSubscribedTopics
-{
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed = YES AND type = %@", ReaderTopicTypeTag];
-    NSError *error;
-    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
-    if (error) {
-        DDLogError(@"%@ error counting topics: %@", NSStringFromSelector(_cmd), error);
-        return 0;
-    }
     return count;
 }
 
