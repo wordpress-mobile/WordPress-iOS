@@ -48,18 +48,17 @@
 
     [self configureNavBar];
     [self configurePostsViewController];
+}
 
-    if ([[[NSUserDefaults standardUserDefaults] valueForKey:@"ReadItLater"] isEqualToString:@"ReadItLater"]) {
-        ReaderTopicService *readerTopicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-        [self assignTopic:[readerTopicService readItLaterTopic]];
-        [[NSUserDefaults standardUserDefaults] setNilValueForKey:@"ReadItLater"];
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    ReaderTopic *topic = [self currentTopic];
+    if (topic) {
+        [self assignTopic:topic];
     } else {
-        ReaderTopic *topic = [self currentTopic];
-        if (topic) {
-            [self assignTopic:topic];
-        } else {
-            [self syncTopics];
-        }
+        [self syncTopics];
     }
 }
 
