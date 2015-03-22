@@ -72,6 +72,8 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
 
++ (void)handleLocalReadItLaterNotification;
+
 /**
  Handle an action taken from a remote notification
  
