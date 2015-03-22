@@ -495,7 +495,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 - (BOOL)isCurrentTopicReadItLater
 {
-    return [self.readerTopic.path isEqualToString:@"ReadItLater"];
+    return [self.readerTopic.path isEqualToString:ReaderTopicReadItLaterPath];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed

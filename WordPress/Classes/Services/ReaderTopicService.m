@@ -14,7 +14,8 @@ NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTo
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
 NSString * const ReaderTopicReadItLaterTitle = @"Read It Later";
-static NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
+NSString * const ReaderTopicReadItLaterPath = @"ReadItLater";
+NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
 NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
 
 @interface ReaderTopicService ()
@@ -96,7 +97,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderTopic class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", ReaderTopicReadItLaterPath];
     NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
@@ -202,7 +203,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 - (NSUInteger)numberOfReadItLaterPosts
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", ReaderTopicReadItLaterPath];
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (error) {
@@ -617,7 +618,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 - (void)addReadItLaterToArray:(NSMutableArray *)topicsToKeep
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", ReaderTopicReadItLaterPath];
     
     NSError *error;
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
@@ -632,7 +633,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
         topic.lastSynced = [[NSDate alloc] init];
         topic.title = ReaderTopicReadItLaterTitle;
         topic.isMenuItem = YES;
-        topic.path = @"ReadItLater";
+        topic.path = ReaderTopicReadItLaterPath;
         
         [topicsToKeep addObject:topic];
     } else {
