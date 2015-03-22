@@ -375,7 +375,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
     
-    if (self.readerTopic.isReadItLater) {
+    if ([self isCurrentTopicReadItLater]) {
         return NSLocalizedString(@"No posts saved for later.", @"Message shown to user when the reader list is empty because they have not saved any posts to Read It Later.");
     }
 
@@ -398,7 +398,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         return @"";
     }
     
-    if (self.readerTopic.isReadItLater) {
+    if ([self isCurrentTopicReadItLater]) {
         return NSLocalizedString(@"Tap the '...' option on any post and select 'Read It Later' to save posts you want to check out later!", @"Message shown when there are no saved posts to Read It Later.");
     }
     
@@ -470,7 +470,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
     if ([self isCurrentTopicFreshlyPressed]) {
         [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
-    } else if (self.readerTopic.isReadItLater) {
+    } else if ([self isCurrentTopicReadItLater]) {
         [NotificationsManager clearAllLocalNotifications];
     }
 }
@@ -491,6 +491,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     } else {
         self.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
     }
+}
+
+- (BOOL)isCurrentTopicReadItLater
+{
+    return [self.readerTopic.path isEqualToString:@"ReadItLater"];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
@@ -944,7 +949,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     NSPredicate *predicate;
 
-    if (self.readerTopic.isReadItLater) {
+    if ([self isCurrentTopicReadItLater]) {
         predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
     } else {
         if ([self.postIDsForUndoBlockCells count]) {

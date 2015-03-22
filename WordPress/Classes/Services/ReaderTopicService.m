@@ -96,7 +96,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 {
     NSError *error;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderTopic class])];
-    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
     NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
     if (error) {
         DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
@@ -202,7 +202,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
 - (NSUInteger)numberOfReadItLaterPosts
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path = %@", @"ReadItLater"];
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (error) {
@@ -628,7 +628,6 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
         ReaderTopic *topic = [[ReaderTopic alloc] initWithEntity:entity
                                   insertIntoManagedObjectContext:self.managedObjectContext];
         
-        topic.isReadItLater = YES;
         topic.type = ReaderTopicTypeList;
         topic.lastSynced = [[NSDate alloc] init];
         topic.title = ReaderTopicReadItLaterTitle;

@@ -41,7 +41,7 @@ static NSString *const NotificationActionCommentReply               = @"COMMENT_
 static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
 static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
 
-static NSTimeInterval const oneDayInSeconds                         = 60 * 60 * 24;
+static NSTimeInterval const oneDayInSeconds                         = 3;
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsManager
