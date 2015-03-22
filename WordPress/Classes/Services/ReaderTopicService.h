@@ -32,6 +32,8 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (NSUInteger)numberOfSubscribedTopics;
 
+- (NSUInteger)numberOfReadItLaterPosts;
+
 /**
  Deletes all topics from core data and saves the context. Call when switching accounts.
  */
