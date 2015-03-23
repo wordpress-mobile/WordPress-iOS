@@ -63,7 +63,8 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
             return;
         }
 
-        [self mergeMenuTopics:topics forAccount:reloadedAccount];
+        
+        [self mergeReadItLaterAndMenuTopics:topics forAccount:reloadedAccount];
 
         if (success) {
             success();
@@ -492,18 +493,22 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
     return [title capitalizedStringWithLocale:[NSLocale currentLocale]];
 }
 
+- (void)mergeReadItLaterAndMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account
+{
+    NSMutableArray *topicsToKeep = [NSMutableArray array];
+    [self addReadItLaterToArray:topicsToKeep];
+    [self mergeMenuTopics:topics withTopicsToKeep:topicsToKeep forAccount:account];
+}
+
 /**
  Saves the specified `ReaderTopics`. Any `ReaderTopics` not included in the passed
  array are removed from Core Data.
 
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account
+- (void)mergeMenuTopics:(NSArray *)topics withTopicsToKeep:(NSMutableArray *)topicsToKeep forAccount:(WPAccount *)account
 {
     NSArray *currentTopics = [self allMenuTopics];
-    NSMutableArray *topicsToKeep = [NSMutableArray array];
-    
-    [self addReadItLaterToArray:topicsToKeep];
     
     for (RemoteReaderTopic *remoteTopic in topics) {
         ReaderTopic *newTopic = [self createOrReplaceFromRemoteTopic:remoteTopic];
