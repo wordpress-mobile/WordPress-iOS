@@ -26,6 +26,9 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 
         _attributionLinkButton = [self buttonForAttributionLink];
         [self addSubview:self.attributionLinkButton];
+        
+        _readItLaterIndicatorImageView = [self imageViewForReadItLaterIndicator];
+        [self addSubview:self.readItLaterIndicatorImageView];
 
         _attributionMenuButton = [self buttonForAttributionMenu];
         [self addSubview:self.attributionMenuButton];
@@ -78,7 +81,7 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton, _attributionMenuButton);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _attributionNameLabel, _attributionLinkButton, _readItLaterIndicatorImageView, _attributionMenuButton);
     NSDictionary *metrics = @{@"avatarSize": @(WPContentAttributionViewAvatarSize),
                               @"labelHeight":@(WPContentAttributionLabelHeight),
                               @"menuSize":@(WPContentAttributionMenuSize)};
@@ -102,6 +105,10 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:metrics
                                                                    views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_readItLaterIndicatorImageView][_attributionMenuButton]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_attributionMenuButton]|"
                                                                  options:0
                                                                  metrics:metrics
@@ -113,7 +120,6 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 {
     self.attributionNameLabel.text = [self.contentProvider authorForDisplay];
     [self configureAttributionButton];
-
 }
 
 - (void)configureAttributionButton
@@ -163,6 +169,15 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     [button addTarget:self action:@selector(attributionButtonAction:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
+}
+
+- (UIImageView *)imageViewForReadItLaterIndicator
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"read-it-later-indicator"]];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.hidden = YES;
+    
+    return imageView;
 }
 
 - (UIButton *)buttonForAttributionMenu

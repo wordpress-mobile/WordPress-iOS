@@ -84,6 +84,7 @@ extern const CGFloat WPContentAttributionViewAvatarSize;
 @property (nonatomic, strong) CircularImageView *avatarImageView;
 @property (nonatomic, strong) UILabel *attributionNameLabel;
 @property (nonatomic, strong) UIButton *attributionLinkButton;
+@property (nonatomic, strong) UIImageView *readItLaterIndicatorImageView;
 @property (nonatomic, strong) UIButton *attributionMenuButton;
 @property (nonatomic, strong) UIView *borderView;
 
