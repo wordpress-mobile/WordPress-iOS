@@ -19,6 +19,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
+#import "LoginViewController.h"
 
 NSString * const WPTabBarRestorationID = @"WPTabBarID";
 NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -278,6 +279,26 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)showLoginController
+{
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.showEditorAfterAddingSites = YES;
+    loginViewController.cancellable = YES;
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    if (!defaultAccount) {
+        loginViewController.prefersSelfHosted = YES;
+    }
+    loginViewController.dismissBlock = ^{
+        [self dismissViewControllerAnimated:YES completion:nil];
+    };
+    UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    [self presentViewController:loginNavigationController animated:YES completion:nil];
+}
+
 - (void)switchTabToPostsListForPost:(AbstractPost *)post
 {
     // Make sure the desired tab is selected.
@@ -351,7 +372,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         // Ignore taps on the post tab and instead show the modal.
         if ([blogService blogCountVisibleForAllAccounts] == 0) {
-            [[WordPressAppDelegate sharedInstance] showWelcomeScreenAnimated:YES thenEditor:YES];
+            [self showLoginController];
         } else {
             [self showPostTab];
         }
