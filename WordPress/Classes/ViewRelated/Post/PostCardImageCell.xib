@@ -184,7 +184,7 @@
                                             </constraint>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkq-mO-MBJ">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pkq-mO-MBJ" customClass="PostCardActionBar">
                                         <rect key="frame" x="0.0" y="390" width="600" height="37"/>
                                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -279,9 +279,9 @@
                         </variation>
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
-                                <exclude reference="vWx-63-G4B"/>
-                                <exclude reference="IhB-5o-fWK"/>
                                 <include reference="95F-8n-BLS"/>
+                                <exclude reference="IhB-5o-fWK"/>
+                                <exclude reference="vWx-63-G4B"/>
                             </mask>
                         </variation>
                     </view>

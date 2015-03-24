@@ -1,4 +1,5 @@
 #import <UIKit/UIKit.h>
+#import "PostCardActionBar.h"
 #import "WPPostContentViewProvider.h"
 
 @interface PostCardTableViewCell : UITableViewCell
@@ -22,7 +23,7 @@
 @property (nonatomic, strong) IBOutlet UIView *metaView;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonRight;
 @property (nonatomic, strong) IBOutlet UIButton *metaButtonLeft;
-@property (nonatomic, strong) IBOutlet UIView *actionBar;
+@property (nonatomic, strong) IBOutlet PostCardActionBar *actionBar;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *headerViewLowerConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLowerConstraint;
