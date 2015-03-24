@@ -19,6 +19,7 @@
 
 // Meta accessors
 - (NSDate *)dateForDisplay;
+- (NSString *)status;
 - (NSString *)statusForDisplay;
 - (BOOL)unreadStatusForDisplay;
 - (NSInteger)commentCount;
