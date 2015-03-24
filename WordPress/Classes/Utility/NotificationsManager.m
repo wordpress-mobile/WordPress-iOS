@@ -41,7 +41,7 @@ static NSString *const NotificationActionCommentReply               = @"COMMENT_
 static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
 static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
 
-static NSTimeInterval const oneDayInSeconds                         = 3;
+static NSTimeInterval const OneDayInSeconds                         = 60 * 60 * 24;
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsManager
@@ -469,7 +469,7 @@ static NSTimeInterval const oneDayInSeconds                         = 3;
     UILocalNotification *localNotification = [[UILocalNotification alloc] init];
     
     localNotification.timeZone = [NSTimeZone localTimeZone];
-    localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:oneDayInSeconds];
+    localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:OneDayInSeconds];
     localNotification.alertTitle = @"WordPress";
     localNotification.alertBody = NSLocalizedString(@"Read it later!", @"Notification body for their Read It Later");
     localNotification.soundName = UILocalNotificationDefaultSoundName;
