@@ -176,7 +176,7 @@
                                             <constraint firstAttribute="centerY" secondItem="Ovg-ci-Pfb" secondAttribute="centerY" id="jAb-xl-YQh"/>
                                         </constraints>
                                     </view>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BlB-Gp-P6A">
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BlB-Gp-P6A" customClass="PostCardActionBar">
                                         <rect key="frame" x="0.0" y="180" width="600" height="37"/>
                                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
@@ -269,8 +269,8 @@
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
                                 <exclude reference="NMO-YJ-xyb"/>
-                                <exclude reference="PT4-oy-27q"/>
                                 <include reference="Nqp-7c-aLc"/>
+                                <exclude reference="PT4-oy-27q"/>
                             </mask>
                         </variation>
                     </view>
