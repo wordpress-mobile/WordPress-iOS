@@ -207,6 +207,8 @@ static NSTimeInterval const OneDayInSeconds                         = 60 * 60 * 
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WPTabBarController sharedInstance] showNotificationsTab];
+        
+        return;
     }
     
     NSDictionary *localNotif = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
