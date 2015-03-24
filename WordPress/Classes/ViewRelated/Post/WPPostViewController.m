@@ -43,7 +43,8 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMediaBeforeEdit,
     EditPostViewControllerAlertTagFailedMediaBeforeSave,
     EditPostViewControllerAlertTagSwitchBlogs,
-    EditPostViewControllerAlertCancelMediaUpload,
+    EditPostViewControllerAlertTagCancelMediaUpload,
+    EditPostViewControllerAlertTagMediaOptions,
 };
 
 // State Restoration
@@ -695,7 +696,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
                                               otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    alertView.tag = EditPostViewControllerAlertTagCancelMediaUpload;
     [alertView show];
 }
 
@@ -765,18 +766,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     [self.editorView saveSelection];
     
-    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
-	picker.delegate = self;
-    
-    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
-    
-    // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
-    
-    [self presentViewController:picker animated:YES completion:nil];
-    picker.childNavigationController.navigationBar.translucent = NO;
+#warning pick local or remote 
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert image from:", nil)
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                          otherButtonTitles:NSLocalizedString(@"Local Media", nil), NSLocalizedString(@"Blog Media", nil), nil];
+    alert.tag = EditPostViewControllerAlertTagMediaOptions;
+    [alert show];
 }
 
 #pragma mark - Data Model: Post
@@ -1806,7 +1803,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [self showBlogSelector];
             }
         } break;
-        case (EditPostViewControllerAlertCancelMediaUpload): {
+        case (EditPostViewControllerAlertTagCancelMediaUpload): {
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self cancelMediaUploads];
             }
@@ -1821,6 +1818,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self removeAllFailedMedia];
                 [self savePostAndDismissVC];
+            }
+        } break;
+        case (EditPostViewControllerAlertTagMediaOptions): {
+            if (buttonIndex == alertView.firstOtherButtonIndex) {
+                CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+                picker.delegate = self;
+                
+                UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
+                [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+                [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
+                
+                // Only show photos for now (not videos)
+                picker.assetsFilter = [ALAssetsFilter allPhotos];
+                
+                [self presentViewController:picker animated:YES completion:nil];
+                picker.childNavigationController.navigationBar.translucent = NO;
+            } else if (buttonIndex == alertView.firstOtherButtonIndex + 1) {
+                MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
+                [self presentViewController:vc animated:YES completion:nil];
             }
         } break;
     }
