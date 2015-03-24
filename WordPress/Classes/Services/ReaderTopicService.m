@@ -602,7 +602,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
                                   insertIntoManagedObjectContext:self.managedObjectContext];
         
         topic.type = ReaderTopicTypeList;
-        topic.lastSynced = [[NSDate alloc] init];
+        topic.lastSynced = [NSDate date];
         topic.title = NSLocalizedString(@"Read It Later", @"Title for the Read It Later topic");
         topic.isMenuItem = YES;
         topic.path = ReaderTopicReadItLaterPath;
