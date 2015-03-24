@@ -13,7 +13,6 @@
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
 NSString * const ReaderTopicFreshlyPressedPathCommponent = @"freshly-pressed";
-NSString * const ReaderTopicReadItLaterTitle = @"Read It Later";
 NSString * const ReaderTopicReadItLaterPath = @"ReadItLater";
 NSString * const ReaderTopicCurrentTopicURIKey = @"ReaderTopicCurrentTopicURIKey"; // Deprecated
 NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathKey";
@@ -604,7 +603,7 @@ NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTopicPathK
         
         topic.type = ReaderTopicTypeList;
         topic.lastSynced = [[NSDate alloc] init];
-        topic.title = ReaderTopicReadItLaterTitle;
+        topic.title = NSLocalizedString(@"Read It Later", @"Title for the Read It Later topic");
         topic.isMenuItem = YES;
         topic.path = ReaderTopicReadItLaterPath;
         
