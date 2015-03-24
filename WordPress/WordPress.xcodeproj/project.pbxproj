@@ -73,9 +73,9 @@
 		5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5903AE1A19B60A98009D5354 /* WPButtonForNavigationBar.m */; };
 		591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */; };
 		591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */; };
+		594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 594DB2941AB891A200E2E456 /* WPUserAgent.m */; };
 		5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = 5948AD0D1AB734F2006E8882 /* WPAppAnalytics.m */; };
 		5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */; };
-		594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */ = {isa = PBXBuildFile; fileRef = 594DB2941AB891A200E2E456 /* WPUserAgent.m */; };
 		595B02221A6C4ECD00415A30 /* WPWhatsNewView.m in Sources */ = {isa = PBXBuildFile; fileRef = 595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */; };
 		595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 595B02261A6C504400415A30 /* WPWhatsNewView.xib */; };
 		5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */; };
@@ -625,11 +625,11 @@
 		591A428B1A6DC1B0003807A6 /* WPBackgroundDimmerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBackgroundDimmerView.m; sourceTree = "<group>"; };
 		591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPGUIConstants.h; sourceTree = "<group>"; };
 		591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPGUIConstants.m; sourceTree = "<group>"; };
+		594DB2931AB891A200E2E456 /* WPUserAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUserAgent.h; sourceTree = "<group>"; };
+		594DB2941AB891A200E2E456 /* WPUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgent.m; sourceTree = "<group>"; };
 		5948AD0C1AB734F2006E8882 /* WPAppAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAppAnalytics.h; sourceTree = "<group>"; };
 		5948AD0D1AB734F2006E8882 /* WPAppAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAppAnalytics.m; sourceTree = "<group>"; };
 		5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAppAnalyticsTests.m; sourceTree = "<group>"; };
-		594DB2931AB891A200E2E456 /* WPUserAgent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPUserAgent.h; sourceTree = "<group>"; };
-		594DB2941AB891A200E2E456 /* WPUserAgent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgent.m; sourceTree = "<group>"; };
 		595B02201A6C4ECD00415A30 /* WPWhatsNewView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNewView.h; path = WhatsNew/WPWhatsNewView.h; sourceTree = "<group>"; };
 		595B02211A6C4ECD00415A30 /* WPWhatsNewView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNewView.m; path = WhatsNew/WPWhatsNewView.m; sourceTree = "<group>"; };
 		595B02261A6C504400415A30 /* WPWhatsNewView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = WPWhatsNewView.xib; path = Resources/WhatsNew/WPWhatsNewView.xib; sourceTree = "<group>"; };

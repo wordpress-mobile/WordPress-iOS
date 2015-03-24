@@ -48,18 +48,14 @@
 
     [self configureNavBar];
     [self configurePostsViewController];
-}
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
     ReaderTopic *topic = [self currentTopic];
     if (topic) {
         [self assignTopic:topic];
     } else {
         [self syncTopics];
     }
+
 }
 
 
@@ -108,7 +104,7 @@
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
     [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
     navigationItem.rightBarButtonItem = button;
-    
+
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:navigationItem];
 }
 
@@ -190,6 +186,7 @@
     navController.navigationBar.translucent = NO;
     [self presentViewController:navController animated:YES completion:nil];
 }
+
 
 #pragma mark - Scrollable Controller
 
