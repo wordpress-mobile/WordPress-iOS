@@ -1,4 +1,5 @@
 #import "PostCardTableViewCell.h"
+#import "PostCardActionBarItem.h"
 #import "NSDate+StringFormatting.h"
 #import "UIImageView+Gravatar.h"
 #import "WPStyleGuide+Posts.h"
@@ -132,6 +133,7 @@
     [self configureDate];
     [self configureStatusView];
     [self configureMetaButtons];
+    [self configureActionBar];
 
     [self setNeedsUpdateConstraints];
 }
@@ -255,5 +257,89 @@
     metaButton.selected = NO;
     metaButton.hidden = NO;
 }
+
+- (void)configureActionBar
+{
+    if ([[self.contentProvider status] isEqualToString:@"draft"] || [[self.contentProvider status] isEqualToString:@"pending"] || [[self.contentProvider status] isEqualToString:@"future"]) {
+        // draft, pending, future
+        [self configureDraftActionBar];
+    } else if ([[self.contentProvider status] isEqualToString:@"trash"]) {
+        // trashed
+        [self configureTrashedActionBar];
+    } else {
+        // anything else (published, private, something custom) treat as published
+        [self configurePublishedActionBar];
+    }
+}
+
+- (void)configurePublishedActionBar
+{
+    NSMutableArray *items = [NSMutableArray array];
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"")
+                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
+                                                      highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    [self.actionBar setItems:items];
+}
+
+- (void)configureDraftActionBar
+{
+    NSMutableArray *items = [NSMutableArray array];
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"")
+                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
+                                                      highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-view"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    [self.actionBar setItems:items];
+}
+
+
+- (void)configureTrashedActionBar
+{
+    NSMutableArray *items = [NSMutableArray array];
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Restore", @"")
+                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-restore"]
+                                                      highlightedImage:nil];
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                               highlightedImage:nil];
+    [items addObject:item];
+
+    [self.actionBar setItems:items];
+}
+
 
 @end
