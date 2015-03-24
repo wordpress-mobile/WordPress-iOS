@@ -175,7 +175,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[[NSMutableArray alloc] init] forAccount:nil];
+    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[NSMutableArray new] forAccount:nil];
 
     // Topics exist in the context
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
@@ -185,7 +185,7 @@
 
     // Merg new set of topics.
     RemoteReaderTopic *foo = remoteTopics.firstObject;
-    [service mergeMenuTopics:@[foo] withTopicsToKeep:[[NSMutableArray alloc] init] forAccount:nil];
+    [service mergeMenuTopics:@[foo] withTopicsToKeep:[NSMutableArray new] forAccount:nil];
 
     // Make sure the missing topics were removed when merged
     count = [context countForFetchRequest:request error:&error];
@@ -209,7 +209,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeMenuTopics:startingTopics withTopicsToKeep:[[NSMutableArray alloc] init] forAccount:nil];
+    [service mergeMenuTopics:startingTopics withTopicsToKeep:[NSMutableArray new] forAccount:nil];
 
     // Topics exist in the context
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
@@ -220,7 +220,7 @@
     XCTAssertEqual(count, [startingTopics count], @"Number of topics in context did not match expected.");
 
     // Merg new set of topics.
-    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[[NSMutableArray alloc] init] forAccount:nil];
+    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[NSMutableArray new] forAccount:nil];
 
     // Make sure the missing topics were added when merged
     count = [context countForFetchRequest:request error:&error];
@@ -244,7 +244,7 @@
     service.currentTopic = nil;
 
     // Current topic is not nil after a sync
-    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[[NSMutableArray alloc] init] forAccount:nil];
+    [service mergeMenuTopics:remoteTopics withTopicsToKeep:[NSMutableArray new] forAccount:nil];
     XCTAssertNotNil(service.currentTopic, @"The current topic was nil.");
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
