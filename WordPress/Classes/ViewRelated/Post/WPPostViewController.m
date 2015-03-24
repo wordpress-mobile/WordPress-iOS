@@ -773,7 +773,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
     
     // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.assetsFilter = [ALAssetsFilter allAssets];
     
     [self presentViewController:picker animated:YES completion:nil];
     picker.childNavigationController.navigationBar.translucent = NO;
@@ -1563,6 +1563,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     for(NSProgress * progress in [self.mediaInProgress allValues]){
         if (progress.totalUnitCount != 0 && !progress.cancelled){
             [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
+            [self.editorView setProgress:progress.fractionCompleted onVideo:progress.userInfo[WPProgressImageId]];
         }
     }
 }
@@ -1689,16 +1690,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
         [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
-        [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+        if (media.mediaType == MediaTypeImage) {
+            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+        } else if (media.mediaType == MediaTypeVideo) {
+            [self.editorView replaceLocalVideoWithId:imageUniqueId forRemoteVideo:media.remoteURL];
+        }
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
             [self stopTrackingProgressOfMediaWithId:imageUniqueId];
-            [self.editorView removeImage:imageUniqueId];
+            if (media.mediaType == MediaTypeImage) {
+                [self.editorView removeImage:imageUniqueId];
+            } else if (media.mediaType == MediaTypeVideo) {
+                [self.editorView removeVideo:imageUniqueId];
+            }
             [media remove];
         } else {
             [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
-            [self.editorView markImage:imageUniqueId failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+            [self.editorView markImage:imageUniqueId
+               failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
         }
     }];
     [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
@@ -1731,33 +1741,41 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self prepareMediaProgressForNumberOfAssets:assets.count];
 
     for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-            // Could handle videos here
-        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            __weak __typeof__(self) weakSelf = self;
-            NSString *imageUniqueId = [self uniqueIdForMedia];
-            NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-            createMediaProgress.totalUnitCount = 2;
-            [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
-                __typeof__(self) strongSelf = weakSelf;
-                if (!strongSelf) {
-                    return;
-                }
-                createMediaProgress.completedUnitCount++;
-                if (error) {
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                    return;
-                }
-                NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
-                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:imageUniqueId];
-                
-                [self uploadMedia:media trackingId:imageUniqueId];
-            }];
-        }
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        __weak __typeof__(self) weakSelf = self;
+        NSString *mediaUniqueId = [self uniqueIdForMedia];
+        NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+        createMediaProgress.totalUnitCount = 2;
+        [self trackMediaWithId:mediaUniqueId usingProgress:createMediaProgress];
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
+            __typeof__(self) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            createMediaProgress.completedUnitCount++;
+            if (error) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                              @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                    message:error.localizedDescription];
+                return;
+            }
+            NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
+            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueId];
+            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+                UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+                NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
+                NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueId];
+                [data writeToFile:posterImagePath atomically:YES];
+                NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
+                [strongSelf.editorView insertLocalVideo:[url absoluteString]
+                                            posterImage:[posterURL absoluteString]
+                                               uniqueId:mediaUniqueId];
+            }
+            
+            [self uploadMedia:media trackingId:mediaUniqueId];
+        }];
     }
-
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
@@ -1963,6 +1981,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self refreshNavigationBarButtons:NO];
 }
 
+- (void)editorViewController:(WPEditorViewController *)editorViewController videoReplaced:(NSString *)videoId
+{
+    [self stopTrackingProgressOfMediaWithId:videoId];
+    [self refreshNavigationBarButtons:NO];
+}
+
+
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url imageMeta:(WPImageMeta *)imageMeta
 {
     // Note: imageId is an editor specified data attribute, not the image's ID attribute.
@@ -2034,16 +2059,19 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
-    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-        // If the image is from a shared photo stream it may not be available locally to be used
+    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto
+        || [asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
+        // If the media is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")
+                      withSupportButton:NO];
             return NO;
         }
         if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
             [WPError showAlertWithTitle:nil
-                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures] withSupportButton:NO];
+                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]
+                      withSupportButton:NO];
             return NO;
         }
         return YES;

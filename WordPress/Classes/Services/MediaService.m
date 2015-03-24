@@ -58,28 +58,34 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
-                  completion:(void (^)(Media *media, NSError * error))completion
+                  completion:(void (^)(Media *media, NSError *error))completion
 {
     BOOL geoLocationEnabled = NO;
     NSError *error = nil;
     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-	if (!post) {
-		if (completion) {
-			completion(nil, error);
-		}
-		return;
-	}
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    MediaType mediaType = MediaTypeDocument;
+    if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+        mediaType = MediaTypeImage;
+    } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+        mediaType = MediaTypeVideo;
+    }
 
     geoLocationEnabled = post.blog.geolocationEnabled;
-    
+
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
     NSString *imagePath = [self pathForAsset:asset];
-    
+
     [[WPAssetExporter sharedInstance] exportAsset:asset
                                            toFile:imagePath
                                          resizing:maxImageSize
                                  stripGeoLocation:!geoLocationEnabled
-                                completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+                                completionHandler:^(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error) {
         if (!success) {
             if (completion){
                 completion(nil, error);
@@ -99,6 +105,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             media.filesize = @([fileAttributes fileSize] / 1024);
             media.width = @(resultingSize.width);
             media.height = @(resultingSize.height);
+            media.mediaType = mediaType;
             //make sure that we only return when object is properly created and saved
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (completion) {
@@ -106,7 +113,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 }
             }];
         }];
-    }];
+                                }];
 }
 
 - (void)uploadMedia:(Media *)media
