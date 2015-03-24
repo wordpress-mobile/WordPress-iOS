@@ -96,7 +96,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
-@property (nonatomic, strong) NSString * selectedImageId;
+@property (nonatomic, strong) NSString * selectedMediaID;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -1646,7 +1646,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)dismissAssociatedActionSheetIfVisible:(NSString *)uniqueMediaId {
     // let's see if we where displaying an action sheet for this image
-    if (self.currentActionSheet && [uniqueMediaId isEqualToString:self.selectedImageId]){
+    if (self.currentActionSheet && [uniqueMediaId isEqualToString:self.selectedMediaID]){
         if (self.currentActionSheet.tag == WPPostViewControllerActionSheetCancelUpload ||
             self.currentActionSheet.tag == WPPostViewControllerActionSheetRetryUpload ) {
             [self.currentActionSheet dismissWithClickedButtonIndex:self.currentActionSheet.cancelButtonIndex animated:YES];
@@ -1750,10 +1750,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     for (ALAsset *asset in assets) {
         MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         __weak __typeof__(self) weakSelf = self;
-        NSString *mediaUniqueId = [self uniqueIdForMedia];
+        NSString *mediaUniqueID = [self uniqueIdForMedia];
         NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
         createMediaProgress.totalUnitCount = 2;
-        [self trackMediaWithId:mediaUniqueId usingProgress:createMediaProgress];
+        [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
         [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
             __typeof__(self) strongSelf = weakSelf;
             if (!strongSelf) {
@@ -1768,19 +1768,19 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             }
             NSURL* url = [[NSURL alloc] initFileURLWithPath:media.localURL];
             if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueId];
+                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
             } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
                 UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
                 NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
-                NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueId];
+                NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
                 [data writeToFile:posterImagePath atomically:YES];
                 NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
                 [strongSelf.editorView insertLocalVideo:[url absoluteString]
                                             posterImage:[posterURL absoluteString]
-                                               uniqueId:mediaUniqueId];
+                                               uniqueId:mediaUniqueID];
             }
             
-            [self uploadMedia:media trackingId:mediaUniqueId];
+            [self uploadMedia:media trackingId:mediaUniqueID];
         }];
     }
     // Need to refresh the post object. If we didn't, self.post.media would appear
@@ -1873,35 +1873,35 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         } break;
         case (WPPostViewControllerActionSheetCancelUpload): {
             if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self cancelUploadOfMediaWithId:self.selectedImageId];
+                [self cancelUploadOfMediaWithId:self.selectedMediaID];
             }
-            self.selectedImageId = nil;
+            self.selectedMediaID = nil;
         } break;
         case (WPPostViewControllerActionSheetRetryUpload): {
             if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self stopTrackingProgressOfMediaWithId:self.selectedImageId];
-                [self.editorView removeImage:self.selectedImageId];
+                [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
+                [self.editorView removeImage:self.selectedMediaID];
             } else if (buttonIndex == 1) {
-                [self.editorView unmarkImageFailedUpload:self.selectedImageId];
-                [self retryUploadOfMediaWithId:self.selectedImageId];
+                [self.editorView unmarkImageFailedUpload:self.selectedMediaID];
+                [self retryUploadOfMediaWithId:self.selectedMediaID];
             }
-            self.selectedImageId = nil;
+            self.selectedMediaID = nil;
         } break;
         case (WPPostViewControllerActionSheetCancelVideoUpload): {
             if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self cancelUploadOfMediaWithId:self.selectedImageId];
+                [self cancelUploadOfMediaWithId:self.selectedMediaID];
             }
-            self.selectedImageId = nil;
+            self.selectedMediaID = nil;
         } break;
         case (WPPostViewControllerActionSheetRetryVideoUpload): {
             if (buttonIndex == actionSheet.destructiveButtonIndex){
-                [self stopTrackingProgressOfMediaWithId:self.selectedImageId];
-                [self.editorView removeVideo:self.selectedImageId];
+                [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
+                [self.editorView removeVideo:self.selectedMediaID];
             } else if (buttonIndex == 1) {
-                [self.editorView unmarkVideoFailedUpload:self.selectedImageId];
-                [self retryUploadOfMediaWithId:self.selectedImageId];
+                [self.editorView unmarkVideoFailedUpload:self.selectedMediaID];
+                [self retryUploadOfMediaWithId:self.selectedMediaID];
             }
-            self.selectedImageId = nil;
+            self.selectedMediaID = nil;
         } break;
     }
     
@@ -2051,7 +2051,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
     
-    self.selectedImageId= imageId;
+    self.selectedMediaID= imageId;
     
     NSProgress * mediaProgress = self.mediaInProgress[imageId];
     if (!mediaProgress){
@@ -2089,7 +2089,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         return;
     }
     
-    self.selectedImageId= videoID;
+    self.selectedMediaID= videoID;
     
     NSProgress * mediaProgress = self.mediaInProgress[videoID];
     if (!mediaProgress){
