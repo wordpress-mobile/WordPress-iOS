@@ -27,7 +27,7 @@
 NSString *const NotificationsManagerDidRegisterDeviceToken          = @"NotificationsManagerDidRegisterDeviceToken";
 NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
 
-NSString *const WordPressNotificationTitle                          = @"WordPress";
+NSString *const WordPressLocalNotificationTitle                     = @"WordPress";
 
 static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey                  = @"notification_preferences";
@@ -472,7 +472,7 @@ static NSTimeInterval const OneDayInSeconds                         = 60 * 60 * 
     
     localNotification.timeZone = [NSTimeZone localTimeZone];
     localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:OneDayInSeconds];
-    localNotification.alertTitle = WordPressNotificationTitle;
+    localNotification.alertTitle = WordPressLocalNotificationTitle;
     localNotification.alertBody = NSLocalizedString(@"You've got posts you haven't read. Check them out now!", @"Notification body for their Read It Later");
     localNotification.soundName = UILocalNotificationDefaultSoundName;
     
