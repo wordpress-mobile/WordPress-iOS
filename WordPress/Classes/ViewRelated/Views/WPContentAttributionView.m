@@ -105,7 +105,11 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
                                                                  options:NSLayoutFormatAlignAllLeft
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_readItLaterIndicatorImageView][_attributionMenuButton]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(-9)-[_readItLaterIndicatorImageView(labelHeight)]"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(-9)-[_readItLaterIndicatorImageView(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
