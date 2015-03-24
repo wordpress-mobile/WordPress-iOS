@@ -74,7 +74,9 @@ static NSInteger const MaximumNumberOfPictures = 10;
 NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetSaveOnExit = 201,
     WPPostViewControllerActionSheetCancelUpload = 202,
-    WPPostViewControllerActionSheetRetryUpload = 203
+    WPPostViewControllerActionSheetRetryUpload = 203,
+    WPPostViewControllerActionSheetCancelVideoUpload = 204,
+    WPPostViewControllerActionSheetRetryVideoUpload = 205
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -1683,37 +1685,42 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-- (void)uploadMedia:(Media *)media trackingId:(NSString *)imageUniqueId
+- (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
 {
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
     NSProgress *uploadProgress = nil;
     [mediaService uploadMedia:media progress:&uploadProgress success:^{
-        [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
         if (media.mediaType == MediaTypeImage) {
-            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:imageUniqueId];
+            [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
+            [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            [self.editorView replaceLocalVideoWithId:imageUniqueId forRemoteVideo:media.remoteURL];
+            [self.editorView replaceLocalVideoWithId:mediaUniqueId forRemoteVideo:media.remoteURL];
         }
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-            [self stopTrackingProgressOfMediaWithId:imageUniqueId];
+            [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
             if (media.mediaType == MediaTypeImage) {
-                [self.editorView removeImage:imageUniqueId];
+                [self.editorView removeImage:mediaUniqueId];
             } else if (media.mediaType == MediaTypeVideo) {
-                [self.editorView removeVideo:imageUniqueId];
+                [self.editorView removeVideo:mediaUniqueId];
             }
             [media remove];
         } else {
-            [self dismissAssociatedActionSheetIfVisible:imageUniqueId];
+            [self dismissAssociatedActionSheetIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
-            [self.editorView markImage:imageUniqueId
-               failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+            if (media.mediaType == MediaTypeImage) {
+                [self.editorView markImage:mediaUniqueId
+                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+            } else if (media.mediaType == MediaTypeVideo) {
+                [self.editorView markVideo:mediaUniqueId
+                   failedUploadWithMessage:NSLocalizedString(@"Failed", @"The message that is overlay on media when the upload to server fails")];
+            }
         }
     }];
-    [uploadProgress setUserInfoObject:imageUniqueId forKey:WPProgressImageId];
+    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressImageId];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
-    [self trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
+    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
     [self.mediaGlobalProgress resignCurrent];
 }
 
@@ -1880,6 +1887,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             }
             self.selectedImageId = nil;
         } break;
+        case (WPPostViewControllerActionSheetCancelVideoUpload): {
+            if (buttonIndex == actionSheet.destructiveButtonIndex){
+                [self cancelUploadOfMediaWithId:self.selectedImageId];
+            }
+            self.selectedImageId = nil;
+        } break;
+        case (WPPostViewControllerActionSheetRetryVideoUpload): {
+            if (buttonIndex == actionSheet.destructiveButtonIndex){
+                [self stopTrackingProgressOfMediaWithId:self.selectedImageId];
+                [self.editorView removeVideo:self.selectedImageId];
+            } else if (buttonIndex == 1) {
+                [self.editorView unmarkVideoFailedUpload:self.selectedImageId];
+                [self retryUploadOfMediaWithId:self.selectedImageId];
+            }
+            self.selectedImageId = nil;
+        } break;
     }
     
     _currentActionSheet = nil;
@@ -1988,13 +2011,25 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 }
 
 
-- (void)editorViewController:(WPEditorViewController *)editorViewController imageTapped:(NSString *)imageId url:(NSURL *)url imageMeta:(WPImageMeta *)imageMeta
+- (void)editorViewController:(WPEditorViewController *)editorViewController
+                 imageTapped:(NSString *)imageId
+                         url:(NSURL *)url
+                   imageMeta:(WPImageMeta *)imageMeta
 {
     // Note: imageId is an editor specified data attribute, not the image's ID attribute.
     if (imageId.length == 0) {
         [self displayImageDetailsForMeta:imageMeta];
     } else {
         [self promptForActionForTappedImage:imageId url:url];
+    }
+}
+
+- (void)editorViewController:(WPEditorViewController *)editorViewController
+                 videoTapped:(NSString *)videoID
+                         url:(NSURL *)url
+{
+    if (videoID.length > 0) {
+        [self promptForActionForTappedVideo:videoID url:url];
     }
 }
 
@@ -2045,6 +2080,43 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                          otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the image"), nil];
         actionSheet.tag = WPPostViewControllerActionSheetRetryUpload;
         [actionSheet showInView:self.editorView];        
+    }
+}
+
+- (void)promptForActionForTappedVideo:(NSString *)videoID url:(NSURL *)aURL
+{
+    if (videoID.length == 0) {
+        return;
+    }
+    
+    self.selectedImageId= videoID;
+    
+    NSProgress * mediaProgress = self.mediaInProgress[videoID];
+    if (!mediaProgress){
+        return;
+    }
+    
+    //Are we showing another action sheet?
+    if (self.currentActionSheet != nil){
+        return;
+    }
+    
+    // Is upload still going?
+    if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
+        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss stop upload question")
+                                                    destructiveButtonTitle:NSLocalizedString(@"Stop Upload",@"User action to stop upload")otherButtonTitles:nil];
+        actionSheet.tag = WPPostViewControllerActionSheetCancelVideoUpload;
+        [actionSheet showInView:self.editorView];
+    } else {
+        UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                                  delegate:self
+                                                         cancelButtonTitle:NSLocalizedString(@"Cancel", @"User action to dismiss retry upload question")
+                                                    destructiveButtonTitle:NSLocalizedString(@"Remove Video", @"User action to remove video that failed upload")
+                                                         otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the video"), nil];
+        actionSheet.tag = WPPostViewControllerActionSheetRetryVideoUpload;
+        [actionSheet showInView:self.editorView];
     }
 }
 
