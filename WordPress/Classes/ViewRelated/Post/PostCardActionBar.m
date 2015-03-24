@@ -10,21 +10,29 @@
 
 @implementation PostCardActionBar
 
+- (void)awakeFromNib
+{
+    [self setupView];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _buttons = @[];
-        self.backgroundColor = [WPStyleGuide lightGrey];
-        [self configureContentView];
+        [self setupView];
     }
     return self;
 }
 
-- (void)configureContentView
+- (void)setupView
 {
+    _buttons = @[];
+    self.backgroundColor = [WPStyleGuide lightGrey];
+
     self.contentView = [[UIView alloc] initWithFrame:self.bounds];
+    self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
     self.contentView.backgroundColor = [WPStyleGuide greyLighten20];
+    [self addSubview:self.contentView];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(_contentView);
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_contentView]|"
@@ -79,7 +87,7 @@
         previousButton = button;
         button = [self.buttons objectAtIndex:i];
         views = NSDictionaryOfVariableBindings(button, previousButton);
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[previousButton]-(1)-[button]"
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[previousButton]-(1)-[button(==previousButton)]"
                                                                                  options:0
                                                                                  metrics:nil
                                                                                    views:views]];
@@ -89,13 +97,10 @@
                                                                                    views:views]];
     }
 
-    /// right-most button
-    if (!previousButton) {
-        previousButton = button;
-    }
+    previousButton = button;
     button = [self.buttons lastObject];
     views = NSDictionaryOfVariableBindings(button, previousButton);
-    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[previousButton]-(1)-[button]|"
+    [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[previousButton]-(1)-[button(==previousButton)]|"
                                                                              options:0
                                                                              metrics:nil
                                                                                views:views]];
@@ -103,7 +108,7 @@
                                                                              options:0
                                                                              metrics:nil
                                                                                views:views]];
-
+    [self setNeedsUpdateConstraints];
 }
 
 - (NSInteger)numberOfItems
@@ -117,12 +122,13 @@
         [button removeFromSuperview];
     }
 
-    NSMutableArray *marr = [NSMutableArray array];
+    NSMutableArray *buttons = [NSMutableArray array];
     for (PostCardActionBarItem *item in items) {
         UIButton *button = [self buttonForItem:item];
         [self.contentView addSubview:button];
-        [marr addObject:button];
+        [buttons addObject:button];
     }
+    self.buttons = buttons;
     [self configureConstraints];
 }
 
@@ -136,8 +142,8 @@
     // Frames for transtion
     CGRect frame = self.contentView.frame;
     CGRect smallFrame = frame;
-    smallFrame.origin.x += smallFrame.size.width / 2;
-    smallFrame.origin.y += smallFrame.size.height / 2;
+    smallFrame.origin.x += smallFrame.size.width / 2.0;
+    smallFrame.origin.y += smallFrame.size.height / 2.0;
     smallFrame.size = CGSizeZero;
 
     // Get snapshot of current state
@@ -169,7 +175,9 @@
 - (UIButton *)buttonForItem:(PostCardActionBarItem *)item
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    [button setTitle:item.title forState:UIControlStateNormal | UIControlStateHighlighted];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    [button setTitle:item.title forState:UIControlStateNormal];
+    [button setTitle:item.title forState:UIControlStateHighlighted];
     [button setImage:item.image forState:UIControlStateNormal];
     [button setImage:item.highlightedImage forState:UIControlStateHighlighted];
     button.backgroundColor = [WPStyleGuide lightGrey];
