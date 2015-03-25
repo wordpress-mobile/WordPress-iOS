@@ -178,7 +178,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
-    [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    if (application.applicationState == UIApplicationStateActive) {
+        [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
+    }
 
     [self.window makeKeyAndVisible];
     [self showWelcomeScreenIfNeededAnimated:NO];
