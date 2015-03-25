@@ -44,7 +44,7 @@ PODS:
   - EmailChecker (0.1)
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
-  - Helpshift (4.8.0)
+  - Helpshift (4.10.2)
   - HockeySDK (3.6.2)
   - JRSwizzle (1.0)
   - KIF/IdentifierTests (3.1.2):
@@ -113,7 +113,7 @@ PODS:
   - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.0.29)
+  - WordPressCom-Analytics-iOS (0.0.30)
   - WordPressCom-Stats-iOS (0.3.0):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
@@ -132,7 +132,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
-  - Helpshift (~> 4.8.0)
+  - Helpshift (~> 4.10.0)
   - HockeySDK (~> 3.6.0)
   - KIF/IdentifierTests (~> 3.1)
   - Lookback (= 0.9.2)
@@ -153,7 +153,7 @@ DEPENDENCIES:
   - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `983b2483bb68fa499cef5f2b1757550d07770d1b`)
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (= 0.0.29)
+  - WordPressCom-Analytics-iOS (= 0.0.30)
   - WordPressCom-Stats-iOS (= 0.3.0)
   - wpxmlrpc (~> 0.8)
 
@@ -202,15 +202,15 @@ SPEC CHECKSUMS:
   CTAssetsPickerController: 319a91106b7b323446b39ab944a3f14db0a1ca46
   DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
   DTFoundation: bea4e07459f0f88a5aa3b8258fab1576bbe2e58c
-  EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
+  EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
   google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
-  Helpshift: cb3f909e33f53a1b4f617a743ed24fdbfdb507f3
+  Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
   HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
   JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
   KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
   Lookback: 1c2f89df8d08440460c93ad180f47c8608ad4cea
-  MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
+  MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
   Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
   MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
   NSLogger: 7421a0a60df62fb8ff548cd0388c302d3329a322
@@ -222,14 +222,14 @@ SPEC CHECKSUMS:
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
-  SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
+  SVProgressHUD: 90363c5e66aa08356bfe1a0923bd885fd3fbcb7c
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
-  WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
+  WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: e04a4a2b251e9bf973bc388d4674be2ee42fe914
   WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
   WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
-  WordPressCom-Analytics-iOS: d56f093a0379f543ea49edb265db67afc534dc00
+  WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
   WordPressCom-Stats-iOS: 199fe3ef7cf12d16430cdf36e74c8a3fb051b179
   wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
 
