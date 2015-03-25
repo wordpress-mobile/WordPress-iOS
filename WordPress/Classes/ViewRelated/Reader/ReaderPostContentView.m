@@ -162,6 +162,7 @@
     [super configureAttributionView];
     [self configureFollowAttributeButton];
     self.attributionView.readItLaterIndicatorImageView.hidden = !self.post.isReadItLater;
+    [self.attributionView hideAttributionMenu:!self.shouldShowAttributionMenu];
 }
 
 - (void)configureFollowAttributeButton

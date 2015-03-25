@@ -141,6 +141,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
     self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
+    self.postView.shouldShowAttributionMenu = NO;
     
     [self setReblogButtonVisibilityOfPostView:self.postView];
     
