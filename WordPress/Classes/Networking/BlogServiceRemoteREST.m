@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
 #import "Blog.h"
+#import "NSDate+WordPressJSON.h"
 
 @interface BlogServiceRemoteREST ()
 
@@ -67,7 +68,24 @@
                         failure:(void (^)(NSError *))failure
 {
 #warning write networking code for REST
-    NSAssert(NO, @"OMG: REST syncMediaLibraryForBlog not implemented yet!");
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSString *path = [self pathForMediaLibraryWithBlog:blog];
+    [self.api GET:path
+       parameters:nil // @{ @"number" : @9999 } must be <= 100; defaults to 20
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              //NSInteger mediaCount = [responseObject[@"found"] integerValue];
+              NSArray *mediaItems = responseObject[@"media"];
+              //NSDictionary *meta = responseObject[@"meta"];
+              NSArray *media = [self mapMediaLibraryFromResponse:mediaItems];
+              if (success) {
+                  success(media);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
 }
 
 #pragma mark - API paths
@@ -80,6 +98,11 @@
 - (NSString *)pathForPostFormatsWithBlog:(Blog *)blog
 {
     return [NSString stringWithFormat:@"sites/%@/post-formats", blog.dotComID];
+}
+
+- (NSString *)pathForMediaLibraryWithBlog:(Blog *)blog
+{
+    return [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
 }
 
 #pragma mark - Mapping methods
@@ -127,6 +150,41 @@
         return response;
     } else {
         return @{};
+    }
+}
+
+- (NSArray *)mapMediaLibraryFromResponse:(id)response
+{
+    if ([response isKindOfClass:[NSArray class]] && [response count]) {
+        NSMutableArray *mediaLibrary = [NSMutableArray array];
+        
+        for (NSDictionary *json in response) {
+            NSMutableDictionary *medium = [NSMutableDictionary dictionary];
+            
+            // map to XMLRPC format expected by Media -updateFromDictionary
+            medium[@"date_created_gmt"] = [NSDate dateWithWordPressComJSONString:json[@"date"]] ?: @"";
+            NSDictionary *mappings = @{
+                @"link" : @"URL",
+                @"attachment_id" : @"ID",
+                @"title" : @"title",
+                @"caption" : @"caption",
+                @"description" : @"description",
+            };
+            for (NSString *key in mappings) {
+                medium[key] = json[mappings[key]] ?: @"";
+            }
+            NSMutableDictionary *metadata = [NSMutableDictionary dictionary];
+            NSArray *keys = @[@"width", @"height", @"file"];
+            for (NSString *key in keys) {
+                metadata[key] = json[key] ?: @"";
+            }
+            medium[@"metadata"] = metadata;
+
+            [mediaLibrary addObject:medium];
+        }
+        return [NSMutableArray arrayWithArray:mediaLibrary];
+    } else {
+        return @[];
     }
 }
 
