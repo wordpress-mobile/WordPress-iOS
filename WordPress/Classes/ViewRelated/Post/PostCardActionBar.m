@@ -1,14 +1,30 @@
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
+#import "UIDevice+Helpers.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h> 
+#import "WordPress-Swift.h"
+
+static NSInteger ActionBarMoreButtonIndex = 999;
+static CGFloat ActionBarMinButtonWidth = 100.0;
 
 @interface PostCardActionBar()
-@property (nonatomic, strong) NSArray *buttons;
 @property (nonatomic, strong) UIView *contentView;
+@property (nonatomic, strong) NSArray *buttons;
+@property (nonatomic, strong) NSArray *items;
+@property (nonatomic, assign) NSInteger currentBatch;
+@property (nonatomic, assign) BOOL shouldShowMore;
+@property (nonatomic, assign) BOOL needsSetupButtons;
 @end
 
 @implementation PostCardActionBar
+
+#pragma mark - Life Cycle Methods
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)awakeFromNib
 {
@@ -24,8 +40,22 @@
     return self;
 }
 
+- (void)didMoveToWindow
+{
+    [super didMoveToWindow];
+
+    // Initial frame is likely to change after moving to a window.
+    // Be sure to refresh buttons if necessary.
+    // Calling after a delay is a bit of a hack but I don't see a better option - E
+    [self performSelector:@selector(setupButtonsIfNeeded) withObject:nil afterDelay:0.3];
+}
+
+
+#pragma mark - Setup
+
 - (void)setupView
 {
+    _items = @[];
     _buttons = @[];
     self.backgroundColor = [WPStyleGuide lightGrey];
 
@@ -43,9 +73,14 @@
                                                                  options:0
                                                                  metrics:nil
                                                                    views:views]];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationDidChange:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
 }
 
-- (void)configureConstraints
+- (void)setupConstraints
 {
     if ([self.buttons count] == 0) {
         return;
@@ -55,14 +90,14 @@
     UIButton *previousButton;
     NSDictionary *views;
 
-    // one button to rule them all...
+    // One button to rule them all...
     if ([self.buttons count] == 1) {
         button = [self.buttons firstObject];
         views = NSDictionaryOfVariableBindings(button);
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[button]|"
-                                                                                options:0
-                                                                                metrics:nil
-                                                                                  views:views]];
+                                                                                 options:0
+                                                                                 metrics:nil
+                                                                                   views:views]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[button]|"
                                                                                  options:0
                                                                                  metrics:nil
@@ -111,34 +146,85 @@
     [self setNeedsUpdateConstraints];
 }
 
-- (NSInteger)numberOfItems
-{
-    return [self.buttons count];
-}
-
-- (void)setItems:(NSArray *)items
+- (void)setupButtons
 {
     for (UIButton *button in self.buttons) {
         [button removeFromSuperview];
     }
+    self.currentBatch = 0;
+    self.shouldShowMore = [self checkIfShouldShowMoreButton];
+    NSInteger numOfButtons = [self maxButtonsToDisplay];
+    numOfButtons = MIN(numOfButtons, [self.items count]);
 
     NSMutableArray *buttons = [NSMutableArray array];
-    for (PostCardActionBarItem *item in items) {
-        UIButton *button = [self buttonForItem:item];
+    for (NSInteger i = 0; i < numOfButtons; i++) {
+        UIButton *button = [self newButton];
         [self.contentView addSubview:button];
         [buttons addObject:button];
     }
     self.buttons = buttons;
-    [self configureConstraints];
+
+    [self setupConstraints];
 }
 
-- (void)setItems:(NSArray *)items withAnimation:(BOOL)animation
+- (UIButton *)newButton
 {
-    if (!animation) {
-        [self setItems:items];
-        return;
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.backgroundColor = [WPStyleGuide lightGrey];
+    button.titleLabel.font = [WPStyleGuide subtitleFont];
+    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide mediumBlue] forState:UIControlStateHighlighted];
+    [button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
+}
+
+- (void)setupButtonsIfNeeded
+{
+    // check if we need to show the more button.
+    if ([self checkIfShouldShowMoreButton] != self.shouldShowMore) {
+        // configure buttons
+        [self setupButtons];
+        [self configureButtons];
+    }
+}
+
+
+#pragma mark - Configuration
+
+- (void)configureButtons
+{
+    // Reset all buttons.
+    for (UIButton *button in self.buttons) {
+        [self configureButton:button forItem:nil atIndex:0];
     }
 
+    NSArray *itemsToShow = [self currentBatchOfItems];
+    for (NSInteger i = 0; i < [itemsToShow count]; i++) {
+        PostCardActionBarItem *item = [itemsToShow objectAtIndex:i];
+        UIButton *button =[self.buttons objectAtIndex:i];
+        [self configureButton:button forItem:item atIndex:[self indexOfItem:item]];
+    }
+
+    if (self.shouldShowMore) {
+        BOOL isLastBatch = [itemsToShow lastObject] == [self.items lastObject];
+        PostCardActionBarItem *moreItem = [self moreItem:isLastBatch];
+        [self configureButton:[self.buttons lastObject] forItem:moreItem atIndex:ActionBarMoreButtonIndex];
+    }
+}
+
+- (void)configureButton:(UIButton *)button forItem:(PostCardActionBarItem *)item atIndex:(NSUInteger)index
+{
+    button.tag = index;
+    [button setTitle:item.title forState:UIControlStateNormal];
+    [button setTitle:item.title forState:UIControlStateHighlighted];
+    [button setImage:item.image forState:UIControlStateNormal];
+    [button setImage:item.highlightedImage forState:UIControlStateHighlighted];
+}
+
+- (void)configureButtonsWithAnimation
+{
     // Frames for transtion
     CGRect frame = self.contentView.frame;
     CGRect smallFrame = frame;
@@ -151,7 +237,7 @@
     viewOldState.frame = frame;
     [self addSubview:viewOldState];
 
-    [self setItems:items];
+    [self configureButtons];
 
     UIView *viewNewState = [self.contentView snapshotViewAfterScreenUpdates:YES];
     viewNewState.frame = smallFrame;
@@ -172,20 +258,95 @@
     }];
 }
 
-- (UIButton *)buttonForItem:(PostCardActionBarItem *)item
-{
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.translatesAutoresizingMaskIntoConstraints = NO;
-    [button setTitle:item.title forState:UIControlStateNormal];
-    [button setTitle:item.title forState:UIControlStateHighlighted];
-    [button setImage:item.image forState:UIControlStateNormal];
-    [button setImage:item.highlightedImage forState:UIControlStateHighlighted];
-    button.backgroundColor = [WPStyleGuide lightGrey];
-    button.titleLabel.font = [WPStyleGuide subtitleFont];
-    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide mediumBlue] forState:UIControlStateHighlighted];
 
-    return button;
+#pragma mark - Notifications
+
+- (void)orientationDidChange:(NSNotification *)notification
+{
+    [self setupButtonsIfNeeded];
+}
+
+
+#pragma mark - Accessors
+
+- (NSInteger)indexOfItem:(PostCardActionBarItem *)item
+{
+    return [self.items indexOfObject:item];
+}
+
+- (NSInteger)maxButtonsToDisplay
+{
+    return (NSInteger)floor(CGRectGetWidth(self.frame) / ActionBarMinButtonWidth);
+}
+
+- (BOOL)checkIfShouldShowMoreButton
+{
+    return [self maxButtonsToDisplay] < [self.items count];
+}
+
+- (void)setItems:(NSArray *)items
+{
+    _items = items;
+
+    [self setupButtons];
+    [self configureButtons];
+}
+
+- (PostCardActionBarItem *)moreItem:(BOOL)isLastBatch;
+{
+    PostCardActionBarItem *item;
+    if (isLastBatch) {
+        item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Back", @"")
+                                              image:[UIImage imageNamed:@"icon-post-actionbar-back"]
+                                   highlightedImage:nil];
+    } else {
+        item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
+                                              image:[UIImage imageNamed:@"icon-post-actionbar-more"]
+                                   highlightedImage:nil];
+    }
+    return item;
+}
+
+- (NSArray *)currentBatchOfItems
+{
+    NSInteger batchSize = [self.buttons count];
+    if (batchSize == 0) {
+        return @[];
+    }
+
+    if (self.shouldShowMore) {
+        batchSize--;
+    }
+    NSInteger index = self.currentBatch * batchSize;
+
+    // Validate the index and batch size do not exceed the limits of the array
+    if (index >= [self.items count]) {
+        // Safety net. Currently at the end of the available items so reset to zero.
+        index = 0;
+        self.currentBatch = 0;
+    }
+    // Adjust the batch size if we have fewer items in the array.
+    if ((index + batchSize) >= [self.items count]) {
+        batchSize = [self.items count] - index;
+    }
+
+    NSRange rng = NSMakeRange(index, batchSize);
+    return [self.items subarrayWithRange:rng];
+}
+
+
+#pragma mark - Actions
+
+- (void)handleButtonTap:(id)sender
+{
+    UIButton *button = (UIButton *)sender;
+    if (button.tag == ActionBarMoreButtonIndex) {
+        self.currentBatch++;
+        [self configureButtonsWithAnimation];
+        return;
+    }
+    // TODO: handle taps
+
 }
 
 @end
