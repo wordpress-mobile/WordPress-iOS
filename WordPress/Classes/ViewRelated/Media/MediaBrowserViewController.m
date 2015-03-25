@@ -206,11 +206,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)refresh
 {
-    /*
-     Syncing code was removed while implementing REST.
-     When we bring back the media library, networking code needs to be rewritten for both XML-RPC and REST
-     */
-#if FALSE
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
@@ -225,7 +220,6 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
         }
         [_refreshHeaderView endRefreshing];
     }];
-#endif
 }
 
 - (void)setUploadButtonEnabled:(BOOL)enabled

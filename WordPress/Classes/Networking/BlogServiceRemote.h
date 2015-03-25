@@ -4,6 +4,7 @@
 
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
+typedef void (^MediaLibraryHandler)(NSArray *media);
 
 @protocol BlogServiceRemote <NSObject>
 
@@ -15,5 +16,8 @@ typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
                        success:(PostFormatsHandler)success
                        failure:(void (^)(NSError *error))failure;
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(MediaLibraryHandler)success
+                        failure:(void (^)(NSError *error))failure;
 
 @end

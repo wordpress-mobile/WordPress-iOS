@@ -19,7 +19,9 @@
     return self;
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(OptionsHandler)success
+                   failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);
@@ -39,7 +41,9 @@
           }];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(PostFormatsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);
@@ -56,6 +60,14 @@
                   failure(error);
               }
           }];
+}
+
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(MediaLibraryHandler)success
+                        failure:(void (^)(NSError *))failure
+{
+#warning write networking code for REST
+    NSAssert(NO, @"OMG: REST syncMediaLibraryForBlog not implemented yet!");
 }
 
 #pragma mark - API paths

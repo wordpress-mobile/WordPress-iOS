@@ -56,7 +56,11 @@
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
-/*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure;
+
+/*! Syncs an entire blog include posts, pages, comments, options, post formats, media library, and categories.
  *  Used for instances where the entire blog should be refreshed or initially downloaded.
  *
  *  \param success Completion block called if the operation was a success

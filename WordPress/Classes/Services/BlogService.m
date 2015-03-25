@@ -242,6 +242,19 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            failure:failure];
 }
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+#warning write networking code for REST
+    BlogServiceRemoteXMLRPC *remote = [[BlogServiceRemoteXMLRPC alloc] initWithApi:blog.api];
+    
+    [remote syncMediaLibraryForBlog:blog
+                            success:[self mediaLibraryHandlerWithBlogObjectID:blog.objectID
+                                                            completionHandler:success]
+                            failure:failure];
+}
+
 - (void)syncBlog:(Blog *)blog
          success:(void (^)())success
          failure:(void (^)(NSError *error))failure
@@ -260,6 +273,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
+    
+#warning write networking code for REST
+    [self syncMediaLibraryForBlog:blog success:nil failure:nil];
 
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
@@ -302,6 +318,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             [remote syncPostFormatsForBlog:blog success:[strongSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
                 DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
             }];
+            
+#warning write networking code for REST
+            [self syncMediaLibraryForBlog:blog success:nil failure:nil];
 
             CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             // Right now, none of the callers care about the results of the sync
@@ -674,6 +693,38 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
 
+            if (completion) {
+                completion();
+            }
+        }];
+    };
+}
+
+- (MediaLibraryHandler)mediaLibraryHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                                  completionHandler:(void (^)(void))completion
+{
+    return ^void(NSArray *media) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:nil];
+            if (blog) {
+                NSMutableArray *mediaToKeep = [NSMutableArray array];
+                for (NSDictionary *item in media) {
+                    Media *mediaItem = [Media createOrReplaceMediaFromJSON:item forBlog:blog];
+                    [mediaToKeep addObject:mediaItem];
+                }
+                NSSet *syncedMedia = blog.media;
+                if (syncedMedia && (syncedMedia.count > 0)) {
+                    for (Media *m in syncedMedia) {
+                        if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
+                            [self.managedObjectContext deleteObject:m];
+                        }
+                    }
+                }
+                
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+        
             if (completion) {
                 completion();
             }
