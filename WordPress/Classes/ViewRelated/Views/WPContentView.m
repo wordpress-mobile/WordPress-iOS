@@ -15,6 +15,7 @@ const CGFloat WPContentViewAuthorViewHeight = 32.0;
 const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
+const CGFloat WPContentViewReadItLaterNegativePadding = -1.0;
 
 @interface WPContentView()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
@@ -151,19 +152,21 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     UIView *attributionView = self.attributionView;
     UIView *attributionBorderView = self.attributionBorderView;
+    UIView *readItLaterIndicatorImageView = self.readItLaterIndicatorImageView;
     UIView *featuredImageView = self.featuredImageView;
     UIView *titleLabel = self.titleLabel;
     UIView *contentView = self.contentView;
     UIView *actionView = self.actionView;
 
     CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
-    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView, actionView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, readItLaterIndicatorImageView,  featuredImageView, titleLabel, contentView, actionView);
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
                               @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
                               @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
                               @"titleContentPadding": @(WPContentViewTitleContentPadding),
                               @"borderHeight": @(WPContentViewBorderHeight),
+                              @"readItLaterNegativePadding": @(WPContentViewReadItLaterNegativePadding),
                               @"priority":@900
                               };
 
@@ -199,6 +202,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[readItLaterIndicatorImageView(verticalPadding)]-(readItLaterNegativePadding)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[readItLaterIndicatorImageView(verticalPadding)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -259,6 +271,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 {
     [self buildAttributionView];
     [self buildAttributionBorderView];
+    [self buildReadItLaterIndicatorImageView];
     [self buildFeaturedImageview];
     [self buildTitleLabel];
     [self buildContentView];
@@ -285,6 +298,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     borderView.backgroundColor = [UIColor colorWithRed:232.0/255.0 green:240.0/255.0 blue:245.0/255.0 alpha:1.0];
     self.attributionBorderView = borderView;
     [self addSubview:self.attributionBorderView];
+}
+
+- (void)buildReadItLaterIndicatorImageView
+{
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"read-it-later-indicator"]];
+    imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.hidden = YES;
+    self.readItLaterIndicatorImageView = imageView;
+    [self addSubview:self.readItLaterIndicatorImageView];
 }
 
 - (void)buildFeaturedImageview

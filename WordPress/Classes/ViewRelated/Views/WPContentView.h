@@ -114,6 +114,7 @@ The object specifying the content (text, images, etc.) to display.
 
 /* Subviews */
 @property (nonatomic, strong) WPContentAttributionView *attributionView;
+@property (nonatomic, strong) UIImageView *readItLaterIndicatorImageView;
 @property (nonatomic, strong) UIImageView *featuredImageView;
 @property (nonatomic, strong) UIView *attributionBorderView;
 @property (nonatomic, strong) UILabel *titleLabel;
