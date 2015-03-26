@@ -35,6 +35,7 @@
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 #import "WPTooltip.h"
+#import "WPEditorToolbarView.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -44,7 +45,6 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMediaBeforeSave,
     EditPostViewControllerAlertTagSwitchBlogs,
     EditPostViewControllerAlertTagCancelMediaUpload,
-    EditPostViewControllerAlertTagMediaOptions,
 };
 
 // State Restoration
@@ -75,7 +75,8 @@ static NSInteger const MaximumNumberOfPictures = 10;
 NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetSaveOnExit = 201,
     WPPostViewControllerActionSheetCancelUpload = 202,
-    WPPostViewControllerActionSheetRetryUpload = 203
+    WPPostViewControllerActionSheetRetryUpload = 203,
+    WPPostViewControllerActionSheetMediaOptions = 204,
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -762,18 +763,88 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaOptions
+- (void)showMediaOptions:(WPEditorViewController *)editorController
 {
     [self.editorView saveSelection];
     
-#warning pick local or remote 
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Insert image from:", nil)
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                          otherButtonTitles:NSLocalizedString(@"Local Media", nil), NSLocalizedString(@"Blog Media", nil), nil];
-    alert.tag = EditPostViewControllerAlertTagMediaOptions;
-    [alert show];
+    NSString *optionsTitle = NSLocalizedString(@"Insert image from:", @"Title of image source options");
+    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Image source: device");
+    NSString *optionBlog = NSLocalizedString(@"Blog Media", @"Image source: blog");
+    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
+    
+    // Expect this alert is a temporary measure that editor shouldn't officially support
+    WPEditorToolbarView *toolbarView = [editorController valueForKey:@"toolbarView"];
+    UIBarButtonItem *buttonItem = toolbarView.items.firstObject;
+    if (![buttonItem isKindOfClass:[UIBarButtonItem class]]) {
+        buttonItem = nil;
+    }
+    if (NSClassFromString(@"UIAlertController")) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:optionsTitle
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:optionLocal
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+             [self showMediaLocal];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:optionBlog
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+             [self showMediaBlog];
+        }]];
+        
+        UIPopoverPresentationController *popover = alert.popoverPresentationController;
+        if (popover)
+        {
+            if (buttonItem) {
+                popover.barButtonItem = buttonItem;
+            } else {
+                popover.sourceView = toolbarView ?: self.editorView;
+                popover.sourceRect = popover.sourceView.bounds;
+            }
+            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        } else {
+            [alert addAction:[UIAlertAction actionWithTitle:cancel
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+        }
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
+                                                           delegate:self
+                                                  cancelButtonTitle:!IS_IPAD ? cancel : nil
+                                             destructiveButtonTitle:nil
+                                                  otherButtonTitles:optionLocal, optionBlog, nil];
+        alert.tag = WPPostViewControllerActionSheetMediaOptions;
+        alert.actionSheetStyle = UIActionSheetStyleAutomatic;
+        if (IS_IPAD && buttonItem) {
+            [alert showFromBarButtonItem:buttonItem animated:YES];
+        } else {
+            [alert showInView:self.editorView];
+        }
+    }
+}
+
+- (void)showMediaLocal
+{
+    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+    picker.delegate = self;
+    
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
+    
+    // Only show photos for now (not videos)
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    
+    [self presentViewController:picker animated:YES completion:nil];
+    picker.childNavigationController.navigationBar.translucent = NO;
+}
+
+- (void)showMediaBlog
+{
+    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
+    [self presentViewController:vc animated:YES completion:nil];
 }
 
 #pragma mark - Data Model: Post
@@ -1820,25 +1891,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [self savePostAndDismissVC];
             }
         } break;
-        case (EditPostViewControllerAlertTagMediaOptions): {
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
-                picker.delegate = self;
-                
-                UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
-                [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-                [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
-                
-                // Only show photos for now (not videos)
-                picker.assetsFilter = [ALAssetsFilter allPhotos];
-                
-                [self presentViewController:picker animated:YES completion:nil];
-                picker.childNavigationController.navigationBar.translucent = NO;
-            } else if (buttonIndex == alertView.firstOtherButtonIndex + 1) {
-                MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
-                [self presentViewController:vc animated:YES completion:nil];
-            }
-        } break;
     }
     
     return;
@@ -1877,6 +1929,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 [self retryUploadOfMediaWithId:self.selectedImageId];
             }
             self.selectedImageId = nil;
+        } break;
+        case (WPPostViewControllerActionSheetMediaOptions): {
+            if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+                [self showMediaLocal];
+            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
+                [self showMediaBlog];
+            }
         } break;
     }
     
@@ -1960,7 +2019,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaOptions];
+    [self showMediaOptions:editorController];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
