@@ -15,7 +15,9 @@ const CGFloat WPContentViewAuthorViewHeight = 32.0;
 const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 const CGFloat WPContentViewLineHeightMultiple = 1.03;
-const CGFloat WPContentViewReadItLaterNegativePadding = -1.0;
+const CGFloat WPContentViewReadItLaterNegativeHorizontalPadding = -2.0;
+const CGFloat WPContentViewReadItLaterNegativeVerticalPadding = -0.5;
+const CGFloat WPContentViewReadItLaterSize = 15.0;
 
 @interface WPContentView()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
@@ -166,7 +168,9 @@ const CGFloat WPContentViewReadItLaterNegativePadding = -1.0;
                               @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
                               @"titleContentPadding": @(WPContentViewTitleContentPadding),
                               @"borderHeight": @(WPContentViewBorderHeight),
-                              @"readItLaterNegativePadding": @(WPContentViewReadItLaterNegativePadding),
+                              @"readItLaterNegativeHorizontalPadding": @(WPContentViewReadItLaterNegativeHorizontalPadding),
+                              @"readItLaterNegativeVerticalPadding": @(WPContentViewReadItLaterNegativeVerticalPadding),
+                              @"readItLaterSize": @(WPContentViewReadItLaterSize),
                               @"priority":@900
                               };
 
@@ -206,11 +210,11 @@ const CGFloat WPContentViewReadItLaterNegativePadding = -1.0;
                                                                  metrics:metrics
                                                                    views:views]];
     
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[readItLaterIndicatorImageView(verticalPadding)]-(readItLaterNegativePadding)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[readItLaterIndicatorImageView(readItLaterSize)]-(readItLaterNegativeHorizontalPadding)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[readItLaterIndicatorImageView(verticalPadding)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(readItLaterNegativeVerticalPadding)-[readItLaterIndicatorImageView(readItLaterSize)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
