@@ -36,6 +36,8 @@
 @property (nonatomic, weak) id<LoginViewModelDelegate> delegate;
 
 - (void)signInButtonAction;
+- (NSString *)baseSiteUrl;
+- (void)forgotPasswordButtonAction;
 - (void)toggleSignInFormAction;
 - (void)displayMultifactorTextField;
 
@@ -69,6 +71,7 @@
 - (void)displayErrorMessageForInvalidOrMissingFields;
 - (void)displayReservedNameErrorMessage;
 - (void)reloadInterfaceWithAnimation:(BOOL)animated;
+- (void)openURLInSafari:(NSURL *)url;
 
 // Ones we forward from LoginService
 - (void)displayLoginMessage:(NSString *)message;

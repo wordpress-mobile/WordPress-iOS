@@ -846,6 +846,81 @@ describe(@"signInButtonAction", ^{
     });
 });
 
+describe(@"baseSiteUrl", ^{
+    
+    it(@"should force https:// for a WordPress.com site that used http://", ^{
+        NSString *baseUrl = @"testsite.wordpress.com";
+        viewModel.siteUrl = [NSString stringWithFormat:@"http://%@", baseUrl];
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"https://%@", baseUrl]);
+    });
+    
+    it(@"should force https:// for a WordPress.com site that didn't include a scheme", ^{
+        NSString *baseUrl = @"testsite.wordpress.com";
+        viewModel.siteUrl = baseUrl;
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"https://%@", baseUrl]);
+    });
+    
+    it(@"should add http:// for a non WordPress.com site that forgot to include a scheme", ^{
+        NSString *baseUrl = @"www.selfhostedsite.com";
+        viewModel.siteUrl = baseUrl;
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"http://%@", baseUrl]);
+    });
+    
+    it(@"should remove wp-login.php from the url", ^{
+        NSString *baseUrl = @"www.selfhostedsite.com";
+        viewModel.siteUrl = [NSString stringWithFormat:@"%@/wp-login.php", baseUrl];
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"http://%@", baseUrl]);
+    });
+    
+    it(@"should remove /wp-admin from the url", ^{
+        NSString *baseUrl = @"www.selfhostedsite.com";
+        viewModel.siteUrl = [NSString stringWithFormat:@"%@/wp-admin", baseUrl];
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"http://%@", baseUrl]);
+    });
+    
+    it(@"should remove /wp-admin/ from the url", ^{
+        NSString *baseUrl = @"www.selfhostedsite.com";
+        viewModel.siteUrl = [NSString stringWithFormat:@"%@/wp-admin/", baseUrl];
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"http://%@", baseUrl]);
+    });
+    
+    it(@"should remove a trailing slash from the url", ^{
+        NSString *baseUrl = @"www.selfhostedsite.com";
+        viewModel.siteUrl = [NSString stringWithFormat:@"%@/", baseUrl];
+        
+        expect([viewModel baseSiteUrl]).to.equal([NSString stringWithFormat:@"http://%@", baseUrl]);
+    });
+});
+
+describe(@"forgotPasswordButtonAction", ^{
+    
+    it(@"should open the correct forgot password url for WordPress.com", ^{
+        viewModel.userIsDotCom = YES;
+        [[mockViewModelDelegate expect] openURLInSafari:[NSURL URLWithString:@"https://wordpress.com/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F"]];
+        
+        [viewModel forgotPasswordButtonAction];
+        
+        [mockViewModelDelegate verify];
+    });
+    
+    it(@"should open the correct forgot password url for a self hosted site", ^{
+        viewModel.userIsDotCom = NO;
+        viewModel.siteUrl = @"http://www.selfhosted.com";
+        NSString *url = [NSString stringWithFormat:@"%@%@", viewModel.siteUrl, @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F"];
+        [[mockViewModelDelegate expect] openURLInSafari:[NSURL URLWithString:url]];
+        
+        [viewModel forgotPasswordButtonAction];
+        
+        [mockViewModelDelegate verify];
+    });
+});
+
 describe(@"LoginServiceDelegate methods", ^{
     
     context(@"displayLoginMessage", ^{

@@ -18,6 +18,8 @@
 static CGFloat const LoginViewModelAlphaHidden              = 0.0f;
 static CGFloat const LoginViewModelAlphaDisabled            = 0.5f;
 static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
+static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 
 - (instancetype)init
 {
@@ -124,6 +126,45 @@ static CGFloat const LoginViewModelAlphaEnabled             = 1.0f;
     }
    
     [self.loginService signInWithLoginFields:loginFields];
+}
+
+- (void)forgotPasswordButtonAction
+{
+    NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self baseSiteUrl];
+    NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
+    
+    [self.delegate openURLInSafari:forgotPasswordURL];
+}
+
+- (NSString *)baseSiteUrl
+{
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrl]];
+    NSString *url = [siteURL absoluteString];
+
+    // If the user enters a WordPress.com url we want to ensure we are communicating over https
+    if (url.isWordPressComPath) {
+        if (siteURL.scheme == nil) {
+            url = [NSString stringWithFormat:@"https://%@", url];
+        } else {
+            if ([url rangeOfString:@"http://" options:NSCaseInsensitiveSearch].location != NSNotFound) {
+                url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [url length])];
+            }
+        }
+    } else {
+        if (siteURL.scheme == nil) {
+            url = [NSString stringWithFormat:@"http://%@", url];
+        }
+    }
+
+    NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:nil];
+    NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:nil];
+
+    url = [wplogin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
+    url = [wpadmin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
+    url = [trailingslash stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
+
+    return url;
 }
 
 - (BOOL)isUsernameReserved:(NSString *)username

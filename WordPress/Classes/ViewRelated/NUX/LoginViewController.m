@@ -77,8 +77,6 @@
 
 @implementation LoginViewController
 
-static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
 static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
 static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
@@ -250,7 +248,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
 
         if (rng.location == NSNotFound) {
-            path = [self getSiteUrl];
+            path = [self.viewModel baseSiteUrl];
             path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
             path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
         } else {
@@ -379,20 +377,17 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)forgotPassword:(id)sender
 {
-    NSString *baseUrl = self.viewModel.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self getSiteUrl];
-    NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
-    
-    [[UIApplication sharedApplication] openURL:forgotPasswordURL];
+    [self.viewModel forgotPasswordButtonAction];
 }
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    if (self.viewModel.userIsDotCom == false && self.siteUrlText.text.isEmpty) {
+    if (self.viewModel.userIsDotCom == false && self.viewModel.siteUrl.isEmpty) {
         [self displayOnePasswordEmptySiteAlert];
         return;
     }
  
-    NSString *loginURL = self.viewModel.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrlText.text;
+    NSString *loginURL = self.viewModel.userIsDotCom ? WPOnePasswordWordPressComURL : self.viewModel.siteUrl;
     
     [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
                                                 forViewController:self
@@ -790,43 +785,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
-- (NSString *)getSiteUrl
-{
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
-    NSString *url = [siteURL absoluteString];
-
-    // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if (url.isWordPressComPath) {
-        if (siteURL.scheme == nil) {
-            url = [NSString stringWithFormat:@"https://%@", url];
-        } else {
-            if ([url rangeOfString:@"http://" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [url length])];
-            }
-        }
-    } else {
-        if (siteURL.scheme == nil) {
-            url = [NSString stringWithFormat:@"http://%@", url];
-        }
-    }
-
-    NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-
-    url = [wplogin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-    url = [wpadmin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-    url = [trailingslash stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-
-    return url;
-}
-
-
 #pragma mark - Validation Helpers
 
 - (BOOL)isMultifactorFilled
 {
-    return self.multifactorText.text.isEmpty == NO;
+    return self.viewModel.multifactorCode.isEmpty == NO;
 }
 
 #pragma mark - Interface Helpers: Buttons
@@ -1158,6 +1121,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     }
 }
 
+- (void)openURLInSafari:(NSURL *)url
+{
+    [[UIApplication sharedApplication] openURL:url];
+}
 
 - (void)displayLoginMessage:(NSString *)message
 {
