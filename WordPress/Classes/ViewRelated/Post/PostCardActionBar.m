@@ -340,13 +340,16 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
 - (void)handleButtonTap:(id)sender
 {
     UIButton *button = (UIButton *)sender;
-    if (button.tag == ActionBarMoreButtonIndex) {
+    NSInteger index = button.tag;
+    if (index == ActionBarMoreButtonIndex) {
         self.currentBatch++;
         [self configureButtonsWithAnimation];
         return;
     }
-    // TODO: handle taps
-
+    PostCardActionBarItem *item = [self.items objectAtIndex:index];
+    if (item.callback) {
+        item.callback();
+    }
 }
 
 @end
