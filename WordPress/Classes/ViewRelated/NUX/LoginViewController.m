@@ -122,28 +122,15 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
     
-    // Do we have a default account?
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
     // Initialize Interface
     [self addMainView];
     [self addControls];
     [self bindToViewModel];
     
-    // Initialize flags!
-    self.viewModel.hasDefaultAccount = (defaultAccount != nil);
-    self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
-    self.viewModel.shouldDisplayMultifactor = NO;
-    
     // Reauth: Pre-populate username. If needed
     if (!self.shouldReauthenticateDefaultAccount) {
         return;
     }
-    
-    self.usernameText.text = defaultAccount.username;
-    self.viewModel.userIsDotCom = YES;
 }
 
 - (void)bindToViewModel
@@ -155,7 +142,18 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
     RAC(self.viewModel, onlyDotComAllowed) = RACObserve(self, onlyDotComAllowed);
     
-    // TODO: Remove userIsDotCom from this class
+    // Do we have a default account?
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    
+    // Initialize flags!
+    self.viewModel.hasDefaultAccount = (defaultAccount != nil);
+    self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
+    self.viewModel.shouldDisplayMultifactor = NO;
+    
+    self.usernameText.text = defaultAccount.username;
+    
     self.viewModel.userIsDotCom = YES;
 }
 
