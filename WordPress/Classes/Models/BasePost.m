@@ -36,13 +36,22 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 + (NSString *)titleForStatus:(NSString *)status
 {
     if ([status isEqualToString:@"draft"]) {
-        return NSLocalizedString(@"Draft", @"");
+        return NSLocalizedString(@"Draft", @"Name for the status of a draft post.");
+
     } else if ([status isEqualToString:@"pending"]) {
-        return NSLocalizedString(@"Pending review", @"");
+        return NSLocalizedString(@"Pending review", @"Name for the status of a post pending review.");
+
     } else if ([status isEqualToString:@"private"]) {
-        return NSLocalizedString(@"Privately published", @"");
+        return NSLocalizedString(@"Privately published", @"Name for the status of a post that is marked private.");
+
     } else if ([status isEqualToString:@"publish"]) {
-        return NSLocalizedString(@"Published", @"");
+        return NSLocalizedString(@"Published", @"Name for the status of a published post.");
+
+    } else if ([status isEqualToString:@"trash"]) {
+        return NSLocalizedString(@"Trashed", @"Name for the status of a trashed post");
+
+    } else if ([status isEqualToString:@"future"]) {
+        return NSLocalizedString(@"Scheduled", @"Name for the status of a scheduled post");
     }
 
     return status;
@@ -54,10 +63,14 @@ static const NSUInteger PostDerivedSummaryLength = 150;
         return @"draft";
     } else if ([title isEqualToString:NSLocalizedString(@"Pending review", @"")]) {
         return @"pending";
-    } else if ([title isEqualToString:NSLocalizedString(@"Private", @"")]) {
+    } else if ([title isEqualToString:NSLocalizedString(@"Privately published", @"")]) {
         return @"private";
     } else if ([title isEqualToString:NSLocalizedString(@"Published", @"")]) {
         return @"publish";
+    } else if ([title isEqualToString:NSLocalizedString(@"Trashed", @"")]) {
+        return @"trash";
+    } else if ([title isEqualToString:NSLocalizedString(@"Scheduled", @"")]) {
+        return @"future";
     }
 
     return title;
@@ -217,13 +230,15 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 - (NSString *)statusForDisplay
 {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([self.status isEqualToString:@"pending"]) {
-            return NSLocalizedString(@"Pending", @"");
-        } else if ([self.status isEqualToString:@"draft"]) {
-            return self.statusTitle;
+        if ([self.status isEqualToString:@"publish"]) {
+            if (self.dateCreated == [self.dateCreated laterDate:[NSDate date]]) {
+                // XML-RPC returns scheduled posts with a status of `publish` so
+                // the extra check is needed.
+                return [BasePost titleForStatus:@"future"];
+            }
+            return [NSString string];
         }
-
-        return @"";
+        return self.statusTitle;
     }
 
     NSString *statusText = [AbstractPost titleForRemoteStatus:@((int)self.remoteStatus)];
