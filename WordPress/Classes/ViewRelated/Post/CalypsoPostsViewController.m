@@ -3,11 +3,15 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 
 #import "Blog.h"
+#import "BlogService.h"
 #import "ContextManager.h"
 #import "EditSiteViewController.h"
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
+#import "PostPreviewViewController.h"
+#import "StatsPostDetailsTableViewController.h"
+#import "WPStatsService.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPLegacyEditPostViewController.h"
@@ -22,12 +26,14 @@ static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentif
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
 static NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
+static NSString * const StatsStoryboardName = @"SiteStats";
+static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 static const NSInteger PostsFetchRequestBatchSize = 10;
 
-@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, WPNoResultsViewDelegate>
+@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, WPNoResultsViewDelegate, PostCardTableViewCellDelegate>
 
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
@@ -467,7 +473,12 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
         return;
     }
 
-    [self viewPost:post];
+    if ([post.status isEqualToString:@"trash"]) {
+        // No editing posts that are trashed.
+        return;
+    }
+
+    [self editPost:post];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -489,6 +500,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     PostCardTableViewCell *postCell = (PostCardTableViewCell *)cell;
+    postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [postCell configureCell:post];
 }
@@ -496,7 +508,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 #pragma mark - Instance Methods
 
-- (void)viewPost:(AbstractPost *)apost
+- (void)editPost:(AbstractPost *)apost
 {
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
@@ -514,6 +526,125 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
         [self presentViewController:navController animated:YES completion:nil];
     }
+}
+
+- (void)viewPost:(AbstractPost *)apost
+{
+    PostPreviewViewController *controller = [[PostPreviewViewController alloc] initWithPost:apost shouldHideStatusBar:NO];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)deletePost:(AbstractPost *)apost
+{
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [postService deletePost:apost
+                    success:nil
+                    failure:^(NSError *error) {
+                        if([error code] == 403) {
+                            [self promptForPasswordWithMessage:nil];
+                        } else {
+                            [WPError showXMLRPCErrorAlert:error];
+                        }
+                        [self syncItemsWithUserInteraction:NO];
+                    }];
+}
+
+- (void)publishPost:(AbstractPost *)apost
+{
+    apost.status = @"publish";
+    apost.dateCreated = [NSDate date];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [postService uploadPost:apost
+                    success:nil
+                    failure:^(NSError *error) {
+                        if([error code] == 403) {
+                            [self promptForPasswordWithMessage:nil];
+                        } else {
+                            [WPError showXMLRPCErrorAlert:error];
+                        }
+                        [self syncItemsWithUserInteraction:NO];
+                    }];
+}
+
+- (void)restorePost:(AbstractPost *)apost
+{
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [postService restorePost:apost
+                    success:nil
+                    failure:^(NSError *error) {
+                        if([error code] == 403) {
+                            [self promptForPasswordWithMessage:nil];
+                        } else {
+                            [WPError showXMLRPCErrorAlert:error];
+                        }
+                        [self syncItemsWithUserInteraction:NO];
+                    }];
+}
+
+- (void)viewStatsForPost:(AbstractPost *)apost
+{
+    // Check the blog
+    Blog *blog = apost.blog;
+    if (!blog.isWPcom) {
+        // Needs Jetpack.
+        return;
+    }
+
+    // Push the Stats Post Details ViewController
+    NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:StatsStoryboardName bundle:nil];
+    StatsPostDetailsTableViewController *controller = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
+    NSAssert(controller, @"Couldn't instantiate StatsPostDetailsTableViewController");
+
+    controller.postID = apost.postID;
+    controller.postTitle = [apost titleForDisplay];
+    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.blogID
+                                                        siteTimeZone:[service timeZoneForBlog:blog]
+                                                         oauth2Token:blog.authToken
+                                          andCacheExpirationInterval:StatsCacheInterval];
+
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+#pragma mark - Cell Delegate Methods
+
+- (void)cell:(PostCardTableViewCell *)cell receivedEditActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self editPost:apost];
+}
+
+- (void)cell:(PostCardTableViewCell *)cell receivedViewActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self viewPost:apost];
+}
+
+- (void)cell:(PostCardTableViewCell *)cell receivedStatsActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self viewStatsForPost:apost];
+}
+
+- (void)cell:(PostCardTableViewCell *)cell receivedPublishActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self publishPost:apost];
+}
+
+- (void)cell:(PostCardTableViewCell *)cell receivedTrashActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self deletePost:apost];
+}
+
+- (void)cell:(PostCardTableViewCell *)cell receivedRestoreActionForProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    AbstractPost *apost = (AbstractPost *)contentProvider;
+    [self restorePost:apost];
 }
 
 @end
