@@ -63,12 +63,9 @@
 @property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
 @property (nonatomic, strong) LoginViewModel *viewModel;
 
-
 // Measurements
 @property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
-@property (nonatomic, assign) BOOL                      hasDefaultAccount;
-@property (nonatomic, assign) BOOL                      authenticating;
 
 
 @end
@@ -136,7 +133,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self bindToViewModel];
     
     // Initialize flags!
-    self.hasDefaultAccount = (defaultAccount != nil);
+    self.viewModel.hasDefaultAccount = (defaultAccount != nil);
     self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
     self.viewModel.shouldDisplayMultifactor = NO;
     
@@ -151,9 +148,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)bindToViewModel
 {
-    RAC(self.viewModel, authenticating) = RACObserve(self, authenticating);
     RAC(self.viewModel, cancellable) = RACObserve(self, cancellable);
-    RAC(self.viewModel, hasDefaultAccount) = RACObserve(self, hasDefaultAccount);
     RAC(self.viewModel, username) = self.usernameText.rac_textSignal;
     RAC(self.viewModel, password) = self.passwordText.rac_textSignal;
     RAC(self.viewModel, multifactorCode) = self.multifactorText.rac_textSignal;
@@ -224,12 +219,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return YES;
 }
 
-
 - (void)textFieldDidChange:(NSNotification *)note
 {
     [self updateControls];
 }
-
 
 #pragma mark - Displaying of Error Messages
 
@@ -884,7 +877,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)setAuthenticating:(BOOL)authenticating status:(NSString *)status
 {
-    self.authenticating = authenticating;
+    self.viewModel.authenticating = authenticating;
     
     self.statusLabel.hidden = !(status.length > 0);
     self.statusLabel.text = status;
