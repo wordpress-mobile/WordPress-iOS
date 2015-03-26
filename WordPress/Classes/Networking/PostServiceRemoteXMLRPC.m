@@ -164,6 +164,14 @@
     }
 }
 
+- (void)restorePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)())success
+           failure:(void (^)(NSError *))failure
+{
+    [self updatePost:post forBlog:blog success:success failure:failure];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
