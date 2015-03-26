@@ -71,7 +71,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -79,10 +78,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-
-        // Watch for application badge number changes
-        NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -141,7 +136,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
     
-    [self updateTabBarBadgeNumber];
+    [[WPTabBarController sharedInstance] updateNotificationBadgeVisibility];
     [self showNoResultsViewIfNeeded];
     [self showManageButtonIfNeeded];
     [self showBucketNameIfNeeded];
@@ -221,16 +216,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseOut animations:^{
         self.tableView.tableHeaderView = nil;
     } completion:nil];
-}
-
-
-#pragma mark - NSObject(NSKeyValueObserving) Helpers
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
-        [self updateTabBarBadgeNumber];
-    }
 }
 
 
@@ -370,18 +355,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)resetApplicationBadge
 {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-}
-
-- (void)updateTabBarBadgeNumber
-{
-    // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
-    UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
-    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[WPTabNotifications];
-
-    NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
-
-    tabBarItem.badgeValue                   = countString;
 }
 
 - (void)updateLastSeenTime
