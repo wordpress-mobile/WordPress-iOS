@@ -74,10 +74,6 @@
 
 - (void)setCommonCrashlyticsParameters
 {
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
-    return;
-#endif
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
