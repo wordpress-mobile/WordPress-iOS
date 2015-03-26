@@ -23,6 +23,8 @@
 
 @implementation PostCardTableViewCell
 
+#pragma mark - Life Cycle
+
 - (void)awakeFromNib {
     [self applyStyles];
 
@@ -43,6 +45,9 @@
     }
     return [super hitTest:point withEvent:event];
 }
+
+
+#pragma mark - Accessors
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
@@ -80,12 +85,6 @@
     return CGSizeMake(size.width, height);
 }
 
-- (void)setBackgroundColor:(UIColor *)backgroundColor
-{
-    [super setBackgroundColor:backgroundColor];
-    self.innerContentView.backgroundColor = backgroundColor;
-}
-
 - (CGFloat)innerWidthForSize:(CGSize)size
 {
     CGFloat width = 0.0;
@@ -102,6 +101,49 @@
     width -= (horizontalMargin * 2);
     return width;
 }
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor
+{
+    [super setBackgroundColor:backgroundColor];
+    self.innerContentView.backgroundColor = backgroundColor;
+}
+
+- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
+{
+    _contentProvider = contentProvider;
+
+    [self configureHeader];
+    [self configureCardImage];
+    [self configureTitle];
+    [self configureSnippet];
+    [self configureDate];
+    [self configureStatusView];
+    [self configureMetaButtons];
+    [self configureActionBar];
+
+    [self setNeedsUpdateConstraints];
+}
+
+
+#pragma mark - Helpers
+
+- (NSURL *)blavatarURL
+{
+    NSInteger size = (NSInteger)ceil(CGRectGetWidth(self.avatarImageView.frame) * [[UIScreen mainScreen] scale]);
+    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blogURLForDisplay] withSize:size];
+}
+
+- (NSURL *)photonURLForURL:(NSURL *)url
+{
+    CGSize size = self.postCardImageView.frame.size;
+    NSString *imagePath = [NSString stringWithFormat:@"http://%@/%@", url.host, url.path];
+    NSString *queryStr = [NSString stringWithFormat:@"resize=%i,%i&quality=80", size.width, size.height];
+    NSString *photonStr = [NSString stringWithFormat:@"https://i0.wp.com/%@?%@", imagePath, queryStr];
+    return [NSURL URLWithString:photonStr];
+}
+
+
+#pragma mark - Configuration
 
 - (void)applyStyles
 {
@@ -123,33 +165,12 @@
     self.contentProvider = contentProvider;
 }
 
-- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    _contentProvider = contentProvider;
-    [self configureHeader];
-    [self configureCardImage];
-    [self configureTitle];
-    [self configureSnippet];
-    [self configureDate];
-    [self configureStatusView];
-    [self configureMetaButtons];
-    [self configureActionBar];
-
-    [self setNeedsUpdateConstraints];
-}
-
 - (void)configureHeader
 {
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
     [self.avatarImageView sd_setImageWithURL:[self blavatarURL]
                             placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
-}
-
-- (NSURL *)blavatarURL
-{
-    NSInteger size = (NSInteger)ceil(CGRectGetWidth(self.avatarImageView.frame) * [[UIScreen mainScreen] scale]);
-    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blogURLForDisplay] withSize:size];
 }
 
 - (void)configureCardImage
@@ -169,15 +190,6 @@
     }
 
     [self.postCardImageView sd_setImageWithURL:url placeholderImage:nil];
-}
-
-- (NSURL *)photonURLForURL:(NSURL *)url
-{
-    CGSize size = self.postCardImageView.frame.size;
-    NSString *imagePath = [NSString stringWithFormat:@"http://%@/%@", url.host, url.path];
-    NSString *queryStr = [NSString stringWithFormat:@"resize=%i,%i&quality=80", size.width, size.height];
-    NSString *photonStr = [NSString stringWithFormat:@"https://i0.wp.com/%@?%@", imagePath, queryStr];
-    return [NSURL URLWithString:photonStr];
 }
 
 - (void)configureTitle
@@ -215,6 +227,9 @@
     }
     [self.statusView setNeedsUpdateConstraints];
 }
+
+
+#pragma mark - Configure Meta
 
 - (void)configureMetaButtons
 {
@@ -258,12 +273,16 @@
     metaButton.hidden = NO;
 }
 
+
+#pragma mark - Configure Actionbar
+
 - (void)configureActionBar
 {
-    if ([[self.contentProvider status] isEqualToString:@"draft"] || [[self.contentProvider status] isEqualToString:@"pending"] || [[self.contentProvider status] isEqualToString:@"future"]) {
+    NSString *status = [self.contentProvider status];
+    if ([status isEqualToString:@"draft"] || [status isEqualToString:@"pending"] || [status isEqualToString:@"future"]) {
         // draft, pending, future
         [self configureDraftActionBar];
-    } else if ([[self.contentProvider status] isEqualToString:@"trash"]) {
+    } else if ([status isEqualToString:@"trash"]) {
         // trashed
         [self configureTrashedActionBar];
     } else {
@@ -274,25 +293,40 @@
 
 - (void)configurePublishedActionBar
 {
+    __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"")
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
                                                                  image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
                                                       highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf editPostAction];
+    };
     [items addObject:item];
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"")
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"View", @"Label for the view post button. Tapping displays the post as it appears on the web.")
                                           image:[UIImage imageNamed:@"icon-post-actionbar-view"]
                                highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf viewPostAction];
+    };
     [items addObject:item];
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
-                               highlightedImage:nil];
-    [items addObject:item];
+    if ([self.contentProvider isWPcom]) {
+        item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
+                                              image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
+                                   highlightedImage:nil];
+        item.callback = ^{
+            [weakSelf statsPostAction];
+        };
+        [items addObject:item];
+    }
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"")
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
                                           image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
                                highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf trashPostAction];
+    };
     [items addObject:item];
 
     [self.actionBar setItems:items];
@@ -300,45 +334,109 @@
 
 - (void)configureDraftActionBar
 {
+    __weak __typeof(self) weakSelf = self;
     NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"")
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Edit", @"Label for the edit post button. Tapping displays the editor.")
                                                                  image:[UIImage imageNamed:@"icon-post-actionbar-edit"]
                                                       highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf editPostAction];
+    };
     [items addObject:item];
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"")
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Preview", @"Label for the preview post button. Tapping shows a preview of the post.")
                                           image:[UIImage imageNamed:@"icon-post-actionbar-view"]
                                highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf viewPostAction];
+    };
     [items addObject:item];
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"")
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Publish", @"Label for the publish button. Tapping publishes a draft post.")
                                           image:[UIImage imageNamed:@"icon-post-actionbar-publish"]
                                highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf publishPostAction];
+    };
     [items addObject:item];
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"")
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Trash", @"Label for the trash post button. Tapping moves a post to the trash bin.")
                                           image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
                                highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf trashPostAction];
+    };
+    [items addObject:item];
+
+    [self.actionBar setItems:items];
+}
+
+- (void)configureTrashedActionBar
+{
+    __weak __typeof(self) weakSelf = self;
+    NSMutableArray *items = [NSMutableArray array];
+    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Restore", @"Label for restoring a trashed post.")
+                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-restore"]
+                                                      highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf restorePostAction];
+    };
+    [items addObject:item];
+
+    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"Label for the delete post buton. Tapping permanently deletes a post.")
+                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
+                               highlightedImage:nil];
+    item.callback = ^{
+        [weakSelf trashPostAction];
+    };
     [items addObject:item];
 
     [self.actionBar setItems:items];
 }
 
 
-- (void)configureTrashedActionBar
+#pragma mark - Actions
+
+- (void)editPostAction
 {
-    NSMutableArray *items = [NSMutableArray array];
-    PostCardActionBarItem *item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Restore", @"")
-                                                                 image:[UIImage imageNamed:@"icon-post-actionbar-restore"]
-                                                      highlightedImage:nil];
-    [items addObject:item];
+    if ([self.delegate respondsToSelector:@selector(cell:receivedEditActionForProvider:)]) {
+        [self.delegate cell:self receivedEditActionForProvider:self.contentProvider];
+    }
+}
 
-    item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Delete", @"")
-                                          image:[UIImage imageNamed:@"icon-post-actionbar-trash"]
-                               highlightedImage:nil];
-    [items addObject:item];
+- (void)viewPostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:receivedViewActionForProvider:)]) {
+        [self.delegate cell:self receivedViewActionForProvider:self.contentProvider];
+    }
+}
 
-    [self.actionBar setItems:items];
+- (void)publishPostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:receivedPublishActionForProvider:)]) {
+        [self.delegate cell:self receivedPublishActionForProvider:self.contentProvider];
+    }
+}
+
+- (void)trashPostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:receivedTrashActionForProvider:)]) {
+        [self.delegate cell:self receivedTrashActionForProvider:self.contentProvider];
+    }
+}
+
+- (void)restorePostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:receivedRestoreActionForProvider:)]) {
+        [self.delegate cell:self receivedRestoreActionForProvider:self.contentProvider];
+    }
+}
+
+- (void)statsPostAction
+{
+    if ([self.delegate respondsToSelector:@selector(cell:receivedStatsActionForProvider:)]) {
+        [self.delegate cell:self receivedStatsActionForProvider:self.contentProvider];
+    }
 }
 
 
