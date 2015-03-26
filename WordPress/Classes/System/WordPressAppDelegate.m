@@ -30,6 +30,7 @@
 #import "ReaderTopicService.h"
 #import "SVProgressHUD.h"
 #import "TodayExtensionService.h"
+#import "WPCrashlytics.h"
 
 #import "WPTabBarController.h"
 #import "BlogListViewController.h"
@@ -69,9 +70,10 @@
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
+@property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
@@ -644,7 +646,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
-#pragma mark - Crash reporting
+#pragma mark - Crashlytics configuration
 
 - (void)configureCrashlytics
 {
@@ -652,42 +654,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return;
 #endif
 
-    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
-        return;
-    }
-
-    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
-    [[Crashlytics sharedInstance] setDelegate:self];
-
-    [self setCommonCrashlyticsParameters];
-}
-
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
-{
-    DDLogMethod();
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
-    crashCount += 1;
-    [defaults setInteger:crashCount forKey:@"crashCount"];
-    [defaults synchronize];
-}
-
-- (void)setCommonCrashlyticsParameters
-{
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
-    return;
-#endif
+    NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    BOOL loggedIn = defaultAccount != nil;
-    [Crashlytics setUserName:defaultAccount.username];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
+    if (apiKey) {
+        self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
+    }
 }
 
 - (void)configureHockeySDK
@@ -870,7 +841,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     return name ?: WPNotificationsBucketName;
 }
-
 
 #pragma mark - Keychain
 
@@ -1138,7 +1108,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     [self toggleExtraDebuggingIfNeeded];
-    [self setCommonCrashlyticsParameters];
     [self setupSingleSignOn];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
