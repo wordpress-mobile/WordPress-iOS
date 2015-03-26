@@ -35,4 +35,9 @@
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
+- (void)restorePost:(RemotePost *)post
+            forBlog:(Blog *)blog
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
+
 @end
