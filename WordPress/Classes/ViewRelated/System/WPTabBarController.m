@@ -19,6 +19,7 @@
 #import "WPLegacyEditPageViewController.h"
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
+#import <WordPress-iOS-Shared/WPDeviceIdentification.h>
 
 NSString * const WPTabBarRestorationID = @"WPTabBarID";
 NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -29,6 +30,14 @@ NSString * const kWPNewPostURLParamTitleKey = @"title";
 NSString * const kWPNewPostURLParamContentKey = @"content";
 NSString * const kWPNewPostURLParamTagsKey = @"tags";
 NSString * const kWPNewPostURLParamImageKey = @"image";
+
+// Constants for the unread notification dot icon
+static NSInteger const kNotificationBadgeIconSize = 10;
+static NSInteger const kNotificationBadgeIconVerticalOffsetFromTop = 5;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenter = 8;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInPortrait = 104;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 232;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
 
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
@@ -42,6 +51,8 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
+
+@property (nonatomic, strong) UIImageView *notificationBadgeIconView;
 
 @end
 
@@ -78,6 +89,9 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 
         [self setSelectedViewController:self.blogListNavigationController];
 
+        // adds the orange dot on top of the notification tab
+        [self addNotificationBadgeIcon];
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
                                                      name:HelpshiftUnreadCountUpdatedNotification
@@ -87,6 +101,10 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
                                                  selector:@selector(defaultAccountDidChange:)
                                                      name:WPAccountDefaultWordPressComAccountChangedNotification
                                                    object:nil];
+
+        // Watch for application badge number changes
+        NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
+        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
     }
     return self;
 }
@@ -94,6 +112,7 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 #pragma mark - Tab Bar Items
@@ -433,6 +452,110 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
     [self.readerNavigationController popToRootViewControllerAnimated:NO];
     [self.meNavigationController popToRootViewControllerAnimated:NO];
     [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+}
+
+#pragma mark - Handling Badges
+
+- (void)updateNotificationBadgeVisibility
+{
+    NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    if (count == 0) {
+        self.notificationBadgeIconView.hidden = YES;
+        return;
+    }
+
+    BOOL wasNotificationBadgeHidden = self.notificationBadgeIconView.hidden;
+    self.notificationBadgeIconView.hidden = NO;
+    if (wasNotificationBadgeHidden) {
+        [self animateNotificationBadgeIcon];
+    }
+}
+
+#pragma mark - NSObject(NSKeyValueObserving) Helpers
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
+        [self updateNotificationBadgeVisibility];
+    }
+}
+
+#pragma mark - Notification Badge Icon Management
+
+- (void)addNotificationBadgeIcon
+{
+    self.notificationBadgeIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kNotificationBadgeIconSize, kNotificationBadgeIconSize)];
+    self.notificationBadgeIconView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
+                                                        havingSize:CGSizeMake(kNotificationBadgeIconSize, kNotificationBadgeIconSize)];
+    self.notificationBadgeIconView.layer.cornerRadius = kNotificationBadgeIconSize / 2.0;
+    self.notificationBadgeIconView.layer.masksToBounds = YES;
+    self.notificationBadgeIconView.layer.borderColor = [[UIColor whiteColor] CGColor];
+    self.notificationBadgeIconView.layer.borderWidth = 1.0;
+    self.notificationBadgeIconView.hidden = YES;
+    [self.view addSubview:self.notificationBadgeIconView];
+
+    [self updateNotificationBadgeIconPosition];
+    [self updateNotificationBadgeVisibility];
+}
+
+- (void)updateNotificationBadgeIconPosition
+{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    BOOL isLandscape = (orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight);
+
+    // We need to take the extra space before & after the tabbar into account for iPad and iPhone 6 Plus
+    CGFloat horizontalOffset = 0.0;
+    if (IS_IPAD) {
+        horizontalOffset = isLandscape ? kNotificationBadgeIconHorizontalOffsetForIPadInLandscape : kNotificationBadgeIconHorizontalOffsetForIPadInPortrait;
+    }
+    else if (isLandscape && WPDeviceIdentification.isiPhoneSixPlus) {
+        horizontalOffset = kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape;
+    }
+    CGFloat verticalPosition = CGRectGetHeight(self.view.bounds) - (self.tabBar.frame.size.height - kNotificationBadgeIconVerticalOffsetFromTop);
+    // Subtract the space before & after the tabbar
+    CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
+    CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
+    CGFloat horizontalPosition = ((WPTabNotifications + 0.5) * tabItemWidth) - kNotificationBadgeIconHorizontalOffsetFromCenter + horizontalOffset;
+
+    CGRect rect = self.notificationBadgeIconView.frame;
+    rect.origin.x = floorf(horizontalPosition);
+    rect.origin.y = floorf(verticalPosition);
+    self.notificationBadgeIconView.frame = rect;
+}
+
+- (void)animateNotificationBadgeIcon
+{
+    __weak __typeof(self) weakSelf = self;
+    [UIView animateWithDuration:0.3 animations:^{
+        weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(1.5, 1.5);
+    } completion:^(BOOL finished) {
+        [UIView animateWithDuration:0.3 animations:^{
+            weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(0.85, 0.85);
+        } completion:^(BOOL finished) {
+            [UIView animateWithDuration:0.2 animations:^{
+                weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
+            }];
+        }];
+    }];
+}
+
+#pragma mark - Handling Rotations
+
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
+{
+    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
+
+    __weak __typeof(self) weakSelf = self;
+    [coordinator animateAlongsideTransition:nil completion:^(id<UIViewControllerTransitionCoordinatorContext> context) {
+        [weakSelf updateNotificationBadgeIconPosition];
+    }];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+
+    [self updateNotificationBadgeIconPosition];
 }
 
 @end
