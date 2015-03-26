@@ -236,6 +236,22 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+- (void)restorePost:(AbstractPost *)post
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
+{
+    // TODO: Is this the best option?
+    post.status = @"draft";
+    NSNumber *postID = post.postID;
+    if ([postID longLongValue] > 0) {
+        RemotePost *remotePost = [self remotePostWithPost:post];
+        id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+        [remote restorePost:remotePost forBlog:post.blog success:success failure:failure];
+    }
+
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
 #pragma mark -
 
 - (void)initializeDraft:(AbstractPost *)post {
