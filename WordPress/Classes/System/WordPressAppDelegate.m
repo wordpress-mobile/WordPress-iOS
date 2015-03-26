@@ -50,6 +50,7 @@
 #import "NSProcessInfo+Util.h"
 #import "WPUserAgent.h"
 #import "WPAppAnalytics.h"
+#import "WPLogger.h"
 
 #import "AppRatingUtility.h"
 #import "HelpshiftUtils.h"
@@ -72,8 +73,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
+@property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
@@ -110,7 +111,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
-    [self configureLogging];
+    self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
     [self configureCrashlytics];
     [self initializeAppRatingUtility];
@@ -706,7 +707,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
 {
-    NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
+    NSString *description = [self.logger getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
     }
@@ -937,7 +938,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 }
 
 
-#pragma mark - Debugging and logging
+#pragma mark - Debugging
 
 - (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
 {
@@ -948,9 +949,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSArray *blogs = [blogService blogsForAllAccounts];
-
+    
     DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] detailedVersionNumber]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -964,7 +965,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
-
+    
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
@@ -973,7 +974,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     } else {
         DDLogInfo(@"No blogs configured on device.");
     }
-
+    
     DDLogInfo(@"===========================================================================");
 }
 
@@ -992,77 +993,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }];
     }];
 #endif
-}
-
-- (void)configureLogging
-{
-    // Remove the old Documents/wordpress.log if it exists
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-
-    if ([fileManager fileExistsAtPath:filePath]) {
-        [fileManager removeItemAtPath:filePath error:nil];
-    }
-
-    // Sets up the CocoaLumberjack logging; debug output to console and file
-#ifdef DEBUG
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-#endif
-
-#ifndef INTERNAL_BUILD
-    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
-#endif
-
-    [DDLog addLogger:self.fileLogger];
-
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    if (extraDebug) {
-        ddLogLevel = LOG_LEVEL_VERBOSE;
-    }
-}
-
-- (DDFileLogger *)fileLogger
-{
-    if (_fileLogger) {
-        return _fileLogger;
-    }
-    _fileLogger = [[DDFileLogger alloc] init];
-    _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-
-    return _fileLogger;
-}
-
-// get the log content with a maximum byte size
-- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
-{
-    NSMutableString *description = [NSMutableString string];
-
-    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
-    NSInteger count = [sortedLogFileInfos count];
-
-    // we start from the last one
-    for (NSInteger index = 0; index < count; index++) {
-        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-
-        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
-        if ([logData length] > 0) {
-            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
-                                                        length:[logData length]
-                                                      encoding: NSUTF8StringEncoding];
-
-            [description appendString:result];
-        }
-    }
-
-    if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
-    }
-
-    return description;
 }
 
 - (void)toggleExtraDebuggingIfNeeded
