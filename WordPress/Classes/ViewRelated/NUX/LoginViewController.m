@@ -166,7 +166,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
-    [nc addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
 
@@ -215,11 +214,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     }
 
     return YES;
-}
-
-- (void)textFieldDidChange:(NSNotification *)note
-{
-    [self updateControls];
 }
 
 #pragma mark - Displaying of Error Messages
@@ -653,13 +647,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)reloadInterface
 {
-    [self updateControls];
     [self layoutControls];
-}
-
-- (void)updateControls
-{
-    // TODO :Remove this method entirely
 }
 
 - (void)layoutControls
@@ -881,8 +869,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.statusLabel.text = status;
     
     self.view.userInteractionEnabled = !authenticating;
-    
-    [self updateControls];
 }
 
 #pragma mark - Backend Helpers
