@@ -89,7 +89,6 @@ static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
 
 static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
 static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
-static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
