@@ -34,7 +34,8 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 // Constants for the unread notification dot icon
 static NSInteger const kNotificationBadgeIconSize = 10;
 static NSInteger const kNotificationBadgeIconVerticalOffsetFromTop = 5;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenter = 8;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenterForIPhone = 8;
+static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenterForIPad = 12;
 static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInPortrait = 104;
 static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 232;
 static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
@@ -515,7 +516,8 @@ static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLan
     // Subtract the space before & after the tabbar
     CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
     CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
-    CGFloat horizontalPosition = ((WPTabNotifications + 0.5) * tabItemWidth) - kNotificationBadgeIconHorizontalOffsetFromCenter + horizontalOffset;
+    CGFloat horizontalOffsetFromCenter = IS_IPAD ? kNotificationBadgeIconHorizontalOffsetFromCenterForIPad : kNotificationBadgeIconHorizontalOffsetFromCenterForIPhone;
+    CGFloat horizontalPosition = ((WPTabNotifications + 0.5) * tabItemWidth) - horizontalOffsetFromCenter + horizontalOffset;
 
     CGRect rect = self.notificationBadgeIconView.frame;
     rect.origin.x = floorf(horizontalPosition);
