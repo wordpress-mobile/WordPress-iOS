@@ -26,19 +26,19 @@ NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 NSString * const WPReaderNavigationRestorationID= @"WPReaderNavigationID";
 NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 
-NSString * const kWPNewPostURLParamTitleKey = @"title";
-NSString * const kWPNewPostURLParamContentKey = @"content";
-NSString * const kWPNewPostURLParamTagsKey = @"tags";
-NSString * const kWPNewPostURLParamImageKey = @"image";
+NSString * const WPNewPostURLParamTitleKey = @"title";
+NSString * const WPNewPostURLParamContentKey = @"content";
+NSString * const WPNewPostURLParamTagsKey = @"tags";
+NSString * const WPNewPostURLParamImageKey = @"image";
 
 // Constants for the unread notification dot icon
-static NSInteger const kNotificationBadgeIconSize = 10;
-static NSInteger const kNotificationBadgeIconVerticalOffsetFromTop = 5;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenterForIPhone = 8;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetFromCenterForIPad = 12;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInPortrait = 104;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 232;
-static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
+static NSInteger const WPNotificationBadgeIconSize = 10;
+static NSInteger const WPNotificationBadgeIconVerticalOffsetFromTop = 5;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenterForIPhone = 8;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetFromCenterForIPad = 12;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait = 104;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 232;
+static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
 
 @interface WPTabBarController () <UITabBarControllerDelegate>
 
@@ -268,10 +268,10 @@ static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLan
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostViewController = [[WPPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
+            editPostViewController = [[WPPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
+                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
+                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
+                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
         navController.restorationIdentifier = WPEditorNavigationRestorationID;
@@ -282,10 +282,10 @@ static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLan
             [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"tab_bar" }];
             editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
         } else {
-            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:kWPNewPostURLParamTitleKey]
-                                                                                      andContent:[options stringForKey:kWPNewPostURLParamContentKey]
-                                                                                         andTags:[options stringForKey:kWPNewPostURLParamTagsKey]
-                                                                                        andImage:[options stringForKey:kWPNewPostURLParamImageKey]];
+            editPostLegacyViewController = [[WPLegacyEditPostViewController alloc] initWithTitle:[options stringForKey:WPNewPostURLParamTitleKey]
+                                                                                      andContent:[options stringForKey:WPNewPostURLParamContentKey]
+                                                                                         andTags:[options stringForKey:WPNewPostURLParamTagsKey]
+                                                                                        andImage:[options stringForKey:WPNewPostURLParamImageKey]];
         }
         navController = [[UINavigationController alloc] initWithRootViewController:editPostLegacyViewController];
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
@@ -485,10 +485,10 @@ static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLan
 
 - (void)addNotificationBadgeIcon
 {
-    self.notificationBadgeIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, kNotificationBadgeIconSize, kNotificationBadgeIconSize)];
+    self.notificationBadgeIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
     self.notificationBadgeIconView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
-                                                        havingSize:CGSizeMake(kNotificationBadgeIconSize, kNotificationBadgeIconSize)];
-    self.notificationBadgeIconView.layer.cornerRadius = kNotificationBadgeIconSize / 2.0;
+                                                        havingSize:CGSizeMake(WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
+    self.notificationBadgeIconView.layer.cornerRadius = WPNotificationBadgeIconSize / 2.0;
     self.notificationBadgeIconView.layer.masksToBounds = YES;
     self.notificationBadgeIconView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.notificationBadgeIconView.layer.borderWidth = 1.0;
@@ -507,16 +507,16 @@ static NSInteger const kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLan
     // We need to take the extra space before & after the tabbar into account for iPad and iPhone 6 Plus
     CGFloat horizontalOffset = 0.0;
     if (IS_IPAD) {
-        horizontalOffset = isLandscape ? kNotificationBadgeIconHorizontalOffsetForIPadInLandscape : kNotificationBadgeIconHorizontalOffsetForIPadInPortrait;
+        horizontalOffset = isLandscape ? WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape : WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait;
     }
     else if (isLandscape && WPDeviceIdentification.isiPhoneSixPlus) {
-        horizontalOffset = kNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape;
+        horizontalOffset = WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape;
     }
-    CGFloat verticalPosition = CGRectGetHeight(self.view.bounds) - (self.tabBar.frame.size.height - kNotificationBadgeIconVerticalOffsetFromTop);
+    CGFloat verticalPosition = CGRectGetHeight(self.view.bounds) - (self.tabBar.frame.size.height - WPNotificationBadgeIconVerticalOffsetFromTop);
     // Subtract the space before & after the tabbar
     CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
     CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
-    CGFloat horizontalOffsetFromCenter = IS_IPAD ? kNotificationBadgeIconHorizontalOffsetFromCenterForIPad : kNotificationBadgeIconHorizontalOffsetFromCenterForIPhone;
+    CGFloat horizontalOffsetFromCenter = IS_IPAD ? WPNotificationBadgeIconHorizontalOffsetFromCenterForIPad : WPNotificationBadgeIconHorizontalOffsetFromCenterForIPhone;
     CGFloat horizontalPosition = ((WPTabNotifications + 0.5) * tabItemWidth) - horizontalOffsetFromCenter + horizontalOffset;
 
     CGRect rect = self.notificationBadgeIconView.frame;
