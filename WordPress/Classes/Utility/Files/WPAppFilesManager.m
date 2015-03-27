@@ -7,7 +7,7 @@
 
 #pragma mark - Application directories
 
-- (void)changeWorkingDirectoryToWordPressSubdirectory
++ (void)changeWorkingDirectoryToWordPressSubdirectory
 {
     // Set current directory for WordPress app
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -24,7 +24,7 @@
 
 #pragma mark - Media cleanup
 
-- (void)cleanUnusedMediaFileFromTmpDir
++ (void)cleanUnusedMediaFileFromTmpDir
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     

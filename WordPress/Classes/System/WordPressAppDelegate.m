@@ -152,17 +152,15 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self setupSingleSignOn];
 
     [self customizeAppearance];
-    
+
     // Push notifications
     [NotificationsManager registerForPushNotifications];
 
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        WPAppFilesManager* appFilesManager = [[WPAppFilesManager alloc] init];
-        
-        [appFilesManager changeWorkingDirectoryToWordPressSubdirectory];
-        [appFilesManager cleanUnusedMediaFileFromTmpDir];
-        
+        [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
+        [WPAppFilesManager cleanUnusedMediaFileFromTmpDir];
+
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
     
