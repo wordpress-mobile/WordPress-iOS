@@ -30,6 +30,7 @@
 #import "ReaderTopicService.h"
 #import "SVProgressHUD.h"
 #import "TodayExtensionService.h"
+#import "WPCrashlytics.h"
 
 #import "WPTabBarController.h"
 #import "BlogListViewController.h"
@@ -48,7 +49,9 @@
 #import "UIImage+Util.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
+#import "WPUserAgent.h"
 #import "WPAppAnalytics.h"
+#import "WPLogger.h"
 
 #import "AppRatingUtility.h"
 #import "HelpshiftUtils.h"
@@ -68,14 +71,16 @@
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
-@interface WordPressAppDelegate () <UITabBarControllerDelegate, CrashlyticsDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
+@interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
 
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
+@property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
+@property (nonatomic, strong, readwrite) WPLogger                       *logger;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
-@property (nonatomic, strong, readwrite) DDFileLogger                   *fileLogger;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
+@property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -108,7 +113,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self configureSimperiumWithLaunchOptions:launchOptions];
 
     // Crash reporting, logging
-    [self configureLogging];
+    self.logger = [[WPLogger alloc] init];
     [self configureHockeySDK];
     [self configureCrashlytics];
     [self initializeAppRatingUtility];
@@ -142,7 +147,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Networking setup
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     [self setupReachability];
-    [self setupUserAgent];
+    self.userAgent = [[WPUserAgent alloc] init];
     [self setupSingleSignOn];
 
     [self customizeAppearance];
@@ -642,7 +647,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [fileManager changeCurrentDirectoryPath:currentDirectoryPath];
 }
 
-#pragma mark - Crash reporting
+#pragma mark - Crashlytics configuration
 
 - (void)configureCrashlytics
 {
@@ -650,42 +655,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return;
 #endif
 
-    if ([[WordPressComApiCredentials crashlyticsApiKey] length] == 0) {
-        return;
-    }
-
-    [Crashlytics startWithAPIKey:[WordPressComApiCredentials crashlyticsApiKey]];
-    [[Crashlytics sharedInstance] setDelegate:self];
-
-    [self setCommonCrashlyticsParameters];
-}
-
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
-{
-    DDLogMethod();
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    NSInteger crashCount = [defaults integerForKey:@"crashCount"];
-    crashCount += 1;
-    [defaults setInteger:crashCount forKey:@"crashCount"];
-    [defaults synchronize];
-}
-
-- (void)setCommonCrashlyticsParameters
-{
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
-    return;
-#endif
+    NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
     
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    BOOL loggedIn = defaultAccount != nil;
-    [Crashlytics setUserName:defaultAccount.username];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
+    if (apiKey) {
+        self.crashlytics = [[WPCrashlytics alloc] initWithAPIKey:apiKey];
+    }
 }
 
 - (void)configureHockeySDK
@@ -704,7 +678,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (NSString *)applicationLogForCrashManager:(BITCrashManager *)crashManager
 {
-    NSString *description = [self getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
+    NSString *description = [self.logger getLogFilesContentWithMaxSize:5000]; // 5000 bytes should be enough!
     if ([description length] == 0) {
         return nil;
     }
@@ -775,49 +749,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }
     }];
 }
-
-
-
-#pragma mark - User agents
-
-- (void)setupUserAgent
-{
-    // Keep a copy of the original userAgent for use with certain webviews in the app.
-    NSString *defaultUA = [[[UIWebView alloc] init] stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"];
-    NSString *wordPressUserAgent = [[UIDevice currentDevice] wordPressUserAgent];
-
-    NSDictionary *dictionary = @{
-        @"UserAgent"        : wordPressUserAgent,
-        @"DefaultUserAgent" : defaultUA,
-        @"AppUserAgent"     : wordPressUserAgent
-    };
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-}
-
-- (void)useDefaultUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"DefaultUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (void)useAppUserAgent
-{
-    NSString *ua = [[NSUserDefaults standardUserDefaults] stringForKey:@"AppUserAgent"];
-    NSDictionary *dictionary = [[NSDictionary alloc] initWithObjectsAndKeys:ua, @"UserAgent", nil];
-    // We have to call registerDefaults else the change isn't picked up by UIWebViews.
-    [[NSUserDefaults standardUserDefaults] registerDefaults:dictionary];
-    
-    DDLogVerbose(@"User-Agent set to: %@", ua);
-}
-
-- (NSString *)applicationUserAgent
-{
-    return [[NSUserDefaults standardUserDefaults] objectForKey:@"UserAgent"];
-}
-
 
 #pragma mark - Networking setup
 
@@ -912,7 +843,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return name ?: WPNotificationsBucketName;
 }
 
-
 #pragma mark - Keychain
 
 + (void)fixKeychainAccess
@@ -978,7 +908,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 }
 
 
-#pragma mark - Debugging and logging
+#pragma mark - Debugging
 
 - (void)printDebugLaunchInfoWithLaunchOptions:(NSDictionary *)launchOptions
 {
@@ -989,9 +919,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSArray *blogs = [blogService blogsForAllAccounts];
-
+    
     DDLogInfo(@"===========================================================================");
-    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle mainBundle] detailedVersionNumber]);
+    DDLogInfo(@"Launching WordPress for iOS %@...", [[NSBundle bundleForClass:[self class]] detailedVersionNumber]);
     DDLogInfo(@"Crash count:       %d", crashCount);
 #ifdef DEBUG
     DDLogInfo(@"Debug mode:  Debug");
@@ -1005,7 +935,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     DDLogInfo(@"UDID:      %@", device.wordPressIdentifier);
     DDLogInfo(@"APN token: %@", [NotificationsManager registeredPushNotificationsToken]);
     DDLogInfo(@"Launch options: %@", launchOptions);
-
+    
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
@@ -1014,7 +944,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     } else {
         DDLogInfo(@"No blogs configured on device.");
     }
-
+    
     DDLogInfo(@"===========================================================================");
 }
 
@@ -1033,77 +963,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }];
     }];
 #endif
-}
-
-- (void)configureLogging
-{
-    // Remove the old Documents/wordpress.log if it exists
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [paths objectAtIndex:0];
-    NSString *filePath = [documentsDirectory stringByAppendingPathComponent:@"wordpress.log"];
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-
-    if ([fileManager fileExistsAtPath:filePath]) {
-        [fileManager removeItemAtPath:filePath error:nil];
-    }
-
-    // Sets up the CocoaLumberjack logging; debug output to console and file
-#ifdef DEBUG
-    [DDLog addLogger:[DDASLLogger sharedInstance]];
-    [DDLog addLogger:[DDTTYLogger sharedInstance]];
-#endif
-
-#ifndef INTERNAL_BUILD
-    [DDLog addLogger:[CrashlyticsLogger sharedInstance]];
-#endif
-
-    [DDLog addLogger:self.fileLogger];
-
-    BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
-    if (extraDebug) {
-        ddLogLevel = LOG_LEVEL_VERBOSE;
-    }
-}
-
-- (DDFileLogger *)fileLogger
-{
-    if (_fileLogger) {
-        return _fileLogger;
-    }
-    _fileLogger = [[DDFileLogger alloc] init];
-    _fileLogger.rollingFrequency = 60 * 60 * 24; // 24 hour rolling
-    _fileLogger.logFileManager.maximumNumberOfLogFiles = 7;
-
-    return _fileLogger;
-}
-
-// get the log content with a maximum byte size
-- (NSString *)getLogFilesContentWithMaxSize:(NSInteger)maxSize
-{
-    NSMutableString *description = [NSMutableString string];
-
-    NSArray *sortedLogFileInfos = [[self.fileLogger logFileManager] sortedLogFileInfos];
-    NSInteger count = [sortedLogFileInfos count];
-
-    // we start from the last one
-    for (NSInteger index = 0; index < count; index++) {
-        DDLogFileInfo *logFileInfo = [sortedLogFileInfos objectAtIndex:index];
-
-        NSData *logData = [[NSFileManager defaultManager] contentsAtPath:[logFileInfo filePath]];
-        if ([logData length] > 0) {
-            NSString *result = [[NSString alloc] initWithBytes:[logData bytes]
-                                                        length:[logData length]
-                                                      encoding: NSUTF8StringEncoding];
-
-            [description appendString:result];
-        }
-    }
-
-    if ([description length] > maxSize) {
-        description = (NSMutableString *)[description substringWithRange:NSMakeRange(0, maxSize)];
-    }
-
-    return description;
 }
 
 - (void)toggleExtraDebuggingIfNeeded
@@ -1179,7 +1038,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     [self toggleExtraDebuggingIfNeeded];
-    [self setCommonCrashlyticsParameters];
     [self setupSingleSignOn];
     
     [WPAnalytics track:WPAnalyticsStatDefaultAccountChanged];
