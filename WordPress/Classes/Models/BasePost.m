@@ -5,6 +5,11 @@
 #import "WPComLanguages.h"
 #import "NSString+XMLExtensions.h"
 
+static NSString* const BasePostStatusDraft = @"draft";
+static NSString* const BasePostStatusPending = @"pending";
+static NSString* const BasePostStatusPrivate = @"private";
+static NSString* const BasePostStatusPublish = @"publish";
+
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
@@ -97,11 +102,6 @@
 - (void)setStatusTitle:(NSString *)aTitle
 {
     self.status = [BasePost statusForTitle:aTitle];
-}
-
-- (BOOL)isScheduled
-{
-    return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);
 }
 
 - (AbstractPostRemoteStatus)remoteStatus
@@ -199,9 +199,9 @@
 - (NSString *)statusForDisplay
 {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([self.status isEqualToString:@"pending"]) {
+        if ([self isPending]) {
             return NSLocalizedString(@"Pending", @"");
-        } else if ([self.status isEqualToString:@"draft"]) {
+        } else if ([self isDraft]) {
             return self.statusTitle;
         }
 
@@ -217,6 +217,53 @@
         return [NSString stringWithFormat:@"%@…", statusText];
     }
     return statusText;
+}
+
+#pragma mark - Status
+
+- (BOOL)isDraft
+{
+    return [self.status isEqualToString:BasePostStatusDraft];
+}
+
+- (BOOL)isPending
+{
+    return [self.status isEqualToString:BasePostStatusPending];
+}
+
+- (BOOL)isPublished
+{
+    return ([self.status isEqualToString:BasePostStatusPublish]
+            && [self hasRemote]);
+}
+
+- (BOOL)isPrivate
+{
+    return [self.status isEqualToString:BasePostStatusPrivate];
+}
+
+- (BOOL)isScheduled
+{
+    return ([self.status isEqualToString:BasePostStatusPublish]
+            && ![self hasRemote]);
+}
+
+- (BOOL)isScheduledForImmediatePublishing
+{
+    NSComparisonResult dateComparison = [self.dateCreated compare:[NSDate date]];
+    BOOL publishDateIsCurrentOrPast = (dateComparison == NSOrderedSame
+                                       || dateComparison == NSOrderedAscending);
+    
+    return ([self isScheduled]
+            && publishDateIsCurrentOrPast);
+}
+
+- (BOOL)isScheduledForFuturePublishing
+{
+    BOOL publishDateIsFuture = [self.dateCreated compare:[NSDate date]] == NSOrderedDescending;
+    
+    return ([self isScheduled]
+            && publishDateIsFuture);
 }
 
 @end
