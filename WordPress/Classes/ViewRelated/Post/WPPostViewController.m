@@ -1427,7 +1427,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     [self.view endEditing:YES];
     
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:@"draft"]  && [self.post.status isEqualToString:@"publish"]) {
+    if (![self.post isScheduledForFuturePublishing]
+        && [self.post.original.status isEqualToString:@"draft"]
+        && [self.post.status isEqualToString:@"publish"]) {
         self.post.dateCreated = [NSDate date];
     }
     self.post = self.post.original;
@@ -1436,7 +1438,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
 	__block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
-    __block BOOL postIsScheduled = self.post.isScheduled;
+    __block BOOL postIsScheduled = [self.post isScheduledForFuturePublishing];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
