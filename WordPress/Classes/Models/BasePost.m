@@ -9,10 +9,12 @@
 
 static const NSUInteger PostDerivedSummaryLength = 150;
 
-@interface BasePost(ProtectedMethods)
-+ (NSString *)titleForStatus:(NSString *)status;
-+ (NSString *)statusForTitle:(NSString *)title;
-@end
+NSString * const PostStatusDraft = @"draft";
+NSString * const PostStatusPending = @"pending";
+NSString * const PostStatusPrivate = @"private";
+NSString * const PostStatusPublish = @"publish";
+NSString * const PostStatusScheduled = @"future";
+NSString * const PostStatusTrash = @"trash";
 
 @implementation BasePost
 
@@ -35,45 +37,26 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:@"draft"]) {
+    if ([status isEqualToString:PostStatusDraft]) {
         return NSLocalizedString(@"Draft", @"Name for the status of a draft post.");
 
-    } else if ([status isEqualToString:@"pending"]) {
+    } else if ([status isEqualToString:PostStatusPending]) {
         return NSLocalizedString(@"Pending review", @"Name for the status of a post pending review.");
 
-    } else if ([status isEqualToString:@"private"]) {
+    } else if ([status isEqualToString:PostStatusPrivate]) {
         return NSLocalizedString(@"Privately published", @"Name for the status of a post that is marked private.");
 
-    } else if ([status isEqualToString:@"publish"]) {
+    } else if ([status isEqualToString:PostStatusPublish]) {
         return NSLocalizedString(@"Published", @"Name for the status of a published post.");
 
-    } else if ([status isEqualToString:@"trash"]) {
+    } else if ([status isEqualToString:PostStatusTrash]) {
         return NSLocalizedString(@"Trashed", @"Name for the status of a trashed post");
 
-    } else if ([status isEqualToString:@"future"]) {
+    } else if ([status isEqualToString:PostStatusScheduled]) {
         return NSLocalizedString(@"Scheduled", @"Name for the status of a scheduled post");
     }
 
     return status;
-}
-
-+ (NSString *)statusForTitle:(NSString *)title
-{
-    if ([title isEqualToString:NSLocalizedString(@"Draft", @"")]) {
-        return @"draft";
-    } else if ([title isEqualToString:NSLocalizedString(@"Pending review", @"")]) {
-        return @"pending";
-    } else if ([title isEqualToString:NSLocalizedString(@"Privately published", @"")]) {
-        return @"private";
-    } else if ([title isEqualToString:NSLocalizedString(@"Published", @"")]) {
-        return @"publish";
-    } else if ([title isEqualToString:NSLocalizedString(@"Trashed", @"")]) {
-        return @"trash";
-    } else if ([title isEqualToString:NSLocalizedString(@"Scheduled", @"")]) {
-        return @"future";
-    }
-
-    return title;
 }
 
 + (NSString *)makePlainText:(NSString *)string
@@ -89,12 +72,16 @@ static const NSUInteger PostDerivedSummaryLength = 150;
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
-- (NSArray *)availableStatuses
+- (NSArray *)availableStatusesForEditing
 {
-    return @[NSLocalizedString(@"Draft", @""),
-             NSLocalizedString(@"Pending review", @""),
-             NSLocalizedString(@"Private", @""),
-             NSLocalizedString(@"Published", @"")];
+    // Subset of status a user may assign to a post they are editing.
+    // Private is not listed as this is determined by the visibility settings.
+    // Scheduled is not listed as this should be handled by assigning a
+    // future date.
+    // Trash is not listed as this should be handled via a delete action.
+    return @[PostStatusDraft,
+             PostStatusPending,
+             PostStatusPublish];
 }
 
 - (BOOL)hasRemote
@@ -124,14 +111,9 @@ static const NSUInteger PostDerivedSummaryLength = 150;
     return [BasePost titleForStatus:self.status];
 }
 
-- (void)setStatusTitle:(NSString *)aTitle
-{
-    self.status = [BasePost statusForTitle:aTitle];
-}
-
 - (BOOL)isScheduled
 {
-    return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);
+    return ([self.status isEqualToString:PostStatusScheduled]);
 }
 
 - (AbstractPostRemoteStatus)remoteStatus
@@ -172,9 +154,30 @@ static const NSUInteger PostDerivedSummaryLength = 150;
     return self.date_created_gmt;
 }
 
+// TODO: Double check to make sure this logic matches wp-admin
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
+
+    /*
+     If the date is nil it means publish immediately so set the status to publish. 
+     If the date is in the future set the status to publish. 
+     If the date is now or in the past, and the status is scheduled, set the status
+     to published.
+     */
+    if (self.date_created_gmt == nil) {
+        // A nil date means publish immediately.
+        self.status = PostStatusPublish;
+
+    } else if (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]) {
+        // If its a future date, and we're not trashed, then the status is scheduled.
+        if (![self.status isEqualToString:PostStatusTrash]){
+            self.status = PostStatusScheduled;
+        }
+
+    } else if ([self.status isEqualToString:PostStatusScheduled]) {
+        self.status = PostStatusPublish;
+    }
 }
 
 - (void)findComments
@@ -230,12 +233,7 @@ static const NSUInteger PostDerivedSummaryLength = 150;
 - (NSString *)statusForDisplay
 {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([self.status isEqualToString:@"publish"]) {
-            if (self.dateCreated == [self.dateCreated laterDate:[NSDate date]]) {
-                // XML-RPC returns scheduled posts with a status of `publish` so
-                // the extra check is needed.
-                return [BasePost titleForStatus:@"future"];
-            }
+        if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
             return [NSString string];
         }
         return self.statusTitle;
