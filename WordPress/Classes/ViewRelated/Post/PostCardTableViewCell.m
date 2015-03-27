@@ -1,4 +1,5 @@
 #import "PostCardTableViewCell.h"
+#import "BasePost.h"
 #import "PostCardActionBarItem.h"
 #import "NSDate+StringFormatting.h"
 #import "UIImageView+Gravatar.h"
@@ -226,15 +227,15 @@
     }
 
     // Set the correct icon and text color
-    if ([[self.contentProvider status] isEqualToString:@"pending"]) {
+    if ([[self.contentProvider status] isEqualToString:PostStatusPending]) {
         self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
         self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
-    } else if ([[self.contentProvider status] isEqualToString:@"future"]) {
+    } else if ([[self.contentProvider status] isEqualToString:PostStatusScheduled]) {
         self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
         self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
-    } else if ([[self.contentProvider status] isEqualToString:@"trashed"]) {
+    } else if ([[self.contentProvider status] isEqualToString:PostStatusTrash]) {
         self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
         self.statusLabel.textColor = [WPStyleGuide errorRed];
@@ -298,10 +299,10 @@
 - (void)configureActionBar
 {
     NSString *status = [self.contentProvider status];
-    if ([status isEqualToString:@"draft"] || [status isEqualToString:@"pending"] || [status isEqualToString:@"future"]) {
+    if ([status isEqualToString:PostStatusDraft] || [status isEqualToString:PostStatusPending] || [status isEqualToString:PostStatusScheduled]) {
         // draft, pending, future
         [self configureDraftActionBar];
-    } else if ([status isEqualToString:@"trash"]) {
+    } else if ([status isEqualToString:PostStatusTrash]) {
         // trashed
         [self configureTrashedActionBar];
     } else {
