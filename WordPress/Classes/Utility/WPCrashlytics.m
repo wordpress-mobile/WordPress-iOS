@@ -20,7 +20,7 @@
 
 #pragma mark - Initialization
 
-- (instancetype)initWithAPIKey:(NSString*)apiKey
+- (instancetype)initWithAPIKey:(NSString *)apiKey
 {
     NSParameterAssert(apiKey);
     
@@ -57,7 +57,7 @@
     [notificationCenter removeObserver:self];
 }
 
-- (void)handleDefaultAccountChangedNotification:(NSNotification*)notification
+- (void)handleDefaultAccountChangedNotification:(NSNotification *)notification
 {
     [self setCommonCrashlyticsParameters];
 }
