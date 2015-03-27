@@ -56,6 +56,55 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return self;
 }
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryForBlog:blog
+                           success:^(NSArray *media) {
+                               [self.managedObjectContext performBlock:^{
+                                   [self mergeMedia:media forBlog:blog completionHandler:success];
+                               }];
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
+- (void)mergeMedia:(NSArray *)media forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+{
+    NSMutableArray *mediaToKeep = [NSMutableArray array];
+    for (RemoteMedia *remote in media) {
+        Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+        if (!local) {
+            local = [self newMediaForBlog:blog];
+            local.remoteStatus = MediaRemoteStatusSync;
+        }
+        [self updateMedia:local withRemoteMedia:remote];
+        [mediaToKeep addObject:local];
+    }
+    
+    NSSet *existingMedia = blog.media;
+    if (existingMedia.count > 0) {
+        for (Media *existing in existingMedia) {
+            if (![mediaToKeep containsObject:existing] && existing.remoteURL != nil) {
+                [self.managedObjectContext deleteObject:existing];
+            }
+        }
+    }
+    
+    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+    
+    if (completion) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
+
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
                   completion:(void (^)(Media *media, NSError * error))completion
@@ -284,10 +333,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     media.desc = remoteMedia.descriptionText;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
-    //media.exif = remoteMedia.exif;
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;

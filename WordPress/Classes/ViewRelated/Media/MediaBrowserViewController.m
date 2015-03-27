@@ -16,6 +16,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ContextManager.h"
 #import "BlogService.h"
+#import "MediaService.h"
 #import "CustomHighlightButton.h"
 #import "WPError.h"
 
@@ -206,19 +207,28 @@ NSString *const MediaFeaturedImageSelectedNotification = @"MediaFeaturedImageSel
 
 - (void)refresh
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    [blogService syncMediaLibraryForBlog:self.blog success:^{
-        [_refreshHeaderView endRefreshing];
-        [self setUploadButtonEnabled:YES];
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed to refresh media library %@", error);
-        [WPError showNetworkingAlertWithError:error];
-        if (error.code == 401) {
-            [self setUploadButtonEnabled:NO];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:context];
+    NSManagedObjectID *blogObjectID = self.blog.objectID;
+    [context performBlock:^{
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
+        if (blogInContext) {
+            [mediaService syncMediaLibraryForBlog:blogInContext success:^{
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [_refreshHeaderView endRefreshing];
+                    [self setUploadButtonEnabled:YES];
+                });
+            } failure:^(NSError *error) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    DDLogError(@"Failed to refresh media library %@", error);
+                    [_refreshHeaderView endRefreshing];
+                    [WPError showNetworkingAlertWithError:error];
+                    if (error.code == 401) {
+                        [self setUploadButtonEnabled:NO];
+                    }
+                });
+            }];
         }
-        [_refreshHeaderView endRefreshing];
     }];
 }
 

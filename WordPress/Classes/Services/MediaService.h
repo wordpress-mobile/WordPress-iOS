@@ -16,6 +16,17 @@ extern NSInteger const MediaMaxImageSizeDimension;
 + (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
 /**
+ Sync all Media objects from the server to local database
+ 
+ @param blog
+ @success a block that will be invoked when the sync succeeds
+ @failure a block that will be invoked when the sync fails
+ */
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure;
+
+/**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
  
  @param asset
