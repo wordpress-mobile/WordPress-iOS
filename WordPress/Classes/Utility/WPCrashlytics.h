@@ -6,6 +6,6 @@
  */
 @interface WPCrashlytics : NSObject
 
-- (instancetype)initWithAPIKey:(NSString*)apiKey;
+- (instancetype)initWithAPIKey:(NSString *)apiKey;
 
 @end
