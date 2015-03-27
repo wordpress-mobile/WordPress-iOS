@@ -3,17 +3,17 @@
     {
       "idiom" : "universal",
       "scale" : "1x",
-      "filename" : "icon-post-status-pending.png"
+      "filename" : "icon-post-status-scheduled.png"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "icon-post-status-pending@2x.png"
+      "filename" : "icon-post-status-scheduled@2x.png"
     },
     {
       "idiom" : "universal",
       "scale" : "3x",
-      "filename" : "icon-post-status-pending@3x.png"
+      "filename" : "icon-post-status-scheduled@3x.png"
     }
   ],
   "info" : {
