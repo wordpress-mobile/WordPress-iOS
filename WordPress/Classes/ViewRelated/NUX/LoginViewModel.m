@@ -1,11 +1,14 @@
-#import "LoginViewModel.h"
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
+#import "HelpshiftService.h"
 #import "LoginFields.h"
+#import "LoginViewModel.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
 #import "ReachabilityService.h"
+#import "WPWalkthroughOverlayView.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
+#import <WPXMLRPC/WPXMLRPC.h>
 
 @interface LoginViewModel()
 
@@ -39,6 +42,7 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     _reachabilityService = [ReachabilityService new];
     _accountCreationService = [AccountCreationService new];
     _blogSyncService = [BlogSyncService new];
+    _helpshiftService = [HelpshiftService new];
 }
 
 - (void)setup
@@ -355,14 +359,45 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
 
 - (void)displayRemoteError:(NSError *)error
 {
+    DDLogError(@"%@", error);
+    
     [self.delegate dismissLoginMessage];
-    [self.delegate displayRemoteError:error];
+    
+    NSString *message = [error localizedDescription];
+    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
+        if ([self.helpshiftService isHelpshiftEnabled]) {
+            [self displayGenericErrorMessageWithHelpshiftButton:message];
+        } else {
+            [self displayGenericErrorMessage:message];
+        }
+        return;
+    }
+    
+    if ([error code] == 403) {
+        message = NSLocalizedString(@"Please try entering your login details again.", nil);
+    }
+    
+    if ([[message trim] length] == 0) {
+        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
+    }
+    
+    if ([error code] == 405) {
+        [self displayErrorMessageForXMLRPC:message];
+    } else {
+        if ([error code] == NSURLErrorBadURL) {
+            [self displayErrorMessageForBadUrl:message];
+        } else {
+            [self displayGenericErrorMessage:message];
+        }
+    }
 }
 
 - (void)showJetpackAuthentication
 {
     [self.delegate showJetpackAuthentication];
 }
+
+#pragma mark - Private Methods
 
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
 {
@@ -415,6 +450,98 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     } finishedSync:^{
         [self finishedLogin];
     }];
+}
+
+#pragma mark - Overlay View Related Methods
+
+- (void)displayGenericErrorMessage:(NSString *)message
+{
+    OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+        [self.delegate displayHelpViewControllerWithAnimation:NO];
+    };
+    
+    [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:@"GenericErrorMessage"];
+}
+
+
+- (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
+{
+    NSString *secondButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the ""error message when a user has repeated trouble logging in");
+    
+    OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+        [self.delegate displayHelpshiftConversationView];
+    };
+    
+    [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:secondButtonText secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
+}
+
+- (void)displayErrorMessageForXMLRPC:(NSString *)message
+{
+    NSString *firstButtonText = NSLocalizedString(@"Enable Now", nil);
+    OverlayViewCallback firstButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+        
+        NSString *path = nil;
+        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php"
+                                                                               options:NSRegularExpressionCaseInsensitive
+                                                                                 error:nil];
+        NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
+        
+        if (rng.location == NSNotFound) {
+            path = self.baseSiteUrl;
+            path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
+            path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
+        } else {
+            path = [message substringWithRange:rng];
+        }
+        
+        [self.delegate displayWebViewForURL:[NSURL URLWithString:path] username:self.username password:self.password];
+    };
+    OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+        [self.delegate displayHelpViewControllerWithAnimation:NO];
+    };
+    
+    [self displayOverlayViewWithMessage:message firstButtonText:firstButtonText firstButtonCallback:firstButtonCallback secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
+}
+
+- (void)displayErrorMessageForBadUrl:(NSString *)message
+{
+    OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+        [self.delegate displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+    };
+    
+    [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
+}
+
+- (void)displayOverlayViewWithMessage:(NSString *)message firstButtonText:(NSString *)firstButtonText firstButtonCallback:(OverlayViewCallback)firstButtonCallback secondButtonText:(NSString *)secondButtonText secondButtonCallback:(OverlayViewCallback)secondButtonCallback accessibilityIdentifier:(NSString *)accessibilityIdentifier
+{
+    NSParameterAssert(message.length > 0);
+    NSParameterAssert(secondButtonCallback != nil);
+    
+    NSString *firstButtonTextOrDefault = NSLocalizedString(@"OK", nil);
+    NSString *secondButtonTextOrDefault = NSLocalizedString(@"Need Help?", nil);
+    
+    OverlayViewCallback firstButtonCallbackOrDefault = ^(WPWalkthroughOverlayView *overlayView) {
+        [overlayView dismiss];
+    };
+    
+    if (firstButtonCallback != nil) {
+        firstButtonCallbackOrDefault = firstButtonCallback;
+    }
+    
+    if (firstButtonText.length > 0) {
+        firstButtonTextOrDefault = firstButtonText;
+    }
+    
+    if (secondButtonText.length > 0) {
+        secondButtonTextOrDefault = secondButtonText;
+    }
+    
+    [self.delegate displayOverlayViewWithMessage:message firstButtonText:firstButtonTextOrDefault firstButtonCallback:firstButtonCallbackOrDefault secondButtonText:secondButtonTextOrDefault secondButtonCallback:secondButtonCallback accessibilityIdentifier:accessibilityIdentifier];
 }
 
 @end

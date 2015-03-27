@@ -8,6 +8,8 @@
 #import "WordPressComOAuthClientService.h"
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
+#import "HelpshiftService.h"
+#import <WPXMLRPC/WPXMLRPC.h>
 
 SpecBegin(LoginViewModel)
 
@@ -19,6 +21,7 @@ __block id mockLoginServiceDelegate;
 __block id mockOAuthService;
 __block id mockAccountCreationService;
 __block id mockBlogSyncService;
+__block id mockHelpshiftService;
 
 beforeEach(^{
     mockViewModelDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
@@ -28,6 +31,7 @@ beforeEach(^{
     mockOAuthService = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientService)];
     mockAccountCreationService = [OCMockObject niceMockForProtocol:@protocol(AccountCreationService)];
     mockBlogSyncService = [OCMockObject niceMockForProtocol:@protocol(BlogSyncService)];
+    mockHelpshiftService = [OCMockObject niceMockForProtocol:@protocol(HelpshiftService)];
     [OCMStub([mockLoginService wordpressComOAuthClientService]) andReturn:mockOAuthService];
     [OCMStub([mockLoginService delegate]) andReturn:mockLoginServiceDelegate];
     
@@ -37,6 +41,7 @@ beforeEach(^{
     viewModel.delegate = mockViewModelDelegate;
     viewModel.accountCreationService = mockAccountCreationService;
     viewModel.blogSyncService = mockBlogSyncService;
+    viewModel.helpshiftService = mockHelpshiftService;
 });
 
 describe(@"authenticating", ^{
@@ -564,6 +569,107 @@ describe(@"signInButton", ^{
     });
 });
 
+describe(@"displayRemoteError", ^{
+    
+    __block NSError *error;
+    NSString *errorMessage = @"You have failed me yet again Starscream.";
+    NSString *defaultFirstButtonText = NSLocalizedString(@"OK", nil);
+    NSString *defaultSecondButtonText = NSLocalizedString(@"Need Help?", nil);
+    
+    it(@"should dismiss the login message", ^{
+        [[mockViewModelDelegate expect] dismissLoginMessage];
+        
+        error = [NSError errorWithDomain:@"wordpress.com" code:3 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+        [viewModel displayRemoteError:error];
+        
+        [mockViewModelDelegate verify];
+    });
+   
+    context(@"for non XMLRPC errors", ^{
+        
+        beforeEach(^{
+            error = [NSError errorWithDomain:@"wordpress.com" code:3 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+        });
+        
+        it(@"should display an overlay with a generic error message with the default button labels if Helpshift is not enabled", ^{
+            [[[mockHelpshiftService stub] andReturnValue:@(NO)] isHelpshiftEnabled];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:@"GenericErrorMessage"];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with a 'Contact Us' button if Helpshift is enabled", ^{
+            [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Contact Us", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with a 'Need Help?' button if the url was bad", ^{
+            error = [NSError errorWithDomain:@"wordpress.com" code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Need Help?", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    context(@"for XMLRPC errors", ^{
+        
+        it(@"should display an overlay with a message about re-entering login details if the code is 403", ^{
+            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:403 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Please try entering your login details again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with a message about sign in failed if there is no message and the error code isn't 403, 405 or a bad url", ^{
+            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Sign in failed. Please try again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with a button that will take the user to the page to enable XMLRPC if the error code is 405", ^{
+            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:405 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:NSLocalizedString(@"Enable Now", nil) firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with the default button text if the URL is bad", ^{
+            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should display an overlay with the default button text if the error isn't a bad url, a 403, or a 405", ^{
+            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+});
+
 describe(@"toggleSignInButtonTitle", ^{
     
     it(@"should set the title to 'Add Self-Hosted Site' for a .com user", ^{
@@ -953,25 +1059,6 @@ describe(@"LoginServiceDelegate methods", ^{
         });
     });
     
-    context(@"displayRemoteError:", ^{
-        
-        it(@"should be passed on to the LoginViewModelDelegate", ^{
-            [[mockViewModelDelegate expect] displayRemoteError:OCMOCK_ANY];
-            
-            [viewModel displayRemoteError:nil];
-            
-            [mockViewModelDelegate verify];
-        });
-        
-        it(@"should dismiss the login message", ^{
-            [[mockViewModelDelegate expect] dismissLoginMessage];
-            
-            [viewModel displayRemoteError:nil];
-            
-            [mockViewModelDelegate verify];
-        });
-    });
-    
     context(@"showJetpackAuthentication", ^{
         
         it(@"should be passed on to the LoginViewModelDelegate", ^{
@@ -1090,7 +1177,7 @@ describe(@"LoginServiceDelegate methods", ^{
                 });
                 
                 it(@"should display the error", ^{
-                    [[mockViewModelDelegate expect] displayRemoteError:error];
+                    [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                     

@@ -1,13 +1,13 @@
 #import <Foundation/Foundation.h>
 #import "LoginService.h"
 
-@protocol LoginViewModelDelegate;
-@protocol ReachabilityService;
-@protocol LoginService;
 @protocol AccountCreationService;
 @protocol BlogSyncService;
+@protocol HelpshiftService;
+@protocol LoginService;
+@protocol LoginViewModelDelegate;
+@protocol ReachabilityService;
 @class RACSignal;
-
 @interface LoginViewModel : NSObject <LoginServiceDelegate>
 
 // Services
@@ -15,6 +15,7 @@
 @property (nonatomic, strong) id<LoginService> loginService;
 @property (nonatomic, strong) id<AccountCreationService> accountCreationService;
 @property (nonatomic, strong) id<BlogSyncService> blogSyncService;
+@property (nonatomic, strong) id<HelpshiftService> helpshiftService;
 
 @property (nonatomic, assign) BOOL authenticating;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
@@ -42,6 +43,10 @@
 - (void)displayMultifactorTextField;
 
 @end
+
+
+@class WPWalkthroughOverlayView;
+typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 
 @protocol LoginViewModelDelegate
 
@@ -76,8 +81,11 @@
 // Ones we forward from LoginService
 - (void)displayLoginMessage:(NSString *)message;
 - (void)dismissLoginMessage;
-- (void)displayRemoteError:(NSError *)error;
 - (void)dismissLoginView;
 - (void)showJetpackAuthentication;
+- (void)displayOverlayViewWithMessage:(NSString *)message firstButtonText:(NSString *)firstButtonText firstButtonCallback:(OverlayViewCallback)firstButtonCallback secondButtonText:(NSString *)secondButtonText secondButtonCallback:(OverlayViewCallback)secondButtonCallback accessibilityIdentifier:(NSString *)accessibilityIdentifier;
+- (void)displayHelpViewControllerWithAnimation:(BOOL)animated;
+- (void)displayHelpshiftConversationView;
+- (void)displayWebViewForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password;
 
 @end
