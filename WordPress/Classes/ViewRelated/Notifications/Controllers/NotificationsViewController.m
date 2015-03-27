@@ -135,8 +135,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
-    [[WPTabBarController sharedInstance] updateNotificationBadgeVisibility];
+
     [self showNoResultsViewIfNeeded];
     [self showManageButtonIfNeeded];
     [self showBucketNameIfNeeded];
