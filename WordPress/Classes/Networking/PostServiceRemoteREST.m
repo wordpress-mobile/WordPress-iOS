@@ -188,7 +188,7 @@
     post.content = jsonPost[@"content"];
     post.excerpt = jsonPost[@"excerpt"];
     post.slug = jsonPost[@"slug"];
-    post.status = [self statusWithRemoteStatus:jsonPost[@"status"]];
+    post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
     if ([post.password isEmpty]) {
         post.password = nil;
@@ -284,14 +284,6 @@
         [metadata addObject:[NSDictionary dictionaryWithDictionary:modifiedMeta]];
     }
     return [NSArray arrayWithArray:metadata];
-}
-
-- (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus {
-    NSString *status = remoteStatus;
-    if ([status isEqualToString:@"future"]) {
-        status = @"publish";
-    }
-    return status;
 }
 
 - (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
