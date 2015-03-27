@@ -1,24 +1,24 @@
 PODS:
   - 1PasswordExtension (1.1.2)
-  - AFNetworking (2.5.1):
-    - AFNetworking/NSURLConnection (= 2.5.1)
-    - AFNetworking/NSURLSession (= 2.5.1)
-    - AFNetworking/Reachability (= 2.5.1)
-    - AFNetworking/Security (= 2.5.1)
-    - AFNetworking/Serialization (= 2.5.1)
-    - AFNetworking/UIKit (= 2.5.1)
-  - AFNetworking/NSURLConnection (2.5.1):
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.1):
+  - AFNetworking/NSURLSession (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.1)
-  - AFNetworking/Security (2.5.1)
-  - AFNetworking/Serialization (2.5.1)
-  - AFNetworking/UIKit (2.5.1):
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.7.1)
@@ -124,7 +124,7 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension
-  - AFNetworking (~> 2.5.1)
+  - AFNetworking (~> 2.5.2)
   - AMPopTip (~> 0.7)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
@@ -195,7 +195,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   1PasswordExtension: 38b5be7dd6dbe786c98f15d51d50ad21150db60a
-  AFNetworking: 8bee59492a6ff15d69130efa4d0dc67e0094a52a
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   AMPopTip: 2c103e376d068f9c8eeb1ddbddd27a23e89db0bc
   CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
   CrashlyticsLumberjack: 192a08e07648e4e09d44052356b53ab839cc8a1b
@@ -221,12 +221,12 @@ SPEC CHECKSUMS:
   OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
   Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
   Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
-  SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  SocketRocket: 77c536491ce78315d4f26a06057ed49aa36cef5e
   SVProgressHUD: 90363c5e66aa08356bfe1a0923bd885fd3fbcb7c
   UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
   UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: e04a4a2b251e9bf973bc388d4674be2ee42fe914
+  WordPress-iOS-Editor: 75cebaa4cbb40327fe8b1a032840b80672b43fcd
   WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
   WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
   WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
