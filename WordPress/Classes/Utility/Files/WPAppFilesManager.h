@@ -11,13 +11,13 @@
 /**
  *  @brief      Changes the current working directory to the WordPress subdirectory.
  */
-- (void)changeWorkingDirectoryToWordPressSubdirectory;
++ (void)changeWorkingDirectoryToWordPressSubdirectory;
 
 #pragma mark - Media cleanup
 
 /**
  *  @brief      Removes all unused media files from the tmp directorys.
  */
-- (void)cleanUnusedMediaFileFromTmpDir;
++ (void)cleanUnusedMediaFileFromTmpDir;
 
 @end
