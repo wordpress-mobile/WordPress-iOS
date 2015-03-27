@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
-extern NSString * const kWPNewPostURLParamContentKey;
-extern NSString * const kWPNewPostURLParamTagsKey;
+extern NSString * const WPNewPostURLParamContentKey;
+extern NSString * const WPNewPostURLParamTagsKey;
 
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
