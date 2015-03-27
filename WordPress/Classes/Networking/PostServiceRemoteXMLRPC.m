@@ -195,7 +195,7 @@
     post.content = xmlrpcDictionary[@"post_content"];
     post.excerpt = xmlrpcDictionary[@"post_excerpt"];
     post.slug = xmlrpcDictionary[@"post_name"];
-    post.status = xmlrpcDictionary[@"post_status"];
+    post.status = [self statusForPostStatus:xmlrpcDictionary[@"post_status"] andDate:post.date];
     post.password = xmlrpcDictionary[@"post_password"];
     if ([post.password isEmpty]) {
         post.password = nil;
@@ -215,6 +215,16 @@
     post.categories = [self remoteCategoriesFromXMLRPCTermsArray:terms];
 
     return post;
+}
+
+- (NSString *)statusForPostStatus:(NSString *)status andDate:(NSDate *)date
+{
+    // Scheduled posts are synced with a post_status of 'publish' but we want to
+    // work with a status of 'future' from within the app.
+    if (date == [date laterDate:[NSDate date]]) {
+        return @"future";
+    }
+    return status;
 }
 
 - (NSArray *)tagsFromXMLRPCTermsArray:(NSArray *)terms {
@@ -289,7 +299,12 @@
         postParams[@"custom_fields"] = post.metadata;
     }
 
-    if (post.status == nil) {
+    // Scheduled posts need to sync with a status of 'publish'.
+    // Passing a status of 'future' will set the post status to 'draft'
+    // This is an apparent inconsistency in the XML-RPC API as 'future' should
+    // be a valid status.
+    // https://codex.wordpress.org/Post_Status_Transitions
+    if (post.status == nil || [post.status isEqualToString:@"future"]) {
         post.status = @"publish";
     }
 
