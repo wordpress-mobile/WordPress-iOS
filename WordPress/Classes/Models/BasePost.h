@@ -10,6 +10,13 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
+extern NSString * const PostStatusDraft;
+extern NSString * const PostStatusPending;
+extern NSString * const PostStatusPrivate;
+extern NSString * const PostStatusPublish;
+extern NSString * const PostStatusScheduled;
+extern NSString * const PostStatusTrash;
+
 @interface BasePost : NSManagedObject<WPContentViewProvider>
 
 // Attributes
@@ -20,7 +27,7 @@ typedef enum {
 @property (nonatomic, strong) NSString * postTitle;
 @property (nonatomic, strong) NSString * content;
 @property (nonatomic, strong) NSString * status;
-@property (nonatomic, weak) NSString * statusTitle;
+@property (nonatomic, weak, readonly) NSString * statusTitle;
 @property (nonatomic, strong) NSString * password;
 @property (nonatomic, strong) NSString * permaLink;
 @property (nonatomic, strong) NSString * mt_excerpt;
@@ -31,6 +38,16 @@ typedef enum {
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
+
+/**
+ Returns the localized title for the specified status.  Status should be 
+ one of the `PostStatus...` constants.  If a matching title is not found
+ the status is returned. 
+ 
+ @param string The post status value
+ @return The localized title for the specified status, or the status if a title was not found.
+*/
++ (NSString *)titleForStatus:(NSString *)status;
 
 /**
  Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
@@ -48,7 +65,10 @@ typedef enum {
  */
 + (NSString *)createSummaryFromContent:(NSString *)string;
 
-- (NSArray *)availableStatuses;
+/**
+ An array of statuses available to a post while editing. 
+ */
+- (NSArray *)availableStatusesForEditing;
 
 /**
  Returns YES if the post is scheduled to be published on a specific date in the future.

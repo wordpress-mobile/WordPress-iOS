@@ -241,7 +241,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
             failure:(void (^)(NSError *error))failure
 {
     // TODO: Is this the best option?
-    post.status = @"draft";
+    post.status = PostStatusDraft;
     NSNumber *postID = post.postID;
     if ([postID longLongValue] > 0) {
         RemotePost *remotePost = [self remotePostWithPost:post];
@@ -256,7 +256,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = @"publish";
+    post.status = PostStatusPublish;
 }
 
 - (void)mergePosts:(NSArray *)posts ofType:(NSString *)postType forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
