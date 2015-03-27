@@ -392,7 +392,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     UIActionSheet *actionSheet;
-    if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+    if (![self.post.original.status isEqualToString:PostStatusDraft] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -498,10 +498,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     // Right nav button: Publish Button
     NSString *buttonTitle;
     if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+        if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
-        } else if ([self.post.status isEqualToString:@"publish"]) {
+        } else if ([self.post.status isEqualToString:PostStatusPublish]) {
             buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
 
         } else {
@@ -1105,8 +1105,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             } else {
                 // Save draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
+                if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+                    self.post.status = PostStatusDraft;
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];

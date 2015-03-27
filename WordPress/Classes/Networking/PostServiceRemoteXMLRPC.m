@@ -1,5 +1,6 @@
 #import "PostServiceRemoteXMLRPC.h"
 #import "Blog.h"
+#import "BasePost.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
@@ -52,10 +53,12 @@
                options:(NSDictionary *)options
                success:(void (^)(NSArray *posts))success
                failure:(void (^)(NSError *error))failure {
+    NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate,PostStatusPublish, PostStatusScheduled, PostStatusTrash];
+    NSString *postStatus = [statuses componentsJoinedByString:@","];
     NSDictionary *extraParameters = @{
                                       @"number": @40,
                                       @"post_type": postType,
-                                      @"post_status": @"publish,future,trash,draft,pending",
+                                      @"post_status": postStatus,
                                       };
     if (options) {
         NSMutableDictionary *mutableParameters = [extraParameters mutableCopy];
@@ -222,7 +225,7 @@
     // Scheduled posts are synced with a post_status of 'publish' but we want to
     // work with a status of 'future' from within the app.
     if (date == [date laterDate:[NSDate date]]) {
-        return @"future";
+        return PostStatusScheduled;
     }
     return status;
 }
@@ -304,8 +307,8 @@
     // This is an apparent inconsistency in the XML-RPC API as 'future' should
     // be a valid status.
     // https://codex.wordpress.org/Post_Status_Transitions
-    if (post.status == nil || [post.status isEqualToString:@"future"]) {
-        post.status = @"publish";
+    if (post.status == nil || [post.status isEqualToString:PostStatusScheduled]) {
+        post.status = PostStatusPublish;
     }
 
     if ([post.type isEqualToString:@"page"]) {

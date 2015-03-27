@@ -190,18 +190,16 @@
 {
     BOOL needsLogin = NO;
     NSString *status = self.apost.status;
-    NSDate *postGMTDate = self.apost.date_created_gmt;
-    NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
-    if ([status isEqualToString:@"draft"]) {
+    if ([status isEqualToString:PostStatusDraft]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"private"]) {
+    } else if ([status isEqualToString:PostStatusPrivate]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"pending"]) {
+    } else if ([status isEqualToString:PostStatusPending]) {
         needsLogin = YES;
     } else if ([self.apost.blog isPrivate]) {
         needsLogin = YES; // Private blog
-    } else if ([laterDate isEqualToDate:postGMTDate]) {
+    } else if ([self.apost isScheduled]) {
         needsLogin = YES; // Scheduled post
     }
 
