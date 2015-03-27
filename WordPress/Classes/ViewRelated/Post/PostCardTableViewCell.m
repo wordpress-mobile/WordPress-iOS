@@ -216,7 +216,6 @@
 - (void)configureStatusView
 {
     NSString *str = [self.contentProvider statusForDisplay];
-    self.statusLabel.text = str;
     self.statusView.hidden = ([str length] == 0);
     if (self.statusView.hidden) {
         self.dateViewLowerConstraint.constant = 0.0;
@@ -225,6 +224,26 @@
         self.dateViewLowerConstraint.constant = self.dateViewLowerMargin;
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
+
+    // Set the correct icon and text color
+    if ([[self.contentProvider status] isEqualToString:@"pending"]) {
+        self.statusLabel.text = str;
+        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
+        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
+    } else if ([[self.contentProvider status] isEqualToString:@"future"]) {
+        self.statusLabel.text = str;
+        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
+        self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
+    } else if ([[self.contentProvider status] isEqualToString:@"trashed"]) {
+        self.statusLabel.text = str;
+        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
+        self.statusLabel.textColor = [WPStyleGuide errorRed];
+    } else {
+        self.statusLabel.text = nil;
+        self.statusImageView.image = nil;
+        self.statusLabel.textColor = [WPStyleGuide grey];
+    }
+
     [self.statusView setNeedsUpdateConstraints];
 }
 
