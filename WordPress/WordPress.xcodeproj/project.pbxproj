@@ -245,6 +245,7 @@
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
 		85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */; };
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
+		85E813451AC62BD2004DC4B4 /* OnePasswordService.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E813441AC62BD2004DC4B4 /* OnePasswordService.m */; };
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
@@ -960,6 +961,8 @@
 		85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerWPCom.m; sourceTree = "<group>"; };
 		85E105841731A597001071A3 /* WPWalkthroughOverlayView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPWalkthroughOverlayView.h; sourceTree = "<group>"; };
 		85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWalkthroughOverlayView.m; sourceTree = "<group>"; };
+		85E813431AC62BD2004DC4B4 /* OnePasswordService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordService.h; sourceTree = "<group>"; };
+		85E813441AC62BD2004DC4B4 /* OnePasswordService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordService.m; sourceTree = "<group>"; };
 		85EC44D21739826A00686604 /* CreateAccountAndBlogViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreateAccountAndBlogViewController.h; sourceTree = "<group>"; };
 		85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
 		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -2362,6 +2365,8 @@
 				858EEC821ABA30190007B3B6 /* BlogSyncService.m */,
 				854FEB5E1AC4BED60012B8EB /* HelpshiftService.h */,
 				854FEB5F1AC4BED60012B8EB /* HelpshiftService.m */,
+				85E813431AC62BD2004DC4B4 /* OnePasswordService.h */,
+				85E813441AC62BD2004DC4B4 /* OnePasswordService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -3659,6 +3664,7 @@
 				E1249B4319408C910035E895 /* RemoteComment.m in Sources */,
 				93DEB88219E5BF7100F9546D /* TodayExtensionService.m in Sources */,
 				5D42A3E2175E7452005CFF05 /* ReaderPost.m in Sources */,
+				85E813451AC62BD2004DC4B4 /* OnePasswordService.m in Sources */,
 				B587797F19B799D800E57C5A /* UIImageView+Networking.swift in Sources */,
 				5DA5BF4718E32DCF005F11F9 /* ThemeDetailsViewController.m in Sources */,
 				E1D062D4177C685C00644185 /* ContentActionButton.m in Sources */,

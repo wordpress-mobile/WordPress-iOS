@@ -1,10 +1,12 @@
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
+#import "Constants.h"
 #import "HelpshiftService.h"
 #import "LoginFields.h"
 #import "LoginViewModel.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
+#import "OnePasswordService.h"
 #import "ReachabilityService.h"
 #import "WPWalkthroughOverlayView.h"
 #import <ReactiveCocoa/ReactiveCocoa.h>
@@ -43,6 +45,7 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     _accountCreationService = [AccountCreationService new];
     _blogSyncService = [BlogSyncService new];
     _helpshiftService = [HelpshiftService new];
+    _onePasswordService = [OnePasswordService new];
 }
 
 - (void)setup
@@ -132,6 +135,35 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     [self.loginService signInWithLoginFields:loginFields];
 }
 
+- (void)onePasswordButtonActionForViewController:(UIViewController *)viewController
+{
+    if (self.userIsDotCom == false && self.siteUrl.isEmpty) {
+        [self.delegate displayOnePasswordEmptySiteAlert];
+        return;
+    }
+ 
+    NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrl;
+    
+    [self.onePasswordService findLoginForURLString:loginURL viewController:viewController completion:^(NSString *username, NSString *password, NSError *error) {
+        BOOL blankUsernameOrPassword = (username.length == 0) || (password.length == 0);
+        if (blankUsernameOrPassword || (error != nil)) {
+            if (error != nil) {
+                DDLogError(@"OnePassword Error: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
+            }
+            return;
+        }
+        
+        self.username = username;
+        self.password = password;
+        [self.delegate setUsernameTextValue:username];
+        [self.delegate setPasswordTextValue:password];
+        
+        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
+        [self signInButtonAction];
+    }];
+}
+
 - (void)forgotPasswordButtonAction
 {
     NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self baseSiteUrl];
@@ -196,6 +228,11 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     self.shouldDisplayMultifactor = YES;
     [self.delegate reloadInterfaceWithAnimation:YES];
     [self.delegate setFocusToMultifactorText];
+}
+
+- (BOOL)isOnePasswordEnabled
+{
+    return [self.onePasswordService isOnePasswordEnabled];
 }
 
 - (BOOL)areFieldsValid:(LoginFields *)loginFields

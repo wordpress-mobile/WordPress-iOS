@@ -7,6 +7,7 @@
 @protocol LoginService;
 @protocol LoginViewModelDelegate;
 @protocol ReachabilityService;
+@protocol OnePasswordService;
 @class RACSignal;
 @interface LoginViewModel : NSObject <LoginServiceDelegate>
 
@@ -16,6 +17,7 @@
 @property (nonatomic, strong) id<AccountCreationService> accountCreationService;
 @property (nonatomic, strong) id<BlogSyncService> blogSyncService;
 @property (nonatomic, strong) id<HelpshiftService> helpshiftService;
+@property (nonatomic, strong) id<OnePasswordService> onePasswordService;
 
 @property (nonatomic, assign) BOOL authenticating;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
@@ -37,10 +39,12 @@
 @property (nonatomic, weak) id<LoginViewModelDelegate> delegate;
 
 - (void)signInButtonAction;
+- (void)onePasswordButtonActionForViewController:(UIViewController *)viewController;
 - (NSString *)baseSiteUrl;
 - (void)forgotPasswordButtonAction;
 - (void)toggleSignInFormAction;
 - (void)displayMultifactorTextField;
+- (BOOL)isOnePasswordEnabled;
 
 @end
 
@@ -53,12 +57,16 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)showActivityIndicator:(BOOL)show;
 
 - (void)setUsernameAlpha:(CGFloat)alpha;
+- (void)setUsernameEnabled:(BOOL)enabled;
+- (void)setUsernameTextValue:(NSString *)username;
+
 - (void)setPasswordAlpha:(CGFloat)alpha;
+- (void)setPasswordEnabled:(BOOL)enabled;
+- (void)setPasswordTextValue:(NSString *)password;
+
 - (void)setSiteAlpha:(CGFloat)alpha;
 - (void)setMultiFactorAlpha:(CGFloat)alpha;
 
-- (void)setUsernameEnabled:(BOOL)enabled;
-- (void)setPasswordEnabled:(BOOL)enabled;
 - (void)setSiteUrlEnabled:(BOOL)enabled;
 - (void)setMultifactorEnabled:(BOOL)enabled;
 - (void)setCancelButtonHidden:(BOOL)hidden;
@@ -77,6 +85,7 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)displayReservedNameErrorMessage;
 - (void)reloadInterfaceWithAnimation:(BOOL)animated;
 - (void)openURLInSafari:(NSURL *)url;
+- (void)displayOnePasswordEmptySiteAlert;
 
 // Ones we forward from LoginService
 - (void)displayLoginMessage:(NSString *)message;

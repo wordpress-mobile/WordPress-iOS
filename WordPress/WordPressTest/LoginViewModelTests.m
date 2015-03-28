@@ -9,6 +9,7 @@
 #import "AccountCreationService.h"
 #import "BlogSyncService.h"
 #import "HelpshiftService.h"
+#import "OnePasswordService.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "WPWalkthroughOverlayView.h"
 
@@ -23,6 +24,7 @@ __block id mockOAuthService;
 __block id mockAccountCreationService;
 __block id mockBlogSyncService;
 __block id mockHelpshiftService;
+__block id mockOnePasswordService;
 
 beforeEach(^{
     mockViewModelDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
@@ -33,6 +35,7 @@ beforeEach(^{
     mockAccountCreationService = [OCMockObject niceMockForProtocol:@protocol(AccountCreationService)];
     mockBlogSyncService = [OCMockObject niceMockForProtocol:@protocol(BlogSyncService)];
     mockHelpshiftService = [OCMockObject niceMockForProtocol:@protocol(HelpshiftService)];
+    mockOnePasswordService = [OCMockObject niceMockForProtocol:@protocol(OnePasswordService)];
     [OCMStub([mockLoginService wordpressComOAuthClientService]) andReturn:mockOAuthService];
     [OCMStub([mockLoginService delegate]) andReturn:mockLoginServiceDelegate];
     
@@ -43,6 +46,7 @@ beforeEach(^{
     viewModel.accountCreationService = mockAccountCreationService;
     viewModel.blogSyncService = mockBlogSyncService;
     viewModel.helpshiftService = mockHelpshiftService;
+    viewModel.onePasswordService = mockOnePasswordService;
 });
 
 describe(@"authenticating", ^{
@@ -567,6 +571,169 @@ describe(@"signInButton", ^{
                 [mockViewModelDelegate verify];
             });
         });
+    });
+});
+
+describe(@"onePasswordButtonActionForViewController", ^{
+    
+    __block id mockViewController;
+    before(^{
+        mockViewController = [OCMockObject niceMockForClass:[UIViewController class]];
+    });
+    
+    __block NSError *error;
+    __block NSString *username;
+    __block NSString *password;
+    
+    void (^forceOnePasswordExtensionCallbackToExecute)() = ^{
+        [OCMStub([mockOnePasswordService findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            void (^ __unsafe_unretained callback)(NSString *, NSString *, NSError *);
+            [invocation getArgument:&callback atIndex:4];
+            
+            callback(username, password, error);
+        }];
+    };
+    
+    NSString *sharedExamplesForABlankResponseOrAnError = @"the extension returning a blank response or an error";
+    sharedExamplesFor(sharedExamplesForABlankResponseOrAnError, ^(NSDictionary *data) {
+        
+        beforeEach(^{
+            forceOnePasswordExtensionCallbackToExecute();
+        });
+        
+        context(@"there is no data", ^{
+            
+            beforeEach(^{
+                username = nil;
+                password = nil;
+            });
+            
+            it(@"shouldn't attempt to set the username/password", ^{
+                [[mockViewModelDelegate reject] setUsernameTextValue:OCMOCK_ANY];
+                [[mockViewModelDelegate reject] setPasswordTextValue:OCMOCK_ANY];
+                
+                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            it(@"shouldn't attempt to sign in", ^{
+                [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
+                    XCTFail(@"Shouldn't get here");
+                }];
+                
+                [viewModel onePasswordButtonActionForViewController:mockViewController];
+            });
+        });
+        
+        
+        context(@"there is an error", ^{
+            
+            beforeEach(^{
+                error = [NSError errorWithDomain:@"com.wordpress" code:-1 userInfo:@{}];
+            });
+            
+            it(@"shoudln't attempt to set username/password", ^{
+                [[mockViewModelDelegate reject] setUsernameTextValue:OCMOCK_ANY];
+                [[mockViewModelDelegate reject] setPasswordTextValue:OCMOCK_ANY];
+                
+                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            it(@"shoudln't attempt to sign in", ^{
+                [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
+                    XCTFail(@"Shouldn't get here");
+                }];
+                
+                [viewModel onePasswordButtonActionForViewController:mockViewController];
+            });
+        });
+    });
+    
+    NSString *sharedExamplesForValidData = @"the extension returned valid data";
+    sharedExamplesFor(sharedExamplesForValidData, ^(NSDictionary *data) {
+        
+        beforeEach(^{
+            forceOnePasswordExtensionCallbackToExecute();
+            viewModel.username = username =  @"username";
+            viewModel.password = password = @"password";
+            error = nil;
+        });
+        
+        it(@"should set the username/password", ^{
+            [[mockViewModelDelegate expect] setUsernameTextValue:viewModel.username];
+            [[mockViewModelDelegate expect] setPasswordTextValue:viewModel.password];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should attempt to sign in", ^{
+            __block BOOL signInAttempted = NO;
+            [OCMStub([viewModel signInButtonAction]) andDo:^(NSInvocation *invocation) {
+                signInAttempted = YES;
+            }];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            expect(signInAttempted).to.beTruthy();
+        });
+    });
+    
+    context(@"for a self hosted user", ^{
+        
+        beforeEach(^{
+            viewModel.userIsDotCom = NO;
+            viewModel.siteUrl = @"http://www.selfhosted.com";
+        });
+        
+        it(@"if the user doesn't have a site url it should display an error", ^{
+            viewModel.siteUrl = @"";
+            [[mockViewModelDelegate expect] displayOnePasswordEmptySiteAlert];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"if the user has a site url it should not display an error", ^{
+            [[mockViewModelDelegate reject] displayOnePasswordEmptySiteAlert];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockViewModelDelegate verify];
+        });
+        
+        it(@"should use OnePassword to find the users credentials", ^{
+            [[mockOnePasswordService expect] findLoginForURLString:viewModel.siteUrl viewController:mockViewController completion:OCMOCK_ANY];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockOnePasswordService verify];
+        });
+        
+        itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
+        itShouldBehaveLike(sharedExamplesForValidData, nil);
+    });
+    
+    context(@"for a WordPress.com user", ^{
+        beforeEach(^{
+            viewModel.userIsDotCom = YES;
+        });
+        
+        it(@"should use OnePassword to find the users credentials", ^{
+            [[mockOnePasswordService expect] findLoginForURLString:@"wordpress.com" viewController:mockViewController completion:OCMOCK_ANY];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockOnePasswordService verify];
+        });
+        
+        itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
+        itShouldBehaveLike(sharedExamplesForValidData, nil);
     });
 });
 

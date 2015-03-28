@@ -1,7 +1,6 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <1PasswordExtension/OnePasswordExtension.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"
@@ -303,31 +302,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    if (self.viewModel.userIsDotCom == false && self.viewModel.siteUrl.isEmpty) {
-        [self displayOnePasswordEmptySiteAlert];
-        return;
-    }
- 
-    NSString *loginURL = self.viewModel.userIsDotCom ? WPOnePasswordWordPressComURL : self.viewModel.siteUrl;
-    
-    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
-                                                forViewController:self
-                                                           sender:sender
-                                                       completion:^(NSDictionary *loginDict, NSError *error) {
-        if (!loginDict) {
-            if (error.code != AppExtensionErrorCodeCancelledByUser) {
-                DDLogError(@"OnePassword Error: %@", error);
-                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
-            }
-            return;
-        }
-
-        self.usernameText.text = loginDict[AppExtensionUsernameKey];
-        self.passwordText.text = loginDict[AppExtensionPasswordKey];
-                                                           
-        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
-        [self.viewModel signInButtonAction];
-    }];
+    [self.viewModel onePasswordButtonActionForViewController:self];
 }
 
 - (IBAction)sendVerificationCode:(id)sender
@@ -414,8 +389,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     usernameText.rightView = onePasswordButton;
     usernameText.rightViewPadding = LoginOnePasswordPadding;
     
-    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
-    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    usernameText.rightViewMode = [self.viewModel isOnePasswordEnabled] ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
     
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
@@ -905,9 +879,29 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.usernameText.alpha = alpha;
 }
 
+- (void)setUsernameEnabled:(BOOL)enabled
+{
+    self.usernameText.enabled = enabled;
+}
+
+- (void)setUsernameTextValue:(NSString *)username
+{
+    self.usernameText.text = username;
+}
+
 - (void)setPasswordAlpha:(CGFloat)alpha
 {
     self.passwordText.alpha = alpha;
+}
+
+- (void)setPasswordEnabled:(BOOL)enabled
+{
+    self.passwordText.enabled = enabled;
+}
+
+- (void)setPasswordTextValue:(NSString *)passwordText
+{
+    self.passwordText.text = passwordText;
 }
 
 - (void)setSiteAlpha:(CGFloat)alpha
@@ -918,16 +912,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)setMultiFactorAlpha:(CGFloat)alpha
 {
     self.multifactorText.alpha = alpha;
-}
-
-- (void)setUsernameEnabled:(BOOL)enabled
-{
-    self.usernameText.enabled = enabled;
-}
-
-- (void)setPasswordEnabled:(BOOL)enabled
-{
-    self.passwordText.enabled = enabled;
 }
 
 - (void)setSiteUrlEnabled:(BOOL)enabled
