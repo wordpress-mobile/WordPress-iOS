@@ -1695,7 +1695,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
-            [self.editorView replaceLocalVideoWithId:mediaUniqueId forRemoteVideo:media.remoteURL];
+            [self.editorView replaceLocalVideoWithID:mediaUniqueId
+                                      forRemoteVideo:media.remoteURL
+                                        remotePoster:@""
+                                          videoPress:media.shortcode];
         }
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
@@ -1775,9 +1778,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
                 [data writeToFile:posterImagePath atomically:YES];
                 NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
-                [strongSelf.editorView insertLocalVideo:[url absoluteString]
-                                            posterImage:[posterURL absoluteString]
-                                               uniqueId:mediaUniqueID];
+                [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
             }
             
             [self uploadMedia:media trackingId:mediaUniqueID];
