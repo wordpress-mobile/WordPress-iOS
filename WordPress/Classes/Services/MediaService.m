@@ -292,6 +292,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
     //media.exif = remoteMedia.exif;
+    media.shortcode = remoteMedia.shortcode;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
