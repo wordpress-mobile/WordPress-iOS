@@ -10,6 +10,7 @@
 #import "BlogSyncService.h"
 #import "HelpshiftService.h"
 #import <WPXMLRPC/WPXMLRPC.h>
+#import "WPWalkthroughOverlayView.h"
 
 SpecBegin(LoginViewModel)
 
@@ -569,12 +570,90 @@ describe(@"signInButton", ^{
     });
 });
 
-describe(@"displayRemoteError", ^{
-    
+describe(@"displayRemoteError", ^{ 
     __block NSError *error;
     NSString *errorMessage = @"You have failed me yet again Starscream.";
     NSString *defaultFirstButtonText = NSLocalizedString(@"OK", nil);
     NSString *defaultSecondButtonText = NSLocalizedString(@"Need Help?", nil);
+    __block id mockOverlayView;
+    
+    NSString *sharedExamplesForPrimaryButtonThatDismissesOverlay = @"a primary button that dismisses the overlay";
+    sharedExamplesFor(sharedExamplesForPrimaryButtonThatDismissesOverlay, ^(NSDictionary *data) {
+        
+        context(@"when the primary button is pressed", ^{
+            
+            it(@"should dismiss the overlay", ^{
+                [OCMStub([mockViewModelDelegate displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    void (^ __unsafe_unretained callback)(WPWalkthroughOverlayView *);
+                    [invocation getArgument:&callback atIndex:4];
+                    
+                    callback(mockOverlayView);
+                }];
+                
+                [[mockOverlayView expect] dismiss];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockOverlayView verify];
+            });
+        });
+    });
+    
+    NSString *sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController = @"an overlay button that shows the help view controller";
+    sharedExamplesFor(sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController, ^(NSDictionary *data) {
+        
+        it(@"should show the help view controller", ^{
+            [[mockViewModelDelegate expect] displayHelpViewControllerWithAnimation:NO];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    NSString *sharedExamplesForAnOverlayButtonThatDismissesTheOverlay = @"an overlay button that dismisses the overlay";
+    sharedExamplesFor(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, ^(NSDictionary *data) {
+        it(@"should dismiss the overlay view", ^{
+            [[mockOverlayView expect] dismiss];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockOverlayView verify];
+        });
+    });
+    
+    NSString *sharedExamplesForAButtonThatOpensUpTheFAQ = @"a button that opens up the FAQ";
+    sharedExamplesFor(sharedExamplesForAButtonThatOpensUpTheFAQ, ^(NSDictionary *data) {
+        it(@"should open the FAQ on the website", ^{
+            [[mockViewModelDelegate expect] displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+            
+            [viewModel displayRemoteError:error];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    void (^overlayViewPrimaryButton)() = ^{
+        [OCMStub([mockViewModelDelegate displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            void (^ __unsafe_unretained callback)(WPWalkthroughOverlayView *);
+            [invocation getArgument:&callback atIndex:4];
+            
+            callback(mockOverlayView);
+        }];
+    };
+    
+    void (^overlayViewSecondaryButton)() = ^{
+        [OCMStub([mockViewModelDelegate displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            void (^ __unsafe_unretained callback)(WPWalkthroughOverlayView *);
+            [invocation getArgument:&callback atIndex:6];
+            
+            callback(mockOverlayView);
+        }];
+    };
+    
+    beforeEach(^{
+        mockOverlayView = [OCMockObject niceMockForClass:[WPWalkthroughOverlayView class]];
+    });
     
     it(@"should dismiss the login message", ^{
         [[mockViewModelDelegate expect] dismissLoginMessage];
@@ -591,26 +670,73 @@ describe(@"displayRemoteError", ^{
             error = [NSError errorWithDomain:@"wordpress.com" code:3 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
         });
         
-        it(@"should display an overlay with a generic error message with the default button labels if Helpshift is not enabled", ^{
-            [[[mockHelpshiftService stub] andReturnValue:@(NO)] isHelpshiftEnabled];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:@"GenericErrorMessage"];
+        context(@"when Helpshift is not enabled", ^{
             
-            [viewModel displayRemoteError:error];
+            beforeEach(^{
+                [[[mockHelpshiftService stub] andReturnValue:@(NO)] isHelpshiftEnabled];
+            });
             
-            [mockViewModelDelegate verify];
+            it(@"should display an overlay with a generic error message with the default button labels", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:@"GenericErrorMessage"];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            itBehavesLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
+            
+            context(@"when the overlay's secondary button is pressed", ^{
+                
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController, nil);
+            });
         });
         
-        it(@"should display an overlay with a 'Contact Us' button if Helpshift is enabled", ^{
-            [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Contact Us", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+        context(@"when Helpshift is enabled", ^{
             
-            [viewModel displayRemoteError:error];
+            beforeEach(^{
+                [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+            });
             
-            [mockViewModelDelegate verify];
+            it(@"should display an overlay with a 'Contact Us' button", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Contact Us", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            itBehavesLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
+            
+            context(@"when the overlay's secondary button is pressed", ^{
+                
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                it(@"should bring up Helpshift", ^{
+                    [[mockViewModelDelegate expect] displayHelpshiftConversationView];
+                    
+                    [viewModel displayRemoteError:error];
+                    
+                    [mockViewModelDelegate verify];
+                });
+            });
         });
+    });
+    
+    context(@"for a bad URL", ^{
         
-        it(@"should display an overlay with a 'Need Help?' button if the url was bad", ^{
+        beforeEach(^{
             error = [NSError errorWithDomain:@"wordpress.com" code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+        });
+        
+        it(@"should display an overlay with a 'Need Help?'", ^{
             [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
             [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Need Help?", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
             
@@ -618,56 +744,151 @@ describe(@"displayRemoteError", ^{
             
             [mockViewModelDelegate verify];
         });
+        
+        itShouldBehaveLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
+        
+        context(@"when the overlay's secondary button is pressed", ^{
+            
+            beforeEach(^{
+                overlayViewSecondaryButton();
+            });
+            
+            itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+            itShouldBehaveLike(sharedExamplesForAButtonThatOpensUpTheFAQ, nil);
+        });
     });
     
     context(@"for XMLRPC errors", ^{
         
-        it(@"should display an overlay with a message about re-entering login details if the code is 403", ^{
-            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:403 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Please try entering your login details again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+        context(@"when the error code is 403", ^{
             
-            [viewModel displayRemoteError:error];
+            beforeEach(^{
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:403 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            });
             
-            [mockViewModelDelegate verify];
+            it(@"should display an overlay with a message about re-entering login details", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Please try entering your login details again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            itShouldBehaveLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
+            
+            context(@"the overlay's secondary button is pushed", ^{
+                
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController, nil);
+            });
         });
         
-        it(@"should display an overlay with a message about sign in failed if there is no message and the error code isn't 403, 405 or a bad url", ^{
-            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Sign in failed. Please try again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+        context(@"when the error code is 405", ^{
             
-            [viewModel displayRemoteError:error];
+            beforeEach(^{
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:405 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            });
             
-            [mockViewModelDelegate verify];
+            it(@"should display an overlay with a button that will take the user to the page to enable XMLRPC", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:NSLocalizedString(@"Enable Now", nil) firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            context(@"when the overlay's primary button is pressed", ^{
+                
+                beforeEach(^{
+                    overlayViewPrimaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+                
+                it(@"should open a web view to the writing options page to allow the user to enable XMLRPC", ^{
+                    NSString *siteUrl = @"http://www.selfhosted.com";
+                    NSString *writingOptionsUrl = @"http://www.selfhosted.com/wp-admin/options-writing.php";
+                    viewModel.siteUrl = siteUrl;
+                    [[mockViewModelDelegate expect] displayWebViewForURL:[NSURL URLWithString:writingOptionsUrl] username:viewModel.username password:viewModel.password];
+                    
+                    [viewModel displayRemoteError:error];
+                    
+                    [mockViewModelDelegate verify];
+                });
+            });
+            
+            context(@"when the overlay's secondary button is pressed", ^{
+                
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController, nil);
+            });
         });
         
-        it(@"should display an overlay with a button that will take the user to the page to enable XMLRPC if the error code is 405", ^{
-            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:405 userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:NSLocalizedString(@"Enable Now", nil) firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+        context(@"the error code isn't 403, 405, a bad url and there is no error message", ^{
             
-            [viewModel displayRemoteError:error];
+            beforeEach(^{
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];;
+            });
             
-            [mockViewModelDelegate verify];
+            it(@"should display an overlay with a message about sign in failed", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:NSLocalizedString(@"Sign in failed. Please try again.", nil) firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            it(@"should display an overlay with the default button text", ^{
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
+            
+            itShouldBehaveLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
+            
+            context(@"when the overlay's secondary button is pressed", ^{
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatShowsTheHelpViewController, nil);
+            });
         });
         
-        it(@"should display an overlay with the default button text if the URL is bad", ^{
-            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+        context(@"when the url is bad", ^{
             
-            [viewModel displayRemoteError:error];
+            it(@"should display an overlay with the default button text", ^{
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+                [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+                
+                [viewModel displayRemoteError:error];
+                
+                [mockViewModelDelegate verify];
+            });
             
-            [mockViewModelDelegate verify];
-        });
-        
-        it(@"should display an overlay with the default button text if the error isn't a bad url, a 403, or a 405", ^{
-            error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
-            [[mockViewModelDelegate expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
+            itShouldBehaveLike(sharedExamplesForPrimaryButtonThatDismissesOverlay, nil);
             
-            [viewModel displayRemoteError:error];
-            
-            [mockViewModelDelegate verify];
+            context(@"when the overlay's secondary button is pressed", ^{
+                
+                beforeEach(^{
+                    overlayViewSecondaryButton();
+                });
+                
+                itShouldBehaveLike(sharedExamplesForAnOverlayButtonThatDismissesTheOverlay, nil);
+                itShouldBehaveLike(sharedExamplesForAButtonThatOpensUpTheFAQ, nil);
+            });
         });
     });
-    
 });
 
 describe(@"toggleSignInButtonTitle", ^{
