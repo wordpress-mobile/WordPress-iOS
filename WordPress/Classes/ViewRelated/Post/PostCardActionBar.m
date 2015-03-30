@@ -174,7 +174,7 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
     button.backgroundColor = [WPStyleGuide lightGrey];
     button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    [button setTitleColor:[WPStyleGuide mediumBlue] forState:UIControlStateHighlighted];
+    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
     [button addTarget:self action:@selector(handleButtonTap:) forControlEvents:UIControlEventTouchUpInside];
 
     return button;
