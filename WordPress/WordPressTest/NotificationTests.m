@@ -141,6 +141,43 @@
     XCTAssertEqualObjects(range.type, @"follow", @"Missing follow range");
 }
 
+- (void)testCommentNotificationHasCommentFlagSetToTrue
+{
+    Notification *note = [self loadCommentNotification];
+    XCTAssertTrue(note.isComment, @"Comment flag should be true");
+}
+
+- (void)testCommentNotificationContainsSubjectWithSnippet
+{
+    Notification *note = [self loadCommentNotification];
+    XCTAssertNotNil(note.subjectBlock.text, @"Subject Block has no text!");
+    XCTAssertNotNil(note.snippetBlock.text, @"Subject Block has no text!");
+}
+
+- (void)testCommentNotificationContainsHeader
+{
+    Notification *note = [self loadCommentNotification];
+    NotificationBlockGroup *header = note.headerBlockGroup;
+    XCTAssertNotNil(header, @"Missing headerBlockGroup");
+    
+    NotificationBlock *gravatarBlock = [header blockOfType:NoteBlockTypeImage];
+    XCTAssertNotNil(gravatarBlock.text, @"Missing Gravatar Text");
+    
+    NotificationMedia *media = gravatarBlock.media.firstObject;
+    XCTAssertNotNil(media.mediaURL, @"Missing Gravatar URL");
+    
+    NotificationBlock *snippetBlock = [header blockOfType:NoteBlockTypeText];
+    XCTAssertNotNil(snippetBlock.text, @"Missing Snippet Block");
+}
+
+- (void)testCommentNotificationContainsCommentAndSiteID
+{
+    Notification *note = [self loadCommentNotification];
+    XCTAssertNotNil(note.metaSiteID, @"Missing siteID");
+    XCTAssertNotNil(note.metaCommentID, @"Missing commentID");
+}
+
+
 
 #pragma mark - Helpers
 
@@ -165,6 +202,12 @@
 {
     return (Notification *)[self.contextManager loadEntityNamed:self.entityName
                                              withContentsOfFile:@"notifications-new-follower.json"];
+}
+
+- (Notification *)loadCommentNotification
+{
+    return (Notification *)[self.contextManager loadEntityNamed:self.entityName
+                                             withContentsOfFile:@"notifications-replied-comment.json"];
 }
 
 @end
