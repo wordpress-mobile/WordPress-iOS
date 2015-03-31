@@ -543,6 +543,10 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _passwordField.text = loginDict[AppExtensionPasswordKey] ?: [NSString string];
                                                             
         [WPAnalytics track:WPAnalyticsStatOnePasswordSignup];
+                 
+        // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
+        // and make the SiteAddress Field the first responder.
+        [_siteAddressField becomeFirstResponder];
     }];
 }
 
