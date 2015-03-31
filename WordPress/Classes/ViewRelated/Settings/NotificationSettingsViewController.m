@@ -71,16 +71,16 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
     
     self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
     
-    if (_notificationPreferences) {
-        [self reloadNotificationSettings];
-    } else {
-        // Trigger a refresh to download the notification settings
+    // Empty Settings: Display the spinner
+    if (!_notificationPreferences) {
         CGFloat refreshControlHeight = CGRectGetHeight(self.refreshControl.frame);
         [self.tableView setContentOffset:CGPointMake(0.0f, -refreshControlHeight) animated:YES];
         [self.refreshControl beginRefreshing];
-        
-        [self refreshNotificationSettings];
     }
+    
+    // Always download the latest settings
+    [self reloadNotificationSettings];
+    [self refreshNotificationSettings];
 }
 
 - (void)refreshNotificationSettings
