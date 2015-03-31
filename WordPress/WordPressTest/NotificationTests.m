@@ -97,6 +97,50 @@
     XCTAssertNotNil(note.metaPostID, @"Missing PostID");
 }
 
+- (void)testFollowerNotificationHasFollowFlagSetToTrue
+{
+    Notification *note = [self loadFollowerNotification];
+    XCTAssertTrue(note.isFollow, @"Follow flag should be true");
+}
+
+- (void)testFollowerNotificationContainsOneSubjectBlock
+{
+    Notification *note = [self loadFollowerNotification];
+    XCTAssertNotNil(note.subjectBlock, @"Missing subjectBlock");
+    XCTAssertNotNil(note.subjectBlock.text, @"Subject Block has no text!");
+}
+
+- (void)testFollowerNotificationContainsSiteID
+{
+    Notification *note = [self loadFollowerNotification];
+    XCTAssertNotNil(note.metaSiteID, @"Missing siteID");
+}
+
+- (void)testFollowerNotificationContainsUserBlocksInTheBody
+{
+    Notification *note = [self loadFollowerNotification];
+    
+    // Note: Account for 'View All Followers'
+    for (NotificationBlockGroup *group in note.bodyBlockGroups) {
+        XCTAssertTrue(group.type == NoteBlockGroupTypeUser || group.type == NoteBlockGroupTypeText);
+    }
+}
+
+- (void)testFollowerNotificationContainsTextBlockWithFollowRangeAtTheEnd
+{
+    Notification *note = [self loadFollowerNotification];
+    
+    NotificationBlockGroup *lastGroup = note.bodyBlockGroups.lastObject;
+    XCTAssertTrue(lastGroup.type == NoteBlockGroupTypeText);
+    
+    NotificationBlock *block = [lastGroup.blocks firstObject];
+    XCTAssertNotNil(block.text, @"Missing block text");
+    
+    NotificationRange *range = block.ranges.firstObject;
+    XCTAssertNotNil(range, @"Missing range");
+    XCTAssertEqualObjects(range.type, @"follow", @"Missing follow range");
+}
+
 
 #pragma mark - Helpers
 
@@ -115,6 +159,12 @@
 {
     return (Notification *)[self.contextManager loadEntityNamed:self.entityName
                                              withContentsOfFile:@"notifications-like.json"];
+}
+
+- (Notification *)loadFollowerNotification
+{
+    return (Notification *)[self.contextManager loadEntityNamed:self.entityName
+                                             withContentsOfFile:@"notifications-new-follower.json"];
 }
 
 @end
