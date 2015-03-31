@@ -16,7 +16,8 @@
 #import "EditImageDetailsViewController.h"
 #import "LocationService.h"
 #import "Media.h"
-#import "MediaBrowserViewController.h"
+#import "WPBlogMediaPickerViewController.h"
+#import "WPBlogMediaCollectionViewController.h"
 #import "MediaService.h"
 #import "NSString+Helpers.h"
 #import "Post.h"
@@ -85,7 +86,7 @@ static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, EditImageDetailsViewControllerDelegate>
+@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, EditImageDetailsViewControllerDelegate, WPBlogMediaPickerViewControllerDelegate>
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
@@ -769,7 +770,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     NSString *optionsTitle = NSLocalizedString(@"Insert image from:", @"Title of image source options");
     NSString *optionLocal = NSLocalizedString(@"Local Media", @"Image source: device");
-    NSString *optionBlog = NSLocalizedString(@"Blog Media", @"Image source: blog");
+    NSString *optionBlog = [WPBlogMediaCollectionViewController title];
     NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
     
     // Expect this alert is a temporary measure that editor shouldn't officially support
@@ -843,8 +844,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showMediaBlog
 {
-    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post selectingMediaForPost:YES];
-    [self presentViewController:vc animated:YES completion:nil];
+    WPBlogMediaPickerViewController *picker = [[WPBlogMediaPickerViewController alloc] init];
+    picker.blog = self.post.blog;
+    picker.showMostRecentFirst = YES;
+    picker.delegate = self;
+    
+    [self presentViewController:picker animated:YES completion:nil];
 }
 
 #pragma mark - Data Model: Post
@@ -2125,6 +2130,28 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     } else {
         return NO;
     }
+}
+
+#pragma mark - WPBlogMediaPickerViewControllerDelegate
+
+- (void)mediaPickerController:(WPBlogMediaPickerViewController *)picker didFinishPickingMedia:(NSArray *)media
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        for (Media *item in media) {
+            [self.editorView insertImage:item.remoteURL alt:item.title];
+        }
+    }];
+}
+
+- (void)mediaPickerControllerDidCancel:(WPBlogMediaPickerViewController *)browser
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldShowMedia:(Media *)media;
+{
+    BOOL isImage = media.mediaType == MediaTypeImage;
+    return isImage;
 }
 
 #pragma mark - KVO
