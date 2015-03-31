@@ -201,6 +201,20 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return [media anyObject];
 }
 
+- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+                             inBlog:(Blog *)blog
+                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            failure:(void (^)(NSError *error))failure
+{
+    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
+    Media *media = [mediaSet anyObject];
+    if (media) {
+        success(media.remoteURL, @"");
+    } else {
+        failure(nil);
+    }
+}
+
 
 #pragma mark - Private
 
