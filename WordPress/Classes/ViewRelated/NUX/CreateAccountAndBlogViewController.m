@@ -509,6 +509,10 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (IBAction)saveLoginToOnePassword:(id)sender
 {
+    // Dismiss the keyboard right away
+    [self.view endEditing:YES];
+    
+    // Hit 1Password!
     NSDictionary *newLoginDetails = @{
         AppExtensionTitleKey        : WPOnePasswordWordPressTitle,
         AppExtensionUsernameKey     : _usernameField.text ?: [NSString string],
