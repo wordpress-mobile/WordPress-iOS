@@ -2123,15 +2123,14 @@
 			isa = PBXGroup;
 			children = (
 				852416D11A12ED690030700C /* AppRatingUtilityTests.m */,
+				93A379EB19FFBF7900415023 /* KeychainTest.m */,
+				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
+				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
+				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
+				5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */,
+				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
 			);
 			name = Utility;
-			sourceTree = "<group>";
-		};
-		852CD8AE190E0D04006C9AED /* Media */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Media;
 			sourceTree = "<group>";
 		};
 		8584FDB31923EF4F0019C02E /* ViewRelated */ = {
@@ -2465,6 +2464,42 @@
 			path = Notifications;
 			sourceTree = "<group>";
 		};
+		B5AEEC731ACACF3B008BF2A4 /* Core Data */ = {
+			isa = PBXGroup;
+			children = (
+				93E9050319E6F242005513C9 /* ContextManagerTests.swift */,
+				C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */,
+				931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */,
+			);
+			name = "Core Data";
+			sourceTree = "<group>";
+		};
+		B5AEEC7E1ACAD088008BF2A4 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9363113E19FA996700B0C739 /* AccountServiceTests.swift */,
+				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
+				930FD0A519882742000CC81D /* BlogServiceTest.m */,
+			);
+			name = Services;
+			sourceTree = "<group>";
+		};
+		B5AEEC7F1ACAD099008BF2A4 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
+		B5AEEC801ACAD0A5008BF2A4 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		B5B56D2F19AFB68800B4E29B /* Style */ = {
 			isa = PBXGroup;
 			children = (
@@ -2678,24 +2713,13 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				852416D01A12ED2D0030700C /* Utility */,
-				9363113E19FA996700B0C739 /* AccountServiceTests.swift */,
-				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
-				930FD0A519882742000CC81D /* BlogServiceTest.m */,
-				93E9050319E6F242005513C9 /* ContextManagerTests.swift */,
-				C5CFDC29184F962B00097B05 /* CoreDataConcurrencyTest.m */,
-				931D26FF19EDAE8600114F17 /* CoreDataMigrationTests.m */,
-				852CD8AE190E0D04006C9AED /* Media */,
-				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
+				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
+				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
 				5DF94E351962BA5F00359241 /* Reader */,
-				E10675C7183F82E900E5CE5C /* SettingsViewControllerTest.m */,
-				5948AD101AB73D19006E8882 /* WPAppAnalyticsTests.m */,
-				E1E4CE0C177439D100430844 /* WPAvatarSourceTest.m */,
-				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
-				5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */,
-				93A379EB19FFBF7900415023 /* KeychainTest.m */,
-				FFAB7CB21A14D1AC00765942 /* ProgressTest.m */,
-				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
+				B5AEEC7E1ACAD088008BF2A4 /* Services */,
+				852416D01A12ED2D0030700C /* Utility */,
+				B5AEEC711ACACF2F008BF2A4 /* NotificationTests.m */,
+				B5AEEC801ACAD0A5008BF2A4 /* ViewControllers */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -2733,19 +2757,19 @@
 			path = Vendor;
 			sourceTree = "<group>";
 		};
-		E131CB5B16CAD638004B0314 /* Test Helpers */ = {
+		E131CB5B16CAD638004B0314 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
 				E150520D16CAC75A00D3DDDC /* CoreDataTestHelper.h */,
 				E150520E16CAC75A00D3DDDC /* CoreDataTestHelper.m */,
-				E15618FB16DB8677006532C4 /* UIKitTestHelper.h */,
-				E15618FC16DB8677006532C4 /* UIKitTestHelper.m */,
-				93E9050519E6F3D8005513C9 /* TestContextManager.h */,
-				93E9050619E6F3D8005513C9 /* TestContextManager.m */,
 				B5D689FB1A5EBC900063D9E5 /* NotificationsManager+TestHelper.h */,
 				B5D689FC1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m */,
+				93E9050519E6F3D8005513C9 /* TestContextManager.h */,
+				93E9050619E6F3D8005513C9 /* TestContextManager.m */,
+				E15618FB16DB8677006532C4 /* UIKitTestHelper.h */,
+				E15618FC16DB8677006532C4 /* UIKitTestHelper.m */,
 			);
-			name = "Test Helpers";
+			name = Helpers;
 			sourceTree = "<group>";
 		};
 		E1523EB216D3B2EE002C5A36 /* Sharing */ = {
@@ -2784,8 +2808,8 @@
 			isa = PBXGroup;
 			children = (
 				E16AB93014D978240047A2E5 /* Supporting Files */,
-				E16AB94414D9A13A0047A2E5 /* Test Data */,
-				E131CB5B16CAD638004B0314 /* Test Helpers */,
+				E16AB94414D9A13A0047A2E5 /* Mock Data */,
+				E131CB5B16CAD638004B0314 /* Helpers */,
 				E1239B7B176A2E0F00D37220 /* Tests */,
 			);
 			path = WordPressTest;
@@ -2802,7 +2826,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		E16AB94414D9A13A0047A2E5 /* Test Data */ = {
+		E16AB94414D9A13A0047A2E5 /* Mock Data */ = {
 			isa = PBXGroup;
 			children = (
 				93CD939219099BE70049096E /* authtoken.json */,
@@ -2818,6 +2842,7 @@
 				855408871A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
 			);
+			name = "Mock Data";
 			path = "Test Data";
 			sourceTree = "<group>";
 		};
