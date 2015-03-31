@@ -2034,6 +2034,20 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
+- (void)editorViewController:(WPEditorViewController *)editorViewController videoPressInfoRequest:(NSString *)videoID
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    [mediaService getMediaURLFromVideoPressID:videoID
+        inBlog:self.post.blog
+        success:^(NSString *videoURL, NSString *posterURL) {
+            [weakSelf.editorView setVideoPress:videoID source:videoURL poster:posterURL];
+        }
+        failure:^(NSError *error){
+
+        }];
+}
+
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
     [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
