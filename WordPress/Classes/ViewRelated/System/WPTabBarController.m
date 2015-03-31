@@ -21,10 +21,12 @@
 #import "HelpshiftUtils.h"
 #import <WordPress-iOS-Shared/WPDeviceIdentification.h>
 
-NSString * const WPTabBarRestorationID = @"WPTabBarID";
-NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-NSString * const WPReaderNavigationRestorationID= @"WPReaderNavigationID";
-NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+static NSString * const WPTabBarRestorationID = @"WPTabBarID";
+static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
+static NSString * const WPReaderNavigationRestorationID= @"WPReaderNavigationID";
+static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+
+static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
 
 NSString * const WPNewPostURLParamTitleKey = @"title";
 NSString * const WPNewPostURLParamContentKey = @"content";
@@ -103,8 +105,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
                                                    object:nil];
 
         // Watch for application badge number changes
-        NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
+        [[UIApplication sharedApplication] addObserver:self
+                                            forKeyPath:WPApplicationIconBadgeNumberKeyPath
+                                               options:NSKeyValueObservingOptionNew
+                                               context:nil];
     }
     return self;
 }
@@ -112,7 +116,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
+    [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
 #pragma mark - Tab Bar Items
@@ -475,7 +479,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
+    if ([keyPath isEqualToString:WPApplicationIconBadgeNumberKeyPath]) {
         [self updateNotificationBadgeVisibility];
     }
 }
