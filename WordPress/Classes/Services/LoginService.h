@@ -8,6 +8,7 @@
 @protocol LoginService
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields;
+- (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
 @property (nonatomic, weak) id<LoginServiceDelegate> delegate;
 @property (nonatomic, strong) id<WordPressComOAuthClientService> wordpressComOAuthClientService;

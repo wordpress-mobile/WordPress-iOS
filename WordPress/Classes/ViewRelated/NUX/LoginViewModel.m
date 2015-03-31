@@ -112,6 +112,11 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     [self setupToggleSignInButtonHidden];
 }
 
+- (LoginFields *)loginFields
+{
+    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:self.multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+}
+
 - (void)signInButtonAction
 {
     if (![self.reachabilityService isInternetReachable]) {
@@ -119,7 +124,7 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
         return;
     }
     
-    LoginFields *loginFields = [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:self.multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+    LoginFields *loginFields = [self loginFields];
     if (![self areFieldsValid:loginFields]) {
         [self.delegate displayErrorMessageForInvalidOrMissingFields];
         return;
@@ -233,6 +238,11 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
 - (BOOL)isOnePasswordEnabled
 {
     return [self.onePasswordService isOnePasswordEnabled];
+}
+
+- (void)requestOneTimeCode
+{
+    [self.loginService requestOneTimeCodeWithLoginFields:[self loginFields]];
 }
 
 - (BOOL)areFieldsValid:(LoginFields *)loginFields

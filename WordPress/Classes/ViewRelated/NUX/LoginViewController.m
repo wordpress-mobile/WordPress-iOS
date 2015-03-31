@@ -307,13 +307,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)sendVerificationCode:(id)sender
 {
-    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
-    [client requestOneTimeCodeWithUsername:self.usernameText.text
-                                  password:self.passwordText.text
-                                   success:^{
-                                       [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
-                                   }
-                                   failure:nil];
+    [self.viewModel requestOneTimeCode];
 }
 
 

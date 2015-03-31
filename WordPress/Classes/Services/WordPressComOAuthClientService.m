@@ -20,4 +20,13 @@
     }];
 }
 
+- (void)requestOneTimeCodeWithUsername:(NSString *)username
+                              password:(NSString *)password
+                               success:(void (^)(void))success
+                               failure:(void (^)(NSError *error))failure
+{
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client requestOneTimeCodeWithUsername:username password:password success:success failure:failure];
+}
+
 @end

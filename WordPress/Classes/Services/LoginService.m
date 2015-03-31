@@ -72,6 +72,15 @@
     }
 }
 
+- (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
+{
+    [self.wordpressComOAuthClientService requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
+        [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to request one time code");
+    }];
+}
+
 - (void)signInToWordpressDotCom:(LoginFields *)loginFields
 {
     [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];

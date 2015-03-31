@@ -45,6 +45,7 @@
 - (void)toggleSignInFormAction;
 - (void)displayMultifactorTextField;
 - (BOOL)isOnePasswordEnabled;
+- (void)requestOneTimeCode;
 
 @end
 

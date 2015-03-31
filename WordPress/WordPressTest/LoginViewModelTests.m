@@ -1723,6 +1723,17 @@ describe(@"displayMultifactorTextField", ^{
     });
 });
 
+describe(@"requestOneTimeCode", ^{
+    
+    it(@"should pass on the request to the oauth client service", ^{
+        [[mockLoginService expect] requestOneTimeCodeWithLoginFields:OCMOCK_ANY];
+        
+        [viewModel requestOneTimeCode];
+        
+        [mockLoginService verify];
+    });
+});
+
 describe(@"sendVerificationCodeButton visibility", ^{
     
     context(@"when authenticating", ^{
