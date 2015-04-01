@@ -38,8 +38,9 @@ static NSString * const ArrowDown = @"\u25be";
 
 + (CGFloat)thumbnailWidthFor:(CGFloat)width
 {
-    CGFloat thumbnailWidth = truncf((width-((NumberOfPhotosForLine-1)*SpaceBetweenPhotos))/NumberOfPhotosForLine);
-    thumbnailWidth = MAX(thumbnailWidth, MinimumCellSize);
+    CGFloat rowCells = MAX(NumberOfPhotosForLine, trunc(width / (MinimumCellSize + SpaceBetweenPhotos)));
+    CGFloat thumbnailWidth = ( width - ( (rowCells - 1) * SpaceBetweenPhotos) ) / rowCells;
+    thumbnailWidth = MAX(trunc(thumbnailWidth), MinimumCellSize);
     return thumbnailWidth;
 }
 
@@ -79,8 +80,12 @@ static NSString * const ArrowDown = @"\u25be";
     self.layout.sectionInset = UIEdgeInsetsMake(SpaceBetweenPhotos, 0, SpaceBetweenPhotos, 0);
     
     //setup navigation items
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelPicker:)];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(finishPicker:)];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self
+                                                                                          action:@selector(cancelPicker:)];
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                                           target:self
+                                                                                           action:@selector(finishPicker:)];
 
     // Fetch Media for this blog
     NSError *error = nil;
