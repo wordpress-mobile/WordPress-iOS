@@ -519,7 +519,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     // Subtract the space before & after the tabbar
     CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
     CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
-    CGFloat horizontalPosition = ((WPTabNotifications + 0.5) * tabItemWidth) - WPNotificationBadgeIconHorizontalOffsetFromCenter + horizontalOffset;
+
+    // 0.5 is added to WPTabNotifications to get the center position of the tab
+    CGFloat notificationTabCenter = horizontalOffset + ((WPTabNotifications + 0.5) * tabItemWidth);
+    CGFloat horizontalPosition = notificationTabCenter - WPNotificationBadgeIconHorizontalOffsetFromCenter;
 
     CGRect rect = self.notificationBadgeIconView.frame;
     rect.origin.x = floorf(horizontalPosition);
