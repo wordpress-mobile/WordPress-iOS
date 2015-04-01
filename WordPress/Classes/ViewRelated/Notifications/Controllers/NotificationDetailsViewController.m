@@ -273,7 +273,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)attachSuggestionsViewIfNeeded
 {
-
     if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
@@ -568,6 +567,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+/**
+    Note:
+    We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
+    -   UITableViewCell automatically handles highlight / unhighlight for us
+    -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
+ */
+    
     NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypeImage];
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
@@ -614,6 +620,15 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+/**
+    Note:
+    The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
+    gravatar, is because we're implementing a custom behavior whenever the user approves/ disapproves the comment.
+    
+    -   Font colors are updated.
+    -   A left separator is displayed.
+ */
+    
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
