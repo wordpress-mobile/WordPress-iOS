@@ -129,12 +129,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)bindToViewModel
 {
-    RAC(self.viewModel, cancellable) = RACObserve(self, cancellable);
     RAC(self.viewModel, username) = self.usernameText.rac_textSignal;
     RAC(self.viewModel, password) = self.passwordText.rac_textSignal;
     RAC(self.viewModel, multifactorCode) = self.multifactorText.rac_textSignal;
     RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
-    RAC(self.viewModel, onlyDotComAllowed) = RACObserve(self, onlyDotComAllowed);
     
     // Do we have a default account?
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -142,6 +140,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
     // Initialize flags!
+    self.viewModel.onlyDotComAllowed = self.onlyDotComAllowed;
+    self.viewModel.cancellable = self.cancellable;
     self.viewModel.hasDefaultAccount = (defaultAccount != nil);
     self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
     self.viewModel.shouldDisplayMultifactor = NO;
