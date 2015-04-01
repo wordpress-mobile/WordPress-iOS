@@ -74,4 +74,15 @@ extern NSInteger const MediaMaxImageSizeDimension;
  */
 - (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog;
 
+/**
+ Create a thumbnail for a Media by downloading its image
+ 
+ @param media
+ @success a block that will be invoked when the media is retrieved
+ @failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ */
+- (void)getThumbnailForMedia:(Media *)media
+                     success:(void (^)(UIImage *image))success
+                     failure:(void (^)(NSError *error))failure;
+
 @end

@@ -2148,12 +2148,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldShowMedia:(Media *)media;
-{
-    BOOL isImage = media.mediaType == MediaTypeImage;
-    return isImage;
-}
-
 #pragma mark - KVO
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {    

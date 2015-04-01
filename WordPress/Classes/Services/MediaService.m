@@ -9,6 +9,10 @@
 #import "RemoteMedia.h"
 #import "WPAssetExporter.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "AccountService.h"
+#import "WPImageSource.h"
+#import "UIImage+Resize.h"
+#import "WPBlogMediaCollectionViewController.h"
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
@@ -90,18 +94,104 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
     
     NSSet *existingMedia = blog.media;
+    NSMutableOrderedSet *mediaToThumbnail = [NSMutableOrderedSet orderedSet];
     if (existingMedia.count > 0) {
         for (Media *existing in existingMedia) {
             if (![mediaToKeep containsObject:existing] && existing.remoteURL != nil) {
                 [self.managedObjectContext deleteObject:existing];
+            } else if (existing.remoteURL.length && !existing.thumbnail && existing.mediaType == MediaTypeImage) {
+                [mediaToThumbnail addObject:existing];
             }
         }
     }
     
     [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
     
+    [mediaToThumbnail sortUsingComparator:^NSComparisonResult(Media *left, Media *right) {
+        return [right.creationDate compare:left.creationDate];
+    }];
+    [self getThumbnailsForMedia:mediaToThumbnail];
+    
     if (completion) {
         dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
+
+- (void)getThumbnailsForMedia:(NSMutableOrderedSet *)media
+{
+    Media *item = nil;
+    do {
+        item = media.firstObject;
+        [media removeObject:item];
+        // might have updated it to show in browser since last sync
+        [self.managedObjectContext refreshObject:item mergeChanges:YES];
+        if (!item.remoteURL.length || item.thumbnail || item.mediaType != MediaTypeImage) {
+            item = nil;
+            continue;
+        }
+    } while (!item && [media count]);
+    if (!item) {
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+        [self getThumbnailForMedia:item
+                           success:^(UIImage *image) {
+                               [self performSelector:@selector(getThumbnailsForMedia:) withObject:media afterDelay:0.1];
+                           }
+                           failure:^(NSError *error) {
+                               DDLogError(@"Failed getting thumbnail image: %@", error);
+                           }];
+    });
+}
+
+- (void)getThumbnailForMedia:(Media *)media
+                     success:(void (^)(UIImage *image))success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSInteger thumbnailSize = round([WPBlogMediaCollectionViewController thumbnailWidthFor:[[UIScreen mainScreen] bounds].size.width]);
+    __block NSURL *thumbnailUrl = nil;
+    __block BOOL isPrivate = NO;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSString *remote = media.remoteURL;
+        if (media.blog.isWPcom) {
+            remote = [NSString stringWithFormat:@"%@?w=%ld", remote, thumbnailSize];
+        }
+        thumbnailUrl = [NSURL URLWithString:remote];
+        isPrivate = media.blog.isPrivate;
+    }];
+     
+    void (^successBlock)(UIImage *) = ^(UIImage *image) {
+        UIImage *thumbnail = image;
+        if (thumbnail.size.width > thumbnailSize || thumbnail.size.height > thumbnailSize) {
+            thumbnail = [image thumbnailImage:thumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:0.9];
+        }
+        NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
+
+        [self.managedObjectContext performBlock:^{
+            media.thumbnail = thumbnailData;
+            [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    success(thumbnail);
+                }
+            }];
+        }];
+    };
+
+    if (isPrivate) {
+        __block NSString *authToken = nil;
+        [self.managedObjectContext performBlockAndWait:^{
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+        }];
+        [[WPImageSource sharedSource] downloadImageForURL:thumbnailUrl
+                                                authToken:authToken
+                                              withSuccess:successBlock
+                                                  failure:failure];
+    } else {
+        [[WPImageSource sharedSource] downloadImageForURL:thumbnailUrl
+                                              withSuccess:successBlock
+                                                  failure:failure];
     }
 }
 

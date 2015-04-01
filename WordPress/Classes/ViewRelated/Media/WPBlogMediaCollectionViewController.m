@@ -3,13 +3,17 @@
 #import "WPBlogMediaPickerViewController.h"
 #import "Media.h"
 #import "Blog.h"
+#import "ContextManager.h"
+#import "MediaService.h"
 
 @interface WPBlogMediaCollectionViewController () <UINavigationControllerDelegate, UIPopoverPresentationControllerDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) UICollectionViewFlowLayout *layout;
 @property (nonatomic, strong) NSMutableArray *selected;
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (strong, nonatomic) NSMutableArray *objectChanges;
+@property (nonatomic, strong) NSMutableArray *objectChanges;
+@property (atomic, assign) NSInteger thumbnailsLoading;
+@property (nonatomic, strong) MediaService *loader;
 
 @end
 
@@ -30,6 +34,13 @@ static NSString * const ArrowDown = @"\u25be";
 - (NSString *)title
 {
     return [[self class] title];
+}
+
++ (CGFloat)thumbnailWidthFor:(CGFloat)width
+{
+    CGFloat thumbnailWidth = truncf((width-((NumberOfPhotosForLine-1)*SpaceBetweenPhotos))/NumberOfPhotosForLine);
+    thumbnailWidth = MAX(thumbnailWidth, MinimumCellSize);
+    return thumbnailWidth;
 }
 
 - (instancetype)init
@@ -61,8 +72,7 @@ static NSString * const ArrowDown = @"\u25be";
     [self.collectionView registerClass:[WPBlogMediaCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([WPBlogMediaCollectionViewCell class])];
     
     // Configure collection view layout
-    CGFloat width = roundf((self.view.frame.size.width-((NumberOfPhotosForLine-1)*SpaceBetweenPhotos))/NumberOfPhotosForLine);
-    width = MIN(width, MinimumCellSize);
+    CGFloat width = [WPBlogMediaCollectionViewController thumbnailWidthFor:self.view.frame.size.width];
     self.layout.itemSize = CGSizeMake(width, width);
     self.layout.minimumInteritemSpacing = SpaceBetweenPhotos;
     self.layout.minimumLineSpacing = SpaceBetweenPhotos;
@@ -122,11 +132,12 @@ static NSString * const ArrowDown = @"\u25be";
     WPBlogMediaCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:NSStringFromClass([WPBlogMediaCollectionViewCell class]) forIndexPath:indexPath];
     
     // Configure the cell
-#warning load thumbnails here!
-    CGImageRef thumbnailImageRef = nil;
-    UIImage *thumbnail = [UIImage imageWithCGImage:thumbnailImageRef];
+    if (media.thumbnail) {
+        cell.image = [UIImage imageWithData:media.thumbnail];
+    } else {
+        [self loadVisibleMedia];
+    }
     
-    cell.image = thumbnail;
     NSUInteger position = [self findMedia:media];
     if (position != NSNotFound){
         [self.collectionView selectItemAtIndexPath:indexPath animated:YES scrollPosition:UICollectionViewScrollPositionNone];
@@ -236,7 +247,7 @@ static NSString * const ArrowDown = @"\u25be";
         NSManagedObjectContext *context = self.blog.managedObjectContext;
         NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Media class])];
         fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:!self.showMostRecentFirst]];
-        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@", self.blog];
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blog == %@ AND mediaTypeString == 'image'", self.blog];
         fetchRequest.predicate = predicate;
         fetchRequest.fetchBatchSize = 20;
         _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:fetchRequest managedObjectContext:context sectionNameKeyPath:nil cacheName:nil];
@@ -304,6 +315,45 @@ static NSString * const ArrowDown = @"\u25be";
     }
     
     [self.objectChanges removeAllObjects];
+}
+
+-  (MediaService *)loader
+{
+    if (!_loader) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        _loader = [[MediaService alloc] initWithManagedObjectContext:context];
+    }
+    return _loader;
+}
+
+- (void)loadVisibleMedia
+{
+    const NSInteger MaxThumbnailLoads = 4;
+    if (self.thumbnailsLoading >= MaxThumbnailLoads) {
+        return;
+    }
+  
+    for (NSIndexPath *indexPath in self.collectionView.indexPathsForVisibleItems) {
+        Media *media = (Media *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+        if (!media.remoteURL.length || media.thumbnail || media.mediaType != MediaTypeImage) {
+            continue;
+        }
+
+        self.thumbnailsLoading++;
+        [self.loader getThumbnailForMedia:media
+                                  success:^(UIImage *image) {
+                                      self.thumbnailsLoading--;
+                                      [self performSelector:@selector(loadVisibleMedia) withObject:nil afterDelay:0];
+                                  }
+                                  failure:^(NSError *error) {
+                                      DDLogError(@"Failed getting thumbnail image: %@", error);
+                                      self.thumbnailsLoading--;
+                                      [self performSelector:@selector(loadVisibleMedia) withObject:nil afterDelay:0];
+                                  }];
+        if (self.thumbnailsLoading >= MaxThumbnailLoads) {
+            return;
+        }
+    }
 }
 
 @end

@@ -63,34 +63,6 @@
  */
 - (void)mediaPickerControllerDidCancel:(WPBlogMediaPickerViewController *)picker;
 
-
-/**
- *  @name Enabling Media
- */
-
-/**
- *  Ask the delegate if the specified Media shoule be shown.
- *
- *  @param picker The controller object managing the media picker interface.
- *  @param media  The media to be shown.
- *
- *  @return `YES` if the media should be shown or `NO` if it should not.
- *
- */
-- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldShowMedia:(Media *)media;
-
-/**
- *  Ask the delegate if the specified media should be enabled for selection.
- *
- *  @param picker The controller object managing the media picker interface.
- *  @param media  The media to be enabled.
- *
- *  @return `YES` if the media should be enabled or `NO` if it should not.
- *
- */
-- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldEnableMedia:(Media *)media;
-
-
 /**
  *  @name Managing the Selected Media
  */
