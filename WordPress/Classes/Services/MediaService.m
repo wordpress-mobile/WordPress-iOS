@@ -415,14 +415,27 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     media.mediaID =  remoteMedia.mediaID;
     media.remoteURL = [remoteMedia.url absoluteString];
-    media.creationDate = remoteMedia.date;
     media.filename = remoteMedia.file;
     [media mediaTypeFromUrl:[remoteMedia extension]];
-    media.title = remoteMedia.title;
-    media.caption = remoteMedia.caption;
-    media.desc = remoteMedia.descriptionText;
-    media.height = remoteMedia.height;
-    media.width = remoteMedia.width;
+    // these aren't maintained during upload
+    if ([remoteMedia.title isKindOfClass:[NSString class]]) {
+        media.title = remoteMedia.title;
+    }
+    if ([remoteMedia.caption isKindOfClass:[NSString class]]) {
+        media.caption = remoteMedia.caption;
+    }
+    if ([remoteMedia.date isKindOfClass:[NSDate class]]) {
+        media.creationDate = remoteMedia.date;
+    }
+    if ([remoteMedia.descriptionText isKindOfClass:[NSString class]]) {
+        media.desc = remoteMedia.descriptionText;
+    }
+    if ([remoteMedia.height isKindOfClass:[NSNumber class]]) {
+        media.height = remoteMedia.height;
+    }
+    if ([remoteMedia.width isKindOfClass:[NSNumber class]]) {
+        media.width = remoteMedia.width;
+    }
 }
 
 - (RemoteMedia *)remoteMediaFromMedia:(Media *)media
