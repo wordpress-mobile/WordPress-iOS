@@ -3,6 +3,7 @@
 #import "WPURLRequest.h"
 #import "Post.h"
 #import "PostCategory.h"
+#import "WPUserAgent.h"
 
 @interface PostPreviewViewController ()
 
@@ -21,7 +22,7 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedInstance] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -55,7 +56,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedInstance] useDefaultUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
     if (self.shouldHideStatusBar && !IS_IPAD) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
     }
@@ -65,7 +66,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedInstance] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 

@@ -462,6 +462,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
     // If still no image specified, try attachments.
     if ([featuredImage length] == 0 && [attachments count] > 0) {
+        attachments = [self sanitizeAttachmentsArray:attachments];
         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
         attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
         NSDictionary *attachment = [attachments firstObject];
@@ -483,6 +484,27 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
 
     return featuredImage;
+}
+
+/**
+ Loops over the passed attachments array. For each attachment dictionary
+ the value of the `width` key is ensured to be an NSNumber. If the value
+ was an empty string the NSNumber zero is substituted.
+ */
+- (NSArray *)sanitizeAttachmentsArray:(NSArray *)attachments
+{
+    NSMutableArray *marr = [NSMutableArray array];
+    NSString *key = @"width";
+    for (NSDictionary *attachment in attachments) {
+        NSMutableDictionary *mdict = [attachment mutableCopy];
+        NSNumber *numVal = [attachment numberForKey:key];
+        if (!numVal) {
+            numVal = @0;
+        }
+        [mdict setObject:numVal forKey:key];
+        [marr addObject:mdict];
+    }
+    return [marr copy];
 }
 
 /**

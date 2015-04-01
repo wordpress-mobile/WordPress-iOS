@@ -1,11 +1,3 @@
-//
-//  WPAppAnalytics.h
-//  WordPress
-//
-//  Created by Diego E. Rey Mendez on 3/16/15.
-//  Copyright (c) 2015 WordPress. All rights reserved.
-//
-
 #import <Foundation/Foundation.h>
 
 typedef NSString*(^WPAppAnalyticsLastVisibleScreenCallback)();
