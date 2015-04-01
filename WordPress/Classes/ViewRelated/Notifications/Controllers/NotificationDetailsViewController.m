@@ -273,7 +273,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)attachSuggestionsViewIfNeeded
 {
-
     if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
@@ -568,6 +567,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+/**
+    Note:
+    We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
+    -   UITableViewCell automatically handles highlight / unhighlight for us
+    -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
+ */
+    
     NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypeImage];
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
