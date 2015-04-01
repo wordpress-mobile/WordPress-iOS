@@ -1,73 +1,76 @@
+#import "WordPressAppDelegate.h"
+
+// Constants
+#import "Constants.h"
+
+// Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-#import <DDFileLogger.h>
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <WordPressApi/WordPressApi.h>
 #import <WordPress-AppbotX/ABX.h>
-
-#import "WordPressAppDelegate.h"
-#import "ContextManager.h"
-#import "Media.h"
-#import "Notification.h"
-#import "NotificationsManager.h"
-#import "NSString+Helpers.h"
-#import "NSString+HTML.h"
-#import "PocketAPI.h"
-#import "ReaderPost.h"
-#import "UIDevice+Helpers.h"
-#import "WordPressComApiCredentials.h"
-#import "WPAccount.h"
-#import "AccountService.h"
-#import "BlogService.h"
-#import "WPImageOptimizer.h"
-#import "ReaderPostService.h"
-#import "ReaderTopicService.h"
-#import "SVProgressHUD.h"
-#import "TodayExtensionService.h"
-#import "WPCrashlytics.h"
-
-#import "WPTabBarController.h"
-#import "BlogListViewController.h"
-#import "BlogDetailsViewController.h"
-#import "MeViewController.h"
-#import "PostsViewController.h"
-#import "WPPostViewController.h"
-#import "WPLegacyEditPostViewController.h"
-#import "WPWhatsNew.h"
-#import "LoginViewController.h"
-#import "NotificationsViewController.h"
-#import "ReaderViewController.h"
-#import "SupportViewController.h"
-#import "StatsViewController.h"
-#import "Constants.h"
-#import "UIImage+Util.h"
-#import "NSBundle+VersionNumberHelper.h"
-#import "NSProcessInfo+Util.h"
-#import "WPUserAgent.h"
-#import "WPAppAnalytics.h"
-#import "WPAppFilesManager.h"
-#import "WPLogger.h"
-
-#import "AppRatingUtility.h"
-#import "HelpshiftUtils.h"
-
-#import "Reachability.h"
-#import "WordPress-Swift.h"
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 
 #ifdef LOOKBACK_ENABLED
 #import <Lookback/Lookback.h>
 #endif
 
-#if DEBUG
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
-#endif
+// Other third party libs
+#import "PocketAPI.h"
+
+// Analytics & crash logging
+#import "WPAppAnalytics.h"
+#import "WPCrashlytics.h"
+
+// Categories & extensions
+#import "NSBundle+VersionNumberHelper.h"
+#import "NSProcessInfo+Util.h"
+#import "NSString+Helpers.h"
+#import "UIDevice+Helpers.h"
+
+// Data model
+#import "Blog.h"
+
+// Data services
+#import "BlogService.h"
+#import "ReaderPostService.h"
+#import "ReaderTopicService.h"
+
+// Files
+#import "WPAppFilesManager.h"
+
+// Logging
+#import "WPLogger.h"
+
+// Misc managers, helpers, utilities
+#import "AppRatingUtility.h"
+#import "ContextManager.h"
+#import "HelpshiftUtils.h"
+#import "TodayExtensionService.h"
+#import "WPWhatsNew.h"
+
+// Networking
+#import "WPUserAgent.h"
+#import "WordPressComApiCredentials.h"
+
+// Notifications
+#import "NotificationsManager.h"
+
+// Swift support
+#import "WordPress-Swift.h"
+
+// View controllers
+#import "LoginViewController.h"
+#import "ReaderViewController.h"
+#import "StatsViewController.h"
+#import "SupportViewController.h"
+#import "WPPostViewController.h"
+#import "WPTabBarController.h"
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
