@@ -147,6 +147,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.viewModel.shouldDisplayMultifactor = NO;
     
     self.usernameText.text = defaultAccount.username;
+    self.viewModel.username = defaultAccount.username;
     
     self.viewModel.userIsDotCom = YES;
 }
