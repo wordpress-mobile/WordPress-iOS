@@ -149,4 +149,6 @@ extern NSString * const ReaderPostServiceErrorDomain;
 
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
 
+- (NSUInteger)numberOfReadItLaterPosts;
+
 @end

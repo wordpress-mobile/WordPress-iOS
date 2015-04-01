@@ -135,11 +135,13 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
     self.postView.shouldHideComments = self.shouldHideComments;
+    self.post.isReadItLater = NO;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
     self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
+    self.postView.shouldShowAttributionMenu = NO;
     
     [self setReblogButtonVisibilityOfPostView:self.postView];
     

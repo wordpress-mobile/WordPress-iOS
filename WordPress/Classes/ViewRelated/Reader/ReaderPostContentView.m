@@ -149,7 +149,7 @@
     [self.reblogButton setSelected:self.post.isReblogged];
     [self.reblogButton setNeedsLayout];
     [self.reblogButton setHidden:self.shouldHideReblogButton];
-
+    
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
 
@@ -160,13 +160,17 @@
 - (void)configureAttributionView
 {
     [super configureAttributionView];
-    [self.attributionView selectAttributionButton:self.post.isFollowing];
-
-    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
-
-    BOOL hide = (self.shouldShowAttributionMenu && self.post.isWPCom)? NO : YES;
-    [self.attributionView hideAttributionMenu:hide];
+    [self configureFollowAttributeButton];
+    self.readItLaterIndicatorImageView.hidden = !self.post.isReadItLater;
+    [self.attributionView hideAttributionMenu:!self.shouldShowAttributionMenu];
 }
+
+- (void)configureFollowAttributeButton
+{
+    [self.attributionView selectAttributionButton:self.post.isFollowing];
+    [self.attributionView hideAttributionButton:!self.shouldShowAttributionButton];
+}
+
 
 - (void)buildAttributionView
 {

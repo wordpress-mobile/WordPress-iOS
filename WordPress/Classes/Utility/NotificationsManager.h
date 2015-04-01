@@ -72,6 +72,8 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)handleNotificationForApplicationLaunch:(NSDictionary *)launchOptions;
 
++ (void)handleLocalReadItLaterNotification;
+
 /**
  Handle an action taken from a remote notification
  
@@ -93,5 +95,9 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  Fetch the current WordPress.com settings
  */
 + (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
+
++ (void)clearAndScheduleLocalReadItLaterNotification;
+
++ (void)clearAllLocalNotifications;
 
 @end

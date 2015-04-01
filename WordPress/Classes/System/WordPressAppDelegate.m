@@ -186,7 +186,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     DDLogVerbose(@"didFinishLaunchingWithOptions state: %d", application.applicationState);
 
-    // Launched by tapping a notification
     if (application.applicationState == UIApplicationStateActive) {
         [NotificationsManager handleNotificationForApplicationLaunch:launchOptions];
     }
@@ -438,13 +437,18 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [NotificationsManager handleNotification:userInfo forState:[UIApplication sharedApplication].applicationState completionHandler:completionHandler];
 }
 
-- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier
-                                        forRemoteNotification:(NSDictionary *)remoteNotification
-                                            completionHandler:(void (^)())completionHandler
+- (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification completionHandler:(void (^)())completionHandler
 {
     [NotificationsManager handleActionWithIdentifier:identifier forRemoteNotification:remoteNotification];
     
     completionHandler();
+}
+
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification
+{
+    if (application.applicationState == UIApplicationStateInactive) {
+        [NotificationsManager handleLocalReadItLaterNotification];
+    }
 }
 
 #pragma mark - OpenURL helpers

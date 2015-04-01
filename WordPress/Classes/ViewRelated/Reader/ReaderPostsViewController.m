@@ -29,10 +29,10 @@
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
 #import "BlogService.h"
+#import "NotificationsManager.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
-
 
 static CGFloat const RPVCHeaderHeightPhone = 10.0;
 static CGFloat const RPVCBlockedCellHeight = 66.0;
@@ -56,7 +56,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
                                         WPTableImageSourceDelegate,
                                         WPTableViewHandlerDelegate,
                                         ReaderPostContentViewDelegate>
-
 
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
@@ -86,8 +85,8 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.syncHelper.delegate = nil;
-    self.tableViewHandler.delegate = nil;
+    _syncHelper.delegate = nil;
+    _tableViewHandler.delegate = nil;
 }
 
 - (instancetype)init
@@ -375,6 +374,10 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
+    
+    if ([self isCurrentTopicReadItLater]) {
+        return NSLocalizedString(@"No posts saved for later.", @"Message shown to user when the reader list is empty because they have not saved any posts to Read It Later.");
+    }
 
     NSRange range = [self.readerTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
@@ -394,6 +397,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     if (self.syncHelper.isSyncing) {
         return @"";
     }
+    
+    if ([self isCurrentTopicReadItLater]) {
+        return NSLocalizedString(@"Tap the '...' option on any post and select 'Read It Later' to save posts you want to check out later!", @"Message shown when there are no saved posts to Read It Later.");
+    }
+    
     if (self.readerViewStyle == ReaderViewStyleSitePreview) {
         return NSLocalizedString(@"We were unable to load any posts for this site.", @"Message shown when wwe were unable to load posts for a site being previewed in the reader. ");
     }
@@ -457,17 +465,23 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 - (void)readerTopicDidChange
 {
     [self updateTitle];
+    [self updateReaderTableView];
 
+    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    if ([self isCurrentTopicFreshlyPressed]) {
+        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
+    } else if ([self isCurrentTopicReadItLater]) {
+        [NotificationsManager clearAllLocalNotifications];
+    }
+}
+
+- (void)updateReaderTableView
+{
     [self.tableView setContentOffset:CGPointZero animated:NO];
     [self.tableViewHandler clearCachedRowHeights];
     [self updateAndPerformFetchRequest];
     [self.tableView reloadData];
     [self syncItemsWithUserInteraction:NO];
-
-    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
-    if ([self isCurrentTopicFreshlyPressed]) {
-        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
-    }
 }
 
 - (void)updateTitle
@@ -477,6 +491,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     } else {
         self.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
     }
+}
+
+- (BOOL)isCurrentTopicReadItLater
+{
+    return [self.readerTopic.path isEqualToString:ReaderTopicReadItLaterPath];
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
@@ -685,6 +704,19 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self syncItemsWithUserInteraction:YES];
 }
 
+- (void)toggleReadItLater:(ReaderPost *)post
+{
+    post.isReadItLater = !post.isReadItLater;
+    
+    if (post.isReadItLater) {
+        [NotificationsManager clearAndScheduleLocalReadItLaterNotification];
+    } else {
+        ReaderPostService *readerPostService = [[ReaderPostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        if ([readerPostService numberOfReadItLaterPosts] == 0) {
+            [NotificationsManager clearAllLocalNotifications];
+        }
+    }
+}
 
 #pragma mark - Sync methods
 
@@ -917,10 +949,14 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     NSPredicate *predicate;
 
-    if ([self.postIDsForUndoBlockCells count]) {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
+    if ([self isCurrentTopicReadItLater]) {
+        predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
     } else {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
+        if ([self.postIDsForUndoBlockCells count]) {
+            predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
+        } else {
+            predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
+        }
     }
 
     return predicate;
@@ -1189,22 +1225,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     ReaderPost *post = [self postFromCellSubview:sender];
     self.postForMenuActionSheet = post;
 
-    NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
-    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
-
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
-                                                             delegate:self
-                                                    cancelButtonTitle:cancel
-                                               destructiveButtonTitle:blockSite
-                                                    otherButtonTitles:nil, nil];
-    if ([UIDevice isPad]) {
-        UIView *view = (UIView *)sender;
-        [actionSheet showFromRect:view.bounds inView:view animated:YES];
-    } else {
-        [actionSheet showFromTabBar:self.tabBarController.tabBar];
-    }
-
-    self.actionSheet = actionSheet;
+    self.actionSheet = [self actionSheetForAccount:sender];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender
@@ -1253,9 +1274,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     self.postForMenuActionSheet = nil;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
+    } else if (buttonIndex == actionSheet.destructiveButtonIndex) {
+        [self blockSite:post];
+    } else {
+        [self toggleReadItLater:post];
     }
-
-    [self blockSite:post];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -1288,6 +1311,53 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     if (self.contextForSync) {
         [self saveContextForSync];
+    }
+}
+
+#pragma mark - Private Helper Methods
+
+- (UIActionSheet *)actionSheetForAccount:(id)sender
+{
+    NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
+    NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
+    NSString *readItLater = [self stringForReadItLaterOptionForPost];
+    
+    UIActionSheet *actionSheet;
+    if (self.hasWPComAccount) {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                  delegate:self
+                                         cancelButtonTitle:cancel
+                                    destructiveButtonTitle:blockSite
+                                         otherButtonTitles:readItLater, nil];
+    } else {
+        actionSheet = [[UIActionSheet alloc] initWithTitle:nil
+                                                  delegate:self
+                                         cancelButtonTitle:cancel
+                                    destructiveButtonTitle:nil
+                                         otherButtonTitles:readItLater, nil];
+    }
+    
+    [self configureViewOptionsOfActionSheet:actionSheet fromSender:sender];
+    
+    return actionSheet;
+}
+
+- (NSString *)stringForReadItLaterOptionForPost
+{
+    if (self.postForMenuActionSheet.isReadItLater) {
+        return NSLocalizedString(@"Remove From Read It Later", @"The title of a button that removed a post from reading later.");
+    } else {
+        return NSLocalizedString(@"Read It Later", @"The title of a button that saves a post for reading later.");
+    }
+}
+
+- (void)configureViewOptionsOfActionSheet:(UIActionSheet *)actionSheet fromSender:(id)sender
+{
+    if ([UIDevice isPad]) {
+        UIView *view = (UIView *)sender;
+        [actionSheet showFromRect:view.bounds inView:view animated:YES];
+    } else {
+        [actionSheet showFromTabBar:self.tabBarController.tabBar];
     }
 }
 

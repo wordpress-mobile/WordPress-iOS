@@ -13,6 +13,7 @@
 #import "ReaderTopicService.h"
 #import "WPTabBarController.h"
 #import "WordPress-Swift.h"
+#import "NotificationsManager.h"
 
 @interface ReaderViewController () <UIViewControllerRestoration>
 @property (nonatomic, strong) ReaderPostsViewController *postsViewController;
@@ -161,7 +162,10 @@
         return;
     }
 
-    [self assignTopic:[self currentTopic]];
+    ReaderTopic *currentTopic = [self currentTopic];
+    
+    [self cancelLocalNotificationsIfReadItLaterTopic:currentTopic];
+    [self assignTopic:currentTopic];
 }
 
 - (void)didChangeAccount:(NSNotification *)notification
@@ -175,7 +179,6 @@
 
     [self syncTopics];
 }
-
 
 #pragma mark - Actions
 
@@ -193,6 +196,15 @@
 - (void)scrollViewToTop
 {
     [self.postsViewController.tableView setContentOffset:CGPointMake(0.0, 0.0) animated:YES];
+}
+
+#pragma mark - Helper Methods
+
+- (void)cancelLocalNotificationsIfReadItLaterTopic:(ReaderTopic *)currentTopic
+{
+    if ([currentTopic.path isEqualToString:ReaderTopicReadItLaterPath]) {
+        [NotificationsManager clearAllLocalNotifications];
+    }
 }
 
 @end

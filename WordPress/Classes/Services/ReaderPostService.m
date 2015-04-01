@@ -431,6 +431,18 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }];
 }
 
+- (NSUInteger)numberOfReadItLaterPosts
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([ReaderPost class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"isReadItLater = YES"];
+    NSError *error;
+    NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error counting posts: %@", NSStringFromSelector(_cmd), error);
+    }
+    
+    return count;
+}
 
 #pragma mark - Private Methods
 

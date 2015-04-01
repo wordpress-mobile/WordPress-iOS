@@ -7,6 +7,7 @@
 #import "BlogService.h"
 #import "Blog.h"
 #import "Post.h"
+#import "ReaderTopicService.h"
 
 #import "BlogListViewController.h"
 #import "BlogDetailsViewController.h"
@@ -233,6 +234,12 @@ NSString * const kWPNewPostURLParamImageKey = @"image";
 - (void)showNotificationsTab
 {
     [self showTabForIndex:WPTabNotifications];
+}
+
+- (void)showReaderTabWithReadItLaterTopic
+{
+    [[NSUserDefaults standardUserDefaults] setValue:ReaderTopicReadItLaterPath forKey:ReaderTopicCurrentTopicPathKey];
+    [self showReaderTab];
 }
 
 - (void)showPostTabWithOptions:(NSDictionary *)options

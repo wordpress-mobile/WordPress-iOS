@@ -27,6 +27,8 @@
 NSString *const NotificationsManagerDidRegisterDeviceToken          = @"NotificationsManagerDidRegisterDeviceToken";
 NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
 
+NSString *const WordPressLocalNotificationTitle                     = @"WordPress";
+
 static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey                  = @"notification_preferences";
 static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
@@ -41,6 +43,7 @@ static NSString *const NotificationActionCommentReply               = @"COMMENT_
 static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
 static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
 
+static NSTimeInterval const OneDayInSeconds                         = 60 * 60 * 24;
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsManager
@@ -50,10 +53,6 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 + (void)registerForPushNotifications
 {
-#if TARGET_IPHONE_SIMULATOR
-    return;
-#endif
-
     BOOL canRegisterUserNotifications = [[UIApplication sharedApplication] respondsToSelector:@selector(registerForRemoteNotifications)];
     if (!canRegisterUserNotifications) {
         // iOS 7 notifications registration
@@ -208,7 +207,20 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
         [[WPTabBarController sharedInstance] showNotificationsTab];
+        
+        return;
     }
+    
+    NSDictionary *localNotif = launchOptions[UIApplicationLaunchOptionsLocalNotificationKey];
+    if (localNotif) {
+        DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
+        [self handleLocalReadItLaterNotification];
+    }
+}
+
++ (void)handleLocalReadItLaterNotification
+{
+    [[WPTabBarController sharedInstance] showReaderTabWithReadItLaterTopic];
 }
 
 + (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification
@@ -452,6 +464,26 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     if (blog != nil && [blog isWPcom]) {
         [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
+}
+
++ (void)clearAndScheduleLocalReadItLaterNotification
+{
+    [self clearAllLocalNotifications];
+    
+    UILocalNotification *localNotification = [[UILocalNotification alloc] init];
+    
+    localNotification.timeZone = [NSTimeZone localTimeZone];
+    localNotification.fireDate = [[NSDate alloc] initWithTimeIntervalSinceNow:OneDayInSeconds];
+    localNotification.alertTitle = WordPressLocalNotificationTitle;
+    localNotification.alertBody = NSLocalizedString(@"You've got posts you haven't read. Check them out now!", @"Notification body for their Read It Later");
+    localNotification.soundName = UILocalNotificationDefaultSoundName;
+    
+    [[UIApplication sharedApplication] scheduleLocalNotification:localNotification];
+}
+
++ (void)clearAllLocalNotifications
+{
+    [[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 @end

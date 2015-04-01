@@ -37,6 +37,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
+@property (nonatomic) BOOL isReadItLater;
 
 - (BOOL)isPrivate;
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
