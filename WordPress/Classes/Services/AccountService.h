@@ -33,7 +33,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)setDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
- Removes the default WordPress.com account
+ Removes the default WordPress.com account. Should only be called from the Main Thread
  
  @see defaultWordPressComAccount
  @see setDefaultWordPressComAccount:
