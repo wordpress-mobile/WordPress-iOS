@@ -16,10 +16,6 @@
 #import <WordPress-AppbotX/ABX.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
-#ifdef LOOKBACK_ENABLED
-#import <Lookback/Lookback.h>
-#endif
-
 // Other third party libs
 #import "PocketAPI.h"
 
@@ -51,6 +47,7 @@
 #import "AppRatingUtility.h"
 #import "ContextManager.h"
 #import "HelpshiftUtils.h"
+#import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPWhatsNew.h"
 
@@ -80,6 +77,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
+@property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
@@ -204,29 +202,19 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #ifdef LOOKBACK_ENABLED
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        if ([WordPressComApiCredentials lookbackToken].length > 0) {
-            [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
-            [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPInternalBetaShakeToPullUpFeedbackKey: @YES}];
-            [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:LookbackCameraEnabledSettingsKey];
-            [Lookback lookback].shakeToRecord = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
-            
-            // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lookbackGestureRecognized:)];
-                recognizer.minimumPressDuration = 3;
-                recognizer.cancelsTouchesInView = NO;
-#if TARGET_IPHONE_SIMULATOR
-                recognizer.numberOfTouchesRequired = 2;
-#else
-                recognizer.numberOfTouchesRequired = 3;
-#endif
-                [[UIApplication sharedApplication].keyWindow addGestureRecognizer:recognizer];
-            });
-            
+        
+        NSString *lookbackToken = [WordPressComApiCredentials lookbackToken];
+        
+        if ([lookbackToken length] > 0) {
+            UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *account = [accountService defaultWordPressComAccount];
-            [Lookback lookback].userIdentifier = account.username;
+
+            self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
+                                                                         userId:account.username
+                                                                         window:keyWindow];
         }
     });
 #endif
@@ -237,15 +225,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
         [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
     }
-}
-
-- (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
-{
-#ifdef LOOKBACK_ENABLED
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        [LookbackRecordingViewController presentOntoScreenAnimated:YES];
-    }
-#endif
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
