@@ -1447,17 +1447,6 @@ describe(@"LoginServiceDelegate methods", ^{
         });
     });
     
-    context(@"showJetpackAuthentication", ^{
-        
-        it(@"should be passed on to the LoginViewModelDelegate", ^{
-            [[mockViewModelDelegate expect] showJetpackAuthentication];
-            
-            [viewModel showJetpackAuthentication];
-            
-            [mockViewModelDelegate verify];
-        });
-    });
-    
     context(@"finishedLoginWithUsername:authToken:shouldDisplayMultifactor:", ^{
         
         __block NSString *username;
@@ -1614,7 +1603,7 @@ describe(@"LoginServiceDelegate methods", ^{
         });
         
         it(@"should show jetpack authentication when the blog syncing service tells it to", ^{
-            [[mockViewModelDelegate expect] showJetpackAuthentication];
+            [[mockViewModelDelegate expect] showJetpackAuthentication:OCMOCK_ANY];
             
             // Retrieve jetpack block and execute it when appropriate
             [OCMStub([mockBlogSyncService syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {

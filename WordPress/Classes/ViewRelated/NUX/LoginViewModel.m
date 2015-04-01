@@ -439,11 +439,6 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
     }
 }
 
-- (void)showJetpackAuthentication
-{
-    [self.delegate showJetpackAuthentication];
-}
-
 #pragma mark - Private Methods
 
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
@@ -492,8 +487,9 @@ static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.ph
                                            options:(NSDictionary *)options
 {
     WPAccount *account = [self.accountCreationService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    [self.blogSyncService syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^{
-        [self showJetpackAuthentication];
+    [self.blogSyncService syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
+        [self.delegate dismissLoginMessage];
+        [self.delegate showJetpackAuthentication:blogId];
     } finishedSync:^{
         [self finishedLogin];
     }];

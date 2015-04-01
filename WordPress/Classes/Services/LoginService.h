@@ -27,7 +27,6 @@
 - (void)displayRemoteError:(NSError *)error;
 - (void)finishedLoginWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary * )options;
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor;
-- (void)showJetpackAuthentication;
 
 @end
 

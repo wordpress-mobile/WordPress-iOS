@@ -63,9 +63,7 @@
 @property (nonatomic, strong) LoginViewModel *viewModel;
 
 // Measurements
-@property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
-
 
 @end
 
@@ -639,10 +637,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthentication
+- (void)showJetpackAuthentication:(NSNumber *)blogId
 {
-    [self finishedAuthenticating];
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog = [blogService blogByBlogId:blogId];
+    NSAssert(blog != nil, @"blog should not be nil here");
+    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {

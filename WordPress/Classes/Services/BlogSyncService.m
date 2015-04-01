@@ -23,7 +23,7 @@
     [blogService syncBlogsForAccount:account success:success failure:failure];
 }
 
-- (void)syncBlogForAccount:(WPAccount *)account username:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options needsJetpack:(void(^)())needsJetpack finishedSync:(void(^)())finishedSync;
+- (void)syncBlogForAccount:(WPAccount *)account username:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options needsJetpack:(void(^)(NSNumber *))needsJetpack finishedSync:(void(^)())finishedSync;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -51,7 +51,7 @@
     if ([blog hasJetpack]) {
         if ([blog hasJetpackAndIsConnectedToWPCom]) {
             if (needsJetpack != nil) {
-                needsJetpack();
+                needsJetpack(blog.blogID);
             }
         } else {
             [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];

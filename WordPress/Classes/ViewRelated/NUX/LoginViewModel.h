@@ -92,7 +92,7 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)displayLoginMessage:(NSString *)message;
 - (void)dismissLoginMessage;
 - (void)dismissLoginView;
-- (void)showJetpackAuthentication;
+- (void)showJetpackAuthentication:(NSNumber *)blogId;
 - (void)displayOverlayViewWithMessage:(NSString *)message firstButtonText:(NSString *)firstButtonText firstButtonCallback:(OverlayViewCallback)firstButtonCallback secondButtonText:(NSString *)secondButtonText secondButtonCallback:(OverlayViewCallback)secondButtonCallback accessibilityIdentifier:(NSString *)accessibilityIdentifier;
 - (void)displayHelpViewControllerWithAnimation:(BOOL)animated;
 - (void)displayHelpshiftConversationView;
