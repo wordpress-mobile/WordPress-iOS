@@ -536,9 +536,19 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     [UIView animateWithDuration:0.3 animations:^{
         weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(1.5, 1.5);
     } completion:^(BOOL finished) {
+        if (!finished) {
+            weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
+            return;
+        }
+
         [UIView animateWithDuration:0.3 animations:^{
             weakSelf.notificationBadgeIconView.transform = CGAffineTransformMakeScale(0.85, 0.85);
         } completion:^(BOOL finished) {
+            if (!finished) {
+                weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
+                return;
+            }
+
             [UIView animateWithDuration:0.2 animations:^{
                 weakSelf.notificationBadgeIconView.transform = CGAffineTransformIdentity;
             }];
