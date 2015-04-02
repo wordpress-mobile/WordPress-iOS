@@ -21,6 +21,7 @@ NSString const *NoteRangeTypeUser       = @"user";
 NSString const *NoteRangeTypePost       = @"post";
 NSString const *NoteRangeTypeComment    = @"comment";
 NSString const *NoteRangeTypeStats      = @"stat";
+NSString const *NoteRangeTypeFollow     = @"follow";
 NSString const *NoteRangeTypeBlockquote = @"blockquote";
 NSString const *NoteRangeTypeNoticon    = @"noticon";
 NSString const *NoteRangeTypeSite       = @"site";
@@ -124,6 +125,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isComment
 {
     return [self.type isEqual:NoteRangeTypeComment];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteRangeTypeFollow];
 }
 
 - (BOOL)isStats
