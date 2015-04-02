@@ -666,16 +666,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
-- (void)showHelpshiftConversationView
-{
-    NSDictionary *metaData = @{@"Source": @"Failed login",
-                               @"Username": self.usernameText.text,
-                               @"SiteURL": self.siteUrlText.text};
-
-    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
-    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
-}
-
 #pragma mark - Validation Helpers
 
 - (BOOL)isMultifactorFilled
