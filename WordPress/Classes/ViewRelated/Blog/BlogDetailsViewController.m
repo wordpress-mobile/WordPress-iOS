@@ -123,6 +123,9 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:self.blog.blogName style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)configureBlogDetailHeader
