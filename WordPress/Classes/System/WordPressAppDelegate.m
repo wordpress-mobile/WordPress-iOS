@@ -121,9 +121,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self initializeAppRatingUtility];
     
     // Analytics
-    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
-        return [self currentlySelectedScreen];
-    }];
+    [self configureAnalytics];
 
     // Start Simperium
     [self loginSimperium];
@@ -598,6 +596,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
     [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
+}
+
+#pragma mark - Analytics
+
+- (void)configureAnalytics
+{
+    __weak __typeof(self) weakSelf = self;
+ 
+    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
+        return [weakSelf currentlySelectedScreen];
+    }];
 }
 
 #pragma mark - App Rating
