@@ -9,6 +9,7 @@
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
+#import "PostListViewController.h"
 #import "PostPreviewViewController.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "WPStatsService.h"
@@ -35,12 +36,14 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, WPNoResultsViewDelegate, PostCardTableViewCellDelegate>
 
+@property (nonatomic, strong) PostListViewController *postListViewController;
+@property (nonatomic, weak) UITableView *tableView;
+@property (nonatomic, weak) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 
@@ -88,11 +91,19 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [super encodeRestorableStateWithCoder:coder];
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    self.postListViewController = segue.destinationViewController;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
+    self.tableView = self.postListViewController.tableView;
+    self.refreshControl = self.postListViewController.refreshControl;
+    [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
 
     [self configureCellsForLayout];
     [self configureTableView];
