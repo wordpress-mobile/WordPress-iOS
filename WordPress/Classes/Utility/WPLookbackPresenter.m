@@ -33,8 +33,6 @@ NSString* const WPLookbackPresenterShakeToPullUpFeedbackKey = @"InternalBetaShak
 {
     NSParameterAssert([token isKindOfClass:[NSString class]]);
     NSParameterAssert([token length] > 0);
-    NSParameterAssert([userId isKindOfClass:[NSString class]]);
-    NSParameterAssert([userId length] > 0);
     NSParameterAssert([window isKindOfClass:[UIWindow class]]);
     
     self = [super init];
@@ -58,8 +56,6 @@ NSString* const WPLookbackPresenterShakeToPullUpFeedbackKey = @"InternalBetaShak
 {
     NSParameterAssert([token isKindOfClass:[NSString class]]);
     NSParameterAssert([token length] > 0);
-    NSParameterAssert([userId isKindOfClass:[NSString class]]);
-    NSParameterAssert([userId length] > 0);
     NSParameterAssert([window isKindOfClass:[UIWindow class]]);
     
 #ifndef LOOKBACK_ENABLED
