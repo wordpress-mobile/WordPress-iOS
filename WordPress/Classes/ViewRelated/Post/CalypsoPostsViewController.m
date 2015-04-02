@@ -26,7 +26,7 @@ static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifie
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
-static NSString * const WPBlogRestorationKey = @"WPBlogRestorationKey";
+static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
 static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
@@ -65,7 +65,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
-    NSString *blogID = [coder decodeObjectForKey:WPBlogRestorationKey];
+    NSString *blogID = [coder decodeObjectForKey:PostsViewControllerRestorationKey];
     if (!blogID) {
         return nil;
     }
@@ -87,7 +87,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (void)encodeRestorableStateWithCoder:(NSCoder *)coder
 {
-    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogRestorationKey];
+    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:PostsViewControllerRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
 }
 
