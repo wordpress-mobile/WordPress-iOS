@@ -359,16 +359,12 @@ describe(@"skipToCreateAccountButton visibility", ^{
     });
 });
 
-describe(@"signInButtonTitle", ^{
+describe(@"the sign in button title", ^{
     
     context(@"when multifactor controls are visible", ^{
         
         beforeEach(^{
             viewModel.shouldDisplayMultifactor = YES;
-        });
-        
-        it(@"should be 'Verify'", ^{
-            expect(viewModel.signInButtonTitle).to.equal(@"Verify");
         });
         
         it(@"should set the sign in button title to 'Verify'", ^{
@@ -377,11 +373,6 @@ describe(@"signInButtonTitle", ^{
             viewModel.shouldDisplayMultifactor = YES;
             
             [mockViewModelDelegate verify];
-        });
-        
-        it(@"should be 'Verify' even if user is a .com user", ^{
-            viewModel.userIsDotCom = YES;
-            expect(viewModel.signInButtonTitle).to.equal(@"Verify");
         });
         
         it(@"should set the sign in button title to 'Verify' even if the user is a .com user", ^{
@@ -399,22 +390,12 @@ describe(@"signInButtonTitle", ^{
             viewModel.shouldDisplayMultifactor = NO;
         });
         
-        it(@"should be 'Sign In' if user is a .com user", ^{
-            viewModel.userIsDotCom = YES;
-            expect(viewModel.signInButtonTitle).to.equal(@"Sign In");
-        });
-        
         it(@"should set the sign in button title to 'Sign In' if user is a .com user", ^{
             [[mockViewModelDelegate expect] setSignInButtonTitle:@"Sign In"];
             
             viewModel.userIsDotCom = YES;
             
             [mockViewModelDelegate verify];
-        });
-        
-        it(@"should be 'Add Site' if user isn't a .com user", ^{
-            viewModel.userIsDotCom = NO;
-            expect(viewModel.signInButtonTitle).to.equal(@"Add Site");
         });
         
         it(@"should set the sign in button title to 'Add Site' if user isn't a .com user", ^{
