@@ -497,9 +497,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     {
         NSString* value = [parameters objectForKey:key];
         
-        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+        if ([key isEqualToString:WPNewPostURLParamContentKey]) {
             value = [value stringByStrippingHTML];
-        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+        } else if ([key isEqualToString:WPNewPostURLParamTagsKey]) {
             value = [value stringByStrippingHTML];
         }
         
