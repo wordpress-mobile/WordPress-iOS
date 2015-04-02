@@ -34,7 +34,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                       failure:failure];
 }
 
-- (void)getMediaLibraryPage:(NSString *)page_handle
+- (void)getMediaLibraryPage:(NSString *)pageHandle
                       media:(NSMutableArray *)media
                        path:(NSString *)path
                     success:(void (^)(NSArray *))success
@@ -42,8 +42,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 {
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"number"] = @100;
-    if (page_handle.length) {
-        parameters[@"page_handle"] = page_handle;
+    if ([pageHandle length]) {
+        parameters[@"page_handle"] = pageHandle;
     }
     [self.api GET:path
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
@@ -54,9 +54,9 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                   [media addObjectsFromArray:pageItems];
               }
               NSDictionary *meta = responseObject[@"meta"];
-              NSString *next_page = meta[@"next_page"];
-              if (next_page.length) {
-                  [self getMediaLibraryPage:next_page
+              NSString *nextPage = meta[@"next_page"];
+              if (nextPage.length) {
+                  [self getMediaLibraryPage:nextPage
                                       media:media
                                        path:path
                                     success:success
