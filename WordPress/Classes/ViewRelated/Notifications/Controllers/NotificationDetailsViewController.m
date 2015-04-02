@@ -770,6 +770,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         success = [self displayStatsWithSiteID:range.siteID];
     }
     
+    if (!success && range.isFollow) {
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];    
+    }
+    
     if (!success && url) {
         success = [self displayWebViewWithURL:url];
     }
