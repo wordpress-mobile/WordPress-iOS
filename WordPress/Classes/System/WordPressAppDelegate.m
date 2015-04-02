@@ -209,12 +209,15 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
 
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *account = [accountService defaultWordPressComAccount];
+            
+            [context performBlock:^{
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *account = [accountService defaultWordPressComAccount];
 
-            self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
-                                                                         userId:account.username
-                                                                         window:keyWindow];
+                self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
+                                                                             userId:account.username
+                                                                             window:keyWindow];
+            }];
         }
     });
 #endif
