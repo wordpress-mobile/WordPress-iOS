@@ -69,6 +69,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = 44.0;
@@ -332,9 +333,15 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         postTitle = [self.comment.post contentPreviewForDisplay];
     }
 
+    // Setup the cell
     cell.headerTitle = self.comment.post.author;
     cell.headerDetails = postTitle;
-
+    
+    // Setup the Separator
+    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    separatorsView.bottomSeparatorVisible = YES;
+    
+    // Setup the Gravatar if needed
     if (cell.isLayoutCell == NO && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
