@@ -96,6 +96,8 @@ extension WPStyleGuide
         public static let blockSubtitleColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
 
+        public static let blockApprovedBgColor      = UIColor.clearColor()
+        
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
@@ -126,11 +128,19 @@ extension WPStyleGuide
         }
         
         //  Comment Helpers
-        public static func blockTextColorForComment(isApproved approved: Bool) -> UIColor {
+        public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
+            return approved ? blockSeparatorColor : blockUnapprovedSideColor
+        }
+
+        public static func blockBackgroundColorForComment(isApproved approved: Bool) -> UIColor {
+            return approved ? blockApprovedBgColor : blockUnapprovedBgColor
+        }
+        
+        public static func blockTitleColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
 
-        public static func blockTimestampColorForComment(isApproved approved: Bool) -> UIColor {
+        public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedTextColor
         }
         
