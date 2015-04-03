@@ -339,7 +339,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     
     // Setup the Separator
     NoteSeparatorsView *separatorsView = cell.separatorsView;
-    separatorsView.bottomSeparatorVisible = YES;
+    separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
     if (cell.isLayoutCell == NO && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {

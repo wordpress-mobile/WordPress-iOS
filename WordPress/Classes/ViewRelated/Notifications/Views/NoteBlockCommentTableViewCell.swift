@@ -73,16 +73,16 @@ import Foundation
         super.awakeFromNib()
         
         // Bottom + Left Separators
-        separatorsView.bottomSeparatorVisible   = true
-        separatorsView.leftSeparatorColor       = Style.blockUnapprovedSideColor
+        separatorsView.bottomVisible        = true
+        separatorsView.leftColor            = Style.blockUnapprovedSideColor
         
         // Setup Labels
-        titleLabel.font                         = Style.blockBoldFont
-        detailsLabel.font                       = Style.blockRegularFont
+        titleLabel.font                     = Style.blockBoldFont
+        detailsLabel.font                   = Style.blockRegularFont
 
         // Setup Recognizers
-        detailsLabel.gestureRecognizers         = [ UITapGestureRecognizer(target: self, action: "detailsWasPressed:") ]
-        detailsLabel.userInteractionEnabled     = true
+        detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: "detailsWasPressed:") ]
+        detailsLabel.userInteractionEnabled = true
 
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
@@ -104,18 +104,18 @@ import Foundation
 
     private func refreshApprovalColors() {
         // Separators
-        separatorsView.bottomSeparatorInsets    = isApproved ? separatorApprovedInsets : separatorUnapprovedInsets
-        separatorsView.bottomSeparatorColor     = Style.blockSeparatorColorForComment(isApproved: isApproved)
-        separatorsView.leftSeparatorVisible     = !isApproved
+        separatorsView.bottomInsets = isApproved ? separatorApprovedInsets : separatorUnapprovedInsets
+        separatorsView.bottomColor  = Style.blockSeparatorColorForComment(isApproved: isApproved)
+        separatorsView.leftVisible  = !isApproved
         
         // Background
-        contentView.backgroundColor             = Style.blockBackgroundColorForComment(isApproved: isApproved)
+        contentView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
         
         // Refresh Colors
-        titleLabel.textColor                    = Style.blockTitleColorForComment(isApproved: isApproved)
-        detailsLabel.textColor                  = Style.blockDetailsColorForComment(isApproved: isApproved)
-        super.linkColor                         = Style.blockLinkColorForComment(isApproved: isApproved)
-        super.attributedText                    = isApproved ? attributedCommentText : attributedCommentUnapprovedText
+        titleLabel.textColor        = Style.blockTitleColorForComment(isApproved: isApproved)
+        detailsLabel.textColor      = Style.blockDetailsColorForComment(isApproved: isApproved)
+        super.linkColor             = Style.blockLinkColorForComment(isApproved: isApproved)
+        super.attributedText        = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
 
     private var attributedCommentUnapprovedText : NSAttributedString? {
