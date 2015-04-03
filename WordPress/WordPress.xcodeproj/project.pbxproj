@@ -331,6 +331,7 @@
 		B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B5AB733C19901F85005F5044 /* WPNoResultsView+AnimatedBox.m */; };
 		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */; };
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
+		B5C66B6E1ACEE0B500F68370 /* NoteSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */; };
 		B5CC05F61962150600975CAC /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F51962150600975CAC /* Constants.m */; };
 		B5CC05F91962186D00975CAC /* Meta.m in Sources */ = {isa = PBXBuildFile; fileRef = B5CC05F81962186D00975CAC /* Meta.m */; };
 		B5D689FD1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = B5D689FC1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m */; };
@@ -1103,6 +1104,7 @@
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5B9C08F1A38A23A00B5B85F /* Notification+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Notification+Internals.h"; sourceTree = "<group>"; };
+		B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSeparatorsView.swift; sourceTree = "<group>"; };
 		B5CC05F51962150600975CAC /* Constants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		B5CC05F71962186D00975CAC /* Meta.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meta.h; sourceTree = "<group>"; };
 		B5CC05F81962186D00975CAC /* Meta.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meta.m; sourceTree = "<group>"; };
@@ -2505,6 +2507,7 @@
 				B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */,
 				B52C4C7E199D74AE009FD823 /* NoteTableViewCell.swift */,
 				B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */,
+				B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */,
 				B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */,
 				B532D4E6199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift */,
 				B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */,
@@ -3411,6 +3414,7 @@
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
 				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
+				B5C66B6E1ACEE0B500F68370 /* NoteSeparatorsView.swift in Sources */,
 				B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */,
