@@ -14,6 +14,7 @@
     self = [super init];
     if (self) {
         _searchBar = [[UISearchBar alloc] init];
+        _searchBar.delegate = self;
     }
     return self;
 }
