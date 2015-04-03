@@ -44,9 +44,6 @@
 		3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3101866A1A373B01008F7DF6 /* WPTabBarController.m */; };
 		313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 313692781A5D6F7900EBE645 /* HelpshiftUtils.m */; };
 		313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 313AE49C19E3F20400AAFABE /* CommentViewController.m */; };
-		313AE4A119E3F20400AAFABE /* CommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313AE49D19E3F20400AAFABE /* CommentTableViewCell.swift */; };
-		313AE4A219E3F20400AAFABE /* CommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 313AE49E19E3F20400AAFABE /* CommentTableViewCell.xib */; };
-		313AE4A319E3F20400AAFABE /* CommentTableViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 313AE49F19E3F20400AAFABE /* CommentTableViewHeaderCell.xib */; };
 		315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 315FC2C41A2CB29300E7CDA2 /* MeHeaderView.m */; };
 		319D6E7B19E447500013871C /* Suggestion.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E7A19E447500013871C /* Suggestion.m */; };
 		319D6E7E19E447C80013871C /* SuggestionService.m in Sources */ = {isa = PBXBuildFile; fileRef = 319D6E7D19E447C80013871C /* SuggestionService.m */; };
@@ -585,9 +582,6 @@
 		313692781A5D6F7900EBE645 /* HelpshiftUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpshiftUtils.m; sourceTree = "<group>"; };
 		313AE49B19E3F20400AAFABE /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
 		313AE49C19E3F20400AAFABE /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
-		313AE49D19E3F20400AAFABE /* CommentTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentTableViewCell.swift; sourceTree = "<group>"; };
-		313AE49E19E3F20400AAFABE /* CommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewCell.xib; sourceTree = "<group>"; };
-		313AE49F19E3F20400AAFABE /* CommentTableViewHeaderCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CommentTableViewHeaderCell.xib; sourceTree = "<group>"; };
 		315FC2C31A2CB29300E7CDA2 /* MeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeHeaderView.h; path = Me/MeHeaderView.h; sourceTree = "<group>"; };
 		315FC2C41A2CB29300E7CDA2 /* MeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeHeaderView.m; path = Me/MeHeaderView.m; sourceTree = "<group>"; };
 		319D6E7919E447500013871C /* Suggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Suggestion.h; sourceTree = "<group>"; };
@@ -2590,9 +2584,6 @@
 				C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */,
 				313AE49B19E3F20400AAFABE /* CommentViewController.h */,
 				313AE49C19E3F20400AAFABE /* CommentViewController.m */,
-				313AE49D19E3F20400AAFABE /* CommentTableViewCell.swift */,
-				313AE49E19E3F20400AAFABE /* CommentTableViewCell.xib */,
-				313AE49F19E3F20400AAFABE /* CommentTableViewHeaderCell.xib */,
 				2906F80F110CDA8900169D56 /* EditCommentViewController.h */,
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
 				B5509A9119CA38B3006D2E49 /* EditReplyViewController.h */,
@@ -3170,7 +3161,6 @@
 				83CAD4211235F9F4003DFA20 /* MediaObjectView.xib in Resources */,
 				B54E1DF21A0A7BAA00807537 /* ReplyTextView.xib in Resources */,
 				3768BEF213041E7900E7C9A9 /* BetaFeedbackViewController.xib in Resources */,
-				313AE4A319E3F20400AAFABE /* CommentTableViewHeaderCell.xib in Resources */,
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
@@ -3184,7 +3174,6 @@
 				93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */,
 				85ED988817DFA00000090D0B /* Images.xcassets in Resources */,
 				5DC02A3818E4C5BD009A1765 /* ThemeDetailsViewController.xib in Resources */,
-				313AE4A219E3F20400AAFABE /* CommentTableViewCell.xib in Resources */,
 				3716E401167296D30035F8C4 /* ToastView.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
 				5DA5BF3E18E32DCF005F11F9 /* EditMediaViewController.xib in Resources */,
@@ -3476,7 +3465,6 @@
 				B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */,
 				E149D65119349E69006A843D /* MediaServiceRemoteXMLRPC.m in Sources */,
 				5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */,
-				313AE4A119E3F20400AAFABE /* CommentTableViewCell.swift in Sources */,
 				5DF94E421962BAA700359241 /* WPContentActionView.m in Sources */,
 				B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
