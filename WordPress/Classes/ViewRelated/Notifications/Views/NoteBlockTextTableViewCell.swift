@@ -29,7 +29,7 @@ import Foundation
         }
     }
     
-    public var dataDetectors: UIDataDetectorTypes? {
+    public var dataDetectors: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue ?? .None
         }

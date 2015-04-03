@@ -13,6 +13,15 @@ import Foundation
             refreshApprovalColors()
         }
     }
+    public var commentText: String? {
+        set {
+            let text = newValue ?? String()
+            attributedCommentText = NSMutableAttributedString(string: text, attributes: Style.blockRegularStyle)
+        }
+        get {
+            return attributedCommentText?.string
+        }
+    }
     public var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
