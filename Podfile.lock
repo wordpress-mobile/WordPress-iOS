@@ -101,12 +101,12 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.5):
+  - WordPress-iOS-Editor (0.6):
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (~> 0.0.2)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.3.0)
-    - WordPressCom-Analytics-iOS (~> 0.0.4)
+    - WordPressCom-Analytics-iOS (~> 0.0.30)
   - WordPress-iOS-Shared (0.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
@@ -150,7 +150,7 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `983b2483bb68fa499cef5f2b1757550d07770d1b`)
+  - WordPress-iOS-Editor (= 0.6)
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.30)
@@ -172,9 +172,6 @@ EXTERNAL SOURCES:
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-iOS-Editor:
-    :commit: 983b2483bb68fa499cef5f2b1757550d07770d1b
-    :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 CHECKOUT OPTIONS:
   MGImageUtilities:
@@ -189,48 +186,45 @@ CHECKOUT OPTIONS:
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
-  WordPress-iOS-Editor:
-    :commit: 983b2483bb68fa499cef5f2b1757550d07770d1b
-    :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 SPEC CHECKSUMS:
-  1PasswordExtension: 38b5be7dd6dbe786c98f15d51d50ad21150db60a
+  1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
-  AMPopTip: 2c103e376d068f9c8eeb1ddbddd27a23e89db0bc
-  CocoaLumberjack: 205769c032b5fef85b92472046bcc8b7e7c8a817
-  CrashlyticsLumberjack: 192a08e07648e4e09d44052356b53ab839cc8a1b
-  CTAssetsPickerController: 319a91106b7b323446b39ab944a3f14db0a1ca46
-  DTCoreText: 84eb8ba2e70448fdd9d837540e371f9f587b65ba
-  DTFoundation: bea4e07459f0f88a5aa3b8258fab1576bbe2e58c
-  EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
-  Google-Diff-Match-Patch: 1f9c0b972c351d9c0a4fee137eb96896460477cd
-  google-plus-ios-sdk: bb7b918c2ee0d5f5e389c4fddc06d71995481f67
+  AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
+  CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
+  CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
+  CTAssetsPickerController: 085e7d4010bf51a7bd49d1ef75e534ca3090eb09
+  DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
+  DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
+  EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
+  Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
+  google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
-  HockeySDK: bfd1f5ac75938b07499c4ac12932244b72a2e70b
-  JRSwizzle: 30da7a2c539a4ebf954b16d15f6dd8221c9f6fa5
-  KIF: 068074b24dd455025e7f2a488ba4fb07b9ce047b
-  Lookback: 1c2f89df8d08440460c93ad180f47c8608ad4cea
-  MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
-  Mixpanel: 87167a0b0a74f11f0ee3787f291357494730617c
-  MRProgress: 5abb19ba97ad22c321c37f3d299e32391109b1d6
-  NSLogger: 7421a0a60df62fb8ff548cd0388c302d3329a322
-  NSLogger-CocoaLumberjack-connector: 8f659ea51386f0a0e8c2643bf9273010a83a15f5
-  NSObject-SafeExpectations: c31276ef7209016849fc4e5c8ed5ae5453e1e208
-  NSURL+IDN: acf82a7fa47a8e2c8b644778e3efe7a56bd66aa8
-  OCMock: ecdd510b73ef397f2f97274785c1e87fd147c49f
-  OHHTTPStubs: d6ace2645e4744a0ad6c5a72940999a5632037fb
-  Reachability: 8e9635e3cb4f98e7f825e51147f677ecc694d0e7
-  Simperium: ecb2b7db9f065a12d65ac6d2e348952a0008f261
-  SocketRocket: 77c536491ce78315d4f26a06057ed49aa36cef5e
-  SVProgressHUD: 90363c5e66aa08356bfe1a0923bd885fd3fbcb7c
-  UIAlertView+Blocks: 0b749f1f7bd5131ff2233b30a406c1585a7171b2
-  UIDeviceIdentifier: 4733d3b2480ff5c7f8da887f74c0d6f1e9208d4f
-  WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
-  WordPress-iOS-Editor: 75cebaa4cbb40327fe8b1a032840b80672b43fcd
-  WordPress-iOS-Shared: a26de91a692932fa27e6d5f3f5dd7705ea628c61
-  WordPressApi: 099a644955625cbae926c668fc6f009a7f5972d8
+  HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
+  JRSwizzle: dd5ead5d913a0f29e7f558200165849f006bb1e3
+  KIF: e08915d78a220480599837e9a760deee64453d76
+  Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
+  MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
+  Mixpanel: 61f3f69428ec1f4c32245392471ccc2292c05e32
+  MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
+  NSLogger: 5ed223a2436df96244e033be750656dacdeec034
+  NSLogger-CocoaLumberjack-connector: 075f822e06393495fb4b90c814ea986b794a00a2
+  NSObject-SafeExpectations: 7d7f48df90df4e11da7cfe86b64f45eff7a7f521
+  NSURL+IDN: 82355a0afd532fe1de08f6417c134b49b1a1c4b3
+  OCMock: a10ea9f0a6e921651f96f78b6faee95ebc813b92
+  OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
+  Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
+  Simperium: 61e51e0140d4dbf15d0fa07a7404368449a531d1
+  SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
+  UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
+  UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
+  WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
+  WordPress-iOS-Editor: 91b9a9863864ea1ece07be395ac9ca2ea048737c
+  WordPress-iOS-Shared: 0f5281492166bb89ea09d8ab5011e871ba4f6709
+  WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
-  WordPressCom-Stats-iOS: 199fe3ef7cf12d16430cdf36e74c8a3fb051b179
-  wpxmlrpc: 5bd349b9894755c05d868b3518b217e496ae1b05
+  WordPressCom-Stats-iOS: b0b767b8aab64b4446e547d6bbd23060ec78e1ab
+  wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
 COCOAPODS: 0.35.0
