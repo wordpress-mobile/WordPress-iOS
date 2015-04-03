@@ -46,6 +46,9 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) IBOutlet UIView *rightBarButtonView;
+@property (nonatomic, weak) IBOutlet UIButton *searchButton;
+@property (nonatomic, weak) IBOutlet UIButton *addButton;
 
 - (IBAction)refresh:(id)sender;
 
@@ -109,14 +112,9 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureSyncHelper];
+    [self configureNavbar];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
-    // this VC's title.
-    //
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -133,16 +131,6 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self automaticallySyncIfAppropriate];
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
@@ -151,6 +139,19 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 
 #pragma mark - Configuration
+
+- (void)configureNavbar
+{
+    // IMPORTANT: this code makes sure that the back button in WPPostViewController doesn't show
+    // this VC's title.
+    //
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
+
+    UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarButtonView];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
+}
+
 
 - (void)configureCellsForLayout
 {
@@ -251,7 +252,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    [self showAddPostView:nil];
+    [self presentEditViewController];
 }
 
 
@@ -262,7 +263,17 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self syncItemsWithUserInteraction:YES];
 }
 
-- (IBAction)showAddPostView:(id)sender
+- (IBAction)handleAddButtonTapped:(id)sender
+{
+    [self presentEditViewController];
+}
+
+- (IBAction)handleSearchButtonTapped:(id)sender
+{
+    //TODO:
+}
+
+- (void)presentEditViewController
 {
 // TODO: Flag we're adding a new post
 

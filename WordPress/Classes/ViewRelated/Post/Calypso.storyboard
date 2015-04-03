@@ -15,7 +15,7 @@
                         <viewControllerLayoutGuide type="bottom" id="AIH-s0-RTt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Zhd-4n-wcm">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
@@ -34,10 +34,40 @@
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Posts" id="Pj8-QK-H8z"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
+                        <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
+                        <outlet property="searchButton" destination="odC-V9-68g" id="FbP-8x-HyD"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
+                    <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="odC-V9-68g">
+                            <rect key="frame" x="0.0" y="0.0" width="40" height="44"/>
+                            <state key="normal" image="icon-post-search">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="handleSearchButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="jbr-TQ-q2r"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Az-zB-Hwe">
+                            <rect key="frame" x="40" y="0.0" width="40" height="44"/>
+                            <state key="normal" image="icon-post-add">
+                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <connections>
+                                <action selector="handleAddButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="fEv-yc-HXV"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                </view>
             </objects>
             <point key="canvasLocation" x="519" y="318"/>
         </scene>
@@ -64,4 +94,8 @@
             <point key="canvasLocation" x="1202" y="318"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icon-post-add" width="22" height="22"/>
+        <image name="icon-post-search" width="22" height="22"/>
+    </resources>
 </document>
