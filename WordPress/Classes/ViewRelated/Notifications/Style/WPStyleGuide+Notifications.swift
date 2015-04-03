@@ -203,9 +203,4 @@ extension WPStyleGuide
         private static let headerTitleItalicsFont   = blockItalicsFont
         private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
     }
-    
-    // MARK: - ObjectiveC Helpers: Nuke me once NotificationDetailsViewController is Swifted!
-    public class func notificationsBlockSeparatorColor() -> UIColor {
-        return Notifications.blockSeparatorColor
-    }
 }
