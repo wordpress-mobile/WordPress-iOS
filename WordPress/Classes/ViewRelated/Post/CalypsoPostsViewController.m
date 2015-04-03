@@ -21,6 +21,7 @@
 #import "WPSearchController.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
@@ -34,8 +35,16 @@ static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 static const NSInteger PostsFetchRequestBatchSize = 10;
+static const CGFloat PostsSearchBarWidth = 150.0;
+static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
-@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, WPNoResultsViewDelegate, PostCardTableViewCellDelegate>
+@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate,
+                                            WPContentSyncHelperDelegate,
+                                            UIViewControllerRestoration,
+                                            WPNoResultsViewDelegate,
+                                            PostCardTableViewCellDelegate,
+                                            WPSearchControllerDelegate,
+                                            WPSearchResultsUpdating>
 
 @property (nonatomic, strong) PostListViewController *postListViewController;
 @property (nonatomic, weak) UITableView *tableView;
@@ -54,6 +63,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *authorsFilterViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
 
 @end
 
@@ -117,7 +127,9 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self configureSyncHelper];
     [self configureNavbar];
     [self configureAuthorFilter];
+    [self configureSearchController];
     [self configureSearchBar];
+    [self configureSearchWrapper];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -134,6 +146,12 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [super viewDidAppear:animated];
 
     [self automaticallySyncIfAppropriate];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    self.searchController.active = NO;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -260,11 +278,95 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 }
 
-- (void)configureSearchBar
+- (void)configureSearchController
 {
-
+    self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
+    self.searchController.dimsBackgroundDuringPresentation = NO;
+    self.searchController.hidesNavigationBarDuringPresentation = ![UIDevice isPad];
+    self.searchController.delegate = self;
+    self.searchController.searchResultsUpdater = self;
 }
 
+- (void)configureSearchBar
+{
+    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide wordPressBlue]]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+
+    UISearchBar *searchBar = self.searchController.searchBar;
+    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
+    searchBar.accessibilityIdentifier = @"Search";
+    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    searchBar.backgroundImage = [[UIImage alloc] init];
+    searchBar.barStyle = UIBarStyleBlack;
+    searchBar.barTintColor = [UIDevice isPad] ? [WPStyleGuide grey] : [WPStyleGuide wordPressBlue];
+    searchBar.showsCancelButton = YES;
+    searchBar.tintColor = [UIColor whiteColor];
+    searchBar.translucent = NO;
+    [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
+
+    if ([UIDevice isPad]) {
+        [self positionSearchBarInFilterView];
+    } else {
+        [self positionSearchBarInSearchView];
+    }
+}
+
+- (void)positionSearchBarInFilterView
+{
+    UISearchBar *searchBar = self.searchController.searchBar;
+    [self.authorsFilterView addSubview:searchBar];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
+    NSDictionary *metrics = @{@"searchBarWidth":@(PostsSearchBarWidth)};
+    [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
+                                                                       attribute:NSLayoutAttributeCenterY
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.authorsFilterView
+                                                                       attribute:NSLayoutAttributeCenterY
+                                                                      multiplier:1.0
+                                                                        constant:0.0]];
+    if (self.authorsFilter.hidden) {
+        [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
+                                                                           attribute:NSLayoutAttributeCenterX
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.authorsFilterView
+                                                                           attribute:NSLayoutAttributeCenterX
+                                                                          multiplier:1.0
+                                                                            constant:0.0]];
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]"
+                                                                                       options:0
+                                                                                       metrics:metrics
+                                                                                         views:views]];
+    } else {
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]|"
+                                                                                       options:0
+                                                                                       metrics:nil
+                                                                                         views:views]];
+    }
+}
+
+- (void)positionSearchBarInSearchView
+{
+    UISearchBar *searchBar = self.searchController.searchBar;
+    [self.searchWrapperView addSubview:searchBar];
+
+    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
+    [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchBar]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:views]];
+    [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[searchBar]|"
+                                                                                   options:0
+                                                                                   metrics:nil
+                                                                                     views:views]];
+}
+
+- (void)configureSearchWrapper
+{
+    self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
+}
 
 #pragma mark - Actions
 
@@ -280,7 +382,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (IBAction)handleSearchButtonTapped:(id)sender
 {
-    //TODO:
+    [self toggleSearch];
 }
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
@@ -651,6 +753,11 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)toggleSearch
+{
+    self.searchController.active = !self.searchController.active;
+}
+
 
 #pragma mark - Cell Delegate Methods
 
@@ -688,6 +795,45 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 {
     AbstractPost *apost = (AbstractPost *)contentProvider;
     [self restorePost:apost];
+}
+
+
+#pragma mark - Search Controller Delegate Methods
+
+- (void)presentSearchController:(WPSearchController *)searchController
+{
+    if ([UIDevice isPad]) {
+        return;
+    }
+    [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
+    self.searchWrapperViewHeightConstraint.constant = 64.0;
+    [UIView animateWithDuration:PostSearchBarAnimationDuration
+                          delay:0.0
+                        options:0
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                     } completion:^(BOOL finished) {
+                         [self.searchController.searchBar becomeFirstResponder];
+                     }];
+}
+
+- (void)willDismissSearchController:(WPSearchController *)searchController
+{
+    if ([UIDevice isPad]) {
+        return;
+    }
+
+    [self.searchController.searchBar resignFirstResponder];
+    [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
+    self.searchWrapperViewHeightConstraint.constant = 0;
+    [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+}
+
+- (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
+{
+    // TODO: filter results
 }
 
 @end
