@@ -18,7 +18,7 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kl8-s3-Dv4">
+                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Kl8-s3-Dv4">
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" id="zVg-7h-v5z"/>
@@ -86,6 +86,7 @@
                             <state key="normal" image="icon-post-search">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <state key="highlighted" image="icon-post-search-highlight"/>
                             <connections>
                                 <action selector="handleSearchButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="jbr-TQ-q2r"/>
                             </connections>
@@ -95,6 +96,7 @@
                             <state key="normal" image="icon-post-add">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <state key="highlighted" image="icon-post-add-highlight"/>
                             <connections>
                                 <action selector="handleAddButtonTapped:" destination="VTO-0U-HpP" eventType="touchUpInside" id="fEv-yc-HXV"/>
                             </connections>
@@ -129,6 +131,8 @@
     </scenes>
     <resources>
         <image name="icon-post-add" width="22" height="22"/>
+        <image name="icon-post-add-highlight" width="22" height="22"/>
         <image name="icon-post-search" width="22" height="22"/>
+        <image name="icon-post-search-highlight" width="22" height="22"/>
     </resources>
 </document>
