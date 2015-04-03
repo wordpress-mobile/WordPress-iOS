@@ -45,8 +45,8 @@
 static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
 
-static UIEdgeInsets NotificationHeaderSeparatorInsets   = {0.0f,  0.0f,  0.0f, 0.0f};
-static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
+static UIEdgeInsets NotificationFullSeparatorInsets     = {0.0f,  0.0f,  0.0f, 0.0f};
+static UIEdgeInsets NotificationIndentedSeparatorInsets = {0.0f, 12.0f,  0.0f, 0.0f};
 
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
@@ -72,7 +72,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 @property (nonatomic, strong) NSDictionary                  *layoutCellMap;
 @property (nonatomic, strong) NSDictionary                  *reuseIdentifierMap;
 @property (nonatomic, strong) NSArray                       *blockGroups;
-@property (nonatomic, assign) UIEdgeInsets                  firstRowInsets;
 
 // Media Helpers
 @property (nonatomic, strong) NotificationMediaDownloader   *mediaDownloader;
@@ -140,11 +139,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     // TableView
-    self.tableView.separatorStyle           = self.note.isBadge ? UITableViewCellSeparatorStyleNone : UITableViewCellSeparatorStyleSingleLine;
+    self.tableView.separatorStyle           = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     self.tableView.accessibilityIdentifier  = @"Notification Details Table";
-    self.tableView.separatorInset           = UIEdgeInsetsZero;
-    self.tableView.separatorColor           = [WPStyleGuide notificationsBlockSeparatorColor];
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     
     // Media
@@ -185,7 +182,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     [super viewDidLayoutSubviews];
     [self adjustTableInsetsIfNeeded];
-    [self adjustTableSeparatorsIfNeeded];
 }
 
 - (void)reloadData
@@ -202,8 +198,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [blockGroups addObjectsFromArray:_note.bodyBlockGroups];
     }
     
-    self.firstRowInsets = hasHeaderBlocks ? NotificationHeaderSeparatorInsets : NotificationBlockSeparatorInsets;
-    self.blockGroups    = blockGroups;
+    self.blockGroups = blockGroups;
     
     [self.tableView reloadData];
     [self adjustTableInsetsIfNeeded];
@@ -372,17 +367,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     self.tableView.contentInset = contentInset;
 }
 
-- (void)adjustTableSeparatorsIfNeeded
-{
-    if ([self.tableView respondsToSelector:@selector(setSeparatorInset:)]) {
-        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
-    }
-    
-    if ([self.tableView respondsToSelector:@selector(setLayoutMargins:)]) {
-        [self.tableView setLayoutMargins:UIEdgeInsetsZero];
-    }
-}
-
 
 #pragma mark - UIViewController Restoration
 
@@ -489,17 +473,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     return height;
 }
 
-- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UIEdgeInsets separatorInsets            = (indexPath.row == 0) ? self.firstRowInsets : NotificationBlockSeparatorInsets;
-    cell.separatorInset                     = separatorInsets;
-    
-    // iOS 8 Only!
-    if ([cell respondsToSelector:@selector(setLayoutMargins:)]) {
-        cell.layoutMargins = separatorInsets;
-    }
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
@@ -507,8 +480,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
  
     [self enqueueMediaDownloads:blockGroup indexPath:indexPath];
+    [self setupSeparators:cell indexPath:indexPath];
     [self setupCell:cell blockGroup:blockGroup];
-
+    
     return cell;
 }
 
@@ -616,13 +590,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
     BOOL hasHomeTitle               = (userBlock.metaTitlesHome.length > 0);
-    __weak __typeof(self) weakSelf  = self;
     
+    // Setup the Cell
     cell.accessoryType              = hasHomeURL ? UITableViewCellAccessoryDisclosureIndicator : UITableViewCellAccessoryNone;
     cell.name                       = userBlock.text;
     cell.blogTitle                  = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome.hostname;
     cell.isFollowEnabled            = [userBlock isActionEnabled:NoteActionFollowKey];
     cell.isFollowOn                 = [userBlock isActionOn:NoteActionFollowKey];
+    
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf  = self;
     cell.onFollowClick              = ^() {
         [weakSelf followSiteWithBlock:userBlock];
     };
@@ -630,7 +607,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [weakSelf unfollowSiteWithBlock:userBlock];
     };
 
-    // Download the Gravatar-
+    // Download the Gravatar
     if ([self isLayoutCell:cell]) {
         return;
     }
@@ -770,8 +747,34 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Setup the Callbacks
     __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
+        
         [weakSelf openURL:url];
     };
+}
+
+
+#pragma mark - Cell Separators Logic
+
+- (void)setupSeparators:(NoteBlockTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    NoteSeparatorsView *separatorsView  = cell.separatorsView;
+    
+    // Exception: Badges require no separators
+    if (self.note.isBadge) {
+        separatorsView.bottomVisible = NO;
+        return;
+    }
+    
+    // Exception: Comments setups its own separators (depending on the approval status!)
+    if ([cell isKindOfClass:[NoteBlockCommentTableViewCell class]]) {
+        return;
+    }
+    
+    // Headers + Last Rows: Require full separators
+    BOOL isHeaderCell               = [cell isKindOfClass:[NoteBlockHeaderTableViewCell class]];
+    BOOL isLastCell                 = (indexPath.row >= self.blockGroups.count - 1);
+    separatorsView.bottomInsets     = (isHeaderCell || isLastCell) ? NotificationFullSeparatorInsets : NotificationIndentedSeparatorInsets;
+    separatorsView.bottomVisible    = YES;
 }
 
 
