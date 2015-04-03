@@ -4,37 +4,37 @@ import Foundation
 public class NoteSeparatorsView : UIView
 {
     // MARK: - Public Properties
-    public var leftSeparatorVisible : Bool = false {
+    public var leftVisible : Bool = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var leftSeparatorColor : UIColor = UIColor.clearColor() {
+    public var leftColor : UIColor = UIColor.clearColor() {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var leftSeparatorWidth : CGFloat = CGFloat(3) {
+    public var leftWidth : CGFloat = CGFloat(3) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorVisible : Bool = false {
+    public var bottomVisible : Bool = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorColor : UIColor = WPStyleGuide.Notifications.blockSeparatorColor {
+    public var bottomColor : UIColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorHeight : CGFloat = CGFloat(0.5) {
+    public var bottomHeight : CGFloat = CGFloat(0.5) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorInsets : UIEdgeInsets = UIEdgeInsetsZero {
+    public var bottomInsets : UIEdgeInsets = UIEdgeInsetsZero {
         didSet {
             setNeedsDisplay()
         }
@@ -65,20 +65,20 @@ public class NoteSeparatorsView : UIView
         CGContextClearRect(ctx, rect);
 
         // Left Separator
-        if leftSeparatorVisible {
-            leftSeparatorColor.setStroke()
-            CGContextSetLineWidth(ctx, leftSeparatorWidth * scale);
+        if leftVisible {
+            leftColor.setStroke()
+            CGContextSetLineWidth(ctx, leftWidth * scale);
             CGContextMoveToPoint(ctx, bounds.minX, bounds.minY)
             CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
             CGContextStrokePath(ctx);
         }
         
         // Bottom Separator
-        if bottomSeparatorVisible {
-            bottomSeparatorColor.setStroke()
-            CGContextSetLineWidth(ctx, bottomSeparatorHeight * scale);
-            CGContextMoveToPoint(ctx, bottomSeparatorInsets.left, bounds.height)
-            CGContextAddLineToPoint(ctx, bounds.width - bottomSeparatorInsets.left - bottomSeparatorInsets.right, bounds.height)
+        if bottomVisible {
+            bottomColor.setStroke()
+            CGContextSetLineWidth(ctx, bottomHeight * scale);
+            CGContextMoveToPoint(ctx, bottomInsets.left, bounds.height)
+            CGContextAddLineToPoint(ctx, bounds.width - bottomInsets.left - bottomInsets.right, bounds.height)
             CGContextStrokePath(ctx);
         }
     }
