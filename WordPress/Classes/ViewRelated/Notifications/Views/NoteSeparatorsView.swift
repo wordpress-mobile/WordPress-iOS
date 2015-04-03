@@ -4,6 +4,21 @@ import Foundation
 public class NoteSeparatorsView : UIView
 {
     // MARK: - Public Properties
+    public var leftSeparatorVisible : Bool = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var leftSeparatorColor : UIColor = UIColor.clearColor() {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var leftSeparatorWidth : CGFloat = CGFloat(3) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     public var bottomSeparatorVisible : Bool = false {
         didSet {
             setNeedsDisplay()
@@ -14,7 +29,7 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorHeight : CGFloat = CGFloat(1) {
+    public var bottomSeparatorHeight : CGFloat = CGFloat(0.5) {
         didSet {
             setNeedsDisplay()
         }
@@ -45,19 +60,27 @@ public class NoteSeparatorsView : UIView
         
         super.drawRect(rect)
         
+        let scale = UIScreen.mainScreen().scale
         let ctx = UIGraphicsGetCurrentContext()
         CGContextClearRect(ctx, rect);
-        
-        // Bottom Separator
-        if bottomSeparatorVisible == false {
-            return
+
+        // Left Separator
+        if leftSeparatorVisible {
+            leftSeparatorColor.setStroke()
+            CGContextSetLineWidth(ctx, leftSeparatorWidth * scale);
+            CGContextMoveToPoint(ctx, bounds.minX, bounds.minY)
+            CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
+            CGContextStrokePath(ctx);
         }
         
-        bottomSeparatorColor.setStroke()
-        CGContextSetLineWidth(ctx, bottomSeparatorHeight);
-        CGContextMoveToPoint(ctx, bottomSeparatorInsets.left, bounds.height)
-        CGContextAddLineToPoint(ctx, bounds.width - bottomSeparatorInsets.left - bottomSeparatorInsets.right, bounds.height)
-        CGContextStrokePath(ctx);
+        // Bottom Separator
+        if bottomSeparatorVisible {
+            bottomSeparatorColor.setStroke()
+            CGContextSetLineWidth(ctx, bottomSeparatorHeight * scale);
+            CGContextMoveToPoint(ctx, bottomSeparatorInsets.left, bounds.height)
+            CGContextAddLineToPoint(ctx, bounds.width - bottomSeparatorInsets.left - bottomSeparatorInsets.right, bounds.height)
+            CGContextStrokePath(ctx);
+        }
     }
     
     private func setupView() {
