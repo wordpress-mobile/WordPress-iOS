@@ -18,8 +18,32 @@
                         <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kl8-s3-Dv4">
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" id="zVg-7h-v5z"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9at-tM-m4A">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="2zZ-72-iKA">
+                                        <rect key="frame" x="239" y="8" width="123" height="29"/>
+                                        <segments>
+                                            <segment title="First"/>
+                                            <segment title="Second"/>
+                                        </segments>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="centerX" secondItem="2zZ-72-iKA" secondAttribute="centerX" constant="-0.5" id="3PO-xC-h2M"/>
+                                    <constraint firstAttribute="height" constant="44" id="KUd-OB-pfW"/>
+                                    <constraint firstAttribute="centerY" secondItem="2zZ-72-iKA" secondAttribute="centerY" id="uve-eW-3Xv"/>
+                                </constraints>
+                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cnu-9z-5GZ">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                                <rect key="frame" x="0.0" y="44" width="600" height="492"/>
                                 <connections>
                                     <segue destination="zOz-bT-2ph" kind="embed" id="m8J-kl-Bnz"/>
                                 </connections>
@@ -27,10 +51,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="rUe-TB-81b" secondAttribute="bottom" id="dfK-JS-H5a"/>
+                            <constraint firstItem="9at-tM-m4A" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="C6h-83-Wk3"/>
+                            <constraint firstItem="Kl8-s3-Dv4" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="GP4-eX-EG8"/>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="9at-tM-m4A" secondAttribute="bottom" id="O34-iY-MtY"/>
                             <constraint firstItem="AIH-s0-RTt" firstAttribute="top" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="g65-gl-KUt"/>
                             <constraint firstAttribute="trailingMargin" secondItem="cnu-9z-5GZ" secondAttribute="trailing" constant="-16" id="hEd-mB-ZfB"/>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="phA-Qk-kzl"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Kl8-s3-Dv4" secondAttribute="trailing" constant="-16" id="rhu-Tp-z3F"/>
+                            <constraint firstItem="rUe-TB-81b" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="bottom" id="sDR-Lv-r7y"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9at-tM-m4A" secondAttribute="trailing" constant="-16" id="wcq-af-Gp2"/>
+                            <constraint firstItem="9at-tM-m4A" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="bottom" id="xbf-DL-e4c"/>
                         </constraints>
                     </view>
                     <extendedEdge key="edgesForExtendedLayout"/>
@@ -40,8 +70,11 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="9Az-zB-Hwe" id="r4s-oX-gyT"/>
+                        <outlet property="authorsFilter" destination="2zZ-72-iKA" id="Ycd-OB-A7L"/>
+                        <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchButton" destination="odC-V9-68g" id="FbP-8x-HyD"/>
+                        <outlet property="searchWrapperView" destination="Kl8-s3-Dv4" id="Wgb-yM-577"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -76,7 +109,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="PostListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zOz-bT-2ph" customClass="PostListViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>

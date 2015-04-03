@@ -18,6 +18,7 @@
 #import "WPLegacyEditPostViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPPostViewController.h"
+#import "WPSearchController.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -48,6 +49,11 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 @property (nonatomic, weak) IBOutlet UIView *rightBarButtonView;
 @property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
+@property (nonatomic, weak) IBOutlet UIView *searchWrapperView; // Used on iPhone for presenting the search bar.
+@property (nonatomic, weak) IBOutlet UIView *authorsFilterView; // Search lives here on iPad
+@property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *authorsFilterViewHeightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 
 @end
 
@@ -110,6 +116,8 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     [self configureTableViewHandler];
     [self configureSyncHelper];
     [self configureNavbar];
+    [self configureAuthorFilter];
+    [self configureSearchBar];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -247,9 +255,14 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
     return NSLocalizedString(@"Create post", @"Button title, encourages users to create their first post on their blog.");
 }
 
-- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+- (void)configureAuthorFilter
 {
-    [self createPost];
+
+}
+
+- (void)configureSearchBar
+{
+
 }
 
 
@@ -269,6 +282,17 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 {
     //TODO:
 }
+
+- (IBAction)handleAuthorFilterChanged:(id)sender
+{
+
+}
+
+- (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
+{
+    [self createPost];
+}
+
 
 
 #pragma mark - Syncing
