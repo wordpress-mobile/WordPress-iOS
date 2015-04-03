@@ -42,9 +42,10 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
     NoteBlockGroupTypeText     = NoteBlockTypeText,
     NoteBlockGroupTypeImage    = NoteBlockTypeImage,
     NoteBlockGroupTypeUser     = NoteBlockTypeUser,
-    NoteBlockGroupTypeComment  = NoteBlockTypeComment,      // Contains a User + Comment Block
-    NoteBlockGroupTypeSubject  = 20,                        // Contains a User + Text Block
-    NoteBlockGroupTypeHeader   = 30                         // Contains a User + Text Block
+    NoteBlockGroupTypeComment  = NoteBlockTypeComment,      // Blocks: User  + Comment
+    NoteBlockGroupTypeActions  = 100,                       // Blocks: Comment
+    NoteBlockGroupTypeSubject  = 200,                       // Blocks: Text  + Text
+    NoteBlockGroupTypeHeader   = 300                        // Blocks: Image + Text
 };
 
 
