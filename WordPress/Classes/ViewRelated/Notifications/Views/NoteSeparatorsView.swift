@@ -24,7 +24,7 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var bottomSeparatorColor : UIColor = UIColor.clearColor() {
+    public var bottomSeparatorColor : UIColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
