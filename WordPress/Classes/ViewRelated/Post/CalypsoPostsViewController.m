@@ -43,14 +43,11 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
-@property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
-@property (nonatomic, strong) IBOutlet UIView *rightBarButtonView;
+@property (nonatomic, weak) IBOutlet UIView *rightBarButtonView;
 @property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
-
-- (IBAction)refresh:(id)sender;
 
 @end
 
@@ -252,7 +249,7 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    [self presentEditViewController];
+    [self createPost];
 }
 
 
@@ -265,38 +262,12 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 - (IBAction)handleAddButtonTapped:(id)sender
 {
-    [self presentEditViewController];
+    [self createPost];
 }
 
 - (IBAction)handleSearchButtonTapped:(id)sender
 {
     //TODO:
-}
-
-- (void)presentEditViewController
-{
-// TODO: Flag we're adding a new post
-
-    UINavigationController *navController;
-
-    if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
-        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
-        navController.restorationIdentifier = WPEditorNavigationRestorationID;
-        navController.restorationClass = [WPPostViewController class];
-    } else {
-        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
-        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
-        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
-        navController.restorationClass = [WPLegacyEditPostViewController class];
-    }
-
-    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-    navController.modalPresentationStyle = UIModalPresentationFullScreen;
-
-    [self presentViewController:navController animated:YES completion:nil];
-
-    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
 
 
@@ -529,6 +500,32 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 
 
 #pragma mark - Instance Methods
+
+- (void)createPost
+{
+    // TODO: Flag we're adding a new post
+
+    UINavigationController *navController;
+
+    if ([WPPostViewController isNewEditorEnabled]) {
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithDraftForBlog:self.blog];
+        navController = [[UINavigationController alloc] initWithRootViewController:postViewController];
+        navController.restorationIdentifier = WPEditorNavigationRestorationID;
+        navController.restorationClass = [WPPostViewController class];
+    } else {
+        WPLegacyEditPostViewController *editPostViewController = [[WPLegacyEditPostViewController alloc] initWithDraftForLastUsedBlog];
+        navController = [[UINavigationController alloc] initWithRootViewController:editPostViewController];
+        navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
+        navController.restorationClass = [WPLegacyEditPostViewController class];
+    }
+
+    [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
+
+    [self presentViewController:navController animated:YES completion:nil];
+
+    [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+}
 
 - (void)editPost:(AbstractPost *)apost
 {
