@@ -35,7 +35,7 @@ static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 static const NSInteger PostsFetchRequestBatchSize = 10;
-static const CGFloat PostsSearchBarWidth = 150.0;
+static const CGFloat PostsSearchBarWidth = 200.0;
 static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate,
@@ -173,6 +173,8 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarButtonView];
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
+
+    self.searchButton.hidden = [UIDevice isPad];
 }
 
 
@@ -275,7 +277,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 - (void)configureAuthorFilter
 {
-
+    self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
 }
 
 - (void)configureSearchController
@@ -289,33 +291,33 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 - (void)configureSearchBar
 {
-    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide wordPressBlue]]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [self configureSearchBarPlaceholder];
 
     UISearchBar *searchBar = self.searchController.searchBar;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     searchBar.accessibilityIdentifier = @"Search";
     searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
     searchBar.backgroundImage = [[UIImage alloc] init];
-    searchBar.barStyle = UIBarStyleBlack;
-    searchBar.barTintColor = [UIDevice isPad] ? [WPStyleGuide grey] : [WPStyleGuide wordPressBlue];
-    searchBar.showsCancelButton = YES;
-    searchBar.tintColor = [UIColor whiteColor];
+    searchBar.tintColor = [WPStyleGuide grey]; // cursor color
     searchBar.translucent = NO;
     [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
 
     if ([UIDevice isPad]) {
-        [self positionSearchBarInFilterView];
+        [self configureSearchBarForFilterView];
     } else {
-        [self positionSearchBarInSearchView];
+        [self configureSearchBarForSearchView];
     }
 }
 
-- (void)positionSearchBarInFilterView
+- (void)configureSearchBarForFilterView
 {
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide darkGrey]]];
+    [[UIButton appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     UISearchBar *searchBar = self.searchController.searchBar;
+    searchBar.barTintColor = [WPStyleGuide lightGrey];
+    searchBar.showsCancelButton = NO;
+    searchBar.barStyle = UIBarStyleDefault;
+
     [self.authorsFilterView addSubview:searchBar];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
@@ -340,16 +342,22 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
                                                                                        metrics:metrics
                                                                                          views:views]];
     } else {
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]|"
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]-|"
                                                                                        options:0
-                                                                                       metrics:nil
+                                                                                       metrics:metrics
                                                                                          views:views]];
     }
 }
 
-- (void)positionSearchBarInSearchView
+- (void)configureSearchBarForSearchView
 {
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+
     UISearchBar *searchBar = self.searchController.searchBar;
+    searchBar.barTintColor = [WPStyleGuide wordPressBlue];
+    searchBar.showsCancelButton = YES;
+    searchBar.barStyle = UIBarStyleBlack;
+
     [self.searchWrapperView addSubview:searchBar];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
@@ -361,6 +369,18 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
                                                                                    options:0
                                                                                    metrics:nil
                                                                                      views:views]];
+}
+
+- (void)configureSearchBarPlaceholder
+{
+    NSString *placeholderText;
+    // TODO: adjust text depending on filters
+
+    // Adjust color depending on where the search bar is being presented.
+    UIColor *placeholderColor = [UIDevice isPad] ? [WPStyleGuide grey] : [WPStyleGuide wordPressBlue];
+    placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
 }
 
 - (void)configureSearchWrapper
@@ -387,14 +407,13 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
 {
-
+    // TODO:
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     [self createPost];
 }
-
 
 
 #pragma mark - Syncing
@@ -803,6 +822,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 - (void)presentSearchController:(WPSearchController *)searchController
 {
     if ([UIDevice isPad]) {
+        [self.searchController.searchBar setShowsCancelButton:YES animated:YES];
         return;
     }
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
@@ -820,6 +840,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 - (void)willDismissSearchController:(WPSearchController *)searchController
 {
     if ([UIDevice isPad]) {
+        [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
         return;
     }
 
