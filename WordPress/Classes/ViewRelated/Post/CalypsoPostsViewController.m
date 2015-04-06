@@ -9,6 +9,7 @@
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
+#import "PostFilterButton.h"
 #import "PostListViewController.h"
 #import "PostPreviewViewController.h"
 #import "StatsPostDetailsTableViewController.h"
@@ -55,6 +56,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, weak) IBOutlet PostFilterButton *filterButton;
 @property (nonatomic, weak) IBOutlet UIView *rightBarButtonView;
 @property (nonatomic, weak) IBOutlet UIButton *searchButton;
 @property (nonatomic, weak) IBOutlet UIButton *addButton;
@@ -175,8 +177,10 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
 
     self.searchButton.hidden = [UIDevice isPad];
-}
 
+    self.navigationItem.titleView = self.filterButton;
+    [self updateFilterTitle];
+}
 
 - (void)configureCellsForLayout
 {
@@ -413,6 +417,11 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
     [self createPost];
+}
+
+- (IBAction)didTapFilterButton:(id)sender
+{
+    NSLog(@"Show Filters");
 }
 
 
@@ -775,6 +784,39 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 - (void)toggleSearch
 {
     self.searchController.active = !self.searchController.active;
+}
+
+- (void)updateFilterTitle
+{
+    // TODO: Get current filter title
+    NSString *title = NSLocalizedString(@"published", @"");
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:16.0] };
+    NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                  attributes:attributes];
+
+    [self.filterButton setAttributedTitle:titleText forState:UIControlStateNormal];
+    [self.filterButton setAttributedTitle:titleText forState:UIControlStateHighlighted];
+    [self.filterButton sizeToFit];
+}
+
+- (void)displayFilters
+{
+    if ([UIDevice isPad]) {
+        [self displayFilterPopover];
+    } else {
+        [self displayFilterActionSheet];
+    }
+}
+
+- (void)displayFilterPopover
+{
+
+}
+
+- (void)displayFilterActionSheet
+{
+
 }
 
 
