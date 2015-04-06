@@ -79,10 +79,10 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     geoLocationEnabled = post.blog.geolocationEnabled;
 
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    NSString *imagePath = [self pathForAsset:asset];
+    NSString *mediaPath = [self pathForAsset:asset];
 
     [[WPAssetExporter sharedInstance] exportAsset:asset
-                                           toFile:imagePath
+                                           toFile:mediaPath
                                          resizing:maxImageSize
                                  stripGeoLocation:!geoLocationEnabled
                                 completionHandler:^(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error) {
@@ -96,10 +96,10 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             
             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
             Media *media = [self newMediaForPost:post];
-            media.filename = [imagePath lastPathComponent];
-            media.localURL = imagePath;
+            media.filename = [mediaPath lastPathComponent];
+            media.localURL = mediaPath;
             media.thumbnail = thumbnailData;
-            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
+            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
             media.filesize = @([fileAttributes fileSize] / 1024);
