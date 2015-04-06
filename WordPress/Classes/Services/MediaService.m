@@ -149,24 +149,20 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                      success:(void (^)(UIImage *image))success
                      failure:(void (^)(NSError *error))failure
 {
-    NSInteger thumbnailSize = round([WPBlogMediaCollectionViewController thumbnailWidthFor:[[UIScreen mainScreen] bounds].size.width]);
     __block NSURL *thumbnailUrl = nil;
     __block BOOL isPrivate = NO;
     [self.managedObjectContext performBlockAndWait:^{
         NSString *remote = media.remoteURL;
         if (media.blog.isWPcom) {
-            remote = [NSString stringWithFormat:@"%@?w=%ld", remote, thumbnailSize];
+            remote = [NSString stringWithFormat:@"%@?w=%ld", remote, [Media preferredThumbnailWidthScreenPixels]];
         }
         thumbnailUrl = [NSURL URLWithString:remote];
         isPrivate = media.blog.isPrivate;
     }];
      
     void (^successBlock)(UIImage *) = ^(UIImage *image) {
-        UIImage *thumbnail = image;
-        if (thumbnail.size.width > thumbnailSize || thumbnail.size.height > thumbnailSize) {
-            thumbnail = [image thumbnailImage:thumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:0.9];
-        }
-        NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, 0.9);
+        UIImage *thumbnail = [Media thumbnailImageFromImage:image];
+        NSData *thumbnailData = [Media thumbnailDataFrom:thumbnail];
 
         [self.managedObjectContext performBlock:^{
             media.thumbnail = thumbnailData;

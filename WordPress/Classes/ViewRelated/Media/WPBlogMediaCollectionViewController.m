@@ -19,10 +19,7 @@
 
 @implementation WPBlogMediaCollectionViewController
 
-static CGFloat SpaceBetweenPhotos = 2.0f;
-static CGFloat NumberOfPhotosForLine = 3;
-static CGFloat SelectAnimationTime = 0.2;
-static CGFloat MinimumCellSize = 105;
+static CGFloat const SelectAnimationTime = 0.2;
 static NSString * const ArrowDown = @"\u25be";
 
 + (NSString *)title
@@ -34,14 +31,6 @@ static NSString * const ArrowDown = @"\u25be";
 - (NSString *)title
 {
     return [[self class] title];
-}
-
-+ (CGFloat)thumbnailWidthFor:(CGFloat)width
-{
-    CGFloat rowCells = MAX(NumberOfPhotosForLine, trunc(width / (MinimumCellSize + SpaceBetweenPhotos)));
-    CGFloat thumbnailWidth = ( width - ( (rowCells - 1) * SpaceBetweenPhotos) ) / rowCells;
-    thumbnailWidth = MAX(trunc(thumbnailWidth), MinimumCellSize);
-    return thumbnailWidth;
 }
 
 - (instancetype)init
@@ -73,11 +62,12 @@ static NSString * const ArrowDown = @"\u25be";
     [self.collectionView registerClass:[WPBlogMediaCollectionViewCell class] forCellWithReuseIdentifier:NSStringFromClass([WPBlogMediaCollectionViewCell class])];
     
     // Configure collection view layout
-    CGFloat width = [WPBlogMediaCollectionViewController thumbnailWidthFor:self.view.frame.size.width];
+    CGFloat spaceBetweenPhotos = [Media preferredThumbnailSpacing];
+    CGFloat width = [Media thumbnailWidthFor:self.view.frame.size.width];
     self.layout.itemSize = CGSizeMake(width, width);
-    self.layout.minimumInteritemSpacing = SpaceBetweenPhotos;
-    self.layout.minimumLineSpacing = SpaceBetweenPhotos;
-    self.layout.sectionInset = UIEdgeInsetsMake(SpaceBetweenPhotos, 0, SpaceBetweenPhotos, 0);
+    self.layout.minimumInteritemSpacing = spaceBetweenPhotos;
+    self.layout.minimumLineSpacing = spaceBetweenPhotos;
+    self.layout.sectionInset = UIEdgeInsetsMake(spaceBetweenPhotos, 0, spaceBetweenPhotos, 0);
     
     //setup navigation items
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel

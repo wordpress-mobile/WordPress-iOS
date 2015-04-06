@@ -24,11 +24,6 @@
  */
 + (NSString *)title;
 
-/**
- For cell size and expected size to save thumbnails for offline access as
- */
-+ (CGFloat)thumbnailWidthFor:(CGFloat)width;
-
 @end
 
 

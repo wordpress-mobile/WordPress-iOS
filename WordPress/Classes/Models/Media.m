@@ -4,7 +4,7 @@
 #import "NSString+Util.h"
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
-#import <ImageIO/ImageIO.h>
+@import ImageIO;
 
 @interface Media (PrivateMethods)
 
@@ -40,8 +40,10 @@
 
 @synthesize unattached;
 
-NSUInteger const MediaDefaultThumbnailSize = 75;
-CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
+static CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
+static CGFloat const MediaSpaceBetweenThumbnails = 2.0;
+static CGFloat const MediaMinimumThumbnailsForLine = 3.0;
+static CGFloat const MediaMinimumThumbnailSize = 105.0;
 
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
@@ -60,9 +62,56 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return media;
 }
 
-+ (UIImage *)generateThumbnailFromImage:(UIImage *)theImage andSize:(CGSize)targetSize
++ (CGFloat)preferredThumbnailSpacing
 {
-    return [theImage thumbnailImage:MediaDefaultThumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+    return MediaSpaceBetweenThumbnails;
+}
+
++ (CGFloat)preferredThumbnailWidthScreenPixels
+{
+    CGFloat screenPixels = [UIScreen mainScreen].bounds.size.width;
+    CGFloat thumbnailWidth = [Media thumbnailWidthFor:screenPixels];
+    thumbnailWidth *= [UIScreen mainScreen].scale;
+    return thumbnailWidth;
+}
+
++ (CGFloat)thumbnailWidthFor:(CGFloat)width
+{
+    CGFloat rowCells = MAX(MediaMinimumThumbnailsForLine, trunc(width / (MediaMinimumThumbnailSize + MediaSpaceBetweenThumbnails)));
+    CGFloat thumbnailWidth = ( width - ( (rowCells - 1) * MediaSpaceBetweenThumbnails) ) / rowCells;
+    thumbnailWidth = MAX(trunc(thumbnailWidth), MediaMinimumThumbnailSize);
+    return thumbnailWidth;
+}
+
++ (UIImage *)thumbnailImageFromAsset:(ALAsset *)asset
+{
+    NSDictionary *thumbnailOptions = @{
+        (id)kCGImageSourceCreateThumbnailWithTransform : @YES,
+        (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+        (id)kCGImageSourceThumbnailMaxPixelSize : @([Media preferredThumbnailWidthScreenPixels]),
+    };
+    
+    CGImageRef generated = [asset.defaultRepresentation CGImageWithOptions:thumbnailOptions];
+    UIImage *image = [UIImage imageWithCGImage:generated];
+    UIImage *thumbnail = [Media thumbnailImageFromImage:image];
+    return thumbnail;
+}
+
++ (UIImage *)thumbnailImageFromImage:(UIImage *)image
+{
+    CGFloat thumbnailSize = [Media preferredThumbnailWidthScreenPixels];
+    if (image.size.width <= thumbnailSize && image.size.height <= thumbnailSize) {
+        return image;
+    }
+    
+    UIImage *thumbnail = [image thumbnailImage:thumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+    return thumbnail;
+}
+
++ (NSData *)thumbnailDataFrom:(UIImage *)thumbnail
+{
+    NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, MediaDefaultJPEGCompressionQuality);
+    return thumbnailData;
 }
 
 + (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog
