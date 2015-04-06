@@ -103,7 +103,7 @@
 		5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D20A6521982D56600463A91 /* FollowedSitesViewController.m */; };
 		5D2415CB1A8842C9009BD444 /* ReaderPreviewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2415CA1A8842C9009BD444 /* ReaderPreviewHeaderView.m */; };
 		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
-		5D2C05561AD2F56200A753FE /* PostFilterButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C05551AD2F56200A753FE /* PostFilterButton.m */; };
+		5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
 		5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
 		5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */; };
@@ -690,8 +690,8 @@
 		5D2415CA1A8842C9009BD444 /* ReaderPreviewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPreviewHeaderView.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
 		5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSourceTest.m; sourceTree = "<group>"; };
-		5D2C05541AD2F56200A753FE /* PostFilterButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostFilterButton.h; sourceTree = "<group>"; };
-		5D2C05551AD2F56200A753FE /* PostFilterButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFilterButton.m; sourceTree = "<group>"; };
+		5D2C05541AD2F56200A753FE /* NavbarTitleDropdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarTitleDropdownButton.h; sourceTree = "<group>"; };
+		5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBarTitleDropdownButton.m; sourceTree = "<group>"; };
 		5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
 		5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPCommentContentViewProvider.h; sourceTree = "<group>"; };
 		5D37941919216B1300E26CA4 /* RebloggingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RebloggingViewController.h; sourceTree = "<group>"; };
@@ -2015,8 +2015,8 @@
 				5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */,
 				5D000DDF1AC0879600A7BAF9 /* PostCardActionBarItem.h */,
 				5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */,
-				5D2C05541AD2F56200A753FE /* PostFilterButton.h */,
-				5D2C05551AD2F56200A753FE /* PostFilterButton.m */,
+				5D2C05541AD2F56200A753FE /* NavbarTitleDropdownButton.h */,
+				5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3506,7 +3506,7 @@
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
 				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
-				5D2C05561AD2F56200A753FE /* PostFilterButton.m in Sources */,
+				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
 				31C9F82E1A2368A2008BB945 /* BlogDetailHeaderView.m in Sources */,
 				C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */,

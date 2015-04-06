@@ -1,7 +1,7 @@
-#import "PostFilterButton.h"
+#import "NavBarTitleDropdownButton.h"
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
-@implementation PostFilterButton
+@implementation NavBarTitleDropdownButton
 
 - (void)awakeFromNib
 {
