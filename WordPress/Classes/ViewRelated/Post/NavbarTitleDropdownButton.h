@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface PostFilterButton : UIButton
+@interface NavBarTitleDropdownButton : UIButton
 
 - (void)setAttributedTitleForTitle:(NSString *)title;
 
