@@ -282,6 +282,10 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 - (void)configureAuthorFilter
 {
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
+    NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
+    NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
+    [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
+    [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
 }
 
 - (void)configureSearchController
