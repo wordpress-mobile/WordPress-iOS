@@ -59,6 +59,8 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign) BOOL featured;
 
+@property (nonatomic, strong, readonly) NSString * thumbnaiLocalURL;
+
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
