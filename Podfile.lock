@@ -1,24 +1,24 @@
 PODS:
-  - 1PasswordExtension (1.1.2)
-  - AFNetworking (2.5.1):
-    - AFNetworking/NSURLConnection (= 2.5.1)
-    - AFNetworking/NSURLSession (= 2.5.1)
-    - AFNetworking/Reachability (= 2.5.1)
-    - AFNetworking/Security (= 2.5.1)
-    - AFNetworking/Serialization (= 2.5.1)
-    - AFNetworking/UIKit (= 2.5.1)
-  - AFNetworking/NSURLConnection (2.5.1):
+  - 1PasswordExtension (1.2)
+  - AFNetworking (2.5.2):
+    - AFNetworking/NSURLConnection (= 2.5.2)
+    - AFNetworking/NSURLSession (= 2.5.2)
+    - AFNetworking/Reachability (= 2.5.2)
+    - AFNetworking/Security (= 2.5.2)
+    - AFNetworking/Serialization (= 2.5.2)
+    - AFNetworking/UIKit (= 2.5.2)
+  - AFNetworking/NSURLConnection (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.1):
+  - AFNetworking/NSURLSession (2.5.2):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.1)
-  - AFNetworking/Security (2.5.1)
-  - AFNetworking/Serialization (2.5.1)
-  - AFNetworking/UIKit (2.5.1):
+  - AFNetworking/Reachability (2.5.2)
+  - AFNetworking/Security (2.5.2)
+  - AFNetworking/Serialization (2.5.2)
+  - AFNetworking/UIKit (2.5.2):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.7.1)
@@ -46,9 +46,9 @@ PODS:
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.8.0)
   - HockeySDK (3.6.2)
-  - KIF/IdentifierTests (3.1.2):
+  - KIF/IdentifierTests (3.2.1):
     - KIF/XCTest
-  - KIF/XCTest (3.1.2)
+  - KIF/XCTest (3.2.1)
   - Lookback (0.9.2)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.4)
@@ -97,19 +97,19 @@ PODS:
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
   - WordPress-AppbotX (1.0.6)
-  - WordPress-iOS-Editor (0.5):
+  - WordPress-iOS-Editor (0.6):
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (~> 0.0.2)
     - UIAlertView+Blocks
     - WordPress-iOS-Shared (~> 0.3.0)
-    - WordPressCom-Analytics-iOS (~> 0.0.4)
+    - WordPressCom-Analytics-iOS (~> 0.0.30)
   - WordPress-iOS-Shared (0.3):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
   - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.0.29)
+  - WordPressCom-Analytics-iOS (0.0.30)
   - WordPressCom-Stats-iOS (0.3.0):
     - AFNetworking (~> 2.5.1)
     - CocoaLumberjack (~> 1.9)
@@ -145,10 +145,10 @@ DEPENDENCIES:
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `e799a8cb470bc07032a7080ca4647a6ce3bfb59b`)
+  - WordPress-iOS-Editor (from `git://github.com/wordpress-mobile/WordPress-Editor-iOS`, commit `d4156881446ddab6afcdce0b4e897056db2a6eeb`)
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (= 0.0.29)
+  - WordPressCom-Analytics-iOS (= 0.0.30)
   - WordPressCom-Stats-iOS (= 0.3.0)
   - wpxmlrpc (~> 0.8)
 
@@ -165,7 +165,7 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: e799a8cb470bc07032a7080ca4647a6ce3bfb59b
+    :commit: d4156881446ddab6afcdce0b4e897056db2a6eeb
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 CHECKOUT OPTIONS:
@@ -179,12 +179,12 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: e799a8cb470bc07032a7080ca4647a6ce3bfb59b
+    :commit: d4156881446ddab6afcdce0b4e897056db2a6eeb
     :git: git://github.com/wordpress-mobile/WordPress-Editor-iOS
 
 SPEC CHECKSUMS:
-  1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
-  AFNetworking: 10e85a00bb0f475124e4ff2677bf15693b2c1523
+  1PasswordExtension: fcf300204bda5b5c78936dbb937a7d661f1ca796
+  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
@@ -196,7 +196,7 @@ SPEC CHECKSUMS:
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9e188175ea51ca04287df3f5f14ba44f8a017a34
   HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
-  KIF: e08915d78a220480599837e9a760deee64453d76
+  KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 61f3f69428ec1f4c32245392471ccc2292c05e32
@@ -213,10 +213,10 @@ SPEC CHECKSUMS:
   UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: e4f17d9c84fb3ddfd714f231498ea1f27be534bb
+  WordPress-iOS-Editor: 063429929976da5b2618fea0f3bee3f4e7bf9dfc
   WordPress-iOS-Shared: 0f5281492166bb89ea09d8ab5011e871ba4f6709
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
-  WordPressCom-Analytics-iOS: 4003edc911aeaaba5f931e9045e70f9b6057737a
+  WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
   WordPressCom-Stats-iOS: b0b767b8aab64b4446e547d6bbd23060ec78e1ab
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
