@@ -1,4 +1,5 @@
 #import "PostFilterButton.h"
+#import <WordPress-iOS-Shared/WPFontManager.h>
 
 @implementation PostFilterButton
 
@@ -24,6 +25,18 @@
     CGRect frame = [super titleRectForContentRect:contentRect];
     frame.origin.x = CGRectGetMinX(frame) - CGRectGetWidth([self imageRectForContentRect:contentRect]);
     return frame;
+}
+
+- (void)setAttributedTitleForTitle:(NSString *)title
+{
+    NSDictionary *attributes = @{NSForegroundColorAttributeName : [UIColor whiteColor],
+                                 NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:16.0] };
+    NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:title
+                                                                                  attributes:attributes];
+
+    [self setAttributedTitle:titleText forState:UIControlStateNormal];
+    [self setAttributedTitle:titleText forState:UIControlStateHighlighted];
+    [self sizeToFit];
 }
 
 @end
