@@ -89,6 +89,7 @@
                         <outlet property="authorsFilter" destination="2zZ-72-iKA" id="Ycd-OB-A7L"/>
                         <outlet property="authorsFilterView" destination="9at-tM-m4A" id="Iue-Ql-B4V"/>
                         <outlet property="authorsFilterViewHeightConstraint" destination="KUd-OB-pfW" id="qbe-pV-Ymo"/>
+                        <outlet property="filterButton" destination="qr8-Nf-Mwl" id="u7d-J1-vsa"/>
                         <outlet property="rightBarButtonView" destination="8Ph-e4-iOe" id="V4F-lw-glT"/>
                         <outlet property="searchButton" destination="odC-V9-68g" id="FbP-8x-HyD"/>
                         <outlet property="searchWrapperView" destination="Kl8-s3-Dv4" id="Wgb-yM-577"/>
@@ -96,6 +97,17 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mrN-zD-yTr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="qr8-Nf-Mwl" customClass="PostFilterButton">
+                    <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <state key="normal" title="Button" image="icon-navbar-dropdown">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="didTapFilterButton:" destination="VTO-0U-HpP" eventType="touchUpInside" id="B6R-YT-dc3"/>
+                    </connections>
+                </button>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Ph-e4-iOe">
                     <rect key="frame" x="0.0" y="0.0" width="80" height="44"/>
                     <subviews>
@@ -148,6 +160,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="icon-navbar-dropdown" width="22" height="25"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
         <image name="icon-post-search" width="22" height="22"/>
