@@ -33,7 +33,7 @@ pod 'WordPressApi', '~> 0.3.4'
 pod 'WordPress-iOS-Shared', '0.3'
 pod 'WordPress-iOS-Editor', :git => 'git://github.com/wordpress-mobile/WordPress-Editor-iOS', :commit => 'd4156881446ddab6afcdce0b4e897056db2a6eeb'
 pod 'WordPressCom-Stats-iOS', '0.3.0'
-pod 'WordPressCom-Analytics-iOS', '0.0.29'
+pod 'WordPressCom-Analytics-iOS', '0.0.30'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
 
 target 'WordPressTodayWidget', :exclusive => true do
