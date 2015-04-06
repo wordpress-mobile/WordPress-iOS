@@ -1,7 +1,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <1PasswordExtension/OnePasswordExtension/OnePasswordExtension.h>
 
 #import "CreateAccountAndBlogViewController.h"
 #import "SupportViewController.h"
