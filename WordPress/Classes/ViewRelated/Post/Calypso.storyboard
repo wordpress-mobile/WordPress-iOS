@@ -54,15 +54,27 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="9at-tM-m4A" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="C6h-83-Wk3"/>
-                            <constraint firstItem="Kl8-s3-Dv4" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="GP4-eX-EG8"/>
+                            <constraint firstItem="9at-tM-m4A" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="C6h-83-Wk3">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
+                            <constraint firstItem="Kl8-s3-Dv4" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="GP4-eX-EG8">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
                             <constraint firstItem="cnu-9z-5GZ" firstAttribute="top" secondItem="9at-tM-m4A" secondAttribute="bottom" id="O34-iY-MtY"/>
                             <constraint firstItem="AIH-s0-RTt" firstAttribute="top" secondItem="cnu-9z-5GZ" secondAttribute="bottom" id="g65-gl-KUt"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="cnu-9z-5GZ" secondAttribute="trailing" constant="-16" id="hEd-mB-ZfB"/>
-                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="phA-Qk-kzl"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Kl8-s3-Dv4" secondAttribute="trailing" constant="-16" id="rhu-Tp-z3F"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="cnu-9z-5GZ" secondAttribute="trailing" constant="-16" id="hEd-mB-ZfB">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
+                            <constraint firstItem="cnu-9z-5GZ" firstAttribute="leading" secondItem="Zhd-4n-wcm" secondAttribute="leadingMargin" constant="-16" id="phA-Qk-kzl">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
+                            <constraint firstAttribute="trailingMargin" secondItem="Kl8-s3-Dv4" secondAttribute="trailing" constant="-16" id="rhu-Tp-z3F">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
                             <constraint firstItem="rUe-TB-81b" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="top" id="sDR-Lv-r7y"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="9at-tM-m4A" secondAttribute="trailing" constant="-16" id="wcq-af-Gp2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="9at-tM-m4A" secondAttribute="trailing" constant="-16" id="wcq-af-Gp2">
+                                <variation key="heightClass=regular-widthClass=regular" constant="-20"/>
+                            </constraint>
                             <constraint firstItem="9at-tM-m4A" firstAttribute="top" secondItem="Kl8-s3-Dv4" secondAttribute="bottom" id="xbf-DL-e4c"/>
                         </constraints>
                     </view>
