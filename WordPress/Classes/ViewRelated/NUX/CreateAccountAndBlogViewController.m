@@ -24,7 +24,7 @@
 #import "NSString+XMLExtensions.h"
 #import "Constants.h"
 
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <1PasswordExtension/OnePasswordExtension/OnePasswordExtension.h>
 
 
 @interface CreateAccountAndBlogViewController ()<UITextFieldDelegate,UIGestureRecognizerDelegate> {
