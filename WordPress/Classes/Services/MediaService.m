@@ -14,10 +14,11 @@
 #import "UIImage+Resize.h"
 #import "WPBlogMediaCollectionViewController.h"
 
-NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
+static NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
 NSInteger const MediaMinImageSizeDimension = 150;
 NSInteger const MediaMaxImageSizeDimension = 3000;
+static NSInteger const MediaPreloadThumbnailCount = 100;
 
 @interface MediaService ()
 
@@ -110,6 +111,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     [mediaToThumbnail sortUsingComparator:^NSComparisonResult(Media *left, Media *right) {
         return [right.creationDate compare:left.creationDate];
     }];
+    // balance offline convenience and data usage
+    if (MediaPreloadThumbnailCount < [mediaToThumbnail count]) {
+        NSRange ignore = NSMakeRange(MediaPreloadThumbnailCount, [mediaToThumbnail count] - MediaPreloadThumbnailCount);
+        [mediaToThumbnail removeObjectsInRange:ignore];
+    }
     [self getThumbnailsForMedia:mediaToThumbnail];
     
     if (completion) {
