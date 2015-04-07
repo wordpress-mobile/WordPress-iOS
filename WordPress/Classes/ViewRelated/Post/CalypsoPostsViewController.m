@@ -393,12 +393,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)configureSearchBarPlaceholder
 {
-    NSString *placeholderText;
-    // TODO: adjust text depending on filters
-
     // Adjust color depending on where the search bar is being presented.
     UIColor *placeholderColor = [UIDevice isPad] ? [WPStyleGuide grey] : [WPStyleGuide wordPressBlue];
-    placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
 }
