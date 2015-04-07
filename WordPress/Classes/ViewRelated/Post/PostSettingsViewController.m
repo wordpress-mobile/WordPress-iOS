@@ -771,8 +771,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
                                  };
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *status) {
-        self.apost.status = status;
+    vc.onItemSelected = ^(NSObject *status) {
+        self.apost.status = (NSString *)status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
@@ -794,7 +794,8 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
                                     @"CurrentValue" : [self titleForVisibility]};
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *visibility) {
+    vc.onItemSelected = ^(NSObject *selectedVis) {
+        NSString *visibility = (NSString *)selectedVis;
         [weakVc dismiss];
         
         NSAssert(_apost != nil, @"The post should not be nil here.");
@@ -858,10 +859,10 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *status) {
+    vc.onItemSelected = ^(NSObject *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            post.postFormatText = status;
+            post.postFormatText = (NSString *)status;
             [weakVc dismiss];
             [self.tableView reloadData];
         }
