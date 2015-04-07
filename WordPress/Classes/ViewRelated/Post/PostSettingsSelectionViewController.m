@@ -66,11 +66,30 @@
         // Hides cell dividers.
         self.tableView.tableFooterView = [UIView new];
     }
+
+    [self configureCancelButton];
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-#pragma mark -
-#pragma mark Table view data source
+- (void)configureCancelButton
+{
+    if ([self.navigationController.viewControllers count] > 1) {
+        // showing a back button instead
+        return;
+    }
+
+    UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(didTapCancelButton:)];
+    self.navigationItem.rightBarButtonItem = cancelButton;
+}
+
+- (void)didTapCancelButton:(id)sender
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+
+#pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
