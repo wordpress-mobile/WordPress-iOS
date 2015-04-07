@@ -8,7 +8,7 @@
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *values;
 @property (nonatomic, strong) NSString *defaultValue;
-@property (nonatomic, strong) NSString *currentValue;
+@property (nonatomic, strong) NSObject *currentValue;
 
 @end
 
@@ -110,7 +110,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    NSString *val = [self.values objectAtIndex:indexPath.row];
+    NSObject *val = [self.values objectAtIndex:indexPath.row];
     self.currentValue = val;
     [self.tableView reloadData];
 
