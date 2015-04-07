@@ -37,19 +37,23 @@
 }
 */
 
-- (id)initWithDictionary:(NSDictionary *)dictionary
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
-    self = [self initWithStyle:UITableViewStyleGrouped];
+    return [self initWithStyle:UITableViewStyleGrouped andDictionary:dictionary];
+}
 
+- (instancetype)initWithStyle:(UITableViewStyle)style andDictionary:(NSDictionary *)dictionary
+{
+    self = [self initWithStyle:style];
     if (self) {
         self.title = [dictionary objectForKey:@"Title"];
-        self.titles = [dictionary objectForKey:@"Titles"];
-        self.values = [dictionary objectForKey:@"Values"];
-        self.defaultValue = [dictionary objectForKey:@"DefaultValue"];
-        self.currentValue = [dictionary objectForKey:@"CurrentValue"];
+        _titles = [dictionary objectForKey:@"Titles"];
+        _values = [dictionary objectForKey:@"Values"];
+        _defaultValue = [dictionary objectForKey:@"DefaultValue"];
+        _currentValue = [dictionary objectForKey:@"CurrentValue"];
 
-        if (self.currentValue == nil) {
-            self.currentValue = self.defaultValue;
+        if (_currentValue == nil) {
+            _currentValue = _defaultValue;
         }
     }
     return self;
@@ -58,6 +62,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    if (self.tableView.style == UITableViewStylePlain) {
+        // Hides cell dividers.
+        self.tableView.tableFooterView = [UIView new];
+    }
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
