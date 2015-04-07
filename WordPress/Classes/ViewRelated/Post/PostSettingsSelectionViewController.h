@@ -4,7 +4,8 @@
 
 @property (nonatomic, copy) void(^onItemSelected)(NSString *);
 
-- (id)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithDictionary:(NSDictionary *)dictionary;
+- (instancetype)initWithStyle:(UITableViewStyle)style andDictionary:(NSDictionary *)dictionary;
 - (void)dismiss;
 
 @end
