@@ -105,16 +105,15 @@
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSString *predStr;
-    if ([self isWPComUser]) {
-        predStr = @"topicID > 0 AND isSubscribed = NO";
-    } else {
-        // include lists for non wpcom users
-        predStr = @"topicID = 0 OR isSubscribed = NO";
-    }
-
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:predStr];
+
+    if ([self isWPComUser]) {
+        // Just fetch popular/recommended tags
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID > 0 AND isSubscribed = NO) AND (isMenuItem = YES)"];
+    } else {
+        // fetch popular/recommended tags + any default lists
+        request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = NO) AND (isMenuItem = YES)"];
+    }
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -137,7 +136,7 @@
         [WPStyleGuide configureTableViewCell:cell];
     }
     ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [topic.title capitalizedString];
+    cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
@@ -165,6 +164,10 @@
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
+    if ([self.tableView numberOfSections] > 1 && section == 0) {
+        return NSLocalizedString(@"Lists", @"Section title for the default reader lists");
+    }
+
     return NSLocalizedString(@"Tags", @"Section title for reader tags you can browse");
 }
 

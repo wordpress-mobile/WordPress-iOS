@@ -1,14 +1,14 @@
 #import "PostService.h"
 #import "Post.h"
 #import "Coordinate.h"
-#import "Category.h"
+#import "PostCategory.h"
 #import "Page.h"
 #import "PostServiceRemote.h"
 #import "PostServiceRemoteREST.h"
 #import "PostServiceRemoteXMLRPC.h"
 #import "RemotePost.h"
-#import "RemoteCategory.h"
-#import "CategoryService.h"
+#import "RemotePostCategory.h"
+#import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "NSDate+WordPressJSON.h"
 #import "CommentService.h"
@@ -268,7 +268,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         } else {
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
         }
-        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
         NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
         NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
         [postsToDelete minusSet:postsToKeep];
@@ -301,6 +301,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     post.status = remotePost.status;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
+    post.authorAvatarURL = remotePost.authorAvatarURL;
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
@@ -311,7 +312,6 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         pagePost.parentID = remotePost.parentID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
-        postPost.authorAvatarURL = remotePost.authorAvatarURL;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
@@ -348,12 +348,14 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     RemotePost *remotePost = [RemotePost new];
     remotePost.postID = post.postID;
     remotePost.date = post.date_created_gmt;
-    remotePost.title = post.postTitle;
+    remotePost.title = post.postTitle ?: @"";
     remotePost.content = post.content;
     remotePost.status = post.status;
     remotePost.postThumbnailID = post.post_thumbnail;
     remotePost.password = post.password;
     remotePost.type = @"post";
+    remotePost.authorAvatarURL = post.authorAvatarURL;
+
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         remotePost.parentID = pagePost.parentID;
@@ -361,12 +363,13 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     }
     if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
-        remotePost.authorAvatarURL = postPost.authorAvatarURL;
         remotePost.format = postPost.postFormat;
         remotePost.tags = [postPost.tags componentsSeparatedByString:@","];
         remotePost.categories = [self remoteCategoriesForPost:postPost];
         remotePost.metadata = [self remoteMetadataForPost:postPost];
     }
+
+    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
 
     return remotePost;
 }
@@ -374,15 +377,15 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 - (NSArray *)remoteCategoriesForPost:(Post *)post
 {
     NSMutableArray *remoteCategories = [NSMutableArray arrayWithCapacity:post.categories.count];
-    for (Category *category in post.categories) {
+    for (PostCategory *category in post.categories) {
         [remoteCategories addObject:[self remoteCategoryWithCategory:category]];
     }
     return [NSArray arrayWithArray:remoteCategories];
 }
 
-- (RemoteCategory *)remoteCategoryWithCategory:(Category *)category
+- (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
 {
-    RemoteCategory *remoteCategory = [RemoteCategory new];
+    RemotePostCategory *remoteCategory = [RemotePostCategory new];
     remoteCategory.categoryID = category.categoryID;
     remoteCategory.name = category.categoryName;
     remoteCategory.parentID = category.parentID;
@@ -440,11 +443,11 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 
 - (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories {
     NSManagedObjectID *blogObjectID = post.blog.objectID;
-    CategoryService *categoryService = [[CategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
-    for (RemoteCategory *remoteCategory in remoteCategories) {
-        Category *category = [categoryService findWithBlogObjectID:blogObjectID andCategoryID:remoteCategory.categoryID];
+    for (RemotePostCategory *remoteCategory in remoteCategories) {
+        PostCategory *category = [categoryService findWithBlogObjectID:blogObjectID andCategoryID:remoteCategory.categoryID];
         if (!category) {
             category = [categoryService newCategoryForBlogObjectID:blogObjectID];
             category.categoryID = remoteCategory.categoryID;

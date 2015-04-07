@@ -4,6 +4,7 @@
 @class WPAccount, Blog;
 
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
+extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
 @interface AccountService : NSObject <LocalCoreDataService>
 
@@ -32,7 +33,7 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 - (void)setDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
- Removes the default WordPress.com account
+ Removes the default WordPress.com account. Should only be called from the Main Thread
  
  @see defaultWordPressComAccount
  @see setDefaultWordPressComAccount:
@@ -51,13 +52,11 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  Uses a background managed object context.
  
  @param username the WordPress.com account's username
- @param password the WordPress.com account's password
- @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
  @return a WordPress.com `WPAccount` object for the given `username`
- @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
+ @see createOrUpdateWordPressComAccountWithUsername:authToken:
  */
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                    password:(NSString *)password
                                                    authToken:(NSString *)authToken;
 
 /**
@@ -85,5 +84,17 @@ extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
  @return a `WPAccount` object if there's one for the specified username. Otherwise it returns nil
  */
 - (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
+
+/**
+ Updates email and defaultBlog fields for a WordPress.com WPAccount using /me endpoint
+
+ @param account WordPress.com WPAccount desired to be updated
+ */
+- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
+
+/**
+ Removes your default WordPress.com password from the keychain, if needed.
+ */
+- (void)removeWordPressComAccountPasswordIfNeeded;
 
 @end

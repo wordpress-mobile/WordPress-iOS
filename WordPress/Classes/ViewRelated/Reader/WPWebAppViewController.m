@@ -1,6 +1,7 @@
 #import "WPWebAppViewController.h"
 #import "WordPressAppDelegate.h"
 #import "ReachabilityUtils.h"
+#import "WPUserAgent.h"
 
 @implementation WPWebAppViewController {
     BOOL _pullToRefreshEnabled;
@@ -96,10 +97,10 @@
     }
 
     NSHTTPCookieStorage *cookies = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSDictionary *cookieHeader = [NSHTTPCookie requestHeaderFieldsWithCookies:[cookies cookiesForURL:request.URL]];
-    [request setValue:appDelegate.applicationUserAgent forHTTPHeaderField:@"User-Agent"];
+    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     [request setValue:[cookieHeader valueForKey:@"Cookie"] forHTTPHeaderField:@"Cookie"];
     [self.webView loadRequest:[self.webBridge authorizeHybridRequest:request]];
 }

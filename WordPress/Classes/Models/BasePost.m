@@ -99,11 +99,6 @@
     self.status = [BasePost statusForTitle:aTitle];
 }
 
-- (BOOL)hasChanged
-{
-    return NO;
-}
-
 - (BOOL)isScheduled
 {
     return ([self.status isEqualToString:@"publish"] && [self.dateCreated compare:[NSDate date]] == NSOrderedDescending);

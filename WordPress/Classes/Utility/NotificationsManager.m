@@ -1,8 +1,8 @@
 #import "NotificationsManager.h"
 #import "NotificationsViewController.h"
+#import "WPTabBarController.h"
 
 #import "WordPressAppDelegate.h"
-#import "UIDevice+WordPressIdentifier.h"
 
 #import "WordPressComApi.h"
 #import <WPXMLRPCClient.h>
@@ -20,19 +20,31 @@
 
 
 
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+NSString *const NotificationsManagerDidRegisterDeviceToken          = @"NotificationsManagerDidRegisterDeviceToken";
+NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
+
 static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
 static NSString *const NotificationsPreferencesKey                  = @"notification_preferences";
-NSString *const NotificationsDeviceToken                            = @"apnsDeviceToken";
+static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
 
 // These correspond to the 'category' data WP.com will send with a push notification
-NSString *const NotificationCategoryCommentApprove                  = @"approve-comment";
-NSString *const NotificationCategoryCommentLike                     = @"like-comment";
-NSString *const NotificationCategoryCommentReply                    = @"replyto-comment";
-NSString *const NotificationCategoryCommentReplyWithLike            = @"replyto-like-comment";
+static NSString *const NotificationCategoryCommentApprove           = @"approve-comment";
+static NSString *const NotificationCategoryCommentLike              = @"like-comment";
+static NSString *const NotificationCategoryCommentReply             = @"replyto-comment";
+static NSString *const NotificationCategoryCommentReplyWithLike     = @"replyto-like-comment";
 
-NSString *const NotificationActionCommentReply                      = @"COMMENT_REPLY";
-NSString *const NotificationActionCommentLike                       = @"COMMENT_LIKE";
-NSString *const NotificationActionCommentApprove                    = @"COMMENT_MODERATE_APPROVE";
+static NSString *const NotificationActionCommentReply               = @"COMMENT_REPLY";
+static NSString *const NotificationActionCommentLike                = @"COMMENT_LIKE";
+static NSString *const NotificationActionCommentApprove             = @"COMMENT_MODERATE_APPROVE";
+
+
+#pragma mark ====================================================================================
+#pragma mark NotificationsManager
+#pragma mark ====================================================================================
 
 @implementation NotificationsManager
 
@@ -92,6 +104,9 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         [userDefaults setObject:newToken forKey:NotificationsDeviceToken];
         [userDefaults synchronize];
     }
+    
+    // Notify Listeners
+    [[NSNotificationCenter defaultCenter] postNotificationName:NotificationsManagerDidRegisterDeviceToken object:newToken];
 
     [self syncPushNotificationInfo];
 }
@@ -108,23 +123,35 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount       = [accountService defaultWordPressComAccount];
+
+    void (^successBlock)(void) = ^{
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        [defaults removeObjectForKey:NotificationsDeviceToken];
+        [defaults removeObjectForKey:NotificationsDeviceIdKey];
+        [defaults removeObjectForKey:NotificationsPreferencesKey];
+        [defaults synchronize];
+        
+        NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        [nc postNotificationName:NotificationsManagerDidUnregisterDeviceToken object:nil];
+    };
     
-    [[defaultAccount restApi] unregisterForPushNotificationsWithDeviceId:deviceId
-                                                                 success:^{
-                                                                     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-                                                                     [defaults removeObjectForKey:NotificationsDeviceToken];
-                                                                     [defaults removeObjectForKey:NotificationsDeviceIdKey];
-                                                                     [defaults removeObjectForKey:NotificationsPreferencesKey];
-                                                                     [defaults synchronize];
-                                                                 } failure:^(NSError *error){
-                                                                     DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
-                                                                 }];
+    void (^failureBlock)(NSError *error) = ^(NSError *error){
+        DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
+    };
+    
+    [defaultAccount.restApi unregisterForPushNotificationsWithDeviceId:deviceId success:successBlock failure:failureBlock];
 }
 
 + (BOOL)deviceRegisteredForPushNotifications
 {
-    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken] != nil;
+    return [self registeredPushNotificationsToken] != nil;
 }
+
++ (NSString *)registeredPushNotificationsToken
+{
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+}
+
 
 #pragma mark - Notification handling
 
@@ -158,14 +185,11 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     
 
     if (state == UIApplicationStateInactive) {
-        NSString *notificationID            = [[userInfo numberForKey:@"note_id"] stringValue];
-        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-        
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
+        NSString *notificationID = [[userInfo numberForKey:@"note_id"] stringValue];
+        [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
-            Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+            Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
             [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
                 if (result == UIBackgroundFetchResultNewData) {
                     DDLogVerbose(@"Background Fetch Completed with New Data!");
@@ -183,7 +207,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     NSDictionary *remoteNotif = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
     if (remoteNotif) {
         DDLogVerbose(@"Launched with a remote notification as parameter:  %@", remoteNotif);
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] showTabForIndex:kNotificationsTabIndex];
+        [[WPTabBarController sharedInstance] showNotificationsTab];
     }
 }
 
@@ -228,11 +252,8 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
         }
     } else if ([identifier isEqualToString:NotificationActionCommentReply]) {
         // Load notifications detail view
-        NSString *notificationID            = [[remoteNotification numberForKey:@"note_id"] stringValue];
-        WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
-
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
-        [appDelegate.notificationsViewController showDetailsForNoteWithID:notificationID];
+        NSString *notificationID = [[remoteNotification numberForKey:@"note_id"] stringValue];
+        [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     }
 }
 
@@ -414,11 +435,10 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
 + (void)handleMixpanelPushNotification:(NSDictionary *)userInfo
 {
     NSString *targetToOpen = [userInfo stringForKey:@"open"];
-    WordPressAppDelegate *appDelegate   = [WordPressAppDelegate sharedWordPressApplicationDelegate];
     if ([targetToOpen isEqualToString:@"reader"]) {
-        [appDelegate showTabForIndex:kReaderTabIndex];
+        [[WPTabBarController sharedInstance] showReaderTab];
     } else if ([targetToOpen isEqualToString:@"notifications"]) {
-        [appDelegate showTabForIndex:kNotificationsTabIndex];
+        [[WPTabBarController sharedInstance] showNotificationsTab];
     } else if ([targetToOpen isEqualToString:@"stats"]) {
         [self openStatsForLastUsedOrFirstWPComBlog];
     }
@@ -430,7 +450,7 @@ NSString *const NotificationActionCommentApprove                    = @"COMMENT_
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog = [blogService lastUsedOrFirstWPcomBlog];
     if (blog != nil && [blog isWPcom]) {
-        [[WordPressAppDelegate sharedWordPressApplicationDelegate] switchMeTabToStatsViewForBlog:blog];
+        [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
 }
 

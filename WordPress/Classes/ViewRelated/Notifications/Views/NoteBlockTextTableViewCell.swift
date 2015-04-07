@@ -6,9 +6,12 @@ import Foundation
     // MARK: - Public Properties
     public var onUrlClick: ((NSURL) -> Void)?
     public var attributedText: NSAttributedString? {
-        didSet {
-            textView.attributedText = attributedText
+        set {
+            textView.attributedText = newValue
             setNeedsLayout()
+        }
+        get {
+            return textView.attributedText
         }
     }
     
@@ -27,10 +30,11 @@ import Foundation
     }
     
     public var dataDetectors: UIDataDetectorTypes? {
-        didSet {
-            if let unwrappedDataDetectors = dataDetectors {
-                textView.dataDetectorTypes = unwrappedDataDetectors
-            }
+        set {
+            textView.dataDetectorTypes = newValue ?? .None
+        }
+        get {
+            return textView.dataDetectorTypes
         }
     }
     
@@ -38,9 +42,12 @@ import Foundation
         return privateLabelPadding
     }
     
-    public var isTextViewSelectable: Bool = true {
-        didSet {
-            textView.selectable = isTextViewSelectable
+    public var isTextViewSelectable: Bool {
+        set {
+            textView.selectable = newValue
+        }
+        get {
+            return textView.selectable
         }
     }
     
@@ -72,6 +79,11 @@ import Foundation
     }
         
     // MARK: - RichTextView Data Source
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        onUrlClick?(URL)
+        return false
+    }
+    
     public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
     }

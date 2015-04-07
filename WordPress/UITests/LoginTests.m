@@ -10,6 +10,11 @@
 
 @implementation LoginTests
 
+- (void)beforeAll
+{
+    [self logoutIfNeeded];
+}
+
 - (void)beforeEach
 {
     if([tester tryFindingViewWithAccessibilityLabel:@"OK" error:nil]){
@@ -28,58 +33,59 @@
 
 - (void)testUnsuccessfulLogin
 {
-    [tester clearTextFromAndThenEnterText:@"unknow@unknow.com" intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromAndThenEnterText:@"failpassword" intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:@"unknow@unknow.com" intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:@"failpassword" intoViewWithAccessibilityIdentifier:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"GenericErrorMessage"];
+    [tester waitForViewWithAccessibilityIdentifier:@"GenericErrorMessage"];
     
     [tester tapViewWithAccessibilityLabel:@"OK"];
 }
 
 - (void)testSimpleLogin
 {
-    [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:oneStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:oneStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
     
     [self logout];
 }
 
 - (void)testTwoStepLogin
 {
-    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityLabel:@"Password"];
+    [tester clearTextFromAndThenEnterText:twoStepUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester clearTextFromAndThenEnterText:twoStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
     [tester tapViewWithAccessibilityLabel:@"Sign In"];
     
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
     
     [self logout];
 }
 
-- (void)testSelfHostedLoginWithJetPack
+- (void)testSelfHostedLoginWithoutJetPack
 {
     [tester tapViewWithAccessibilityLabel:@"Add Self-Hosted Site"];
-    [tester enterText:selfHostedUser intoViewWithAccessibilityLabel:@"Username / Email"];
-    [tester enterText:selfHostedPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester enterText:selfHostedSiteURL intoViewWithAccessibilityLabel:@"Site Address (URL)"];
+    [tester enterText:selfHostedUser intoViewWithAccessibilityIdentifier:@"Username / Email"];
+    [tester enterText:selfHostedPassword intoViewWithAccessibilityIdentifier:@"Password"];
+    [tester enterText:selfHostedSiteURL intoViewWithAccessibilityIdentifier:@"Site Address (URL)"];
     [tester tapViewWithAccessibilityLabel:@"Add Site"];
-    
-    [tester waitForTimeInterval:3];
-    [tester tapViewWithAccessibilityLabel:@"Skip"];
-    
+        
     [tester waitForTimeInterval:3];
     // Verify that the login succeeded
-    [tester waitForViewWithAccessibilityLabel:@"Main Navigation"];
+    [tester waitForViewWithAccessibilityIdentifier:@"Main Navigation"];
     
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
+    [tester waitForTimeInterval:1];
+    [tester tapViewWithAccessibilityLabel:@"My Sites"];
+    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Edit"];
     
     [tester tapViewWithAccessibilityLabel:[NSString stringWithFormat:@"Delete %@, %@", selfHostedSiteName, selfHostedSiteURL]];
@@ -89,10 +95,10 @@
 - (void) testCreateAccount {
     NSString * username = [NSString stringWithFormat:@"%@%u", oneStepUser, arc4random()];
     [tester tapViewWithAccessibilityLabel:@"Create Account"];
-    [tester enterText:[NSString stringWithFormat:@"%@@gmail.com", username] intoViewWithAccessibilityLabel:@"Email Address"];
-    [tester enterText:username intoViewWithAccessibilityLabel:@"Username"];
-    [tester enterText:oneStepPassword intoViewWithAccessibilityLabel:@"Password"];
-    [tester clearTextFromAndThenEnterText:username intoViewWithAccessibilityLabel:@"Site Address (URL)"];
+    [tester enterText:[NSString stringWithFormat:@"%@@gmail.com", username] intoViewWithAccessibilityIdentifier:@"Email Address"];
+    [tester enterText:username intoViewWithAccessibilityIdentifier:@"Username"];
+    [tester enterText:oneStepPassword intoViewWithAccessibilityIdentifier:@"Password"];
+    [tester clearTextFromAndThenEnterText:username intoViewWithAccessibilityIdentifier:@"Site Address (URL)"];
     [tester tapViewWithAccessibilityLabel:@"Create Account"];
     [tester waitForTimeInterval:10];
     [self logout];

@@ -3,17 +3,19 @@
 #import <AFNetworking/AFNetworking.h>
 
 #import "AccountService.h"
-#import "BlogService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderBlockedTableViewCell.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
+#import "ReaderPostContentView.h"
 #import "ReaderPostDetailViewController.h"
 #import "ReaderPostService.h"
 #import "ReaderPostTableViewCell.h"
+#import "ReaderPostUnattributedTableViewCell.h"
 #import "ReaderSiteService.h"
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
@@ -25,6 +27,8 @@
 #import "WPAnimatedBox.h"
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
+#import "WPTabBarController.h"
+#import "BlogService.h"
 
 #import "WPTableViewHandler.h"
 #import "WordPress-Swift.h"
@@ -36,68 +40,70 @@ static CGFloat const RPVCEstimatedRowHeightIPhone = 400.0;
 static CGFloat const RPVCEstimatedRowHeightIPad = 600.0;
 static NSInteger RPVCRefreshInterval = 300; // 5 minutes
 static CGRect RPVCTableHeaderFrame = {0.0f, 0.0f, 0.0f, 40.0f};
-
+static NSInteger const RPVCImageQuality = 65;
 
 NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
+NSString * const ReaderDetailTypeKey = @"post-detail-type";
+NSString * const ReaderDetailTypeNormal = @"normal";
+NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 @interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
                                         UIActionSheetDelegate,
                                         WPContentSyncHelperDelegate,
                                         WPTableImageSourceDelegate,
-                                        WPTableViewHandlerDelegate>
+                                        WPTableViewHandlerDelegate,
+                                        ReaderPostContentViewDelegate>
 
 
 @property (nonatomic, assign) BOOL viewHasAppeared;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPAnimatedBox *animatedBox;
-@property (nonatomic, readonly) ReaderTopic *currentTopic;
 @property (nonatomic, strong) ReaderPostTableViewCell *cellForLayout;
-@property (nonatomic, strong) NSNumber *siteIDToBlock;
-@property (nonatomic, strong) NSNumber *postIDThatInitiatedBlock;
+@property (nonatomic, strong) ReaderPost *postForMenuActionSheet;
+@property (nonatomic, strong) NSMutableArray *postIDsForUndoBlockCells;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic) BOOL shouldSkipRowAnimation;
 @property (nonatomic) UIDeviceOrientation previousOrientation;
+@property (nonatomic) BOOL hasWPComAccount;
+@property (nonatomic) BOOL hasVisibleWPComAccount;
+
+@property (nonatomic, strong) NSManagedObjectContext *contextForSync;
 
 @end
 
 
 @implementation ReaderPostsViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    return [[WordPressAppDelegate sharedWordPressApplicationDelegate] readerPostsViewController];
-}
-
-
 #pragma mark - Life Cycle methods
 
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    self.syncHelper.delegate = nil;
+    self.tableViewHandler.delegate = nil;
 }
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        Class aClass = [ReaderPostsViewController class];
+        Class aClass = [self class];
         self.restorationIdentifier = NSStringFromClass(aClass);
         self.restorationClass = aClass;
 
         _syncHelper = [[WPContentSyncHelper alloc] init];
         _syncHelper.delegate = self;
 
-        // TODO: since the vc is not visible when accounts/topics change we could
-        // handle this a different way and ditch the observers.
+        _postIDsForUndoBlockCells = [NSMutableArray array];
+
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didChangeAccount:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(readerTopicDidChange:) name:ReaderTopicDidChangeNotification object:nil];
     }
     return self;
 }
@@ -106,13 +112,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewDidLoad];
 
+    [self checkWPComAccountExists];
     [self configureRefreshControl];
     [self configureTableView];
     [self configureTableViewHandler];
     [self configureCellForLayout];
     [self configureFeaturedImageSource];
     [self configureInfiniteScroll];
-    [self configureNavbar];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
@@ -121,14 +127,9 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [super viewWillAppear:animated];
 
-    if (self.previousOrientation != UIInterfaceOrientationUnknown) {
-        if (UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-            [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
-            [self.tableView reloadData];
-        }
+    if ([self shouldRefreshTableViewOnViewWillAppear]) {
+        [self.tableView reloadData];
     }
-
-    [self updateTitle];
 
     [self configureNoResultsView];
 
@@ -147,7 +148,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }
 
     if (!self.viewHasAppeared) {
-        if (self.currentTopic) {
+        if (self.readerTopic) {
             [WPAnalytics track:WPAnalyticsStatReaderAccessed withProperties:[self tagPropertyForStats]];
         }
         self.viewHasAppeared = YES;
@@ -209,7 +210,53 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 }
 
 
+#pragma mark - Notifications
+
+- (void)didChangeAccount:(NSNotification *)notification
+{
+    [self checkWPComAccountExists];
+    [self.tableView reloadData];
+}
+
+
 #pragma mark - Configuration
+
+- (BOOL)shouldRefreshTableViewOnViewWillAppear
+{
+    return ([self changedOrientation] || [self toggledVisibilityOfWPComAccount]);
+}
+
+- (BOOL)changedOrientation
+{
+    if (self.previousOrientation != UIInterfaceOrientationUnknown
+        && UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
+    {
+        [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+        
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (BOOL)toggledVisibilityOfWPComAccount
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[self managedObjectContext]];
+    BOOL currentlyHasVisibleWPComAccount = [blogService hasVisibleWPComAccounts];
+    
+    if (self.hasVisibleWPComAccount != currentlyHasVisibleWPComAccount) {
+        self.hasVisibleWPComAccount = currentlyHasVisibleWPComAccount;
+        
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
+- (void)checkWPComAccountExists
+{
+    self.hasWPComAccount = ([[[AccountService alloc] initWithManagedObjectContext:[self managedObjectContext]] defaultWordPressComAccount] != nil);
+}
 
 - (void)configureRefreshControl
 {
@@ -218,17 +265,25 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     self.refreshControl = refreshControl;
 }
 
+- (Class)classForPostCell
+{
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return [ReaderPostUnattributedTableViewCell class];
+    }
+    return [ReaderPostTableViewCell class];
+}
+
 - (void)configureTableView
 {
     [self.tableView registerClass:[ReaderBlockedTableViewCell class] forCellReuseIdentifier:BlockedCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:FeaturedImageCellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:NoFeaturedImageCellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:FeaturedImageCellIdentifier];
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.accessibilityIdentifier = @"Reader Table";
     
     // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
-    if (UIDevice.isPad) {
+    if (UIDevice.isPad && !self.skipIpadTopPadding) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];
     }
 }
@@ -248,7 +303,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configureCellForLayout
 {
     NSString *CellIdentifier = @"CellForLayoutIdentifier";
-    [self.tableView registerClass:[ReaderPostTableViewCell class] forCellReuseIdentifier:CellIdentifier];
+    [self.tableView registerClass:[self classForPostCell] forCellReuseIdentifier:CellIdentifier];
     self.cellForLayout = [self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
 }
 
@@ -264,6 +319,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
     self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
     self.featuredImageSource.delegate = self;
+    self.featuredImageSource.photonQuality = RPVCImageQuality;
 }
 
 - (void)configureInfiniteScroll
@@ -281,27 +337,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     } else {
         self.tableView.tableFooterView = nil;
     }
-}
-
-- (void)configureNavbar
-{
-    // Don't show 'Reader' in the next-view back button
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" " style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
-
-    // Topics button
-    UIImage *image = [UIImage imageNamed:@"icon-reader-topics"];
-    CustomHighlightButton *topicsButton = [CustomHighlightButton buttonWithType:UIButtonTypeCustom];
-    topicsButton.tintColor = [WPStyleGuide navbarButtonTintColor];
-    [topicsButton setImage:image forState:UIControlStateNormal];
-    topicsButton.frame = CGRectMake(0.0, 0.0, image.size.width, image.size.height);
-    [topicsButton addTarget:self action:@selector(topicsAction:) forControlEvents:UIControlEventTouchUpInside];
-
-    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:topicsButton];
-    [button setAccessibilityLabel:NSLocalizedString(@"Topics", @"Accessibility label for the topics button. The user does not see this text but it can be spoken by a screen reader.")];
-    self.navigationItem.rightBarButtonItem = button;
-
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:button forNavigationItem:self.navigationItem];
 }
 
 - (void)configureNoResultsView
@@ -341,23 +376,26 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
 
-    NSRange range = [self.currentTopic.path rangeOfString:@"following"];
+    NSRange range = [self.readerTopic.path rangeOfString:@"following"];
     if (range.location != NSNotFound) {
         return NSLocalizedString(@"You're not following any sites yet.", @"Message shown to user when the reader list is empty because they are not following any sites.");
     }
 
-    range = [self.currentTopic.path rangeOfString:@"liked"];
+    range = [self.readerTopic.path rangeOfString:@"liked"];
     if (range.location != NSNotFound) {
         return NSLocalizedString(@"You have not liked any posts.", @"Message shown to user when the reader list is empty because they have not liked any posts.");
     }
 
-    return NSLocalizedString(@"Sorry. No posts yet.", @"Generic message shown to the user when the reader list is empty. ");
+    return NSLocalizedString(@"Sorry. No posts found.", @"Generic message shown to the user when the reader list is empty. ");
 }
 
 - (NSString *)noResultsMessageText
 {
     if (self.syncHelper.isSyncing) {
         return @"";
+    }
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return NSLocalizedString(@"We were unable to load any posts for this site.", @"Message shown when wwe were unable to load posts for a site being previewed in the reader. ");
     }
     return NSLocalizedString(@"Tap the tag icon to browse posts from popular sites.", @"Message shown encouraging the user to browse posts from popular sites. ");
 }
@@ -387,19 +425,63 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     return _activityFooter;
 }
 
-- (ReaderTopic *)currentTopic
+- (ReaderTopic *)topicInContext:(NSManagedObjectContext *)context
 {
-    return [self currentTopicInContext:self.managedObjectContext];
+    return [self topic:self.readerTopic inContext:context];
 }
 
-- (ReaderTopic *)currentTopicInContext:(NSManagedObjectContext *)context
+- (ReaderTopic *)topic:(ReaderTopic *)topic inContext:(NSManagedObjectContext *)context
 {
-    return [[[ReaderTopicService alloc] initWithManagedObjectContext:context] currentTopic];
+    ReaderTopic *topicInContext = (ReaderTopic *)[context objectWithID:topic.objectID];
+    return topicInContext;
+}
+
+- (void)setReaderTopic:(ReaderTopic *)readerTopic
+{
+    ReaderTopic *topic = readerTopic;
+    if (!readerTopic) {
+        topic = nil;
+
+    } else {
+        topic = [self topic:readerTopic inContext:[self managedObjectContext]];
+    }
+
+    if (topic == _readerTopic) {
+        return;
+    }
+
+    _readerTopic = topic;
+    [self readerTopicDidChange];
+}
+
+- (void)readerTopicDidChange
+{
+    [self updateTitle];
+
+    [self.tableView setContentOffset:CGPointZero animated:NO];
+    [self.tableViewHandler clearCachedRowHeights];
+    [self updateAndPerformFetchRequest];
+    [self.tableView reloadData];
+    [self syncItemsWithUserInteraction:NO];
+
+    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
+    if ([self isCurrentTopicFreshlyPressed]) {
+        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
+    }
+}
+
+- (void)updateTitle
+{
+    if (self.readerTopic) {
+        self.title = self.readerTopic.title;
+    } else {
+        self.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+    }
 }
 
 - (BOOL)isCurrentTopicFreshlyPressed
 {
-    return [self.currentTopic.path rangeOfString:ReaderTopicFreshlyPressedPathCommponent].location != NSNotFound;
+    return [self.readerTopic.path rangeOfString:ReaderTopicFreshlyPressedPathCommponent].location != NSNotFound;
 }
 
 - (ReaderPost *)postFromCellSubview:(UIView *)subview
@@ -422,32 +504,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (NSDictionary *)tagPropertyForStats
 {
-    return [NSDictionary dictionaryWithObjectsAndKeys:self.currentTopic.title, @"tag", nil];
+    return [NSDictionary dictionaryWithObjectsAndKeys:self.readerTopic.title, @"tag", nil];
 }
 
-- (void)setTitle:(NSString *)title
+- (void)setTableHeaderView:(UIView *)view
 {
-    [super setTitle:title];
-
-    // Reset the tab bar title; this isn't a great solution, but works
-    NSInteger tabIndex = [self.tabBarController.viewControllers indexOfObject:self.navigationController];
-    UITabBarItem *tabItem = [[[self.tabBarController tabBar] items] objectAtIndex:tabIndex];
-    tabItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
-}
-
-- (void)updateTitle
-{
-    if (self.currentTopic) {
-        self.title = [self.currentTopic.title capitalizedString];
-    } else {
-        self.title = NSLocalizedString(@"Reader", @"Default title for the reader before topics are loaded the first time.");
-    }
-}
-
-- (void)openPost:(NSNumber *)postId onBlog:(NSNumber *)blogId
-{
-    ReaderPostDetailViewController *controller = [ReaderPostDetailViewController detailControllerWithPostID:postId siteID:blogId];
-    [self.navigationController pushViewController:controller animated:YES];
+    self.tableView.tableHeaderView = view;
 }
 
 
@@ -532,6 +594,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     if (image) {
         [cell.postView setFeaturedImage:image];
     } else {
+        [cell.postView setFeaturedImage:nil];
         [self.featuredImageSource fetchImageForURL:imageURL
                                           withSize:[self sizeForFeaturedImage]
                                          indexPath:indexPath
@@ -542,25 +605,19 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 #pragma mark - Blocking
 
-- (void)blockSite
+- (void)blockSite:(ReaderPost *)post
 {
-    if (!self.siteIDToBlock) {
-        return;
-    }
-
+    NSNumber *postID = post.postID;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
-
-    NSNumber *siteIDToBlock = self.siteIDToBlock;
-    self.siteIDToBlock = nil;
+    [self addBlockedPostID:postID];
 
     __weak __typeof(self) weakSelf = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [service flagSiteWithID:siteIDToBlock asBlocked:YES success:^{
-        // Nothing to do.
+    [service flagSiteWithID:post.siteID asBlocked:YES success:^{
+
     } failure:^(NSError *error) {
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        [weakSelf.tableView reloadData];
-        weakSelf.postIDThatInitiatedBlock = nil;
+        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
+        [weakSelf removeBlockedPostID:postID];
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Blocking Site", @"Title of a prompt letting the user know there was an error trying to block a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -572,15 +629,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)unblockSiteForPost:(ReaderPost *)post
 {
+    NSNumber *postID = post.postID;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationFade;
+
     __weak __typeof(self) weakSelf = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [service flagSiteWithID:post.siteID asBlocked:NO success:^{
-        // Nothing to do.
-        weakSelf.postIDThatInitiatedBlock = nil;
+        [weakSelf removeBlockedPostID:postID];
+
     } failure:^(NSError *error) {
-        self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
-        [self.tableView reloadData];
+        weakSelf.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error Unblocking Site", @"Title of a prompt letting the user know there was an error trying to unblock a site from appearing in the reader.")
                                                             message:[error localizedDescription]
                                                            delegate:nil
@@ -590,66 +648,41 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     }];
 }
 
-- (void)setPostIDThatInitiatedBlock:(NSNumber *)postIDThatInitiatedBlock
+- (void)addBlockedPostID:(NSNumber *)postID
 {
-    // Comparing integer values is a valid check even if both values are nil, where an isEqual check would fail.
-    if ([_postIDThatInitiatedBlock integerValue] == [postIDThatInitiatedBlock integerValue]) {
+    if ([self.postIDsForUndoBlockCells containsObject:postID]) {
         return;
     }
 
-    _postIDThatInitiatedBlock = postIDThatInitiatedBlock;
+    [self.postIDsForUndoBlockCells addObject:postID];
+    [self updateAndPerformFetchRequest];
+}
+
+- (void)removeBlockedPostID:(NSNumber *)postID
+{
+    if (![self.postIDsForUndoBlockCells containsObject:postID]) {
+        return;
+    }
+
+    [self.postIDsForUndoBlockCells removeObject:postID];
+    [self updateAndPerformFetchRequest];
+}
+
+- (void)removeAllBlockedPostIDs
+{
+    if ([self.postIDsForUndoBlockCells count] == 0) {
+        return;
+    }
+    [self.postIDsForUndoBlockCells removeAllObjects];
     [self updateAndPerformFetchRequest];
 }
 
 
 #pragma mark - Actions
 
-- (void)topicsAction:(id)sender
-{
-    ReaderSubscriptionViewController *controller = [[ReaderSubscriptionViewController alloc] init];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.navigationBar.translucent = NO;
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 - (void)refresh
 {
     [self syncItemsWithUserInteraction:YES];
-}
-
-
-#pragma mark - Notifications
-
-- (void)readerTopicDidChange:(NSNotification *)notification
-{
-    [self updateTitle];
-
-    [self.tableView setContentOffset:CGPointZero animated:NO];
-
-    [self.tableViewHandler clearCachedRowHeights];
-    [self updateAndPerformFetchRequest];
-    [self.tableView reloadData];
-    [self syncItemsWithUserInteraction:NO];
-
-    [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
-    if ([self isCurrentTopicFreshlyPressed]) {
-        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
-    }
-}
-
-- (void)didChangeAccount:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [self managedObjectContext];
-    [[[ReaderTopicService alloc] initWithManagedObjectContext:context] deleteAllTopics];
-    [[[ReaderPostService alloc] initWithManagedObjectContext:context] deletePostsWithNoTopic];
-
-    [self.tableViewHandler clearCachedRowHeights];
-    [self updateAndPerformFetchRequest];
-    [self.navigationController popToViewController:self animated:NO];
-
-    if ([self isViewLoaded]) {
-        [self refresh];
-    }
 }
 
 
@@ -658,12 +691,12 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)syncIfAppropriate
 {
     // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }
 
-    NSDate *lastSynced = self.currentTopic.lastSynced;
+    NSDate *lastSynced = self.readerTopic.lastSynced;
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > RPVCRefreshInterval) {
         [self syncItemsWithUserInteraction:NO];
     }
@@ -674,22 +707,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     [self configureNoResultsView];
 
+    if (!self.readerTopic) {
+        return;
+    }
+
+    // Weird we should ever have a topic without an account but check for it just in case
     NSManagedObjectContext *context = [self managedObjectContext];
     AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
     if ([service numberOfAccounts] == 0) {
         return;
     }
 
-    if (!self.currentTopic) {
-        __weak __typeof(self) weakSelf = self;
-        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-        [topicService fetchReaderMenuWithSuccess:^{
-            [weakSelf updateAndPerformFetchRequest];
-            [weakSelf updateTitle];
-            [weakSelf.syncHelper syncContentWithUserInteraction:userInteraction];
-        } failure:^(NSError *error) {
-            DDLogError(@"Error refreshing topics: %@", error);
-        }];
+    // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
+    // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
+    // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
+    // methods are called. However, check here just in case there is an unnexpected edgecase. 
+    if (self.contextForSync) {
         return;
     }
 
@@ -701,14 +734,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self currentTopicInContext:context];
-        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] success:^(NSInteger count, BOOL hasMore) {
+        ReaderTopic *topicInContext = [self topicInContext:context];
+        [service fetchPostsForTopic:topicInContext earlierThan:[NSDate date] skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+                [weakSelf removeAllBlockedPostIDs];
                 if (success) {
                     success(count, hasMore);
                 }
@@ -728,14 +760,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    self.contextForSync = context;
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self currentTopicInContext:context];
-        [service backfillPostsForTopic:topicInContext success:^(NSInteger count, BOOL hasMore) {
+        ReaderTopic *topicInContext = [self topicInContext:context];
+        [service backfillPostsForTopic:topicInContext skippingSave:YES success:^(NSInteger count, BOOL hasMore) {
             dispatch_async(dispatch_get_main_queue(), ^{
-                weakSelf.postIDThatInitiatedBlock = nil;
-                weakSelf.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+                [weakSelf removeAllBlockedPostIDs];
                 if (success) {
                     success(count, hasMore);
                 }
@@ -769,7 +800,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         return;
     }
 
-    if (self.currentTopic == nil) {
+    if (self.readerTopic == nil) {
         if (failure) {
             failure(nil);
         }
@@ -780,13 +811,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
     ReaderPost *post = self.tableViewHandler.resultsController.fetchedObjects.lastObject;
     NSDate *earlierThan = post.sortDate;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf = self;
     
     [context performBlock:^{
-        ReaderTopic *topicInContext = [self currentTopicInContext:context];
+        ReaderTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
@@ -808,14 +839,27 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)syncContentEnded
 {
-    if (self.tableViewHandler.shouldRefreshTableViewPreservingOffset) {
-        // This is tricky since the relevant delegate methods are not triggered
-        // if there are no changes in the data model. This can happen if the user
-        // pulls to refresh, then immedately pulls to refresh again.  To handle
-        // case, call clean up after a short delay just to be safe.
-        [self performSelector:@selector(cleanupAfterRefresh) withObject:self afterDelay:0.5];
+    if (!self.contextForSync) {
+        [self cleanupAfterRefresh];
         return;
     }
+    [self saveContextForSync];
+}
+
+- (void)saveContextForSync
+{
+    if (self.syncHelper.isSyncing) {
+        return;
+    }
+
+    if (self.tableViewHandler.isScrolling) {
+        return;
+    }
+
+    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = YES;
+    [[ContextManager sharedInstance] saveContext:self.contextForSync];
+    self.contextForSync = nil;
+
     [self cleanupAfterRefresh];
 }
 
@@ -823,9 +867,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
-
-    // Always reset the flag after a refresh, just to be safe.
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
 
     [self.noResultsView removeFromSuperview];
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
@@ -862,7 +903,6 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         [self.actionSheet dismissWithClickedButtonIndex:[self.actionSheet cancelButtonIndex] animated:YES];
     }
     [self.featuredImageSource invalidateIndexPaths];
-    self.tableViewHandler.shouldRefreshTableViewPreservingOffset = NO;
     self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
     [self configureNoResultsView];
 
@@ -871,17 +911,16 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
         self.shouldSkipRowAnimation = NO;
         [self.tableView reloadData];
     }
-
 }
 
 - (NSPredicate *)predicateForFetchRequest
 {
     NSPredicate *predicate;
 
-    if (self.postIDThatInitiatedBlock) {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID = %@)", self.currentTopic, self.postIDThatInitiatedBlock];
+    if ([self.postIDsForUndoBlockCells count]) {
+        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND (isSiteBlocked = NO OR postID IN %@)", self.readerTopic, self.postIDsForUndoBlockCells];
     } else {
-        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.currentTopic];
+        predicate = [NSPredicate predicateWithFormat:@"topic = %@ AND isSiteBlocked = NO", self.readerTopic];
     }
 
     return predicate;
@@ -932,8 +971,11 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)configurePostCell:(ReaderPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.currentTopic.type != ReaderTopicTypeList)) ? YES : NO;
-    cell.postView.shouldShowAttributionMenu = shouldShowAttributionMenu;
+    BOOL shouldShowAttributionMenu = ([self isCurrentTopicFreshlyPressed] || (self.readerTopic.type != ReaderTopicTypeList)) ? YES : NO;
+    cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
+    cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
+    cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
+    cell.postView.shouldHideReblogButton = !self.hasVisibleWPComAccount;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
@@ -1036,21 +1078,22 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([UIDevice isPad]) {
+    ReaderPost *post = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
+    if ([UIDevice isPad] || post.isSiteBlocked) {
         [tableView deselectRowAtIndexPath:indexPath animated:YES];
     }
-
-    ReaderPost *post = [self.tableViewHandler.resultsController.fetchedObjects objectAtIndex:indexPath.row];
 
     if (post.isSiteBlocked) {
         [self unblockSiteForPost:post];
         return;
     }
 
-    UIViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    ReaderPostDetailViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    detailController.readerViewStyle = self.readerViewStyle;
     [self.navigationController pushViewController:detailController animated:YES];
 
-    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle];
+    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:@{ReaderDetailTypeKey:detailType}];
 }
 
 
@@ -1103,6 +1146,14 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     [postView updateActionButtons];
 }
 
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderPost *post = [self postFromCellSubview:contentView];
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
+    [self.navigationController pushViewController:controller animated:YES];
+    [WPAnalytics track:WPAnalyticsStatReaderPreviewedSite];
+}
+
 - (void)contentView:(UIView *)contentView didReceiveAttributionLinkAction:(id)sender
 {
     UIButton *followButton = (UIButton *)sender;
@@ -1136,8 +1187,7 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 - (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender
 {
     ReaderPost *post = [self postFromCellSubview:sender];
-    self.siteIDToBlock = post.siteID;
-    self.postIDThatInitiatedBlock = post.postID;
+    self.postForMenuActionSheet = post;
 
     NSString *cancel = NSLocalizedString(@"Cancel", @"The title of a cancel button.");
     NSString *blockSite = NSLocalizedString(@"Block This Site", @"The title of a button that triggers blocking a site from the user's reader.");
@@ -1199,13 +1249,13 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    ReaderPost *post = self.postForMenuActionSheet;
+    self.postForMenuActionSheet = nil;
     if (buttonIndex == actionSheet.cancelButtonIndex) {
-        self.siteIDToBlock = nil;
-        self.postIDThatInitiatedBlock = nil;
         return;
     }
 
-    [self blockSite];
+    [self blockSite:post];
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
@@ -1221,6 +1271,23 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
 {
     if ([self.refreshControl isRefreshing]) {
         [self.refreshControl endRefreshing];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (decelerate) {
+        return;
+    }
+    if (self.contextForSync) {
+        [self saveContextForSync];
+    }
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    if (self.contextForSync) {
+        [self saveContextForSync];
     }
 }
 

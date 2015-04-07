@@ -1,11 +1,9 @@
 #import <UIKit/UIKit.h>
 #import <MessageUI/MessageUI.h>
-#import <Helpshift/Helpshift.h>
 
-@interface SupportViewController : UITableViewController <MFMailComposeViewControllerDelegate, HelpshiftDelegate>
+@interface SupportViewController : UITableViewController <MFMailComposeViewControllerDelegate>
 
 + (void)checkIfFeedbackShouldBeEnabled;
-+ (BOOL)isHelpshiftEnabled;
 + (void)showFromTabBar;
 
 @end

@@ -1,9 +1,20 @@
-osx_image: xcode61
+osx_image: xcode611
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
 xcode_sdk: iphonesimulator8.1
 notifications:
   email: true
-before_install:
-  - gem install cocoapods
+install:
+- gem install cocoapods -v 0.35.0 && pod install
+- ./Scripts/install-oclint.sh
+before_script:
+- xctool --version
+script:
+- ./Scripts/build.sh
+after_success:
+- ./Scripts/run-oclint.sh
+
+env:
+  global:
+    secure: Sw3dwkuh9QjVYvvxcVnVN/wHGlhGjAsJjmEfGfqKMJZusdbNCU6tIZ7nmU2cVHDhozoPG4bHK62FgOmc1PhANyEQLe7eICh+G9djr0VP6Rd4/LLbv052dqpSrshwzFLDHCUvjTfEiJsTbQeuQYX2zQqFqvxV5eOnFkMoG4vK7rQ=

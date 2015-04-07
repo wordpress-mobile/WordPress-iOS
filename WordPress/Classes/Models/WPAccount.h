@@ -17,13 +17,14 @@
 @property (nonatomic, copy)     NSString    *username;
 @property (nonatomic, assign)   BOOL        isWpcom;
 @property (nonatomic, copy)     NSString    *uuid;
+@property (nonatomic, strong)   NSString    *email;
 @property (nonatomic, strong)   NSSet       *blogs;
 @property (nonatomic, strong)   NSSet       *jetpackBlogs;
 @property (nonatomic, readonly) NSArray     *visibleBlogs;
 @property (nonatomic, strong)   Blog        *defaultBlog;
 
 /**
- The account's password
+ The self hosted account's password
  
  Note that the password is stored using the keychain, not core data
  */

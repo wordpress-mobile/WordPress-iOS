@@ -1,6 +1,7 @@
 #import "ReaderTopicServiceRemote.h"
 #import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
+#import "ReaderTopic.h"
 
 @interface ReaderTopicServiceRemote ()
 
@@ -55,15 +56,15 @@
         }
 
         for (NSString *key in defaults) {
-            [topics addObject:[self normalizeTopicDictionary:[defaults objectForKey:key] subscribed:NO recommended:NO]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[defaults objectForKey:key] subscribed:NO recommended:NO]];
         }
 
         for (NSString *key in subscribed) {
-            [topics addObject:[self normalizeTopicDictionary:[subscribed objectForKey:key] subscribed:YES recommended:NO]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[subscribed objectForKey:key] subscribed:YES recommended:NO]];
         }
 
         for (NSString *key in recommended) {
-            [topics addObject:[self normalizeTopicDictionary:[recommended objectForKey:key] subscribed:NO recommended:YES]];
+            [topics addObject:[self normalizeMenuTopicDictionary:[recommended objectForKey:key] subscribed:NO recommended:YES]];
         }
 
         for (id topic in subscribedAndRecommended) {
@@ -71,7 +72,7 @@
             if ([topic isKindOfClass:[NSString class]]) {
                 continue;
             }
-            [topics addObject:[self normalizeTopicDictionary:(NSDictionary *)topic subscribed:YES recommended:YES]];
+            [topics addObject:[self normalizeMenuTopicDictionary:(NSDictionary *)topic subscribed:YES recommended:YES]];
         }
 
         success(topics);
@@ -126,6 +127,7 @@
  Formats the specified string for use as part of the URL path for the tags endpoints
  in the REST API. Spaces and periods are converted to dashes, ampersands and hashes are
  removed.
+ See https://github.com/WordPress/WordPress/blob/master/wp-includes/formatting.php#L1258
 
  @param topicName The string to be formatted.
  @return The formatted string.
@@ -135,19 +137,52 @@
     if (!topicName || [topicName length] == 0) {
         return @"";
     }
-    topicName = [[topicName lowercaseString] trim];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"&" withString:@""];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"#" withString:@""];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@" " withString:@"-"];
-    topicName = [topicName stringByReplacingOccurrencesOfString:@"." withString:@"-"];
 
+    static NSRegularExpression *regexHtmlEntities;
+    static NSRegularExpression *regexPeriodsWhitespace;
+    static NSRegularExpression *regexNonAlphaNumNonDash;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        regexHtmlEntities = [NSRegularExpression regularExpressionWithPattern:@"&[^\\s]*;" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexPeriodsWhitespace = [NSRegularExpression regularExpressionWithPattern:@"[\\.\\s]+" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexNonAlphaNumNonDash = [NSRegularExpression regularExpressionWithPattern:@"[^A-Za-z0-9\\-]" options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    topicName = [[topicName lowercaseString] trim];
+
+    // remove html entities
+    topicName = [regexHtmlEntities stringByReplacingMatchesInString:topicName
+                                                            options:NSMatchingReportProgress
+                                                              range:NSMakeRange(0, [topicName length])
+                                                       withTemplate:@""];
+
+    // replace periods and whitespace with a dash
+    topicName = [regexPeriodsWhitespace stringByReplacingMatchesInString:topicName
+                                                                 options:NSMatchingReportProgress
+                                                                   range:NSMakeRange(0, [topicName length])
+                                                            withTemplate:@"-"];
+
+    // remove remaining non-alphanum/non-dash chars
+    topicName = [regexNonAlphaNumNonDash stringByReplacingMatchesInString:topicName
+                                                                  options:NSMatchingReportProgress
+                                                                    range:NSMakeRange(0, [topicName length])
+                                                             withTemplate:@""];
+
+    // reduce double dashes potentially added above
     while ([topicName rangeOfString:@"--"].location != NSNotFound) {
         topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
     }
 
-    topicName = [topicName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
-
     return topicName;
+}
+
+- (RemoteReaderTopic *)normalizeMenuTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
+{
+    RemoteReaderTopic *topic = [self normalizeTopicDictionary:topicDict subscribed:subscribed recommended:recommended];
+    topic.isMenuItem = YES;
+    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
+    return topic;
 }
 
 /**
@@ -173,6 +208,7 @@
     topic.path = url;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
+
     return topic;
 }
 

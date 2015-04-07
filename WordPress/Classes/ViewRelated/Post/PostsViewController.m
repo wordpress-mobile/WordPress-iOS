@@ -101,7 +101,6 @@
         [self.tableView setContentOffset:CGPointZero animated:NO];
         self.addingNewPost = NO;
     }
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -115,6 +114,15 @@
 
 #pragma mark -
 #pragma mark Syncs methods
+
+- (BOOL)userCanRefresh
+{
+    AbstractPost *apost = [self.resultsController.fetchedObjects firstObject];
+    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
+        return NO;
+    }
+    return [super userCanRefresh];
+}
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingPosts;
@@ -139,6 +147,11 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return NSLocalizedString(@"Trash", @"The text that appears when a user swipes to 'delete' a post from the Posts list");
 }
 
 - (void)configureCell:(NewPostTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath {    

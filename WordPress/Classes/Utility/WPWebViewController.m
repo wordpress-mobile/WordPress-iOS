@@ -3,6 +3,9 @@
 #import "ReachabilityUtils.h"
 #import "WPActivityDefaults.h"
 #import "NSString+Helpers.h"
+#import "UIDevice+Helpers.h"
+#import "WPURLRequest.h"
+#import "WPUserAgent.h"
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
@@ -11,9 +14,11 @@
 
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
-@property (weak, readonly) UIScrollView *scrollView;
-@property (nonatomic) BOOL isLoading, needsLogin, hasLoadedContent;
+@property (nonatomic, weak, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPopoverController *popover;
+@property (nonatomic, assign) BOOL isLoading;
+@property (nonatomic, assign) BOOL needsLogin;
+@property (nonatomic, assign) BOOL hasLoadedContent;
 
 @end
 
@@ -22,7 +27,7 @@
 - (void)dealloc
 {
     _webView.delegate = nil;
-    if ([_webView isLoading]) {
+    if (_webView.isLoading) {
         [_webView stopLoading];
     }
     _statusTimer = nil;
@@ -35,7 +40,7 @@
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super viewDidLoad];
 
     if (IS_IPHONE) {
@@ -99,7 +104,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [super viewWillAppear:animated];
 
     if ( self.detailContent == nil ) {
@@ -122,7 +127,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
@@ -235,7 +240,7 @@
 
 - (void)refreshWebView
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
 
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
@@ -253,41 +258,10 @@
         [self retryWithLogin];
         return;
     }
-
-    NSURL *webURL;
-    if (self.needsLogin) {
-        if (self.wpLoginURL != nil) {
-            webURL = self.wpLoginURL;
-        } else { //try to guess the login URL
-            webURL = [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-        }
-    } else {
-        webURL = self.url;
-    }
-
-    WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:webURL];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    [request setValue:[appDelegate applicationUserAgent] forHTTPHeaderField:@"User-Agent"];
-
-    [request setCachePolicy:NSURLRequestReturnCacheDataElseLoad];
-    if (self.needsLogin) {
-        NSString *request_body = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=%@",
-                                  [self.username stringByUrlEncoding],
-                                  [self.password stringByUrlEncoding],
-                                  [[self.url absoluteString] stringByUrlEncoding]];
-
-        if ( self.wpLoginURL != nil ) {
-            [request setURL: self.wpLoginURL];
-        } else {
-             [request setURL:[[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"]];
-         }
-
-        [request setHTTPBody:[request_body dataUsingEncoding:NSUTF8StringEncoding]];
-        [request setValue:[NSString stringWithFormat:@"%d", [request_body length]] forHTTPHeaderField:@"Content-Length"];
-        [request addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-        [request setHTTPMethod:@"POST"];
-    }
+    
+    NSURLRequest *request = [self newRequestForWebsite];
+    NSAssert(request, @"We should have a valid request here!");
+    
     [self.webView loadRequest:request];
 }
 
@@ -299,7 +273,7 @@
 
 - (void)setUrl:(NSURL *)theURL
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     if (_url != theURL) {
         _url = theURL;
         if (_url && self.webView) {
@@ -557,7 +531,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod()
     [self setLoading:NO];
 
     CGSize webviewSize = self.view.frame.size;
@@ -601,51 +575,24 @@
     }
 }
 
-#pragma mark - MFMailComposeViewControllerDelegate
 
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError*)error
+#pragma mark - Requests Helpers
+
+- (NSURLRequest *)newRequestForWebsite
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - custom methods
-//Returns true if the ToAddress field was found any of the sub views and made first responder
-//passing in @"MFComposeSubjectView"     as the value for field makes the subject become first responder
-//passing in @"MFComposeTextContentView" as the value for field makes the body become first responder
-//passing in @"RecipientTextField"       as the value for field makes the to address field become first responder
-- (BOOL) setMFMailFieldAsFirstResponder:(UIView*)view mfMailField:(NSString*)field
-{
-    for (UIView *subview in view.subviews) {
-
-        NSString *className = [NSString stringWithFormat:@"%@", [subview class]];
-        if ([className isEqualToString:field]) {
-            //Found the sub view we need to set as first responder
-            [subview becomeFirstResponder];
-            return YES;
-        }
-
-        if ([subview.subviews count] > 0) {
-            if ([self setMFMailFieldAsFirstResponder:subview mfMailField:field]){
-                //Field was found and made first responder in a subview
-                return YES;
-            }
-        }
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+    if (!self.needsLogin) {
+        return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }
-
-    //field not found in this view.
-    return NO;
-}
-
-- (void)showCloseButton
-{
-    if (IS_IPAD) {
-        if (self.navigationController.navigationBarHidden) {
-            UINavigationItem *topItem = self.iPadNavBar.topItem;
-            topItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
-        }
-    }
+    
+    NSURL *loginURL = self.wpLoginURL ?: [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
+    
+    return [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                             redirectURL:self.url
+                                                username:self.username
+                                                password:self.password
+                                             bearerToken:self.authToken
+                                               userAgent:userAgent];
 }
 
 @end

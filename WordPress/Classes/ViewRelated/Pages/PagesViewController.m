@@ -102,7 +102,7 @@
         WPLegacyEditPageViewController *editPageViewController = [[WPLegacyEditPageViewController alloc] initWithPost:apost];
         UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editPageViewController];
         [navController setToolbarHidden:NO]; // Fixes incorrect toolbar animation.
-        navController.modalPresentationStyle = UIModalPresentationCurrentContext;
+        navController.modalPresentationStyle = UIModalPresentationFullScreen;
         navController.restorationIdentifier = WPLegacyEditorNavigationRestorationID;
         navController.restorationClass = [WPLegacyEditPageViewController class];
         

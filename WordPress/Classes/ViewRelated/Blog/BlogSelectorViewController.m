@@ -200,7 +200,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.fixedWidth = 0.0;
+    header.fixedWidthEnabled = NO;
     header.title = [self tableView:self.tableView titleForHeaderInSection:section];
     return header;
 }
@@ -208,7 +208,9 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderView heightForTitle:title
+                                               andWidth:CGRectGetWidth(self.view.bounds)
+                                      fixedWidthEnabled:NO];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

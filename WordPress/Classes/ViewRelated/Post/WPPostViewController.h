@@ -13,6 +13,8 @@ typedef enum
 }
 WPPostViewControllerMode;
 
+extern const CGRect NavigationBarButtonRect;
+
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;
 
@@ -103,6 +105,7 @@ typedef void (^EditPostCompletionHandler)(void);
             andTags:(NSString *)tags
            andImage:(NSString *)image;
 
+
 #pragma mark - Visual editor in settings
 
 /**
@@ -118,6 +121,13 @@ typedef void (^EditPostCompletionHandler)(void);
  *	@return		YES if the new editor is enabled, NO otherwise.
  */
 + (BOOL)isNewEditorEnabled;
+
+/**
+ *  @brief      Makes sure the new editor is available.
+ *
+ *  @returns    YES if the editor was made available, NO otherwise.
+ */
++ (BOOL)makeNewEditorAvailable;
 
 /**
  *	@brief		Makes the new editor available in the app settings.

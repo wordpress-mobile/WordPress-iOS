@@ -5,7 +5,7 @@
 
 #import "Blog.h"
 #import "Notification.h"
-#import "WPToast.h"
+#import <SVProgressHUD/SVProgressHUD.h>
 
 #import "ContextManager.h"
 
@@ -15,7 +15,9 @@
 
 #import "WPWebViewController.h"
 #import "ReaderPostDetailViewController.h"
+#import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
+#import "StatsViewAllTableViewController.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
 
@@ -46,17 +48,19 @@ static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0
 static UIEdgeInsets NotificationHeaderSeparatorInsets   = {0.0f,  0.0f,  0.0f, 0.0f};
 static UIEdgeInsets NotificationBlockSeparatorInsets    = {0.0f, 12.0f,  0.0f, 0.0f};
 
-static NSString *NotificationReplyToastImage            = @"action-icon-replied";
-static NSString *NotificationSuccessToastImage          = @"action-icon-success";
-
+static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
+
+static NSString *NotificationsSiteIdKey                 = @"NotificationsSiteIdKey";
+static NSString *NotificationsPostIdKey                 = @"NotificationsPostIdKey";
+static NSString *NotificationsCommentIdKey              = @"NotificationsCommentIdKey";
 
 
 #pragma mark ==========================================================================================
 #pragma mark Private
 #pragma mark ==========================================================================================
 
-@interface NotificationDetailsViewController () <UITextViewDelegate, SuggestionsTableViewDelegate>
+@interface NotificationDetailsViewController () <ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
 // Outlets
 @property (nonatomic,   weak) IBOutlet UITableView          *tableView;
@@ -130,7 +134,7 @@ static NSInteger NotificationSectionCount               = 1;
                                                  name:NSManagedObjectContextObjectsDidChangeNotification
                                                object:context];
 
-    [AppRatingUtility incrementSignificantEvent];
+    [AppRatingUtility incrementSignificantEventForSection:@"notifications"];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -221,6 +225,10 @@ static NSInteger NotificationSectionCount               = 1;
     return _layoutCellMap;
 }
 
+- (BOOL)isLayoutCell:(UITableViewCell *)cell
+{
+    return [self.layoutCellMap.allValues containsObject:cell];
+}
 
 #pragma mark - Reply View Helpers
 
@@ -265,13 +273,7 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)attachSuggestionsViewIfNeeded
 {
-    // Proceed only if needed!
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog                      = [service blogByBlogId:self.note.metaSiteID];
-    BOOL shouldAddSuggestionView    = blog.isWPcom && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID];
-
-    if (!shouldAddSuggestionView) {
+    if (![[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.note.metaSiteID]) {
         return;
     }
     
@@ -506,8 +508,8 @@ static NSInteger NotificationSectionCount               = 1;
         
     // Header-Level: Push the resource associated with the note
     } else if (group.type == NoteBlockGroupTypeHeader) {
-
-        [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+        
+        [self openNotificationHeader:group];
     }
 }
 
@@ -565,12 +567,23 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+/**
+    Note:
+    We're using a UITableViewCell as a Header, instead of UITableViewHeaderFooterView, because:
+    -   UITableViewCell automatically handles highlight / unhighlight for us
+    -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
+ */
+    
     NotificationBlock *gravatarBlock    = [blockGroup blockOfType:NoteBlockTypeImage];
     NotificationBlock *snippetBlock     = [blockGroup blockOfType:NoteBlockTypeText];
     NotificationMedia *media            = gravatarBlock.media.firstObject;
     
-    cell.name                           = gravatarBlock.text;
-    cell.snippet                        = snippetBlock.text;
+    cell.attributedHeaderTitle          = gravatarBlock.attributedHeaderTitleText;
+    cell.headerDetails                  = snippetBlock.text;
+    
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
     
     [cell downloadGravatarWithURL:media.mediaURL];
 }
@@ -581,8 +594,8 @@ static NSInteger NotificationSectionCount               = 1;
     NotificationMedia *media        = [userBlock.media firstObject];
     BOOL hasHomeURL                 = (userBlock.metaLinksHome != nil);
     BOOL hasHomeTitle               = (userBlock.metaTitlesHome.length > 0);
-    
-    NSAssert(userBlock, nil);
+
+    NSAssert(userBlock, @"Missing User Block for Notification %@", self.note.simperiumKey);
     
     __weak __typeof(self) weakSelf  = self;
     
@@ -598,16 +611,29 @@ static NSInteger NotificationSectionCount               = 1;
         [weakSelf unfollowSiteWithBlock:userBlock];
     };
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
 - (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+/**
+    Note:
+    The main reason why it's a very good idea *not* to reuse NoteBlockHeaderTableViewCell, just to display the
+    gravatar, is because we're implementing a custom behavior whenever the user approves/ disapproves the comment.
+    
+    -   Font colors are updated.
+    -   A left separator is displayed.
+ */
+    
     NotificationBlock *commentBlock = [blockGroup blockOfType:NoteBlockTypeComment];
     NotificationBlock *userBlock    = [blockGroup blockOfType:NoteBlockTypeUser];
     NotificationMedia *media        = userBlock.media.firstObject;
-    NSAssert(commentBlock, nil);
-    NSAssert(userBlock, nil);
+    NSAssert(commentBlock, @"Missing Comment Block for Notification %@", self.note.simperiumKey);
+    NSAssert(userBlock,    @"Missing User Block for Notification %@",    self.note.simperiumKey);
     
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
@@ -631,7 +657,7 @@ static NSInteger NotificationSectionCount               = 1;
     cell.isApproveOn                = [commentBlock isActionOn:NoteActionApproveKey];
     
     cell.name                       = userBlock.text;
-    cell.attributedCommentText      = [commentBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     cell.timestamp                  = timestamp;
     cell.site                       = site;
     
@@ -679,31 +705,42 @@ static NSInteger NotificationSectionCount               = 1;
         }
     };
 
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadGravatarWithURL:media.mediaURL];
 }
 
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *imageBlock   = blockGroup.blocks.firstObject;
-    NSAssert(imageBlock, nil);
+    NSAssert(imageBlock, @"Missing Image Block for Notification %@", self.note.simperiumKey);
     
     NotificationMedia *media        = imageBlock.media.firstObject;
     cell.isBadge                    = media.isBadge;
     
+    if ([self isLayoutCell:cell]) {
+        return;
+    }
+
     [cell downloadImageWithURL:media.mediaURL];
 }
 
 - (void)setupTextCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
     NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
-    NSAssert(textBlock, nil);
+    NSAssert(textBlock, @"Missing Text Block for Notification %@", self.note.simperiumKey);
     
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:textBlock.imageUrls];
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
+    // Load the attributedText
+    NSAttributedString *text        = textBlock.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText;
+    
     // Setup the Cell
-    cell.attributedText             = [textBlock.richAttributedText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedText             = [text stringByEmbeddingImageAttachments:mediaRanges];
     cell.isBadge                    = textBlock.isBadge;
     
     // Setup the Callbacks
@@ -714,7 +751,7 @@ static NSInteger NotificationSectionCount               = 1;
 }
 
 
-#pragma mark - Helpers
+#pragma mark - Associated Resources
 
 - (void)openURL:(NSURL *)url
 {
@@ -733,6 +770,10 @@ static NSInteger NotificationSectionCount               = 1;
         success = [self displayStatsWithSiteID:range.siteID];
     }
     
+    if (!success && range.isFollow) {
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];    
+    }
+    
     if (!success && url) {
         success = [self displayWebViewWithURL:url];
     }
@@ -742,12 +783,63 @@ static NSInteger NotificationSectionCount               = 1;
     }
 }
 
+- (void)openNotificationHeader:(NotificationBlockGroup *)header
+{
+    NSParameterAssert(header);
+    NSParameterAssert(header.type == NoteBlockGroupTypeHeader);
+    
+    BOOL success = false;
+    
+    if (!success && self.note.isFollow) {
+        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+        success = YES;
+    }
+    
+    if (!success && self.note.metaCommentID) {
+        success = [self displayCommentsWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        success = [self displayReaderWithPostId:self.note.metaPostID siteID:self.note.metaSiteID];
+    }
+    
+    if (!success) {
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayWebViewWithURL:resourceURL];
+    }
+    
+    if (!success) {
+        [self.tableView deselectSelectedRowWithAnimation:YES];
+    }
+}
+
+
+#pragma mark - Helpers
+
 - (BOOL)displayReaderWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
     BOOL success = postID && siteID;
     if (success) {
-        NSArray *parameters = @[ siteID, postID ];
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID
+        };
+        
         [self performSegueWithIdentifier:NSStringFromClass([ReaderPostDetailViewController class]) sender:parameters];
+    }
+    return success;
+}
+
+- (BOOL)displayCommentsWithPostId:(NSNumber *)postID siteID:(NSNumber *)siteID
+{
+    BOOL success = postID && siteID;
+    if (success) {
+        NSDictionary *parameters = @{
+            NotificationsSiteIdKey      : siteID,
+            NotificationsPostIdKey      : postID,
+        };
+        
+        [self performSegueWithIdentifier:NSStringFromClass([ReaderCommentsViewController class]) sender:parameters];
     }
     return success;
 }
@@ -770,6 +862,41 @@ static NSInteger NotificationSectionCount               = 1;
         [self.navigationController pushViewController:vc animated:YES];
     }
     return success;
+}
+
+- (BOOL)displayFollowersWithSiteID:(NSNumber *)siteID
+{
+    if (!siteID) {
+        return false;
+    }
+    
+    // Load the blog
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog                      = [service blogByBlogId:siteID];
+
+    if (!blog || !blog.isWPcom) {
+        return NO;
+    }
+
+    // Push the Stats ViewController
+    NSString *identifier            = NSStringFromClass([StatsViewAllTableViewController class]);
+    
+    UIStoryboard *statsStoryboard   = [UIStoryboard storyboardWithName:@"SiteStats" bundle:nil];
+    StatsViewAllTableViewController *vc = [statsStoryboard instantiateViewControllerWithIdentifier:identifier];
+    NSAssert(vc, @"Couldn't instantiate StatsViewAllTableViewController");
+    
+    vc.selectedDate                = [NSDate date];
+    vc.statsSection                = StatsSectionFollowers;
+    vc.statsSubSection             = StatsSubSectionFollowersDotCom;
+    vc.statsService                = [[WPStatsService alloc] initWithSiteId:blog.blogID
+                                                               siteTimeZone:[service timeZoneForBlog:blog]
+                                                                oauth2Token:blog.authToken
+                                                 andCacheExpirationInterval:NotificationFiveMinutes];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+    
+    return YES;
 }
 
 - (BOOL)displayWebViewWithURL:(NSURL *)url
@@ -947,7 +1074,7 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)editReplyWithBlock:(NotificationBlock *)block
 {
-    EditReplyViewController *editViewController     = [EditReplyViewController newEditViewController];
+    EditReplyViewController *editViewController     = [EditReplyViewController newReplyViewControllerForSiteID:self.note.metaSiteID];
     
     editViewController.onCompletion                 = ^(BOOL hasNewContent, NSString *newContent) {
         [self dismissViewControllerAnimated:YES completion:^{
@@ -967,22 +1094,19 @@ static NSInteger NotificationSectionCount               = 1;
 
 - (void)sendReplyWithBlock:(NotificationBlock *)block content:(NSString *)content
 {
-    NSString *successMessage        = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-    NSString *sendingMessage        = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
-    UIImage *successImage           = [UIImage imageNamed:NotificationSuccessToastImage];
-    UIImage *sendingImage           = [UIImage imageNamed:NotificationReplyToastImage];
-    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     
-    [service replyToCommentWithID:block.metaCommentID siteID:block.metaSiteID content:content success:^(){
-        [WPToast showToastWithMessage:successMessage andImage:successImage];
-        
-    } failure:^(NSError *error) {
-        [self handleReplyErrorWithBlock:block content:content];
-    }];
-    
-    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
+    [service replyToCommentWithID:block.metaCommentID
+                           siteID:block.metaSiteID
+                          content:content
+                          success:^{
+                              NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
+                              [SVProgressHUD showSuccessWithStatus:successMessage];
+                          }
+                          failure:^(NSError *error) {
+                              [self handleReplyErrorWithBlock:block content:content];
+                          }];
 }
 
 - (void)handleReplyErrorWithBlock:(NotificationBlock *)block content:(NSString *)content
@@ -1060,17 +1184,34 @@ static NSInteger NotificationSectionCount               = 1;
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSURL class]]);
+        
         WPWebViewController *webViewController          = segue.destinationViewController;
         webViewController.url                           = (NSURL *)sender;
         
     } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[Blog class]]);
+        
         StatsViewController *statsViewController        = segue.destinationViewController;
         statsViewController.blog                        = (Blog *)sender;
         
+    } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderCommentsViewController class])]) {
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
+        
+        ReaderCommentsViewController *commentsViewController = segue.destinationViewController;
+        [commentsViewController setAllowsPushingPostDetails:YES];
+        [commentsViewController setupWithPostID:postID siteID:siteID];        
+        
     } else if([segue.identifier isEqualToString:NSStringFromClass([ReaderPostDetailViewController class])]) {
-        NSArray *parameters                             = (NSArray *)sender;
-        NSNumber *siteID                                = parameters.firstObject;
-        NSNumber *postID                                = parameters.lastObject;
+        NSParameterAssert([sender isKindOfClass:[NSDictionary class]]);
+        
+        NSDictionary *parameters                        = (NSDictionary *)sender;
+        NSNumber *siteID                                = parameters[NotificationsSiteIdKey];
+        NSNumber *postID                                = parameters[NotificationsPostIdKey];
         
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:postID siteID:siteID];
@@ -1150,17 +1291,17 @@ static NSInteger NotificationSectionCount               = 1;
     self.tableGesturesRecognizer.enabled = false;
 }
 
-
-#pragma mark - SuggestionsTableViewDelegate
-
-- (void)view:(UIView *)view didTypeInWord:(NSString *)word
+- (void)textView:(UITextView *)textView didTypeWord:(NSString *)word
 {
     [self.suggestionsTableView showSuggestionsForWord:word];
 }
 
+
+#pragma mark - SuggestionsTableViewDelegate
+
 - (void)suggestionsTableView:(SuggestionsTableView *)suggestionsTableView didSelectSuggestion:(NSString *)suggestion forSearchText:(NSString *)text
 {
-    [self.replyTextView replaceTextAtCaret:text withSuggestion:suggestion];
+    [self.replyTextView replaceTextAtCaret:text withText:suggestion];
     [suggestionsTableView showSuggestionsForWord:@""];
 }
 
@@ -1170,7 +1311,6 @@ static NSInteger NotificationSectionCount               = 1;
 - (IBAction)dismissKeyboardIfNeeded:(id)sender
 {
     // Dismiss the reply field when tapping on the tableView
-    self.replyTextView.text = [NSString string];
     [self.view endEditing:YES];
 }
 

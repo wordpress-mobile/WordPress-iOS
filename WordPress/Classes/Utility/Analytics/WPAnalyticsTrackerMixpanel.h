@@ -5,6 +5,4 @@
     NSMutableDictionary *_aggregatedStatProperties;
 }
 
-+ (void)resetEmailRetrievalCheck;
-
 @end

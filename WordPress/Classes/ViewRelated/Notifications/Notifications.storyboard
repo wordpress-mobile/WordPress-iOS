@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="14B17" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1510" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -10,7 +10,7 @@
         <scene sceneID="vDn-Eb-UHK">
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MbC-cA-c9S" userLabel="Notification List Controller" customClass="NotificationsViewController" sceneMemberID="viewController">
-                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dwB-H6-MqD">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dwB-H6-MqD">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -29,6 +29,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="236" y="-556"/>
+        </scene>
+        <!--Reader Comments View Controller-->
+        <scene sceneID="RLS-eH-qVH">
+            <objects>
+                <viewController id="kOE-dH-qnb" customClass="ReaderCommentsViewController" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="eaw-kn-CXc"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573" y="-1877"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -109,8 +119,8 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="gravatarImageView" destination="fja-DW-mzm" id="zzW-cA-ucz"/>
-                                            <outlet property="nameLabel" destination="QIf-EO-cFO" id="MOL-rl-DpI"/>
-                                            <outlet property="snippetLabel" destination="LeI-iE-lkn" id="uoG-Od-v1y"/>
+                                            <outlet property="headerDetailsLabel" destination="LeI-iE-lkn" id="fCV-Gb-rMT"/>
+                                            <outlet property="headerTitleLabel" destination="QIf-EO-cFO" id="mDT-EW-ZsF"/>
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NoteBlockTextTableViewCell" rowHeight="44" id="8uY-4y-V9f" userLabel="Text" customClass="NoteBlockTextTableViewCell" customModule="WordPress">
@@ -180,7 +190,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sed-4I-XCW">
                                                     <rect key="frame" x="54" y="26" width="62" height="18"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="18" id="cFo-fQ-oUa"/>
@@ -194,22 +204,26 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" customClass="RichTextView" customModule="WordPress">
-                                                    <rect key="frame" x="12" y="49" width="296" height="13"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="N7y-ge-mMq" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
+                                                    <rect key="frame" x="12" y="49" width="296" height="12"/>
                                                     <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="fpi-gI-JQb"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator View">
-                                                    <rect key="frame" x="12" y="69.5" width="296" height="1"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WpC-gY-myP" userLabel="Separator Small">
+                                                    <rect key="frame" x="12" y="69" width="296" height="1"/>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="1" id="BUp-fs-LKw"/>
                                                     </constraints>
                                                 </view>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khy-Is-MLe" userLabel="Actions View">
-                                                    <rect key="frame" x="50" y="81.5" width="220" height="34"/>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lkg-nQ-th2" userLabel="Separator Big">
+                                                    <rect key="frame" x="0.0" y="69" width="320" height="1"/>
+                                                    <color key="backgroundColor" red="0.67000013589999996" green="0.080549971100000006" blue="0.002051902857" alpha="1" colorSpace="calibratedRGB"/>
+                                                </view>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="khy-Is-MLe" userLabel="Actions">
+                                                    <rect key="frame" x="50" y="81" width="220" height="34"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kdg-f8-pBH" userLabel="Reply" customClass="VerticallyStackedButton">
                                                             <rect key="frame" x="20" y="0.0" width="20" height="34"/>
@@ -324,11 +338,15 @@
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="bj4-em-dha" secondAttribute="trailing" constant="12" id="JeT-Ca-4P6"/>
                                                 <constraint firstItem="khy-Is-MLe" firstAttribute="top" secondItem="WpC-gY-myP" secondAttribute="bottom" constant="11" id="T89-Th-UFJ"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="khy-Is-MLe" secondAttribute="bottom" constant="3" id="Ucc-h4-1Fa"/>
+                                                <constraint firstItem="Lkg-nQ-th2" firstAttribute="leading" secondItem="7qg-ok-Rbo" secondAttribute="leading" id="aqO-t0-HTS"/>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="g23-xL-FVr" secondAttribute="bottom" id="cha-cK-B2r"/>
                                                 <constraint firstItem="g23-xL-FVr" firstAttribute="top" secondItem="7qg-ok-Rbo" secondAttribute="top" id="g5b-GJ-nr2"/>
+                                                <constraint firstItem="WpC-gY-myP" firstAttribute="height" secondItem="Lkg-nQ-th2" secondAttribute="height" id="kkE-FL-pDT"/>
                                                 <constraint firstItem="uYt-ov-kC3" firstAttribute="leading" secondItem="dAK-Dd-Cvw" secondAttribute="trailing" constant="10" id="n5G-wD-KRZ"/>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="N7y-ge-mMq" secondAttribute="bottom" constant="8" id="prj-ah-8ZK"/>
+                                                <constraint firstItem="WpC-gY-myP" firstAttribute="top" secondItem="Lkg-nQ-th2" secondAttribute="top" id="saA-wD-nZw"/>
                                                 <constraint firstAttribute="trailing" secondItem="N7y-ge-mMq" secondAttribute="trailing" constant="12" id="voR-xo-QDx"/>
+                                                <constraint firstAttribute="trailing" secondItem="Lkg-nQ-th2" secondAttribute="trailing" id="wfa-N0-eJl"/>
                                                 <constraint firstAttribute="centerX" secondItem="khy-Is-MLe" secondAttribute="centerX" id="xFc-3Y-neb"/>
                                                 <constraint firstItem="bj4-em-dha" firstAttribute="leading" secondItem="Sed-4I-XCW" secondAttribute="trailing" id="xgi-b8-9W1"/>
                                                 <constraint firstItem="WpC-gY-myP" firstAttribute="trailing" secondItem="N7y-ge-mMq" secondAttribute="trailing" id="yn9-9L-fYV"/>
@@ -346,7 +364,8 @@
                                             <outlet property="btnTrash" destination="q3a-Aa-VqY" id="vN5-93-aA4"/>
                                             <outlet property="gravatarImageView" destination="dAK-Dd-Cvw" id="QLC-K4-YZR"/>
                                             <outlet property="nameLabel" destination="uYt-ov-kC3" id="iUh-rH-6T4"/>
-                                            <outlet property="separatorView" destination="WpC-gY-myP" id="upt-Qi-Clg"/>
+                                            <outlet property="separatorBigView" destination="Lkg-nQ-th2" id="QBx-C9-NHN"/>
+                                            <outlet property="separatorSmallView" destination="WpC-gY-myP" id="yXh-N6-xpO"/>
                                             <outlet property="siteLabel" destination="bj4-em-dha" id="rEs-Pg-lbH"/>
                                             <outlet property="textView" destination="N7y-ge-mMq" id="Cbg-kZ-aBg"/>
                                             <outlet property="timestampLabel" destination="Sed-4I-XCW" id="Sc4-Hw-skT"/>
@@ -461,6 +480,7 @@
                         <segue destination="8p8-88-FGK" kind="push" identifier="StatsViewController" id="EAn-K1-ofm"/>
                         <segue destination="Bbj-DX-KQ7" kind="push" identifier="WPWebViewController" id="ygK-a3-WEJ"/>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="ODX-zz-S1G"/>
+                        <segue destination="kOE-dH-qnb" kind="push" identifier="ReaderCommentsViewController" id="Puk-pn-rGi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jzQ-hT-Ajt" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -471,7 +491,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="843" y="-558"/>
+            <point key="canvasLocation" x="925" y="-601"/>
         </scene>
         <!--StatsView-->
         <scene sceneID="iWL-VB-TOS">

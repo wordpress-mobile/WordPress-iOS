@@ -35,11 +35,34 @@
  */
 - (BOOL)hasRevision;
 
+
+#pragma mark - Unsaved Changes
+
 /**
- *  @brief      Call this method to know whether this post has unsaved changes or not.
+ *  @brief      Wether the post can be saved or not.
  *
- *  @returns    YES if the post has unsaved changes.  NO otherwise.
+ *  @returns    YES if the post can be saved, NO otherwise.
+ */
+- (BOOL)canSave;
+
+/**
+ *  @brief      Call this method to know if the post has either local or remote unsaved changes.
+ *  @details    There should be no need to override this method.  Consider overriding
+ *              methods hasLocalChanges and hasRemoteChanges instead.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
  */
 - (BOOL)hasUnsavedChanges;
+
+/**
+ *  @brief      Call this method to know if the post has local changes.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
+ */
+- (BOOL)hasLocalChanges;
+
+/**
+ *  @brief      Call this method to know if the post has remote changes.
+ *  @returns    YES if there are unsaved changes, NO otherwise.
+ */
+- (BOOL)hasRemoteChanges;
 
 @end

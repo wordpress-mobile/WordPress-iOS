@@ -76,17 +76,12 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         
         let timeZone = NSTimeZone(name: timeZoneName!)
-        var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, andOAuth2Token: oauth2Token)
-        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: WPStatsSummary!) -> Void in
+        var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
+        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
-            var numberFormatter = NSNumberFormatter()
-            numberFormatter.locale = NSLocale.currentLocale()
-            numberFormatter.numberStyle = NSNumberFormatterStyle.DecimalStyle
-            numberFormatter.maximumFractionDigits = 0
-            
-            self.visitorCount = numberFormatter.stringFromNumber(wpStatsSummary.visitorCountToday) ?? ""
-            self.viewCount = numberFormatter.stringFromNumber(wpStatsSummary.viewCountToday) ?? ""
+            self.visitorCount = wpStatsSummary.visitors
+            self.viewCount = wpStatsSummary.views
             
             self.siteNameLabel?.text = self.siteName
             self.visitorsCountLabel?.text = self.visitorCount

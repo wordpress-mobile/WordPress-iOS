@@ -1,8 +1,9 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
-#import "NSString+Helpers.h"
+#import "WPURLRequest.h"
 #import "Post.h"
-#import "Category.h"
+#import "PostCategory.h"
+#import "WPUserAgent.h"
 
 @interface PostPreviewViewController ()
 
@@ -21,7 +22,7 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -39,14 +40,15 @@
 
 - (void)didReceiveMemoryWarning
 {
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidLoad
 {
+    DDLogMethod();
+    
     [super viewDidLoad];
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setupWebView];
     [self setupLoadingView];
 }
@@ -54,10 +56,9 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
     if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                withAnimation:nil];
+        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
     }
     [self refreshWebView];
 }
@@ -65,7 +66,7 @@
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 
@@ -155,7 +156,7 @@
         NSString *catStr = @"";
         NSUInteger i = 0, count = [categories count];
         for (i = 0; i < count; i++) {
-            Category *category = [categories objectAtIndex:i];
+            PostCategory *category = [categories objectAtIndex:i];
             catStr = [catStr stringByAppendingString:category.categoryName];
             if (i < count-1) {
                 catStr = [catStr stringByAppendingString:@", "];
@@ -207,7 +208,7 @@
 
     NSString *link = self.apost.permaLink;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
 
     if (appDelegate.connectionAvailable == NO) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
@@ -215,21 +216,16 @@
         [self showSimplePreview];
     } else {
         if (needsLogin) {
-            NSString *wpLoginURL = [self.apost.blog loginUrl];
-            NSURL *url = [NSURL URLWithString:wpLoginURL];
-            NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-            [req setHTTPMethod:@"POST"];
-            [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
-                                         @"log", [self.apost.blog.username stringByUrlEncoding],
-                                         @"pwd", [self.apost.blog.password stringByUrlEncoding],
-                                         @"redirect_to", [link stringByUrlEncoding]];
-
-            NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];
-            [req setHTTPBody: paramData];
-            [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
-            [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-            [self.webView loadRequest:req];
+            NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
+            NSURL *redirectURL = [NSURL URLWithString:link];
+            
+            NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                                      redirectURL:redirectURL
+                                                                         username:self.apost.blog.username
+                                                                         password:self.apost.blog.password
+                                                                      bearerToken:self.apost.blog.authToken
+                                                                        userAgent:nil];
+            [self.webView loadRequest:request];
             DDLogInfo(@"Showing real preview (login) for %@", link);
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
@@ -243,7 +239,7 @@
 
 - (void)refreshWebView
 {
-    BOOL edited = [self.apost hasChanged];
+    BOOL edited = [self.apost hasLocalChanges];
     self.loadingView.hidden = NO;
 
     if (edited) {

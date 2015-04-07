@@ -142,9 +142,8 @@
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSString *predStr = @"topicID = 0 OR isSubscribed = YES";
     NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:[self entityName]];
-    request.predicate = [NSPredicate predicateWithFormat:predStr];
+    request.predicate = [NSPredicate predicateWithFormat:@"(topicID = 0 OR isSubscribed = YES) AND (isMenuItem = YES)"];
 
     NSSortDescriptor *sortDescriptorType = [NSSortDescriptor sortDescriptorWithKey:@"type" ascending:YES];
     NSSortDescriptor *sortDescriptorTitle = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)];
@@ -167,7 +166,7 @@
         [WPStyleGuide configureTableViewCell:cell];
     }
     ReaderTopic *topic = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = [topic.title capitalizedString];
+    cell.textLabel.text = topic.title;
     cell.accessoryType = UITableViewCellAccessoryNone;
     if ([[[self.currentTopic objectID] URIRepresentation] isEqual:[[topic objectID] URIRepresentation]]) {
         cell.accessoryType = UITableViewCellAccessoryCheckmark;

@@ -1,6 +1,6 @@
 #import "Post.h"
 #import "Media.h"
-#import "Category.h"
+#import "PostCategory.h"
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
@@ -74,32 +74,6 @@
     }
 }
 
-- (BOOL)hasChanged
-{
-    if ([super hasChanged]) {
-        return YES;
-    }
-
-    Post *original = (Post *)self.original;
-    if (!original) {
-        return NO;
-    }
-
-    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
-        return YES;
-    }
-
-    if (self.hasRemote) {
-        CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
-        CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
-        if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
-            return YES;
-        }
-    }
-
-    return NO;
-}
-
 - (BOOL)hasSiteSpecificChanges
 {
     if ([super hasSiteSpecificChanges]) {
@@ -135,6 +109,36 @@
     }
 
     return false;
+}
+
+#pragma mark - Unsaved changes
+
+- (BOOL)hasLocalChanges
+{
+    if (![self isRevision]) {
+        return NO;
+    }
+    
+    if ([super hasLocalChanges]) {
+        return YES;
+    }
+    
+    Post *original = (Post *)self.original;
+    if (!original) {
+        return NO;
+    }
+    
+    if (([self.tags length] != [original.tags length]) && (![self.tags isEqual:original.tags])) {
+        return YES;
+    }
+    
+    CLLocationCoordinate2D coord1 = self.geolocation.coordinate;
+    CLLocationCoordinate2D coord2 = original.geolocation.coordinate;
+    if ((coord1.latitude != coord2.latitude) || (coord1.longitude != coord2.longitude)) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

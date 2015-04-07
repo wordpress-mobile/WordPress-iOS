@@ -34,7 +34,7 @@ extern NSString *const WordPressComApiPushAppId;
  Use this only for things that don't require an account, like signup or logged out reader
  */
 + (WordPressComApi *)anonymousApi;
-- (id)initWithOAuthToken:(NSString *)authToken;
+- (instancetype)initWithOAuthToken:(NSString *)authToken;
 
 /**
  Reset the API instance
@@ -150,13 +150,6 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)activateThemeForBlogId:(NSString*)blogId themeId:(NSString*)themeId
                        success:(WordPressComApiRestSuccessResponseBlock)success
                        failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-///---------------
-/// @name User Details
-///---------------
-
-- (void)getUserDetailsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success
-                                  failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 ///-----------------
 /// @name OAuth info

@@ -7,6 +7,8 @@
 #import "RemoteReaderTopic.h"
 #import "WPAccount.h"
 #import "WordPressComApi.h"
+#import "ReaderPost.h"
+#import "ReaderSite.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
@@ -59,7 +61,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             return;
         }
 
-        [self mergeTopics:topics forAccount:reloadedAccount];
+        [self mergeMenuTopics:topics forAccount:reloadedAccount];
 
         if (success) {
             success();
@@ -181,7 +183,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 - (NSUInteger)numberOfSubscribedTopics
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
-    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed == YES AND type == %@", ReaderTopicTypeTag];
+    request.predicate = [NSPredicate predicateWithFormat:@"isSubscribed = YES AND type = %@", ReaderTopicTypeTag];
     NSError *error;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request error:&error];
     if (error) {
@@ -198,6 +200,14 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     for (ReaderTopic *topic in currentTopics) {
         [self.managedObjectContext deleteObject:topic];
     }
+    [self.managedObjectContext performBlockAndWait:^{
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }];
+}
+
+- (void)deleteTopic:(ReaderTopic *)topic
+{
+    [self.managedObjectContext deleteObject:topic];
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
@@ -224,7 +234,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *topicName = [topic.title trim];
+    NSString *topicName = [topic titleForURL];
 
     BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
 
@@ -296,6 +306,76 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     return (ReaderTopic *)[results firstObject];
 }
 
+- (ReaderTopic *)siteTopicForSite:(ReaderSite *)site
+{
+    // Feeds are not supported yet.
+    if (site.isFeed) {
+        return nil;
+    }
+
+    NSString *path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, site.siteID];;
+
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", path];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for site: %@", error);
+        return nil;
+    }
+
+    ReaderTopic *topic = nil;
+    if (results.count > 0) {
+        topic = (ReaderTopic *)[results firstObject];
+    } else {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"ReaderTopic"
+                                                  inManagedObjectContext:self.managedObjectContext];
+        topic = [[ReaderTopic alloc] initWithEntity:entity
+                     insertIntoManagedObjectContext:self.managedObjectContext];
+    }
+
+    topic.topicID = site.siteID;
+    topic.type = ReaderTopicTypeSite;
+    topic.title = site.name;
+    topic.path = path;
+
+    return topic;
+}
+
+- (ReaderTopic *)siteTopicForPost:(ReaderPost *)post
+{
+    NSString *path;
+    if (post.isWPCom) {
+        path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+    } else {
+        path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+    }
+    NSError *error;
+    NSFetchRequest *request = [[NSFetchRequest alloc] initWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"path LIKE %@", path];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"Failed to fetch topic for site: %@", error);
+        return nil;
+    }
+    ReaderTopic *topic = nil;
+    if (results.count > 0) {
+        topic = (ReaderTopic *)[results firstObject];
+    } else {
+        NSEntityDescription *entity = [NSEntityDescription entityForName:@"ReaderTopic"
+                                                  inManagedObjectContext:self.managedObjectContext];
+        topic = [[ReaderTopic alloc] initWithEntity:entity
+                     insertIntoManagedObjectContext:self.managedObjectContext];
+    }
+
+    topic.topicID = post.siteID;
+    topic.type = ReaderTopicTypeSite;
+    topic.title = post.blogName;
+    topic.topicDescription = post.blogDescription;
+    topic.path = path;
+
+    return topic;
+}
 
 #pragma mark - Private Methods
 
@@ -375,13 +455,39 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     topic.topicID = remoteTopic.topicID;
-    topic.type = ([topic.topicID integerValue] == 0) ? ReaderTopicTypeList : ReaderTopicTypeTag;
-    topic.title = [title stringByDecodingXMLCharacters];
+    topic.type = remoteTopic.type;
+    topic.title = [self formatTitle:title];
     topic.path = [path lowercaseString];
+    topic.topicDescription = remoteTopic.topicDescription;
+    topic.isMenuItem = remoteTopic.isMenuItem;
     topic.isSubscribed = remoteTopic.isSubscribed;
     topic.isRecommended = remoteTopic.isRecommended;
 
     return topic;
+}
+
+- (NSString *)formatTitle:(NSString *)str
+{
+    NSString *title = [str stringByDecodingXMLCharacters];
+
+    // Failsafe
+    if ([title length] == 0) {
+        return title;
+    }
+
+    // If already capitalized, assume the title was returned as it should be displayed.
+    if ([[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:0]]) {
+        return title;
+    }
+
+    // iPhone, ePaper, etc. assume correctly formatted
+    if ([title length] > 1 &&
+        [[NSCharacterSet lowercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:0]] &&
+        [[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:[title characterAtIndex:1]]) {
+        return title;
+    }
+
+    return [title capitalizedStringWithLocale:[NSLocale currentLocale]];
 }
 
 /**
@@ -390,9 +496,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
  @param topics An array of `ReaderTopics` to save.
  */
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account
+- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account
 {
-    NSArray *currentTopics = [self allTopics];
+    NSArray *currentTopics = [self allMenuTopics];
     NSMutableArray *topicsToKeep = [NSMutableArray array];
 
     for (RemoteReaderTopic *remoteTopic in topics) {
@@ -407,7 +513,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     if ([currentTopics count] > 0) {
         for (ReaderTopic *topic in currentTopics) {
-            if (![topicsToKeep containsObject:topic]) {
+            if (![topic.type isEqualToString:ReaderTopicTypeSite] && ![topicsToKeep containsObject:topic]) {
                 DDLogInfo(@"Deleting ReaderTopic: %@", topic);
                 if ([topic isEqual:self.currentTopic]) {
                     self.currentTopic = nil;
@@ -420,6 +526,26 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
     }];
+}
+
+/**
+ Fetch all `ReaderTopics` for the menu currently in Core Data.
+
+ @return An array of all `ReaderTopics` for the menu currently persisted in Core Data.
+ */
+- (NSArray *)allMenuTopics
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"isMenuItem = YES"];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error executing fetch request: %@", NSStringFromSelector(_cmd), error);
+        return nil;
+    }
+
+    return results;
 }
 
 /**
@@ -449,7 +575,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
  */
 - (ReaderTopic *)findWithPath:(NSString *)path
 {
-    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path == %@", [path lowercaseString]]];
+    NSArray *results = [[self allTopics] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"path = %@", [path lowercaseString]]];
     return [results firstObject];
 }
 

@@ -20,6 +20,7 @@
 
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "UIImageView+Gravatar.h"
 
 #import "SuggestionsTableView.h"
 #import "WPAnalyticsTrackerWPCom.h"

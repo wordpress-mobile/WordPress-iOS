@@ -2,8 +2,26 @@
 #import "WPLegacyEditPostViewController_Internal.h"
 #import "AbstractPost.h"
 #import "PageSettingsViewController.h"
+#import "PostService.h"
+#import "BlogService.h"
+#import "Page.h"
+#import "ContextManager.h"
 
 @implementation WPLegacyEditPageViewController
+
+- (id)initWithDraftForLastUsedBlog
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    Blog *blog = [blogService lastUsedOrFirstBlog];
+    return [self initWithPost:[PostService createDraftPageInMainContextForBlog:blog]];
+}
+
+- (AbstractPost *)createNewDraftForBlog:(Blog *)blog
+{
+    return [PostService createDraftPageInMainContextForBlog:blog];
+}
 
 - (NSString *)editorTitle {
     NSString *title = @"";

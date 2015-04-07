@@ -3,6 +3,6 @@
 
 @interface FeaturedImageViewController : WPImageViewController
 
-- (id)initWithPost:(Post *)post;
+- (id)initWithPost:(AbstractPost *)post;
 
 @end

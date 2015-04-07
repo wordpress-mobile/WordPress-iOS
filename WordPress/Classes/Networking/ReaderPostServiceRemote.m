@@ -58,7 +58,8 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     NSNumber *numberToFetch = @(count);
     NSDictionary *params = @{@"number":numberToFetch,
                              @"before": [DateUtils isoStringFromDate:date],
-                             @"order": @"DESC"
+                             @"order": @"DESC",
+                             @"meta":@"site,feed"
                              };
 
     [self fetchPostsFromEndpoint:endpoint withParameters:params success:success failure:failure];
@@ -254,16 +255,18 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     RemoteReaderPost *post = [[RemoteReaderPost alloc] init];
 
     NSDictionary *authorDict = [dict dictionaryForKey:@"author"];
-
+    NSDictionary *discussionDict = [dict dictionaryForKey:@"discussion"] ?: dict;
+    
     post.author = [self stringOrEmptyString:[authorDict stringForKey:@"nice_name"]]; // typically the author's screen name
     post.authorAvatarURL = [self stringOrEmptyString:[authorDict stringForKey:@"avatar_URL"]];
     post.authorDisplayName = [self stringOrEmptyString:[authorDict stringForKey:@"name"]]; // Typically the author's given name
     post.authorEmail = [self authorEmailFromAuthorDictionary:authorDict];
     post.authorURL = [self stringOrEmptyString:[authorDict stringForKey:@"URL"]];
     post.blogName = [self siteNameFromPostDictionary:dict];
+    post.blogDescription = [self siteDescriptionFromPostDictionary:dict];
     post.blogURL = [self siteURLFromPostDictionary:dict];
-    post.commentCount = [dict numberForKey:@"comment_count"];
-    post.commentsOpen = [[dict numberForKey:@"comments_open"] boolValue];
+    post.commentCount = [discussionDict numberForKey:@"comment_count"];
+    post.commentsOpen = [[discussionDict numberForKey:@"comments_open"] boolValue];
     post.content = [self stringOrEmptyString:[dict stringForKey:@"content"]];
     post.date_created_gmt = [self stringOrEmptyString:[dict stringForKey:@"date"]];
     post.featuredImage = [self featuredImageFromPostDictionary:dict];
@@ -459,6 +462,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
     // If still no image specified, try attachments.
     if ([featuredImage length] == 0 && [attachments count] > 0) {
+        attachments = [self sanitizeAttachmentsArray:attachments];
         NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
         attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
         NSDictionary *attachment = [attachments firstObject];
@@ -480,6 +484,27 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     featuredImage = [self sanitizeFeaturedImageString:featuredImage];
 
     return featuredImage;
+}
+
+/**
+ Loops over the passed attachments array. For each attachment dictionary
+ the value of the `width` key is ensured to be an NSNumber. If the value
+ was an empty string the NSNumber zero is substituted.
+ */
+- (NSArray *)sanitizeAttachmentsArray:(NSArray *)attachments
+{
+    NSMutableArray *marr = [NSMutableArray array];
+    NSString *key = @"width";
+    for (NSDictionary *attachment in attachments) {
+        NSMutableDictionary *mdict = [attachment mutableCopy];
+        NSNumber *numVal = [attachment numberForKey:key];
+        if (!numVal) {
+            numVal = @0;
+        }
+        [mdict setObject:numVal forKey:key];
+        [marr addObject:mdict];
+    }
+    return [marr copy];
 }
 
 /**
@@ -634,6 +659,17 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
 
     return siteName;
+}
+
+/**
+ Get the description of the post's site.
+
+ @param dict A dictionary representing a post object from the REST API.
+ @return The description of the post's site or an empty string.
+ */
+- (NSString *)siteDescriptionFromPostDictionary:(NSDictionary *)dict
+{
+    return [self stringOrEmptyString:[dict stringForKeyPath:@"meta.data.site.description"]];
 }
 
 /**

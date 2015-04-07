@@ -4,14 +4,30 @@ import Foundation
 @objc public class NoteBlockHeaderTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public var name: String? {
-        didSet {
-            nameLabel.text  = name ?? String()
+    public var headerTitle: String? {
+        set {
+            headerTitleLabel.text  = newValue
+        }
+        get {
+            return headerTitleLabel.text
         }
     }
-    public var snippet: String? {
-        didSet {
-            snippetLabel.text = snippet ?? String()
+    
+    public var attributedHeaderTitle: NSAttributedString? {
+        set {
+            headerTitleLabel.attributedText  = newValue
+        }
+        get {
+            return headerTitleLabel.attributedText
+        }
+    }
+
+    public var headerDetails: String? {
+        set {
+            headerDetailsLabel.text = newValue
+        }
+        get {
+            return headerDetailsLabel.text
         }
     }
     
@@ -39,10 +55,10 @@ import Foundation
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
         
         backgroundColor                 = WPStyleGuide.Notifications.blockBackgroundColor
-        nameLabel.font                  = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor             = WPStyleGuide.Notifications.blockTextColor
-        snippetLabel.font               = WPStyleGuide.Notifications.blockItalicsFont
-        snippetLabel.textColor          = WPStyleGuide.Notifications.blockQuotedColor
+        headerTitleLabel.font           = WPStyleGuide.Notifications.headerTitleBoldFont
+        headerTitleLabel.textColor      = WPStyleGuide.Notifications.headerTitleColor
+        headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsRegularFont
+        headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
         gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
 
         // iPad: Use a bigger image size!
@@ -59,6 +75,6 @@ import Foundation
     
     // MARK: - IBOutlets
     @IBOutlet private weak var gravatarImageView:   UIImageView!
-    @IBOutlet private weak var nameLabel:           UILabel!
-    @IBOutlet private weak var snippetLabel:        UILabel!
+    @IBOutlet private weak var headerTitleLabel:    UILabel!
+    @IBOutlet private weak var headerDetailsLabel:  UILabel!
 }

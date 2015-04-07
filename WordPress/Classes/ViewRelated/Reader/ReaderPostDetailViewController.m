@@ -2,9 +2,11 @@
 
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
+#import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
 #import "RebloggingViewController.h"
 #import "WPActivityDefaults.h"
@@ -13,8 +15,10 @@
 #import "WPTableImageSource.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
+#import "BlogService.h"
 
 static CGFloat const VerticalMargin = 40;
+static NSInteger const ReaderPostDetailImageQuality = 65;
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             RebloggingViewControllerDelegate,
@@ -99,6 +103,14 @@ static CGFloat const VerticalMargin = 40;
 
 #pragma mark - Configuration
 
+- (Class)classForPostView
+{
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return [ReaderPostRichUnattributedContentView class];
+    }
+    return [ReaderPostRichContentView class];
+}
+
 - (void)configureNavbar
 {
     // Don't show 'Reader' in the next-view back button
@@ -118,11 +130,19 @@ static CGFloat const VerticalMargin = 40;
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
+    self.postView.shouldHideComments = self.shouldHideComments;
 
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+    self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
+    self.postView.shouldShowAttributionButton = isLoggedIn;
+    
+    [self setReblogButtonVisibilityOfPostView:self.postView];
+    
     [self.scrollView addSubview:self.postView];
 }
 
@@ -170,6 +190,12 @@ static CGFloat const VerticalMargin = 40;
                                                                               views:views]];
 }
 
+- (void)setReblogButtonVisibilityOfPostView:(ReaderPostRichContentView *)postView
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    postView.shouldHideReblogButton = ![blogService hasVisibleWPComAccounts];
+}
+
 - (UIActivityViewController *)activityViewControllerForSharing
 {
     NSString *title = self.post.postTitle;
@@ -208,7 +234,6 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)setupWithPostID:(NSNumber *)postID siteID:(NSNumber *)siteID
 {
-
     [WPNoResultsView displayAnimatedBoxWithTitle:NSLocalizedString(@"Loading Post...", @"Text displayed while loading a post.")
                                          message:nil
                                             view:self.view];
@@ -278,7 +303,7 @@ static CGFloat const VerticalMargin = 40;
 
 - (void)refresh
 {
-    self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
+    self.title = self.post.postTitle ?: NSLocalizedString(@"Post", @"Placeholder title for ReaderPostDetails.");
 
     [self refreshPostView];
 
@@ -327,6 +352,7 @@ static CGFloat const VerticalMargin = 40;
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
+        self.featuredImageSource.photonQuality = ReaderPostDetailImageQuality;
     }
     
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
@@ -397,6 +423,12 @@ static CGFloat const VerticalMargin = 40;
         DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
         [followButton setSelected:post.isFollowing];
     }];
+}
+
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender

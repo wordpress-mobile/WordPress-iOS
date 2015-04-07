@@ -2,10 +2,12 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
 
-@implementation WPAccount {
-    WordPressComApi *_restApi;
-    WordPressXMLRPCApi *_xmlrpcApi;
-}
+@interface WPAccount ()
+@property (nonatomic, strong, readwrite) WordPressComApi *restApi;
+@property (nonatomic, strong, readwrite) WordPressXMLRPCApi *xmlrpcApi;
+@end
+
+@implementation WPAccount
 
 @dynamic xmlrpc;
 @dynamic username;
@@ -14,39 +16,50 @@
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
 @dynamic uuid;
+@dynamic email;
+@synthesize restApi = _restApi;
+@synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
 - (void)prepareForDeletion
 {
     // Only do these deletions in the primary context (no parent)
-    if (self.managedObjectContext.parentContext) {
+    if (self.managedObjectContext.concurrencyType != NSMainQueueConcurrencyType) {
         return;
     }
 
-    // We check _restApi directly since using the method would regenerate it if nil
-    // There's no need to cancel/reset anything on a fresh api object
-    if (_restApi) {
-        [[[self restApi] operationQueue] cancelAllOperations];
-        [[self restApi] reset];
-    }
+    // Beware: Lazy getters below. Let's hit directly the ivar
+    [_restApi.operationQueue cancelAllOperations];
+    [_restApi reset];
 
+    [_xmlrpcApi.operationQueue cancelAllOperations];
+    
     self.password = nil;
-    self.authToken = nil;
+    
+    // Fix: Let's make sure we only nuke the authToken when needed. That is, if the deleted account is dotcom.
+    // Otherwise, removing a self hosted account with the same username as a dotcom account might end up nuking the token.
+    if (self.isWpcom) {
+        self.authToken = nil;
+    }
 }
 
 - (void)didTurnIntoFault
 {
     [super didTurnIntoFault];
-
-    _restApi = nil;
-    _xmlrpcApi = nil;
+    
+    self.restApi = nil;
+    self.xmlrpcApi = nil;
 }
 
 #pragma mark - Custom accessors
 
 - (NSString *)password
 {
+    if (self.isWpcom) {
+        return nil;
+    }
+    
     return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
 }
 
@@ -99,6 +112,9 @@
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
     }
+    
+    // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
+    _restApi = nil;
 }
 
 - (NSArray *)visibleBlogs

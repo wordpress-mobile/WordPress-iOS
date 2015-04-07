@@ -17,11 +17,14 @@ NSString *NoteActionTrashKey            = @"trash-comment";
 NSString *NoteActionLikeKey             = @"like-comment";
 NSString *NoteActionEditKey             = @"approve-comment";
 
-NSString const *NoteLinkTypeUser        = @"user";
-NSString const *NoteLinkTypePost        = @"post";
-NSString const *NoteLinkTypeComment     = @"comment";
-NSString const *NoteLinkTypeStats       = @"stat";
-NSString const *NoteLinkTypeBlockquote  = @"blockquote";
+NSString const *NoteRangeTypeUser       = @"user";
+NSString const *NoteRangeTypePost       = @"post";
+NSString const *NoteRangeTypeComment    = @"comment";
+NSString const *NoteRangeTypeStats      = @"stat";
+NSString const *NoteRangeTypeFollow     = @"follow";
+NSString const *NoteRangeTypeBlockquote = @"blockquote";
+NSString const *NoteRangeTypeNoticon    = @"noticon";
+NSString const *NoteRangeTypeSite       = @"site";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";
@@ -30,6 +33,7 @@ NSString const *NoteTypeUser            = @"user";
 NSString const *NoteTypeComment         = @"comment";
 NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypePost            = @"post";
+NSString const *NoteTypeFollow          = @"follow";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -49,11 +53,8 @@ NSString const *NoteIndicesKey          = @"indices";
 NSString const *NoteWidthKey            = @"width";
 NSString const *NoteHeightKey           = @"height";
 
-
 NSString const *NoteRangeIdKey          = @"id";
-NSString const *NoteRangeTypeComment    = @"comment";
-NSString const *NoteRangeTypePost       = @"post";
-NSString const *NoteRangeTypeUser       = @"user";
+NSString const *NoteRangeValueKey       = @"value";
 NSString const *NoteSiteIdKey           = @"site_id";
 NSString const *NotePostIdKey           = @"post_id";
 
@@ -76,15 +77,20 @@ NSString const *NotePostIdKey           = @"post_id";
 		_url                = [NSURL URLWithString:[rawRange stringForKey:NoteUrlKey]];
 		_range              = NSMakeRange(location, length);
         _type               = [rawRange stringForKey:NoteTypeKey];
-        
-        //  SORRY:
-        //  ======
-        //  `id` is coupled with the `type
+        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
+
+        //  SORRY: << Let me stress this. Sorry, i'm 1000% against Duck Typing.
+        //  =====
+        //  `id` is coupled with the `type`. Which, in turn, is also duck typed.
         //
         //      type = post     => id = post_id
         //      type = comment  => id = comment_id
         //      type = user     => id = user_id
-
+        //      type = site     => id = site_id
+        
+        _type               = (_type == nil && _url != nil) ? (NSString *)NoteRangeTypeSite : _type;
+        _type               = _type ?: [NSString string];
+        
         if ([_type isEqual:NoteRangeTypePost]) {
             _postID         = [rawRange numberForKey:NoteRangeIdKey];
             
@@ -94,9 +100,13 @@ NSString const *NotePostIdKey           = @"post_id";
             
         } else if ([_type isEqual:NoteRangeTypeUser]) {
             _userID         = [rawRange numberForKey:NoteRangeIdKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeNoticon]) {
+            _value          = [rawRange stringForKey:NoteRangeValueKey];
+            
+        } else if ([_type isEqual:NoteRangeTypeSite]) {
+            _siteID         = [rawRange numberForKey:NoteRangeIdKey];
         }
-        
-        _siteID             = [rawRange numberForKey:NoteSiteIdKey];
 	}
 	
 	return self;
@@ -104,27 +114,37 @@ NSString const *NotePostIdKey           = @"post_id";
 
 - (BOOL)isUser
 {
-    return [self.type isEqual:NoteLinkTypeUser];
+    return [self.type isEqual:NoteRangeTypeUser];
 }
 
 - (BOOL)isPost
 {
-    return [self.type isEqual:NoteLinkTypePost];
+    return [self.type isEqual:NoteRangeTypePost];
 }
 
 - (BOOL)isComment
 {
-    return [self.type isEqual:NoteLinkTypeComment];
+    return [self.type isEqual:NoteRangeTypeComment];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteRangeTypeFollow];
 }
 
 - (BOOL)isStats
 {
-    return [self.type isEqual:NoteLinkTypeStats];
+    return [self.type isEqual:NoteRangeTypeStats];
 }
 
 - (BOOL)isBlockquote
 {
-    return [self.type isEqual:NoteLinkTypeBlockquote];
+    return [self.type isEqual:NoteRangeTypeBlockquote];
+}
+
+- (BOOL)isNoticon
+{
+    return [self.type isEqual:NoteRangeTypeNoticon];
 }
 
 + (NSArray *)rangesFromArray:(NSArray *)rawURL
@@ -358,6 +378,13 @@ NSString const *NotePostIdKey           = @"post_id";
             if (media.isBadge) {
                 isBadge = true;
             }
+            
+            // TODO:
+            // We've received crashlogs caused by a missing mediaURL field. This assert will only affect debug builds,
+            // and will help us troubleshoot the issue. Please: Feel free to remove this snippet once the bug has been
+            // fixed backend side.
+            //
+            NSAssert(media.mediaURL, @"Missing mediaURL for Notification with SimperiumKey %@", notification.simperiumKey);
         }
         
         [parsed addObject:block];
@@ -520,7 +547,7 @@ NSString const *NotePostIdKey           = @"post_id";
 - (NSDate *)timestampAsDate
 {
     if (!_date) {
-        NSAssert(self.timestamp, @"Notification Timestamp should not be nil");
+        NSAssert(self.timestamp, @"Notification Timestamp should not be nil [%@]", self.simperiumKey);
         if (self.timestamp) {
             _date = [NSDate dateWithISO8601String:self.timestamp];
         }
@@ -593,6 +620,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isPost
 {
     return [self.type isEqual:NoteTypePost];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteTypeFollow];
 }
 
 - (BOOL)isBadge

@@ -6,10 +6,11 @@
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
-#import "NSString+Helpers.h"
+#import "WPURLRequest.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPCookie.h"
+#import "UIDevice+Helpers.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -91,7 +92,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( appDelegate.connectionAvailable == YES ) {
         [self.webView showRefreshingState];
     }
@@ -189,7 +190,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     if (blog) {
         DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
-        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
         if ( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             __weak StatsWebViewController *weakSelf = self;
@@ -262,24 +263,15 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 - (void)authStats
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     if (authed) {
         [self loadStats];
         return;
     }
 
-    NSString *username = @"";
-    NSString *password = @"";
-    if ([blog isWPcom]) {
-        //use set username/pw for wpcom blogs
-        username = blog.username;
-        password = blog.password;
-
-    } else {
-        username = blog.jetpackUsername;
-        password = blog.jetpackPassword;
-    }
-
+    NSString *username = blog.isWPcom ? blog.username : blog.jetpackUsername;
+    NSString *password = blog.isWPcom ? blog.password : blog.jetpackPassword;
+    
     // Skip the auth call to reduce loadtime if its the same username as before.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
         authed = YES;
@@ -287,23 +279,21 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
-                             [username stringByUrlEncoding],
-                             [password stringByUrlEncoding]];
-
-    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
-    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
-    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@", [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    [mRequest setHTTPMethod:@"POST"];
+    NSURL *loginURL = [NSURL URLWithString:@"https://wordpress.com/wp-login.php"];
+    NSURL *redirectURL = [NSURL URLWithString:@"https://wordpress.com"];
+    
+    NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                              redirectURL:redirectURL
+                                                                 username:username
+                                                                 password:password
+                                                              bearerToken:blog.authToken
+                                                                userAgent:nil];
+    
 
     // Clear cookies prior to auth so we don't get a false positive on the login cookie being correctly set in some cases.
     [self clearCookies];
 
-    self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+    self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     __weak StatsWebViewController *statsWebViewController = self;
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -346,7 +336,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( !appDelegate.connectionAvailable ) {
         __weak StatsWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
@@ -365,12 +355,10 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         blogID = [blog jetpackBlogID];
     }
 
-    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?no-chrome&blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/stats/%@", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     [webView loadRequest:mRequest];
 }
@@ -424,7 +412,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
             WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            [webViewController setUrl:request.URL];
+            webViewController.url = request.URL;
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }

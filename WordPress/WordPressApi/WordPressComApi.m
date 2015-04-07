@@ -2,11 +2,12 @@
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
 #import <UIDeviceHardware.h>
-#import "UIDevice+WordPressIdentifier.h"
+#import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
+#import "WPUserAgent.h"
 
-static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
+static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
@@ -58,7 +59,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma - Initializers
 
-- (id)initWithOAuthToken:(NSString *)authToken
+- (instancetype)initWithOAuthToken:(NSString *)authToken
 {
 	NSParameterAssert([authToken isKindOfClass:[NSString class]]);
 	
@@ -66,14 +67,13 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	
 	self = [super initWithBaseURL:url];
 	
-	if (self)
-	{
+    if (self) {
         _authToken = authToken;
         self.requestSerializer = [AFJSONRequestSerializer serializer];
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
-		NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 		[self.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 	}
 	
@@ -122,7 +122,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         DDLogVerbose(@"Initializing anonymous API");
         _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
 
-		NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 		[_anonymousApi.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     });
 
@@ -397,7 +397,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                  @"device_model"    : [UIDeviceHardware platform],
                                  @"os_version"      : [[UIDevice currentDevice] systemVersion],
                                  @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                 @"device_uuid"     : [[UIDevice currentDevice] wordpressIdentifier],
+                                 @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
                                  };
     
     [self POST:@"devices/new"
@@ -577,12 +577,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 #pragma mark - User Details
-
-- (void)getUserDetailsWithSuccess:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = @"me";
-    [self GET:path parameters:nil success:success failure:failure];
-}
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
 	[self.requestSerializer setValue:[NSString stringWithFormat:@"Bearer %@", token]

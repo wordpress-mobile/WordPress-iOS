@@ -6,5 +6,6 @@
 - (BOOL)isLiked;
 - (BOOL)authorIsPostAuthor;
 - (NSNumber *)numberOfLikes;
+- (BOOL)isPrivateContent;
 
 @end

@@ -101,6 +101,14 @@ NSString * const CommentStatusDraft = @"draft";
 
 #pragma mark - WPContentViewProvider protocol
 
+- (BOOL)isPrivateContent
+{
+    if ([self.post respondsToSelector:@selector(isPrivate)]) {
+        return (BOOL)[self.post performSelector:@selector(isPrivate)];
+    }
+    return NO;
+}
+
 - (NSString *)titleForDisplay
 {
     return [self.postTitle stringByDecodingXMLCharacters];

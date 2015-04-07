@@ -7,6 +7,7 @@
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "WPUserAgent.h"
 
 NSString * const BlogJetpackErrorDomain = @"BlogJetpackError";
 NSString * const BlogJetpackApiBaseUrl = @"https://public-api.wordpress.com/";
@@ -59,6 +60,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)validateJetpackUsername:(NSString *)username
                        password:(NSString *)password
+                multifactorCode:(NSString *)multifactorCode
                         success:(void (^)())success
                         failure:(void (^)(NSError *))failure
 {
@@ -76,7 +78,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
     AFHTTPRequestOperationManager* operationManager = [[AFHTTPRequestOperationManager alloc] initWithBaseURL:[NSURL URLWithString:BlogJetpackApiBaseUrl]];
 
-    NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 
     operationManager.requestSerializer = [[AFJSONRequestSerializer alloc] init];
     [operationManager.requestSerializer setAuthorizationHeaderFieldWithUsername:username password:password];
@@ -104,12 +106,14 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
         }]];
 
         if ([foundBlogs count] > 0) {
-            [self saveJetpackUsername:username andPassword:password success:success failure:failure];
+            [self saveJetpackUsername:username andPassword:password multifactorCode:multifactorCode success:success failure:failure];
         } else {
             NSError *error = [NSError errorWithDomain:BlogJetpackErrorDomain
                                                  code:BlogJetpackErrorCodeNoRecordForBlog
                                              userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"This site is not connected to that WordPress.com username", @"")}];
-            if (failure) failure(error);
+            if (failure) {
+                failure(error);
+            }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)
     {
@@ -147,17 +151,19 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 - (void)saveJetpackUsername:(NSString *)username
                 andPassword:(NSString *)password
+            multifactorCode:(NSString *)multifactorCode
                     success:(void (^)())success
                     failure:(void (^)(NSError *))failure
 {
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
+    NSAssert(!self.isWPcom, @"Blog+Jetpack doesn't support WordPress.com blogs");
 
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:multifactorCode
                              success:^(NSString *authToken) {
                                  AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                 WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];

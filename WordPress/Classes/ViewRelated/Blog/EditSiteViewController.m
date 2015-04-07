@@ -20,20 +20,39 @@ static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
+static CGFloat const EditSiteRowHeight = 48.0;
 
-@interface EditSiteViewController ()
+@interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, copy) NSString *startingPwd, *startingUser, *startingUrl;
-@property (nonatomic, weak) UITextField *lastTextField, *usernameTextField, *passwordTextField, *urlTextField;
+@property (nonatomic,   weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
+@property (nonatomic,   weak) UITextField *lastTextField;
+@property (nonatomic,   weak) UITextField *usernameTextField;
+@property (nonatomic,   weak) UITextField *passwordTextField;
+@property (nonatomic,   weak) UITextField *urlTextField;
+
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
-@property (nonatomic) BOOL isKeyboardVisible;
+
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSString *authToken;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *url;
+
+@property (nonatomic,   copy) NSString *startingPwd;
+@property (nonatomic,   copy) NSString *startingUser;
+@property (nonatomic,   copy) NSString *startingUrl;
+
+@property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, assign) BOOL isSiteDotCom;
+@property (nonatomic, assign) BOOL isKeyboardVisible;
 
 @end
 
 @implementation EditSiteViewController
 
-- (id)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super init];
     if (self) {
@@ -49,7 +68,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super viewDidLoad];
 
     if (self.blog) {
@@ -58,6 +77,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
         self.url = self.blog.url;
+        self.authToken = self.blog.authToken;
         self.username = self.blog.username;
         self.password = self.blog.password;
 
@@ -158,6 +178,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     header.title = [self titleForHeaderInSection:section];
 
     return header;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return EditSiteRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -467,7 +492,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
             self.isSiteDotCom = YES;
-            self.blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
             self.isSiteDotCom = NO;
@@ -484,7 +508,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
-        self.subsites = blogs;
         [self validationSuccess:[xmlRpcURL absoluteString]];
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
@@ -546,12 +569,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     if (error) {
         NSString *message;
-        if ([error code] == 403) {
+        if (error.code == 403) {
             message = NSLocalizedString(@"Please try entering your login details again.", @"");
         } else {
             message = [error localizedDescription];
         }
-        if ([error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode] == 405) {
+        if (error.code == 405) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
@@ -579,10 +602,11 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     }
 
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:path]];
-    [webViewController setUsername:self.username];
-    [webViewController setPassword:self.password];
-    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.url = [NSURL URLWithString:path];
+    webViewController.authToken = self.authToken;
+    webViewController.username = self.username;
+    webViewController.password = self.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
     [self.navigationController pushViewController:webViewController animated:YES];
 }
@@ -704,7 +728,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-
     if (_isKeyboardVisible) {
         return;
     }

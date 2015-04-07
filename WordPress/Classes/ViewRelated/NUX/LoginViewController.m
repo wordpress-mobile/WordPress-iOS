@@ -1,72 +1,108 @@
 #import <WPXMLRPC/WPXMLRPC.h>
-#import "LoginViewController.h"
+#import <Helpshift/Helpshift.h>
+#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <1PasswordExtension/OnePasswordExtension.h>
+
 #import "CreateAccountAndBlogViewController.h"
-#import "WordPressAppDelegate.h"
 #import "SupportViewController.h"
+#import "LoginViewController.h"
+#import "JetpackLoginViewController.h"
+
+#import "WPAccount.h"
 #import "WPNUXMainButton.h"
 #import "WPNUXSecondaryButton.h"
-#import "WPWalkthroughTextField.h"
-#import "WordPressComOAuthClient.h"
-#import "WPWebViewController.h"
-#import "Blog+Jetpack.h"
-#import "JetpackLoginViewController.h"
-#import "WPNUXErrorViewController.h"
-#import "ReachabilityUtils.h"
 #import "WPNUXUtility.h"
-#import "WPAccount.h"
+#import "WPNUXHelpBadgeLabel.h"
+#import "WPTabBarController.h"
+#import "WPWalkthroughTextField.h"
+
+#import "WPNUXErrorViewController.h"
+#import "WPWebViewController.h"
+
+#import "WordPressComOAuthClient.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "WPNUXHelpBadgeLabel.h"
-#import <NSString+XMLExtensions.h>
-#import <Helpshift/Helpshift.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
-#import <NSURL+IDN.h>
+#import "Blog+Jetpack.h"
 
-static NSString *const ForgotPasswordDotComBaseUrl = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+#import "NSAttributedString+Util.h"
+#import "NSURL+IDN.h"
 
-@interface LoginViewController () <UITextFieldDelegate, HelpshiftDelegate> {
+#import "Constants.h"
+#import "ReachabilityUtils.h"
+#import "HelpshiftUtils.h"
+#import "WordPress-Swift.h"
 
-    // Views
-    UIView *_mainView;
-    WPNUXSecondaryButton *_skipToCreateAccount;
-    WPNUXSecondaryButton *_toggleSignInForm;
-    WPNUXSecondaryButton *_forgotPassword;
-    UIButton *_helpButton;
-    WPNUXHelpBadgeLabel *_helpBadge;
-    UIImageView *_icon;
-    WPWalkthroughTextField *_usernameText;
-    WPWalkthroughTextField *_passwordText;
-    WPWalkthroughTextField *_siteUrlText;
-    WPNUXMainButton *_signInButton;
-    WPNUXSecondaryButton *_cancelButton;
 
-    UILabel *_statusLabel;
 
-    // Measurements
-    CGFloat _keyboardOffset;
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
 
-    BOOL _userIsDotCom;
-    NSString *_dotComSiteUrl;
-    NSArray *_blogs;
-    Blog *_blog;
-    NSUInteger _numberOfTimesLoginFailed;
-}
+static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
+static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
+static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
+
+static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
+static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
+static CGSize const GeneralWalkthroughTextFieldSize             = {320.0, 44.0};
+static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1.0;
+static CGSize const GeneralWalkthroughButtonSize                = {290.0, 41.0};
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
+static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
+
+static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
+static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
+static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
+static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
+
+static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
+static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+
+
+#pragma mark ====================================================================================
+#pragma mark Private
+#pragma mark ====================================================================================
+
+@interface LoginViewController () <UITextFieldDelegate>
+
+// Views
+@property (nonatomic, strong) UIView                    *mainView;
+@property (nonatomic, strong) WPNUXSecondaryButton      *skipToCreateAccount;
+@property (nonatomic, strong) WPNUXSecondaryButton      *toggleSignInForm;
+@property (nonatomic, strong) WPNUXSecondaryButton      *forgotPassword;
+@property (nonatomic, strong) UIButton                  *helpButton;
+@property (nonatomic, strong) WPNUXHelpBadgeLabel       *helpBadge;
+@property (nonatomic, strong) UIImageView               *icon;
+@property (nonatomic, strong) WPWalkthroughTextField    *usernameText;
+@property (nonatomic, strong) WPWalkthroughTextField    *passwordText;
+@property (nonatomic, strong) UIButton                  *onePasswordButton;
+@property (nonatomic, strong) WPWalkthroughTextField    *multifactorText;
+@property (nonatomic, strong) WPWalkthroughTextField    *siteUrlText;
+@property (nonatomic, strong) WPNUXMainButton           *signInButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
+@property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
+@property (nonatomic, strong) UILabel                   *statusLabel;
+@property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
+
+// Measurements
+@property (nonatomic, strong) Blog                      *blog;
+@property (nonatomic, assign) CGFloat                   keyboardOffset;
+@property (nonatomic, assign) BOOL                      userIsDotCom;
+@property (nonatomic, assign) BOOL                      hasDefaultAccount;
+@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
+@property (nonatomic, assign) BOOL                      authenticating;
 
 @end
 
-@implementation LoginViewController
 
-CGFloat const GeneralWalkthroughIconVerticalOffset = 77;
-CGFloat const GeneralWalkthroughStandardOffset = 15;
-CGFloat const GeneralWalkthroughMaxTextWidth = 290.0;
-CGFloat const GeneralWalkthroughTextFieldWidth = 320.0;
-CGFloat const GeneralWalkthroughTextFieldHeight = 44.0;
-CGFloat const GeneralWalkthroughButtonWidth = 290.0;
-CGFloat const GeneralWalkthroughButtonHeight = 41.0;
-CGFloat const GeneralWalkthroughSecondaryButtonHeight = 33;
-CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
+#pragma mark ====================================================================================
+#pragma mark LoginViewController
+#pragma mark ====================================================================================
+
+@implementation LoginViewController
 
 - (void)dealloc
 {
@@ -77,25 +113,28 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     [super viewDidLoad];
     [self.navigationController setNavigationBarHidden:YES animated:NO];
-
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
-    _userIsDotCom = self.onlyDotComAllowed || !self.prefersSelfHosted;
-
+    
+    // Do we have a default account?
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    if (defaultAccount) {
-        _userIsDotCom = NO;
-    }
-
+    // Initialize flags!
+    self.hasDefaultAccount = (defaultAccount != nil);
+    self.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
+    
+    // Initialize Interface
     [self addMainView];
-    [self initializeViewWithDefaultWPComAccount:defaultAccount];
-
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+    [self addControls];
+    
+    // Reauth: Pre-populate username. If needed
+    if (!self.shouldReauthenticateDefaultAccount) {
+        return;
+    }
+    
+    self.usernameText.text = defaultAccount.username;
+    self.userIsDotCom = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -103,41 +142,56 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:animated];
 
-    [[Helpshift sharedInstance] setDelegate:self];
-    [[Helpshift sharedInstance] getNotificationCountFromRemote:YES];
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
+    [nc addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
+    
+    [HelpshiftUtils refreshUnreadNotificationCount];
 
-    [self layoutControls];
+    [self reloadInterface];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (NSUInteger)supportedInterfaceOrientations
 {
-    if (IS_IPHONE) {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-
-    return UIInterfaceOrientationMaskAll;
+    return [UIDevice isPad] ? UIInterfaceOrientationMaskAll : UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration {
-
+                                         duration:(NSTimeInterval)duration
+{
     [self layoutControls];
 }
+
 
 #pragma mark - UITextField delegate methods
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    if (textField == _usernameText) {
-        [_passwordText becomeFirstResponder];
-    } else if (textField == _passwordText) {
-        if (_userIsDotCom) {
+    if (textField == self.usernameText) {
+        [self.passwordText becomeFirstResponder];
+    } else if (textField == self.passwordText) {
+        if (self.userIsDotCom) {
             [self signInButtonAction:nil];
         } else {
-            [_siteUrlText becomeFirstResponder];
+            [self.siteUrlText becomeFirstResponder];
         }
-    } else if (textField == _siteUrlText && _signInButton.enabled) {
-        [self signInButtonAction:nil];
+    } else if (textField == self.siteUrlText) {
+        if (self.signInButton.enabled) {
+            [self signInButtonAction:nil];
+        }
+    } else if (textField == self.multifactorText) {
+        if ([self isMultifactorFilled]) {
+            [self signInButtonAction:nil];
+        }
     }
 
     return YES;
@@ -145,42 +199,49 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
 - (BOOL)textFieldShouldEndEditing:(UITextField *)textField
 {
-    _signInButton.enabled = [self isSignInEnabled];
     return YES;
 }
 
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range
-                                                       replacementString:(NSString *)string
+- (void)textFieldDidChange:(NSNotification *)note
 {
-    BOOL isUsernameFilled = [self isUsernameFilled];
-    BOOL isPasswordFilled = [self isPasswordFilled];
-    BOOL isSiteUrlFilled = [self isSiteUrlFilled];
-
-    NSMutableString *updatedString = [[NSMutableString alloc] initWithString:textField.text];
-    [updatedString replaceCharactersInRange:range withString:string];
-    BOOL updatedStringHasContent = [[updatedString trim] length] != 0;
-    if (textField == _usernameText) {
-        isUsernameFilled = updatedStringHasContent;
-    } else if (textField == _passwordText) {
-        isPasswordFilled = updatedStringHasContent;
-    } else if (textField == _siteUrlText) {
-        isSiteUrlFilled = updatedStringHasContent;
-    }
-    _signInButton.enabled = isUsernameFilled && isPasswordFilled && (_userIsDotCom || isSiteUrlFilled);
-    _forgotPassword.hidden = !(_userIsDotCom || isSiteUrlFilled);
-
-    return YES;
+    [self updateControls];
 }
 
-#pragma mark - Button Press Methods
+#pragma mark - Displaying of Error Messages
 
-- (void)helpButtonAction:(id)sender
+- (void)displayOnePasswordEmptySiteAlert
+{
+    NSString *message = NSLocalizedString(@"A site address is required before 1Password can be used.",
+                                          @"Error message displayed when the user is Signing into a self hosted site and "
+                                          @"tapped the 1Password Button before typing his siteURL");
+
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"Accept", @"Accept Button Title")
+                                              otherButtonTitles:nil];
+
+    [alertView show];
+}
+
+- (void)displayErrorMessages
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
+
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
+}
+
+#pragma mark - Button Handlers
+
+- (IBAction)helpButtonAction:(id)sender
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
     UINavigationController *nc = [[UINavigationController alloc] initWithRootViewController:supportViewController];
@@ -189,17 +250,18 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self.navigationController presentViewController:nc animated:YES completion:nil];
 }
 
-- (void)skipToCreateAction:(id)sender
+- (IBAction)skipToCreateAction:(id)sender
 {
     [self showCreateAccountView];
 }
 
-- (void)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
+- (IBAction)backgroundTapGestureAction:(UITapGestureRecognizer *)tapGestureRecognizer
 {
     [self.view endEditing:YES];
+    [self hideMultifactorTextfieldIfNeeded];
 }
 
-- (void)signInButtonAction:(id)sender
+- (IBAction)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
 
@@ -216,324 +278,426 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if ([self isUserNameReserved]) {
         [self displayReservedNameErrorMessage];
         [self toggleSignInFormAction:nil];
-        [_siteUrlText becomeFirstResponder];
+        [self.siteUrlText becomeFirstResponder];
         return;
     }
 
     [self signIn];
 }
 
-- (void)toggleSignInFormAction:(id)sender
+- (IBAction)toggleSignInFormAction:(id)sender
 {
-    _userIsDotCom = !_userIsDotCom;
-    _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    self.shouldDisplayMultifactor = false;
+    self.userIsDotCom = !self.userIsDotCom;
+    self.passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
 
-    // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls to their new positions.
-    [UIView animateWithDuration:0.3
+    // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
+    // to their new positions.
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
-                         [self initializeViewWithDefaultWPComAccount:defaultAccount];
+                         [self reloadInterface];
                      }];
 }
 
-- (void)cancelButtonAction:(id)sender
+
+- (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
         self.dismissBlock();
     }
 }
 
-- (void)forgotPassword:(id)sender
+- (IBAction)forgotPassword:(id)sender
 {
-    NSString *baseUrl = ForgotPasswordDotComBaseUrl;
-    if (!_userIsDotCom) {
-        baseUrl = [self getSiteUrl];
-    }
+    NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self getSiteUrl];
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
+    
     [[UIApplication sharedApplication] openURL:forgotPasswordURL];
 }
+
+- (IBAction)findLoginFromOnePassword:(id)sender
+{
+    if (self.userIsDotCom == false && self.siteUrlText.text.isEmpty) {
+        [self displayOnePasswordEmptySiteAlert];
+        return;
+    }
+ 
+    NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrlText.text;
+    
+    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
+                                                forViewController:self
+                                                           sender:sender
+                                                       completion:^(NSDictionary *loginDict, NSError *error) {
+        if (!loginDict) {
+            if (error.code != AppExtensionErrorCodeCancelledByUser) {
+                DDLogError(@"OnePassword Error: %@", error);
+                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
+            }
+            return;
+        }
+
+        self.usernameText.text = loginDict[AppExtensionUsernameKey];
+        self.passwordText.text = loginDict[AppExtensionPasswordKey];
+                                                           
+        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
+        [self signIn];
+    }];
+}
+
+- (IBAction)sendVerificationCode:(id)sender
+{
+    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
+    [client requestOneTimeCodeWithUsername:self.usernameText.text
+                                  password:self.passwordText.text
+                                   success:^{
+                                       [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
+                                   }
+                                   failure:nil];
+}
+
 
 #pragma mark - Private Methods
 
 - (void)addMainView
 {
-    _mainView = [[UIView alloc] init];
-    _mainView.frame = self.view.bounds;
-    _mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    [self.view addSubview:_mainView];
+    NSAssert(self.view, @"The view should be loaded by now");
+    
+    UIView *mainView = [[UIView alloc] initWithFrame:self.view.bounds];
+    mainView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(backgroundTapGestureAction:)];
     gestureRecognizer.numberOfTapsRequired = 1;
     gestureRecognizer.cancelsTouchesInView = YES;
-    [_mainView addGestureRecognizer:gestureRecognizer];
+    [mainView addGestureRecognizer:gestureRecognizer];
+
+    // Attach + Keep the Reference
+    [self.view addSubview:mainView];
+    self.mainView = mainView;
+    self.tapGestureRecognizer = gestureRecognizer;
 }
 
-- (void)initializeViewWithDefaultWPComAccount:(WPAccount *)defaultAccount
+- (void)addControls
 {
-    [self addControlsWithDefaultWPComAccount:defaultAccount];
-    [self layoutControls];
-}
-
-- (void)addControlsWithDefaultWPComAccount:(WPAccount *)defaultAccount
-{
+    NSAssert(self.view, @"The view should be loaded by now");
+    NSAssert(self.mainView, @"Please, initialize the mainView first");
+    
     // Add Icon
-    if (_icon == nil) {
-        _icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
-        _icon.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_mainView addSubview:_icon];
-    }
+    UIImageView *icon = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"icon-wp"]];
+    icon.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 
     // Add Info button
     UIImage *infoButtonImage = [UIImage imageNamed:@"btn-help"];
-    if (_helpButton == nil) {
-        _helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
-        [_helpButton setImage:infoButtonImage forState:UIControlStateNormal];
-        _helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
-        _helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_helpButton sizeToFit];
-        [_helpButton setExclusiveTouch:YES];
-        [_mainView addSubview:_helpButton];
-    }
+    UIButton *helpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    helpButton.accessibilityLabel = NSLocalizedString(@"Help", @"Help button");
+    [helpButton setImage:infoButtonImage forState:UIControlStateNormal];
+    helpButton.frame = CGRectMake(GeneralWalkthroughStandardOffset, GeneralWalkthroughStandardOffset, infoButtonImage.size.width, infoButtonImage.size.height);
+    helpButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    [helpButton addTarget:self action:@selector(helpButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [helpButton sizeToFit];
+    [helpButton setExclusiveTouch:YES];
 
-    // help badge
-    if (_helpBadge == nil) {
-        _helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
-        _helpBadge.layer.masksToBounds = YES;
-        _helpBadge.layer.cornerRadius = 6;
-        _helpBadge.textAlignment = NSTextAlignmentCenter;
-        _helpBadge.backgroundColor = [UIColor colorWithHexString:@"dd3d36"];
-        _helpBadge.textColor = [UIColor whiteColor];
-        _helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
-        _helpBadge.hidden = YES;
-        [_mainView addSubview:_helpBadge];
-    }
+    // Help badge
+    WPNUXHelpBadgeLabel *helpBadge = [[WPNUXHelpBadgeLabel alloc] initWithFrame:CGRectMake(0, 0, 12, 10)];
+    helpBadge.layer.masksToBounds = YES;
+    helpBadge.layer.cornerRadius = 6;
+    helpBadge.textAlignment = NSTextAlignmentCenter;
+    helpBadge.backgroundColor = [UIColor UIColorFromHex:0xdd3d36];
+    helpBadge.textColor = [UIColor whiteColor];
+    helpBadge.font = [WPFontManager openSansRegularFontOfSize:8.0];
+    helpBadge.hidden = YES;
 
     // Add Username
-    if (_usernameText == nil) {
-        _usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
-        _usernameText.backgroundColor = [UIColor whiteColor];
-        _usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
-        _usernameText.font = [WPNUXUtility textFieldFont];
-        _usernameText.adjustsFontSizeToFitWidth = YES;
-        _usernameText.returnKeyType = UIReturnKeyNext;
-        _usernameText.delegate = self;
-        _usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _usernameText.accessibilityIdentifier = @"Username / Email";
-        [_mainView addSubview:_usernameText];
-    }
+    WPWalkthroughTextField *usernameText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-username-field"]];
+    usernameText.backgroundColor = [UIColor whiteColor];
+    usernameText.placeholder = NSLocalizedString(@"Username / Email", @"NUX First Walkthrough Page 2 Username Placeholder");
+    usernameText.font = [WPNUXUtility textFieldFont];
+    usernameText.adjustsFontSizeToFitWidth = YES;
+    usernameText.returnKeyType = UIReturnKeyNext;
+    usernameText.delegate = self;
+    usernameText.autocorrectionType = UITextAutocorrectionTypeNo;
+    usernameText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    usernameText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    usernameText.accessibilityIdentifier = @"Username / Email";
 
+    // Add OnePassword
+    UIButton *onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+    [onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
+    [onePasswordButton sizeToFit];
+    
+    usernameText.rightView = onePasswordButton;
+    usernameText.rightViewPadding = LoginOnePasswordPadding;
+    
     // Add Password
-    if (_passwordText == nil) {
-        _passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
-        _passwordText.backgroundColor = [UIColor whiteColor];
-        _passwordText.placeholder = NSLocalizedString(@"Password", nil);
-        _passwordText.font = [WPNUXUtility textFieldFont];
-        _passwordText.delegate = self;
-        _passwordText.secureTextEntry = YES;
-        _passwordText.returnKeyType = _userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
-        _passwordText.showSecureTextEntryToggle = YES;
-        _passwordText.showTopLineSeparator = YES;
-        _passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _passwordText.accessibilityIdentifier = @"Password";
-        [_mainView addSubview:_passwordText];
-    }
-
+    WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
+    passwordText.backgroundColor = [UIColor whiteColor];
+    passwordText.placeholder = NSLocalizedString(@"Password", nil);
+    passwordText.font = [WPNUXUtility textFieldFont];
+    passwordText.delegate = self;
+    passwordText.secureTextEntry = YES;
+    passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
+    passwordText.showSecureTextEntryToggle = YES;
+    passwordText.showTopLineSeparator = YES;
+    passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    passwordText.accessibilityIdentifier = @"Password";
+    
+    // Add Multifactor
+    WPWalkthroughTextField *multifactorText = [[WPWalkthroughTextField alloc] init];
+    multifactorText.backgroundColor = [UIColor whiteColor];
+    multifactorText.placeholder = NSLocalizedString(@"Verification Code", nil);
+    multifactorText.font = [WPNUXUtility textFieldFont];
+    multifactorText.delegate = self;
+    multifactorText.keyboardType = UIKeyboardTypeNumberPad;
+    multifactorText.textAlignment = NSTextAlignmentCenter;
+    multifactorText.returnKeyType = UIReturnKeyDone;
+    multifactorText.showTopLineSeparator = YES;
+    multifactorText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    multifactorText.accessibilityIdentifier = @"Verification Code";
+    
     // Add Site Url
-    if (_siteUrlText == nil) {
-        _siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
-        _siteUrlText.backgroundColor = [UIColor whiteColor];
-        _siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
-        _siteUrlText.font = [WPNUXUtility textFieldFont];
-        _siteUrlText.adjustsFontSizeToFitWidth = YES;
-        _siteUrlText.delegate = self;
-        _siteUrlText.keyboardType = UIKeyboardTypeURL;
-        _siteUrlText.returnKeyType = UIReturnKeyDone;
-        _siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
-        _siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _siteUrlText.showTopLineSeparator = YES;
-        _siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
-        // insert URL field below password field to hide when signing into
-        // WP.com account
-        [_mainView insertSubview:_siteUrlText belowSubview:_passwordText];
-    }
-    _siteUrlText.enabled = !_userIsDotCom;
-
+    WPWalkthroughTextField *siteUrlText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-url-field"]];
+    siteUrlText.backgroundColor = [UIColor whiteColor];
+    siteUrlText.placeholder = NSLocalizedString(@"Site Address (URL)", @"NUX First Walkthrough Page 2 Site Address Placeholder");
+    siteUrlText.font = [WPNUXUtility textFieldFont];
+    siteUrlText.adjustsFontSizeToFitWidth = YES;
+    siteUrlText.delegate = self;
+    siteUrlText.keyboardType = UIKeyboardTypeURL;
+    siteUrlText.returnKeyType = UIReturnKeyDone;
+    siteUrlText.autocorrectionType = UITextAutocorrectionTypeNo;
+    siteUrlText.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    siteUrlText.showTopLineSeparator = YES;
+    siteUrlText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    siteUrlText.accessibilityIdentifier = @"Site Address (URL)";
+    
     // Add Sign In Button
-    if (_signInButton == nil) {
-        _signInButton = [[WPNUXMainButton alloc] init];
-        [_signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        _signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        _signInButton.accessibilityIdentifier = @"Sign In";
-        [_mainView addSubview:_signInButton];
-    }
-    _signInButton.enabled = [self isSignInEnabled];
-
-    NSString *signInTitle;
-    if (_userIsDotCom) {
-        signInTitle = NSLocalizedString(@"Sign In", nil);
-        _signInButton.accessibilityIdentifier = @"Sign In";
-    } else {
-        signInTitle = NSLocalizedString(@"Add Site", nil);
-        _signInButton.accessibilityIdentifier = @"Add Site";
-    }
-    [_signInButton setTitle:signInTitle forState:UIControlStateNormal];
-
+    WPNUXMainButton *signInButton = [[WPNUXMainButton alloc] init];
+    [signInButton addTarget:self action:@selector(signInButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    signInButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
+    signInButton.accessibilityIdentifier = @"Sign In";
+    
+    // Text: Verification Code SMS
+    NSString *codeText = NSLocalizedString(@"Enter the code on your authenticator app or ", @"Message displayed when a verification code is needed");
+    NSMutableAttributedString *attributedCodeText = [[NSMutableAttributedString alloc] initWithString:codeText];
+    
+    NSString *smsText = NSLocalizedString(@"send the code via text message.", @"Sends an SMS with the Multifactor Auth Code");
+    NSMutableAttributedString *attributedSmsText = [[NSMutableAttributedString alloc] initWithString:smsText];
+    [attributedSmsText applyUnderline];
+    
+    [attributedCodeText appendAttributedString:attributedSmsText];
+    [attributedCodeText applyFont:[WPNUXUtility confirmationLabelFont]];
+    [attributedCodeText applyForegroundColor:[UIColor whiteColor]];
+    
+    NSMutableAttributedString *attributedCodeHighlighted = [attributedCodeText mutableCopy];
+    [attributedCodeHighlighted applyForegroundColor:[WPNUXUtility confirmationLabelColor]];
+    
+    // Add Verification Code SMS Button
+    WPNUXSecondaryButton *sendVerificationCodeButton = [[WPNUXSecondaryButton alloc] init];
+    
+    sendVerificationCodeButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    sendVerificationCodeButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    sendVerificationCodeButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    sendVerificationCodeButton.titleLabel.numberOfLines = LoginVerificationCodeNumberOfLines;
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeText forState:UIControlStateNormal];
+    [sendVerificationCodeButton setAttributedTitle:attributedCodeHighlighted forState:UIControlStateHighlighted];
+    [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
+    
     // Add Cancel Button
-    if (self.cancellable && _cancelButton == nil) {
-        _cancelButton = [[WPNUXSecondaryButton alloc] init];
-        [_cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
-        [_cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
-        [_cancelButton setExclusiveTouch:YES];
-        [_cancelButton sizeToFit];
-        [self.view addSubview:_cancelButton];
-    }
+    WPNUXSecondaryButton *cancelButton = [[WPNUXSecondaryButton alloc] init];
+    [cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
+    [cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [cancelButton setExclusiveTouch:YES];
+    [cancelButton sizeToFit];
 
     // Add status label
-    if (_statusLabel == nil) {
-        _statusLabel = [[UILabel alloc] init];
-        _statusLabel.font = [WPNUXUtility confirmationLabelFont];
-        _statusLabel.textColor = [WPNUXUtility confirmationLabelColor];
-        _statusLabel.textAlignment = NSTextAlignmentCenter;
-        _statusLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-        _statusLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
-        [_mainView addSubview:_statusLabel];
-    }
+    UILabel *statusLabel = [[UILabel alloc] init];
+    statusLabel.font = [WPNUXUtility confirmationLabelFont];
+    statusLabel.textColor = [WPNUXUtility confirmationLabelColor];
+    statusLabel.textAlignment = NSTextAlignmentCenter;
+    statusLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+    statusLabel.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 
     // Add Account type toggle
-    if (_toggleSignInForm == nil) {
-        _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-        [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
-        _toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-        [_mainView addSubview:_toggleSignInForm];
-    }
-    if (!self.onlyDotComAllowed && !defaultAccount) {
-        // Add Account type toggle
-        if (_toggleSignInForm == nil) {
-            _toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
-            [_toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
-            [_mainView addSubview:_toggleSignInForm];
-        }
-        NSString *toggleTitle;
-        if (_userIsDotCom) {
-            toggleTitle = NSLocalizedString(@"Add Self-Hosted Site", nil);
-            _toggleSignInForm.accessibilityIdentifier = @"Add Self-Hosted Site";
-        } else {
-            toggleTitle = NSLocalizedString(@"Sign in to WordPress.com", nil);
-            _toggleSignInForm.accessibilityIdentifier = @"Sign in to WordPress.com";
-        }
-        [_toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
-    }
-
-    if (!defaultAccount) {
-        // Add Skip to Create Account Button
-        if (_skipToCreateAccount == nil) {
-            _skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
-            _skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
-            [_skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
-            [_skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
-            [_mainView addSubview:_skipToCreateAccount];
-        }
-    }
+    WPNUXSecondaryButton *toggleSignInForm = [[WPNUXSecondaryButton alloc] init];
+    [toggleSignInForm addTarget:self action:@selector(toggleSignInFormAction:) forControlEvents:UIControlEventTouchUpInside];
+    toggleSignInForm.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    
+    // Add Skip to Create Account Button
+    WPNUXSecondaryButton *skipToCreateAccount = [[WPNUXSecondaryButton alloc] init];
+    skipToCreateAccount.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleTopMargin;
+    [skipToCreateAccount setTitle:NSLocalizedString(@"Create Account", nil) forState:UIControlStateNormal];
+    [skipToCreateAccount addTarget:self action:@selector(skipToCreateAction:) forControlEvents:UIControlEventTouchUpInside];
 
     // Add Lost Password Button
-    if (_forgotPassword == nil) {
-        _forgotPassword = [[WPNUXSecondaryButton alloc] init];
-        _forgotPassword.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
-        [_forgotPassword setTitle:NSLocalizedString(@"Lost your password?", nil) forState:UIControlStateNormal];
-        [_forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
-        _forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
-        [_forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
-        [_mainView addSubview:_forgotPassword];
-    }
-    _forgotPassword.hidden = ![self isForgotPasswordEnabled];
+    WPNUXSecondaryButton *forgotPassword = [[WPNUXSecondaryButton alloc] init];
+    forgotPassword.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleBottomMargin;
+    [forgotPassword setTitle:NSLocalizedString(@"Lost your password?", nil) forState:UIControlStateNormal];
+    [forgotPassword addTarget:self action:@selector(forgotPassword:) forControlEvents:UIControlEventTouchUpInside];
+    forgotPassword.titleLabel.font = [WPNUXUtility tosLabelFont];
+    [forgotPassword setTitleColor:[WPNUXUtility tosLabelColor] forState:UIControlStateNormal];
+    
+    // Attach Subviews
+    [self.view addSubview:cancelButton];
+    [self.mainView addSubview:icon];
+    [self.mainView addSubview:helpButton];
+    [self.mainView addSubview:helpBadge];
+    [self.mainView addSubview:usernameText];
+    [self.mainView addSubview:passwordText];
+    [self.mainView addSubview:multifactorText];
+    [self.mainView addSubview:sendVerificationCodeButton];
+    [self.mainView addSubview:siteUrlText];
+    [self.mainView addSubview:signInButton];
+    [self.mainView addSubview:statusLabel];
+    [self.mainView addSubview:toggleSignInForm];
+    [self.mainView addSubview:skipToCreateAccount];
+    [self.mainView addSubview:forgotPassword];
+
+    // Keep the references!
+    self.cancelButton = cancelButton;
+    self.icon = icon;
+    self.helpButton = helpButton;
+    self.helpBadge = helpBadge;
+    self.usernameText = usernameText;
+    self.passwordText = passwordText;
+    self.onePasswordButton = onePasswordButton;
+    self.multifactorText = multifactorText;
+    self.sendVerificationCodeButton = sendVerificationCodeButton;
+    self.siteUrlText = siteUrlText;
+    self.signInButton = signInButton;
+    self.statusLabel = statusLabel;
+    self.toggleSignInForm = toggleSignInForm;
+    self.skipToCreateAccount = skipToCreateAccount;
+    self.forgotPassword = forgotPassword;
+}
+
+
+#pragma mark - Private Helpers
+
+- (void)reloadInterface
+{
+    [self updateControls];
+    [self layoutControls];
+}
+
+- (void)updateControls
+{
+    // Spinner!
+    [self.signInButton showActivityIndicator:self.authenticating];
+    
+    // One Password
+    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
+    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
+    
+    // TextFields
+    self.usernameText.alpha                 = self.usernameAlpha;
+    self.passwordText.alpha                 = self.passwordAlpha;
+    self.siteUrlText.alpha                  = self.siteAlpha;
+    self.multifactorText.alpha              = self.multifactorAlpha;
+    
+    self.usernameText.enabled               = self.isUsernameEnabled;
+    self.passwordText.enabled               = self.isPasswordEnabled;
+    self.siteUrlText.enabled                = self.isSiteUrlEnabled;
+    self.multifactorText.enabled            = self.isMultifactorEnabled;
+    
+    // Buttons
+    self.cancelButton.hidden                = !self.cancellable;
+    self.forgotPassword.hidden              = self.isForgotPasswordHidden;
+    self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
+    self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
+    
+    // SignIn Button
+    NSString *signInTitle                   = self.signInButtonTitle;
+    self.signInButton.enabled               = self.isSignInEnabled;
+    self.signInButton.accessibilityIdentifier = signInTitle;
+    [self.signInButton setTitle:signInTitle forState:UIControlStateNormal];
+    
+    // Dotcom / SelfHosted Button
+    NSString *toggleTitle                   = self.toggleSignInButtonTitle;
+    self.toggleSignInForm.hidden            = self.isSignInToggleHidden;
+    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
+    [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
 }
 
 - (void)layoutControls
 {
-    CGFloat x,y;
-
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight(self.view.bounds);
-
+    
+    CGFloat textFieldX = (viewWidth - GeneralWalkthroughTextFieldSize.width) * 0.5f;
+    CGFloat textLabelX = (viewWidth - GeneralWalkthroughMaxTextWidth) * 0.5f;
+    CGFloat buttonX = (viewWidth - GeneralWalkthroughButtonSize.width) * 0.5f;
+    
     // Layout Help Button
-    x = viewWidth - CGRectGetWidth(_helpButton.frame) - GeneralWalkthroughStandardOffset;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _helpButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpButton.frame), GeneralWalkthroughButtonHeight));
+    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - GeneralWalkthroughStandardOffset;
+    CGFloat helpButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    self.helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(self.helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    x = viewWidth - CGRectGetWidth(_helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(_helpBadge.frame) - 5;
-    _helpBadge.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_helpBadge.frame), CGRectGetHeight(_helpBadge.frame)));
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
+    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
+    self.helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(self.helpBadge.frame), CGRectGetHeight(self.helpBadge.frame)));
 
     // Layout Cancel Button
-    x = 0;
-    y = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
-    _cancelButton.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_cancelButton.frame), GeneralWalkthroughButtonHeight));
+    CGFloat cancelButtonX = 0;
+    CGFloat cancelButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    self.cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(self.cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
-    CGFloat heightOfControls = CGRectGetHeight(_icon.frame) + GeneralWalkthroughStandardOffset + (_userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldHeight + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonHeight;
+    CGFloat heightOfControls = CGRectGetHeight(self.icon.frame) + GeneralWalkthroughStandardOffset + (self.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
     CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
 
-    x = (viewWidth - CGRectGetWidth(_icon.frame))/2.0;
-    y = startingYForCenteredControls;
-    _icon.frame = CGRectIntegral(CGRectMake(x, y, CGRectGetWidth(_icon.frame), CGRectGetHeight(_icon.frame)));
+    CGFloat iconX = (viewWidth - CGRectGetWidth(self.icon.frame)) * 0.5f;
+    CGFloat iconY = startingYForCenteredControls;
+    self.icon.frame = CGRectIntegral(CGRectMake(iconX, iconY, CGRectGetWidth(self.icon.frame), CGRectGetHeight(self.icon.frame)));
 
     // Layout Username
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_icon.frame) + GeneralWalkthroughStandardOffset;
-    _usernameText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
+    CGFloat usernameTextY = CGRectGetMaxY(self.icon.frame) + GeneralWalkthroughStandardOffset;
+    self.usernameText.frame = CGRectIntegral(CGRectMake(textFieldX, usernameTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Password
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = CGRectGetMaxY(_usernameText.frame) - 1;
-    _passwordText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
-
+    CGFloat passwordTextY = CGRectGetMaxY(self.usernameText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    self.passwordText.frame = CGRectIntegral(CGRectMake(textFieldX, passwordTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    
     // Layout Site URL
-    x = (viewWidth - GeneralWalkthroughTextFieldWidth)/2.0;
-    y = _userIsDotCom ? CGRectGetMaxY(_usernameText.frame) - 1 : CGRectGetMaxY(_passwordText.frame);
-    _siteUrlText.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughTextFieldWidth, GeneralWalkthroughTextFieldHeight));
+    CGFloat siteUrlTextY = CGRectGetMaxY(self.passwordText.frame) - GeneralWalkthroughTextFieldOverlapY;
+    self.siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
+    // Layout Multifactor
+    CGFloat multifactorTextY = self.userIsDotCom ? CGRectGetMaxY(self.passwordText.frame) : CGRectGetMaxY(self.siteUrlText.frame);
+    multifactorTextY -= GeneralWalkthroughTextFieldOverlapY;
+    self.multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
+    
     // Layout Sign in Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
-    y = CGRectGetMaxY(_siteUrlText.frame) + GeneralWalkthroughStandardOffset;
-    _signInButton.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughButtonHeight));
+    CGFloat signInButtonY = [self lastTextfieldMaxY] + GeneralWalkthroughStandardOffset;
+    self.signInButton.frame = CGRectIntegral(CGRectMake(buttonX, signInButtonY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughButtonSize.height));
 
+    // Layout SMS Label
+    CGFloat smsLabelY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGSize targetSize = [self.sendVerificationCodeButton.titleLabel sizeThatFits:CGSizeMake(GeneralWalkthroughButtonSize.width, CGFLOAT_MAX)];
+    self.sendVerificationCodeButton.frame = CGRectIntegral(CGRectMake(textLabelX, smsLabelY, GeneralWalkthroughButtonSize.width, targetSize.height));
+    
     // Layout Lost password Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth) / 2.0;
-    y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    CGFloat forgotPasswordHeight = [_forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:_forgotPassword.titleLabel.font}].height;
-    _forgotPassword.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, forgotPasswordHeight));
+    CGFloat forgotPasswordY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    CGFloat forgotPasswordHeight = [self.forgotPassword.titleLabel.text sizeWithAttributes:@{NSFontAttributeName:self.forgotPassword.titleLabel.font}].height;
+    self.forgotPassword.frame = CGRectIntegral(CGRectMake(buttonX, forgotPasswordY, GeneralWalkthroughButtonSize.width, forgotPasswordHeight));
 
     // Layout Skip to Create Account Button
-    x = (viewWidth - GeneralWalkthroughButtonWidth)/2.0;
-    y = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
-    _skipToCreateAccount.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughButtonWidth, GeneralWalkthroughSecondaryButtonHeight));
+    CGFloat skipToCreateAccountY = viewHeight - GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    self.skipToCreateAccount.frame = CGRectIntegral(CGRectMake(buttonX, skipToCreateAccountY, GeneralWalkthroughButtonSize.width, GeneralWalkthroughSecondaryButtonHeight));
 
     // Layout Status Label
-    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
-    y = CGRectGetMaxY(_signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
-    _statusLabel.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, _statusLabel.font.lineHeight));
+    CGFloat statusLabelY = CGRectGetMaxY(self.signInButton.frame) + 0.5 * GeneralWalkthroughStandardOffset;
+    self.statusLabel.frame = CGRectIntegral(CGRectMake(textLabelX, statusLabelY, GeneralWalkthroughMaxTextWidth, self.statusLabel.font.lineHeight));
 
     // Layout Toggle Button
-    x =  (viewWidth - GeneralWalkthroughMaxTextWidth) / 2.0;
-    y = CGRectGetMinY(_skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - 33;
-    _toggleSignInForm.frame = CGRectIntegral(CGRectMake(x, y, GeneralWalkthroughMaxTextWidth, 33));
+    CGFloat toggleSignInY = CGRectGetMinY(self.skipToCreateAccount.frame) - 0.5 * GeneralWalkthroughStandardOffset - GeneralWalkthroughSecondaryButtonHeight;
+    self.toggleSignInForm.frame = CGRectIntegral(CGRectMake(textLabelX, toggleSignInY, GeneralWalkthroughMaxTextWidth, GeneralWalkthroughSecondaryButtonHeight));
 }
 
 - (void)dismiss
 {
-    WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-
     // If we were invoked from the post tab proceed to the editor. Our work here is done.
-    if (_showEditorAfterAddingSites) {
-        [delegate showPostTab];
+    if (self.showEditorAfterAddingSites) {
+        [[WPTabBarController sharedInstance] showPostTab];
         return;
     }
 
@@ -542,9 +706,9 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+    
     if (!defaultAccount) {
-        [delegate showTabForIndex:kMeTabIndex];
+        [[WPTabBarController sharedInstance] showMySitesTab];
     }
 
     if (self.dismissBlock) {
@@ -560,7 +724,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (void)showJetpackAuthentication
 {
-    [self setAuthenticating:NO withStatusMessage:nil];
+    [self finishedAuthenticating];
     JetpackLoginViewController *jetpackLoginViewController = [JetpackLoginViewController instantiate];
     [jetpackLoginViewController setBlog:_blog];
     jetpackLoginViewController.context = JetpackLoginContextNUX;
@@ -572,6 +736,7 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         } else {
             [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
         }
+
         [self dismiss];
     };
     [self.navigationController pushViewController:jetpackLoginViewController animated:YES];
@@ -587,27 +752,20 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 - (void)showHelpshiftConversationView
 {
     NSDictionary *metaData = @{@"Source": @"Failed login",
-                               @"Username": _usernameText.text,
-                               @"SiteURL": _siteUrlText.text};
+                               @"Username": self.usernameText.text,
+                               @"SiteURL": self.siteUrlText.text};
 
     [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
-}
-
-- (BOOL)isUrlWPCom:(NSString *)url
-{
-    NSRegularExpression *protocol = [NSRegularExpression regularExpressionWithPattern:@"wordpress\\.com/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSArray *result = [protocol matchesInString:[url trim] options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [[url trim] length])];
-
-    return [result count] != 0;
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
 }
 
 - (NSString *)getSiteUrl
 {
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
     NSString *url = [siteURL absoluteString];
 
     // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if ([self isUrlWPCom:url]) {
+    if (url.isWordPressComPath) {
         if (siteURL.scheme == nil) {
             url = [NSString stringWithFormat:@"https://%@", url];
         } else {
@@ -632,9 +790,12 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return url;
 }
 
+
+#pragma mark - Validation Helpers
+
 - (BOOL)areFieldsValid
 {
-    if ([self areSelfHostedFieldsFilled] && !_userIsDotCom) {
+    if ([self areSelfHostedFieldsFilled] && !self.userIsDotCom) {
         return [self isUrlValid];
     }
 
@@ -643,32 +804,33 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 
 - (BOOL)isUsernameFilled
 {
-    return [[_usernameText.text trim] length] != 0;
+    return [[self.usernameText.text trim] length] != 0;
 }
 
 - (BOOL)isPasswordFilled
 {
-    return [[_passwordText.text trim] length] != 0;
+    return [[self.passwordText.text trim] length] != 0;
+}
+
+- (BOOL)isMultifactorFilled
+{
+    return self.multifactorText.text.isEmpty == NO;
 }
 
 - (BOOL)isSiteUrlFilled
 {
-    return [[_siteUrlText.text trim] length] != 0;
-}
-
-- (BOOL)isSignInEnabled
-{
-    return _userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
-}
-
-- (BOOL)isForgotPasswordEnabled
-{
-    return _userIsDotCom || [self isUrlValid];
+    return [[self.siteUrlText.text trim] length] != 0;
 }
 
 - (BOOL)areDotComFieldsFilled
 {
-    return [self isUsernameFilled] && [self isPasswordFilled];
+    BOOL areCredentialsFilled = [self isUsernameFilled] && [self isPasswordFilled];
+    
+    if (![self shouldDisplayMultifactor]) {
+        return areCredentialsFilled;
+    }
+    
+    return areCredentialsFilled && [self isMultifactorFilled];
 }
 
 - (BOOL)areSelfHostedFieldsFilled
@@ -676,72 +838,178 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
 }
 
-- (BOOL)hasUserOnlyEnteredValuesForDotCom
-{
-    return [self areDotComFieldsFilled] && ![self areSelfHostedFieldsFilled];
-}
-
 - (BOOL)isUrlValid
 {
-    if (_siteUrlText.text.length == 0) {
+    if (self.siteUrlText.text.length == 0) {
         return NO;
     }
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:_siteUrlText.text]];
+    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
     return siteURL != nil;
 }
 
 - (BOOL)isUserNameReserved
 {
-    if (!_userIsDotCom) {
+    if (!self.userIsDotCom) {
         return NO;
     }
-    NSString *username = [[_usernameText.text trim] lowercaseString];
+    NSString *username = [[self.usernameText.text trim] lowercaseString];
     NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
-    if ([reservedUserNames containsObject:username]) {
-        return YES;
+    
+    return [reservedUserNames containsObject:username];
+}
+
+
+#pragma mark - Interface Helpers: TextFields
+
+- (BOOL)isUsernameEnabled
+{
+    return !self.shouldDisplayMultifactor;
+}
+
+- (BOOL)isPasswordEnabled
+{
+    return !self.shouldDisplayMultifactor;
+}
+
+- (BOOL)isSiteUrlEnabled
+{
+    return !self.userIsDotCom;
+}
+
+- (BOOL)isMultifactorEnabled
+{
+    return self.shouldDisplayMultifactor;
+}
+
+- (CGFloat)usernameAlpha
+{
+    return self.isUsernameEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+}
+
+- (CGFloat)passwordAlpha
+{
+    return self.isPasswordEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
+}
+
+- (CGFloat)siteAlpha
+{
+    if (self.isSiteUrlEnabled) {
+        return self.isMultifactorEnabled ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
     }
-    return NO;
+    
+    return GeneralWalkthroughAlphaHidden;
 }
 
-- (void)displayErrorMessages
+- (CGFloat)multifactorAlpha
 {
-    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+    return self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
 }
 
-- (void)displayReservedNameErrorMessage
+
+#pragma mark - Interface Helpers: Buttons
+
+- (BOOL)isSignInEnabled
 {
-    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
+    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
 }
 
-- (void)setAuthenticating:(BOOL)authenticating withStatusMessage:(NSString *)status
+- (BOOL)isSignInToggleHidden
 {
-
-    _statusLabel.hidden = !(status.length > 0);
-    _statusLabel.text = status;
-
-    _signInButton.enabled = !authenticating;
-    _toggleSignInForm.hidden = authenticating;
-    _skipToCreateAccount.hidden = authenticating;
-    _forgotPassword.hidden = authenticating;
-    _cancelButton.enabled = !authenticating;
-    [_signInButton showActivityIndicator:authenticating];
+    return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
 }
+
+- (BOOL)isSendCodeHidden
+{
+    return !self.shouldDisplayMultifactor || self.authenticating;
+}
+
+- (BOOL)isAccountCreationHidden
+{
+    return self.hasDefaultAccount || self.authenticating;
+}
+
+- (BOOL)isForgotPasswordHidden
+{
+    BOOL isEnabled = self.userIsDotCom || self.isUrlValid;
+    return !isEnabled || self.authenticating || self.shouldDisplayMultifactor;
+}
+
+
+#pragma mark - Text Helpers
+
+- (NSString *)signInButtonTitle
+{
+    if (self.shouldDisplayMultifactor) {
+        return NSLocalizedString(@"Verify", @"Button title for Two Factor code verification");
+    } else if (self.userIsDotCom) {
+        return NSLocalizedString(@"Sign In", @"Button title for Sign In Action");
+    }
+    
+    return NSLocalizedString(@"Add Site", @"Button title for Add SelfHosted Site");
+}
+
+- (NSString *)toggleSignInButtonTitle
+{
+    if (self.userIsDotCom) {
+        return NSLocalizedString(@"Add Self-Hosted Site", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
+    }
+    
+    return NSLocalizedString(@"Sign in to WordPress.com", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
+}
+
+- (CGFloat)lastTextfieldMaxY
+{
+    if (self.shouldDisplayMultifactor) {
+        return CGRectGetMaxY(self.multifactorText.frame);
+    } else if (self.userIsDotCom) {
+        return CGRectGetMaxY(self.passwordText.frame);
+    }
+    
+    return CGRectGetMaxY(self.siteUrlText.frame);
+}
+
+- (CGFloat)editionModeMaxY
+{
+    UIView *bottomView = self.shouldDisplayMultifactor ? self.sendVerificationCodeButton : self.signInButton;
+    return CGRectGetMaxY(bottomView.frame);
+}
+
+
+#pragma mark - Auth Helpers
+
+- (void)startedAuthenticatingWithMessage:(NSString *)status
+{
+    [self setAuthenticating:YES status:status];
+}
+
+- (void)finishedAuthenticating
+{
+    [self setAuthenticating:NO status:nil];
+}
+
+- (void)setAuthenticating:(BOOL)authenticating status:(NSString *)status
+{
+    self.authenticating = authenticating;
+    
+    self.statusLabel.hidden = !(status.length > 0);
+    self.statusLabel.text = status;
+    
+    self.view.userInteractionEnabled = !authenticating;
+    
+    [self updateControls];
+}
+
+
+#pragma mark - Backend Helpers
 
 - (void)signIn
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Authenticating", nil)];
+    NSString *username = self.usernameText.text;
+    NSString *password = self.passwordText.text;
+    NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
 
-    NSString *username = _usernameText.text;
-    NSString *password = _passwordText.text;
-    _dotComSiteUrl = nil;
-
-    if (_userIsDotCom) {
-        [self signInForWPComForUsername:username andPassword:password];
-        return;
-    }
-
-    if ([self isUrlWPCom:_siteUrlText.text]) {
-        [self signInForWPComForUsername:username andPassword:password];
+    if (self.userIsDotCom || self.siteUrlText.text.isWordPressComPath) {
+        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
         return;
     }
 
@@ -749,68 +1017,115 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRPCURL username:username password:password];
 
         [api getBlogOptionsWithSuccess:^(id options){
-            [self setAuthenticating:NO withStatusMessage:nil];
+            [self finishedAuthenticating];
 
             if ([options objectForKey:@"wordpress.com"] != nil) {
-                NSDictionary *siteUrl = [options dictionaryForKey:@"home_url"];
-                _dotComSiteUrl = [siteUrl objectForKey:@"value"];
-                [self signInForWPComForUsername:username andPassword:password];
+                [self signInWithWPComForUsername:username password:password multifactor:multifactor];
             } else {
                 NSString *xmlrpc = [xmlRPCURL absoluteString];
                 [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
             }
         } failure:^(NSError *error){
-            [self setAuthenticating:NO withStatusMessage:nil];
+            [WPAnalytics track:WPAnalyticsStatLoginFailed];
+            [self finishedAuthenticating];
             [self displayRemoteError:error];
         }];
     };
 
     void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
+        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
         [self handleGuessXMLRPCURLFailure:error];
     };
 
-    NSString *siteUrl = [NSURL IDNEncodedURL:_siteUrlText.text];
-
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Authenticating", nil)];
+    
+    NSString *siteUrl = [NSURL IDNEncodedURL:self.siteUrlText.text];
     [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
-- (void)signInForWPComForUsername:(NSString *)username andPassword:(NSString *)password
+- (void)signInWithWPComForUsername:(NSString *)username
+                          password:(NSString *)password
+                       multifactor:(NSString *)multifactor
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
 
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:multifactor
                              success:^(NSString *authToken) {
-                                 [self setAuthenticating:NO withStatusMessage:nil];
-                                 _userIsDotCom = YES;
-                                 [self createWordPressComAccountForUsername:username password:password authToken:authToken];
+                                 
+                                 [self finishedAuthenticating];
+                                 [self removeLegacyAccountIfNeeded:username];
+                                 [self createWordPressComAccountForUsername:username authToken:authToken];
+                                 
                              } failure:^(NSError *error) {
-                                 [self setAuthenticating:NO withStatusMessage:nil];
-                                 [self displayRemoteError:error];
+                                 
+                                 // Remove the Spinner + Status Message
+                                 [self finishedAuthenticating];
+                                 
+                                 // If needed, show the multifactor field
+                                 if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
+                                     [self displayMultifactorTextfield];
+                                 } else {
+                                     NSDictionary *properties = @{ @"multifactor" : @(self.shouldDisplayMultifactor) };
+                                     [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
+                                     
+                                     [self displayRemoteError:error];
+                                 }
                              }];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username
-                                    password:(NSString *)password
-                                   authToken:(NSString *)authToken
+- (void)removeLegacyAccountIfNeeded:(NSString *)newUsername
 {
-    [self setAuthenticating:YES withStatusMessage:NSLocalizedString(@"Getting account information", nil)];
+    NSParameterAssert(newUsername);
+    
+    //  Note:
+    //  Reauthentication Mode + Old Username != New Username: In this case, we should nuke the "legacy" defaultAccount
+    if (!self.shouldReauthenticateDefaultAccount) {
+        return;
+    }
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    
+    if (![accountService.defaultWordPressComAccount.username isEqual:newUsername]) {
+        [accountService removeDefaultWordPressComAccount];
+    }
+}
+
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
+{
+    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
+    
+    self.userIsDotCom = YES;
+    
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
 
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account
                                 success:^{
-                                    [self setAuthenticating:NO withStatusMessage:nil];
+                                    // Dismiss the UI
+                                    [self finishedAuthenticating];
                                     [self dismiss];
-                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(YES) }];
+                                    
+                                    // Hit the Tracker
+                                    NSDictionary *properties = @{
+                                        @"multifactor" : @(self.shouldDisplayMultifactor),
+                                        @"dotcom_user" : @(YES)
+                                    };
+                                    
+                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
                                     [WPAnalytics refreshMetadata];
+
+                                    // once blogs for the accounts are synced, we want to update account details for it
+                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
                                 }
                                 failure:^(NSError *error) {
-                                    [self setAuthenticating:NO withStatusMessage:nil];
+                                    [self finishedAuthenticating];
                                     [self displayRemoteError:error];
                                 }];
 }
@@ -820,7 +1135,6 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
                                             xmlrpc:(NSString *)xmlrpc
                                            options:(NSDictionary *)options
 {
-    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -831,23 +1145,23 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    _blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
-    if (!_blog) {
-        _blog = [blogService createBlogWithAccount:account];
+    self.blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    if (!self.blog) {
+        self.blog = [blogService createBlogWithAccount:account];
         if (url) {
-            _blog.url = url;
+            self.blog.url = url;
         }
         if (blogName) {
-            _blog.blogName = [blogName stringByDecodingXMLCharacters];
+            self.blog.blogName = [blogName stringByDecodingXMLCharacters];
         }
     }
-    _blog.xmlrpc = xmlrpc;
-    _blog.options = options;
-    [_blog dataSave];
-    [blogService syncBlog:_blog success:nil failure:nil];
+    self.blog.xmlrpc = xmlrpc;
+    self.blog.options = options;
+    [self.blog dataSave];
+    [blogService syncBlog:self.blog success:nil failure:nil];
 
-    if ([_blog hasJetpack]) {
-        if ([_blog hasJetpackAndIsConnectedToWPCom]) {
+    if ([self.blog hasJetpack]) {
+        if ([self.blog hasJetpackAndIsConnectedToWPCom]) {
             [self showJetpackAuthentication];
         } else {
             [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
@@ -857,13 +1171,14 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
         [self dismiss];
     }
 
+    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
     [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
     [WPAnalytics refreshMetadata];
 }
 
 - (void)handleGuessXMLRPCURLFailure:(NSError *)error
 {
-    [self setAuthenticating:NO withStatusMessage:nil];
+    [self finishedAuthenticating];
     if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
         [self displayRemoteError:nil];
     } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
@@ -884,13 +1199,10 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
 {
     DDLogError(@"%@", error);
     WPNUXErrorViewController *controller = [[WPNUXErrorViewController alloc] initWithRemoteError:error];
-    if ([error.domain isEqual:WordPressComOAuthErrorDomain] && error.code == WordPressComOAuthErrorInvalidRequest) {
-        _numberOfTimesLoginFailed++;
-    }
 
     __weak __typeof(self)weakSelf = self;
 
-    BOOL liveChatEnabled = ([SupportViewController isHelpshiftEnabled] && _numberOfTimesLoginFailed >= 2);
+    BOOL liveChatEnabled = [HelpshiftUtils isHelpshiftEnabled];
     controller.liveChatEnabled = liveChatEnabled;
     if (liveChatEnabled) {
         controller.contactCompletionBlock = ^() {
@@ -909,31 +1221,66 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     [self presentViewController:controller animated:YES completion:NO];
 }
 
+
+#pragma mark - Multifactor Helpers
+
+- (void)displayMultifactorTextfield
+{
+    [WPAnalytics track:WPAnalyticsStatTwoFactorCodeRequested];
+    self.shouldDisplayMultifactor = YES;
+    
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                         [self.multifactorText becomeFirstResponder];
+                     }];
+}
+
+- (void)hideMultifactorTextfieldIfNeeded
+{
+    if (!self.shouldDisplayMultifactor) {
+        return;
+    }
+    
+    self.shouldDisplayMultifactor = NO;
+    [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
+                     animations:^{
+                         [self reloadInterface];
+                     } completion:^(BOOL finished) {
+                         self.multifactorText.text = nil;
+                     }];
+}
+
+
+#pragma mark - Keyboard Handling
+
 - (void)keyboardWillShow:(NSNotification *)notification
 {
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
     CGRect keyboardFrame = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     keyboardFrame = [self.view convertRect:keyboardFrame fromView:nil];
-    CGFloat newKeyboardOffset = (CGRectGetMaxY(_signInButton.frame) - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
+    
+    CGFloat newKeyboardOffset = (self.editionModeMaxY - CGRectGetMinY(keyboardFrame)) + GeneralWalkthroughStandardOffset;
 
     if (newKeyboardOffset < 0) {
         return;
     }
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:newKeyboardOffset]) {
+            control.alpha = GeneralWalkthroughAlphaHidden;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y -= newKeyboardOffset;
             control.frame = frame;
         }
-
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 0.0;
-        }
+        
     } completion:^(BOOL finished) {
 
-        _keyboardOffset += newKeyboardOffset;
+        self.keyboardOffset += newKeyboardOffset;
     }];
 }
 
@@ -942,53 +1289,75 @@ CGFloat const GeneralWalkthroughStatusBarOffset = 20.0;
     NSDictionary *keyboardInfo = notification.userInfo;
     CGFloat animationDuration = [[keyboardInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] floatValue];
 
-    CGFloat currentKeyboardOffset = _keyboardOffset;
-    _keyboardOffset = 0;
+    CGFloat currentKeyboardOffset = self.keyboardOffset;
+    self.keyboardOffset = 0;
 
     [UIView animateWithDuration:animationDuration animations:^{
+        for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
+            control.alpha = GeneralWalkthroughAlphaEnabled;
+        }
+        
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
             CGRect frame = control.frame;
             frame.origin.y += currentKeyboardOffset;
             control.frame = frame;
         }
 
-        for (UIControl *control in [self controlsToHideForTextEntry]) {
-            control.alpha = 1.0;
-        }
     }];
 }
 
 - (NSArray *)controlsToMoveForTextEntry
 {
-    return @[_icon, _usernameText, _passwordText, _siteUrlText, _signInButton, _statusLabel];
+    return @[ self.icon, self.usernameText, self.passwordText, self.multifactorText, self.sendVerificationCodeButton,
+              self.siteUrlText, self.signInButton, self.statusLabel ];
 }
 
-- (NSArray *)controlsToHideForTextEntry
+- (NSArray *)controlsToHideWithKeyboardOffset:(CGFloat)offset
 {
-
-    NSArray *controlsToHide = @[_helpButton, _helpBadge];
-
-    // Hide the
-    BOOL isSmallScreen = !(CGRectGetHeight(self.view.bounds) > 480.0);
-    if (isSmallScreen) {
-        controlsToHide = [controlsToHide arrayByAddingObject:_icon];
+    // Always hide the Help + Badge
+    NSMutableArray *controlsToHide = [NSMutableArray array];
+    [controlsToHide addObjectsFromArray:@[ self.helpButton, self.helpBadge ]];
+    
+    // Find  controls that fall off the screen
+    for (UIView *control in self.controlsToMoveForTextEntry) {
+        if (control.frame.origin.y - offset <= 0) {
+            [controlsToHide addObject:control];
+        }
     }
+    
     return controlsToHide;
 }
 
-#pragma mark - Helpshift Delegate
 
-- (void)didReceiveNotificationCount:(NSInteger)count
+#pragma mark - Helpshift Notifications
+
+- (void)helpshiftUnreadCountUpdated:(NSNotification *)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if (count > 0) {
-            _helpBadge.text = [NSString stringWithFormat:@"%d", count];
-            _helpBadge.hidden = NO;
-        } else {
-            _helpBadge.text = @"0";
-            _helpBadge.hidden = YES;
-        }
-    });
+    NSInteger unreadCount = [HelpshiftUtils unreadNotificationCount];
+    self.helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
+    self.helpBadge.hidden = (unreadCount == 0);
+}
+
+
+#pragma mark - Static Helpers
+
++ (void)presentModalReauthScreen
+{
+    UIViewController *rootViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+    
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    loginViewController.onlyDotComAllowed = YES;
+    loginViewController.shouldReauthenticateDefaultAccount = YES;
+    loginViewController.cancellable = YES;
+    loginViewController.dismissBlock = ^{
+        [rootViewController dismissViewControllerAnimated:YES completion:nil];
+    };
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    navController.navigationBar.translucent = NO;
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
 @end

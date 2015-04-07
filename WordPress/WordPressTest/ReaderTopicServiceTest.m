@@ -17,7 +17,8 @@
 @end
 
 @interface ReaderTopicService()
-- (void)mergeTopics:(NSArray *)topics forAccount:(WPAccount *)account;
+- (void)mergeMenuTopics:(NSArray *)topics forAccount:(WPAccount *)account;
+- (NSString *)formatTitle:(NSString *)str;
 @end
 
 
@@ -146,14 +147,20 @@
     foo.title = @"foo";
     foo.path = @"http://foo.com";
     foo.isSubscribed = YES;
+    foo.isMenuItem = YES;
+    foo.type = ReaderTopicTypeList;
 
     RemoteReaderTopic *bar = [[RemoteReaderTopic alloc] init];
     bar.title = @"bar";
     bar.path = @"http://bar.com";
+    bar.isMenuItem = YES;
+    bar.type = ReaderTopicTypeList;
 
     RemoteReaderTopic *baz = [[RemoteReaderTopic alloc] init];
     baz.title = @"baz";
     baz.path = @"http://baz.com";
+    baz.isMenuItem = YES;
+    baz.type = ReaderTopicTypeList;
 
     return @[foo, bar, baz];
 }
@@ -168,7 +175,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
 
     // Topics exist in the context
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
@@ -178,7 +185,7 @@
 
     // Merg new set of topics.
     RemoteReaderTopic *foo = remoteTopics.firstObject;
-    [service mergeTopics:@[foo] forAccount:nil];
+    [service mergeMenuTopics:@[foo] forAccount:nil];
 
     // Make sure the missing topics were removed when merged
     count = [context countForFetchRequest:request error:&error];
@@ -202,7 +209,7 @@
     // Setup
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
-    [service mergeTopics:startingTopics forAccount:nil];
+    [service mergeMenuTopics:startingTopics forAccount:nil];
 
     // Topics exist in the context
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
@@ -213,7 +220,7 @@
     XCTAssertEqual(count, [startingTopics count], @"Number of topics in context did not match expected.");
 
     // Merg new set of topics.
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
 
     // Make sure the missing topics were added when merged
     count = [context countForFetchRequest:request error:&error];
@@ -237,7 +244,7 @@
     service.currentTopic = nil;
 
     // Current topic is not nil after a sync
-    [service mergeTopics:remoteTopics forAccount:nil];
+    [service mergeMenuTopics:remoteTopics forAccount:nil];
     XCTAssertNotNil(service.currentTopic, @"The current topic was nil.");
 
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
@@ -296,6 +303,38 @@
     fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"ReaderPost"];
     count = [context countForFetchRequest:fetchRequest error:&error];
     XCTAssertTrue(count == 0, @"Topic posts were not successfully deleted.");
+}
+
+- (void)testTopicTitleFormatting
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    ReaderTopicService *service = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+    NSString *unformatted;
+    NSString *formatted;
+
+    // Capitalized first char assumes the string has correct case
+    unformatted = @"WordPress";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"WordPress should have maintained its case.");
+
+    // Lowercase should be capitalized
+    unformatted = @"art & entertainment";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:@"Art & Entertainment"], @"Lower cased words should be capitalized");
+
+    // Special consideration for the casing of "techy" words like iPhone and ePaper.
+    unformatted = @"iPhone";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"iPhone should have maintained its case.");
+
+    unformatted = @"ePaper";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"ePaper should have maintained its case.");
+
+    // All caps stays all caps.
+    unformatted = @"VINE";
+    formatted = [service formatTitle:unformatted];
+    XCTAssertTrue([formatted isEqualToString:unformatted], @"VINE should have remained all caps.");
 }
 
 @end

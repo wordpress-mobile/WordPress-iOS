@@ -68,10 +68,11 @@
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username
                             password:password
+                     multifactorCode:nil
                              success:^(NSString *authToken) {
                                  [self.managedObjectContext performBlock:^{
                                      AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username password:password authToken:authToken];
+                                     WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                      BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      [self associateBlogIDs:blogIDs withJetpackAccount:account];
                                      [blogService syncBlogsForAccount:account success:^{

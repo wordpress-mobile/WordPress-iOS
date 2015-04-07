@@ -190,7 +190,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
     self.resultsController = nil;
     [self.tableView reloadData];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (!(appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing])) {
         [self configureNoResultsView];
     }
@@ -477,11 +477,13 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
     webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
-    [webViewController setUrl:[NSURL URLWithString:path]];
-    [webViewController setUsername:self.blog.username];
-    [webViewController setPassword:self.blog.password];
-    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.url = [NSURL URLWithString:path];
+    webViewController.authToken = self.blog.authToken;
+    webViewController.username = self.blog.username;
+    webViewController.password = self.blog.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
+    
     // Probably should be modal.
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     navController.navigationBar.translucent = NO;
@@ -513,7 +515,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }
