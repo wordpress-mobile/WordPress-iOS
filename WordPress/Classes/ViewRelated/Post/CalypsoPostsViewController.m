@@ -12,6 +12,7 @@
 #import "NavBarTitleDropdownButton.h"
 #import "PostListViewController.h"
 #import "PostPreviewViewController.h"
+#import "PostSettingsSelectionViewController.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "WPStatsService.h"
 #import "UIView+Subviews.h"
@@ -38,12 +39,22 @@ static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
 static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostsSearchBarWidth = 200.0;
 static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
+static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
+static NSString * const CurrentPostListStatusFilterKey = @"CurrentPostListStatusFilterKey";
+
+typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
+    PostListStatusFilterPublished,
+    PostListStatusFilterDraft,
+    PostListStatusFilterScheduled,
+    PostListStatusFilterTrashed
+};
 
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate,
                                             WPContentSyncHelperDelegate,
                                             UIViewControllerRestoration,
                                             WPNoResultsViewDelegate,
                                             PostCardTableViewCellDelegate,
+                                            UIPopoverControllerDelegate,
                                             WPSearchControllerDelegate,
                                             WPSearchResultsUpdating>
 
@@ -66,6 +77,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *authorsFilterViewHeightConstraint;
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
+@property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 
 @end
 
@@ -425,7 +437,10 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 - (IBAction)didTapFilterButton:(id)sender
 {
-    NSLog(@"Show Filters");
+    if (self.postFilterPopoverController) {
+        return;
+    }
+    [self displayFilters];
 }
 
 
@@ -659,6 +674,8 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
 #pragma mark - Instance Methods
 
+#pragma mark - Post Actions
+
 - (void)createPost
 {
     // TODO: Flag we're adding a new post
@@ -785,35 +802,143 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+#pragma mark - Search related
+
 - (void)toggleSearch
 {
     self.searchController.active = !self.searchController.active;
 }
 
+#pragma mark - Filter related
+
+- (PostListStatusFilter)postListStatusFilter
+{
+    NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostListStatusFilterKey];
+    if (!filter) {
+        // Published is default
+        return PostListStatusFilterPublished;
+    }
+    return [filter integerValue];
+}
+
+- (void)setPostListStatusFilter:(PostListStatusFilter)newFilter
+{
+    PostListStatusFilter filter = [self postListStatusFilter];
+    if (newFilter == filter) {
+        return;
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(newFilter) forKey:CurrentPostListStatusFilterKey];
+    [NSUserDefaults resetStandardUserDefaults];
+    // TODO: the filter changed, so update all the things.
+
+    [self updateFilterTitle];
+}
+
+- (NSString *)titleForPostListStatusFilter:(PostListStatusFilter)filter
+{
+    NSString *title;
+    switch (filter) {
+        case PostListStatusFilterPublished:
+            title = NSLocalizedString(@"Published", @"Title of the published filter. This filter shows a list of posts that the user has published.");
+            break;
+        case PostListStatusFilterDraft:
+            title = NSLocalizedString(@"Draft", @"Title of the draft filter.  This filter shows a list of draft posts.");
+            break;
+        case PostListStatusFilterScheduled:
+            title = NSLocalizedString(@"Scheduled", @"Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.");
+            break;
+        case PostListStatusFilterTrashed:
+            title = NSLocalizedString(@"Trashed", @"Title of the trashed filter. This filter shows posts that have been moved to the trash bin.");
+            break;
+        default:
+            break;
+    }
+    return title;
+}
+
+- (NSString *)titleForCurrentPostListStatusFilter
+{
+    PostListStatusFilter filter = [self postListStatusFilter];
+    return [self titleForPostListStatusFilter:filter];
+}
+
 - (void)updateFilterTitle
 {
-    // TODO: Get current filter title
-    NSString *title = NSLocalizedString(@"Published", @"");
-    [self.filterButton setAttributedTitleForTitle:title];
+    [self.filterButton setAttributedTitleForTitle:[self titleForCurrentPostListStatusFilter]];
 }
 
 - (void)displayFilters
 {
+    NSArray *filters = @[
+                         @(PostListStatusFilterPublished),
+                         @(PostListStatusFilterDraft),
+                         @(PostListStatusFilterScheduled),
+                         @(PostListStatusFilterTrashed),
+                         ];
+    NSMutableArray *titles = [NSMutableArray array];
+    for (NSNumber *filter in filters) {
+        [titles addObject:[self titleForPostListStatusFilter:[filter integerValue]]];
+    }
+    PostListStatusFilter currentFilter = [self postListStatusFilter];
+    NSDictionary *dict = @{
+                          @"DefaultValue"   : [filters firstObject],
+                          @"Title"          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
+                          @"Titles"         : titles,
+                          @"Values"         : filters,
+                          @"CurrentValue"   : @(currentFilter)
+                          };
+
+    PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
+    controller.onItemSelected = ^(NSObject *selectedValue) {
+        // TODO: Handle the change
+        if (self.postFilterPopoverController) {
+            [self.postFilterPopoverController dismissPopoverAnimated:YES];
+            self.postFilterPopoverController = nil;
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+        NSNumber *selectedFilter = (NSNumber *)selectedValue;
+        [self setPostListStatusFilter:[selectedFilter integerValue]];
+    };
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     if ([UIDevice isPad]) {
-        [self displayFilterPopover];
+        [self displayFilterPopover:navController];
     } else {
-        [self displayFilterActionSheet];
+        [self displayFilterModal:navController];
     }
 }
 
-- (void)displayFilterPopover
+- (void)displayFilterPopover:(UIViewController *)controller
 {
+    controller.preferredContentSize = PreferredFiltersPopoverContentSize;
+
+    CGRect titleRect = self.navigationItem.titleView.frame;
+    titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
+
+    self.postFilterPopoverController = [[UIPopoverController alloc] initWithContentViewController:controller];
+    self.postFilterPopoverController.delegate = self;
+    [self.postFilterPopoverController presentPopoverFromRect:titleRect
+                                                      inView:self.navigationController.view
+                                    permittedArrowDirections:UIPopoverArrowDirectionAny
+                                                    animated:YES];
 
 }
 
-- (void)displayFilterActionSheet
+- (void)displayFilterModal:(UIViewController *)controller
 {
+    controller.modalPresentationStyle = UIModalPresentationPageSheet;
+    controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self presentViewController:controller animated:YES completion:nil];
+}
 
+
+#pragma mark - UIPopover Delegate Methods
+
+- (void)popoverControllerDidDismissPopover:(UIPopoverController *)popoverController
+{
+    self.postFilterPopoverController.delegate = nil;
+    self.postFilterPopoverController = nil;
 }
 
 
