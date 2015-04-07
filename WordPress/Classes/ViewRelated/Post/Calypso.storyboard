@@ -101,7 +101,8 @@
                     <rect key="frame" x="0.0" y="0.0" width="77" height="25"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    <state key="normal" title="Button" image="icon-navbar-dropdown">
+                    <inset key="imageEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    <state key="normal" title="Button" image="icon-nav-chevron">
                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
@@ -160,7 +161,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="icon-navbar-dropdown" width="22" height="25"/>
+        <image name="icon-nav-chevron" width="14" height="8"/>
         <image name="icon-post-add" width="22" height="22"/>
         <image name="icon-post-add-highlight" width="22" height="22"/>
         <image name="icon-post-search" width="22" height="22"/>
