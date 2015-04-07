@@ -10,7 +10,7 @@
     self.titleLabel.textColor = [UIColor whiteColor];
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
-    [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown"] forState:UIControlStateNormal];
+    [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
 }
 
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
