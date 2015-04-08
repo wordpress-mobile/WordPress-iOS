@@ -1697,7 +1697,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         } else if (media.mediaType == MediaTypeVideo) {
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
-                                        remotePoster:media.thumbnaiLocalURL
+                                        remotePoster:media.thumbnailLocalURL
                                           videoPress:media.shortcode];
         }
     } failure:^(NSError *error) {

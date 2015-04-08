@@ -530,7 +530,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return result;
 }
 
-- (NSString *)thumbnaiLocalURL;
+- (NSString *)thumbnailLocalURL;
 {
     if ( self.localURL ) {
         return [NSString stringWithFormat:@"%@-thumbnail",self.localURL];
