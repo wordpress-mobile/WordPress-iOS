@@ -60,6 +60,7 @@
 @property (nonatomic, strong) WPNUXSecondaryButton      *cancelButton;
 @property (nonatomic, strong) UILabel                   *statusLabel;
 @property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
+
 @property (nonatomic, strong) LoginViewModel *viewModel;
 
 // Measurements
@@ -73,8 +74,6 @@
 #pragma mark ====================================================================================
 
 @implementation LoginViewController
-
-static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
 
 static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
 static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
@@ -830,7 +829,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.helpBadge.text = [NSString stringWithFormat:@"%ld", unreadCount];
     self.helpBadge.hidden = (unreadCount == 0);
 }
-
 
 #pragma mark - Static Helpers
 

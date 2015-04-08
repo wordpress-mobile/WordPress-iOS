@@ -235,7 +235,5 @@ describe(@"signInWithLoginFields", ^{
     });
 });
 
-
-
 SpecEnd
 

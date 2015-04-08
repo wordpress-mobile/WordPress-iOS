@@ -42,6 +42,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     _helpshiftService = [HelpshiftService new];
     _onePasswordService = [OnePasswordService new];
 }
+
 - (void)setup
 {
     [self setupObservationForAuthenticating];
@@ -411,7 +412,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self.delegate dismissLoginView];
 }
 
-#pragma LoginServiceDelegate methods
+#pragma mark - LoginServiceDelegate Related Methods
 
 - (void)displayLoginMessage:(NSString *)message
 {
@@ -458,8 +459,6 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         }
     }
 }
-
-#pragma mark - Private Methods
 
 - (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
 {

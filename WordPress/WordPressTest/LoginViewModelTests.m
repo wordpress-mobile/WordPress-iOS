@@ -51,13 +51,19 @@ beforeEach(^{
 
 describe(@"authenticating", ^{
     
-    it(@"should call the delegate's showActivityIndicator method when the value changes", ^{
+    it(@"should show the activity indicator when authenticating", ^{
         [[mockViewModelDelegate expect] showActivityIndicator:YES];
-        viewModel.authenticating = YES;
-        [mockViewModelDelegate verify];
         
+        viewModel.authenticating = YES;
+        
+        [mockViewModelDelegate verify];
+    });
+    
+    it(@"should hide the activity indicator when not authenticating", ^{
         [[mockViewModelDelegate expect] showActivityIndicator:NO];
+        
         viewModel.authenticating = NO;
+        
         [mockViewModelDelegate verify];
     });
     
@@ -69,19 +75,25 @@ describe(@"shouldDisplayMultifactor", ^{
         
         it(@"should set the username's alpha to 0.5", ^{
             [[mockViewModelDelegate expect] setUsernameAlpha:0.5];
+            
             viewModel.shouldDisplayMultifactor = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should set the password's alpha to 0.5", ^{
             [[mockViewModelDelegate expect] setPasswordAlpha:0.5];
+            
             viewModel.shouldDisplayMultifactor = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should set multifactor's alpha to 1.0", ^{
             [[mockViewModelDelegate expect] setMultiFactorAlpha:1.0];
+            
             viewModel.shouldDisplayMultifactor = YES;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -90,19 +102,25 @@ describe(@"shouldDisplayMultifactor", ^{
         
         it(@"it should set the username's alpha to 1.0", ^{
             [[mockViewModelDelegate expect] setUsernameAlpha:1.0];
+            
             viewModel.shouldDisplayMultifactor = NO;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should set the password's alpha to 1.0", ^{
             [[mockViewModelDelegate expect] setPasswordAlpha:1.0];
+            
             viewModel.shouldDisplayMultifactor = NO;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should set multifactor's alpha to 0.0", ^{
             [[mockViewModelDelegate expect] setMultiFactorAlpha:0.0];
+            
             viewModel.shouldDisplayMultifactor = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -111,17 +129,23 @@ describe(@"shouldDisplayMultifactor", ^{
 describe(@"isUsernameEnabled", ^{
     
     context(@"when it's true", ^{
+        
         it(@"should enable the username text field", ^{
             [[mockViewModelDelegate expect] setUsernameEnabled:YES];
+            
             viewModel.isUsernameEnabled = YES;
+            
             [mockViewModelDelegate verify];
         });
     });
     
     context(@"when it's false", ^{
+        
         it(@"should disable the username text field" , ^{
             [[mockViewModelDelegate expect] setUsernameEnabled:NO];
+            
             viewModel.isUsernameEnabled = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -146,7 +170,9 @@ describe(@"isPasswordEnabled", ^{
         
         it(@"should enable the password text field", ^{
             [[mockViewModelDelegate expect] setPasswordEnabled:YES];
+            
             viewModel.isPasswordEnabled = YES;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -155,7 +181,9 @@ describe(@"isPasswordEnabled", ^{
         
         it(@"should disable the password text field" , ^{
             [[mockViewModelDelegate expect] setPasswordEnabled:NO];
+            
             viewModel.isPasswordEnabled = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -178,13 +206,17 @@ describe(@"isSiteUrlEnabled", ^{
     
     it(@"when it's true it should enable the site url field", ^{
         [[mockViewModelDelegate expect] setSiteUrlEnabled:YES];
+        
         viewModel.isSiteUrlEnabled = YES;
+        
         [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should disable the site url field", ^{
         [[mockViewModelDelegate expect] setSiteUrlEnabled:NO];
+        
         viewModel.isSiteUrlEnabled = NO;
+        
         [mockViewModelDelegate verify];
     });
     
@@ -206,13 +238,17 @@ describe(@"isMultifactorEnabled", ^{
     
     it(@"when it's true it should enable the multifactor text field", ^{
         [[mockViewModelDelegate expect] setMultifactorEnabled:YES];
+        
         viewModel.isMultifactorEnabled = YES;
+        
         [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should disable the multifactor text field", ^{
         [[mockViewModelDelegate expect] setMultifactorEnabled:NO];
+        
         viewModel.isMultifactorEnabled = NO;
+        
         [mockViewModelDelegate verify];
     });
     
@@ -234,13 +270,17 @@ describe(@"cancellable", ^{
     
     it(@"when it's true it should display the cancel button", ^{
         [[mockViewModelDelegate expect] setCancelButtonHidden:NO];
+        
         viewModel.cancellable = YES;
+        
         [mockViewModelDelegate verify];
     });
     
     it(@"when it's false it should hide the cancel button", ^{
         [[mockViewModelDelegate expect] setCancelButtonHidden:YES];
+        
         viewModel.cancellable = NO;
+        
         [mockViewModelDelegate verify];
     });
 });
@@ -257,7 +297,9 @@ describe(@"forgot password button's visibility", ^{
         
             it(@"should not be visible", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
+                
                 viewModel.authenticating = YES;
+                
                 [mockViewModelDelegate verify];
             });
         });
@@ -266,14 +308,18 @@ describe(@"forgot password button's visibility", ^{
             
             it(@"should be visible", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:NO];
+                
                 viewModel.authenticating = NO;
+                
                 [mockViewModelDelegate verify];
             });
             
             it(@"should not be visibile if multifactor auth controls are visible", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
+                
                 viewModel.isMultifactorEnabled = YES;
                 viewModel.authenticating = NO;
+                
                 [mockViewModelDelegate verify];
             });
         });
@@ -289,20 +335,26 @@ describe(@"forgot password button's visibility", ^{
             
             it(@"should not be visible if a url is not present", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
+                
                 viewModel.siteUrl = @"";
+                
                 [mockViewModelDelegate verify];
             });
             
             
             it(@"should be visible if a url is present", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:NO];
+                
                 viewModel.siteUrl = @"http://www.selfhosted.com";
+                
                 [mockViewModelDelegate verify];
             });
             
             it(@"should not be visible if multifactor controls are visible", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
+                
                 viewModel.isMultifactorEnabled = YES;
+                
                 [mockViewModelDelegate verify];
             });
         });
@@ -315,7 +367,9 @@ describe(@"forgot password button's visibility", ^{
             
             it(@"should not be visible if a url is present", ^{
                 [[mockViewModelDelegate expect] setForgotPasswordHidden:YES];
+                
                 viewModel.siteUrl = @"http://www.selfhosted.com";
+                
                 [mockViewModelDelegate verify];
             });
         });
@@ -328,15 +382,19 @@ describe(@"skipToCreateAccountButton visibility", ^{
         
         it(@"should not be visible if the user has an account", ^{
             [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
+            
             viewModel.authenticating = YES;
             viewModel.hasDefaultAccount = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if the user doesn't have an account", ^{
             [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
+            
             viewModel.authenticating = YES;
             viewModel.hasDefaultAccount = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -345,15 +403,19 @@ describe(@"skipToCreateAccountButton visibility", ^{
         
         it(@"should not be visible if the user has an account", ^{
             [[mockViewModelDelegate expect] setAccountCreationButtonHidden:YES];
+            
             viewModel.authenticating = NO;
             viewModel.hasDefaultAccount = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should be visible if the user doesn't have an account", ^{
             [[mockViewModelDelegate expect] setAccountCreationButtonHidden:NO];
+            
             viewModel.authenticating = NO;
             viewModel.hasDefaultAccount = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -416,7 +478,6 @@ describe(@"signInButton", ^{
             viewModel.userIsDotCom = YES;
         });
         
-        
         context(@"when multifactor authentication controls are not visible", ^{
             before(^{
                 viewModel.shouldDisplayMultifactor = NO;
@@ -451,6 +512,7 @@ describe(@"signInButton", ^{
         });
         
         context(@"when multifactor authentication controls are visible", ^{
+            
             before(^{
                 viewModel.shouldDisplayMultifactor = YES;
                 viewModel.username = @"username";
@@ -701,6 +763,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
     });
     
     context(@"for a WordPress.com user", ^{
+        
         beforeEach(^{
             viewModel.userIsDotCom = YES;
         });
@@ -718,7 +781,8 @@ describe(@"onePasswordButtonActionForViewController", ^{
     });
 });
 
-describe(@"displayRemoteError", ^{ 
+describe(@"displayRemoteError", ^{
+    
     __block NSError *error;
     NSString *errorMessage = @"You have failed me yet again Starscream.";
     NSString *defaultFirstButtonText = NSLocalizedString(@"OK", nil);
@@ -1282,6 +1346,7 @@ describe(@"signInButtonAction", ^{
     });
     
     context(@"when all fields are valid", ^{
+        
         beforeEach(^{
             [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
             
@@ -1710,15 +1775,19 @@ describe(@"sendVerificationCodeButton visibility", ^{
         
         it(@"should not be visible if the multifactor controls enabled", ^{
             [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            
             viewModel.authenticating = YES;
             viewModel.shouldDisplayMultifactor = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if the multifactor controls aren't enabled", ^{
             [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            
             viewModel.authenticating = YES;
             viewModel.shouldDisplayMultifactor = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
@@ -1727,15 +1796,19 @@ describe(@"sendVerificationCodeButton visibility", ^{
         
         it(@"should be visible if multifactor controls are enabled", ^{
             [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:NO];
+            
             viewModel.authenticating = NO;
             viewModel.shouldDisplayMultifactor = YES;
+            
             [mockViewModelDelegate verify];
         });
         
         it(@"should not be visible if multifactor controls aren't enabled", ^{
             [[mockViewModelDelegate expect] setSendVerificationCodeButtonHidden:YES];
+            
             viewModel.authenticating = NO;
             viewModel.shouldDisplayMultifactor = NO;
+            
             [mockViewModelDelegate verify];
         });
     });
