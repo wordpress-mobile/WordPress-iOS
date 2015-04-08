@@ -75,6 +75,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 		
         NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 		[self.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+        self.securityPolicy.validatesDomainName = YES;
 	}
 	
 	return self;
