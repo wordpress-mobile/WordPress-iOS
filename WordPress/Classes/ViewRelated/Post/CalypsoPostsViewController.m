@@ -44,7 +44,8 @@ static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const CGFloat PostsSearchBarWidth = 200.0;
 static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
-
+static const CGFloat SearchWrapperViewPortraitHeight = 64.0;
+static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     PostListStatusFilterPublished,
@@ -169,6 +170,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+    if (self.searchWrapperViewHeightConstraint.constant > 0) {
+        self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
+    }
 }
 
 
@@ -943,6 +947,11 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     self.searchController.active = !self.searchController.active;
 }
 
+- (CGFloat)heightForSearchWrapperView
+{
+    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+}
+
 #pragma mark - Filter related
 
 - (PostListStatusFilter)postListStatusFilter
@@ -1124,7 +1133,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
         return;
     }
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
-    self.searchWrapperViewHeightConstraint.constant = 64.0;
+    self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     [UIView animateWithDuration:PostSearchBarAnimationDuration
                           delay:0.0
                         options:0
