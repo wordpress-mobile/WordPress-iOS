@@ -374,9 +374,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 
     UISearchBar *searchBar = self.searchController.searchBar;
+    searchBar.barStyle = UIBarStyleBlack;
     searchBar.barTintColor = [WPStyleGuide wordPressBlue];
     searchBar.showsCancelButton = YES;
-    searchBar.barStyle = UIBarStyleBlack;
 
     [self.searchWrapperView addSubview:searchBar];
 
@@ -589,12 +589,21 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 {
     NSAssert([NSThread isMainThread], @"PostsViewController Error: NSFetchedResultsController accessed in BG");
 
+    NSPredicate *predicate = [self predicateForCurrentFilter];
+    NSString *searchText = self.searchController.searchBar.text;
+    if ([searchText length] > 0) {
+        NSPredicate *searchCondition = [NSPredicate predicateWithFormat:@"postTitle CONTAINS %@", searchText];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, searchCondition]];
+    }
+
     NSError *error = nil;
-    [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForCurrentFilter]];
+    [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
     }
+    [self.tableViewHandler clearCachedRowHeights];
+    [self.tableView reloadData];
 }
 
 - (NSPredicate *)predicateForCurrentFilter
@@ -630,7 +639,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 {
     // We'll exclude known status values. This allows for custom post status to be treated as draft.
     NSArray *excludeStatuses = @[PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusDraft];
-    return [NSPredicate predicateWithFormat:@"blog = %@ && NOT  status IN %@ && original = nil", self.blog, excludeStatuses];
+    return [NSPredicate predicateWithFormat:@"blog = %@ && NOT status IN %@ && original = nil", self.blog, excludeStatuses];
 }
 
 - (NSPredicate *)predicateForScheduled
@@ -890,8 +899,6 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
     [self updateFilterTitle];
     [self updateAndPerformFetchRequest];
-    [self.tableViewHandler clearCachedRowHeights];
-    [self.tableView reloadData];
 }
 
 - (NSString *)titleForPostListStatusFilter:(PostListStatusFilter)filter
@@ -1073,11 +1080,14 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
+
+    self.searchController.searchBar.text = nil;
+    [self updateAndPerformFetchRequest];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
-    // TODO: filter results
+    [self updateAndPerformFetchRequest];
 }
 
 @end
