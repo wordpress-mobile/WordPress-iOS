@@ -587,7 +587,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
-    fetchRequest.predicate = [self predicateForCurrentFilter];
+    fetchRequest.predicate = [self predicateForFetchRequest];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
     fetchRequest.sortDescriptors = @[sortDescriptorDate];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
@@ -598,13 +598,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 {
     NSAssert([NSThread isMainThread], @"PostsViewController Error: NSFetchedResultsController accessed in BG");
 
-    NSPredicate *predicate = [self predicateForCurrentFilter];
-    NSString *searchText = self.searchController.searchBar.text;
-    if ([searchText length] > 0) {
-        NSPredicate *searchCondition = [NSPredicate predicateWithFormat:@"postTitle CONTAINS %@", searchText];
-        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, searchCondition]];
-    }
-
+    NSPredicate *predicate = [self predicateForFetchRequest];
     NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
     [self.tableViewHandler.resultsController performFetch:&error];
@@ -613,6 +607,29 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     }
     [self.tableViewHandler clearCachedRowHeights];
     [self.tableView reloadData];
+}
+
+- (NSPredicate *)predicateForFetchRequest
+{
+    NSMutableArray *predicates = [NSMutableArray array];
+
+    NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
+    [predicates addObject:basePredicate];
+
+    NSPredicate *filterPredicate = [self predicateForCurrentFilter];
+    [predicates addObject:filterPredicate];
+
+    if (!self.blog.isMultiAuthor) {
+        // TODO: limit to posts matching author ID
+    }
+
+    NSString *searchText = self.searchController.searchBar.text;
+    if ([searchText length] > 0) {
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS %@", searchText];
+        [predicates addObject:searchPredicate];
+    }
+
+    return [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
 }
 
 - (NSPredicate *)predicateForCurrentFilter
@@ -641,24 +658,24 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 - (NSPredicate *)predicateForPublished
 {
     NSArray *statuses = @[PostStatusPublish, PostStatusPrivate];
-    return [NSPredicate predicateWithFormat:@"blog = %@ && status IN %@ && original = nil", self.blog, statuses];
+    return [NSPredicate predicateWithFormat:@"status IN %@", statuses];
 }
 
 - (NSPredicate *)predicateForDrafts
 {
-    // We'll exclude known status values. This allows for custom post status to be treated as draft.
+    // We'll exclude known status values. This allows for pending and custom post status to be treated as draft.
     NSArray *excludeStatuses = @[PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusDraft];
-    return [NSPredicate predicateWithFormat:@"blog = %@ && NOT status IN %@ && original = nil", self.blog, excludeStatuses];
+    return [NSPredicate predicateWithFormat:@"NOT status IN %@", excludeStatuses];
 }
 
 - (NSPredicate *)predicateForScheduled
 {
-    return [NSPredicate predicateWithFormat:@"blog = %@ && status = %@ && original = nil", self.blog, PostStatusScheduled];
+    return [NSPredicate predicateWithFormat:@"status = %@", PostStatusScheduled];
 }
 
 - (NSPredicate *)predicateForTrashed
 {
-    return [NSPredicate predicateWithFormat:@"blog = %@ && status = %@ && original = nil", self.blog, PostStatusTrash];
+    return [NSPredicate predicateWithFormat:@"status = %@", PostStatusTrash];
 }
 
 
