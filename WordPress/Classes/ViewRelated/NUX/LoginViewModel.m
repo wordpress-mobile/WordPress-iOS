@@ -168,12 +168,6 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     self.shouldDisplayMultifactor = NO;
     self.userIsDotCom = !self.userIsDotCom;
     
-    if (self.userIsDotCom) {
-        [self.delegate setPasswordTextReturnKeyType:UIReturnKeyDone];
-    } else {
-        [self.delegate setPasswordTextReturnKeyType:UIReturnKeyNext];
-    }
-    
     [self.delegate reloadInterfaceWithAnimation:YES];
 }
 
@@ -251,8 +245,10 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         self.isSiteUrlEnabled = !dotComUser;
         
         if (dotComUser) {
+            [self.delegate setPasswordTextReturnKeyType:UIReturnKeyDone];
             [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
         } else {
+            [self.delegate setPasswordTextReturnKeyType:UIReturnKeyNext];
             [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
         }
     }];

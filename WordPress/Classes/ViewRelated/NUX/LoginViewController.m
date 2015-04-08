@@ -275,7 +275,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     self.viewModel.shouldDisplayMultifactor = NO;
     self.viewModel.userIsDotCom = !self.viewModel.userIsDotCom;
-    self.passwordText.returnKeyType = self.viewModel.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
 
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
     // to their new positions.
