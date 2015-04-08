@@ -696,7 +696,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
         return;
     }
 
-    if ([post.status isEqualToString:@"trash"]) {
+    if ([post.status isEqualToString:PostStatusTrash]) {
         // No editing posts that are trashed.
         return;
     }
@@ -890,6 +890,8 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
     [self updateFilterTitle];
     [self updateAndPerformFetchRequest];
+    [self.tableViewHandler clearCachedRowHeights];
+    [self.tableView reloadData];
 }
 
 - (NSString *)titleForPostListStatusFilter:(PostListStatusFilter)filter
@@ -948,7 +950,6 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
     controller.onItemSelected = ^(NSObject *selectedValue) {
-        // TODO: Handle the change
         if (self.postFilterPopoverController) {
             [self.postFilterPopoverController dismissPopoverAnimated:YES];
             self.postFilterPopoverController = nil;
