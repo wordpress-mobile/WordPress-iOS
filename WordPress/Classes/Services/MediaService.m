@@ -99,7 +99,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             media.filename = [mediaPath lastPathComponent];
             media.localURL = mediaPath;
             media.thumbnail = thumbnailData;
-            [thumbnailData writeToFile:media.thumbnaiLocalURL atomically:NO];
+            [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
@@ -210,8 +210,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
     Media *media = [mediaSet anyObject];
     if (media) {
-        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnaiLocalURL isDirectory:nil]) {
-            success(media.remoteURL, media.thumbnaiLocalURL);
+        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
+            success(media.remoteURL, media.thumbnailLocalURL);
         } else {
             success(media.remoteURL, @"");
         }
