@@ -57,7 +57,7 @@
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
-                                 @"status": @"any",
+                                 @"status": @"any,trash",
                                  @"context": @"edit",
                                  @"number": @40,
                                  @"type": postType,
