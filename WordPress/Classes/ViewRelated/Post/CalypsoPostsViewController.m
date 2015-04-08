@@ -32,15 +32,18 @@ static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
-static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
-static const CGFloat PostCardEstimatedRowHeight = 100.0;
-static const NSInteger PostsLoadMoreThreshold = 4;
-static const NSTimeInterval PostsControllerRefreshTimeout = 300; // 5 minutes
-static const NSInteger PostsFetchRequestBatchSize = 10;
-static const CGFloat PostsSearchBarWidth = 200.0;
-static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
-static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 static NSString * const CurrentPostListStatusFilterKey = @"CurrentPostListStatusFilterKey";
+
+static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
+static const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
+static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
+
+static const NSInteger PostsLoadMoreThreshold = 4;
+static const NSInteger PostsFetchRequestBatchSize = 10;
+static const CGFloat PostCardEstimatedRowHeight = 100.0;
+static const CGFloat PostsSearchBarWidth = 200.0;
+static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
+
 
 typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     PostListStatusFilterPublished,
@@ -293,11 +296,17 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)configureAuthorFilter
 {
-    self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
     NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
     NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
+    self.authorsFilter.hidden = !self.blog.isMultiAuthor;
+
+    self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
+    if (![self.blog isMultiAuthor] && ![UIDevice isPad]) {
+        // Collapse the view on iPhone if single author blog
+        self.authorsFilterViewHeightConstraint.constant = 0.0;
+    }
 }
 
 - (void)configureSearchController
@@ -349,7 +358,12 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
                                                                        attribute:NSLayoutAttributeCenterY
                                                                       multiplier:1.0
                                                                         constant:0.0]];
-    if (self.authorsFilter.hidden) {
+    if (self.blog.isMultiAuthor) {
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]-|"
+                                                                                       options:0
+                                                                                       metrics:metrics
+                                                                                         views:views]];
+    } else {
         [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
                                                                            attribute:NSLayoutAttributeCenterX
                                                                            relatedBy:NSLayoutRelationEqual
@@ -358,11 +372,6 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
                                                                           multiplier:1.0
                                                                             constant:0.0]];
         [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
-    } else {
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]-|"
                                                                                        options:0
                                                                                        metrics:metrics
                                                                                          views:views]];
@@ -459,7 +468,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     }
 
     NSDate *lastSynced = self.blog.lastPostsSync;
-    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > PostsControllerRefreshTimeout) {
+    if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > PostsControllerRefreshInterval) {
         // Update in the background
         [self syncItemsWithUserInteraction:NO];
     }
