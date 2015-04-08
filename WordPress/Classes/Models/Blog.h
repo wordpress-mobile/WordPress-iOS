@@ -70,6 +70,7 @@
 #pragma mark - Blog information
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
+- (BOOL)isMultiAuthor;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;

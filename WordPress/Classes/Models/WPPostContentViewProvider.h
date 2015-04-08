@@ -28,5 +28,6 @@
 - (BOOL)hasCommented;
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
+- (BOOL)isMultiAuthorBlog;
 
 @end
