@@ -405,6 +405,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
 }
 
+
 #pragma mark - Actions
 
 - (IBAction)refresh:(id)sender
@@ -517,6 +518,8 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     [self.refreshControl endRefreshing];
     [self.activityFooter stopAnimating];
 
+    self.blog.lastPostsSync = [NSDate date];
+
     [self.noResultsView removeFromSuperview];
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
         // This is a special case.  Core data can be a bit slow about notifying
@@ -575,12 +578,69 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog = %@) && (original = nil)", self.blog];
-    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"remoteStatusNumber" ascending:YES];
+    fetchRequest.predicate = [self predicateForCurrentFilter];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
-    fetchRequest.sortDescriptors = @[sortDescriptorLocal, sortDescriptorDate];
+    fetchRequest.sortDescriptors = @[sortDescriptorDate];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
     return fetchRequest;
+}
+
+- (void)updateAndPerformFetchRequest
+{
+    NSAssert([NSThread isMainThread], @"PostsViewController Error: NSFetchedResultsController accessed in BG");
+
+    NSError *error = nil;
+    [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForCurrentFilter]];
+    [self.tableViewHandler.resultsController performFetch:&error];
+    if (error) {
+        DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
+    }
+}
+
+- (NSPredicate *)predicateForCurrentFilter
+{
+    NSPredicate *predicate;
+    PostListStatusFilter filter = [self postListStatusFilter];
+    switch (filter) {
+        case PostListStatusFilterPublished:
+            predicate = [self predicateForPublished];
+            break;
+        case PostListStatusFilterDraft:
+            predicate = [self predicateForDrafts];
+            break;
+        case PostListStatusFilterScheduled:
+            predicate = [self predicateForScheduled];
+            break;
+        case PostListStatusFilterTrashed:
+            predicate = [self predicateForTrashed];
+            break;
+        default:
+            break;
+    }
+    return predicate;
+}
+
+- (NSPredicate *)predicateForPublished
+{
+    NSArray *statuses = @[PostStatusPublish, PostStatusPrivate];
+    return [NSPredicate predicateWithFormat:@"blog = %@ && status IN %@ && original = nil", self.blog, statuses];
+}
+
+- (NSPredicate *)predicateForDrafts
+{
+    // We'll exclude known status values. This allows for custom post status to be treated as draft.
+    NSArray *excludeStatuses = @[PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusDraft];
+    return [NSPredicate predicateWithFormat:@"blog = %@ && NOT  status IN %@ && original = nil", self.blog, excludeStatuses];
+}
+
+- (NSPredicate *)predicateForScheduled
+{
+    return [NSPredicate predicateWithFormat:@"blog = %@ && status = %@ && original = nil", self.blog, PostStatusScheduled];
+}
+
+- (NSPredicate *)predicateForTrashed
+{
+    return [NSPredicate predicateWithFormat:@"blog = %@ && status = %@ && original = nil", self.blog, PostStatusTrash];
 }
 
 
@@ -829,6 +889,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     // TODO: the filter changed, so update all the things.
 
     [self updateFilterTitle];
+    [self updateAndPerformFetchRequest];
 }
 
 - (NSString *)titleForPostListStatusFilter:(PostListStatusFilter)filter
