@@ -273,13 +273,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)toggleSignInFormAction:(id)sender
 {
-    self.viewModel.shouldDisplayMultifactor = NO;
-    self.viewModel.userIsDotCom = !self.viewModel.userIsDotCom;
-
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
     // to their new positions.
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = NO;
+                         self.viewModel.userIsDotCom = !self.viewModel.userIsDotCom;
                          [self reloadInterface];
                      }];
 }
@@ -718,10 +717,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)displayMultifactorTextfield
 {
     [WPAnalytics track:WPAnalyticsStatTwoFactorCodeRequested];
-    self.viewModel.shouldDisplayMultifactor = YES;
     
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = YES;
                          [self reloadInterface];
                          [self.multifactorText becomeFirstResponder];
                      }];
@@ -733,9 +732,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
         return;
     }
     
-    self.viewModel.shouldDisplayMultifactor = NO;
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = NO;
                          [self reloadInterface];
                      } completion:^(BOOL finished) {
                          self.multifactorText.text = nil;
