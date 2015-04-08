@@ -3,6 +3,8 @@
 
 @interface WPStyleGuide (Posts)
 
++ (void)applyPostAuthorFilterStyle:(UISegmentedControl *)segmentControl;
+
 + (void)applyPostCardStyle:(UITableViewCell *)cell;
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label;
