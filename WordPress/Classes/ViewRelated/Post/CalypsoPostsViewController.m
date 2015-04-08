@@ -151,13 +151,6 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-//TODO: If a new post was created, scroll to the top so it is visible.
-// But how does this work if it is a draft, scheduled, etc. and the list has filters?
-}
-
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -278,11 +271,41 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (NSString *)noResultsTitleText
 {
-    return NSLocalizedString(@"You haven't created any posts yet", @"Displayed when the user pulls up the posts view and they have no posts");
+    NSString *title;
+    switch ([self postListStatusFilter]) {
+        case PostListStatusFilterDraft:
+            title = NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts");
+            break;
+        case PostListStatusFilterScheduled:
+            title = NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts");
+            break;
+        case PostListStatusFilterTrashed:
+            title = NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts");
+            break;
+        default:
+            title = NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts");
+            break;
+    }
+    return title;
 }
 
 - (NSString *)noResultsMessageText {
-    return NSLocalizedString(@"Would you like to create your first post?",  @"Displayed when the user pulls up the posts view and they have no posts");
+    NSString *message;
+    switch ([self postListStatusFilter]) {
+        case PostListStatusFilterDraft:
+            message = NSLocalizedString(@"Would you like to create one?", @"Displayed when the user views drafts in the posts list and there are no posts");
+            break;
+        case PostListStatusFilterScheduled:
+            message = NSLocalizedString(@"Would you like to schedule a draft to publish?", @"Displayed when the user views scheduled posts in the posts list and there are no posts");
+            break;
+        case PostListStatusFilterTrashed:
+            message = NSLocalizedString(@"Everything you write is solid gold.", @"Displayed when the user views trashed posts in the posts list and there are no posts");
+            break;
+        default:
+            message = NSLocalizedString(@"Would you like to publish your first post?", @"Displayed when the user views published posts in the posts list and there are no posts");
+            break;
+    }
+    return message;
 }
 
 - (UIView *)noResultsAccessoryView {
@@ -291,7 +314,19 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (NSString *)noResultsButtonText
 {
-    return NSLocalizedString(@"Create post", @"Button title, encourages users to create their first post on their blog.");
+    NSString *title;
+    switch ([self postListStatusFilter]) {
+        case PostListStatusFilterScheduled:
+            title = NSLocalizedString(@"Edit Drafts", @"Button title, encourages users to schedule a draft post to publish.");
+            break;
+        case PostListStatusFilterTrashed:
+            title = [NSString string];
+            break;
+        default:
+            title = NSLocalizedString(@"Start a Post", @"Button title, encourages users to create their first post on their blog.");
+            break;
+    }
+    return title;
 }
 
 - (void)configureAuthorFilter
@@ -439,6 +474,10 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
+    if ([self postListStatusFilter] == PostListStatusFilterScheduled) {
+        [self setPostListStatusFilter:PostListStatusFilterDraft];
+        return;
+    }
     [self createPost];
 }
 
@@ -607,6 +646,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     }
     [self.tableViewHandler clearCachedRowHeights];
     [self.tableView reloadData];
+    [self configureNoResultsView];
 }
 
 - (NSPredicate *)predicateForFetchRequest
