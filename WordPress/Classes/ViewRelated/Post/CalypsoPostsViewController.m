@@ -21,6 +21,7 @@
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPPostViewController.h"
 #import "WPSearchController.h"
+#import "WPStyleGuide+Posts.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
@@ -333,6 +334,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 {
     NSString *onlyMe = NSLocalizedString(@"Only Me", @"Label for the post author filter. This fliter shows posts only authored by the current user.");
     NSString *everyone = NSLocalizedString(@"Everyone", @"Label for the post author filter. This filter shows posts for all users on the blog.");
+    [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
     self.authorsFilter.hidden = !self.blog.isMultiAuthor;

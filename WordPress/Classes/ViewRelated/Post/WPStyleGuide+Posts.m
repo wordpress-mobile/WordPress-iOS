@@ -4,7 +4,16 @@
 
 @implementation WPStyleGuide (Posts)
 
-#pragma mark - View Styles
+#pragma mark - Post List Styles
+
++ (void)applyPostAuthorFilterStyle:(UISegmentedControl *)segmentControl
+{
+    CGFloat fontSize = [UIDevice isPad] ? 14.0 : 12.0;
+    NSDictionary *attributes = @{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:fontSize]};
+    [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+}
+
+#pragma mark - Card View Styles
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
