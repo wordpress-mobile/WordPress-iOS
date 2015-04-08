@@ -338,7 +338,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)trackSyncTimeout
 {
-    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
     NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
     
     [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
