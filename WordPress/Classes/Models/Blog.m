@@ -253,6 +253,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
 }
 
+- (BOOL)isMultiAuthor
+{
+    return NO; // TODO: Placeholder. Need to make this a stored property.
+}
+
 - (NSDictionary *)getImageResizeDimensions
 {
     CGSize smallSize, mediumSize, largeSize;
