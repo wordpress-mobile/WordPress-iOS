@@ -6,7 +6,6 @@ NSString *const WPMobileReaderFFURL                                 = @"https://
 
 NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
-NSString *const WPComDefaultAccountUsernameKey                      = @"wpcom_username_preference";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
 NSString *const WPNotificationsJetpackInformationURL                = @"http://jetpack.me/about/";
@@ -26,8 +25,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteNameKey           = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPressTodayWidgetTimeZone";
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
-
-NSString *const WPInternalBetaShakeToPullUpFeedbackKey              = @"InternalBetaShakeToPullUpFeedback";
 
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
 BOOL const WPJetpackRESTEnabled                                     = YES;

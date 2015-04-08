@@ -57,7 +57,6 @@
     
     self.title = NSLocalizedString(@"Posts", @"");
     self.tableView.accessibilityIdentifier = @"PostsTable";
-    self.tableView.isAccessibilityElement = YES;
     UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
     [button setImage:image forState:UIControlStateNormal];
@@ -101,7 +100,6 @@
         [self.tableView setContentOffset:CGPointZero animated:NO];
         self.addingNewPost = NO;
     }
-
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -115,6 +113,15 @@
 
 #pragma mark -
 #pragma mark Syncs methods
+
+- (BOOL)userCanRefresh
+{
+    AbstractPost *apost = [self.resultsController.fetchedObjects firstObject];
+    if (apost.remoteStatus == AbstractPostRemoteStatusPushing) {
+        return NO;
+    }
+    return [super userCanRefresh];
+}
 
 - (BOOL)isSyncing {
 	return self.blog.isSyncingPosts;

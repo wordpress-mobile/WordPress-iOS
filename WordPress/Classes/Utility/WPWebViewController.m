@@ -5,6 +5,7 @@
 #import "NSString+Helpers.h"
 #import "UIDevice+Helpers.h"
 #import "WPURLRequest.h"
+#import "WPUserAgent.h"
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
@@ -579,7 +580,7 @@
 
 - (NSURLRequest *)newRequestForWebsite
 {
-    NSString *userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
     if (!self.needsLogin) {
         return [WPURLRequest requestWithURL:self.url userAgent:userAgent];
     }

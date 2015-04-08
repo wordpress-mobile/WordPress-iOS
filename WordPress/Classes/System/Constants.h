@@ -6,7 +6,6 @@ extern NSString *const WPMobileReaderFFURL;
 
 extern NSString *const WPComXMLRPCUrl;
 extern NSString *const WPComDefaultAccountUrlKey;
-extern NSString *const WPComDefaultAccountUsernameKey;
 
 extern NSString *const WPNotificationsBucketName;
 extern NSString *const WPNotificationsJetpackInformationURL;
@@ -21,7 +20,6 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 
-extern NSString *const WPInternalBetaShakeToPullUpFeedbackKey;
 extern BOOL const WPJetpackRESTEnabled;
 
 extern NSString *const WPiTunesAppId;

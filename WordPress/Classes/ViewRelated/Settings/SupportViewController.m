@@ -17,10 +17,10 @@
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
 #import "WPTabBarController.h"
+#import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
@@ -347,7 +347,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey];
+            aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
         } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -425,19 +425,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)handleCellSwitchChanged:(id)sender
 {
     UISwitch *aSwitch = (UISwitch *)sender;
-    NSString *key = (aSwitch.tag == 1) ? kExtraDebugDefaultsKey : kUsageTrackingDefaultsKey;
 
-    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:key];
-    [NSUserDefaults resetStandardUserDefaults];
-
-    if ([key isEqualToString:kUsageTrackingDefaultsKey] && aSwitch.on) {
-        DDLogInfo(@"WPAnalytics session started");
-
-        [WPAnalytics beginSession];
-    } else if ([key isEqualToString:kUsageTrackingDefaultsKey] && !aSwitch.on) {
-        DDLogInfo(@"WPAnalytics session stopped");
-
-        [WPAnalytics endSession];
+    if (aSwitch.tag == 1) {
+        [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
+        [NSUserDefaults resetStandardUserDefaults];
+    } else {
+        [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }
 }
 

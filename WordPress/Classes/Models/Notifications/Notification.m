@@ -21,6 +21,7 @@ NSString const *NoteRangeTypeUser       = @"user";
 NSString const *NoteRangeTypePost       = @"post";
 NSString const *NoteRangeTypeComment    = @"comment";
 NSString const *NoteRangeTypeStats      = @"stat";
+NSString const *NoteRangeTypeFollow     = @"follow";
 NSString const *NoteRangeTypeBlockquote = @"blockquote";
 NSString const *NoteRangeTypeNoticon    = @"noticon";
 NSString const *NoteRangeTypeSite       = @"site";
@@ -32,6 +33,7 @@ NSString const *NoteTypeUser            = @"user";
 NSString const *NoteTypeComment         = @"comment";
 NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypePost            = @"post";
+NSString const *NoteTypeFollow          = @"follow";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -123,6 +125,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isComment
 {
     return [self.type isEqual:NoteRangeTypeComment];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteRangeTypeFollow];
 }
 
 - (BOOL)isStats
@@ -371,6 +378,13 @@ NSString const *NotePostIdKey           = @"post_id";
             if (media.isBadge) {
                 isBadge = true;
             }
+            
+            // TODO:
+            // We've received crashlogs caused by a missing mediaURL field. This assert will only affect debug builds,
+            // and will help us troubleshoot the issue. Please: Feel free to remove this snippet once the bug has been
+            // fixed backend side.
+            //
+            NSAssert(media.mediaURL, @"Missing mediaURL for Notification with SimperiumKey %@", notification.simperiumKey);
         }
         
         [parsed addObject:block];
@@ -606,6 +620,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isPost
 {
     return [self.type isEqual:NoteTypePost];
+}
+
+- (BOOL)isFollow
+{
+    return [self.type isEqual:NoteTypeFollow];
 }
 
 - (BOOL)isBadge

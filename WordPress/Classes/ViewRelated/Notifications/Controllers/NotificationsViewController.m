@@ -46,6 +46,7 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
+static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 
 #pragma mark ====================================================================================
@@ -71,7 +72,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[UIApplication sharedApplication] removeObserver:self forKeyPath:NSStringFromSelector(@selector(applicationIconBadgeNumber))];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
@@ -79,10 +79,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     self = [super initWithCoder:aDecoder];
     if (self) {
         self.title = NSLocalizedString(@"Notifications", @"Notifications View Controller title");
-
-        // Watch for application badge number changes
-        NSString *badgeKeyPath = NSStringFromSelector(@selector(applicationIconBadgeNumber));
-        [[UIApplication sharedApplication] addObserver:self forKeyPath:badgeKeyPath options:NSKeyValueObservingOptionNew context:nil];
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -140,8 +136,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-    
-    [self updateTabBarBadgeNumber];
+
     [self showNoResultsViewIfNeeded];
     [self showManageButtonIfNeeded];
     [self showBucketNameIfNeeded];
@@ -224,16 +219,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 }
 
 
-#pragma mark - NSObject(NSKeyValueObserving) Helpers
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:NSStringFromSelector(@selector(applicationIconBadgeNumber))]) {
-        [self updateTabBarBadgeNumber];
-    }
-}
-
-
 #pragma mark - SPBucketDelegate Methods
 
 - (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
@@ -310,12 +295,15 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)showDetailsForNoteWithID:(NSString *)notificationID
 {
-    Simperium *simperium        = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium        = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket       = [simperium bucketForName:self.entityName];
     Notification *notification  = [notesBucket objectForKey:notificationID];
     
     if (notification) {
         DDLogInfo(@"Pushing Notification Details for: [%@]", notificationID);
+        
+        NSDictionary *properties = notification.type ? @{ @"type" : notification.type } : nil;
+        [WPAnalytics track:WPAnalyticsStatPushNotificationAlertPressed withProperties:properties];
         
         [self showDetailsForNotification:notification];
     } else {
@@ -334,7 +322,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 - (void)startSyncTimeoutTimer
 {
     // Don't proceed if we're not even connected
-    BOOL isConnected = [[WordPressAppDelegate sharedWordPressApplicationDelegate] connectionAvailable];
+    BOOL isConnected = [[WordPressAppDelegate sharedInstance] connectionAvailable];
     if (!isConnected) {
         return;
     }
@@ -350,7 +338,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)trackSyncTimeout
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning];
+    Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
 }
 
 
@@ -358,7 +349,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)setupNotificationsBucketDelegate
 {
-    Simperium *simperium            = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium            = [[WordPressAppDelegate sharedInstance] simperium];
     SPBucket *notesBucket           = [simperium bucketForName:self.entityName];
     notesBucket.delegate            = self;
     notesBucket.notifyWhileIndexing = YES;
@@ -369,18 +360,6 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
 }
 
-- (void)updateTabBarBadgeNumber
-{
-    // Note: self.navigationViewController might be nil. Let's hit the UITabBarController instead
-    UITabBarController *tabBarController    = [WPTabBarController sharedInstance];
-    UITabBarItem *tabBarItem                = tabBarController.tabBar.items[WPTabNotifications];
-
-    NSInteger count                         = [[UIApplication sharedApplication] applicationIconBadgeNumber];
-    NSString *countString                   = (count > 0) ? [NSString stringWithFormat:@"%d", count] : nil;
-
-    tabBarItem.badgeValue                   = countString;
-}
-
 - (void)updateLastSeenTime
 {
     Notification *note      = [self.tableViewHandler.resultsController.fetchedObjects firstObject];
@@ -389,7 +368,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
     }
 
     NSString *bucketName    = NSStringFromClass([Meta class]);
-    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
     Meta *metadata          = [[simperium bucketForName:bucketName] objectForKey:bucketName.lowercaseString];
     if (!metadata) {
         return;
@@ -415,7 +394,7 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 {
     // This is only required for debugging:
     // If we're sync'ing against a custom bucket, we should let the user know about it!
-    Simperium *simperium    = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+    Simperium *simperium    = [[WordPressAppDelegate sharedInstance] simperium];
     NSString *name          = simperium.bucketOverrides[NSStringFromClass([Notification class])];
     if ([name isEqualToString:WPNotificationsBucketName]) {
         return;

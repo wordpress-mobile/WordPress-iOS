@@ -138,7 +138,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
-    self.postView.canShowActionButtons = isLoggedIn;
+    self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
     
     [self setReblogButtonVisibilityOfPostView:self.postView];
