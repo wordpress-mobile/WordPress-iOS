@@ -15,7 +15,9 @@ static NSString * const WordPressComOAuthRedirectUrl = @"https://wordpress.com/"
 
 	client.responseSerializer = [[AFJSONResponseSerializer alloc] init];
 	[client.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-	
+
+    client.securityPolicy.validatesDomainName = YES;
+
     return client;
 }
 
