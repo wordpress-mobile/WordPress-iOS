@@ -59,8 +59,10 @@
     CGFloat height = CGRectGetMinY(self.postContentView.frame);
 
     height += CGRectGetMinY(self.headerView.frame);
-    height += self.headerViewHeight;
-    height += self.headerViewLowerMargin;
+    if (self.headerViewHeightConstraint.constant > 0) {
+        height += self.headerViewHeight;
+        height += self.headerViewLowerMargin;
+    }
 
     if (self.postCardImageView) {
         height += CGRectGetHeight(self.postCardImageView.frame);
@@ -168,6 +170,16 @@
 
 - (void)configureHeader
 {
+    if (![self.contentProvider isMultiAuthorBlog]) {
+        self.headerViewHeightConstraint.constant = 0;
+        self.headerViewLowerConstraint.constant = 0;
+        // If not visible, just return and don't bother setting the text or loading the avatar.
+        self.headerView.hidden = YES;
+        return;
+    }
+    self.headerView.hidden = NO;
+    self.headerViewHeightConstraint.constant = self.headerViewHeight;
+    self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
     [self.avatarImageView sd_setImageWithURL:[self blavatarURL]
