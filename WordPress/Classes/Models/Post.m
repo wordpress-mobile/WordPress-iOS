@@ -254,6 +254,11 @@
     return self.blog.isPrivate;
 }
 
+- (BOOL)isMultiAuthorBlog
+{
+    return self.blog.isMultiAuthor;
+}
+
 - (NSURL *)featuredImageURLForDisplay
 {
     if ([self.featuredImage remoteURL]) {
