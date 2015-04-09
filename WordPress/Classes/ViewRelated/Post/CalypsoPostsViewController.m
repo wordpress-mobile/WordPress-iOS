@@ -42,10 +42,11 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
-static const CGFloat PostsSearchBarWidth = 200.0;
+static const CGFloat PostsSearchBarWidth = 280.0;
 static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 static const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
+static const CGFloat SearchBarAuthorFilterSpacer = 16.0;
 
 typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     PostListStatusFilterPublished,
@@ -390,8 +391,11 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
     [self.authorsFilterView addSubview:searchBar];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{@"searchBarWidth":@(PostsSearchBarWidth)};
+    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar, _authorsFilter);
+    NSDictionary *metrics = @{
+                              @"searchBarWidth":@(PostsSearchBarWidth),
+                              @"searchBarSpacer":@(SearchBarAuthorFilterSpacer)
+                              };
     [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
                                                                        attribute:NSLayoutAttributeCenterY
                                                                        relatedBy:NSLayoutRelationEqual
@@ -400,7 +404,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
                                                                       multiplier:1.0
                                                                         constant:0.0]];
     if (self.blog.isMultiAuthor) {
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]-|"
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_authorsFilter]-(searchBarSpacer)-[searchBar]-|"
                                                                                        options:0
                                                                                        metrics:metrics
                                                                                          views:views]];
