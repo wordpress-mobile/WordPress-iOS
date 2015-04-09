@@ -233,7 +233,7 @@
 		857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 857610D518C0377300EDF406 /* StatsWebViewController.m */; };
 		8583606F1AB7685F00379901 /* ReachabilityFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 8583606E1AB7685F00379901 /* ReachabilityFacade.m */; };
 		858DE40F1730384F000AC628 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 858DE40E1730384F000AC628 /* LoginViewController.m */; };
-		858EEC801ABA2D700007B3B6 /* AccountCreationFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC7F1ABA2D700007B3B6 /* AccountCreationFacade.m */; };
+		858EEC801ABA2D700007B3B6 /* AccountServiceFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC7F1ABA2D700007B3B6 /* AccountServiceFacade.m */; };
 		858EEC831ABA30190007B3B6 /* BlogSyncFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC821ABA30190007B3B6 /* BlogSyncFacade.m */; };
 		858EEC851ABA4EC20007B3B6 /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 858EEC841ABA4EC20007B3B6 /* LoginFacadeTests.m */; };
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
@@ -945,8 +945,8 @@
 		8583606E1AB7685F00379901 /* ReachabilityFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityFacade.m; sourceTree = "<group>"; };
 		858DE40D1730384F000AC628 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		858DE40E1730384F000AC628 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		858EEC7E1ABA2D700007B3B6 /* AccountCreationFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountCreationFacade.h; sourceTree = "<group>"; };
-		858EEC7F1ABA2D700007B3B6 /* AccountCreationFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountCreationFacade.m; sourceTree = "<group>"; };
+		858EEC7E1ABA2D700007B3B6 /* AccountServiceFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountServiceFacade.h; sourceTree = "<group>"; };
+		858EEC7F1ABA2D700007B3B6 /* AccountServiceFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountServiceFacade.m; sourceTree = "<group>"; };
 		858EEC811ABA30190007B3B6 /* BlogSyncFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSyncFacade.h; sourceTree = "<group>"; };
 		858EEC821ABA30190007B3B6 /* BlogSyncFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSyncFacade.m; sourceTree = "<group>"; };
 		858EEC841ABA4EC20007B3B6 /* LoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
@@ -2404,8 +2404,8 @@
 				856C7C5F1AB8CE9E0057E2F7 /* WordPressComOAuthClientFacade.m */,
 				856C7C611AB8D32A0057E2F7 /* WordPressXMLRPCApiFacade.h */,
 				856C7C621AB8D32A0057E2F7 /* WordPressXMLRPCApiFacade.m */,
-				858EEC7E1ABA2D700007B3B6 /* AccountCreationFacade.h */,
-				858EEC7F1ABA2D700007B3B6 /* AccountCreationFacade.m */,
+				858EEC7E1ABA2D700007B3B6 /* AccountServiceFacade.h */,
+				858EEC7F1ABA2D700007B3B6 /* AccountServiceFacade.m */,
 				858EEC811ABA30190007B3B6 /* BlogSyncFacade.h */,
 				858EEC821ABA30190007B3B6 /* BlogSyncFacade.m */,
 				854FEB5E1AC4BED60012B8EB /* HelpshiftFacade.h */,
@@ -3603,7 +3603,7 @@
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
-				858EEC801ABA2D700007B3B6 /* AccountCreationFacade.m in Sources */,
+				858EEC801ABA2D700007B3B6 /* AccountServiceFacade.m in Sources */,
 				5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,

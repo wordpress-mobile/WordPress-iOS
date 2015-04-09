@@ -6,7 +6,7 @@
 #import "ReachabilityFacade.h"
 #import "LoginFacade.h"
 #import "WordPressComOAuthClientFacade.h"
-#import "AccountCreationFacade.h"
+#import "AccountServiceFacade.h"
 #import "BlogSyncFacade.h"
 #import "HelpshiftFacade.h"
 #import "OnePasswordFacade.h"
@@ -21,7 +21,7 @@ __block id mockReachabilityFacade;
 __block id mockLoginFacade;
 __block id mockLoginFacadeDelegate;
 __block id mockOAuthFacade;
-__block id mockAccountCreationFacade;
+__block id mockAccountServiceFacade;
 __block id mockBlogSyncFacade;
 __block id mockHelpshiftFacade;
 __block id mockOnePasswordFacade;
@@ -32,7 +32,7 @@ beforeEach(^{
     mockLoginFacade = [OCMockObject niceMockForProtocol:@protocol(LoginFacade)];
     mockLoginFacadeDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginFacadeDelegate)];
     mockOAuthFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientFacade)];
-    mockAccountCreationFacade = [OCMockObject niceMockForProtocol:@protocol(AccountCreationFacade)];
+    mockAccountServiceFacade = [OCMockObject niceMockForProtocol:@protocol(AccountServiceFacade)];
     mockBlogSyncFacade = [OCMockObject niceMockForProtocol:@protocol(BlogSyncFacade)];
     mockHelpshiftFacade = [OCMockObject niceMockForProtocol:@protocol(HelpshiftFacade)];
     mockOnePasswordFacade = [OCMockObject niceMockForProtocol:@protocol(OnePasswordFacade)];
@@ -43,7 +43,7 @@ beforeEach(^{
     viewModel.loginFacade = mockLoginFacade;
     viewModel.reachabilityFacade = mockReachabilityFacade;
     viewModel.delegate = mockViewModelDelegate;
-    viewModel.accountCreationFacade = mockAccountCreationFacade;
+    viewModel.accountServiceFacade = mockAccountServiceFacade;
     viewModel.blogSyncFacade = mockBlogSyncFacade;
     viewModel.helpshiftFacade = mockHelpshiftFacade;
     viewModel.onePasswordFacade = mockOnePasswordFacade;
@@ -1540,7 +1540,7 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
         
         it(@"should create a WPAccount for a .com site", ^{
-            [[mockAccountCreationFacade expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+            [[mockAccountServiceFacade expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
             
             [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
             
@@ -1586,11 +1586,11 @@ describe(@"LoginFacadeDelegate methods", ^{
                 });
                 
                 it(@"should update the email and default blog for the newly created account", ^{
-                    [[mockAccountCreationFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
+                    [[mockAccountServiceFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                     
-                    [mockAccountCreationFacade verify];
+                    [mockAccountServiceFacade verify];
                 });
             });
             
@@ -1651,11 +1651,11 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
         
         it(@"should create a WPAccount for a self hosted site", ^{
-            [[mockAccountCreationFacade expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+            [[mockAccountServiceFacade expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
-            [mockAccountCreationFacade verify];
+            [mockAccountServiceFacade verify];
         });
         
         it(@"should sync the newly added site", ^{

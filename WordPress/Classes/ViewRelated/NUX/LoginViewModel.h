@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "LoginFacade.h"
 
-@protocol AccountCreationFacade;
+@protocol AccountServiceFacade;
 @protocol BlogSyncFacade;
 @protocol HelpshiftFacade;
 @protocol LoginFacade;
@@ -14,7 +14,7 @@
 // Services
 @property (nonatomic, strong) id<ReachabilityFacade> reachabilityFacade;
 @property (nonatomic, strong) id<LoginFacade> loginFacade;
-@property (nonatomic, strong) id<AccountCreationFacade> accountCreationFacade;
+@property (nonatomic, strong) id<AccountServiceFacade> accountServiceFacade;
 @property (nonatomic, strong) id<BlogSyncFacade> blogSyncFacade;
 @property (nonatomic, strong) id<HelpshiftFacade> helpshiftFacade;
 @property (nonatomic, strong) id<OnePasswordFacade> onePasswordFacade;

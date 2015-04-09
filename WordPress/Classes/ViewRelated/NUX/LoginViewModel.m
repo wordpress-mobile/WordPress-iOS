@@ -3,7 +3,7 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 
-#import "AccountCreationFacade.h"
+#import "AccountServiceFacade.h"
 #import "BlogSyncFacade.h"
 #import "Constants.h"
 #import "HelpshiftFacade.h"
@@ -37,7 +37,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     loginFacade.delegate = self;
     _loginFacade = loginFacade;
     _reachabilityFacade = [ReachabilityFacade new];
-    _accountCreationFacade = [AccountCreationFacade new];
+    _accountServiceFacade = [AccountServiceFacade new];
     _blogSyncFacade = [BlogSyncFacade new];
     _helpshiftFacade = [HelpshiftFacade new];
     _onePasswordFacade = [OnePasswordFacade new];
@@ -474,7 +474,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
-    WPAccount *account = [self.accountCreationFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+    WPAccount *account = [self.accountServiceFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
     [self.blogSyncFacade syncBlogsForAccount:account success:^{
         // Dismiss the UI
         [self dismissLoginMessage];
@@ -490,7 +490,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         [WPAnalytics refreshMetadata];
         
         // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountCreationFacade updateEmailAndDefaultBlogForWordPressComAccount:account];
+        [self.accountServiceFacade updateEmailAndDefaultBlogForWordPressComAccount:account];
     } failure:^(NSError *error) {
         [self dismissLoginMessage];
         [self displayRemoteError:error];
@@ -503,7 +503,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
                                             xmlrpc:(NSString *)xmlrpc
                                            options:(NSDictionary *)options
 {
-    WPAccount *account = [self.accountCreationFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    WPAccount *account = [self.accountServiceFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
         [self.delegate dismissLoginMessage];
         [self.delegate showJetpackAuthentication:blogId];
