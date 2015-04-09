@@ -726,6 +726,22 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
     });
     
+    NSString *sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension = @"the dismissal of the keyboard before opening the extension";
+    sharedExamplesFor(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, ^(NSDictionary *data) {
+        
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/344
+        it(@"should occur", ^{
+            [[mockViewModelDelegate expect] endViewEditing];
+            
+            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            
+            [mockViewModelDelegate verify];
+        });
+    });
+    
+    
+    
+    
     context(@"for a self hosted user", ^{
         
         beforeEach(^{
@@ -760,6 +776,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
     
     context(@"for a WordPress.com user", ^{
@@ -778,6 +795,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
         itShouldBehaveLike(sharedExamplesForValidData, nil);
+        itShouldBehaveLike(sharedExamplesForBugWhereKeyboardWasntDismissedBeforeOpeningExtension, nil);
     });
 });
 

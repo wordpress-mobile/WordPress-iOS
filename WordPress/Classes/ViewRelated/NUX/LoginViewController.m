@@ -1046,4 +1046,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:webViewController animated:NO];
 }
 
+- (void)endViewEditing
+{
+    [self.view endEditing:NO];
+}
+
 @end

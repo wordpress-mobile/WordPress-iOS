@@ -97,5 +97,6 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)displayHelpViewControllerWithAnimation:(BOOL)animated;
 - (void)displayHelpshiftConversationView;
 - (void)displayWebViewForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password;
+- (void)endViewEditing;
 
 @end

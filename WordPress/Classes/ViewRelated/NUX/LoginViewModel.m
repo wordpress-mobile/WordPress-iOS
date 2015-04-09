@@ -91,6 +91,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)onePasswordButtonActionForViewController:(UIViewController *)viewController
 {
+    [self.delegate endViewEditing];
+    
     if (self.userIsDotCom == false && self.siteUrl.isEmpty) {
         [self.delegate displayOnePasswordEmptySiteAlert];
         return;
