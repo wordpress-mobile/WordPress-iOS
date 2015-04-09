@@ -2041,7 +2041,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [mediaService getMediaURLFromVideoPressID:videoID
         inBlog:self.post.blog
         success:^(NSString *videoURL, NSString *posterURL) {
-            [weakSelf.editorView setVideoPress:videoID source:videoURL poster:posterURL];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakSelf.editorView setVideoPress:videoID source:videoURL poster:posterURL];
+            });            
         }
         failure:^(NSError *error){
 
