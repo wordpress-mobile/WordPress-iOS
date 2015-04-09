@@ -47,7 +47,8 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {
-    [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail];
+    // Since this view is only visible to the current user, we should show all ratings
+    [self.gravatarImageView setImageWithGravatarEmail:gravatarEmail gravatarRating:GravatarRatingX];
 }
 
 #pragma mark - Private Methods
