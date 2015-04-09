@@ -40,7 +40,7 @@
 #pragma mark Private
 #pragma mark ====================================================================================
 
-@interface LoginViewController () <UITextFieldDelegate, LoginViewModelDelegate>
+@interface LoginViewController () <UITextFieldDelegate, LoginViewModelPresenter>
 
 // Views
 @property (nonatomic, strong) UIView                    *mainView;
@@ -106,7 +106,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)initializeViewModel
 {
     _viewModel = [LoginViewModel new];
-    _viewModel.delegate = self;
+    _viewModel.presenter = self;
 }
 
 - (void)viewDidLoad

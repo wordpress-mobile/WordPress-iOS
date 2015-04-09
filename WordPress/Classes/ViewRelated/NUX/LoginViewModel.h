@@ -5,7 +5,7 @@
 @protocol BlogSyncFacade;
 @protocol HelpshiftFacade;
 @protocol LoginFacade;
-@protocol LoginViewModelDelegate;
+@protocol LoginViewModelPresenter;
 @protocol ReachabilityFacade;
 @protocol OnePasswordFacade;
 @class RACSignal;
@@ -37,7 +37,7 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSString *multifactorCode;
 
-@property (nonatomic, weak) id<LoginViewModelDelegate> delegate;
+@property (nonatomic, weak) id<LoginViewModelPresenter> presenter;
 
 - (void)signInButtonAction;
 - (void)onePasswordButtonActionForViewController:(UIViewController *)viewController;
@@ -54,7 +54,7 @@
 @class WPWalkthroughOverlayView;
 typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 
-@protocol LoginViewModelDelegate
+@protocol LoginViewModelPresenter
 
 - (void)showActivityIndicator:(BOOL)show;
 

@@ -75,14 +75,14 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     LoginFields *loginFields = [self loginFields];
     if (![self areFieldsValid:loginFields]) {
-        [self.delegate displayErrorMessageForInvalidOrMissingFields];
+        [self.presenter displayErrorMessageForInvalidOrMissingFields];
         return;
     }
     
     if (loginFields.userIsDotCom && [self isUsernameReserved:loginFields.username]) {
-        [self.delegate displayReservedNameErrorMessage];
+        [self.presenter displayReservedNameErrorMessage];
         [self toggleSignInFormAction];
-        [self.delegate setFocusToSiteUrlText];
+        [self.presenter setFocusToSiteUrlText];
         return;
     }
    
@@ -91,10 +91,10 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)onePasswordButtonActionForViewController:(UIViewController *)viewController
 {
-    [self.delegate endViewEditing];
+    [self.presenter endViewEditing];
     
     if (self.userIsDotCom == false && self.siteUrl.isEmpty) {
-        [self.delegate displayOnePasswordEmptySiteAlert];
+        [self.presenter displayOnePasswordEmptySiteAlert];
         return;
     }
  
@@ -112,8 +112,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         self.username = username;
         self.password = password;
-        [self.delegate setUsernameTextValue:username];
-        [self.delegate setPasswordTextValue:password];
+        [self.presenter setUsernameTextValue:username];
+        [self.presenter setPasswordTextValue:password];
         
         [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
         [self signInButtonAction];
@@ -125,7 +125,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self baseSiteUrl];
     NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
     
-    [self.delegate openURLInSafari:forgotPasswordURL];
+    [self.presenter openURLInSafari:forgotPasswordURL];
 }
 
 - (NSString *)baseSiteUrl
@@ -170,14 +170,14 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     self.shouldDisplayMultifactor = NO;
     self.userIsDotCom = !self.userIsDotCom;
     
-    [self.delegate reloadInterfaceWithAnimation:YES];
+    [self.presenter reloadInterfaceWithAnimation:YES];
 }
 
 - (void)displayMultifactorTextField
 {
     self.shouldDisplayMultifactor = YES;
-    [self.delegate reloadInterfaceWithAnimation:YES];
-    [self.delegate setFocusToMultifactorText];
+    [self.presenter reloadInterfaceWithAnimation:YES];
+    [self.presenter setFocusToMultifactorText];
 }
 
 - (BOOL)isOnePasswordEnabled
@@ -202,7 +202,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 - (void)setupObservationForAuthenticating
 {
     [RACObserve(self, authenticating) subscribeNext:^(NSNumber *authenticating) {
-        [self.delegate showActivityIndicator:[authenticating boolValue]];
+        [self.presenter showActivityIndicator:[authenticating boolValue]];
     }];
 }
 
@@ -210,13 +210,13 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [RACObserve(self, shouldDisplayMultifactor) subscribeNext:^(NSNumber *shouldDisplayMultifactor) {
         BOOL displayMultifactor = [shouldDisplayMultifactor boolValue];
         if (displayMultifactor) {
-            [self.delegate setUsernameAlpha:LoginViewModelAlphaDisabled];
-            [self.delegate setPasswordAlpha:LoginViewModelAlphaDisabled];
-            [self.delegate setMultiFactorAlpha:LoginViewModelAlphaEnabled];
+            [self.presenter setUsernameAlpha:LoginViewModelAlphaDisabled];
+            [self.presenter setPasswordAlpha:LoginViewModelAlphaDisabled];
+            [self.presenter setMultiFactorAlpha:LoginViewModelAlphaEnabled];
         } else {
-            [self.delegate setUsernameAlpha:LoginViewModelAlphaEnabled];
-            [self.delegate setPasswordAlpha:LoginViewModelAlphaEnabled];
-            [self.delegate setMultiFactorAlpha:LoginViewModelAlphaHidden];
+            [self.presenter setUsernameAlpha:LoginViewModelAlphaEnabled];
+            [self.presenter setPasswordAlpha:LoginViewModelAlphaEnabled];
+            [self.presenter setMultiFactorAlpha:LoginViewModelAlphaHidden];
         }
         
         self.isUsernameEnabled = !displayMultifactor;
@@ -228,14 +228,14 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 - (void)setupObserationForUsernameEnabled
 {
     [RACObserve(self, isUsernameEnabled) subscribeNext:^(NSNumber *isUsernameEnabled) {
-        [self.delegate setUsernameEnabled:[isUsernameEnabled boolValue]];
+        [self.presenter setUsernameEnabled:[isUsernameEnabled boolValue]];
     }];
 }
 
 - (void)setupObservationForPasswordEnabled
 {
     [RACObserve(self, isPasswordEnabled) subscribeNext:^(NSNumber *isPasswordEnabled) {
-        [self.delegate setPasswordEnabled:[isPasswordEnabled boolValue]];
+        [self.presenter setPasswordEnabled:[isPasswordEnabled boolValue]];
     }];
 }
 
@@ -247,11 +247,11 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         self.isSiteUrlEnabled = !dotComUser;
         
         if (dotComUser) {
-            [self.delegate setPasswordTextReturnKeyType:UIReturnKeyDone];
-            [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
+            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyDone];
+            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
         } else {
-            [self.delegate setPasswordTextReturnKeyType:UIReturnKeyNext];
-            [self.delegate setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
+            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyNext];
+            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
         }
     }];
 }
@@ -262,28 +262,28 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         BOOL siteUrlEnabled = [isSiteUrlEnabled boolValue];
         if (siteUrlEnabled) {
             if (self.shouldDisplayMultifactor) {
-                [self.delegate setSiteAlpha:LoginViewModelAlphaDisabled];
+                [self.presenter setSiteAlpha:LoginViewModelAlphaDisabled];
             } else {
-                [self.delegate setSiteAlpha:LoginViewModelAlphaEnabled];
+                [self.presenter setSiteAlpha:LoginViewModelAlphaEnabled];
             }
         } else {
-            [self.delegate setSiteAlpha:LoginViewModelAlphaHidden];
+            [self.presenter setSiteAlpha:LoginViewModelAlphaHidden];
         }
-        [self.delegate setSiteUrlEnabled:siteUrlEnabled];
+        [self.presenter setSiteUrlEnabled:siteUrlEnabled];
     }];
 }
 
 - (void)setupObservationForIsMultifactorEnabled
 {
     [RACObserve(self, isMultifactorEnabled) subscribeNext:^(NSNumber *isMultifactorEnabled) {
-        [self.delegate setMultifactorEnabled:[isMultifactorEnabled boolValue]];
+        [self.presenter setMultifactorEnabled:[isMultifactorEnabled boolValue]];
     }];
 }
 
 - (void)setupObservationForCancellable
 {
     [RACObserve(self, cancellable) subscribeNext:^(NSNumber *cancellable) {
-        [self.delegate setCancelButtonHidden:![cancellable boolValue]];
+        [self.presenter setCancelButtonHidden:![cancellable boolValue]];
     }];
 }
 
@@ -293,7 +293,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         BOOL isEnabled = [userIsDotCom boolValue] || [self isUrlValid:siteUrl];
         return @(!isEnabled || [authenticating boolValue] || [isMultifactorEnabled boolValue]);
     }] subscribeNext:^(NSNumber *forgotPasswordHidden) {
-        [self.delegate setForgotPasswordHidden:[forgotPasswordHidden boolValue]];
+        [self.presenter setForgotPasswordHidden:[forgotPasswordHidden boolValue]];
     }];
 }
 
@@ -302,7 +302,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [[[RACSignal combineLatest:@[RACObserve(self, shouldDisplayMultifactor), RACObserve(self, authenticating)]] reduceEach:^id(NSNumber *shouldDisplayMultifactor, NSNumber *authenticating){
         return @(![shouldDisplayMultifactor boolValue] || [authenticating boolValue]);
     }] subscribeNext:^(NSNumber *sendVerificationCodeButtonHidden) {
-        [self.delegate setSendVerificationCodeButtonHidden:[sendVerificationCodeButtonHidden boolValue]];
+        [self.presenter setSendVerificationCodeButtonHidden:[sendVerificationCodeButtonHidden boolValue]];
     }];
 }
 
@@ -311,7 +311,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [[[RACSignal combineLatest:@[RACObserve(self, hasDefaultAccount), RACObserve(self, authenticating)]] reduceEach:^id(NSNumber *hasDefaultAccount, NSNumber *authenticating){
         return @([hasDefaultAccount boolValue] || [authenticating boolValue]);
     }] subscribeNext:^(NSNumber *accountCreationHidden) {
-        [self.delegate setAccountCreationButtonHidden:[accountCreationHidden boolValue]];
+        [self.presenter setAccountCreationButtonHidden:[accountCreationHidden boolValue]];
     }];
 }
 
@@ -326,7 +326,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         return NSLocalizedString(@"Add Site", @"Button title for Add SelfHosted Site");
     }] subscribeNext:^(NSString *signInButtonTitle) {
-        [self.delegate setSignInButtonTitle:signInButtonTitle];
+        [self.presenter setSignInButtonTitle:signInButtonTitle];
     }];
 }
 
@@ -341,7 +341,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
             return @([self areSelfHostedFieldsFilled:loginFields]);
         }
     }] subscribeNext:^(NSNumber *signInButtonEnabled) {
-        [self.delegate setSignInButtonEnabled:[signInButtonEnabled boolValue]];
+        [self.presenter setSignInButtonEnabled:[signInButtonEnabled boolValue]];
     }];
 }
 
@@ -350,7 +350,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [[[RACSignal combineLatest:@[RACObserve(self, onlyDotComAllowed), RACObserve(self, hasDefaultAccount), RACObserve(self, authenticating)]] reduceEach:^id(NSNumber *onlyDotComAllowed, NSNumber *hasDefaultAccount, NSNumber *authenticating){
         return @([onlyDotComAllowed boolValue] || [hasDefaultAccount boolValue] || [authenticating boolValue]);
     }] subscribeNext:^(NSNumber *toggleSignInButtonHidden) {
-        [self.delegate setToggleSignInButtonHidden:[toggleSignInButtonHidden boolValue]];
+        [self.presenter setToggleSignInButtonHidden:[toggleSignInButtonHidden boolValue]];
     }];
 }
 
@@ -402,19 +402,19 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)dismissLoginMessage
 {
-    [self.delegate dismissLoginMessage];
+    [self.presenter dismissLoginMessage];
 }
 
 - (void)finishedLogin
 {
-    [self.delegate dismissLoginView];
+    [self.presenter dismissLoginView];
 }
 
 #pragma mark - LoginFacadeDelegate Related Methods
 
 - (void)displayLoginMessage:(NSString *)message
 {
-    [self.delegate displayLoginMessage:message];
+    [self.presenter displayLoginMessage:message];
 }
 
 - (void)needsMultifactorCode
@@ -427,7 +427,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     DDLogError(@"%@", error);
     
-    [self.delegate dismissLoginMessage];
+    [self.presenter dismissLoginMessage];
     
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
@@ -510,8 +510,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     WPAccount *account = [self.accountServiceFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
-        [self.delegate dismissLoginMessage];
-        [self.delegate showJetpackAuthentication:blogId];
+        [self.presenter dismissLoginMessage];
+        [self.presenter showJetpackAuthentication:blogId];
     } finishedSync:^{
         [self finishedLogin];
     }];
@@ -523,7 +523,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.delegate displayHelpViewControllerWithAnimation:NO];
+        [self.presenter displayHelpViewControllerWithAnimation:NO];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:@"GenericErrorMessage"];
@@ -536,7 +536,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.delegate displayHelpshiftConversationView];
+        [self.presenter displayHelpshiftConversationView];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:secondButtonText secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
@@ -562,11 +562,11 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
             path = [message substringWithRange:rng];
         }
         
-        [self.delegate displayWebViewForURL:[NSURL URLWithString:path] username:self.username password:self.password];
+        [self.presenter displayWebViewForURL:[NSURL URLWithString:path] username:self.username password:self.password];
     };
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.delegate displayHelpViewControllerWithAnimation:NO];
+        [self.presenter displayHelpViewControllerWithAnimation:NO];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:firstButtonText firstButtonCallback:firstButtonCallback secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
@@ -576,7 +576,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.delegate displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
@@ -606,7 +606,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         secondButtonTextOrDefault = secondButtonText;
     }
     
-    [self.delegate displayOverlayViewWithMessage:message firstButtonText:firstButtonTextOrDefault firstButtonCallback:firstButtonCallbackOrDefault secondButtonText:secondButtonTextOrDefault secondButtonCallback:secondButtonCallback accessibilityIdentifier:accessibilityIdentifier];
+    [self.presenter displayOverlayViewWithMessage:message firstButtonText:firstButtonTextOrDefault firstButtonCallback:firstButtonCallbackOrDefault secondButtonText:secondButtonTextOrDefault secondButtonCallback:secondButtonCallback accessibilityIdentifier:accessibilityIdentifier];
 }
 
 @end
