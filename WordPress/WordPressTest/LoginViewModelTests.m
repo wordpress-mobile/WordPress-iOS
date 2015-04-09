@@ -1552,7 +1552,7 @@ describe(@"LoginFacadeDelegate methods", ^{
             
             it(@"should occur if shouldReauthenticateDefaultAccount is true", ^{
                 viewModel.shouldReauthenticateDefaultAccount = YES;
-                [[mockAccountServiceFacade expect] removeLegacyAccountIfNeeded:username];
+                [[mockAccountServiceFacade expect] removeLegacyAccount:username];
                 
                 [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                 
@@ -1561,7 +1561,7 @@ describe(@"LoginFacadeDelegate methods", ^{
             
             it(@"should not occur if shouldReauthenticateDefaultAccount is false", ^{
                 viewModel.shouldReauthenticateDefaultAccount = NO;
-                [[mockAccountServiceFacade reject] removeLegacyAccountIfNeeded:username];
+                [[mockAccountServiceFacade reject] removeLegacyAccount:username];
                 
                 [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                 

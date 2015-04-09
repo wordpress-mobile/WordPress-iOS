@@ -32,7 +32,7 @@
     [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
 }
 
--(void)removeLegacyAccountIfNeeded:(NSString *)newUsername
+-(void)removeLegacyAccount:(NSString *)newUsername
 {
     NSParameterAssert(newUsername);
     

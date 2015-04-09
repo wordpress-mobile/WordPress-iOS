@@ -463,7 +463,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self dismissLoginMessage];
     
     if (self.shouldReauthenticateDefaultAccount) {
-        [self.accountServiceFacade removeLegacyAccountIfNeeded:username];
+        [self.accountServiceFacade removeLegacyAccount:username];
     }
     
     [self createWordPressComAccountForUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];

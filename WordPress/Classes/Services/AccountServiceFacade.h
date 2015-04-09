@@ -12,7 +12,7 @@
 
 - (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
 
--(void)removeLegacyAccountIfNeeded:(NSString *)newUsername;
+-(void)removeLegacyAccount:(NSString *)newUsername;
 
 @end
 
