@@ -137,6 +137,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 if (failure){
                     failure(error);
                 }
+                return;
             }
             
             [self updateMedia:mediaInContext withRemoteMedia:media];
