@@ -29,6 +29,7 @@
 @property (nonatomic, assign) BOOL cancellable;
 @property (nonatomic, assign) BOOL hasDefaultAccount;
 @property (nonatomic, assign) BOOL onlyDotComAllowed;
+@property (nonatomic, assign) BOOL shouldReauthenticateDefaultAccount;
 @property (nonatomic, readonly) NSString *signInButtonTitle;
 
 @property (nonatomic, strong) NSString *siteUrl;

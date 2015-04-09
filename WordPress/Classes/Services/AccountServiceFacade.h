@@ -12,6 +12,8 @@
 
 - (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
 
+-(void)removeLegacyAccountIfNeeded:(NSString *)newUsername;
+
 @end
 
 @interface AccountServiceFacade : NSObject<AccountServiceFacade>

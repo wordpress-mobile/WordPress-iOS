@@ -144,6 +144,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.viewModel.hasDefaultAccount = (defaultAccount != nil);
     self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
     self.viewModel.shouldDisplayMultifactor = NO;
+    self.viewModel.shouldReauthenticateDefaultAccount = self.shouldReauthenticateDefaultAccount;
     
     self.usernameText.text = defaultAccount.username;
     self.viewModel.username = defaultAccount.username;

@@ -1547,6 +1547,28 @@ describe(@"LoginFacadeDelegate methods", ^{
             [mockViewModelDelegate verify];
         });
         
+        // https://github.com/wordpress-mobile/WordPress-iOS/issues/3401
+        context(@"the removal of the old legacy account", ^{
+            
+            it(@"should occur if shouldReauthenticateDefaultAccount is true", ^{
+                viewModel.shouldReauthenticateDefaultAccount = YES;
+                [[mockAccountServiceFacade expect] removeLegacyAccountIfNeeded:username];
+                
+                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                
+                [mockAccountServiceFacade verify];
+            });
+            
+            it(@"should not occur if shouldReauthenticateDefaultAccount is false", ^{
+                viewModel.shouldReauthenticateDefaultAccount = NO;
+                [[mockAccountServiceFacade reject] removeLegacyAccountIfNeeded:username];
+                
+                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                
+                [mockAccountServiceFacade verify];
+            });
+        });
+        
         context(@"the syncing of the newly added blogs", ^{
             
             it(@"should occur", ^{
