@@ -2,28 +2,28 @@
 #define EXP_SHORTHAND
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
-#import "LoginService.h"
+#import "LoginFacade.h"
 #import "LoginFields.h"
-#import "WordPressComOAuthClientService.h"
-#import "WordPressXMLRPCApiService.h"
+#import "WordPressComOAuthClientFacade.h"
+#import "WordPressXMLRPCApiFacade.h"
 
-SpecBegin(LoginService)
+SpecBegin(LoginFacade)
 
-__block LoginService *loginService;
-__block id mockOAuthService;
-__block id mockXMLRPCApiService;
-__block id mockLoginServiceDelegate;
+__block LoginFacade *loginFacade;
+__block id mockOAuthFacade;
+__block id mockXMLRPCApiFacade;
+__block id mockLoginFacadeDelegate;
 __block LoginFields *loginFields;
 
 beforeEach(^{
-    mockOAuthService = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientService)];
-    mockXMLRPCApiService = [OCMockObject niceMockForProtocol:@protocol(WordPressXMLRPCApiService)];
-    mockLoginServiceDelegate = [OCMockObject  niceMockForProtocol:@protocol(LoginServiceDelegate)];
+    mockOAuthFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientFacade)];
+    mockXMLRPCApiFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressXMLRPCApiFacade)];
+    mockLoginFacadeDelegate = [OCMockObject  niceMockForProtocol:@protocol(LoginFacadeDelegate)];
     
-    loginService = [LoginService new];
-    loginService.wordpressComOAuthClientService = mockOAuthService;
-    loginService.wordpressXMLRPCApiService = mockXMLRPCApiService;
-    loginService.delegate = mockLoginServiceDelegate;
+    loginFacade = [LoginFacade new];
+    loginFacade.wordpressComOAuthClientFacade = mockOAuthFacade;
+    loginFacade.wordpressXMLRPCApiFacade = mockXMLRPCApiFacade;
+    loginFacade.delegate = mockLoginFacadeDelegate;
     
     loginFields = [LoginFields loginFieldsWithUsername:@"username" password:@"password" siteUrl:@"www.mysite.com" multifactorCode:@"123456" userIsDotCom:YES shouldDisplayMultiFactor:NO];
 });
@@ -37,66 +37,66 @@ describe(@"signInWithLoginFields", ^{
         });
         
         it(@"should display a message about 'Connecting to WordPress.com'", ^{
-            [[mockLoginServiceDelegate expect] displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
+            [[mockLoginFacadeDelegate expect] displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockLoginServiceDelegate verify];
+            [mockLoginFacadeDelegate verify];
         });
         
         it(@"should authenticate the user's credentials", ^{
-            [[mockOAuthService expect] authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY];
+            [[mockOAuthFacade expect] authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockOAuthService verify];
+            [mockOAuthFacade verify];
         });
         
-        it(@"should call LoginServiceDelegate's finishedLoginWithUsername:authToken:shouldDisplayMultifactor: when authentication was successful", ^{
+        it(@"should call LoginFacadeDelegate's finishedLoginWithUsername:authToken:shouldDisplayMultifactor: when authentication was successful", ^{
             // Intercept success callback and execute it when appropriate
             NSString *authToken = @"auth-token";
-            [OCMStub([mockOAuthService authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockOAuthFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained successStub)(NSString *);
                 [invocation getArgument:&successStub atIndex:5];
                 
                 successStub(authToken);
             }];
-            [[mockLoginServiceDelegate expect] finishedLoginWithUsername:loginFields.username authToken:authToken shouldDisplayMultifactor:loginFields.shouldDisplayMultifactor];
+            [[mockLoginFacadeDelegate expect] finishedLoginWithUsername:loginFields.username authToken:authToken shouldDisplayMultifactor:loginFields.shouldDisplayMultifactor];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockLoginServiceDelegate verify];
+            [mockLoginFacadeDelegate verify];
         });
         
         it(@"should call LoginServceDelegate's needsMultifactorCode when authentication requires it", ^{
             // Intercept success callback and execute it when appropriate
-            [OCMStub([mockOAuthService authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockOAuthFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained needsMultifactorStub)(void);
                 [invocation getArgument:&needsMultifactorStub atIndex:6];
                 
                 needsMultifactorStub();
             }];
-            [[mockLoginServiceDelegate expect] needsMultifactorCode];
+            [[mockLoginFacadeDelegate expect] needsMultifactorCode];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockLoginServiceDelegate verify];
+            [mockLoginFacadeDelegate verify];
         });
         
-        it(@"should call LoginServiceDelegate's displayRemoteError when there has been an error", ^{
+        it(@"should call LoginFacadeDelegate's displayRemoteError when there has been an error", ^{
             NSError *error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again starscream" }];
             // Intercept success callback and execute it when appropriate
-            [OCMStub([mockOAuthService authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockOAuthFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained failureStub)(NSError *);
                 [invocation getArgument:&failureStub atIndex:7];
                 
                 failureStub(error);
             }];
-            [[mockLoginServiceDelegate expect] displayRemoteError:error];
+            [[mockLoginFacadeDelegate expect] displayRemoteError:error];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockLoginServiceDelegate verify];
+            [mockLoginFacadeDelegate verify];
         });
     });
     
@@ -107,21 +107,21 @@ describe(@"signInWithLoginFields", ^{
         });
         
         it(@"should display a message about 'Authenticating'", ^{
-            [[mockLoginServiceDelegate expect] displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
+            [[mockLoginFacadeDelegate expect] displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
             
-            [loginService signInWithLoginFields:loginFields];
+            [loginFacade signInWithLoginFields:loginFields];
             
-            [mockLoginServiceDelegate verify];
+            [mockLoginFacadeDelegate verify];
         });
         
         context(@"the guessing of the xmlrpc url for the site", ^{
             
             it(@"should occur", ^{
-                [[mockXMLRPCApiService expect] guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY];
+                [[mockXMLRPCApiFacade expect] guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY];
                 
-                [loginService signInWithLoginFields:loginFields];
+                [loginFacade signInWithLoginFields:loginFields];
                 
-                [mockXMLRPCApiService verify];
+                [mockXMLRPCApiFacade verify];
             });
             
             context(@"when successful", ^{
@@ -131,7 +131,7 @@ describe(@"signInWithLoginFields", ^{
                 beforeEach(^{
                     xmlrpc = [NSURL URLWithString:@"http://www.selfhosted.com/xmlrpc.php"];
                     // Intercept success callback and execute it when appropriate
-                    [OCMStub([mockXMLRPCApiService guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockXMLRPCApiFacade guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained successStub)(NSURL *);
                         [invocation getArgument:&successStub atIndex:3];
                         
@@ -140,11 +140,11 @@ describe(@"signInWithLoginFields", ^{
                 });
                 
                 it(@"should result in attempting to retrieve the blog's options", ^{
-                    [[mockXMLRPCApiService expect] getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY];
+                    [[mockXMLRPCApiFacade expect] getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY];
                     
-                    [loginService signInWithLoginFields:loginFields];
+                    [loginFacade signInWithLoginFields:loginFields];
                     
-                    [mockXMLRPCApiService verify];
+                    [mockXMLRPCApiFacade verify];
                 });
                 
                 context(@"successfully retrieving the blog's options", ^{
@@ -155,7 +155,7 @@ describe(@"signInWithLoginFields", ^{
                         options = [NSMutableDictionary new];
                         
                         // Intercept success callback and execute it when appropriate
-                        [OCMStub([mockXMLRPCApiService getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                        [OCMStub([mockXMLRPCApiFacade getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                             void (^ __unsafe_unretained successStub)(NSDictionary *);
                             [invocation getArgument:&successStub atIndex:5];
                             
@@ -163,21 +163,21 @@ describe(@"signInWithLoginFields", ^{
                         }];
                     });
                     
-                    it(@"should indicate to the LoginServiceDelegate it's finished logging in with those credentials", ^{
-                        [[mockLoginServiceDelegate expect] finishedLoginWithUsername:loginFields.username password:loginFields.password xmlrpc:[xmlrpc absoluteString] options:options];
+                    it(@"should indicate to the LoginFacadeDelegate it's finished logging in with those credentials", ^{
+                        [[mockLoginFacadeDelegate expect] finishedLoginWithUsername:loginFields.username password:loginFields.password xmlrpc:[xmlrpc absoluteString] options:options];
                        
-                        [loginService signInWithLoginFields:loginFields];
+                        [loginFacade signInWithLoginFields:loginFields];
                         
-                        [mockLoginServiceDelegate verify];
+                        [mockLoginFacadeDelegate verify];
                     });
                     
                     it(@"should attempt to authenticate for WordPress.com when it detects the site is a WordPress.com site", ^{
                         options[@"wordpress.com"] = @YES;
-                        [[mockOAuthService expect] authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY];
+                        [[mockOAuthFacade expect] authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY];
                         
-                        [loginService signInWithLoginFields:loginFields];
+                        [loginFacade signInWithLoginFields:loginFields];
                        
-                        [mockOAuthService verify];
+                        [mockOAuthFacade verify];
                     });
                 });
                 
@@ -189,7 +189,7 @@ describe(@"signInWithLoginFields", ^{
                         error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again Starscream" }];
                         
                         // Intercept failure callback and execute it when appropriate
-                        [OCMStub([mockXMLRPCApiService getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                        [OCMStub([mockXMLRPCApiFacade getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                             void (^ __unsafe_unretained failureStub)(NSError *);
                             [invocation getArgument:&failureStub atIndex:6];
                             
@@ -198,11 +198,11 @@ describe(@"signInWithLoginFields", ^{
                     });
                     
                     it(@"should display an error", ^{
-                        [[mockLoginServiceDelegate expect] displayRemoteError:error];
+                        [[mockLoginFacadeDelegate expect] displayRemoteError:error];
                         
-                        [loginService signInWithLoginFields:loginFields];
+                        [loginFacade signInWithLoginFields:loginFields];
                         
-                        [mockLoginServiceDelegate verify];
+                        [mockLoginFacadeDelegate verify];
                     });
                 });
             });
@@ -215,7 +215,7 @@ describe(@"signInWithLoginFields", ^{
                     error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again Starscream" }];
                     
                     // Intercept failure callback and execute it when appropriate
-                    [OCMStub([mockXMLRPCApiService guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockXMLRPCApiFacade guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained failureStub)(NSError *);
                         [invocation getArgument:&failureStub atIndex:4];
                         
@@ -224,11 +224,11 @@ describe(@"signInWithLoginFields", ^{
                 });
                 
                 it(@"should display an error", ^{
-                    [[mockLoginServiceDelegate expect] displayRemoteError:error];
+                    [[mockLoginFacadeDelegate expect] displayRemoteError:error];
                     
-                    [loginService signInWithLoginFields:loginFields];
+                    [loginFacade signInWithLoginFields:loginFields];
                     
-                    [mockLoginServiceDelegate verify];
+                    [mockLoginFacadeDelegate verify];
                 });
             });
         });

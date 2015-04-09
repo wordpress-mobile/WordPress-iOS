@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 
 @class WPAccount;
-@protocol AccountCreationService
+@protocol AccountCreationFacade
 
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
                                                    authToken:(NSString *)authToken;
@@ -14,6 +14,6 @@
 
 @end
 
-@interface AccountCreationService : NSObject<AccountCreationService>
+@interface AccountCreationFacade : NSObject<AccountCreationFacade>
 
 @end

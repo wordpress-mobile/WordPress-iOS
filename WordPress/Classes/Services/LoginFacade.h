@@ -2,25 +2,25 @@
 
 
 @class LoginFields;
-@protocol WordPressComOAuthClientService;
-@protocol WordPressXMLRPCApiService;
-@protocol LoginServiceDelegate;
-@protocol LoginService
+@protocol WordPressComOAuthClientFacade;
+@protocol WordPressXMLRPCApiFacade;
+@protocol LoginFacadeDelegate;
+@protocol LoginFacade
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields;
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields;
 
-@property (nonatomic, weak) id<LoginServiceDelegate> delegate;
-@property (nonatomic, strong) id<WordPressComOAuthClientService> wordpressComOAuthClientService;
-@property (nonatomic, strong) id<WordPressXMLRPCApiService> wordpressXMLRPCApiService;
+@property (nonatomic, weak) id<LoginFacadeDelegate> delegate;
+@property (nonatomic, strong) id<WordPressComOAuthClientFacade> wordpressComOAuthClientFacade;
+@property (nonatomic, strong) id<WordPressXMLRPCApiFacade> wordpressXMLRPCApiFacade;
 
 @end
 
-@interface LoginService : NSObject <LoginService>
+@interface LoginFacade : NSObject <LoginFacade>
 
 @end
 
-@protocol LoginServiceDelegate
+@protocol LoginFacadeDelegate
 
 - (void)displayLoginMessage:(NSString *)message;
 - (void)needsMultifactorCode;

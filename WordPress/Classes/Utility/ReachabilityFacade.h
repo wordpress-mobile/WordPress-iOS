@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol ReachabilityService <NSObject>
+@protocol ReachabilityFacade <NSObject>
 
 - (BOOL)isInternetReachable;
 - (void)showAlertNoInternetConnection;
@@ -8,6 +8,6 @@
 
 @end
 
-@interface ReachabilityService : NSObject <ReachabilityService>
+@interface ReachabilityFacade : NSObject <ReachabilityFacade>
 
 @end

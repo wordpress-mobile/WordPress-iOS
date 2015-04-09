@@ -1,7 +1,7 @@
-#import "WordPressComOAuthClientService.h"
+#import "WordPressComOAuthClientFacade.h"
 #import "WordPressComOAuthClient.h"
 
-@implementation WordPressComOAuthClientService
+@implementation WordPressComOAuthClientFacade
 
 - (void)authenticateWithUsername:(NSString *)username
                         password:(NSString *)password

@@ -1,7 +1,7 @@
-#import "HelpshiftService.h"
+#import "HelpshiftFacade.h"
 #import "HelpshiftUtils.h"
 
-@implementation HelpshiftService
+@implementation HelpshiftFacade
 
 - (BOOL)isHelpshiftEnabled
 {

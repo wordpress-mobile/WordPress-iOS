@@ -1,9 +1,9 @@
-#import "OnePasswordService.h"
+#import "OnePasswordFacade.h"
 #import <1PasswordExtension/OnePasswordExtension.h>
 
-@implementation OnePasswordService
+@implementation OnePasswordFacade
 
-- (void)findLoginForURLString:(NSString *)loginUrl viewController:(UIViewController *)viewController completion:(OnePasswordServiceCallback)completion;
+- (void)findLoginForURLString:(NSString *)loginUrl viewController:(UIViewController *)viewController completion:(OnePasswordFacadeCallback)completion;
 {
     NSParameterAssert(viewController != nil);
     NSParameterAssert(completion != nil);

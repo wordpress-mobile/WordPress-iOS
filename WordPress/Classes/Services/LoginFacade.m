@@ -1,21 +1,21 @@
-#import "LoginService.h"
+#import "LoginFacade.h"
 #import "LoginFields.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
-#import "WordPressComOAuthClientService.h"
-#import "WordPressXMLRPCApiService.h"
+#import "WordPressComOAuthClientFacade.h"
+#import "WordPressXMLRPCApiFacade.h"
 
 
-@interface LoginService () {
-    id<LoginServiceDelegate> _delegate;
-    id<WordPressComOAuthClientService> _wordpressComOAuthClientService;
-    id<WordPressXMLRPCApiService> _wordpressXMLRPCApiService;
+@interface LoginFacade () {
+    id<LoginFacadeDelegate> _delegate;
+    id<WordPressComOAuthClientFacade> _wordpressComOAuthClientFacade;
+    id<WordPressXMLRPCApiFacade> _wordpressXMLRPCApiFacade;
 }
 
 @end
 
 
-@implementation LoginService
+@implementation LoginFacade
 
 - (instancetype)init
 {
@@ -28,37 +28,37 @@
 
 - (void)initializeServices
 {
-    _wordpressComOAuthClientService = [WordPressComOAuthClientService new];
-    _wordpressXMLRPCApiService = [WordPressXMLRPCApiService new];
+    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
+    _wordpressXMLRPCApiFacade = [WordPressXMLRPCApiFacade new];
 }
 
-- (id<LoginServiceDelegate>)delegate {
+- (id<LoginFacadeDelegate>)delegate {
     return _delegate;
 }
 
-- (void)setDelegate:(id<LoginServiceDelegate>)delegate
+- (void)setDelegate:(id<LoginFacadeDelegate>)delegate
 {
     _delegate = delegate;
 }
 
-- (id<WordPressComOAuthClientService>)wordpressComOAuthClientService
+- (id<WordPressComOAuthClientFacade>)wordpressComOAuthClientFacade
 {
-    return _wordpressComOAuthClientService;
+    return _wordpressComOAuthClientFacade;
 }
 
-- (void)setWordpressComOAuthClientService:(id<WordPressComOAuthClientService>)wordpressComOAuthClientService
+- (void)setWordpressComOAuthClientFacade:(id<WordPressComOAuthClientFacade>)wordpressComOAuthClientService
 {
-    _wordpressComOAuthClientService = wordpressComOAuthClientService;
+    _wordpressComOAuthClientFacade = wordpressComOAuthClientService;
 }
 
-- (id<WordPressXMLRPCApiService>)wordpressXMLRPCApiService
+- (id<WordPressXMLRPCApiFacade>)wordpressXMLRPCApiFacade
 {
-    return _wordpressXMLRPCApiService;
+    return _wordpressXMLRPCApiFacade;
 }
 
-- (void)setWordpressXMLRPCApiService:(id<WordPressXMLRPCApiService>)wordpressXMLRPCApiService
+- (void)setWordpressXMLRPCApiFacade:(id<WordPressXMLRPCApiFacade>)wordpressXMLRPCApiService
 {
-    _wordpressXMLRPCApiService = wordpressXMLRPCApiService;
+    _wordpressXMLRPCApiFacade = wordpressXMLRPCApiService;
 }
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields
@@ -74,7 +74,7 @@
 
 - (void)requestOneTimeCodeWithLoginFields:(LoginFields *)loginFields
 {
-    [self.wordpressComOAuthClientService requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
+    [self.wordpressComOAuthClientFacade requestOneTimeCodeWithUsername:loginFields.username password:loginFields.password success:^{
         [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
     } failure:^(NSError *error) {
         DDLogError(@"Failed to request one time code");
@@ -84,7 +84,7 @@
 - (void)signInToWordpressDotCom:(LoginFields *)loginFields
 {
     [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
-    [self.wordpressComOAuthClientService authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
+    [self.wordpressComOAuthClientFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
         [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken shouldDisplayMultifactor:loginFields.shouldDisplayMultifactor];
     } needsMultiFactor:^{
         [self.delegate needsMultifactorCode];
@@ -98,7 +98,7 @@
 - (void)signInToSelfHosted:(LoginFields *)loginFields
 {
     void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        [self.wordpressXMLRPCApiService getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
+        [self.wordpressXMLRPCApiFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
             if ([options objectForKey:@"wordpress.com"] != nil) {
                 [self signInToWordpressDotCom:loginFields];
             } else {
@@ -119,7 +119,7 @@
     [self.delegate displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
     
     NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteUrl];
-    [self.wordpressXMLRPCApiService guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
+    [self.wordpressXMLRPCApiFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 @end

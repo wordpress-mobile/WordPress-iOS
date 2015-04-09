@@ -1,16 +1,16 @@
-#import "WordPressXMLRPCApiService.h"
+#import "WordPressXMLRPCApiFacade.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <WordPressApi/WordPressXMLRPCApi.h>
 
 
-@interface WordPressXMLRPCApiService ()
+@interface WordPressXMLRPCApiFacade ()
 
 @property (nonatomic, strong) WordPressXMLRPCApi *xmlRPCApi;
 
 @end
 
 
-@implementation WordPressXMLRPCApiService
+@implementation WordPressXMLRPCApiFacade
 
 - (void)guessXMLRPCURLForSite:(NSString *)url
                       success:(void (^)(NSURL *xmlrpcURL))success

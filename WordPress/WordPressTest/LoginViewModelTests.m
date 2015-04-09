@@ -3,13 +3,13 @@
 #import <Expecta/Expecta.h>
 #import <OCMock/OCMock.h>
 #import "LoginViewModel.h"
-#import "ReachabilityService.h"
-#import "LoginService.h"
-#import "WordPressComOAuthClientService.h"
-#import "AccountCreationService.h"
-#import "BlogSyncService.h"
-#import "HelpshiftService.h"
-#import "OnePasswordService.h"
+#import "ReachabilityFacade.h"
+#import "LoginFacade.h"
+#import "WordPressComOAuthClientFacade.h"
+#import "AccountCreationFacade.h"
+#import "BlogSyncFacade.h"
+#import "HelpshiftFacade.h"
+#import "OnePasswordFacade.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "WPWalkthroughOverlayView.h"
 
@@ -17,36 +17,36 @@ SpecBegin(LoginViewModel)
 
 __block LoginViewModel *viewModel;
 __block id mockViewModelDelegate;
-__block id mockReachabilityService;
-__block id mockLoginService;
-__block id mockLoginServiceDelegate;
-__block id mockOAuthService;
-__block id mockAccountCreationService;
-__block id mockBlogSyncService;
-__block id mockHelpshiftService;
-__block id mockOnePasswordService;
+__block id mockReachabilityFacade;
+__block id mockLoginFacade;
+__block id mockLoginFacadeDelegate;
+__block id mockOAuthFacade;
+__block id mockAccountCreationFacade;
+__block id mockBlogSyncFacade;
+__block id mockHelpshiftFacade;
+__block id mockOnePasswordFacade;
 
 beforeEach(^{
     mockViewModelDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginViewModelDelegate)];
-    mockReachabilityService = [OCMockObject niceMockForProtocol:@protocol(ReachabilityService)];
-    mockLoginService = [OCMockObject niceMockForProtocol:@protocol(LoginService)];
-    mockLoginServiceDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginServiceDelegate)];
-    mockOAuthService = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientService)];
-    mockAccountCreationService = [OCMockObject niceMockForProtocol:@protocol(AccountCreationService)];
-    mockBlogSyncService = [OCMockObject niceMockForProtocol:@protocol(BlogSyncService)];
-    mockHelpshiftService = [OCMockObject niceMockForProtocol:@protocol(HelpshiftService)];
-    mockOnePasswordService = [OCMockObject niceMockForProtocol:@protocol(OnePasswordService)];
-    [OCMStub([mockLoginService wordpressComOAuthClientService]) andReturn:mockOAuthService];
-    [OCMStub([mockLoginService delegate]) andReturn:mockLoginServiceDelegate];
+    mockReachabilityFacade = [OCMockObject niceMockForProtocol:@protocol(ReachabilityFacade)];
+    mockLoginFacade = [OCMockObject niceMockForProtocol:@protocol(LoginFacade)];
+    mockLoginFacadeDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginFacadeDelegate)];
+    mockOAuthFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientFacade)];
+    mockAccountCreationFacade = [OCMockObject niceMockForProtocol:@protocol(AccountCreationFacade)];
+    mockBlogSyncFacade = [OCMockObject niceMockForProtocol:@protocol(BlogSyncFacade)];
+    mockHelpshiftFacade = [OCMockObject niceMockForProtocol:@protocol(HelpshiftFacade)];
+    mockOnePasswordFacade = [OCMockObject niceMockForProtocol:@protocol(OnePasswordFacade)];
+    [OCMStub([mockLoginFacade wordpressComOAuthClientFacade]) andReturn:mockOAuthFacade];
+    [OCMStub([mockLoginFacade delegate]) andReturn:mockLoginFacadeDelegate];
     
     viewModel = [LoginViewModel new];
-    viewModel.loginService = mockLoginService;
-    viewModel.reachabilityService = mockReachabilityService;
+    viewModel.loginFacade = mockLoginFacade;
+    viewModel.reachabilityFacade = mockReachabilityFacade;
     viewModel.delegate = mockViewModelDelegate;
-    viewModel.accountCreationService = mockAccountCreationService;
-    viewModel.blogSyncService = mockBlogSyncService;
-    viewModel.helpshiftService = mockHelpshiftService;
-    viewModel.onePasswordService = mockOnePasswordService;
+    viewModel.accountCreationFacade = mockAccountCreationFacade;
+    viewModel.blogSyncFacade = mockBlogSyncFacade;
+    viewModel.helpshiftFacade = mockHelpshiftFacade;
+    viewModel.onePasswordFacade = mockOnePasswordFacade;
 });
 
 describe(@"authenticating", ^{
@@ -629,7 +629,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
     __block NSString *password;
     
     void (^forceOnePasswordExtensionCallbackToExecute)() = ^{
-        [OCMStub([mockOnePasswordService findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+        [OCMStub([mockOnePasswordFacade findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
             void (^ __unsafe_unretained callback)(NSString *, NSString *, NSError *);
             [invocation getArgument:&callback atIndex:4];
             
@@ -767,11 +767,11 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
         
         it(@"should use OnePassword to find the users credentials", ^{
-            [[mockOnePasswordService expect] findLoginForURLString:viewModel.siteUrl viewController:mockViewController completion:OCMOCK_ANY];
+            [[mockOnePasswordFacade expect] findLoginForURLString:viewModel.siteUrl viewController:mockViewController completion:OCMOCK_ANY];
             
             [viewModel onePasswordButtonActionForViewController:mockViewController];
             
-            [mockOnePasswordService verify];
+            [mockOnePasswordFacade verify];
         });
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
@@ -786,11 +786,11 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
         
         it(@"should use OnePassword to find the users credentials", ^{
-            [[mockOnePasswordService expect] findLoginForURLString:@"wordpress.com" viewController:mockViewController completion:OCMOCK_ANY];
+            [[mockOnePasswordFacade expect] findLoginForURLString:@"wordpress.com" viewController:mockViewController completion:OCMOCK_ANY];
             
             [viewModel onePasswordButtonActionForViewController:mockViewController];
             
-            [mockOnePasswordService verify];
+            [mockOnePasswordFacade verify];
         });
         
         itShouldBehaveLike(sharedExamplesForABlankResponseOrAnError, nil);
@@ -903,7 +903,7 @@ describe(@"displayRemoteError", ^{
         context(@"when Helpshift is not enabled", ^{
             
             beforeEach(^{
-                [[[mockHelpshiftService stub] andReturnValue:@(NO)] isHelpshiftEnabled];
+                [[[mockHelpshiftFacade stub] andReturnValue:@(NO)] isHelpshiftEnabled];
             });
             
             it(@"should display an overlay with a generic error message with the default button labels", ^{
@@ -930,7 +930,7 @@ describe(@"displayRemoteError", ^{
         context(@"when Helpshift is enabled", ^{
             
             beforeEach(^{
-                [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+                [[[mockHelpshiftFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
             });
             
             it(@"should display an overlay with a 'Contact Us' button", ^{
@@ -967,7 +967,7 @@ describe(@"displayRemoteError", ^{
         });
         
         it(@"should display an overlay with a 'Need Help?'", ^{
-            [[[mockHelpshiftService stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+            [[[mockHelpshiftFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
             [[mockViewModelDelegate expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Need Help?", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
             
             [viewModel displayRemoteError:error];
@@ -1182,28 +1182,28 @@ describe(@"signInButtonAction", ^{
     context(@"the checking of the user's internet connection", ^{
         
         it(@"should not show an error message about the internet connection if it's down", ^{
-            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
-            [[mockReachabilityService reject] showAlertNoInternetConnection];
+            [OCMStub([mockReachabilityFacade isInternetReachable]) andReturnValue:@(YES)];
+            [[mockReachabilityFacade reject] showAlertNoInternetConnection];
             
             [viewModel signInButtonAction];
             
-            [mockReachabilityService verify];
+            [mockReachabilityFacade verify];
         });
         
         it(@"should show an error message about the internet connection if it's down", ^{
-            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(NO)];
-            [[mockReachabilityService expect] showAlertNoInternetConnection];
+            [OCMStub([mockReachabilityFacade isInternetReachable]) andReturnValue:@(NO)];
+            [[mockReachabilityFacade expect] showAlertNoInternetConnection];
             
             [viewModel signInButtonAction];
             
-            [mockReachabilityService verify];
+            [mockReachabilityFacade verify];
         });
     });
     
     context(@"user field validation", ^{
         
         beforeEach(^{
-            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            [OCMStub([mockReachabilityFacade isInternetReachable]) andReturnValue:@(YES)];
             
             viewModel.username = @"username";
             viewModel.password = @"password";
@@ -1289,7 +1289,7 @@ describe(@"signInButtonAction", ^{
     context(@"verification of non reserved username", ^{
         
         beforeEach(^{
-            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            [OCMStub([mockReachabilityFacade isInternetReachable]) andReturnValue:@(YES)];
             
             viewModel.username = @"username";
             viewModel.password = @"password";
@@ -1366,7 +1366,7 @@ describe(@"signInButtonAction", ^{
     context(@"when all fields are valid", ^{
         
         beforeEach(^{
-            [OCMStub([mockReachabilityService isInternetReachable]) andReturnValue:@(YES)];
+            [OCMStub([mockReachabilityFacade isInternetReachable]) andReturnValue:@(YES)];
             
             viewModel.username = @"username";
             viewModel.password = @"password";
@@ -1380,11 +1380,11 @@ describe(@"signInButtonAction", ^{
             });
             
             it(@"should login", ^{
-                [[mockLoginService expect] signInWithLoginFields:OCMOCK_ANY];
+                [[mockLoginFacade expect] signInWithLoginFields:OCMOCK_ANY];
                 
                 [viewModel signInButtonAction];
                 
-                [mockLoginService verify];
+                [mockLoginFacade verify];
             });
         });
         
@@ -1394,11 +1394,11 @@ describe(@"signInButtonAction", ^{
             });
             
             it(@"should login", ^{
-                [[mockLoginService expect] signInWithLoginFields:OCMOCK_ANY];
+                [[mockLoginFacade expect] signInWithLoginFields:OCMOCK_ANY];
                 
                 [viewModel signInButtonAction];
                 
-                [mockLoginService verify];
+                [mockLoginFacade verify];
             });
         });
     });
@@ -1479,7 +1479,7 @@ describe(@"forgotPasswordButtonAction", ^{
     });
 });
 
-describe(@"LoginServiceDelegate methods", ^{
+describe(@"LoginFacadeDelegate methods", ^{
     
     context(@"displayLoginMessage", ^{
         
@@ -1540,7 +1540,7 @@ describe(@"LoginServiceDelegate methods", ^{
         });
         
         it(@"should create a WPAccount for a .com site", ^{
-            [[mockAccountCreationService expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+            [[mockAccountCreationFacade expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
             
             [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
             
@@ -1550,7 +1550,7 @@ describe(@"LoginServiceDelegate methods", ^{
         context(@"the syncing of the newly added blogs", ^{
             
             it(@"should occur", ^{
-                [[mockBlogSyncService expect] syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
+                [[mockBlogSyncFacade expect] syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                 
                 [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                 
@@ -1561,7 +1561,7 @@ describe(@"LoginServiceDelegate methods", ^{
                 
                 beforeEach(^{
                     // Retrieve success block and execute it when appropriate
-                    [OCMStub([mockBlogSyncService syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockBlogSyncFacade syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained successStub)(void);
                         [invocation getArgument:&successStub atIndex:3];
                         
@@ -1586,11 +1586,11 @@ describe(@"LoginServiceDelegate methods", ^{
                 });
                 
                 it(@"should update the email and default blog for the newly created account", ^{
-                    [[mockAccountCreationService expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
+                    [[mockAccountCreationFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
                     
-                    [mockAccountCreationService verify];
+                    [mockAccountCreationFacade verify];
                 });
             });
             
@@ -1600,7 +1600,7 @@ describe(@"LoginServiceDelegate methods", ^{
                 
                 beforeEach(^{
                     // Retrieve failure block and execute it when appropriate
-                    [OCMStub([mockBlogSyncService syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+                    [OCMStub([mockBlogSyncFacade syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                         void (^ __unsafe_unretained failureStub)(NSError *);
                         [invocation getArgument:&failureStub atIndex:4];
                         
@@ -1651,26 +1651,26 @@ describe(@"LoginServiceDelegate methods", ^{
         });
         
         it(@"should create a WPAccount for a self hosted site", ^{
-            [[mockAccountCreationService expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+            [[mockAccountCreationFacade expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
-            [mockAccountCreationService verify];
+            [mockAccountCreationFacade verify];
         });
         
         it(@"should sync the newly added site", ^{
-            [[mockBlogSyncService expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY];
+            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
-            [mockBlogSyncService verify];
+            [mockBlogSyncFacade verify];
         });
         
-        it(@"should show jetpack authentication when the blog syncing service tells it to", ^{
+        it(@"should show jetpack authentication when the blog syncing facade tells it to", ^{
             [[mockViewModelDelegate expect] showJetpackAuthentication:OCMOCK_ANY];
             
             // Retrieve jetpack block and execute it when appropriate
-            [OCMStub([mockBlogSyncService syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained jetpackStub)(void);
                 [invocation getArgument:&jetpackStub atIndex:7];
                 
@@ -1686,7 +1686,7 @@ describe(@"LoginServiceDelegate methods", ^{
             [[mockViewModelDelegate expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
-            [OCMStub([mockBlogSyncService syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
                 [invocation getArgument:&finishedSyncStub atIndex:8];
                 
@@ -1778,12 +1778,12 @@ describe(@"displayMultifactorTextField", ^{
 
 describe(@"requestOneTimeCode", ^{
     
-    it(@"should pass on the request to the oauth client service", ^{
-        [[mockLoginService expect] requestOneTimeCodeWithLoginFields:OCMOCK_ANY];
+    it(@"should pass on the request to the oauth client facade", ^{
+        [[mockLoginFacade expect] requestOneTimeCodeWithLoginFields:OCMOCK_ANY];
         
         [viewModel requestOneTimeCode];
         
-        [mockLoginService verify];
+        [mockLoginFacade verify];
     });
 });
 

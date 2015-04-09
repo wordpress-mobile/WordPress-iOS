@@ -3,15 +3,15 @@
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import <WPXMLRPC/WPXMLRPC.h>
 
-#import "AccountCreationService.h"
-#import "BlogSyncService.h"
+#import "AccountCreationFacade.h"
+#import "BlogSyncFacade.h"
 #import "Constants.h"
-#import "HelpshiftService.h"
+#import "HelpshiftFacade.h"
 #import "LoginFields.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
-#import "OnePasswordService.h"
-#import "ReachabilityService.h"
+#import "OnePasswordFacade.h"
+#import "ReachabilityFacade.h"
 #import "WPWalkthroughOverlayView.h"
 
 @implementation LoginViewModel
@@ -25,22 +25,22 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 - (instancetype)init
 {
     if (self = [super init]) {
-        [self initializeServices];
+        [self initializeFacades];
         [self setup];
     }
     return self;
 }
 
-- (void)initializeServices
+- (void)initializeFacades
 {
-    LoginService *loginService = [LoginService new];
-    loginService.delegate = self;
-    _loginService = loginService;
-    _reachabilityService = [ReachabilityService new];
-    _accountCreationService = [AccountCreationService new];
-    _blogSyncService = [BlogSyncService new];
-    _helpshiftService = [HelpshiftService new];
-    _onePasswordService = [OnePasswordService new];
+    LoginFacade *loginFacade = [LoginFacade new];
+    loginFacade.delegate = self;
+    _loginFacade = loginFacade;
+    _reachabilityFacade = [ReachabilityFacade new];
+    _accountCreationFacade = [AccountCreationFacade new];
+    _blogSyncFacade = [BlogSyncFacade new];
+    _helpshiftFacade = [HelpshiftFacade new];
+    _onePasswordFacade = [OnePasswordFacade new];
 }
 
 - (void)setup
@@ -68,8 +68,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)signInButtonAction
 {
-    if (![self.reachabilityService isInternetReachable]) {
-        [self.reachabilityService showAlertNoInternetConnection];
+    if (![self.reachabilityFacade isInternetReachable]) {
+        [self.reachabilityFacade showAlertNoInternetConnection];
         return;
     }
     
@@ -86,7 +86,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         return;
     }
    
-    [self.loginService signInWithLoginFields:loginFields];
+    [self.loginFacade signInWithLoginFields:loginFields];
 }
 
 - (void)onePasswordButtonActionForViewController:(UIViewController *)viewController
@@ -100,7 +100,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
  
     NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrl;
     
-    [self.onePasswordService findLoginForURLString:loginURL viewController:viewController completion:^(NSString *username, NSString *password, NSError *error) {
+    [self.onePasswordFacade findLoginForURLString:loginURL viewController:viewController completion:^(NSString *username, NSString *password, NSError *error) {
         BOOL blankUsernameOrPassword = (username.length == 0) || (password.length == 0);
         if (blankUsernameOrPassword || (error != nil)) {
             if (error != nil) {
@@ -182,12 +182,12 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (BOOL)isOnePasswordEnabled
 {
-    return [self.onePasswordService isOnePasswordEnabled];
+    return [self.onePasswordFacade isOnePasswordEnabled];
 }
 
 - (void)requestOneTimeCode
 {
-    [self.loginService requestOneTimeCodeWithLoginFields:[self loginFields]];
+    [self.loginFacade requestOneTimeCodeWithLoginFields:[self loginFields]];
 }
 
 - (BOOL)areFieldsValid:(LoginFields *)loginFields
@@ -410,7 +410,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self.delegate dismissLoginView];
 }
 
-#pragma mark - LoginServiceDelegate Related Methods
+#pragma mark - LoginFacadeDelegate Related Methods
 
 - (void)displayLoginMessage:(NSString *)message
 {
@@ -431,7 +431,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
-        if ([self.helpshiftService isHelpshiftEnabled]) {
+        if ([self.helpshiftFacade isHelpshiftEnabled]) {
             [self displayGenericErrorMessageWithHelpshiftButton:message];
         } else {
             [self displayGenericErrorMessage:message];
@@ -474,8 +474,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
-    WPAccount *account = [self.accountCreationService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-    [self.blogSyncService syncBlogsForAccount:account success:^{
+    WPAccount *account = [self.accountCreationFacade createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
+    [self.blogSyncFacade syncBlogsForAccount:account success:^{
         // Dismiss the UI
         [self dismissLoginMessage];
         [self finishedLogin];
@@ -490,7 +490,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         [WPAnalytics refreshMetadata];
         
         // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountCreationService updateEmailAndDefaultBlogForWordPressComAccount:account];
+        [self.accountCreationFacade updateEmailAndDefaultBlogForWordPressComAccount:account];
     } failure:^(NSError *error) {
         [self dismissLoginMessage];
         [self displayRemoteError:error];
@@ -503,8 +503,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
                                             xmlrpc:(NSString *)xmlrpc
                                            options:(NSDictionary *)options
 {
-    WPAccount *account = [self.accountCreationService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    [self.blogSyncService syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
+    WPAccount *account = [self.accountCreationFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
         [self.delegate dismissLoginMessage];
         [self.delegate showJetpackAuthentication:blogId];
     } finishedSync:^{

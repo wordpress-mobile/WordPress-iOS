@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol WordPressComOAuthClientService
+@protocol WordPressComOAuthClientFacade
 
 
 - (void)authenticateWithUsername:(NSString *)username
@@ -17,6 +17,6 @@
 
 @end
 
-@interface WordPressComOAuthClientService : NSObject <WordPressComOAuthClientService>
+@interface WordPressComOAuthClientFacade : NSObject <WordPressComOAuthClientFacade>
 
 @end

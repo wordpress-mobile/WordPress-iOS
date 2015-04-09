@@ -1,23 +1,23 @@
 #import <Foundation/Foundation.h>
-#import "LoginService.h"
+#import "LoginFacade.h"
 
-@protocol AccountCreationService;
-@protocol BlogSyncService;
-@protocol HelpshiftService;
-@protocol LoginService;
+@protocol AccountCreationFacade;
+@protocol BlogSyncFacade;
+@protocol HelpshiftFacade;
+@protocol LoginFacade;
 @protocol LoginViewModelDelegate;
-@protocol ReachabilityService;
-@protocol OnePasswordService;
+@protocol ReachabilityFacade;
+@protocol OnePasswordFacade;
 @class RACSignal;
-@interface LoginViewModel : NSObject <LoginServiceDelegate>
+@interface LoginViewModel : NSObject <LoginFacadeDelegate>
 
 // Services
-@property (nonatomic, strong) id<ReachabilityService> reachabilityService;
-@property (nonatomic, strong) id<LoginService> loginService;
-@property (nonatomic, strong) id<AccountCreationService> accountCreationService;
-@property (nonatomic, strong) id<BlogSyncService> blogSyncService;
-@property (nonatomic, strong) id<HelpshiftService> helpshiftService;
-@property (nonatomic, strong) id<OnePasswordService> onePasswordService;
+@property (nonatomic, strong) id<ReachabilityFacade> reachabilityFacade;
+@property (nonatomic, strong) id<LoginFacade> loginFacade;
+@property (nonatomic, strong) id<AccountCreationFacade> accountCreationFacade;
+@property (nonatomic, strong) id<BlogSyncFacade> blogSyncFacade;
+@property (nonatomic, strong) id<HelpshiftFacade> helpshiftFacade;
+@property (nonatomic, strong) id<OnePasswordFacade> onePasswordFacade;
 
 @property (nonatomic, assign) BOOL authenticating;
 @property (nonatomic, assign) BOOL shouldDisplayMultifactor;
@@ -88,7 +88,7 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)openURLInSafari:(NSURL *)url;
 - (void)displayOnePasswordEmptySiteAlert;
 
-// Ones we forward from LoginService
+// Ones we forward from LoginFacade
 - (void)displayLoginMessage:(NSString *)message;
 - (void)dismissLoginMessage;
 - (void)dismissLoginView;

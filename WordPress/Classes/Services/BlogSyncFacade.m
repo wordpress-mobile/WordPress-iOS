@@ -1,4 +1,4 @@
-#import "BlogSyncService.h"
+#import "BlogSyncFacade.h"
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "Blog.h"
@@ -6,7 +6,7 @@
 
 #import <NSString+XMLExtensions.h>
 
-@implementation BlogSyncService
+@implementation BlogSyncFacade
 
 - (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {

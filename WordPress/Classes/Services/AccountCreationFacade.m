@@ -1,9 +1,9 @@
-#import "AccountCreationService.h"
+#import "AccountCreationFacade.h"
 #import "AccountService.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 
-@implementation AccountCreationService
+@implementation AccountCreationFacade
 
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
                                                    authToken:(NSString *)authToken

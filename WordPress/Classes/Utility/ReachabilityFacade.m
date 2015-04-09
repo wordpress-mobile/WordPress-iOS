@@ -1,7 +1,7 @@
-#import "ReachabilityService.h"
+#import "ReachabilityFacade.h"
 #import "ReachabilityUtils.h"
 
-@implementation ReachabilityService
+@implementation ReachabilityFacade
 
 - (BOOL)isInternetReachable
 {
