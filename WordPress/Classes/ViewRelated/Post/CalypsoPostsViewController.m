@@ -43,10 +43,10 @@ static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const CGFloat PostsSearchBarWidth = 280.0;
+static const CGFloat PostsSearchBariPadWidth = 210.0;
 static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 static const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
-static const CGFloat SearchBarAuthorFilterSpacer = 16.0;
 
 typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     PostListStatusFilterPublished,
@@ -382,19 +382,19 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)configureSearchBarForFilterView
 {
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide darkGrey]]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide postListSearchBarTextColor]]];
     [[UIButton appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
     UISearchBar *searchBar = self.searchController.searchBar;
+    searchBar.barStyle = UIBarStyleDefault;
     searchBar.barTintColor = [WPStyleGuide lightGrey];
     searchBar.showsCancelButton = NO;
-    searchBar.barStyle = UIBarStyleDefault;
 
-    [self.authorsFilterView addSubview:searchBar];
+    [self.authorsFilterView insertSubview:searchBar atIndex:0];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar, _authorsFilter);
+    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);;
     NSDictionary *metrics = @{
                               @"searchBarWidth":@(PostsSearchBarWidth),
-                              @"searchBarSpacer":@(SearchBarAuthorFilterSpacer)
+                              @"searchBariPadWidth":@(PostsSearchBariPadWidth)
                               };
     [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
                                                                        attribute:NSLayoutAttributeCenterY
@@ -404,7 +404,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
                                                                       multiplier:1.0
                                                                         constant:0.0]];
     if (self.blog.isMultiAuthor) {
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[_authorsFilter]-(searchBarSpacer)-[searchBar]-|"
+        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBariPadWidth)]-|"
                                                                                        options:0
                                                                                        metrics:metrics
                                                                                          views:views]];

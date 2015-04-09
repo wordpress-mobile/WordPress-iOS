@@ -13,6 +13,12 @@
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
 }
 
++ (UIColor *)postListSearchBarTextColor
+{
+    return [UIDevice isPad] ? [UIColor colorWithRed:142.0/255.0 green:142.0/255.0 blue:147.0/255.0 alpha:1.0] : [UIColor whiteColor];
+}
+
+
 #pragma mark - Card View Styles
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell

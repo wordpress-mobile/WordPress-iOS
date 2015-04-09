@@ -3,6 +3,8 @@
 
 @interface WPStyleGuide (Posts)
 
++ (UIColor *)postListSearchBarTextColor;
+
 + (void)applyPostAuthorFilterStyle:(UISegmentedControl *)segmentControl;
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell;
