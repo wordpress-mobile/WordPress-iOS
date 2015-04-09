@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
-extern NSString * const kWPNewPostURLParamContentKey;
-extern NSString * const kWPNewPostURLParamTagsKey;
+extern NSString * const WPNewPostURLParamContentKey;
+extern NSString * const WPNewPostURLParamTagsKey;
 
 typedef NS_ENUM(NSUInteger, WPTabType) {
     WPTabMySites,
@@ -38,5 +38,6 @@ typedef NS_ENUM(NSUInteger, WPTabType) {
 - (void)showPostTabWithOptions:(NSDictionary *)options;
 - (void)switchTabToPostsListForPost:(AbstractPost *)post;
 - (void)showNotificationsTabForNoteWithID:(NSString *)notificationID;
+- (void)updateNotificationBadgeVisibility;
 
 @end

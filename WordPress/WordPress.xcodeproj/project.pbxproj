@@ -81,6 +81,8 @@
 		595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 595B02261A6C504400415A30 /* WPWhatsNewView.xib */; };
 		5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */; };
 		598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */; };
+		5993E7291AC5D65600D31D2B /* WPAppFilesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */; };
+		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
 		5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */; };
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
@@ -651,6 +653,10 @@
 		5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgentTests.m; sourceTree = "<group>"; };
 		598351AC1A704E7A00B6DD4F /* WPWhatsNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNew.h; path = WhatsNew/WPWhatsNew.h; sourceTree = "<group>"; };
 		598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNew.m; path = WhatsNew/WPWhatsNew.m; sourceTree = "<group>"; };
+		5993E7271AC5D65600D31D2B /* WPAppFilesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAppFilesManager.h; sourceTree = "<group>"; };
+		5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAppFilesManager.m; sourceTree = "<group>"; };
+		59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLookbackPresenter.h; sourceTree = "<group>"; };
+		59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLookbackPresenter.m; sourceTree = "<group>"; };
 		59DD94321AC479ED0032DD6B /* WPLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLogger.h; sourceTree = "<group>"; };
 		59DD94331AC479ED0032DD6B /* WPLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLogger.m; sourceTree = "<group>"; };
 		5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
@@ -1785,6 +1791,15 @@
 			name = WhatsNew;
 			sourceTree = "<group>";
 		};
+		5993E7261AC5D62100D31D2B /* Files */ = {
+			isa = PBXGroup;
+			children = (
+				5993E7271AC5D65600D31D2B /* WPAppFilesManager.h */,
+				5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */,
+			);
+			path = Files;
+			sourceTree = "<group>";
+		};
 		59DD94311AC479DC0032DD6B /* Logging */ = {
 			isa = PBXGroup;
 			children = (
@@ -2229,10 +2244,11 @@
 		8584FDB4192437160019C02E /* Utility */ = {
 			isa = PBXGroup;
 			children = (
-				852416CC1A12EAF70030700C /* Ratings */,
 				85A1B6721742E7DB00BA5E35 /* Analytics */,
+				5993E7261AC5D62100D31D2B /* Files */,
 				59DD94311AC479DC0032DD6B /* Logging */,
 				E159D1011309AAF200F498E2 /* Migrations */,
+				852416CC1A12EAF70030700C /* Ratings */,
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
 				93EF094B19ED4F1100C89770 /* ContextManager-Internals.h */,
@@ -2267,6 +2283,8 @@
 				5926E1E21AC4468300964783 /* WPCrashlytics.m */,
 				E114D798153D85A800984182 /* WPError.h */,
 				E114D799153D85A800984182 /* WPError.m */,
+				59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */,
+				59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */,
 				5DA3EE0E192508F700294E0B /* WPImageOptimizer.h */,
 				5DA3EE0F192508F700294E0B /* WPImageOptimizer.m */,
 				5DA3EE10192508F700294E0B /* WPImageOptimizer+Private.h */,
@@ -3688,6 +3706,7 @@
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
+				5993E7291AC5D65600D31D2B /* WPAppFilesManager.m in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
@@ -3782,6 +3801,7 @@
 				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */,
+				59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */,
 				319D6E7E19E447C80013871C /* SuggestionService.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3979,7 +3999,7 @@
 					"-l\"z\"",
 				);
 				PRODUCT_NAME = WordPress;
-				PROVISIONING_PROFILE = "56ae6a33-0068-453a-ad6d-abfdd50b86ff";
+				PROVISIONING_PROFILE = "094101ad-44b6-4b37-806f-849562fb8425";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Classes/System/WordPress-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -4265,7 +4285,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "343e00f7-4f3c-4cb5-a319-d8ccc532197e";
+				PROVISIONING_PROFILE = "ddfaaebf-2573-4a5a-b455-f6ba1aabd978";
 				SKIP_INSTALL = YES;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTodayWidget/WordPressTodayWidget-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
