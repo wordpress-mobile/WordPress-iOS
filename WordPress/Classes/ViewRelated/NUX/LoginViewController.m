@@ -850,7 +850,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
-#pragma mark - LoginViewModelDelegate
+#pragma mark - LoginViewModelPresenter
 
 - (void)showActivityIndicator:(BOOL)show
 {
