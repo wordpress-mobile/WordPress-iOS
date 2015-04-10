@@ -1595,6 +1595,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
         if (progress.isCancelled){
             [self.editorView removeImage:key];
+            [self.editorView removeVideo:key];
             [keys addObject:key];
         }
     }];
@@ -1618,6 +1619,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
         if (progress.totalUnitCount == 0){
             [self.editorView removeImage:key];
+            [self.editorView removeVideo:key];
             [keys addObject:key];
         }
     }];
@@ -1880,8 +1882,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             if (buttonIndex == actionSheet.destructiveButtonIndex){
                 [self stopTrackingProgressOfMediaWithId:self.selectedMediaID];
                 [self.editorView removeImage:self.selectedMediaID];
+                [self.editorView removeVideo:self.selectedMediaID];
             } else if (buttonIndex == 1) {
                 [self.editorView unmarkImageFailedUpload:self.selectedMediaID];
+                [self.editorView unmarkVideoFailedUpload:self.selectedMediaID];
                 [self retryUploadOfMediaWithId:self.selectedMediaID];
             }
             self.selectedMediaID = nil;
