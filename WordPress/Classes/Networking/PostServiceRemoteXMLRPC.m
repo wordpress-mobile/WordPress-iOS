@@ -53,7 +53,7 @@
                options:(NSDictionary *)options
                success:(void (^)(NSArray *posts))success
                failure:(void (^)(NSError *error))failure {
-    NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate,PostStatusPublish, PostStatusScheduled, PostStatusTrash];
+    NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate, PostStatusPublish, PostStatusScheduled, PostStatusTrash];
     NSString *postStatus = [statuses componentsJoinedByString:@","];
     NSDictionary *extraParameters = @{
                                       @"number": @40,
