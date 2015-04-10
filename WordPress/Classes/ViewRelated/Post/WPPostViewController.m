@@ -51,7 +51,7 @@ NSString* const WPEditorNavigationRestorationID = @"WPEditorNavigationRestoratio
 static NSString* const WPPostViewControllerEditModeRestorationKey = @"WPPostViewControllerEditModeRestorationKey";
 static NSString* const WPPostViewControllerOwnsPostRestorationKey = @"WPPostViewControllerOwnsPostRestorationKey";
 static NSString* const WPPostViewControllerPostRestorationKey = @"WPPostViewControllerPostRestorationKey";
-static NSString* const WPProgressImageId = @"WPProgressImageId";
+static NSString* const WPProgressMediaID = @"WPProgressMediaID";
 static NSString* const WPProgressMedia = @"WPProgressMedia";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
@@ -1562,8 +1562,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     self.mediaProgressView.progress = MIN(fractionOfUploadsCompleted ,self.mediaGlobalProgress.fractionCompleted);
     for(NSProgress * progress in [self.mediaInProgress allValues]){
         if (progress.totalUnitCount != 0 && !progress.cancelled){
-            [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressImageId]];
-            [self.editorView setProgress:progress.fractionCompleted onVideo:progress.userInfo[WPProgressImageId]];
+            [self.editorView setProgress:progress.fractionCompleted onImage:progress.userInfo[WPProgressMediaID]];
+            [self.editorView setProgress:progress.fractionCompleted onVideo:progress.userInfo[WPProgressMediaID]];
         }
     }
 }
@@ -1719,7 +1719,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             }
         }
     }];
-    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressImageId];
+    [uploadProgress setUserInfoObject:mediaUniqueId forKey:WPProgressMediaID];
     [uploadProgress setUserInfoObject:media forKey:WPProgressMedia];
     [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
     [self.mediaGlobalProgress resignCurrent];
