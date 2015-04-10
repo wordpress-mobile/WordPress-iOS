@@ -10,6 +10,7 @@
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
 #import "NavBarTitleDropdownButton.h"
+#import "PostListFilter.h"
 #import "PostListViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
@@ -48,13 +49,6 @@ static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 static const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
-typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
-    PostListStatusFilterPublished,
-    PostListStatusFilterDraft,
-    PostListStatusFilterScheduled,
-    PostListStatusFilterTrashed
-};
-
 @interface CalypsoPostsViewController () <WPTableViewHandlerDelegate,
                                             WPContentSyncHelperDelegate,
                                             UIViewControllerRestoration,
@@ -84,6 +78,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 @property (nonatomic, weak) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
+@property (nonatomic, strong) NSArray *postListFilters;
 
 @end
 
@@ -141,6 +136,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     self.refreshControl = self.postListViewController.refreshControl;
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
 
+    [self configureFilters];
     [self configureCellsForLayout];
     [self configureTableView];
     [self configureTableViewHandler];
@@ -178,6 +174,11 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 
 #pragma mark - Configuration
+
+- (void)configureFilters
+{
+    self.postListFilters = [PostListFilter newPostListFilters];
+}
 
 - (void)configureNavbar
 {
@@ -277,8 +278,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (NSString *)noResultsTitleText
 {
+    PostListFilter *filter = [self currentPostListFilter];
     NSString *title;
-    switch ([self postListStatusFilter]) {
+    switch (filter.filterType) {
         case PostListStatusFilterDraft:
             title = NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts");
             break;
@@ -297,7 +299,8 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (NSString *)noResultsMessageText {
     NSString *message;
-    switch ([self postListStatusFilter]) {
+    PostListFilter *filter = [self currentPostListFilter];
+    switch (filter.filterType) {
         case PostListStatusFilterDraft:
             message = NSLocalizedString(@"Would you like to create one?", @"Displayed when the user views drafts in the posts list and there are no posts");
             break;
@@ -321,7 +324,8 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 - (NSString *)noResultsButtonText
 {
     NSString *title;
-    switch ([self postListStatusFilter]) {
+    PostListFilter *filter = [self currentPostListFilter];
+    switch (filter.filterType) {
         case PostListStatusFilterScheduled:
             title = NSLocalizedString(@"Edit Drafts", @"Button title, encourages users to schedule a draft post to publish.");
             break;
@@ -484,8 +488,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    if ([self postListStatusFilter] == PostListStatusFilterScheduled) {
-        [self setPostListStatusFilter:PostListStatusFilterDraft];
+    if ([self currentPostListFilter].filterType == PostListStatusFilterScheduled) {
+        NSInteger index = [self indexForFilterWithType:PostListStatusFilterDraft];
+        [self setCurrentFilterIndex:index];
         return;
     }
     [self createPost];
@@ -529,9 +534,9 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
-- (BOOL)hasMoreContent
+- (void)setHasMore:(BOOL)hasMore forFilter:(PostListFilter *)filter
 {
-    return [self.blog.hasOlderPosts boolValue];
+    filter.hasMore = hasMore;
 }
 
 
@@ -539,11 +544,14 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    PostListFilter *filter = [self currentPostListFilter];
+    NSArray *postStatus = filter.statuses;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService syncPostsOfType:PostServiceTypePost forBlog:self.blog success:^{
+    [postService syncPostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
         if  (success) {
-            success([weakSelf hasMoreContent]);
+            [weakSelf setHasMore:hasMore forFilter:filter];
+            success(hasMore);
         }
     } failure:^(NSError *error) {
         if (failure) {
@@ -557,11 +565,14 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    PostListFilter *filter = [self currentPostListFilter];
+    NSArray *postStatus = filter.statuses;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService loadMorePostsOfType:PostServiceTypePost forBlog:self.blog success:^{
+    [postService loadMorePostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
         if (success) {
-            success([weakSelf hasMoreContent]);
+            [weakSelf setHasMore:hasMore forFilter:filter];
+            success(hasMore);
         }
     } failure:^(NSError *error) {
         if (failure) {
@@ -666,7 +677,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
 
-    NSPredicate *filterPredicate = [self predicateForCurrentFilter];
+    NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
     [predicates addObject:filterPredicate];
 
     if (!self.blog.isMultiAuthor) {
@@ -680,52 +691,6 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
     }
 
     return [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-}
-
-- (NSPredicate *)predicateForCurrentFilter
-{
-    NSPredicate *predicate;
-    PostListStatusFilter filter = [self postListStatusFilter];
-    switch (filter) {
-        case PostListStatusFilterPublished:
-            predicate = [self predicateForPublished];
-            break;
-        case PostListStatusFilterDraft:
-            predicate = [self predicateForDrafts];
-            break;
-        case PostListStatusFilterScheduled:
-            predicate = [self predicateForScheduled];
-            break;
-        case PostListStatusFilterTrashed:
-            predicate = [self predicateForTrashed];
-            break;
-        default:
-            break;
-    }
-    return predicate;
-}
-
-- (NSPredicate *)predicateForPublished
-{
-    NSArray *statuses = @[PostStatusPublish, PostStatusPrivate];
-    return [NSPredicate predicateWithFormat:@"status IN %@", statuses];
-}
-
-- (NSPredicate *)predicateForDrafts
-{
-    // We'll exclude known status values. This allows for pending and custom post status to be treated as draft.
-    NSArray *excludeStatuses = @[PostStatusPublish, PostStatusPrivate, PostStatusScheduled, PostStatusDraft];
-    return [NSPredicate predicateWithFormat:@"NOT status IN %@", excludeStatuses];
-}
-
-- (NSPredicate *)predicateForScheduled
-{
-    return [NSPredicate predicateWithFormat:@"status = %@", PostStatusScheduled];
-}
-
-- (NSPredicate *)predicateForTrashed
-{
-    return [NSPredicate predicateWithFormat:@"status = %@", PostStatusTrash];
 }
 
 
@@ -766,7 +731,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
         (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
 
         // Only 3 rows till the end of table
-        if (self.syncHelper.hasMoreContent) {
+        if ([self currentPostListFilter].hasMore) {
             [self.syncHelper syncMoreContent];
         }
     }
@@ -958,82 +923,60 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
 
 #pragma mark - Filter related
 
-- (PostListStatusFilter)postListStatusFilter
+- (PostListFilter *)currentPostListFilter
+{
+    return self.postListFilters[[self currentFilterIndex]];
+}
+
+- (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
+{
+    NSInteger index = [self.postListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        PostListFilter *filter = (PostListFilter *)obj;
+        return filter.filterType == filterType;
+    }];
+    return index;
+}
+
+- (NSInteger)currentFilterIndex
 {
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostListStatusFilterKey];
-    if (!filter) {
-        // Published is default
-        return PostListStatusFilterPublished;
+    if (!filter || [filter integerValue] >= [self.postListFilters count]) {
+        return 0; // first item is the default
     }
     return [filter integerValue];
 }
 
-- (void)setPostListStatusFilter:(PostListStatusFilter)newFilter
+- (void)setCurrentFilterIndex:(NSInteger)newIndex
 {
-    PostListStatusFilter filter = [self postListStatusFilter];
-    if (newFilter == filter) {
+    NSInteger index = [self currentFilterIndex];
+    if (newIndex == index) {
         return;
     }
-    [[NSUserDefaults standardUserDefaults] setObject:@(newFilter) forKey:CurrentPostListStatusFilterKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:CurrentPostListStatusFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
-    // TODO: the filter changed, so update all the things.
 
     [self updateFilterTitle];
     [self updateAndPerformFetchRequest];
 }
 
-- (NSString *)titleForPostListStatusFilter:(PostListStatusFilter)filter
-{
-    NSString *title;
-    switch (filter) {
-        case PostListStatusFilterPublished:
-            title = NSLocalizedString(@"Published", @"Title of the published filter. This filter shows a list of posts that the user has published.");
-            break;
-        case PostListStatusFilterDraft:
-            title = NSLocalizedString(@"Draft", @"Title of the draft filter.  This filter shows a list of draft posts.");
-            break;
-        case PostListStatusFilterScheduled:
-            title = NSLocalizedString(@"Scheduled", @"Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.");
-            break;
-        case PostListStatusFilterTrashed:
-            title = NSLocalizedString(@"Trashed", @"Title of the trashed filter. This filter shows posts that have been moved to the trash bin.");
-            break;
-        default:
-            break;
-    }
-    return title;
-}
-
-- (NSString *)titleForCurrentPostListStatusFilter
-{
-    PostListStatusFilter filter = [self postListStatusFilter];
-    return [self titleForPostListStatusFilter:filter];
-}
-
 - (void)updateFilterTitle
 {
-    [self.filterButton setAttributedTitleForTitle:[self titleForCurrentPostListStatusFilter]];
+    [self.filterButton setAttributedTitleForTitle:[self currentPostListFilter].title];
 }
 
 - (void)displayFilters
 {
-    NSArray *filters = @[
-                         @(PostListStatusFilterPublished),
-                         @(PostListStatusFilterDraft),
-                         @(PostListStatusFilterScheduled),
-                         @(PostListStatusFilterTrashed),
-                         ];
+
     NSMutableArray *titles = [NSMutableArray array];
-    for (NSNumber *filter in filters) {
-        [titles addObject:[self titleForPostListStatusFilter:[filter integerValue]]];
+    for (PostListFilter *filter in self.postListFilters) {
+        [titles addObject:filter.title];
     }
-    PostListStatusFilter currentFilter = [self postListStatusFilter];
     NSDictionary *dict = @{
-                          @"DefaultValue"   : [filters firstObject],
+                          @"DefaultValue"   : [self.postListFilters firstObject],
                           @"Title"          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
                           @"Titles"         : titles,
-                          @"Values"         : filters,
-                          @"CurrentValue"   : @(currentFilter)
+                          @"Values"         : self.postListFilters,
+                          @"CurrentValue"   : [self currentPostListFilter]
                           };
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
@@ -1044,8 +987,7 @@ typedef NS_ENUM(NSUInteger, PostListStatusFilter) {
         } else {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
-        NSNumber *selectedFilter = (NSNumber *)selectedValue;
-        [self setPostListStatusFilter:[selectedFilter integerValue]];
+        [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
     };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
