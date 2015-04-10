@@ -69,8 +69,6 @@ const CGRect NavigationBarButtonRect = {
 NSString *const kWPEditorConfigURLParamAvailable = @"available";
 NSString *const kWPEditorConfigURLParamEnabled = @"enabled";
 
-static NSInteger const MaximumNumberOfPictures = 10;
-
 NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetSaveOnExit = 201,
     WPPostViewControllerActionSheetCancelUpload = 202,
@@ -2148,25 +2146,27 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
 {
-    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto
-        || [asset valueForProperty:ALAssetPropertyType] == ALAssetTypeVideo) {
-        // If the media is from a shared photo stream it may not be available locally to be used
-        if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")
-                      withSupportButton:NO];
-            return NO;
-        }
-        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
-            [WPError showAlertWithTitle:nil
-                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]
-                      withSupportButton:NO];
-            return NO;
-        }
-        return YES;
-    } else {
+    NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
+    
+    if (assetType == ALAssetTypeUnknown) {
         return NO;
     }
+    
+    // If the media is from a shared photo stream it may not be available locally to be used
+    if (!asset.defaultRepresentation) {
+        if (assetType == ALAssetTypePhoto) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                      withSupportButton:NO];
+        } else {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                      withSupportButton:NO];
+        }
+        return NO;
+    }
+    
+    return YES;
 }
 
 #pragma mark - KVO
