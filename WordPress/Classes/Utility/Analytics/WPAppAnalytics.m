@@ -2,6 +2,7 @@
 
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
+#import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"
 #import "WordPressComApiCredentials.h"
 
@@ -70,6 +71,7 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     }
 
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
 
     if ([self isTrackingUsage]) {
         [self beginSession];
