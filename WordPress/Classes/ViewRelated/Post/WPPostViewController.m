@@ -690,8 +690,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showCancelMediaUploadPrompt
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel images uploads", "Dialog box title for when the user is cancelling an upload.")
-                                                        message:NSLocalizedString(@"You are currently uploading images. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop images uploads in the post editor.")
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Cancel media uploads", "Dialog box title for when the user is cancelling an upload.")
+                                                        message:NSLocalizedString(@"You are currently uploading media. This action will cancel uploads in progress.\n\nAre you sure?", @"This prompt is displayed when the user attempts to stop media uploads in the post editor.")
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
                                               otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
@@ -702,8 +702,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showMediaUploadingAlert
 {
     //the post is using the network connection and cannot be stoped, show a message to the user
-    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading images", @"Title for alert when trying to save/exit a post before image upload process is complete.")
-                                                                  message:NSLocalizedString(@"You are currently uploading images. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the image upload process is complete.")
+    UIAlertView *blogIsCurrentlyBusy = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploading media", @"Title for alert when trying to save/exit a post before media upload process is complete.")
+                                                                  message:NSLocalizedString(@"You are currently uploading media. Please wait until this completes.", @"This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")
                                                                  delegate:nil
                                                         cancelButtonTitle:NSLocalizedString(@"OK", @"")
                                                         otherButtonTitles:nil];
@@ -713,7 +713,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showFailedMediaRemovalAlert
 {
     UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
-                                                                              message:NSLocalizedString(@"Some images uploads failed. This action will remove all failed images from the post.\nSave anyway?", @"Confirms with the user if they save the post all images that failed to upload will be removed from it.")
+                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
                                                                              delegate:self
                                                                     cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                                     otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
@@ -726,7 +726,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)showFailedMediaBeforeEditAlert
 {
     UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"Some images uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all images that failed to upload will be removed from it.")
+                                                           message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
                                                  otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
