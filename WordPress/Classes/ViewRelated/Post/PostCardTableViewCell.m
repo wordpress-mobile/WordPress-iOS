@@ -64,7 +64,8 @@
         height += self.headerViewLowerMargin;
     }
 
-    if (self.postCardImageView) {
+    if (self.postCardImageView && !self.snippetWrapperViewHeightConstraint) {
+        // the image cell xib
         height += CGRectGetHeight(self.postCardImageView.frame);
         height += self.postCardImageViewBottomConstraint.constant;
     }
@@ -72,7 +73,14 @@
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
 
-    height += [self.snippetLabel sizeThatFits:innerSize].height;
+    if (self.snippetWrapperViewHeightConstraint) {
+        // the thumbnail cell xib
+        CGFloat imageHeight = CGRectGetHeight(self.imageView.frame);
+        CGFloat snippetHeight = [self.snippetLabel sizeThatFits:innerSize].height;
+        height += MAX(imageHeight, snippetHeight);
+    } else {
+        height += [self.snippetLabel sizeThatFits:innerSize].height;
+    }
     height += self.snippetLowerConstraint.constant;
 
     height += CGRectGetHeight(self.dateView.frame);
