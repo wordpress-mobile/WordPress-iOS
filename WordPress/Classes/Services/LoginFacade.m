@@ -85,7 +85,7 @@
 {
     [self.delegate displayLoginMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
     [self.wordpressComOAuthClientFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:^(NSString *authToken) {
-        [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken shouldDisplayMultifactor:loginFields.shouldDisplayMultifactor];
+        [self.delegate finishedLoginWithUsername:loginFields.username authToken:authToken requiredMultifactorCode:loginFields.shouldDisplayMultifactor];
     } needsMultiFactor:^{
         [self.delegate needsMultifactorCode];
     } failure:^(NSError *error) {

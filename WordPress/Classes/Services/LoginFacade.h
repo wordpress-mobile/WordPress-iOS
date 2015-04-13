@@ -89,9 +89,9 @@
  *
  *  @param username                 username of the site
  *  @param authToken                authToken to be used to access the site
- *  @param shouldDisplayMultifactor YES when the login required a 2fa code
+ *  @param requiredMultifactorCode  whether the login required a 2fa code
  */
-- (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor;
+- (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode;
 
 @end
 

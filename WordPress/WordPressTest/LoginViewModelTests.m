@@ -1515,22 +1515,22 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
     });
     
-    context(@"finishedLoginWithUsername:authToken:shouldDisplayMultifactor:", ^{
+    context(@"finishedLoginWithUsername:authToken:requiredMultifactorCode:", ^{
         
         __block NSString *username;
         __block NSString *authToken;
-        __block BOOL shouldDisplayMultifactor;
+        __block BOOL requiredMultifactorCode;
         
         beforeEach(^{
             username = @"username";
             authToken = @"authtoken";
-            shouldDisplayMultifactor = NO;
+            requiredMultifactorCode = NO;
         });
         
         it(@"should dismiss the login message", ^{
             [[mockViewModelPresenter expect] dismissLoginMessage];
             
-            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
             
             [mockViewModelPresenter verify];
         });
@@ -1538,7 +1538,7 @@ describe(@"LoginFacadeDelegate methods", ^{
         it(@"should display a message about getting account information", ^{
             [[mockViewModelPresenter expect] displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
             
-            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
             
             [mockViewModelPresenter verify];
         });
@@ -1546,7 +1546,7 @@ describe(@"LoginFacadeDelegate methods", ^{
         it(@"should create a WPAccount for a .com site", ^{
             [[mockAccountServiceFacade expect] createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
             
-            [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+            [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
             
             [mockViewModelPresenter verify];
         });
@@ -1558,7 +1558,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 viewModel.shouldReauthenticateDefaultAccount = YES;
                 [[mockAccountServiceFacade expect] removeLegacyAccount:username];
                 
-                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                 
                 [mockAccountServiceFacade verify];
             });
@@ -1567,7 +1567,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 viewModel.shouldReauthenticateDefaultAccount = NO;
                 [[mockAccountServiceFacade reject] removeLegacyAccount:username];
                 
-                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                 
                 [mockAccountServiceFacade verify];
             });
@@ -1578,7 +1578,7 @@ describe(@"LoginFacadeDelegate methods", ^{
             it(@"should occur", ^{
                 [[mockBlogSyncFacade expect] syncBlogsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                 
-                [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                 
                 [mockViewModelPresenter verify];
             });
@@ -1598,7 +1598,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 it(@"should dismiss the login message", ^{
                     [[mockViewModelPresenter expect] dismissLoginMessage];
                     
-                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockViewModelPresenter verify];
                 });
@@ -1606,7 +1606,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 it(@"should indicate dismiss the login view", ^{
                     [[mockViewModelPresenter expect] dismissLoginView];
                     
-                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockViewModelPresenter verify];
                 });
@@ -1614,7 +1614,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 it(@"should update the email and default blog for the newly created account", ^{
                     [[mockAccountServiceFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
                     
-                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockAccountServiceFacade verify];
                 });
@@ -1638,7 +1638,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 it(@"should dismiss the login message", ^{
                     [[mockViewModelPresenter expect] dismissLoginMessage];
                     
-                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockViewModelPresenter verify];
                 });
@@ -1646,7 +1646,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                 it(@"should display the error", ^{
                     [[mockViewModelPresenter expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:OCMOCK_ANY firstButtonCallback:OCMOCK_ANY secondButtonText:OCMOCK_ANY secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
                     
-                    [viewModel finishedLoginWithUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+                    [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
                     [mockViewModelPresenter verify];
                 });

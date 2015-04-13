@@ -458,7 +458,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     }
 }
 
-- (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+- (void)finishedLoginWithUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode
 {
     [self dismissLoginMessage];
     
@@ -466,7 +466,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         [self.accountServiceFacade removeLegacyAccount:username];
     }
     
-    [self createWordPressComAccountForUsername:username authToken:authToken shouldDisplayMultifactor:shouldDisplayMultifactor];
+    [self createWordPressComAccountForUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
 }
 
 - (void)finishedLoginWithUsername:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
@@ -475,7 +475,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
 }
 
-- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken shouldDisplayMultifactor:(BOOL)shouldDisplayMultifactor
+- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken requiredMultifactorCode:(BOOL)requiredMultifactorCode
 {
     [self displayLoginMessage:NSLocalizedString(@"Getting account information", nil)];
     
@@ -487,7 +487,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         
         // Hit the Tracker
         NSDictionary *properties = @{
-                                     @"multifactor" : @(shouldDisplayMultifactor),
+                                     @"multifactor" : @(requiredMultifactorCode),
                                      @"dotcom_user" : @(YES)
                                      };
         
