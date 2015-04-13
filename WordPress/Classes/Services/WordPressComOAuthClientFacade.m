@@ -13,9 +13,13 @@
     WordPressComOAuthClient *client = [WordPressComOAuthClient client];
     [client authenticateWithUsername:username password:password multifactorCode:multifactorCode success:success failure:^(NSError *error) {
         if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
-            needsMultifactor();
+            if (needsMultifactor != nil) {
+                needsMultifactor();
+            }
         } else {
-            failure(error);
+            if (failure != nil) {
+                failure(error);
+            }
         }
     }];
 }
