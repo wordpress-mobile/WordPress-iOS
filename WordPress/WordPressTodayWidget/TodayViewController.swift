@@ -16,7 +16,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewDidLoad() {
         super.viewDidLoad()
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
 
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
@@ -60,7 +60,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // If there's an update, use NCUpdateResult.NewData
         
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as? NSNumber?
         self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
         let oauth2Token = self.getOAuth2Token()
@@ -76,7 +76,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         }
         
         let timeZone = NSTimeZone(name: timeZoneName!)
-        var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
+        var statsService: WPStatsService = WPStatsService(siteId: siteId!, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
         statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
@@ -99,7 +99,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     func getOAuth2Token() -> String? {
         var error:NSError?
         
-        var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
+        var oauth2Token:String? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
         
         return oauth2Token
     }

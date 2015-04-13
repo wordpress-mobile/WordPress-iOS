@@ -117,9 +117,9 @@ import Foundation
             let prerange = NSMakeRange(0, range.location)
             let pretext: NSString = textViewText.substringWithRange(prerange) + text
             let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            let lastWord: NSString = words.last as NSString
+            let lastWord: NSString = words.last as! NSString
             
-            delegate?.textView?(textView, didTypeWord: lastWord)
+            delegate?.textView?(textView, didTypeWord: lastWord as String)
         }
         
         return shouldChange
