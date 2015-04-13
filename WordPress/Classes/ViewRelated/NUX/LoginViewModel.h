@@ -164,11 +164,6 @@
 - (void)toggleSignInFormAction;
 
 /**
- *  This will display the multifactor text field.
- */
-- (void)displayMultifactorTextField;
-
-/**
  *  This indicates whether 1Password is enabled.
  *
  *  @return YES when 1Password is enabled.

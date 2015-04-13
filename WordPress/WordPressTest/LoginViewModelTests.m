@@ -1499,11 +1499,14 @@ describe(@"LoginFacadeDelegate methods", ^{
     context(@"needsMultifactorCode", ^{
         
         it(@"should result in the multifactor field being displayed", ^{
-            OCMExpect([viewModel displayMultifactorTextField]);
+            expect(viewModel.shouldDisplayMultifactor).to.beFalsy();
+            [[mockViewModelPresenter expect] setFocusToMultifactorText];
+            [[mockViewModelPresenter expect] reloadInterfaceWithAnimation:OCMOCK_ANY];
             
             [viewModel needsMultifactorCode];
             
-            OCMVerify([viewModel displayMultifactorTextField]);
+            expect(viewModel.shouldDisplayMultifactor).to.beTruthy();
+            [mockViewModelPresenter verify];
         });
         
         it(@"should dismiss the login message", ^{
@@ -1773,33 +1776,6 @@ describe(@"toggleSignInFormAction", ^{
         [mockViewModelPresenter verify];
     });
     
-});
-
-describe(@"displayMultifactorTextField", ^{
-    
-    it(@"should set shouldDisplayMultifactor to true", ^{
-        viewModel.shouldDisplayMultifactor = NO;
-        
-        [viewModel displayMultifactorTextField];
-        
-        expect(viewModel.shouldDisplayMultifactor).to.equal(YES);
-    });
-    
-    it(@"should reload the interface", ^{
-        [[mockViewModelPresenter expect] reloadInterfaceWithAnimation:YES];
-        
-        [viewModel displayMultifactorTextField];
-        
-        [mockViewModelPresenter verify];
-    });
-    
-    it(@"should set the focus to the multifactor text field", ^{
-        [[mockViewModelPresenter expect] setFocusToMultifactorText];
-        
-        [viewModel displayMultifactorTextField];
-        
-        [mockViewModelPresenter verify];
-    });
 });
 
 describe(@"requestOneTimeCode", ^{
