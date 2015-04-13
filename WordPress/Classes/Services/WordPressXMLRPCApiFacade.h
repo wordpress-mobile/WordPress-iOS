@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@protocol WordPressXMLRPCApiFacade
+@protocol WordPressXMLRPCAPIFacade
 
 - (void)guessXMLRPCURLForSite:(NSString *)url
                       success:(void (^)(NSURL *xmlrpcURL))success
@@ -14,6 +14,6 @@
 
 @end
 
-@interface WordPressXMLRPCApiFacade : NSObject<WordPressXMLRPCApiFacade>
+@interface WordPressXMLRPCAPIFacade : NSObject<WordPressXMLRPCAPIFacade>
 
 @end

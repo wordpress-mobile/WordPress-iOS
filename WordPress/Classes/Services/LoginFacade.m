@@ -3,13 +3,13 @@
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
 #import "WordPressComOAuthClientFacade.h"
-#import "WordPressXMLRPCApiFacade.h"
+#import "WordPressXMLRPCAPIFacade.h"
 
 
 @interface LoginFacade () {
     id<LoginFacadeDelegate> _delegate;
     id<WordPressComOAuthClientFacade> _wordpressComOAuthClientFacade;
-    id<WordPressXMLRPCApiFacade> _wordpressXMLRPCApiFacade;
+    id<WordPressXMLRPCAPIFacade> _wordpressXMLRPCAPIFacade;
 }
 
 @end
@@ -29,7 +29,7 @@
 - (void)initializeServices
 {
     _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
-    _wordpressXMLRPCApiFacade = [WordPressXMLRPCApiFacade new];
+    _wordpressXMLRPCAPIFacade = [WordPressXMLRPCAPIFacade new];
 }
 
 - (id<LoginFacadeDelegate>)delegate {
@@ -51,14 +51,14 @@
     _wordpressComOAuthClientFacade = wordpressComOAuthClientService;
 }
 
-- (id<WordPressXMLRPCApiFacade>)wordpressXMLRPCApiFacade
+- (id<WordPressXMLRPCAPIFacade>)wordpressXMLRPCAPIFacade
 {
-    return _wordpressXMLRPCApiFacade;
+    return _wordpressXMLRPCAPIFacade;
 }
 
-- (void)setWordpressXMLRPCApiFacade:(id<WordPressXMLRPCApiFacade>)wordpressXMLRPCApiService
+- (void)setWordpressXMLRPCAPIFacade:(id<WordPressXMLRPCAPIFacade>)wordpressXMLRPCApiService
 {
-    _wordpressXMLRPCApiFacade = wordpressXMLRPCApiService;
+    _wordpressXMLRPCAPIFacade = wordpressXMLRPCApiService;
 }
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields
@@ -98,7 +98,7 @@
 - (void)signInToSelfHosted:(LoginFields *)loginFields
 {
     void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        [self.wordpressXMLRPCApiFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
+        [self.wordpressXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlRPCURL username:loginFields.username password:loginFields.password success:^(id options) {
             if ([options objectForKey:@"wordpress.com"] != nil) {
                 [self signInToWordpressDotCom:loginFields];
             } else {
@@ -119,7 +119,7 @@
     [self.delegate displayLoginMessage:NSLocalizedString(@"Authenticating", nil)];
     
     NSString *siteUrl = [NSURL IDNEncodedURL:loginFields.siteUrl];
-    [self.wordpressXMLRPCApiFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
+    [self.wordpressXMLRPCAPIFacade guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
 }
 
 @end

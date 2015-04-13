@@ -3,7 +3,7 @@
 
 @class LoginFields;
 @protocol WordPressComOAuthClientFacade;
-@protocol WordPressXMLRPCApiFacade;
+@protocol WordPressXMLRPCAPIFacade;
 @protocol LoginFacadeDelegate;
 @protocol LoginFacade
 
@@ -12,7 +12,7 @@
 
 @property (nonatomic, weak) id<LoginFacadeDelegate> delegate;
 @property (nonatomic, strong) id<WordPressComOAuthClientFacade> wordpressComOAuthClientFacade;
-@property (nonatomic, strong) id<WordPressXMLRPCApiFacade> wordpressXMLRPCApiFacade;
+@property (nonatomic, strong) id<WordPressXMLRPCAPIFacade> wordpressXMLRPCAPIFacade;
 
 @end
 

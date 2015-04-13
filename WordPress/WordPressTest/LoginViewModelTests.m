@@ -6,6 +6,7 @@
 #import "ReachabilityFacade.h"
 #import "LoginFacade.h"
 #import "WordPressComOAuthClientFacade.h"
+#import "WordPressXMLRPCAPIFacade.h"
 #import "AccountServiceFacade.h"
 #import "BlogSyncFacade.h"
 #import "HelpshiftFacade.h"
@@ -21,6 +22,7 @@ __block id mockReachabilityFacade;
 __block id mockLoginFacade;
 __block id mockLoginFacadeDelegate;
 __block id mockOAuthFacade;
+__block id mockXMLRPCFacade;
 __block id mockAccountServiceFacade;
 __block id mockBlogSyncFacade;
 __block id mockHelpshiftFacade;
@@ -32,11 +34,13 @@ beforeEach(^{
     mockLoginFacade = [OCMockObject niceMockForProtocol:@protocol(LoginFacade)];
     mockLoginFacadeDelegate = [OCMockObject niceMockForProtocol:@protocol(LoginFacadeDelegate)];
     mockOAuthFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressComOAuthClientFacade)];
+    mockXMLRPCFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressXMLRPCAPIFacade)];
     mockAccountServiceFacade = [OCMockObject niceMockForProtocol:@protocol(AccountServiceFacade)];
     mockBlogSyncFacade = [OCMockObject niceMockForProtocol:@protocol(BlogSyncFacade)];
     mockHelpshiftFacade = [OCMockObject niceMockForProtocol:@protocol(HelpshiftFacade)];
     mockOnePasswordFacade = [OCMockObject niceMockForProtocol:@protocol(OnePasswordFacade)];
     [OCMStub([mockLoginFacade wordpressComOAuthClientFacade]) andReturn:mockOAuthFacade];
+    [OCMStub([mockLoginFacade wordpressXMLRPCAPIFacade]) andReturn:mockXMLRPCFacade];
     [OCMStub([mockLoginFacade delegate]) andReturn:mockLoginFacadeDelegate];
     
     viewModel = [LoginViewModel new];
