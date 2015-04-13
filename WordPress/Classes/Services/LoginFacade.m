@@ -6,16 +6,11 @@
 #import "WordPressXMLRPCAPIFacade.h"
 
 
-@interface LoginFacade () {
-    id<LoginFacadeDelegate> _delegate;
-    id<WordPressComOAuthClientFacade> _wordpressComOAuthClientFacade;
-    id<WordPressXMLRPCAPIFacade> _wordpressXMLRPCAPIFacade;
-}
-
-@end
-
-
 @implementation LoginFacade
+
+@synthesize delegate;
+@synthesize wordpressComOAuthClientFacade = _wordpressComOAuthClientFacade;
+@synthesize wordpressXMLRPCAPIFacade = _wordpressXMLRPCAPIFacade;
 
 - (instancetype)init
 {
@@ -28,37 +23,8 @@
 
 - (void)initializeServices
 {
-    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
+    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];;
     _wordpressXMLRPCAPIFacade = [WordPressXMLRPCAPIFacade new];
-}
-
-- (id<LoginFacadeDelegate>)delegate {
-    return _delegate;
-}
-
-- (void)setDelegate:(id<LoginFacadeDelegate>)delegate
-{
-    _delegate = delegate;
-}
-
-- (id<WordPressComOAuthClientFacade>)wordpressComOAuthClientFacade
-{
-    return _wordpressComOAuthClientFacade;
-}
-
-- (void)setWordpressComOAuthClientFacade:(id<WordPressComOAuthClientFacade>)wordpressComOAuthClientService
-{
-    _wordpressComOAuthClientFacade = wordpressComOAuthClientService;
-}
-
-- (id<WordPressXMLRPCAPIFacade>)wordpressXMLRPCAPIFacade
-{
-    return _wordpressXMLRPCAPIFacade;
-}
-
-- (void)setWordpressXMLRPCAPIFacade:(id<WordPressXMLRPCAPIFacade>)wordpressXMLRPCApiService
-{
-    _wordpressXMLRPCAPIFacade = wordpressXMLRPCApiService;
 }
 
 - (void)signInWithLoginFields:(LoginFields *)loginFields
