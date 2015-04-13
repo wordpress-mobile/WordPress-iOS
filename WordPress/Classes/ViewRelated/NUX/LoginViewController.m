@@ -119,11 +119,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self addMainView];
     [self addControls];
     [self bindToViewModel];
-    
-    // Reauth: Pre-populate username. If needed
-    if (!self.shouldReauthenticateDefaultAccount) {
-        return;
-    }
 }
 
 - (void)bindToViewModel
@@ -146,10 +141,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.viewModel.shouldDisplayMultifactor = NO;
     self.viewModel.shouldReauthenticateDefaultAccount = self.shouldReauthenticateDefaultAccount;
     
-    self.usernameText.text = defaultAccount.username;
-    self.viewModel.username = defaultAccount.username;
-    
-    self.viewModel.userIsDotCom = YES;
+    if (self.viewModel.shouldReauthenticateDefaultAccount) {
+        self.usernameText.text = defaultAccount.username;
+        self.viewModel.username = defaultAccount.username;
+        self.viewModel.userIsDotCom = YES;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
