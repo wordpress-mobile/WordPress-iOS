@@ -125,7 +125,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
   - AFNetworking (~> 2.5.2)
   - AMPopTip (~> 0.7)
-  - Automattic-Tracks-iOS (from `../Automattic-Tracks-iOS/`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.0`)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.7.0)
@@ -159,7 +159,8 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
-    :path: ../Automattic-Tracks-iOS/
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -176,6 +177,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/appbotx.git
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
