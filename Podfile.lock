@@ -137,7 +137,7 @@ DEPENDENCIES:
   - CTAssetsPickerController (~> 2.7.0)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
-  - Expecta
+  - Expecta (= 0.3.2)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.10.0)
   - HockeySDK (~> 3.6.0)
@@ -149,13 +149,13 @@ DEPENDENCIES:
   - NSLogger-CocoaLumberjack-connector (~> 1.3)
   - NSObject-SafeExpectations (= 0.0.2)
   - NSURL+IDN (= 0.3)
-  - OCMock
+  - OCMock (= 3.1.2)
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - ReactiveCocoa (~> 2.4.7)
   - Simperium (= 0.7.9)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
-  - Specta
+  - Specta (= 0.5.0)
   - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)

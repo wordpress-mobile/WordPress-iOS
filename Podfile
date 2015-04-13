@@ -44,9 +44,9 @@ end
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
-  pod 'OCMock'
-  pod 'Specta'
-  pod 'Expecta'
+  pod 'OCMock', '3.1.2'
+  pod 'Specta', '0.5.0'
+  pod 'Expecta', '0.3.2'
 end
 
 target 'UITests', :exclusive => true do
