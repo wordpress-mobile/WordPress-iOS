@@ -8,14 +8,19 @@
 
 @implementation BlogSyncFacade
 
-- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)syncBlogsForAccount:(WPAccount *)account
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlogsForAccount:account success:success failure:failure];
 }
 
-- (void)syncBlogForAccount:(WPAccount *)account username:(NSString *)username password:(NSString *)password xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options needsJetpack:(void(^)(NSNumber *))needsJetpack finishedSync:(void(^)())finishedSync;
+- (void)syncBlogForAccount:(WPAccount *)account
+                  username:(NSString *)username
+                  password:(NSString *)password
+                    xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options needsJetpack:(void(^)(NSNumber *))needsJetpack finishedSync:(void(^)())finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
