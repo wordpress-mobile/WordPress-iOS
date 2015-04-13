@@ -36,11 +36,6 @@ typedef enum {
 
 - (NSArray *)availableStatuses;
 
-/**
- Returns YES if the post is scheduled to be published on a specific date in the future.
- */
-- (BOOL)isScheduled;
-
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
 // Deletes post locally
@@ -58,5 +53,57 @@ typedef enum {
 // Subclass methods
 - (NSString *)remoteStatusText;
 + (NSString *)titleForRemoteStatus:(NSNumber *)remoteStatus;
+
+#pragma mark - Status
+
+/**
+ *  @brief      Call this method to know if the post is a draft.
+ *
+ *  @returns    YES if the post is a draft.  NO otherwise.
+ */
+- (BOOL)isDraft;
+
+/**
+ *  @brief      Call this method to know if the post is pending review.
+ *
+ *  @returns    YES if the post is pending review.  NO otherwise.
+ */
+- (BOOL)isPending;
+
+/**
+ *  @brief      Call this method to know if the post is published.
+ *
+ *  @returns    YES if the post is published.  NO otherwise.
+ */
+- (BOOL)isPublished;
+
+/**
+ *  @brief      Call this method to know if the post is private.
+ *
+ *  @returns    YES if the post is private.  NO otherwise.
+ */
+- (BOOL)isPrivate;
+
+/**
+ *  @brief      Call this method to know if the post is scheduled for publishing.
+ *  @details    This returns YES whether the scheduled publishing date is immediate or future.
+ *
+ *  @returns    YES if the post is scheduled for publishing.  NO otherwise.
+ */
+- (BOOL)isScheduled;
+
+/**
+ *  @brief      Call this method to know if the post is scheduled for immediate publishing.
+ *
+ *  @returns    YES if the post is scheduled for immediate publishing.  NO otherwise.
+ */
+- (BOOL)isScheduledForImmediatePublishing;
+
+/**
+ *  @brief      Call this method to know if the post is scheduled for future publishing.
+ *
+ *  @returns    YES if the post is scheduled for future publishing.  NO otherwise.
+ */
+- (BOOL)isScheduledForFuturePublishing;
 
 @end
