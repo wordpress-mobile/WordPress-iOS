@@ -51,9 +51,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
-    
+
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
-    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
+                                                                                    URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString]
+                                                                                   parameters:nil
+                                                                    constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
     } error:nil];
@@ -125,7 +128,10 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     remoteMedia.descriptionText = jsonMedia[@"description"];
     remoteMedia.height = jsonMedia[@"height"];
     remoteMedia.width = jsonMedia[@"width"];
-    remoteMedia.exif = jsonMedia[@"exif"];    
+    remoteMedia.exif = jsonMedia[@"exif"];
+    if (jsonMedia[@"videopress_guid"]) {
+        remoteMedia.shortcode = jsonMedia[@"videopress_guid"];
+    }
     return remoteMedia;
 }
 
