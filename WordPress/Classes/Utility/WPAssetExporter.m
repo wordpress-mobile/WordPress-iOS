@@ -1,5 +1,6 @@
 #import "WPAssetExporter.h"
 #import "WPImageOptimizer.h"
+#import "WPVideoOptimizer.h"
 
 NSString * const WPAssetExportErrorDomain = @"org.wordpress.assetexporter";
 const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
@@ -41,9 +42,32 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
    stripGeoLocation:(BOOL)stripGeoLocation
   completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
+    NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
+    if (assetType == ALAssetTypePhoto) {
+        [self exportPhotoAsset:asset
+                        toFile:filePath
+                      resizing:targetSize
+              stripGeoLocation:stripGeoLocation
+             completionHandler:handler];
+    } else if (assetType == ALAssetTypeVideo) {
+        [self exportVideoAsset:asset
+                        toFile:filePath
+                      resizing:targetSize
+              stripGeoLocation:stripGeoLocation
+             completionHandler:handler];
+    }
+    
+}
+
+- (void)exportPhotoAsset:(ALAsset *)asset
+             toFile:(NSString *)filePath
+           resizing:(CGSize)targetSize
+   stripGeoLocation:(BOOL)stripGeoLocation
+       completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
+{
     if (!asset.defaultRepresentation) {
         if (handler) {
-            NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a media that belogns to a photostream that needs to be downloaded locally first.")};
+            NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a photo that belongs to a photostream that needs to be downloaded locally first.")};
             NSError * error = [NSError errorWithDomain:WPAssetExportErrorDomain
                                                   code:WPAssetExportErrorCodeMissingAsset
                                               userInfo:userInfo];
@@ -52,6 +76,7 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
         return;
     }
     [self.operationQueue addOperationWithBlock:^{
+        
         UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
         NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
         
@@ -76,6 +101,39 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
             handler(YES, newSize, thumbnailJPEGData, nil);
             return;
         }
+    }];
+}
+
+- (void)exportVideoAsset:(ALAsset *)asset
+                  toFile:(NSString *)filePath
+                resizing:(CGSize)targetSize
+        stripGeoLocation:(BOOL)stripGeoLocation
+       completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error))handler
+{
+    if (!asset.defaultRepresentation) {
+        if (handler) {
+            NSDictionary *userInfo = @{ NSLocalizedDescriptionKey: NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a video that belongs to a photostream that needs to be downloaded locally first.") };
+            NSError *error = [NSError errorWithDomain:WPAssetExportErrorDomain
+                                                 code:WPAssetExportErrorCodeMissingAsset
+                                             userInfo:userInfo];
+            handler(NO, CGSizeZero, nil, error);
+        }
+        return;
+    }
+    [self.operationQueue addOperationWithBlock:^{
+        UIImage *thumbnail = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+        NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
+        WPVideoOptimizer *videoOptimizer = [[WPVideoOptimizer alloc] init];
+        [videoOptimizer optimizeAsset:asset resize:NO toPath:filePath withHandler:^(CGSize newSize, NSError *error) {
+            if (handler){
+                if (error) {
+                    handler(NO, CGSizeZero, nil, error);
+                } else {
+                    handler(YES, newSize, thumbnailJPEGData, nil);
+                }
+                return;
+            }
+        }];
     }];
 }
 
