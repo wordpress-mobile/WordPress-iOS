@@ -181,6 +181,10 @@
 @class WPWalkthroughOverlayView;
 typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 
+/**
+ *  A protocol that should be implemented by a class using `LoginViewModel`. Most of the methods on this
+    protocol are very basic as the most of the logic behind them is contained in `LoginViewModel`.
+ */
 @protocol LoginViewModelPresenter
 
 - (void)showActivityIndicator:(BOOL)show;
