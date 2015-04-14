@@ -3,7 +3,7 @@
 
 @protocol AccountServiceFacade;
 @protocol BlogSyncFacade;
-@protocol HelpshiftFacade;
+@protocol HelpshiftEnabledFacade;
 @protocol LoginFacade;
 @protocol LoginViewModelPresenter;
 @protocol ReachabilityFacade;
@@ -41,7 +41,7 @@
 /**
  *  A class to determine if Helpshift is available.
  */
-@property (nonatomic, strong) id<HelpshiftFacade> helpshiftFacade;
+@property (nonatomic, strong) id<HelpshiftEnabledFacade> helpshiftEnabledFacade;
 
 /**
  *  A class to determine if OnePassword is available and to display the extension when needed.

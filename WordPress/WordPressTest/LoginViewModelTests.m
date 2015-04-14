@@ -9,7 +9,7 @@
 #import "WordPressXMLRPCAPIFacade.h"
 #import "AccountServiceFacade.h"
 #import "BlogSyncFacade.h"
-#import "HelpshiftFacade.h"
+#import "HelpshiftEnabledFacade.h"
 #import "OnePasswordFacade.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "WPWalkthroughOverlayView.h"
@@ -25,7 +25,7 @@ __block id mockOAuthFacade;
 __block id mockXMLRPCFacade;
 __block id mockAccountServiceFacade;
 __block id mockBlogSyncFacade;
-__block id mockHelpshiftFacade;
+__block id mockHelpshiftEnabledFacade;
 __block id mockOnePasswordFacade;
 
 beforeEach(^{
@@ -37,7 +37,7 @@ beforeEach(^{
     mockXMLRPCFacade = [OCMockObject niceMockForProtocol:@protocol(WordPressXMLRPCAPIFacade)];
     mockAccountServiceFacade = [OCMockObject niceMockForProtocol:@protocol(AccountServiceFacade)];
     mockBlogSyncFacade = [OCMockObject niceMockForProtocol:@protocol(BlogSyncFacade)];
-    mockHelpshiftFacade = [OCMockObject niceMockForProtocol:@protocol(HelpshiftFacade)];
+    mockHelpshiftEnabledFacade = [OCMockObject niceMockForProtocol:@protocol(HelpshiftEnabledFacade)];
     mockOnePasswordFacade = [OCMockObject niceMockForProtocol:@protocol(OnePasswordFacade)];
     [OCMStub([mockLoginFacade wordpressComOAuthClientFacade]) andReturn:mockOAuthFacade];
     [OCMStub([mockLoginFacade wordpressXMLRPCAPIFacade]) andReturn:mockXMLRPCFacade];
@@ -49,7 +49,7 @@ beforeEach(^{
     viewModel.presenter = mockViewModelPresenter;
     viewModel.accountServiceFacade = mockAccountServiceFacade;
     viewModel.blogSyncFacade = mockBlogSyncFacade;
-    viewModel.helpshiftFacade = mockHelpshiftFacade;
+    viewModel.helpshiftEnabledFacade = mockHelpshiftEnabledFacade;
     viewModel.onePasswordFacade = mockOnePasswordFacade;
 });
 
@@ -907,7 +907,7 @@ describe(@"displayRemoteError", ^{
         context(@"when Helpshift is not enabled", ^{
             
             beforeEach(^{
-                [[[mockHelpshiftFacade stub] andReturnValue:@(NO)] isHelpshiftEnabled];
+                [[[mockHelpshiftEnabledFacade stub] andReturnValue:@(NO)] isHelpshiftEnabled];
             });
             
             it(@"should display an overlay with a generic error message with the default button labels", ^{
@@ -934,7 +934,7 @@ describe(@"displayRemoteError", ^{
         context(@"when Helpshift is enabled", ^{
             
             beforeEach(^{
-                [[[mockHelpshiftFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+                [[[mockHelpshiftEnabledFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
             });
             
             it(@"should display an overlay with a 'Contact Us' button", ^{
@@ -971,7 +971,7 @@ describe(@"displayRemoteError", ^{
         });
         
         it(@"should display an overlay with a 'Need Help?'", ^{
-            [[[mockHelpshiftFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
+            [[[mockHelpshiftEnabledFacade stub] andReturnValue:@(YES)] isHelpshiftEnabled];
             [[mockViewModelPresenter expect] displayOverlayViewWithMessage:errorMessage firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:NSLocalizedString(@"Need Help?", nil) secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
             
             [viewModel displayRemoteError:error];

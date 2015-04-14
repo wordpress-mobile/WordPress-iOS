@@ -3,7 +3,7 @@
  /**
  *  This protocol represents a class that can determine whether Helpshift is enabled or not
  */
-@protocol HelpshiftFacade
+@protocol HelpshiftEnabledFacade
 
 /**
  *  Indicates whether Helpshift is enabled
@@ -17,6 +17,6 @@
  /**
  *  This class can determine whether Helpshift is enabled or not
  */
-@interface HelpshiftFacade : NSObject <HelpshiftFacade>
+@interface HelpshiftEnabledFacade : NSObject <HelpshiftEnabledFacade>
 
 @end

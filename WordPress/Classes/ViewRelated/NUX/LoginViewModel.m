@@ -6,7 +6,7 @@
 #import "AccountServiceFacade.h"
 #import "BlogSyncFacade.h"
 #import "Constants.h"
-#import "HelpshiftFacade.h"
+#import "HelpshiftEnabledFacade.h"
 #import "LoginFields.h"
 #import "NSString+Helpers.h"
 #import "NSURL+IDN.h"
@@ -39,7 +39,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     _reachabilityFacade = [ReachabilityFacade new];
     _accountServiceFacade = [AccountServiceFacade new];
     _blogSyncFacade = [BlogSyncFacade new];
-    _helpshiftFacade = [HelpshiftFacade new];
+    _helpshiftEnabledFacade = [HelpshiftEnabledFacade new];
     _onePasswordFacade = [OnePasswordFacade new];
 }
 
@@ -431,7 +431,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     
     NSString *message = [error localizedDescription];
     if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain] && [error code] != NSURLErrorBadURL) {
-        if ([self.helpshiftFacade isHelpshiftEnabled]) {
+        if ([self.helpshiftEnabledFacade isHelpshiftEnabled]) {
             [self displayGenericErrorMessageWithHelpshiftButton:message];
         } else {
             [self displayGenericErrorMessage:message];
