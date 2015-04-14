@@ -218,3 +218,8 @@ OBJC_EXTERN void CLSNSLogv(NSString *format, va_list args) NS_FORMAT_FUNCTION(1,
 - (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id <CLSCrashReport>)crash;
 
 @end
+
+/**
+ *  `CrashlyticsKit` can be used as a parameter to `[Fabric with:@[CrashlyticsKit]];` in Objective-C. In Swift, simply use `Crashlytics()`
+ */
+#define CrashlyticsKit [Crashlytics sharedInstance]
