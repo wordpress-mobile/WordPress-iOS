@@ -20,7 +20,7 @@
                     failure:(void (^)(NSError *error))failure;
 
 /**
- *  This synchronizes a self hosted blog.
+ *  This synchronizes a self hosted blog. This method will create a `Blog` object if a match isn't found.
  *
  *  @param account      a self hosted account.
  *  @param username     username for the self hosted blog.
