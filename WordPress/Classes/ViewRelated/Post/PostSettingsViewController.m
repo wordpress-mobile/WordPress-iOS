@@ -16,7 +16,6 @@
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
-#import "MediaBrowserViewController.h"
 #import "WPTableViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
@@ -933,12 +932,6 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showMediaLibrary
-{
-    self.navigationItem.title = NSLocalizedString(@"Back", nil);
-    MediaBrowserViewController *vc = [[MediaBrowserViewController alloc] initWithPost:self.post];
-    [self.navigationController pushViewController:vc animated:YES];
-}
 
 - (void)loadFeaturedImage:(NSIndexPath *)indexPath
 {
