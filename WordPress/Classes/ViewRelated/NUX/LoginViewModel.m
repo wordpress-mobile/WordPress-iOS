@@ -243,25 +243,19 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     [RACObserve(self, userIsDotCom) subscribeNext:^(NSNumber *userIsDotCom) {
         BOOL dotComUser = [userIsDotCom boolValue];
-        
         self.isSiteUrlEnabled = !dotComUser;
-        
-        if (dotComUser) {
-            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyDone];
-            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
-        } else {
-            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyNext];
-            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
-        }
     }];
 }
 
 - (void)setupObservationForIsSiteUrlEnabled
 {
-    [RACObserve(self, isSiteUrlEnabled) subscribeNext:^(NSNumber *isSiteUrlEnabled) {
-        BOOL siteUrlEnabled = [isSiteUrlEnabled boolValue];
-        if (siteUrlEnabled) {
-            if (self.shouldDisplayMultifactor) {
+    [[RACSignal combineLatest:@[RACObserve(self, isSiteUrlEnabled), RACObserve(self, userIsDotCom), RACObserve(self, shouldDisplayMultifactor)]] subscribeNext:^(RACTuple *values) {
+        BOOL isSiteUrlEnabled = [[values first] boolValue];
+        BOOL userIsDotcom = [[values second] boolValue];
+        BOOL shouldDisplayMultifactor = [[values third] boolValue];
+        
+        if (isSiteUrlEnabled) {
+            if (shouldDisplayMultifactor) {
                 [self.presenter setSiteAlpha:LoginViewModelAlphaDisabled];
             } else {
                 [self.presenter setSiteAlpha:LoginViewModelAlphaEnabled];
@@ -269,7 +263,16 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         } else {
             [self.presenter setSiteAlpha:LoginViewModelAlphaHidden];
         }
-        [self.presenter setSiteUrlEnabled:siteUrlEnabled];
+        [self.presenter setSiteUrlEnabled:isSiteUrlEnabled];
+        
+        
+        if (userIsDotcom) {
+            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyDone];
+            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Add Self-Hosted Site", nil)];
+        } else {
+            [self.presenter setPasswordTextReturnKeyType:UIReturnKeyNext];
+            [self.presenter setToggleSignInButtonTitle:NSLocalizedString(@"Sign in to WordPress.com", nil)];
+        }
     }];
 }
 
