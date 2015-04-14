@@ -632,7 +632,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthentication:(NSNumber *)blogId
+- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];

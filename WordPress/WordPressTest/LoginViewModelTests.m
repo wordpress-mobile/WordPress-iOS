@@ -1696,7 +1696,7 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
         
         it(@"should show jetpack authentication when the blog syncing facade tells it to", ^{
-            [[mockViewModelPresenter expect] showJetpackAuthentication:OCMOCK_ANY];
+            [[mockViewModelPresenter expect] showJetpackAuthenticationForBlog:OCMOCK_ANY];
             
             // Retrieve jetpack block and execute it when appropriate
             [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {

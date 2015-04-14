@@ -511,7 +511,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     WPAccount *account = [self.accountServiceFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
     [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
         [self.presenter dismissLoginMessage];
-        [self.presenter showJetpackAuthentication:blogId];
+        [self.presenter showJetpackAuthenticationForBlog:blogId];
     } finishedSync:^{
         [self finishedLogin];
     }];
