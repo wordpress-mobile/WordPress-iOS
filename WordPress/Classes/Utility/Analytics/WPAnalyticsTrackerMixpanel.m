@@ -654,6 +654,10 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Opened Helpshift Screen"];
             [instructions addSuperPropertyToFlag:@"opened_helpshift_screen"];
             break;
+        case WPAnalyticsStatSupportSentReplyToSupportMessage:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Support - Replied to Helpshift"];
+            [instructions addSuperPropertyToFlag:@"support_replied_to_helpshift"];
+            break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyFlagger:@"received_response_from_support"];
             break;
