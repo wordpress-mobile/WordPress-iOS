@@ -1,7 +1,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <1PasswordExtension/OnePasswordExtension/OnePasswordExtension.h>
+#import <1PasswordExtension/OnePasswordExtension.h>
 
 #import "CreateAccountAndBlogViewController.h"
 #import "SupportViewController.h"
@@ -412,6 +412,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
+    // Resign first responder
+    [self.view endEditing:NO];
+    
+    // Proceed only if needed
     if (self.userIsDotCom == false && self.siteUrlText.text.isEmpty) {
         [self displayOnePasswordEmptySiteAlert];
         return;

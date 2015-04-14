@@ -105,4 +105,9 @@ CGFloat const HelpshiftFlagCheckDelay = 10.0;
     });
 }
 
+- (void)userRepliedToConversationWithMessage:(NSString *)newMessage
+{
+    [WPAnalytics track:WPAnalyticsStatSupportSentReplyToSupportMessage];
+}
+
 @end
