@@ -1,14 +1,18 @@
 #import "WPAnalyticsTrackerAutomatticTracks.h"
-#import <TracksService.h>
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
+#ifdef TRACKS_ENABLED
+#import <TracksService.h>
+#endif
 
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
+#ifdef TRACKS_ENABLED
 @property (nonatomic, strong) TracksService *tracksService;
+#endif
 @property (nonatomic, strong) NSDictionary *userProperties;
 @property (nonatomic, strong) NSString *anonymousID;
 
@@ -20,7 +24,9 @@
 {
     self = [super init];
     if (self) {
+#ifdef TRACKS_ENABLED
         _tracksService = [TracksService new];
+#endif
     }
     return self;
 }
@@ -38,7 +44,9 @@
         return;
     }
     
+#ifdef TRACKS_ENABLED
     [self.tracksService trackEventName:eventName withCustomProperties:properties];
+#endif
 }
 
 - (void)beginSession
@@ -99,6 +107,8 @@
     userProperties[@"jetpack_user"] = @(jetpack_user);
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
+
+#ifdef TRACKS_ENABLED
     self.tracksService.userProperties = userProperties;
     
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
@@ -106,6 +116,7 @@
     if (accountPresent && [username length] > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
+#endif
 }
 
 - (void)beginTimerForStat:(WPAnalyticsStat)stat
