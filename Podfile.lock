@@ -22,6 +22,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.7.1)
+  - Automattic-Tracks-iOS (0.0.0):
+    - UIDeviceIdentifier (~> 0.4)
   - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
@@ -123,6 +125,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
   - AFNetworking (~> 2.5.2)
   - AMPopTip (~> 0.7)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.0`)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.7.0)
@@ -155,6 +158,9 @@ DEPENDENCIES:
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -171,6 +177,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
@@ -188,6 +197,7 @@ SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
+  Automattic-Tracks-iOS: 61ff137363756ab0f0da49e570dfc0aa637655f9
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
   CTAssetsPickerController: 085e7d4010bf51a7bd49d1ef75e534ca3090eb09
