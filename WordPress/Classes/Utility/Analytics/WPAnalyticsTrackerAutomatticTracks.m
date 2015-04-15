@@ -354,7 +354,7 @@
             eventName = @"site_menu_view_site_opened";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
-            eventName = @"signed_into_jetpack_from_stats_screen";
+            eventName = @"stats_screen_signed_into_jetpack";
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             eventName = @"push_notification_alert_tapped";
@@ -363,40 +363,40 @@
             eventName = @"reader_accessed";
             break;
         case WPAnalyticsStatReaderCommentedOnArticle:
-            eventName = @"reader_commented_on_article";
+            eventName = @"reader_article_commented_on";
             break;
         case WPAnalyticsStatReaderFollowedReaderTag:
-            eventName = @"reader_followed_reader_tag";
+            eventName = @"reader_reader_tag_followed";
             break;
         case WPAnalyticsStatReaderFollowedSite:
-            eventName = @"reader_followed_site";
+            eventName = @"reader_site_followed";
             break;
         case WPAnalyticsStatReaderInfiniteScroll:
             eventName = @"reader_infinite_scroll_performed";
             break;
         case WPAnalyticsStatReaderLikedArticle:
-            eventName = @"reader_liked_article";
+            eventName = @"reader_article_liked";
             break;
         case WPAnalyticsStatReaderLoadedFreshlyPressed:
-            eventName = @"reader_loaded_freshly_pressed";
+            eventName = @"reader_freshly_pressed_loaded";
             break;
         case WPAnalyticsStatReaderLoadedTag:
-            eventName = @"reader_loaded_tag";
+            eventName = @"reader_tag_loaded";
             break;
         case WPAnalyticsStatReaderOpenedArticle:
-            eventName = @"reader_opened_article";
+            eventName = @"reader_article_opened";
             break;
         case WPAnalyticsStatReaderPreviewedSite:
             eventName = @"reader_blog_preview";
             break;
         case WPAnalyticsStatReaderRebloggedArticle:
-            eventName = @"reader_reblogged_article";
+            eventName = @"reader_article_reblogged";
             break;
         case WPAnalyticsStatReaderUnfollowedReaderTag:
-            eventName = @"reader_unfollowed_reader_tag";
+            eventName = @"reader_reader_tag_unfollowed";
             break;
         case WPAnalyticsStatSelectedInstallJetpack:
-            eventName = @"stats_selected_install_jetpack";
+            eventName = @"stats_install_jetpack_selected";
             break;
         case WPAnalyticsStatSentItemToGooglePlus:
             eventName = @"sent_item_to_google_plus";
@@ -453,7 +453,7 @@
             eventName = @"stats_single_post_accessed";
             break;
         case WPAnalyticsStatStatsTappedBarChart:
-            eventName = @"stats_tapped_bar_chart";
+            eventName = @"stats_bar_chart_tapped";
             break;
         case WPAnalyticsStatStatsViewAllAccessed:
             eventName = @"stats_view_all_accessed";
@@ -462,7 +462,7 @@
             eventName = @"support_opened_helpshift_screen";
             break;
         case WPAnalyticsStatSupportReceivedResponseFromSupport:
-            eventName = @"support_recieved_response_from_support";
+            eventName = @"support_received_response_from_support";
             break;
         case WPAnalyticsStatSupportSentMessage:
             eventName = @"support_sent_message";
@@ -474,10 +474,10 @@
             eventName = @"support_user_replied_to_helpshift";
             break;
         case WPAnalyticsStatThemesAccessedThemeBrowser:
-            eventName = @"themes_accessed_theme_browser";
+            eventName = @"themes_theme_browser_accessed";
             break;
         case WPAnalyticsStatThemesChangedTheme:
-            eventName = @"themes_changed_theme";
+            eventName = @"themes_theme_changed";
             break;
         case WPAnalyticsStatTwoFactorCodeRequested:
             eventName = @"two_factor_code_requested";
