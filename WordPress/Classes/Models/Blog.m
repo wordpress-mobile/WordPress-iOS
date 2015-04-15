@@ -30,6 +30,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic posts;
 @dynamic categories;
 @dynamic comments;
+@dynamic statuses;
 @dynamic themes;
 @dynamic media;
 @dynamic currentThemeId;

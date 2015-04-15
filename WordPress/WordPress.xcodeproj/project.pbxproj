@@ -244,6 +244,7 @@
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
+		87FF9E851ADEFE95007D3B8E /* PostStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E841ADEFE95007D3B8E /* PostStatus.m */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -955,6 +956,9 @@
 		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
 		872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordPressTodayWidget.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		87FF9E821ADEFBA9007D3B8E /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
+		87FF9E831ADEFE95007D3B8E /* PostStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatus.h; sourceTree = "<group>"; };
+		87FF9E841ADEFE95007D3B8E /* PostStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostStatus.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9198544476D3B385673B18E9 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -1655,6 +1659,8 @@
 				CEBD3EAA0FF1BA3B00C1396E /* Blog.m */,
 				E125445412BF5B3900D87A0A /* PostCategory.h */,
 				E125445512BF5B3900D87A0A /* PostCategory.m */,
+				87FF9E831ADEFE95007D3B8E /* PostStatus.h */,
+				87FF9E841ADEFE95007D3B8E /* PostStatus.m */,
 				83418AA811C9FA6E00ACF00C /* Comment.h */,
 				83418AA911C9FA6E00ACF00C /* Comment.m */,
 				E14932B4130427B300154804 /* Coordinate.h */,
@@ -3567,6 +3573,7 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
+				87FF9E851ADEFE95007D3B8E /* PostStatus.m in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
@@ -4747,6 +4754,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				87FF9E821ADEFBA9007D3B8E /* WordPress 29.xcdatamodel */,
 				B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */,
 				5D784E741A80430D005D7388 /* WordPress 27.xcdatamodel */,
 				31CCB9FD1A52ED0A00BA0733 /* WordPress 26.xcdatamodel */,
@@ -4776,7 +4784,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */;
+			currentVersion = 87FF9E821ADEFBA9007D3B8E /* WordPress 29.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
