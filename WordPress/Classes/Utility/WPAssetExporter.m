@@ -65,6 +65,7 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
    stripGeoLocation:(BOOL)stripGeoLocation
        completionHandler:(void (^)(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error)) handler
 {
+    NSParameterAssert(filePath);
     if (!asset.defaultRepresentation) {
         if (handler) {
             NSDictionary * userInfo = @{NSLocalizedDescriptionKey:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"Message that explains to a user that the current asset they selected is not available on the device. This normally happens when user selects a photo that belongs to a photostream that needs to be downloaded locally first.")};
@@ -75,6 +76,15 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
         }
         return;
     }
+    NSString * type = asset.defaultRepresentation.UTI;
+    // File path extension takes precedence over the default representation.
+    if ([filePath pathExtension]) {
+        // Get the UTI from the file's extension:
+        CFStringRef pathExtension = (__bridge_retained CFStringRef)[filePath pathExtension];
+        NSString * type = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+        CFRelease(pathExtension);
+    }
+    
     [self.operationQueue addOperationWithBlock:^{
         
         UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
@@ -82,7 +92,10 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
         
         WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];
-        NSData *data = [imageOptimizer optimizedDataFromAsset:asset fittingSize:targetSize stripGeoLocation:stripGeoLocation];
+        NSData *data = [imageOptimizer optimizedDataFromAsset:asset
+                                                  fittingSize:targetSize
+                                             stripGeoLocation:stripGeoLocation
+                                              convertToType:type];
         if (!data) {
             if (handler) {
                 handler(NO, newSize, thumbnailJPEGData, nil);
