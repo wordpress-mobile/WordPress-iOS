@@ -16,6 +16,7 @@ extern NSString * const PostStatusPrivate;
 extern NSString * const PostStatusPublish;
 extern NSString * const PostStatusScheduled;
 extern NSString * const PostStatusTrash;
+extern NSString * const PostStatusDeleted;
 
 @interface BasePost : NSManagedObject<WPContentViewProvider>
 
