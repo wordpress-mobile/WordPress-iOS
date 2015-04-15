@@ -70,16 +70,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         return;
     }
     MediaType mediaType = MediaTypeDocument;
+    NSSet *allowedFileTypes = nil;
     if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
         mediaType = MediaTypeImage;
+        allowedFileTypes = post.blog.allowedFileTypes;
     } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+        // We ignore allowsFileTypes for videos because if videopress is not enabled we still can upload
+        // files even if the allowed file types says no.
+        allowedFileTypes = nil;
         mediaType = MediaTypeVideo;
     }
 
     geoLocationEnabled = post.blog.geolocationEnabled;
 
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    NSString *mediaPath = [self pathForAsset:asset];
+    
+    NSString *mediaPath = [self pathForAsset:asset supportedFileFormats:allowedFileTypes];
 
     [[WPAssetExporter sharedInstance] exportAsset:asset
                                            toFile:mediaPath
@@ -252,18 +258,20 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 #pragma mark - Media helpers
 
-- (NSString *)pathForAsset:(ALAsset *)asset
+- (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filename = asset.defaultRepresentation.filename;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
+    NSString *basename = [filename stringByDeletingPathExtension];
+    NSString *extension = [filename pathExtension];
+    if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
+        extension = @"png";
+    }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
     while ([fileManager fileExistsAtPath:path]) {
-        NSString *basename = [filename stringByDeletingPathExtension];
-        NSString *extension = [filename pathExtension];
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
         path = [documentsDirectory stringByAppendingPathComponent:alternativeFilename];
         index++;
@@ -273,6 +281,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (NSString *)mimeTypeForFilename:(NSString *)filename
 {
+    if (!filename || ![filename pathExtension]) {
+        return @"application/octet-stream";
+    }
     // Get the UTI from the file's extension:
     CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
     CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
