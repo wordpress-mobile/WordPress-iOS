@@ -19,6 +19,7 @@
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
+#import "PostStatusService.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -283,7 +284,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                          forBlog:blog
                          success:nil
                          failure:nil];
-
+    
+    PostStatusService *statusService = [[PostStatusService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [statusService syncStatusesForBlog:blog
+                               success:nil
+                               failure:nil];
 }
 
 - (void)syncBlogStaggeringRequests:(Blog *)blog
