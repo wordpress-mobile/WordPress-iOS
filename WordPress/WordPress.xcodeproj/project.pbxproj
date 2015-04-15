@@ -245,6 +245,10 @@
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
 		87FF9E851ADEFE95007D3B8E /* PostStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E841ADEFE95007D3B8E /* PostStatus.m */; };
+		87FF9E881ADF04F0007D3B8E /* PostStatusService.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E871ADF04F0007D3B8E /* PostStatusService.m */; };
+		87FF9E941ADF06D4007D3B8E /* RemotePostStatus.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E931ADF06D4007D3B8E /* RemotePostStatus.m */; };
+		87FF9E971ADF0857007D3B8E /* PostStatusServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E961ADF0857007D3B8E /* PostStatusServiceRemoteREST.m */; };
+		87FF9E9A1ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 87FF9E991ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.m */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -959,6 +963,15 @@
 		87FF9E821ADEFBA9007D3B8E /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
 		87FF9E831ADEFE95007D3B8E /* PostStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatus.h; sourceTree = "<group>"; };
 		87FF9E841ADEFE95007D3B8E /* PostStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostStatus.m; sourceTree = "<group>"; };
+		87FF9E861ADF04F0007D3B8E /* PostStatusService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatusService.h; sourceTree = "<group>"; };
+		87FF9E871ADF04F0007D3B8E /* PostStatusService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostStatusService.m; sourceTree = "<group>"; };
+		87FF9E891ADF0643007D3B8E /* PostStatusServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatusServiceRemote.h; sourceTree = "<group>"; };
+		87FF9E921ADF06D4007D3B8E /* RemotePostStatus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePostStatus.h; path = "Remote Objects/RemotePostStatus.h"; sourceTree = "<group>"; };
+		87FF9E931ADF06D4007D3B8E /* RemotePostStatus.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostStatus.m; path = "Remote Objects/RemotePostStatus.m"; sourceTree = "<group>"; };
+		87FF9E951ADF0857007D3B8E /* PostStatusServiceRemoteREST.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatusServiceRemoteREST.h; sourceTree = "<group>"; };
+		87FF9E961ADF0857007D3B8E /* PostStatusServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostStatusServiceRemoteREST.m; sourceTree = "<group>"; };
+		87FF9E981ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostStatusServiceRemoteXMLRPC.h; sourceTree = "<group>"; };
+		87FF9E991ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostStatusServiceRemoteXMLRPC.m; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9198544476D3B385673B18E9 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
 		91E1D2929A320BA8932240BF /* Pods-UITests.release-internal.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UITests.release-internal.xcconfig"; path = "../Pods/Target Support Files/Pods-UITests/Pods-UITests.release-internal.xcconfig"; sourceTree = "<group>"; };
@@ -2072,6 +2085,11 @@
 				E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */,
 				E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */,
 				E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */,
+				87FF9E891ADF0643007D3B8E /* PostStatusServiceRemote.h */,
+				87FF9E951ADF0857007D3B8E /* PostStatusServiceRemoteREST.h */,
+				87FF9E961ADF0857007D3B8E /* PostStatusServiceRemoteREST.m */,
+				87FF9E981ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.h */,
+				87FF9E991ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.m */,
 				E1249B3D19408C230035E895 /* CommentServiceRemote.h */,
 				E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */,
 				E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */,
@@ -2340,6 +2358,8 @@
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
 				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
 				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
+				87FF9E861ADF04F0007D3B8E /* PostStatusService.h */,
+				87FF9E871ADF04F0007D3B8E /* PostStatusService.m */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
 				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
@@ -2718,6 +2738,8 @@
 			children = (
 				E1A6DBD619DC7D080071AC1E /* RemotePostCategory.h */,
 				E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */,
+				87FF9E921ADF06D4007D3B8E /* RemotePostStatus.h */,
+				87FF9E931ADF06D4007D3B8E /* RemotePostStatus.m */,
 				E1A6DBD819DC7D080071AC1E /* RemotePost.h */,
 				E1A6DBD919DC7D080071AC1E /* RemotePost.m */,
 				E1249B4119408C910035E895 /* RemoteComment.h */,
@@ -3454,6 +3476,7 @@
 				313AE4A119E3F20400AAFABE /* CommentTableViewCell.swift in Sources */,
 				5DF94E421962BAA700359241 /* WPContentActionView.m in Sources */,
 				B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */,
+				87FF9E971ADF0857007D3B8E /* PostStatusServiceRemoteREST.m in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
@@ -3498,6 +3521,7 @@
 				B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
+				87FF9E9A1ADF0915007D3B8E /* PostStatusServiceRemoteXMLRPC.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
@@ -3542,6 +3566,7 @@
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */,
+				87FF9E941ADF06D4007D3B8E /* RemotePostStatus.m in Sources */,
 				5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */,
 				CC24E5EF1577D1EA00A6D5B5 /* WPFriendFinderViewController.m in Sources */,
 				5903AE1B19B60A98009D5354 /* WPButtonForNavigationBar.m in Sources */,
@@ -3549,6 +3574,7 @@
 				E13EB7A5157D230000885780 /* WordPressComApi.m in Sources */,
 				B5D7F2DC1A04180A006D3047 /* NSAttributedString+RichTextView.swift in Sources */,
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
+				87FF9E881ADF04F0007D3B8E /* PostStatusService.m in Sources */,
 				5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
