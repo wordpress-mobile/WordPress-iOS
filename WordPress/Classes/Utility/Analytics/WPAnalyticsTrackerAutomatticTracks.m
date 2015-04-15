@@ -138,10 +138,10 @@
     
     switch (stat) {
         case WPAnalyticsStatAddedSelfHostedSite:
-            eventName = @"added_self_hosted_blog";
+            eventName = @"self_hosted_blog_added";
             break;
         case WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom:
-            eventName = @"added_self_hosted_blog_jetpack_not_connected";
+            eventName = @"self_hosted_blog_added_jetpack_not_connected";
             break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
@@ -153,7 +153,7 @@
             eventName = @"application_closed";
             break;
         case WPAnalyticsStatAppReviewsCanceledFeedbackScreen:
-            eventName = @"app_reviews_canceled_feedback_screen";
+            eventName = @"app_reviews_feedback_screen_canceled";
             break;
         case WPAnalyticsStatAppReviewsDeclinedToRateApp:
             eventName = @"app_reviews_declined_to_rate_app";
@@ -165,7 +165,7 @@
             eventName = @"app_reviews_liked_app";
             break;
         case WPAnalyticsStatAppReviewsOpenedFeedbackScreen:
-            eventName = @"app_reviews_opened_feedback_screen";
+            eventName = @"app_reviews_feedback_screen_opened";
             break;
         case WPAnalyticsStatAppReviewsRatedApp:
             eventName = @"app_reviews_rated_app";
@@ -174,88 +174,88 @@
             eventName = @"app_reviews_saw_prompt";
             break;
         case WPAnalyticsStatAppReviewsSentFeedback:
-            eventName = @"app_reviews_sent_feedback";
+            eventName = @"app_reviews_feedback_sent";
             break;
         case WPAnalyticsStatCreatedAccount:
-            eventName = @"created_account";
+            eventName = @"account_created";
             break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
-            eventName = @"editor_added_photo_via_local_library";
+            eventName = @"editor_photo_added_via_local_library";
             break;
         case WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary:
-            eventName = @"editor_added_photo_via_wp_media_library";
+            eventName = @"editor_photo_added_via_wp_media_library";
             break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
             break;
         case WPAnalyticsStatEditorCreatedPost:
-            eventName = @"editor_created_post";
+            eventName = @"editor_post_created";
             break;
         case WPAnalyticsStatPublishedPostWithCategories:
-            eventName = @"editor_published_post_with_categories";
+            eventName = @"editor_post_published_with_categories";
             break;
         case WPAnalyticsStatPublishedPostWithPhoto:
-            eventName = @"editor_published_post_with_photos";
+            eventName = @"editor_post_published_with_photos";
             break;
         case WPAnalyticsStatPublishedPostWithTags:
-            eventName = @"editor_published_post_with_tags";
+            eventName = @"editor_post_published_with_tags";
             break;
         case WPAnalyticsStatPublishedPostWithVideo:
-            eventName = @"editor_published_post_with_videos";
+            eventName = @"editor_post_published_with_videos";
             break;
         case WPAnalyticsStatEditorDiscardedChanges:
             eventName = @"editor_discarded_changes";
             break;
         case WPAnalyticsStatEditorEditedImage:
-            eventName = @"editor_edited_image";
+            eventName = @"editor_image_edited";
             break;
         case WPAnalyticsStatEditorEnabledNewVersion:
             eventName = @"editor_enabled_new_version";
             break;
         case WPAnalyticsStatEditorSavedDraft:
-            eventName = @"editor_saved_draft";
+            eventName = @"editor_draft_saved";
             break;
         case WPAnalyticsStatEditorScheduledPost:
-            eventName = @"editor_scheduled_post";
+            eventName = @"editor_post_scheduled";
             break;
         case WPAnalyticsStatEditorPublishedPost:
-            eventName = @"editor_published_post";
+            eventName = @"editor_post_published";
             break;
         case WPAnalyticsStatEditorTappedBlockquote:
-            eventName = @"editor_tapped_blockquote_button";
+            eventName = @"editor_button_blockquote_tapped";
             break;
         case WPAnalyticsStatEditorTappedBold:
-            eventName = @"editor_tapped_bold_button";
+            eventName = @"editor_button_bold_tapped";
             break;
         case WPAnalyticsStatEditorTappedHTML:
-            eventName = @"editor_tapped_html";
+            eventName = @"editor_button_html_tapped";
             break;
         case WPAnalyticsStatEditorTappedImage:
-            eventName = @"editor_tapped_image_button";
+            eventName = @"editor_button_image_tapped";
             break;
         case WPAnalyticsStatEditorTappedItalic:
-            eventName = @"editor_tapped_italic_button";
+            eventName = @"editor_button_italic_tapped";
             break;
         case WPAnalyticsStatEditorTappedLink:
-            eventName = @"editor_tapped_link_button";
+            eventName = @"editor_button_link_tapped";
             break;
         case WPAnalyticsStatEditorTappedMore:
-            eventName = @"editor_tapped_more_button";
+            eventName = @"editor_button_more_tapped";
             break;
         case WPAnalyticsStatEditorTappedOrderedList:
-            eventName = @"editor_tapped_ordered_list";
+            eventName = @"editor_button_ordered_list_tapped";
             break;
         case WPAnalyticsStatEditorTappedStrikethrough:
-            eventName = @"editor_tapped_strikethrough_button";
+            eventName = @"editor_button_strikethrough_tapped";
             break;
         case WPAnalyticsStatEditorTappedUnderline:
-            eventName = @"editor_tapped_underline_button";
+            eventName = @"editor_button_underline_tapped";
             break;
         case WPAnalyticsStatEditorTappedUnlink:
-            eventName = @"editor_tapped_unlink";
+            eventName = @"editor_button_unlink_tapped";
             break;
         case WPAnalyticsStatEditorTappedUnorderedList:
-            eventName = @"editor_tapped_unordered_list";
+            eventName = @"editor_button_unordered_list_tapped";
             break;
         case WPAnalyticsStatEditorToggledOff:
             eventName = @"editor_toggled_off";
@@ -264,7 +264,7 @@
             eventName = @"editor_toggled_on";
             break;
         case WPAnalyticsStatEditorUpdatedPost:
-            eventName = @"editor_update_post";
+            eventName = @"editor_post_update";
             break;
         case WPAnalyticsStatEditorUploadMediaFailed:
             eventName = @"editor_upload_media_failed";
@@ -273,7 +273,7 @@
             eventName = @"editor_upload_media_retried";
             break;
         case WPAnalyticsStatLoginFailed:
-            eventName = @"login_failed_login";
+            eventName = @"login_failed_to_login";
             break;
         case WPAnalyticsStatLoginFailedToGuessXMLRPC:
             eventName = @"login_failed_to_guess_xmlrpc";
@@ -282,7 +282,7 @@
             eventName = @"logout";
             break;
         case WPAnalyticsStatLowMemoryWarning:
-            eventName = @"low_memory_warning";
+            eventName = @"application_low_memory_warning";
             break;
         case WPAnalyticsStatNotificationsAccessed:
             eventName = @"notifications_accessed";
@@ -330,28 +330,28 @@
             eventName = @"one_password_signup";
             break;
         case WPAnalyticsStatOpenedComments:
-            eventName = @"site_menu_opened_comments";
+            eventName = @"site_menu_comments_opened";
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
-            eventName = @"site_menu_opened_media_library";
+            eventName = @"site_menu_media_library_opened";
             break;
         case WPAnalyticsStatOpenedPages:
-            eventName = @"site_menu_opened_pages";
+            eventName = @"site_menu_pages_opened";
             break;
         case WPAnalyticsStatOpenedPosts:
-            eventName = @"site_menu_opened_posts";
+            eventName = @"site_menu_posts_opened";
             break;
         case WPAnalyticsStatOpenedSettings:
-            eventName = @"site_menu_opened_settings";
+            eventName = @"site_menu_settings_opened";
             break;
         case WPAnalyticsStatOpenedSupport:
-            eventName = @"opened_support";
+            eventName = @"support_opened";
             break;
         case WPAnalyticsStatOpenedViewAdmin:
-            eventName = @"site_menu_opened_view_admin";
+            eventName = @"site_menu_view_admin_opened";
             break;
         case WPAnalyticsStatOpenedViewSite:
-            eventName = @"site_menu_opened_view_site";
+            eventName = @"site_menu_view_site_opened";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"signed_into_jetpack_from_stats_screen";
