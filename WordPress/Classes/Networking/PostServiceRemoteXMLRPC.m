@@ -168,10 +168,50 @@
     }
 }
 
+- (void)trashPost:(RemotePost *)post
+          forBlog:(Blog *)blog
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([post.postID longLongValue] > 0);
+    NSNumber *postID = post.postID;
+    if ([postID longLongValue] > 0) {
+        NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+
+        WPXMLRPCRequest *deletePostRequest = [self.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:parameters];
+        WPXMLRPCRequestOperation *delOperation = [self.api XMLRPCRequestOperationWithRequest:deletePostRequest success:nil failure:nil];
+
+        WPXMLRPCRequest *getPostRequest = [self.api XMLRPCRequestWithMethod:@"wp.getPost" parameters:parameters];
+        WPXMLRPCRequestOperation *getOperation = [self.api XMLRPCRequestOperationWithRequest:getPostRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (success) {
+                // The post was trashed but not yet deleted.
+                RemotePost *post = [self remotePostFromXMLRPCDictionary:responseObject];
+                success(post);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (error.code == 404) {
+                // The post was deleted.
+                if (success) {
+                    success(post);
+                }
+            }
+        }];
+
+        AFHTTPRequestOperation *operation = [self.api combinedHTTPRequestOperationWithOperations:@[delOperation, getOperation]
+                                                                                         success:nil
+                                                                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                             if (failure) {
+                                                                                                 failure(error);
+                                                                                             }
+                                                                                         }];
+        [self.api enqueueHTTPRequestOperation:operation];
+    }
+}
+
 - (void)restorePost:(RemotePost *)post
            forBlog:(Blog *)blog
-           success:(void (^)())success
-           failure:(void (^)(NSError *))failure
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *error))failure
 {
     [self updatePost:post forBlog:blog success:success failure:failure];
 }
