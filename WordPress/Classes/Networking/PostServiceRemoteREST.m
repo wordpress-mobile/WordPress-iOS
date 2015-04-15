@@ -143,17 +143,38 @@
            }];
 }
 
+- (void)trashPost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
+               if (success) {
+                   success(post);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 - (void)restorePost:(RemotePost *)post
            forBlog:(Blog *)blog
-           success:(void (^)())success
+           success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
                if (success) {
-                   success();
+                   success(post);
                }
            } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
                if (failure) {

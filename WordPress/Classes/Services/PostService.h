@@ -52,6 +52,10 @@ extern NSString * const PostServiceTypeAny;
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
 
+- (void)trashPost:(AbstractPost *)post
+          success:(void (^)())success
+          failure:(void (^)(NSError *error))failure;
+
 - (void)restorePost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
