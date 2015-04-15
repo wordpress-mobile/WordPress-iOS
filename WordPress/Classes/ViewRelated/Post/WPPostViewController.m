@@ -16,7 +16,6 @@
 #import "EditImageDetailsViewController.h"
 #import "LocationService.h"
 #import "Media.h"
-#import "MediaBrowserViewController.h"
 #import "MediaService.h"
 #import "NSString+Helpers.h"
 #import "Post.h"

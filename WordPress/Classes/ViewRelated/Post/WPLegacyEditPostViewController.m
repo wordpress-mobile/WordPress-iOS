@@ -148,8 +148,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 
     [self geotagNewPost];
     self.mediaInProgress = [NSMutableDictionary dictionary];
