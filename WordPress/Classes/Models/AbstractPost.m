@@ -9,9 +9,6 @@
 
 - (void)remove
 {
-    for (Media *media in self.media) {
-        [media cancelUpload];
-    }
     [super remove];
 }
 
