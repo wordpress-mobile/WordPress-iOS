@@ -199,28 +199,34 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
 
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
-                  completion:(void (^)(Media *media, NSError * error))completion
+                  completion:(void (^)(Media *media, NSError *error))completion
 {
     BOOL geoLocationEnabled = NO;
     NSError *error = nil;
     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-	if (!post) {
-		if (completion) {
-			completion(nil, error);
-		}
-		return;
-	}
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    MediaType mediaType = MediaTypeDocument;
+    if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+        mediaType = MediaTypeImage;
+    } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+        mediaType = MediaTypeVideo;
+    }
 
     geoLocationEnabled = post.blog.geolocationEnabled;
-    
+
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    NSString *imagePath = [self pathForAsset:asset];
-    
+    NSString *mediaPath = [self pathForAsset:asset];
+
     [[WPAssetExporter sharedInstance] exportAsset:asset
-                                           toFile:imagePath
+                                           toFile:mediaPath
                                          resizing:maxImageSize
                                  stripGeoLocation:!geoLocationEnabled
-                                completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+                                completionHandler:^(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error) {
         if (!success) {
             if (completion){
                 completion(nil, error);
@@ -231,15 +237,17 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
             
             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
             Media *media = [self newMediaForPost:post];
-            media.filename = [imagePath lastPathComponent];
-            media.localURL = imagePath;
+            media.filename = [mediaPath lastPathComponent];
+            media.localURL = mediaPath;
             media.thumbnail = thumbnailData;
-            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
+            [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
+            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
             media.filesize = @([fileAttributes fileSize] / 1024);
             media.width = @(resultingSize.width);
             media.height = @(resultingSize.height);
+            media.mediaType = mediaType;
             //make sure that we only return when object is properly created and saved
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (completion) {
@@ -247,7 +255,7 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
                 }
             }];
         }];
-    }];
+                                }];
 }
 
 - (void)uploadMedia:(Media *)media
@@ -270,6 +278,7 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
                 if (failure){
                     failure(error);
                 }
+                return;
             }
             
             [self updateMedia:mediaInContext withRemoteMedia:media];
@@ -333,6 +342,24 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
 {
     NSSet *media = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID = %@", mediaID]];
     return [media anyObject];
+}
+
+- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+                             inBlog:(Blog *)blog
+                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            failure:(void (^)(NSError *error))failure
+{
+    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
+    Media *media = [mediaSet anyObject];
+    if (media) {
+        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
+            success(media.remoteURL, media.thumbnailLocalURL);
+        } else {
+            success(media.remoteURL, @"");
+        }
+    } else {
+        failure(nil);
+    }
 }
 
 
@@ -437,6 +464,9 @@ static NSInteger const MediaPreloadThumbnailCount = 100;
     }
     if ([remoteMedia.width isKindOfClass:[NSNumber class]]) {
         media.width = remoteMedia.width;
+    }
+    if ([remoteMedia.shortcode isKindOfClass:[NSString class]]) {
+        media.shortcode = remoteMedia.shortcode;
     }
 }
 

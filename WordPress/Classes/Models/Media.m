@@ -349,7 +349,6 @@ static CGFloat const MediaMinimumThumbnailSize = 105.0;
 
 - (void)remove
 {
-    [self cancelUpload];
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
 
@@ -369,138 +368,6 @@ static CGFloat const MediaMinimumThumbnailSize = 105.0;
 - (BOOL)unattached
 {
     return self.posts.count == 0;
-}
-
-- (void)cancelUpload
-{
-    if ((self.remoteStatus == MediaRemoteStatusPushing || self.remoteStatus == MediaRemoteStatusProcessing) && self.progress < 1.0f) {
-        [_uploadOperation cancel];
-        _uploadOperation = nil;
-        self.remoteStatus = MediaRemoteStatusFailed;
-    }
-}
-
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    [self save];
-    self.progress = 0.0f;
-
-    [self xmlrpcUploadWithSuccess:success failure:failure];
-}
-
-- (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
-{
-    [self save];
-    [self xmlrpcUpdateWithSuccess:success failure:failure];
-}
-
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
-{
-    NSString *mimeType = (self.mediaType == MediaTypeVideo) ? @"video/mp4" : @"image/jpeg";
-    NSDictionary *object = @{@"type": mimeType,
-                             @"name": self.filename,
-                             @"bits": [NSInputStream inputStreamWithFileAtPath:self.localURL]};
-    NSArray *parameters = [self.blog getXMLRPCArgsWithExtra:object];
-
-    self.remoteStatus = MediaRemoteStatusProcessing;
-
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^(void) {
-        // Create the request asynchronously
-        // TODO: use streaming to avoid processing on memory
-        NSMutableURLRequest *request = [self.blog.api requestWithMethod:@"metaWeblog.newMediaObject" parameters:parameters];
-
-        dispatch_async(dispatch_get_main_queue(), ^(void) {
-            void (^failureBlock)(AFHTTPRequestOperation *, NSError *) = ^(AFHTTPRequestOperation *operation, NSError *error) {
-                if ([self isDeleted] || self.managedObjectContext == nil) {
-                    return;
-                }
-
-                self.remoteStatus = MediaRemoteStatusFailed;
-                _uploadOperation = nil;
-                if (failure) {
-                    failure(error);
-                }
-            };
-            AFHTTPRequestOperation *operation = [self.blog.api HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-                if ([self isDeleted] || self.managedObjectContext == nil) {
-                    return;
-                }
-
-                NSDictionary *response = (NSDictionary *)responseObject;
-
-                if (![response isKindOfClass:[NSDictionary class]]) {
-                    NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadServerResponse userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"The server returned an empty response. This usually means you need to increase the memory limit for your site.", @"")}];
-                    failureBlock(operation, error);
-                    return;
-                }
-                if ([response objectForKey:@"videopress_shortcode"] != nil) {
-                    self.shortcode = [response objectForKey:@"videopress_shortcode"];
-                }
-
-                if ([response objectForKey:@"url"] != nil) {
-                    self.remoteURL = [response objectForKey:@"url"];
-                }
-
-                if ([response objectForKey:@"id"] != nil) {
-                    self.mediaID = [[response objectForKey:@"id"] numericValue];
-                }
-
-                self.remoteStatus = MediaRemoteStatusSync;
-                 _uploadOperation = nil;
-                if (success) {
-                    success();
-                }
-            } failure:failureBlock];
-            [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-                dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    if ([self isDeleted] || self.managedObjectContext == nil) {
-                        return;
-                    }
-                    self.progress = (float)totalBytesWritten / (float)totalBytesExpectedToWrite;
-                });
-            }];
-            _uploadOperation = operation;
-
-            // Upload might have been canceled while processing
-            if (self.remoteStatus == MediaRemoteStatusProcessing) {
-                self.remoteStatus = MediaRemoteStatusPushing;
-                [self.blog.api enqueueHTTPRequestOperation:operation];
-            }
-        });
-    });
-}
-
-- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
-{
-    WPXMLRPCRequest *deleteRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:[self.blog getXMLRPCArgsWithExtra:self.mediaID]];
-    WPXMLRPCRequestOperation *deleteOperation = [self.blog.api XMLRPCRequestOperationWithRequest:deleteRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.managedObjectContext deleteObject:self];
-        if (success) {
-            success();
-        }
-        [self.managedObjectContext save:nil];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [self.blog.api enqueueXMLRPCRequestOperation:deleteOperation];
-}
-
-- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure
-{
-    NSArray *params = [self.blog getXMLRPCArgsWithExtra:@[self.mediaID, [self XMLRPCDictionaryForUpdate]]];
-    WPXMLRPCRequest *updateRequest = [self.blog.api XMLRPCRequestWithMethod:@"wp.editPost" parameters:params];
-    WPXMLRPCRequestOperation *update = [self.blog.api XMLRPCRequestOperationWithRequest:updateRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success) {
-            success();
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [self.blog.api enqueueXMLRPCRequestOperation:update];
 }
 
 - (NSString *)html
@@ -577,6 +444,15 @@ static CGFloat const MediaMinimumThumbnailSize = 105.0;
         }
     }
     return result;
+}
+
+- (NSString *)thumbnailLocalURL;
+{
+    if ( self.localURL ) {
+        return [NSString stringWithFormat:@"%@-thumbnail",self.localURL];
+    } else {
+        return nil;
+    }
 }
 
 @end
