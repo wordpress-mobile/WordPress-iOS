@@ -290,7 +290,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")
+                                            destructiveButtonTitle:NSLocalizedString(@"Disconnect", @"Button for confirming disconnecting WordPress.com account")
                                                  otherButtonTitles:nil];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 
