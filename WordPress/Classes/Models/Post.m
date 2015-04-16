@@ -259,6 +259,11 @@
     return self.blog.isMultiAuthor;
 }
 
+- (BOOL)isUploading
+{
+    return self.remoteStatus == AbstractPostRemoteStatusPushing;
+}
+
 - (NSURL *)featuredImageURLForDisplay
 {
     if ([self.featuredImage remoteURL]) {
