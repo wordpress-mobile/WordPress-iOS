@@ -416,15 +416,14 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 - (void)configureActionBar
 {
     NSString *status = [self.contentProvider status];
-    if ([status isEqualToString:PostStatusDraft] || [status isEqualToString:PostStatusPending] || [status isEqualToString:PostStatusScheduled]) {
-        // draft, pending, future
-        [self configureDraftActionBar];
+    if ([status isEqualToString:PostStatusPublish] || [status isEqualToString:PostStatusPrivate]) {
+        [self configurePublishedActionBar];
     } else if ([status isEqualToString:PostStatusTrash]) {
         // trashed
         [self configureTrashedActionBar];
     } else {
-        // anything else (published, private, something custom) treat as published
-        [self configurePublishedActionBar];
+        // anything else (draft, pending, scheduled, something custom) treat as draft
+        [self configureDraftActionBar];
     }
 }
 
