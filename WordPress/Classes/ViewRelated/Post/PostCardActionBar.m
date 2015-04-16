@@ -40,14 +40,10 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
     return self;
 }
 
-- (void)didMoveToWindow
+- (void)layoutSubviews
 {
-    [super didMoveToWindow];
-
-    // Initial frame is likely to change after moving to a window.
-    // Be sure to refresh buttons if necessary.
-    // Calling after a delay is a bit of a hack but I don't see a better option - E
-    [self performSelector:@selector(setupButtonsIfNeeded) withObject:nil afterDelay:0.3];
+    [super layoutSubviews];
+    [self setupButtonsIfNeeded];
 }
 
 
