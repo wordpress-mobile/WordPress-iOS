@@ -204,20 +204,20 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (void)configureCellsForLayout
 {
     self.textCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
-    [self configureCellForLayout:self.textCellForLayout];
+    [self forceUpdateCellLayout:self.textCellForLayout];
 
     self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
-    [self configureCellForLayout:self.imageCellForLayout];
+    [self forceUpdateCellLayout:self.imageCellForLayout];
 }
 
-- (void)configureCellForLayout:(PostCardTableViewCell *)cellForLayout
+- (void)forceUpdateCellLayout:(PostCardTableViewCell *)cell
 {
     // Force a layout pass to ensure that constrants are configured for the
     // proper size class.
-    [self.view addSubview:cellForLayout];
-    [cellForLayout updateConstraintsIfNeeded];
-    [cellForLayout layoutIfNeeded];
-    [cellForLayout removeFromSuperview];
+    [self.view addSubview:cell];
+    [cell updateConstraintsIfNeeded];
+    [cell layoutIfNeeded];
+    [cell removeFromSuperview];
 }
 
 - (void)configureTableView
