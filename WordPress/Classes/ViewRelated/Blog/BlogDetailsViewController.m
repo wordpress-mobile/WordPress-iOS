@@ -21,7 +21,6 @@
 #import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "ThemeBrowserViewController.h"
-#import "MediaBrowserViewController.h"
 #import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
