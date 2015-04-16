@@ -29,5 +29,6 @@
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (BOOL)isMultiAuthorBlog;
+- (BOOL)isUploading;
 
 @end
