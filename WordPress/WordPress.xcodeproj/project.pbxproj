@@ -140,6 +140,8 @@
 		5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */; };
 		5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */; };
 		5D8D53F219250412003C8859 /* WPComBlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53F019250412003C8859 /* WPComBlogSelectorViewController.m */; };
+		5D91B26D1ADC5EDF00591C43 /* PostCardRestoreView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D91B26C1ADC5EDF00591C43 /* PostCardRestoreView.xib */; };
+		5D91B2701ADC612800591C43 /* PostCardRestoreView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D91B26F1ADC612800591C43 /* PostCardRestoreView.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
 		5D9B17C519998A430047A4A2 /* ReaderBlockedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9B17C419998A430047A4A2 /* ReaderBlockedTableViewCell.m */; };
 		5D9BFF041A8557A8001D6D63 /* ReaderPostRichContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D9BFF031A8557A8001D6D63 /* ReaderPostRichContentView.m */; };
@@ -766,6 +768,9 @@
 		5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSelectorViewController.m; sourceTree = "<group>"; };
 		5D8D53EF19250412003C8859 /* WPComBlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPComBlogSelectorViewController.h; sourceTree = "<group>"; };
 		5D8D53F019250412003C8859 /* WPComBlogSelectorViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPComBlogSelectorViewController.m; sourceTree = "<group>"; };
+		5D91B26C1ADC5EDF00591C43 /* PostCardRestoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardRestoreView.xib; sourceTree = "<group>"; };
+		5D91B26E1ADC612800591C43 /* PostCardRestoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardRestoreView.h; sourceTree = "<group>"; };
+		5D91B26F1ADC612800591C43 /* PostCardRestoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardRestoreView.m; sourceTree = "<group>"; };
 		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9B17C319998A430047A4A2 /* ReaderBlockedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderBlockedTableViewCell.h; sourceTree = "<group>"; };
@@ -1902,10 +1907,10 @@
 		5D09CBA61ACDE532007A23BD /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				5D09CBA31ACDE52C007A23BD /* WPSearchController.h */,
-				5D09CBA41ACDE52C007A23BD /* WPSearchController.m */,
 				5DE293BF1AD8009E00825DE5 /* PostListFilter.h */,
 				5DE293C01AD8009E00825DE5 /* PostListFilter.m */,
+				5D09CBA31ACDE52C007A23BD /* WPSearchController.h */,
+				5D09CBA41ACDE52C007A23BD /* WPSearchController.m */,
 			);
 			name = Utils;
 			sourceTree = "<group>";
@@ -2034,6 +2039,9 @@
 				5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */,
 				5D4C89FF1AB88F58007464B3 /* PostCardImageCell.xib */,
 				5DE293C21AD82A6800825DE5 /* PostCardThumbCell.xib */,
+				5D91B26E1ADC612800591C43 /* PostCardRestoreView.h */,
+				5D91B26F1ADC612800591C43 /* PostCardRestoreView.m */,
+				5D91B26C1ADC5EDF00591C43 /* PostCardRestoreView.xib */,
 				5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */,
 				5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */,
 				5D000DDF1AC0879600A7BAF9 /* PostCardActionBarItem.h */,
@@ -3257,6 +3265,7 @@
 				B5509A9519CA3B9F006D2E49 /* EditReplyViewController.xib in Resources */,
 				5DA5BF4218E32DCF005F11F9 /* MediaBrowserViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
+				5D91B26D1ADC5EDF00591C43 /* PostCardRestoreView.xib in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
 				B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */,
 				5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */,
@@ -3609,6 +3618,7 @@
 				5D157B8C1A8AB73C003ADF4C /* ReaderSiteHeaderView.m in Sources */,
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				5D7B414719E482C9007D9EC7 /* WPRichTextImage.swift in Sources */,
+				5D91B2701ADC612800591C43 /* PostCardRestoreView.m in Sources */,
 				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
