@@ -8,6 +8,15 @@
 #import <TracksService.h>
 #endif
 
+@interface  TracksEventPair : NSObject
+@property (nonatomic, copy) NSString *eventName;
+@property (nonatomic, strong) NSDictionary *properties;
+@end
+
+@implementation TracksEventPair
+@end
+
+
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
 #ifdef TRACKS_ENABLED
@@ -38,14 +47,14 @@
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
-    NSString *eventName = [self eventNameForStat:stat];
-    
-    if (eventName.length == 0) {
-        return;
-    }
-    
+    TracksEventPair *eventPair = [self eventPairForStat:stat];
+    NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
+
+    [mergedProperties addEntriesFromDictionary:eventPair.properties];
+    [mergedProperties addEntriesFromDictionary:properties];
+
 #ifdef TRACKS_ENABLED
-    [self.tracksService trackEventName:eventName withCustomProperties:properties];
+    [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
 #endif
 }
 
@@ -132,9 +141,10 @@
 
 #pragma mark - Private methods
 
-- (NSString *)eventNameForStat:(WPAnalyticsStat)stat
+- (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
 {
     NSString *eventName;
+    NSDictionary *eventProperties;
     
     switch (stat) {
         case WPAnalyticsStatAddedSelfHostedSite:
@@ -180,10 +190,12 @@
             eventName = @"account_created";
             break;
         case WPAnalyticsStatEditorAddedPhotoViaLocalLibrary:
-            eventName = @"editor_photo_added_via_local_library";
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"local_library" };
             break;
         case WPAnalyticsStatEditorAddedPhotoViaWPMediaLibrary:
-            eventName = @"editor_photo_added_via_wp_media_library";
+            eventName = @"editor_photo_added";
+            eventProperties = @{ @"via" : @"media_library" };
             break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
@@ -192,16 +204,20 @@
             eventName = @"editor_post_created";
             break;
         case WPAnalyticsStatPublishedPostWithCategories:
-            eventName = @"editor_post_published_with_categories";
+            eventName = @"editor_post_published";
+            eventProperties = @{ @"with_categories" : @YES };
             break;
         case WPAnalyticsStatPublishedPostWithPhoto:
-            eventName = @"editor_post_published_with_photos";
+            eventName = @"editor_post_published";
+            eventProperties = @{ @"with_photos" : @YES };
             break;
         case WPAnalyticsStatPublishedPostWithTags:
-            eventName = @"editor_post_published_with_tags";
+            eventName = @"editor_post_published";
+            eventProperties = @{ @"with_tags" : @YES };
             break;
         case WPAnalyticsStatPublishedPostWithVideo:
-            eventName = @"editor_post_published_with_videos";
+            eventName = @"editor_post_published";
+            eventProperties = @{ @"with_videos" : @YES };
             break;
         case WPAnalyticsStatEditorDiscardedChanges:
             eventName = @"editor_discarded_changes";
@@ -222,40 +238,52 @@
             eventName = @"editor_post_published";
             break;
         case WPAnalyticsStatEditorTappedBlockquote:
-            eventName = @"editor_button_blockquote_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"blockquote" };
             break;
         case WPAnalyticsStatEditorTappedBold:
-            eventName = @"editor_button_bold_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"bold" };
             break;
         case WPAnalyticsStatEditorTappedHTML:
-            eventName = @"editor_button_html_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"html" };
             break;
         case WPAnalyticsStatEditorTappedImage:
-            eventName = @"editor_button_image_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"image" };
             break;
         case WPAnalyticsStatEditorTappedItalic:
-            eventName = @"editor_button_italic_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"italic" };
             break;
         case WPAnalyticsStatEditorTappedLink:
-            eventName = @"editor_button_link_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"link" };
             break;
         case WPAnalyticsStatEditorTappedMore:
-            eventName = @"editor_button_more_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"more" };
             break;
         case WPAnalyticsStatEditorTappedOrderedList:
-            eventName = @"editor_button_ordered_list_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"ordered_list" };
             break;
         case WPAnalyticsStatEditorTappedStrikethrough:
-            eventName = @"editor_button_strikethrough_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"strikethrough" };
             break;
         case WPAnalyticsStatEditorTappedUnderline:
-            eventName = @"editor_button_underline_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"underline" };
             break;
         case WPAnalyticsStatEditorTappedUnlink:
-            eventName = @"editor_button_unlink_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"unlink" };
             break;
         case WPAnalyticsStatEditorTappedUnorderedList:
-            eventName = @"editor_button_unordered_list_tapped";
+            eventName = @"editor_button_tapped";
+            eventProperties = @{ @"button" : @"unordered_list" };
             break;
         case WPAnalyticsStatEditorToggledOff:
             eventName = @"editor_toggled_off";
@@ -330,19 +358,24 @@
             eventName = @"one_password_signup";
             break;
         case WPAnalyticsStatOpenedComments:
-            eventName = @"site_menu_comments_opened";
+            eventName = @"site_menu_opened";
+            eventProperties = @{ @"menu_item" : @"comments" };
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
-            eventName = @"site_menu_media_library_opened";
+            eventName = @"site_menu_opened";
+            eventProperties = @{ @"menu_item" : @"library" };
             break;
         case WPAnalyticsStatOpenedPages:
-            eventName = @"site_menu_pages_opened";
+            eventName = @"site_menu_opened";
+            eventProperties = @{ @"menu_item" : @"pages" };
             break;
         case WPAnalyticsStatOpenedPosts:
-            eventName = @"site_menu_posts_opened";
+            eventName = @"site_menu_opened";
+            eventProperties = @{ @"menu_item" : @"posts" };
             break;
         case WPAnalyticsStatOpenedSettings:
-            eventName = @"site_menu_settings_opened";
+            eventName = @"site_menu_opened";
+            eventProperties = @{ @"menu_item" : @"settings" };
             break;
         case WPAnalyticsStatOpenedSupport:
             eventName = @"support_opened";
@@ -490,11 +523,14 @@
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
-            eventName = nil;
-            break;
+            return nil;
     }
 
-    return eventName;
+    TracksEventPair *eventPair = [TracksEventPair new];
+    eventPair.eventName = eventName;
+    eventPair.properties = eventProperties;
+    
+    return eventPair;
 }
 
 @end
