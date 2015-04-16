@@ -6,10 +6,10 @@
 #import "BlogService.h"
 #import "ContextManager.h"
 #import "EditSiteViewController.h"
+#import "NavBarTitleDropdownButton.h"
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
-#import "NavBarTitleDropdownButton.h"
 #import "PostListFilter.h"
 #import "PostListViewController.h"
 #import "PostPreviewViewController.h"
@@ -25,6 +25,7 @@
 #import "WPStyleGuide+Posts.h"
 #import "WPTableImageSource.h"
 #import "WPTableViewHandler.h"
+#import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
@@ -79,7 +80,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 @property (nonatomic, strong) NSArray *postListFilters;
-
+@property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
+@property (nonatomic, strong) NSMutableDictionary *nonReusuablePostCells;
 @end
 
 @implementation CalypsoPostsViewController
@@ -130,6 +132,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.recentlyTrashedPostIDs = [NSMutableArray array];
+    self.nonReusuablePostCells = [NSMutableDictionary dictionary];
 
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
     self.tableView = self.postListViewController.tableView;
@@ -235,6 +239,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
     self.tableViewHandler.cacheRowHeights = YES;
     self.tableViewHandler.delegate = self;
+    self.tableViewHandler.updateRowAnimation = UITableViewRowAnimationNone;
 }
 
 - (void)configureSyncHelper
@@ -395,7 +400,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     [self.authorsFilterView insertSubview:searchBar atIndex:0];
 
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);;
+    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
     NSDictionary *metrics = @{
                               @"searchBarWidth":@(PostsSearchBarWidth),
                               @"searchBariPadWidth":@(PostsSearchBariPadWidth)
@@ -544,6 +549,10 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    if ([self.recentlyTrashedPostIDs count]) {
+        [self.recentlyTrashedPostIDs removeAllObjects];
+        [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    }
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
     __weak __typeof(self) weakSelf = self;
@@ -654,7 +663,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return fetchRequest;
 }
 
-- (void)updateAndPerformFetchRequest
+- (void)updateAndPerformFetchRequestClearingCachedRowHeights:(BOOL)clearCachedRowHeights
 {
     NSAssert([NSThread isMainThread], @"PostsViewController Error: NSFetchedResultsController accessed in BG");
 
@@ -665,7 +674,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
     }
-    [self.tableViewHandler clearCachedRowHeights];
+    if (clearCachedRowHeights) {
+        [self.tableViewHandler clearCachedRowHeights];
+    }
     [self.tableView reloadData];
     [self configureNoResultsView];
 }
@@ -690,7 +701,13 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         [predicates addObject:searchPredicate];
     }
 
-    return [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
+    if ([self.recentlyTrashedPostIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+        predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, trashedPredicate]];
+    }
+
+    return predicate;
 }
 
 
@@ -754,15 +771,34 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self editPost:post];
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Clean up nonReusableCells once they are off screen.
+    if (indexPath.row < [self.tableViewHandler.resultsController.fetchedObjects count]) {
+        Post *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+        [self.nonReusuablePostCells removeObjectForKey:post.postID];
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([post featuredImageURLForDisplay]) {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardImageCellIdentifier];
+
+    if ([self needsNonReusableCellForPost:post]) {
+        cell = [self nonReusableCellForPost:post];
+
     } else {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardTextCellIdentifier];
+        // Dequeue reusable cell
+        NSString *identifier;
+        if ([post featuredImageURLForDisplay]) {
+            identifier = PostCardImageCellIdentifier;
+        } else {
+            identifier = PostCardTextCellIdentifier;
+        }
+        cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     }
+
     [self configureCell:cell atIndexPath:indexPath];
     return cell;
 }
@@ -775,7 +811,45 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     PostCardTableViewCell *postCell = (PostCardTableViewCell *)cell;
     postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+
+    postCell.canShowRestoreView = [self cellCanShowRestoreViewForPost:post];
     [postCell configureCell:post];
+}
+
+- (BOOL)needsNonReusableCellForPost:(Post *)post
+{
+    // Is the post currently uploading?
+    BOOL isPushing = post.remoteStatus == AbstractPostRemoteStatusPushing;
+
+    return isPushing || [self cellCanShowRestoreViewForPost:post];
+}
+
+- (BOOL)cellCanShowRestoreViewForPost:(Post *)post
+{
+    // Is the post trashed but we're not viewing the trash filter.
+    BOOL isNotViewingTrashFolder = [self currentPostListFilter].filterType != PostListStatusFilterTrashed;
+
+    // Is this a trashed post...
+    BOOL isTrashedPost = [post.status isEqualToString:PostStatusTrash];
+
+    return (isNotViewingTrashFolder && isTrashedPost);
+}
+
+- (PostCardTableViewCell *)nonReusableCellForPost:(Post *)post
+{
+    PostCardTableViewCell *cell = [self.nonReusuablePostCells objectForKey:post.postID];
+    if (cell) {
+        return cell;
+    }
+
+    if ([post featuredImageURLForDisplay]) {
+        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
+    } else {
+        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+    }
+    [self.nonReusuablePostCells setObject:cell forKey:post.postID];
+
+    return cell;
 }
 
 
@@ -785,8 +859,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)createPost
 {
-    // TODO: Flag we're adding a new post
-
     UINavigationController *navController;
 
     if ([WPPostViewController isNewEditorEnabled]) {
@@ -807,6 +879,23 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self presentViewController:navController animated:YES completion:nil];
 
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
+}
+
+- (void)publishPost:(AbstractPost *)apost
+{
+    apost.status = PostStatusPublish;
+    apost.dateCreated = [NSDate date];
+    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [postService uploadPost:apost
+                    success:nil
+                    failure:^(NSError *error) {
+                        if([error code] == 403) {
+                            [self promptForPasswordWithMessage:nil];
+                        } else {
+                            [WPError showXMLRPCErrorAlert:error];
+                        }
+                        [self syncItemsWithUserInteraction:NO];
+                    }];
 }
 
 - (void)editPost:(AbstractPost *)apost
@@ -838,25 +927,14 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)deletePost:(AbstractPost *)apost
 {
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [postService deletePost:apost
-                    success:nil
-                    failure:^(NSError *error) {
-                        if([error code] == 403) {
-                            [self promptForPasswordWithMessage:nil];
-                        } else {
-                            [WPError showXMLRPCErrorAlert:error];
-                        }
-                        [self syncItemsWithUserInteraction:NO];
-                    }];
-}
+    NSNumber *postID = apost.postID;
+    [self.recentlyTrashedPostIDs addObject:postID];
 
-- (void)publishPost:(AbstractPost *)apost
-{
-    apost.status = @"publish";
-    apost.dateCreated = [NSDate date];
+    // Update the fetch request *before* making the service call.
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [postService uploadPost:apost
+    [postService trashPost:apost
                     success:nil
                     failure:^(NSError *error) {
                         if([error code] == 403) {
@@ -864,23 +942,80 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                         } else {
                             [WPError showXMLRPCErrorAlert:error];
                         }
-                        [self syncItemsWithUserInteraction:NO];
+                        [self.recentlyTrashedPostIDs removeObject:postID];
                     }];
 }
 
 - (void)restorePost:(AbstractPost *)apost
 {
+    // if the post was recently deleted, update the status helper and reload the cell to display a spinner
+    NSNumber *postID = apost.postID;
+    NSManagedObjectID *postObjectID = apost.objectID;
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService restorePost:apost
-                    success:nil
-                    failure:^(NSError *error) {
-                        if([error code] == 403) {
-                            [self promptForPasswordWithMessage:nil];
-                        } else {
-                            [WPError showXMLRPCErrorAlert:error];
-                        }
-                        [self syncItemsWithUserInteraction:NO];
-                    }];
+                     success:^() {
+                         [self.recentlyTrashedPostIDs removeObject:postID];
+                         [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
+
+                         // Make sure the post still exists.
+                         NSError *err;
+                         AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+                         if (err) {
+                             DDLogError(@"%@", err);
+                         }
+                         if (!post) {
+                             // The post was deleted (?), so update the fetch request then bail.
+                             return;
+                         }
+
+                         // If the post was restored, see if it appears in the current filter.
+                         // If not, prompt the user to let it know under which filter it appears.
+                         PostListFilter *filter = [self filterThatDisplaysPostsWithStatus:post.status];
+                         if ([filter isEqual:[self currentPostListFilter]]) {
+                             return;
+                         }
+                         [self promptThatPostRestoredToFilter:filter];
+                     }
+                     failure:^(NSError *error) {
+                         if([error code] == 403) {
+                             [self promptForPasswordWithMessage:nil];
+                         } else {
+                             [WPError showXMLRPCErrorAlert:error];
+                         }
+                     }];
+}
+
+- (void)promptThatPostRestoredToFilter:(PostListFilter *)filter
+{
+    NSString *message = NSLocalizedString(@"Post Restored to Drafts", @"Prompts the user that a restored post was moved to the drafts list.");
+    switch (filter.filterType) {
+        case PostListStatusFilterPublished:
+            message = NSLocalizedString(@"Post Restored to Published", @"Prompts the user that a restored post was moved to the published list.");
+            break;
+        case PostListStatusFilterScheduled:
+            message = NSLocalizedString(@"Post Restored to Scheduled", @"Prompts the user that a restored post was moved to the scheduled list.");
+            break;
+        default:
+            break;
+    }
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil
+                                                        message:message
+                                                       delegate:nil
+                                              cancelButtonTitle:NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
+                                              otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+- (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
+{
+    for (PostListFilter *filter in self.postListFilters) {
+        if ([filter.statuses containsObject:postStatus]) {
+            return filter;
+        }
+    }
+    // The draft filter is the catch all by convention.
+    return [self.postListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
 }
 
 - (void)viewStatsForPost:(AbstractPost *)apost
@@ -955,8 +1090,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:CurrentPostListStatusFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
+    [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateFilterTitle];
-    [self updateAndPerformFetchRequest];
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
 }
 
 - (void)updateFilterTitle
@@ -966,7 +1102,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)displayFilters
 {
-
     NSMutableArray *titles = [NSMutableArray array];
     for (PostListFilter *filter in self.postListFilters) {
         [titles addObject:filter.title];
@@ -1011,7 +1146,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                                                       inView:self.navigationController.view
                                     permittedArrowDirections:UIPopoverArrowDirectionAny
                                                     animated:YES];
-
 }
 
 - (void)displayFilterModal:(UIViewController *)controller
@@ -1105,12 +1239,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     }];
 
     self.searchController.searchBar.text = nil;
-    [self updateAndPerformFetchRequest];
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
-    [self updateAndPerformFetchRequest];
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
 }
 
 @end
