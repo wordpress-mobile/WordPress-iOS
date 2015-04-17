@@ -11,6 +11,9 @@
     CGFloat fontSize = [UIDevice isPad] ? 14.0 : 12.0;
     NSDictionary *attributes = @{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:fontSize]};
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
+    segmentControl.tintColor = [WPStyleGuide grey];
+    segmentControl.backgroundColor = [UIColor whiteColor];
+
 }
 
 + (UIColor *)postListSearchBarTextColor
