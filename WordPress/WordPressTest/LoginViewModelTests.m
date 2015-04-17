@@ -1700,10 +1700,10 @@ describe(@"LoginFacadeDelegate methods", ^{
             
             // Retrieve jetpack block and execute it when appropriate
             [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
-                void (^ __unsafe_unretained jetpackStub)(void);
+                void (^ __unsafe_unretained jetpackStub)(NSNumber *);
                 [invocation getArgument:&jetpackStub atIndex:7];
                 
-                jetpackStub();
+                jetpackStub(@1);
             }];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
