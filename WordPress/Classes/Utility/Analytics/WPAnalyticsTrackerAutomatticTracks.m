@@ -27,6 +27,9 @@
 
 @end
 
+NSString *const TracksEventPropertyButtonKey = @"button";
+NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
+
 @implementation WPAnalyticsTrackerAutomatticTracks
 
 - (instancetype)init
@@ -239,51 +242,51 @@
             break;
         case WPAnalyticsStatEditorTappedBlockquote:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"blockquote" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"blockquote" };
             break;
         case WPAnalyticsStatEditorTappedBold:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"bold" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"bold" };
             break;
         case WPAnalyticsStatEditorTappedHTML:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"html" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"html" };
             break;
         case WPAnalyticsStatEditorTappedImage:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"image" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"image" };
             break;
         case WPAnalyticsStatEditorTappedItalic:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"italic" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"italic" };
             break;
         case WPAnalyticsStatEditorTappedLink:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"link" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"link" };
             break;
         case WPAnalyticsStatEditorTappedMore:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"more" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"more" };
             break;
         case WPAnalyticsStatEditorTappedOrderedList:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"ordered_list" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"ordered_list" };
             break;
         case WPAnalyticsStatEditorTappedStrikethrough:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"strikethrough" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"strikethrough" };
             break;
         case WPAnalyticsStatEditorTappedUnderline:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"underline" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"underline" };
             break;
         case WPAnalyticsStatEditorTappedUnlink:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"unlink" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"unlink" };
             break;
         case WPAnalyticsStatEditorTappedUnorderedList:
             eventName = @"editor_button_tapped";
-            eventProperties = @{ @"button" : @"unordered_list" };
+            eventProperties = @{ TracksEventPropertyButtonKey : @"unordered_list" };
             break;
         case WPAnalyticsStatEditorToggledOff:
             eventName = @"editor_toggled_off";
@@ -359,23 +362,23 @@
             break;
         case WPAnalyticsStatOpenedComments:
             eventName = @"site_menu_opened";
-            eventProperties = @{ @"menu_item" : @"comments" };
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"comments" };
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
-            eventProperties = @{ @"menu_item" : @"library" };
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"library" };
             break;
         case WPAnalyticsStatOpenedPages:
             eventName = @"site_menu_opened";
-            eventProperties = @{ @"menu_item" : @"pages" };
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"pages" };
             break;
         case WPAnalyticsStatOpenedPosts:
             eventName = @"site_menu_opened";
-            eventProperties = @{ @"menu_item" : @"posts" };
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"posts" };
             break;
         case WPAnalyticsStatOpenedSettings:
             eventName = @"site_menu_opened";
-            eventProperties = @{ @"menu_item" : @"settings" };
+            eventProperties = @{ TracksEventPropertyMenuItemKey : @"settings" };
             break;
         case WPAnalyticsStatOpenedSupport:
             eventName = @"support_opened";
