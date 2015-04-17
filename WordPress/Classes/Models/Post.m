@@ -259,6 +259,14 @@
     return self.blog.isMultiAuthor;
 }
 
+- (NSString *)statusForDisplay
+{
+    if ([self.status isEqualToString:PostStatusPublish]) {
+        return [NSString string];
+    }
+    return [self statusTitle];
+}
+
 - (BOOL)isUploading
 {
     return self.remoteStatus == AbstractPostRemoteStatusPushing;
