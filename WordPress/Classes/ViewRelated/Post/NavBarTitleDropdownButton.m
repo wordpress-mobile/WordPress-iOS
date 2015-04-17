@@ -11,6 +11,7 @@
     self.titleLabel.adjustsFontSizeToFitWidth = NO;
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [self setImage:[UIImage imageNamed:@"icon-nav-chevron"] forState:UIControlStateNormal];
+    [self setImage:[UIImage imageNamed:@"icon-nav-chevron-highlight"] forState:UIControlStateHighlighted];
 }
 
 - (CGRect)imageRectForContentRect:(CGRect)contentRect
