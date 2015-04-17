@@ -86,7 +86,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
-@property (nonatomic, strong) UIButton *uploadStatusButton;
+@property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
@@ -98,7 +98,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *negativeSeparator;
-@property (nonatomic, strong) UIBarButtonItem *cancelButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelXButton;
+@property (nonatomic, strong) UIBarButtonItem *cancelChevronButton;
+@property (nonatomic, strong) UIBarButtonItem *currentCancelButton;
 @property (nonatomic, strong) UIBarButtonItem *editBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *saveBarButtonItem;
 @property (nonatomic, strong) UIBarButtonItem *previewBarButtonItem;
@@ -834,7 +836,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     actionSheet.tag = WPPostViewControllerActionSheetSaveOnExit;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
-        [actionSheet showFromBarButtonItem:self.cancelButton animated:YES];
+        [actionSheet showFromBarButtonItem:self.currentCancelButton animated:YES];
     } else {
         [actionSheet showInView:[UIApplication sharedApplication].keyWindow];
     }
@@ -1018,20 +1020,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
-        [self.navigationItem setLeftBarButtonItems:nil];
         leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
-        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
+        self.currentCancelButton = self.cancelXButton;
     } else if ([self isEditing] && self.post.hasRemote) {
         // Editing an existing post (draft or published)
-        [self.navigationItem setLeftBarButtonItems:nil];
         leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        [self.navigationItem setLeftBarButtonItems:leftBarButtons animated:NO];
+        self.currentCancelButton = self.cancelChevronButton;
 	} else {
         // Previewing a post (no edit)
-        [self.navigationItem setLeftBarButtonItems:nil];
         leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
-        [self.navigationItem setLeftBarButtonItems:leftBarButtons];
+        self.currentCancelButton = self.cancelChevronButton;
 	}
+    
+    if (![leftBarButtons isEqualToArray:self.navigationItem.leftBarButtonItems]) {
+        [self.navigationItem setLeftBarButtonItems:nil];
+        [self.navigationItem setLeftBarButtonItems:leftBarButtons];
+    }
 }
 
 - (void)refreshNavigationBarRightButtons:(BOOL)editingChanged
@@ -1115,6 +1119,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (UIBarButtonItem*)cancelChevronButton
 {
+    if (_cancelChevronButton) {
+        return _cancelChevronButton;
+    }
+    
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
@@ -1125,12 +1133,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
-    _cancelButton = button;
-    return _cancelButton;
+    _cancelChevronButton = button;
+    return _cancelChevronButton;
 }
 
 - (UIBarButtonItem*)cancelXButton
 {
+    if (_cancelXButton) {
+        return _cancelXButton;
+    }
+    
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
@@ -1140,9 +1152,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
     
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
-    _cancelButton = button;
+    _cancelXButton = button;
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
-	return _cancelButton;
+	return _cancelXButton;
 }
 
 - (UIBarButtonItem *)editBarButtonItem
@@ -1251,7 +1263,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     UIBarButtonItem *aUIButtonBarItem;
     
     if ([self isMediaUploading]) {
-        aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:self.uploadStatusButton];
+        aUIButtonBarItem = self.uploadStatusButton;
     } else {
         WPBlogSelectorButton *blogButton = (WPBlogSelectorButton*)self.blogPickerButton;
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
@@ -1291,13 +1303,13 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     return _blogPickerButton;
 }
 
-- (UIButton *)uploadStatusButton
+- (UIBarButtonItem *)uploadStatusButton
 {
     if (!_uploadStatusButton) {
         UIButton *button = [WPUploadStatusButton buttonWithFrame:CGRectMake(0.0f, 0.0f, 125.0f , 30.0f)];
         button.titleLabel.text = NSLocalizedString(@"Media Uploading...", @"Message to indicate progress of uploading media to server");
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
-        _uploadStatusButton = button;
+        _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
     
     return _uploadStatusButton;
