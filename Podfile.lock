@@ -22,6 +22,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.7.1)
+  - Automattic-Tracks-iOS (0.0.0):
+    - UIDeviceIdentifier (~> 0.4)
   - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions (= 1.9.2)
   - CocoaLumberjack/Core (1.9.2)
@@ -29,7 +31,7 @@ PODS:
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.2):
     - CocoaLumberjack/Core (~> 1.9)
-  - CTAssetsPickerController (2.7.0)
+  - CTAssetsPickerController (2.9.3)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -103,14 +105,14 @@ PODS:
     - Google-Diff-Match-Patch
   - SocketRocket (0.3.1-beta2)
   - Specta (0.5.0)
-  - SVProgressHUD (1.1.1)
+  - SVProgressHUD (1.1.3)
   - UIAlertView+Blocks (0.8.1)
   - UIDeviceIdentifier (0.4.4)
   - WordPress-AppbotX (1.0.6)
   - WordPress-iOS-Editor (0.6):
     - CocoaLumberjack (~> 1.9)
     - NSObject-SafeExpectations (~> 0.0.2)
-    - UIAlertView+Blocks
+    - UIAlertView+Blocks (~> 0.8.1)
     - WordPress-iOS-Shared (~> 0.3.0)
     - WordPressCom-Analytics-iOS (~> 0.0.30)
   - WordPress-iOS-Shared (0.3):
@@ -132,9 +134,10 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
   - AFNetworking (~> 2.5.2)
   - AMPopTip (~> 0.7)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.0`)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
-  - CTAssetsPickerController (~> 2.7.0)
+  - CTAssetsPickerController (~> 2.9.3)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
@@ -156,10 +159,10 @@ DEPENDENCIES:
   - Simperium (= 0.7.9)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
   - Specta (= 0.5.0)
-  - SVProgressHUD (from `https://github.com/TransitApp/SVProgressHUD.git`, commit `2ac46ae2f2dd37db153ce1daea73b1273ac2bba3`)
+  - SVProgressHUD (~> 1.1.3)
   - UIDeviceIdentifier (~> 0.1)
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit `303b8068530389ea87afde38b77466d685fe3210`)
-  - WordPress-iOS-Editor (= 0.6)
+  - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`, commit `410a94de9b71ef4cb300f5215d3ef09bfdd7abfb`)
   - WordPress-iOS-Shared (= 0.3)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.30)
@@ -167,6 +170,9 @@ DEPENDENCIES:
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -175,34 +181,38 @@ EXTERNAL SOURCES:
   SocketRocket:
     :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
     :git: https://github.com/jleandroperez/SocketRocket.git
-  SVProgressHUD:
-    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
-    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: 410a94de9b71ef4cb300f5215d3ef09bfdd7abfb
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
+    :tag: 0.0.0
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
   SocketRocket:
     :commit: 3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927
     :git: https://github.com/jleandroperez/SocketRocket.git
-  SVProgressHUD:
-    :commit: 2ac46ae2f2dd37db153ce1daea73b1273ac2bba3
-    :git: https://github.com/TransitApp/SVProgressHUD.git
   WordPress-AppbotX:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
+  WordPress-iOS-Editor:
+    :commit: 410a94de9b71ef4cb300f5215d3ef09bfdd7abfb
+    :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
   AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
+  Automattic-Tracks-iOS: 61ff137363756ab0f0da49e570dfc0aa637655f9
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
-  CTAssetsPickerController: 085e7d4010bf51a7bd49d1ef75e534ca3090eb09
+  CTAssetsPickerController: 56a4a228dcb48a9375ab8d4922e82ac74af74aa1
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
@@ -227,11 +237,11 @@ SPEC CHECKSUMS:
   Simperium: 7d0a207d7f0ce918b36ba9e690cdb0d0d730cc28
   SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
-  SVProgressHUD: 74db8326b5973869594a6e8b139f486e3500a488
+  SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
   WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
-  WordPress-iOS-Editor: 91b9a9863864ea1ece07be395ac9ca2ea048737c
+  WordPress-iOS-Editor: 8bd67af1e0391fb6a118cee583ba6163e04ab5b2
   WordPress-iOS-Shared: 0f5281492166bb89ea09d8ab5011e871ba4f6709
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
