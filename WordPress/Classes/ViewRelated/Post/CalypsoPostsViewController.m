@@ -383,7 +383,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     searchBar.tintColor = [WPStyleGuide grey]; // cursor color
     searchBar.translucent = NO;
     [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
-
+    [searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     if ([UIDevice isPad]) {
         [self configureSearchBarForFilterView];
     } else {
