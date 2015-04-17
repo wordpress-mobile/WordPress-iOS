@@ -321,17 +321,18 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 
 - (void)configureRestoreView
 {
-    [self buildRestoreView];
-
     BOOL isUploading = [self.contentProvider isUploading];
     BOOL canBeRestored = self.canShowRestoreView && [[self.contentProvider status] isEqualToString:PostStatusTrash];
 
     if (isUploading) {
+        [self buildRestoreView];
         [self showRestoreViewBusy];
+
     } else if (canBeRestored) {
-        // show dialog
+        [self buildRestoreView];
         [self showRestoreViewDialog];
-    } else {
+
+    } else if (self.restoreView) {
         [self hideRestoreView];
     }
 }
@@ -659,6 +660,7 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
                      } completion:^(BOOL finished) {
                          [self removeRestoreView];
                      }];
+    self.restoreViewState = PostCardCellRestoreViewStateNone;
 }
 
 @end
