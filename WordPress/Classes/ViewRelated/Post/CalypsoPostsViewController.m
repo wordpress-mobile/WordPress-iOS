@@ -81,7 +81,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 @property (nonatomic, strong) NSArray *postListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
+@property (nonatomic, strong) NSMutableArray *recentlyRestoredPostIDs; // IDs of posts restored from the trash. A helper to avoid clobbering non-reusable cells that may be animating.
 @property (nonatomic, strong) NSMutableDictionary *nonReusuablePostCells;
+
 @end
 
 @implementation CalypsoPostsViewController
@@ -133,6 +135,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     [super viewDidLoad];
     self.recentlyTrashedPostIDs = [NSMutableArray array];
+    self.recentlyRestoredPostIDs = [NSMutableArray array];
     self.nonReusuablePostCells = [NSMutableDictionary dictionary];
 
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
@@ -549,10 +552,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [self.recentlyRestoredPostIDs removeAllObjects];
     if ([self.recentlyTrashedPostIDs count]) {
         [self.recentlyTrashedPostIDs removeAllObjects];
         [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
     }
+
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
     __weak __typeof(self) weakSelf = self;
@@ -710,6 +715,17 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return predicate;
 }
 
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    // Part of mechanism to defer cleaning up trashed post IDs until after
+    // coredata saves, triggering the tableview to refresh. Helps prevent
+    // in progress animations from being abruptly clobbered.
+    for (NSNumber *postID in self.recentlyRestoredPostIDs) {
+        [self.recentlyTrashedPostIDs removeObject:postID];
+    }
+    [self.recentlyRestoredPostIDs removeAllObjects];
+}
+
 
 #pragma mark - Table View Handling
 
@@ -771,8 +787,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self editPost:post];
 }
 
-- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)atableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (!cell.reuseIdentifier) {
+        NSLog(@"SDLKSLFJSDJFLKSDJFLKSDFLSKDJF");
+    }
+
     // Clean up nonReusableCells once they are off screen.
     if (indexPath.row < [self.tableViewHandler.resultsController.fetchedObjects count]) {
         Post *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
@@ -787,7 +807,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     if ([self needsNonReusableCellForPost:post]) {
         cell = [self nonReusableCellForPost:post];
-
     } else {
         // Dequeue reusable cell
         NSString *identifier;
@@ -830,7 +849,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     BOOL isNotViewingTrashFolder = [self currentPostListFilter].filterType != PostListStatusFilterTrashed;
 
     // Is this a trashed post...
-    BOOL isTrashedPost = [post.status isEqualToString:PostStatusTrash];
+    BOOL isTrashedPost = [self.recentlyTrashedPostIDs containsObject:post.postID];
 
     return (isNotViewingTrashFolder && isTrashedPost);
 }
@@ -935,7 +954,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService trashPost:apost
-                    success:nil
+                   success:^(){
+                       [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
+                   }
                     failure:^(NSError *error) {
                         if([error code] == 403) {
                             [self promptForPasswordWithMessage:nil];
@@ -955,8 +976,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService restorePost:apost
                      success:^() {
-                         [self.recentlyTrashedPostIDs removeObject:postID];
-                         [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
+                         [self updateAndPerformFetchRequestClearingCachedRowHeights:NO]; // ensures we have the correct row height.
+                         [self.recentlyRestoredPostIDs addObject:postID]; // Notes the ID to be cleaned up after the next table view content change.
 
                          // Make sure the post still exists.
                          NSError *err;
@@ -965,7 +986,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                              DDLogError(@"%@", err);
                          }
                          if (!post) {
-                             // The post was deleted (?), so update the fetch request then bail.
                              return;
                          }
 
@@ -1005,17 +1025,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                                               cancelButtonTitle:NSLocalizedString(@"OK", @"Title of an OK button. Pressing the button acknowledges and dismisses a prompt.")
                                               otherButtonTitles:nil, nil];
     [alertView show];
-}
-
-- (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
-{
-    for (PostListFilter *filter in self.postListFilters) {
-        if ([filter.statuses containsObject:postStatus]) {
-            return filter;
-        }
-    }
-    // The draft filter is the catch all by convention.
-    return [self.postListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
 }
 
 - (void)viewStatsForPost:(AbstractPost *)apost
@@ -1063,6 +1072,17 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return self.postListFilters[[self currentFilterIndex]];
 }
 
+- (PostListFilter *)filterThatDisplaysPostsWithStatus:(NSString *)postStatus
+{
+    for (PostListFilter *filter in self.postListFilters) {
+        if ([filter.statuses containsObject:postStatus]) {
+            return filter;
+        }
+    }
+    // The draft filter is the catch all by convention.
+    return [self.postListFilters objectAtIndex:[self indexForFilterWithType:PostListStatusFilterDraft]];
+}
+
 - (NSInteger)indexForFilterWithType:(PostListStatusFilter)filterType
 {
     NSInteger index = [self.postListFilters indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
@@ -1090,6 +1110,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:CurrentPostListStatusFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
+    [self.recentlyRestoredPostIDs removeAllObjects];
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateFilterTitle];
     [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
