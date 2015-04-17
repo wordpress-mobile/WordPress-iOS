@@ -11,7 +11,6 @@
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
 #import "PostListFilter.h"
-#import "PostListViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "StatsPostDetailsTableViewController.h"
@@ -59,7 +58,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                                             WPSearchControllerDelegate,
                                             WPSearchResultsUpdating>
 
-@property (nonatomic, strong) PostListViewController *postListViewController;
+@property (nonatomic, strong) UITableViewController *postListViewController;
 @property (nonatomic, weak) UITableView *tableView;
 @property (nonatomic, weak) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) WPTableViewHandler *tableViewHandler;
