@@ -13,7 +13,6 @@
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
     segmentControl.tintColor = [WPStyleGuide grey];
     segmentControl.backgroundColor = [UIColor whiteColor];
-
 }
 
 + (UIColor *)postListSearchBarTextColor
