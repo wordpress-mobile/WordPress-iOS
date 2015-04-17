@@ -84,7 +84,7 @@ describe(@"signInWithLoginFields", ^{
         });
         
         it(@"should call LoginFacadeDelegate's displayRemoteError when there has been an error", ^{
-            NSError *error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again starscream" }];
+            NSError *error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"Error" }];
             // Intercept success callback and execute it when appropriate
             [OCMStub([mockOAuthFacade authenticateWithUsername:loginFields.username password:loginFields.password multifactorCode:loginFields.multifactorCode success:OCMOCK_ANY needsMultiFactor:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained failureStub)(NSError *);
@@ -186,7 +186,7 @@ describe(@"signInWithLoginFields", ^{
                     __block NSError *error;
                     
                     beforeEach(^{
-                        error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again Starscream" }];
+                        error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"Error" }];
                         
                         // Intercept failure callback and execute it when appropriate
                         [OCMStub([mockXMLRPCAPIFacade getBlogOptionsWithEndpoint:xmlrpc username:loginFields.username password:loginFields.password success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
@@ -212,7 +212,7 @@ describe(@"signInWithLoginFields", ^{
                 __block NSError *error;
                 
                 beforeEach(^{
-                    error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again Starscream" }];
+                    error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"Error" }];
                     
                     // Intercept failure callback and execute it when appropriate
                     [OCMStub([mockXMLRPCAPIFacade guessXMLRPCURLForSite:loginFields.siteUrl success:OCMOCK_ANY failure:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {

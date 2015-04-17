@@ -806,7 +806,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
 describe(@"displayRemoteError", ^{
     
     __block NSError *error;
-    NSString *errorMessage = @"You have failed me yet again Starscream.";
+    NSString *errorMessage = @"Error";
     NSString *defaultFirstButtonText = NSLocalizedString(@"OK", nil);
     NSString *defaultSecondButtonText = NSLocalizedString(@"Need Help?", nil);
     __block id mockOverlayView;
@@ -1633,7 +1633,7 @@ describe(@"LoginFacadeDelegate methods", ^{
                         void (^ __unsafe_unretained failureStub)(NSError *);
                         [invocation getArgument:&failureStub atIndex:4];
                         
-                        error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"You have failed me yet again starscream" }];
+                        error = [NSError errorWithDomain:@"org.wordpress" code:-1 userInfo:@{ NSLocalizedDescriptionKey : @"Error" }];
                         failureStub(error);
                     }];
                 });
