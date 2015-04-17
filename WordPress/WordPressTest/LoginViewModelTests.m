@@ -1501,7 +1501,7 @@ describe(@"LoginFacadeDelegate methods", ^{
         it(@"should result in the multifactor field being displayed", ^{
             expect(viewModel.shouldDisplayMultifactor).to.beFalsy();
             [[mockViewModelPresenter expect] setFocusToMultifactorText];
-            [[mockViewModelPresenter expect] reloadInterfaceWithAnimation:OCMOCK_ANY];
+            [[mockViewModelPresenter expect] reloadInterfaceWithAnimation:YES];
             
             [viewModel needsMultifactorCode];
             
