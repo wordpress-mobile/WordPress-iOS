@@ -1694,6 +1694,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
             [self.editorView replaceLocalImageWithRemoteImage:media.remoteURL uniqueId:mediaUniqueId];
         } else if (media.mediaType == MediaTypeVideo) {
+            [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.thumbnailLocalURL
@@ -1709,6 +1710,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             }
             [media remove];
         } else {
+            [WPAnalytics track:WPAnalyticsStatEditorUploadMediaFailed];
             [self dismissAssociatedActionSheetIfVisible:mediaUniqueId];
             self.mediaGlobalProgress.completedUnitCount++;
             if (media.mediaType == MediaTypeImage) {
