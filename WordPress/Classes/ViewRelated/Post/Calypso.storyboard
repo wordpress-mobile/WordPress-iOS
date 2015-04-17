@@ -150,10 +150,10 @@
             </objects>
             <point key="canvasLocation" x="519" y="318"/>
         </scene>
-        <!--Post List View Controller-->
+        <!--Table View Controller-->
         <scene sceneID="2RX-OH-EPn">
             <objects>
-                <tableViewController storyboardIdentifier="PostListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="zOz-bT-2ph" customClass="PostListViewController" sceneMemberID="viewController">
+                <tableViewController id="zOz-bT-2ph" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="srU-rF-GC6">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
