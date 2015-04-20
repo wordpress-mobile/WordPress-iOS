@@ -19,6 +19,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 @implementation BasePost
 
+@dynamic authorID;
 @dynamic author;
 @dynamic authorAvatarURL;
 @dynamic content;
