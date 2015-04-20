@@ -29,6 +29,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
+#import "CalypsoPostsViewController.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -298,8 +299,10 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     } else if (indexPath.section == TableViewSectionPublishType) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
-                [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-                controllerClass = [PostsViewController class];
+            {
+                [self showPostList];
+                return;
+            }
                 break;
             case BlogDetailsRowPages:
                 [WPAnalytics track:WPAnalyticsStatOpenedPages];
@@ -375,6 +378,13 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 }
 
 #pragma mark - Private methods
+
+- (void)showPostList {
+    [WPAnalytics track:WPAnalyticsStatOpenedPosts];
+    UIViewController *controller = [CalypsoPostsViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)showViewSiteForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
