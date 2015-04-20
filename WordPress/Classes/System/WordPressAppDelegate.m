@@ -1,73 +1,73 @@
+#import "WordPressAppDelegate.h"
+
+// Constants
+#import "Constants.h"
+
+// Pods
 #import <AFNetworking/UIKit+AFNetworking.h>
-#import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreTelephony/CTCarrier.h>
 #import <Crashlytics/Crashlytics.h>
-#import <CrashlyticsLumberjack/CrashlyticsLogger.h>
-#import <DDFileLogger.h>
 #import <GooglePlus/GooglePlus.h>
 #import <HockeySDK/HockeySDK.h>
-#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <Reachability/Reachability.h>
 #import <Simperium/Simperium.h>
-#import <WordPress-iOS-Shared/WPFontManager.h>
+#import <SVProgressHUD/SVProgressHUD.h>
+#import <UIDeviceIdentifier/UIDeviceHardware.h>
+#import <WordPressApi/WordPressApi.h>
 #import <WordPress-AppbotX/ABX.h>
+#import <WordPress-iOS-Shared/UIImage+Util.h>
 
-#import "WordPressAppDelegate.h"
-#import "ContextManager.h"
-#import "Media.h"
-#import "Notification.h"
-#import "NotificationsManager.h"
-#import "NSString+Helpers.h"
-#import "NSString+HTML.h"
+// Other third party libs
 #import "PocketAPI.h"
-#import "ReaderPost.h"
-#import "UIDevice+Helpers.h"
-#import "WordPressComApiCredentials.h"
-#import "WPAccount.h"
-#import "AccountService.h"
-#import "BlogService.h"
-#import "WPImageOptimizer.h"
-#import "ReaderPostService.h"
-#import "ReaderTopicService.h"
-#import "SVProgressHUD.h"
-#import "TodayExtensionService.h"
+
+// Analytics & crash logging
+#import "WPAppAnalytics.h"
 #import "WPCrashlytics.h"
 
-#import "WPTabBarController.h"
-#import "BlogListViewController.h"
-#import "BlogDetailsViewController.h"
-#import "MeViewController.h"
-#import "PostsViewController.h"
-#import "WPPostViewController.h"
-#import "WPLegacyEditPostViewController.h"
-#import "WPWhatsNew.h"
-#import "LoginViewController.h"
-#import "NotificationsViewController.h"
-#import "ReaderViewController.h"
-#import "SupportViewController.h"
-#import "StatsViewController.h"
-#import "Constants.h"
-#import "UIImage+Util.h"
+// Categories & extensions
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
-#import "WPUserAgent.h"
-#import "WPAppAnalytics.h"
+#import "NSString+Helpers.h"
+#import "UIDevice+Helpers.h"
+
+// Data model
+#import "Blog.h"
+
+// Data services
+#import "BlogService.h"
+#import "ReaderPostService.h"
+#import "ReaderTopicService.h"
+
+// Files
 #import "WPAppFilesManager.h"
+
+// Logging
 #import "WPLogger.h"
 
+// Misc managers, helpers, utilities
 #import "AppRatingUtility.h"
+#import "ContextManager.h"
 #import "HelpshiftUtils.h"
+#import "WPLookbackPresenter.h"
+#import "TodayExtensionService.h"
+#import "WPWhatsNew.h"
 
-#import "Reachability.h"
+// Networking
+#import "WPUserAgent.h"
+#import "WordPressComApiCredentials.h"
+
+// Notifications
+#import "NotificationsManager.h"
+
+// Swift support
 #import "WordPress-Swift.h"
 
-#ifdef LOOKBACK_ENABLED
-#import <Lookback/Lookback.h>
-#endif
-
-#if DEBUG
-#import "DDTTYLogger.h"
-#import "DDASLLogger.h"
-#endif
+// View controllers
+#import "LoginViewController.h"
+#import "ReaderViewController.h"
+#import "StatsViewController.h"
+#import "SupportViewController.h"
+#import "WPPostViewController.h"
+#import "WPTabBarController.h"
 
 int ddLogLevel                                                  = LOG_LEVEL_INFO;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
@@ -77,6 +77,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, strong, readwrite) WPAppAnalytics                 *analytics;
 @property (nonatomic, strong, readwrite) WPCrashlytics                  *crashlytics;
 @property (nonatomic, strong, readwrite) WPLogger                       *logger;
+@property (nonatomic, strong, readwrite) WPLookbackPresenter            *lookbackPresenter;
 @property (nonatomic, strong, readwrite) Reachability                   *internetReachability;
 @property (nonatomic, strong, readwrite) Simperium                      *simperium;
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
@@ -120,9 +121,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [self initializeAppRatingUtility];
     
     // Analytics
-    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
-        return [self currentlySelectedScreen];
-    }];
+    [self configureAnalytics];
 
     // Start Simperium
     [self loginSimperium];
@@ -201,29 +200,22 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #ifdef LOOKBACK_ENABLED
     // Kick this off on a background thread so as to not slow down the app initialization
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        if ([WordPressComApiCredentials lookbackToken].length > 0) {
-            [Lookback setupWithAppToken:[WordPressComApiCredentials lookbackToken]];
-            [[NSUserDefaults standardUserDefaults] registerDefaults:@{WPInternalBetaShakeToPullUpFeedbackKey: @YES}];
-            [[NSUserDefaults standardUserDefaults] setObject:@(NO) forKey:LookbackCameraEnabledSettingsKey];
-            [Lookback lookback].shakeToRecord = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
-            
-            // Setup Lookback to fire when the user holds down with three fingers for around 3 seconds
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UILongPressGestureRecognizer *recognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(lookbackGestureRecognized:)];
-                recognizer.minimumPressDuration = 3;
-                recognizer.cancelsTouchesInView = NO;
-#if TARGET_IPHONE_SIMULATOR
-                recognizer.numberOfTouchesRequired = 2;
-#else
-                recognizer.numberOfTouchesRequired = 3;
-#endif
-                [[UIApplication sharedApplication].keyWindow addGestureRecognizer:recognizer];
-            });
-            
+        
+        NSString *lookbackToken = [WordPressComApiCredentials lookbackToken];
+        
+        if ([lookbackToken length] > 0) {
+            UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;
+
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *account = [accountService defaultWordPressComAccount];
-            [Lookback lookback].userIdentifier = account.username;
+            
+            [context performBlock:^{
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+                WPAccount *account = [accountService defaultWordPressComAccount];
+
+                self.lookbackPresenter = [[WPLookbackPresenter alloc] initWithToken:lookbackToken
+                                                                             userId:account.username
+                                                                             window:keyWindow];
+            }];
         }
     });
 #endif
@@ -234,15 +226,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if ([WordPressComApiCredentials appbotXAPIKey].length > 0) {
         [[ABXApiClient instance] setApiKey:[WordPressComApiCredentials appbotXAPIKey]];
     }
-}
-
-- (void)lookbackGestureRecognized:(UILongPressGestureRecognizer *)sender
-{
-#ifdef LOOKBACK_ENABLED
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        [LookbackRecordingViewController presentOntoScreenAnimated:YES];
-    }
-#endif
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
@@ -494,9 +477,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     {
         NSString* value = [parameters objectForKey:key];
         
-        if ([key isEqualToString:kWPNewPostURLParamContentKey]) {
+        if ([key isEqualToString:WPNewPostURLParamContentKey]) {
             value = [value stringByStrippingHTML];
-        } else if ([key isEqualToString:kWPNewPostURLParamTagsKey]) {
+        } else if ([key isEqualToString:WPNewPostURLParamTagsKey]) {
             value = [value stringByStrippingHTML];
         }
         
@@ -613,6 +596,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
     [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
+}
+
+#pragma mark - Analytics
+
+- (void)configureAnalytics
+{
+    __weak __typeof(self) weakSelf = self;
+ 
+    self.analytics = [[WPAppAnalytics alloc] initWithLastVisibleScreenBlock:^NSString*{
+        return [weakSelf currentlySelectedScreen];
+    }];
 }
 
 #pragma mark - App Rating

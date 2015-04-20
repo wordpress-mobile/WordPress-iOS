@@ -26,8 +26,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
-NSString *const WPInternalBetaShakeToPullUpFeedbackKey              = @"InternalBetaShakeToPullUpFeedback";
-
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
 BOOL const WPJetpackRESTEnabled                                     = YES;
 #else
