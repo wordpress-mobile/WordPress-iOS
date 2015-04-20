@@ -10,6 +10,7 @@
     <entity name="Account" representedClassName="WPAccount" syncable="YES">
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isWpcom" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
         <attribute name="uuid" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="xmlrpc" attributeType="String" indexed="YES" syncable="YES"/>
@@ -24,6 +25,7 @@
             <userInfo/>
         </attribute>
         <attribute name="authorAvatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorID" optional="YES" attributeType="Integer 64" defaultValueString="0" indexed="YES" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -379,8 +381,8 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="270"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="208"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="480"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
