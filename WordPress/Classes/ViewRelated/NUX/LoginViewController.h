@@ -1,7 +1,5 @@
 #import <UIKit/UIKit.h>
 
-
-
 @interface LoginViewController : UIViewController
 
 @property (nonatomic, assign) BOOL onlyDotComAllowed;
