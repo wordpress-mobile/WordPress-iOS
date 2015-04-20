@@ -1,4 +1,4 @@
-#import "CalypsoPostsViewController.h"
+    #import "CalypsoPostsViewController.h"
 
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 
@@ -353,7 +353,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
-    self.authorsFilter.hidden = !self.blog.isMultiAuthor;
+    self.authorsFilter.hidden = (!self.blog.isMultiAuthor || !self.blog.account.userID);
 
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
     if (![self.blog isMultiAuthor] && ![UIDevice isPad]) {

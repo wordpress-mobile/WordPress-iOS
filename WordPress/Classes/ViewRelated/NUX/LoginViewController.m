@@ -1219,7 +1219,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
                                     [WPAnalytics refreshMetadata];
 
                                     // once blogs for the accounts are synced, we want to update account details for it
-                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
+                                    [accountService updateUserDetailsForAccount:account success:nil failure:nil];
                                 }
                                 failure:^(NSError *error) {
                                     [self finishedAuthenticating];
@@ -1255,6 +1255,8 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.blog.xmlrpc = xmlrpc;
     self.blog.options = options;
     [self.blog dataSave];
+
+    [accountService updateUserDetailsForAccount:account success:nil failure:nil];
     [blogService syncBlog:self.blog success:nil failure:nil];
 
     if ([self.blog hasJetpack]) {
