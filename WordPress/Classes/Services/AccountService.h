@@ -86,11 +86,11 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
 
 /**
- Updates email and defaultBlog fields for a WordPress.com WPAccount using /me endpoint
+ Updates user details including username, email, userID, avatarURL, and default blog.
 
- @param account WordPress.com WPAccount desired to be updated
+ @param account WPAccount to be updated
  */
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 /**
  Removes your default WordPress.com password from the keychain, if needed.
