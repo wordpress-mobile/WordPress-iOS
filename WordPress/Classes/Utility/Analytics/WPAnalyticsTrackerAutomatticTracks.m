@@ -200,6 +200,12 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
             eventName = @"editor_photo_added";
             eventProperties = @{ @"via" : @"media_library" };
             break;
+        case WPAnalyticsStatEditorAddedVideoViaLocalLibrary:
+            eventName = @"editor_added_video_via_local_library";
+            break;
+        case WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary:
+            eventName = @"editor_added_video_via_wp_media_library";
+            break;
         case WPAnalyticsStatEditorClosed:
             eventName = @"editor_closed";
             break;
