@@ -8,6 +8,7 @@
         <userInfo/>
     </entity>
     <entity name="Account" representedClassName="WPAccount" syncable="YES">
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isWpcom" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
@@ -381,7 +382,7 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="208"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="223"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="480"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
