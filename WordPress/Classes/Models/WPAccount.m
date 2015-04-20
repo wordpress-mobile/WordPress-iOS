@@ -18,6 +18,7 @@
 @dynamic uuid;
 @dynamic email;
 @dynamic userID;
+@dynamic avatarURL;
 @synthesize restApi = _restApi;
 @synthesize xmlrpcApi = _xmlrpcApi;
 
