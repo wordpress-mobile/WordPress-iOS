@@ -28,6 +28,11 @@
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import "WordPress-Swift.h"
 
+typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
+    PostAuthorFilterMine,
+    PostAuthorFilterEveryone,
+};
+
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
@@ -35,6 +40,7 @@ static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
 static NSString * const CurrentPostListStatusFilterKey = @"CurrentPostListStatusFilterKey";
+static NSString * const CurrentPostAuthorFilterKey = @"CurrentPostAuthorFilterKey";
 
 static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
@@ -360,6 +366,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         // Collapse the view on iPhone if single author blog
         self.authorsFilterViewHeightConstraint.constant = 0.0;
     }
+
+    if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
+        self.authorsFilter.selectedSegmentIndex = 0;
+    } else {
+        self.authorsFilter.selectedSegmentIndex = 1;
+    }
 }
 
 - (void)configureSearchController
@@ -490,7 +502,11 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
 {
-    // TODO:
+    if (self.authorsFilter.selectedSegmentIndex == PostAuthorFilterMine) {
+        [self setCurrentPostAuthorFilter:PostAuthorFilterMine];
+    } else {
+        [self setCurrentPostAuthorFilter:PostAuthorFilterEveryone];
+    }
 }
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
@@ -695,8 +711,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
     [predicates addObject:filterPredicate];
 
-    if (!self.blog.isMultiAuthor) {
-        // TODO: limit to posts matching author ID
+    if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
+        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
+        [predicates addObject:authorPredicate];
     }
 
     NSString *searchText = self.searchController.searchBar.text;
@@ -1065,6 +1082,35 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 }
 
 #pragma mark - Filter related
+
+- (BOOL)shouldShowPostsForEveryone
+{
+    PostAuthorFilter filter = [self currentPostAuthorFilter];
+    return filter == PostAuthorFilterEveryone;
+}
+
+- (PostAuthorFilter)currentPostAuthorFilter
+{
+    NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
+    if (filter) {
+        if (PostAuthorFilterEveryone == [filter integerValue]) {
+            return PostAuthorFilterEveryone;
+        }
+    }
+    return PostAuthorFilterMine;
+}
+
+- (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
+{
+    if (filter == [self currentPostAuthorFilter]) {
+        return;
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
+    [NSUserDefaults resetStandardUserDefaults];
+    [self.recentlyRestoredPostIDs removeAllObjects];
+    [self.recentlyTrashedPostIDs removeAllObjects];
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+}
 
 - (PostListFilter *)currentPostListFilter
 {
