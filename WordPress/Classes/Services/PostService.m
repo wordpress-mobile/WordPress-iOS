@@ -510,6 +510,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
+    post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
     post.postTitle = remotePost.title;
     post.permaLink = [remotePost.URL absoluteString];

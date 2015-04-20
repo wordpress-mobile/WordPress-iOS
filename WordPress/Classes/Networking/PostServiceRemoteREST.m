@@ -202,6 +202,7 @@
     post.authorDisplayName = jsonPost[@"author"][@"name"];
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
     post.authorURL = jsonPost[@"author"][@"URL"];
+    post.authorID = [jsonPost numberForKeyPath:@"author.ID"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
