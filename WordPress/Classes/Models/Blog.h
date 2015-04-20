@@ -38,6 +38,7 @@
 @property (nonatomic, strong, readwrite) WPAccount      *account;
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
+@property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;
@@ -70,7 +71,6 @@
 #pragma mark - Blog information
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
-- (BOOL)isMultiAuthor;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;

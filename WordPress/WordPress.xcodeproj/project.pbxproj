@@ -766,6 +766,7 @@
 		5D91B26C1ADC5EDF00591C43 /* PostCardRestoreView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardRestoreView.xib; sourceTree = "<group>"; };
 		5D91B26E1ADC612800591C43 /* PostCardRestoreView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardRestoreView.h; sourceTree = "<group>"; };
 		5D91B26F1ADC612800591C43 /* PostCardRestoreView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardRestoreView.m; sourceTree = "<group>"; };
+		5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
 		5D97C2F115CAF8D8009B44DD /* UINavigationController+KeyboardFix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+KeyboardFix.h"; sourceTree = "<group>"; };
 		5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+KeyboardFix.m"; sourceTree = "<group>"; };
 		5D9B17C319998A430047A4A2 /* ReaderBlockedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderBlockedTableViewCell.h; sourceTree = "<group>"; };
@@ -4837,6 +4838,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */,
 				B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */,
 				5D784E741A80430D005D7388 /* WordPress 27.xcdatamodel */,
 				31CCB9FD1A52ED0A00BA0733 /* WordPress 26.xcdatamodel */,
@@ -4866,7 +4868,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */;
+			currentVersion = 5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";
