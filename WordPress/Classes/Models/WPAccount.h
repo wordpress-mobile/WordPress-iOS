@@ -13,6 +13,7 @@
 /// @name Properties
 ///-----------------
 
+@property (nonatomic, strong)   NSNumber    *userID;
 @property (nonatomic, copy)     NSString    *xmlrpc;
 @property (nonatomic, copy)     NSString    *username;
 @property (nonatomic, assign)   BOOL        isWpcom;

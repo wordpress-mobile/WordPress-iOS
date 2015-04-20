@@ -17,6 +17,7 @@
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic email;
+@dynamic userID;
 @synthesize restApi = _restApi;
 @synthesize xmlrpcApi = _xmlrpcApi;
 
