@@ -774,12 +774,7 @@ EditImageDetailsViewControllerDelegate
     [self.editorView saveSelection];
     
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-	picker.delegate = self;
-    
-    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[WPMediaPickerViewController class], nil];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
-    [[UICollectionView appearanceWhenContainedIn:[WPMediaPickerViewController class],nil] setBackgroundColor:[WPStyleGuide greyLighten30]];
+	picker.delegate = self;        
     
     [self presentViewController:picker animated:YES completion:nil];
 }
