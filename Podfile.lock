@@ -31,7 +31,6 @@ PODS:
     - CocoaLumberjack/Core
   - CrashlyticsLumberjack (1.0.2):
     - CocoaLumberjack/Core (~> 1.9)
-  - CTAssetsPickerController (2.9.3)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -119,6 +118,7 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS
+  - WPMediaPicker (0.2.0)
   - wpxmlrpc (0.8)
 
 DEPENDENCIES:
@@ -128,7 +128,6 @@ DEPENDENCIES:
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.0`)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
-  - CTAssetsPickerController (~> 2.9.3)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
@@ -155,6 +154,7 @@ DEPENDENCIES:
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.30)
   - WordPressCom-Stats-iOS (= 0.3.0)
+  - WPMediaPicker (= 0.2.0)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -200,7 +200,6 @@ SPEC CHECKSUMS:
   Automattic-Tracks-iOS: 61ff137363756ab0f0da49e570dfc0aa637655f9
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
-  CTAssetsPickerController: 56a4a228dcb48a9375ab8d4922e82ac74af74aa1
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
   EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
@@ -231,6 +230,7 @@ SPEC CHECKSUMS:
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: c1338756ca3f889e5a115fb73343b6bd2e7bfa0f
   WordPressCom-Stats-iOS: b0b767b8aab64b4446e547d6bbd23060ec78e1ab
+  WPMediaPicker: 3c3ab8ed5d7fb6e1df9fa8cc9c397c9094b22814
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
 COCOAPODS: 0.35.0
