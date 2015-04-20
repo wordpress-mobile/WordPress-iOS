@@ -238,6 +238,7 @@
     post.content = xmlrpcDictionary[@"post_content"];
     post.excerpt = xmlrpcDictionary[@"post_excerpt"];
     post.slug = xmlrpcDictionary[@"post_name"];
+    post.authorID = [xmlrpcDictionary numberForKey:@"post_author"];
     post.status = [self statusForPostStatus:xmlrpcDictionary[@"post_status"] andDate:post.date];
     post.password = xmlrpcDictionary[@"post_password"];
     if ([post.password isEmpty]) {
