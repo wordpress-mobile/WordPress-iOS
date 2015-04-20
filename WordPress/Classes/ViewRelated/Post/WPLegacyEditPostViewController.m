@@ -24,7 +24,6 @@
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 10;
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
