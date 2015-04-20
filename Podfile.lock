@@ -130,7 +130,7 @@ DEPENDENCIES:
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.9.3)
   - DTCoreText (= 1.6.13)
-  - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec`)
+  - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.10.0)
   - HockeySDK (~> 3.6.0)
@@ -162,7 +162,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
     :tag: 0.0.0
   EmailChecker:
-    :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec
+    :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
     :branch: gifsupport
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
