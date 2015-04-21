@@ -1,5 +1,5 @@
 #import "WPAnalyticsTrackerMixpanel.h"
-#import <Mixpanel/Mixpanel.h>
+#import "MixpanelProxy.h"
 #import "WPAnalyticsTrackerMixpanelInstructionsForStat.h"
 #import "WordPressComApiCredentials.h"
 #import "AccountService.h"
@@ -11,6 +11,14 @@
 #import "AccountServiceRemoteREST.h"
 #import "WPPostViewController.h"
 
+
+@interface WPAnalyticsTrackerMixpanel ()
+
+@property (nonatomic, strong) MixpanelProxy *mixpanelProxy;
+
+@end
+
+
 @implementation WPAnalyticsTrackerMixpanel
 
 NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
@@ -21,13 +29,14 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
     self = [super init];
     if (self) {
         _aggregatedStatProperties = [[NSMutableDictionary alloc] init];
+        _mixpanelProxy = [MixpanelProxy new];
     }
     return self;
 }
 
 - (void)beginSession
 {
-    [Mixpanel sharedInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
+    [self.mixpanelProxy registerInstanceWithToken:[WordPressComApiCredentials mixpanelAPIToken]];
     [self refreshMetadata];
     [self flagIfUserHasSeenLegacyEditor];
 }
@@ -57,7 +66,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (BOOL)didUserCreateAccountOnMobile
 {
-    return [[Mixpanel sharedInstance].currentSuperProperties[@"created_account_on_mobile"] boolValue];
+    return [self.mixpanelProxy.currentSuperProperties[@"created_account_on_mobile"] boolValue];
 }
 
 - (void)track:(WPAnalyticsStat)stat
@@ -112,19 +121,19 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         }
     }
 
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.mixpanelProxy.currentSuperProperties];
     superProperties[@"platform"] = @"iOS";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
     superProperties[@"number_of_blogs"] = @(blogCount);
     superProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    [self.mixpanelProxy registerSuperProperties:superProperties];
 
     if (accountPresent && [username length] > 0) {
-        [[Mixpanel sharedInstance] identify:username];
-        [[Mixpanel sharedInstance].people set:@{ @"$username": username, @"$first_name" : username }];
+        [self.mixpanelProxy identify:username];
+        [self.mixpanelProxy setPeopleProperties:@{ @"$username": username, @"$first_name" : username }];
         if ([emailAddress length] > 0) {
-            [[Mixpanel sharedInstance].people set:@"$email" to:emailAddress];
+            [self.mixpanelProxy setPeopleProperties:@{ @"$email": emailAddress }];
         }
     }
 }
@@ -137,8 +146,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         WPAccount *account = [accountService defaultWordPressComAccount];
         NSString *username = account.username;
         
-        [[Mixpanel sharedInstance] createAlias:username forDistinctID:[Mixpanel sharedInstance].distinctId];
-        [[Mixpanel sharedInstance] identify:[Mixpanel sharedInstance].distinctId];
+        [self.mixpanelProxy aliasNewUser:username];
     }];
 }
 
@@ -172,9 +180,9 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             NSMutableDictionary *combinedProperties = [[NSMutableDictionary alloc] init];
             [combinedProperties addEntriesFromDictionary:aggregatedPropertiesForEvent];
             [combinedProperties addEntriesFromDictionary:properties];
-            [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:combinedProperties];
+            [self.mixpanelProxy track:instructions.mixpanelEventName properties:combinedProperties];
         } else {
-            [[Mixpanel sharedInstance] track:instructions.mixpanelEventName properties:properties];
+            [self.mixpanelProxy track:instructions.mixpanelEventName properties:properties];
         }
     }
 
@@ -205,34 +213,27 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
 
 - (void)incrementPeopleProperty:(NSString *)property
 {
-    [[Mixpanel sharedInstance].people increment:property by:@(1)];
+    [self.mixpanelProxy incrementPeopleProperty:property];
 }
 
 - (void)incrementSuperProperty:(NSString *)property
 {
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    NSUInteger propertyValue = [superProperties[property] integerValue];
-    superProperties[property] = @(++propertyValue);
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    [self.mixpanelProxy incrementSuperProperty:property];
 }
 
 - (void)flagSuperProperty:(NSString *)property
 {
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    superProperties[property] = @(YES);
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    [self.mixpanelProxy flagSuperProperty:property];
 }
 
 - (void)setSuperProperty:(NSString *)property toValue:(id)value
 {
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
-    superProperties[property] = value;
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    [self.mixpanelProxy setSuperProperty:property toValue:value];
 }
 
 - (void)setValue:(id)value forPeopleProperty:(NSString *)property
 {
-    [[Mixpanel sharedInstance].people set:@{ property : value } ];
+    [self.mixpanelProxy setPeopleProperties:@{ property : value } ];
 }
 
 - (WPAnalyticsTrackerMixpanelInstructionsForStat *)instructionsForStat:(WPAnalyticsStat )stat
@@ -781,14 +782,14 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         [WPAnalytics track:WPAnalyticsStatAppInstalled];
     }
 
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:[Mixpanel sharedInstance].currentSuperProperties];
+    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.mixpanelProxy.currentSuperProperties];
     superProperties[@"session_count"] = @(sessionCount);
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    [self.mixpanelProxy registerSuperProperties:superProperties];
 }
 
 - (NSInteger)sessionCount
 {
-    return [[[[Mixpanel sharedInstance] currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    return [[[self.mixpanelProxy currentSuperProperties] numberForKey:@"session_count"] integerValue];
 }
 
 @end
