@@ -1,24 +1,24 @@
 PODS:
   - 1PasswordExtension (1.1.2)
-  - AFNetworking (2.5.2):
-    - AFNetworking/NSURLConnection (= 2.5.2)
-    - AFNetworking/NSURLSession (= 2.5.2)
-    - AFNetworking/Reachability (= 2.5.2)
-    - AFNetworking/Security (= 2.5.2)
-    - AFNetworking/Serialization (= 2.5.2)
-    - AFNetworking/UIKit (= 2.5.2)
-  - AFNetworking/NSURLConnection (2.5.2):
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection (= 2.5.3)
+    - AFNetworking/NSURLSession (= 2.5.3)
+    - AFNetworking/Reachability (= 2.5.3)
+    - AFNetworking/Security (= 2.5.3)
+    - AFNetworking/Serialization (= 2.5.3)
+    - AFNetworking/UIKit (= 2.5.3)
+  - AFNetworking/NSURLConnection (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.5.2):
+  - AFNetworking/NSURLSession (2.5.3):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/Reachability (2.5.2)
-  - AFNetworking/Security (2.5.2)
-  - AFNetworking/Serialization (2.5.2)
-  - AFNetworking/UIKit (2.5.2):
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.7.1)
@@ -123,7 +123,7 @@ PODS:
 
 DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
-  - AFNetworking (~> 2.5.2)
+  - AFNetworking (~> 2.5.3)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.1`)
   - CocoaLumberjack (~> 1.9)
@@ -195,7 +195,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
-  AFNetworking: fefbce9660acb17f48ae0011292d4da0f457bf36
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
   Automattic-Tracks-iOS: c06baf6619f268d839ebe2b0891764e40c0482f7
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
@@ -203,7 +203,7 @@ SPEC CHECKSUMS:
   CTAssetsPickerController: 56a4a228dcb48a9375ab8d4922e82ac74af74aa1
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
-  EmailChecker: e909e6d113fac7ad5e3c304fabce30fc4a79c80e
+  EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
@@ -221,11 +221,11 @@ SPEC CHECKSUMS:
   OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   Simperium: 7d0a207d7f0ce918b36ba9e690cdb0d0d730cc28
-  SocketRocket: b809068861cb66d871eb93a428696b1eb5451318
+  SocketRocket: 77c536491ce78315d4f26a06057ed49aa36cef5e
   SVProgressHUD: 748080e4f36e603f6c02aec292664239df5279c1
   UIAlertView+Blocks: 45c3d3b7194906702d3e9a14c7ece5581505646d
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
-  WordPress-AppbotX: 8bb0ad23af141e85db282ce09b58e5b3604cf54c
+  WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 8bd67af1e0391fb6a118cee583ba6163e04ab5b2
   WordPress-iOS-Shared: 0f5281492166bb89ea09d8ab5011e871ba4f6709
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
