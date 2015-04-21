@@ -39,7 +39,9 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic) AbstractPostRemoteStatus remoteStatus;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
-@property (nonatomic, assign) BOOL isFeaturedImageChanged;
+// Helpers
+@property (nonatomic, strong) NSString *pathForDisplayImage; // Cached path of an image from the post to use for display purposes. Not part of the post's canoncial data.
+@property (nonatomic, assign) BOOL isFeaturedImageChanged; // BOOL flag if the feature image was changed.
 
 /**
  Returns the localized title for the specified status.  Status should be 

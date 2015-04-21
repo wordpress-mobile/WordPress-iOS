@@ -42,6 +42,7 @@
         <attribute name="password" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="pathForDisplayImage" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="permaLink" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -383,7 +384,7 @@
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="223"/>
-        <element name="BasePost" positionX="0" positionY="0" width="128" height="285"/>
+        <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
         <element name="Blog" positionX="0" positionY="0" width="128" height="480"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
