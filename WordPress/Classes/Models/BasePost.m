@@ -34,6 +34,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 @dynamic mt_text_more;
 @dynamic wp_slug;
 @dynamic post_thumbnail;
+@dynamic pathForDisplayImage;
 
 @synthesize isFeaturedImageChanged;
 
