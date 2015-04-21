@@ -180,6 +180,7 @@
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
 		5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */; };
+		5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6571A1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m */; };
 		5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738931965FAB900393584 /* SubscribedTopicsViewController.m */; };
 		5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */; };
 		5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738991965FB3C00393584 /* WPTableViewHandler.m */; };
@@ -858,6 +859,8 @@
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
 		5DF59C091770AE3A00171208 /* UILabel+SuggestSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SuggestSize.h"; sourceTree = "<group>"; };
 		5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SuggestSize.m"; sourceTree = "<group>"; };
+		5DF657191AE6ACAC00AAA8D7 /* DisplayableImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayableImageHelper.h; sourceTree = "<group>"; };
+		5DF6571A1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayableImageHelper.m; sourceTree = "<group>"; };
 		5DF738921965FAB900393584 /* SubscribedTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubscribedTopicsViewController.h; sourceTree = "<group>"; };
 		5DF738931965FAB900393584 /* SubscribedTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubscribedTopicsViewController.m; sourceTree = "<group>"; };
 		5DF738951965FACD00393584 /* RecommendedTopicsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecommendedTopicsViewController.h; sourceTree = "<group>"; };
@@ -2348,6 +2351,8 @@
 				74F313EE1A9B97A200AA8B45 /* WPTooltip.m */,
 				594DB2931AB891A200E2E456 /* WPUserAgent.h */,
 				594DB2941AB891A200E2E456 /* WPUserAgent.m */,
+				5DF657191AE6ACAC00AAA8D7 /* DisplayableImageHelper.h */,
+				5DF6571A1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m */,
 			);
 			path = Utility;
 			sourceTree = "<group>";
@@ -3652,6 +3657,7 @@
 				B5E167F419C08D18009535AA /* NSCalendar+Helpers.swift in Sources */,
 				E149D64E19349E69006A843D /* AccountServiceRemoteREST.m in Sources */,
 				5D9BFF0A1A856801001D6D63 /* ReaderPostRichUnattributedContentView.m in Sources */,
+				5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */,
 				59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */,
 				313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */,
 				CEBD3EAB0FF1BA3B00C1396E /* Blog.m in Sources */,

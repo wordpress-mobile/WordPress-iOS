@@ -1,6 +1,7 @@
 #import "PostServiceRemoteXMLRPC.h"
 #import "Blog.h"
 #import "BasePost.h"
+#import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
@@ -257,6 +258,14 @@
     NSArray *terms = [xmlrpcDictionary arrayForKey:@"terms"];
     post.tags = [self tagsFromXMLRPCTermsArray:terms];
     post.categories = [self remoteCategoriesFromXMLRPCTermsArray:terms];
+
+    // Pick an image to use for display
+    if (post.postThumbnailPath) {
+        post.pathForDisplayImage = post.postThumbnailPath;
+    } else {
+        // parse content for a suitable image.
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+    }
 
     return post;
 }
