@@ -1,6 +1,7 @@
 #import "PostServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "Blog.h"
+#import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
@@ -240,6 +241,19 @@
         post.categories = [self remoteCategoriesFromJSONArray:[categories allValues]];
     }
     post.tags = [self tagNamesFromJSONDictionary:jsonPost[@"tags"]];
+
+    // Pick an image to use for display
+    if (post.postThumbnailPath) {
+        post.pathForDisplayImage = post.postThumbnailPath;
+    } else {
+        // check attachments for a suitable image
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:[jsonPost dictionaryForKey:@"attachments"]];
+
+        // parse contents for a suitable image
+        if (!post.pathForDisplayImage) {
+            post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+        }
+    }
 
     return post;
 }

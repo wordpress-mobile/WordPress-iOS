@@ -518,6 +518,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     post.status = remotePost.status;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
+    post.pathForDisplayImage = remotePost.pathForDisplayImage;
     post.authorAvatarURL = remotePost.authorAvatarURL;
     post.mt_excerpt = remotePost.excerpt;
 
