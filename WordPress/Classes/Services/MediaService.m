@@ -268,6 +268,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSString *extension = [[filename pathExtension] lowercaseString];
     if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
         extension = @"png";
+        filename = [NSString stringWithFormat:@"%@.%@", basename, extension];
+        path = [documentsDirectory stringByAppendingPathComponent:filename];
     }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
