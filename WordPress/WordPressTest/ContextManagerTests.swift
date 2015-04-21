@@ -271,7 +271,7 @@ class ContextManagerTests: XCTestCase {
         let model = NSManagedObjectModel(contentsOfURL: modelURL!)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
         
-        let storeUrl = contextManager.storeURL()
+        let storeUrl = contextManager.storeURL
         removeStoresBasedOnStoreURL(storeUrl)
         
         let persistentStore = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
