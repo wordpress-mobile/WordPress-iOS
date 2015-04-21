@@ -53,3 +53,14 @@ end
 target 'UITests', :exclusive => true do
     pod 'KIF/IdentifierTests', '~>3.1'
 end
+
+# We need to add in AF_APP_EXTENSIONS=1 to AFNetworking used by the Today Extension otherwise the build will fail. See - https://github.com/AFNetworking/AFNetworking/pull/2589
+post_install do |installer_representation|
+  installer_representation.project.targets.each do |target|
+    if target.name == "Pods-WordPressTodayWidget-AFNetworking"
+      target.build_configurations.each do |config|
+        config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AF_APP_EXTENSIONS=1']
+      end
+    end
+  end
+end
