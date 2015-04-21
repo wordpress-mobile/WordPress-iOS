@@ -292,8 +292,8 @@
                         <variation key="heightClass=regular-widthClass=regular">
                             <mask key="constraints">
                                 <exclude reference="07i-JP-1FF"/>
-                                <include reference="10u-vp-3n7"/>
                                 <exclude reference="0NU-SU-4T3"/>
+                                <include reference="10u-vp-3n7"/>
                             </mask>
                         </variation>
                     </view>
@@ -329,6 +329,7 @@
                 <outlet property="shadowView" destination="2iQ-Pq-6Rd" id="WQJ-ST-Igg"/>
                 <outlet property="snippetLabel" destination="kmi-vY-F7D" id="K7u-N3-adx"/>
                 <outlet property="snippetLowerConstraint" destination="ZAy-DW-997" id="D9b-R2-foY"/>
+                <outlet property="snippetThumbPaddingWidthConstraint" destination="IFf-qs-yf8" id="fMk-1E-gdL"/>
                 <outlet property="snippetWrapperViewHeightConstraint" destination="SSo-uZ-SZn" id="AYe-Sq-VFF"/>
                 <outlet property="statusHeightConstraint" destination="o5l-at-K6T" id="xhJ-PB-3J1"/>
                 <outlet property="statusImageView" destination="0Tf-KU-SPy" id="obo-Ub-NQC"/>
