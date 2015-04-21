@@ -51,6 +51,7 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetWrapperViewHeightConstraint;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetThumbPaddingWidthConstraint;
 
 @property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
 @property (nonatomic, assign) CGFloat headerViewHeight;
@@ -118,8 +119,10 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 
     if (self.snippetWrapperViewHeightConstraint) {
         // the thumbnail cell xib
-        CGFloat imageHeight = CGRectGetHeight(self.imageView.frame);
-        CGFloat snippetHeight = [self.snippetLabel sizeThatFits:innerSize].height;
+        CGFloat imageHeight = CGRectGetHeight(self.postCardImageView.frame);
+        CGSize amendedInnerSize = innerSize;
+        amendedInnerSize.width -= (CGRectGetWidth(self.postCardImageView.frame) + self.snippetThumbPaddingWidthConstraint.constant);
+        CGFloat snippetHeight = [self.snippetLabel sizeThatFits:amendedInnerSize].height;
         height += MAX(imageHeight, snippetHeight);
     } else {
         height += [self.snippetLabel sizeThatFits:innerSize].height;
@@ -198,8 +201,8 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 - (NSURL *)photonURLForURL:(NSURL *)url
 {
     CGSize size = self.postCardImageView.frame.size;
-    NSString *imagePath = [NSString stringWithFormat:@"http://%@/%@", url.host, url.path];
-    NSString *queryStr = [NSString stringWithFormat:@"resize=%i,%i&quality=80", size.width, size.height];
+    NSString *imagePath = [NSString stringWithFormat:@"%@%@", url.host, url.path];
+    NSString *queryStr = [NSString stringWithFormat:@"resize=%.f,%.f&quality=80", size.width, size.height];
     NSString *photonStr = [NSString stringWithFormat:@"https://i0.wp.com/%@?%@", imagePath, queryStr];
     return [NSURL URLWithString:photonStr];
 }

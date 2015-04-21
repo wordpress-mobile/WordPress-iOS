@@ -1,6 +1,4 @@
-    #import "CalypsoPostsViewController.h"
-
-#import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import "CalypsoPostsViewController.h"
 
 #import "Blog.h"
 #import "BlogService.h"
@@ -26,6 +24,7 @@
 #import "WPTableViewHandler.h"
 #import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
+#import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "WordPress-Swift.h"
 
 typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
@@ -35,8 +34,10 @@ typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
+static NSString * const PostCardThumbCellIdentifier = @"PostCardThumbCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
+static NSString * const PostCardThumbCellNibName = @"PostCardThumbCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
 static NSString * const CurrentPostListStatusFilterKey = @"CurrentPostListStatusFilterKey";
@@ -71,6 +72,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) WPContentSyncHelper *syncHelper;
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
+@property (nonatomic, strong) PostCardTableViewCell *thumbCellForLayout;
 @property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, weak) IBOutlet NavBarTitleDropdownButton *filterButton;
@@ -216,6 +218,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
     [self forceUpdateCellLayout:self.imageCellForLayout];
+
+    self.thumbCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
+    [self forceUpdateCellLayout:self.thumbCellForLayout];
 }
 
 - (void)forceUpdateCellLayout:(PostCardTableViewCell *)cell
@@ -238,8 +243,11 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     UINib *postCardTextCellNib = [UINib nibWithNibName:PostCardTextCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardTextCellNib forCellReuseIdentifier:PostCardTextCellIdentifier];
 
-    UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellIdentifier bundle:[NSBundle mainBundle]];
+    UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardImageCellNib forCellReuseIdentifier:PostCardImageCellIdentifier];
+
+    UINib *postCardThumbCellNib = [UINib nibWithNibName:PostCardThumbCellNibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:postCardThumbCellNib forCellReuseIdentifier:PostCardThumbCellIdentifier];
 }
 
 - (void)configureTableViewHandler
@@ -760,10 +768,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([post featuredImageURLForDisplay]) {
-        cell = self.imageCellForLayout;
-    } else {
+    if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
+    } else if(post.post_thumbnail) {
+        cell = self.thumbCellForLayout;
+    } else {
+        cell = self.imageCellForLayout;
     }
     [self configureCell:cell atIndexPath:indexPath];
     CGSize size = [cell sizeThatFits:CGSizeMake(width, CGFLOAT_MAX)];
@@ -773,8 +783,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-// TODO: Preload images (maybe?)
-
     // Are we approaching the end of the table?
     if ((indexPath.section + 1 == self.tableView.numberOfSections) &&
         (indexPath.row + PostsLoadMoreThreshold >= [self.tableView numberOfRowsInSection:indexPath.section])) {
@@ -805,10 +813,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)atableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!cell.reuseIdentifier) {
-        NSLog(@"SDLKSLFJSDJFLKSDJFLKSDFLSKDJF");
-    }
-
     // Clean up nonReusableCells once they are off screen.
     if (indexPath.row < [self.tableViewHandler.resultsController.fetchedObjects count]) {
         Post *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
@@ -825,12 +829,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         cell = [self nonReusableCellForPost:post];
     } else {
         // Dequeue reusable cell
-        NSString *identifier;
-        if ([post featuredImageURLForDisplay]) {
-            identifier = PostCardImageCellIdentifier;
-        } else {
-            identifier = PostCardTextCellIdentifier;
-        }
+        NSString *identifier = [self cellIdentifierForPost:post];
         cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     }
 
@@ -876,15 +875,30 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     if (cell) {
         return cell;
     }
-
-    if ([post featuredImageURLForDisplay]) {
+    NSString *identifier = [self cellIdentifierForPost:post];
+    if ([identifier isEqualToString:PostCardImageCellIdentifier]) {
         cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
-    } else {
+    } else if ([identifier isEqualToString:PostCardTextCellIdentifier]) {
         cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+    } else {
+        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
     }
     [self.nonReusuablePostCells setObject:cell forKey:post.postID];
 
     return cell;
+}
+
+- (NSString *)cellIdentifierForPost:(Post *)post
+{
+    NSString *identifier;
+    if (![post.pathForDisplayImage length]) {
+        identifier = PostCardTextCellIdentifier;
+    } else if (post.post_thumbnail) {
+        identifier = PostCardThumbCellIdentifier;
+    } else {
+        identifier = PostCardImageCellIdentifier;
+    }
+    return identifier;
 }
 
 
