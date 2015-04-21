@@ -274,10 +274,9 @@
 
 - (NSURL *)featuredImageURLForDisplay
 {
-    if ([self.featuredImage remoteURL]) {
-        return [NSURL URLWithString:[self.featuredImage remoteURL]];
-    }
-    return nil;
+    NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
+NSLog(@"URL: %@", url);
+    return url;
 }
 
 @end
