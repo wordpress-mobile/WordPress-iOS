@@ -25,10 +25,12 @@
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
 #import "CalypsoPostsViewController.h"
 
 const typedef enum {
@@ -118,8 +120,13 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
     [blogService syncBlog:_blog success:nil failure:nil];
+
+    if (!self.blog.account.userID) {
+        // User's who upgrade may not have a userID recorded.
+        AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
+        [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
+    }
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
