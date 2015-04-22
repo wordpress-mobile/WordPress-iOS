@@ -237,11 +237,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     return _layoutCellMap;
 }
 
-- (BOOL)isLayoutCell:(UITableViewCell *)cell
-{
-    return [self.layoutCellMap.allValues containsObject:cell];
-}
-
 
 #pragma mark - Reply View Helpers
 
@@ -575,7 +570,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.attributedHeaderTitle          = gravatarBlock.attributedHeaderTitleText;
     cell.headerDetails                  = snippetBlock.text;
     
-    if ([self isLayoutCell:cell]) {
+    // Download the Gravatar (If Needed!)
+    if (cell.isLayoutCell) {
         return;
     }
 
@@ -607,8 +603,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [weakSelf unfollowSiteWithBlock:userBlock];
     };
 
-    // Download the Gravatar
-    if ([self isLayoutCell:cell]) {
+    // Download the Gravatar (If Needed!)
+    if (cell.isLayoutCell) {
         return;
     }
 
@@ -657,8 +653,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         [weakSelf openURL:url];
     };
 
-    // Download the Gravatar
-    if ([self isLayoutCell:cell]) {
+    // Download the Gravatar (If Needed!)
+    if (cell.isLayoutCell) {
         return;
     }
     
@@ -721,7 +717,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationMedia *media        = imageBlock.media.firstObject;
     cell.isBadge                    = media.isBadge;
     
-    if ([self isLayoutCell:cell]) {
+    // Download the Gravatar (If Needed!)
+    if (cell.isLayoutCell) {
         return;
     }
 
@@ -747,7 +744,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Setup the Callbacks
     __weak __typeof(self) weakSelf  = self;
     cell.onUrlClick                 = ^(NSURL *url){
-        
         [weakSelf openURL:url];
     };
 }
