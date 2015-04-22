@@ -57,7 +57,7 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
 
     self.contentView = [[UIView alloc] initWithFrame:self.bounds];
     self.contentView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.contentView.backgroundColor = [WPStyleGuide greyLighten20];
+    self.contentView.backgroundColor = [WPStyleGuide greyLighten30];
     [self addSubview:self.contentView];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(_contentView);
