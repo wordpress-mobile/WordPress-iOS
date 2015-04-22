@@ -9,6 +9,7 @@
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
 #import "PostListFilter.h"
+#import "PostListFooterView.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "StatsPostDetailsTableViewController.h"
@@ -73,8 +74,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *thumbCellForLayout;
-@property (nonatomic, strong) UIActivityIndicatorView *activityFooter;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
+@property (nonatomic, strong) PostListFooterView *postListFooterView;
 @property (nonatomic, weak) IBOutlet NavBarTitleDropdownButton *filterButton;
 @property (nonatomic, weak) IBOutlet UIView *rightBarButtonView;
 @property (nonatomic, weak) IBOutlet UIButton *searchButton;
@@ -153,15 +154,17 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self configureFilters];
     [self configureCellsForLayout];
     [self configureTableView];
-    [self configureTableViewHandler];
+    [self configureFooterView];
     [self configureSyncHelper];
     [self configureNavbar];
     [self configureAuthorFilter];
     [self configureSearchController];
     [self configureSearchBar];
     [self configureSearchWrapper];
+    [self configureTableViewHandler];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    [self.tableView reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -250,6 +253,13 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self.tableView registerNib:postCardThumbCellNib forCellReuseIdentifier:PostCardThumbCellIdentifier];
 }
 
+- (void)configureFooterView
+{
+    self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
+    [self.postListFooterView showSpinner:NO];
+    self.tableView.tableFooterView = self.postListFooterView;
+}
+
 - (void)configureTableViewHandler
 {
     self.tableViewHandler = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
@@ -277,8 +287,10 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     if ([self.tableViewHandler.resultsController.fetchedObjects count] > 0) {
         [self.noResultsView removeFromSuperview];
+        self.postListFooterView.hidden = NO;
         return;
     }
+    self.postListFooterView.hidden = YES;
 
     // Refresh the NoResultsView Properties
     self.noResultsView.titleText        = self.noResultsTitleText;
@@ -605,6 +617,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [self.postListFooterView showSpinner:YES];
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
     __weak __typeof(self) weakSelf = self;
@@ -625,7 +638,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (void)syncContentEnded
 {
     [self.refreshControl endRefreshing];
-    [self.activityFooter stopAnimating];
+    [self.postListFooterView showSpinner:NO];
 
     self.blog.lastPostsSync = [NSDate date];
 
