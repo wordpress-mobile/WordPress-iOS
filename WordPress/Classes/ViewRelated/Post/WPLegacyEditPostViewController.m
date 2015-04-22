@@ -362,8 +362,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
 
-    // TODO: Only show photos for now (not videos)
-    //picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
 
     [self presentViewController:picker animated:YES completion:nil];
 }
