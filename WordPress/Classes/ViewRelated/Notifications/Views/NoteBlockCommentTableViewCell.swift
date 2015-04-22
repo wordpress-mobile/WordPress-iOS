@@ -64,7 +64,7 @@ import Foundation
     }
 
     public func downloadGravatarWithGravatarEmail(email: NSString?) {
-        gravatarImageView.setImageWithGravatarEmail(email)
+        gravatarImageView.setImageWithGravatarEmail(email as String?)
     }
     
 
@@ -123,7 +123,7 @@ import Foundation
             return nil
         }
 
-        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as NSMutableAttributedString
+        let unwrappedMutableString  = attributedCommentText!.mutableCopy() as! NSMutableAttributedString
         let range                   = NSRange(location: 0, length: unwrappedMutableString.length)
         let textColor               = Style.blockUnapprovedTextColor
         unwrappedMutableString.addAttribute(NSForegroundColorAttributeName, value: textColor, range: range)

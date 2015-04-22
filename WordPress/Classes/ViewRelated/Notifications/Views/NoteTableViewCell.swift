@@ -47,7 +47,7 @@ import Foundation
     }
     public var noticon: NSString? {
         set {
-            noticonLabel.text = newValue
+            noticonLabel.text = newValue as String?
         }
         get {
             return noticonLabel.text
