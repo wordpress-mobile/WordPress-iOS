@@ -26,7 +26,7 @@ pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
 pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.0', :configurations => ['Debug', 'Release-Internal']
-pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/master/ios/EmailChecker.podspec'
+pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.7.9'
@@ -37,6 +37,7 @@ pod 'WordPressCom-Stats-iOS', '0.3.0'
 pod 'WordPressCom-Analytics-iOS', '0.0.30'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
+pod 'ReactiveCocoa', '~> 2.4.7'
 
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPressCom-Stats-iOS', '0.3.0'
@@ -44,7 +45,9 @@ end
 
 target :WordPressTest, :exclusive => true do
   pod 'OHHTTPStubs', '1.1.1'
-  pod 'OCMock'
+  pod 'OCMock', '3.1.2'
+  pod 'Specta', '0.5.0'
+  pod 'Expecta', '0.3.2'
 end
 
 target 'UITests', :exclusive => true do
