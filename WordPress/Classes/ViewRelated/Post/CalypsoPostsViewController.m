@@ -549,6 +549,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     // Do not start auto-sync if connection is down
     WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
+        [self configureNoResultsView];
         return;
     }
 
@@ -556,6 +557,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > PostsControllerRefreshInterval) {
         // Update in the background
         [self syncItemsWithUserInteraction:NO];
+    } else {
+        [self configureNoResultsView];
     }
 }
 
