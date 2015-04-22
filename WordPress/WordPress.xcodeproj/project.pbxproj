@@ -3261,7 +3261,6 @@
 				5DC02A3818E4C5BD009A1765 /* ThemeDetailsViewController.xib in Resources */,
 				3716E401167296D30035F8C4 /* ToastView.xib in Resources */,
 				B5C66B7A1ACF074600F68370 /* NoteBlockUserTableViewCell.xib in Resources */,
-				5DA5BF3E18E32DCF005F11F9 /* EditMediaViewController.xib in Resources */,
 				B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */,
 				B5509A9519CA3B9F006D2E49 /* EditReplyViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
