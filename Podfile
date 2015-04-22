@@ -36,7 +36,7 @@ pod 'WordPressCom-Stats-iOS', '0.3.0'
 pod 'WordPressCom-Analytics-iOS', '0.0.30'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
-pod 'WPMediaPicker', '0.2.0'
+pod 'WPMediaPicker', '0.3.0'
 target 'WordPressTodayWidget', :exclusive => true do
   pod 'WordPressCom-Stats-iOS', '0.3.0'
 end
