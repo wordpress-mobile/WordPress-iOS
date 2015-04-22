@@ -23,6 +23,7 @@
 
 NSString *const CheckedIfUserHasSeenLegacyEditor = @"checked_if_user_has_seen_legacy_editor";
 NSString *const SeenLegacyEditor = @"seen_legacy_editor";
+NSString *const SessionCount = @"session_count";
 
 - (instancetype)init
 {
@@ -121,7 +122,7 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         }
     }
 
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.mixpanelProxy.currentSuperProperties];
+    NSMutableDictionary *superProperties = [NSMutableDictionary new];
     superProperties[@"platform"] = @"iOS";
     superProperties[@"dotcom_user"] = @(dotcom_user);
     superProperties[@"jetpack_user"] = @(jetpack_user);
@@ -782,14 +783,12 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
         [WPAnalytics track:WPAnalyticsStatAppInstalled];
     }
 
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.mixpanelProxy.currentSuperProperties];
-    superProperties[@"session_count"] = @(sessionCount);
-    [self.mixpanelProxy registerSuperProperties:superProperties];
+    [self.mixpanelProxy registerSuperProperties:@{ SessionCount : @(sessionCount) }];
 }
 
 - (NSInteger)sessionCount
 {
-    return [[[self.mixpanelProxy currentSuperProperties] numberForKey:@"session_count"] integerValue];
+    return [[self.mixpanelProxy.currentSuperProperties numberForKey:SessionCount] integerValue];
 }
 
 @end

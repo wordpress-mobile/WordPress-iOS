@@ -4,9 +4,9 @@
 
 - (void)registerInstanceWithToken:(NSString *)token;
 - (NSDictionary *)currentSuperProperties;
-- (void)incrementSuperProperty:(NSString *)property;
 - (void)flagSuperProperty:(NSString *)property;
 - (void)setSuperProperty:(NSString *)property toValue:(id)value;
+- (void)incrementSuperProperty:(NSString *)property;
 - (void)registerSuperProperties:(NSDictionary *)superProperties;
 - (void)identify:(NSString *)username;
 - (void)setPeopleProperties:(NSDictionary *)peopleProperties;

@@ -43,14 +43,14 @@ describe(@"currentSuperProperties", ^{
         
         NSDictionary *currentSuperProperties = mixpanelProxy.currentSuperProperties;
         
-        expect(currentSuperProperties).to.equal(superProperties);
+        expect([currentSuperProperties[@"property"] boolValue]).to.beTruthy();
     });
 });
 
 // Create helper to intercept super property dictionary
 __block NSDictionary *superPropertiesRegistering;
 void (^interceptSuperPropertyDictionary)() = ^{
-    [OCMStub([mixpanelProxy registerSuperProperties:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+    [OCMStub([mixpanelMock registerSuperProperties:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
         __unsafe_unretained NSDictionary *props;
         [invocation getArgument:&props atIndex:2];
         
@@ -67,6 +67,10 @@ describe(@"incrementSuperProperty:", ^{
         
         [mixpanelProxy incrementSuperProperty:property];
         
+        setAsyncSpecTimeout(1.0);
+        
+        // Sleeping briefly to give the MixpanelProxy time to kick off the async tasks that eventually register the super properties
+        [NSThread sleepForTimeInterval:0.1];
         expect(superPropertiesRegistering[property]).to.equal(@11);
     });
 });
@@ -78,6 +82,8 @@ describe(@"flagSuperProperty:", ^{
         
         [mixpanelProxy flagSuperProperty:property];
         
+        // Sleeping briefly to give the MixpanelProxy time to kick off the async tasks that eventually register the super properties
+        [NSThread sleepForTimeInterval:0.1];
         expect(superPropertiesRegistering[property]).to.equal(@YES);
     });
 });
@@ -91,6 +97,8 @@ describe(@"setSuperProperty:toValue:", ^{
         NSString *value = @"value";
         [mixpanelProxy setSuperProperty:property toValue:value];
         
+        // Sleeping briefly to give the MixpanelProxy time to kick off the async tasks that eventually register the super properties
+        [NSThread sleepForTimeInterval:0.1];
         expect(superPropertiesRegistering[property]).to.equal(value);
     });
 });
@@ -103,6 +111,8 @@ describe(@"registerSuperProperties:", ^{
         
         [mixpanelProxy registerSuperProperties:properties];
         
+        // Sleeping briefly to give the MixpanelProxy time to kick off the async tasks that eventually register the super properties
+        [NSThread sleepForTimeInterval:0.1];
         [mixpanelMock verify];
     });
 });
