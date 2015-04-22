@@ -3,12 +3,13 @@
 
 @implementation OnePasswordFacade
 
-- (void)findLoginForURLString:(NSString *)loginUrl viewController:(UIViewController *)viewController completion:(OnePasswordFacadeCallback)completion;
+- (void)findLoginForURLString:(NSString *)loginUrl viewController:(UIViewController *)viewController sender:(id)sender completion:(OnePasswordFacadeCallback)completion
 {
     NSParameterAssert(viewController != nil);
+    NSParameterAssert(sender != nil);
     NSParameterAssert(completion != nil);
     
-    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginUrl forViewController:viewController sender:nil completion:^(NSDictionary *loginDict, NSError *error) {
+    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginUrl forViewController:viewController sender:sender completion:^(NSDictionary *loginDict, NSError *error) {
         if (error != nil && error.code != AppExtensionErrorCodeCancelledByUser) {
             completion(nil, nil, error);
         } else {
