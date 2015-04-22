@@ -8,4 +8,6 @@
                      success:(void (^)(NSArray *statuses))success
                      failure:(void (^)(NSError *error))failure;
 
+- (NSDictionary *)simulatedRemotePostStatusResponseObject;
+
 @end
