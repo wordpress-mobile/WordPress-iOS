@@ -10,6 +10,8 @@
 
 @implementation WPRichContentView
 
+@dynamic delegate;
+
 #pragma mark - Lifecycle Methods
 
 - (void)dealloc

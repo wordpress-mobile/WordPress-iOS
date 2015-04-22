@@ -51,7 +51,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let context = manager.destinationContext
         let request = NSFetchRequest(entityName: "Account")
         var error: NSError?
-        let accounts = context.executeFetchRequest(request, error: &error) as [NSManagedObject]?
+        let accounts = context.executeFetchRequest(request, error: &error) as! [NSManagedObject]?
         
         if accounts == nil {
             return true
@@ -84,7 +84,7 @@ class AccountToAccount22to23: NSEntityMigrationPolicy {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         
         if defaultAccount != nil {
-            let uuid = defaultAccount!.valueForKey("uuid") as String
+            let uuid = defaultAccount!.valueForKey("uuid") as! String
             userDefaults.setObject(uuid, forKey: defaultDotcomUUIDKey)
         }
         
