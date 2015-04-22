@@ -77,7 +77,7 @@ public class NoteSeparatorsView : UIView
             bottomColor.setStroke()
             CGContextSetLineWidth(ctx, bottomHeight * scale);
             CGContextMoveToPoint(ctx, bottomInsets.left, bounds.height)
-            CGContextAddLineToPoint(ctx, bounds.width - bottomInsets.left - bottomInsets.right, bounds.height)
+            CGContextAddLineToPoint(ctx, bounds.maxX - bottomInsets.right, bounds.height)
             CGContextStrokePath(ctx);
         }
     }
