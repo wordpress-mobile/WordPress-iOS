@@ -94,9 +94,9 @@ import Foundation
 
     // MARK: - Private Methods
     private func refreshDetails() {
-        var details = timestamp ?? NSString()
+        var details = timestamp ?? String()
         if let unwrappedSite = site {
-            details = NSString(format: "%@ • %@", details, unwrappedSite)
+            details = String(format: "%@ • %@", details, unwrappedSite)
         }
         
         detailsLabel.text = details
