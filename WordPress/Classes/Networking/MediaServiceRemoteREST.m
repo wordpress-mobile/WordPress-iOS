@@ -86,6 +86,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
         localProgress.totalUnitCount=0;
         localProgress.completedUnitCount=0;
         if (failure) {
