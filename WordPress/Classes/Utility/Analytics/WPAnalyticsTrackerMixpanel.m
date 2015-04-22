@@ -245,7 +245,13 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatApplicationOpened:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Opened"];
             [instructions setPeoplePropertyToIncrement:@"Application Opened"];
-            [self incrementSessionCount];
+            
+            // As this event increments the session count stat on the Mixpanel super properties we are forced to set it by hand otherwise
+            // this property will always be one session count behind. The reason being is that by the time the updated super property is ready
+            // to be applied this event will have already been processed by Mixpanel.
+            NSUInteger sessionCount = [self incrementSessionCount];
+            [self saveProperty:SessionCount withValue:@(sessionCount) forStat:WPAnalyticsStatApplicationOpened];
+            
             break;
         case WPAnalyticsStatApplicationClosed:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Application Closed"];
@@ -774,7 +780,7 @@ NSString *const SessionCount = @"session_count";
     [self saveProperty:property withValue:@(newValue) forStat:stat];
 }
 
-- (void)incrementSessionCount
+- (NSUInteger)incrementSessionCount
 {
     NSInteger sessionCount = [self sessionCount];
     sessionCount++;
@@ -784,6 +790,8 @@ NSString *const SessionCount = @"session_count";
     }
 
     [self.mixpanelProxy registerSuperProperties:@{ SessionCount : @(sessionCount) }];
+    
+    return sessionCount;
 }
 
 - (NSInteger)sessionCount
