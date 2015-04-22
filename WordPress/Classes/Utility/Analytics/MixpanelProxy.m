@@ -6,9 +6,9 @@
 @interface MixpanelProxy ()
 
 @property (nonatomic, strong) NSLock *lock;
+@property (nonatomic, strong) dispatch_queue_t superPropertiesQueue;
 
 @end
-
 
 @implementation MixpanelProxy
 
@@ -17,6 +17,7 @@
     self = [super init];
     if (self) {
         _lock = [NSLock new];
+        _superPropertiesQueue = dispatch_queue_create("org.wordpress.analytics.mixpanelproxy", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -31,19 +32,11 @@
     return [Mixpanel sharedInstance].currentSuperProperties;
 }
 
-- (void)incrementSuperProperty:(NSString *)property
-{
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.currentSuperProperties];
-    NSUInteger propertyValue = [superProperties[property] integerValue];
-    superProperties[property] = @(++propertyValue);
-    [self registerSuperProperties:superProperties];
-}
-
 - (void)flagSuperProperty:(NSString *)property
 {
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.currentSuperProperties];
-    superProperties[property] = @(YES);
-    [self registerSuperProperties:superProperties];
+    NSParameterAssert(property.length > 0);
+    
+    [self registerSuperProperties:@{ property : @(YES) }];
 }
 
 - (void)setSuperProperty:(NSString *)property toValue:(id)value
@@ -51,14 +44,22 @@
     NSParameterAssert(property.length > 0);
     NSParameterAssert(value != nil);
     
-    NSMutableDictionary *superProperties = [[NSMutableDictionary alloc] initWithDictionary:self.currentSuperProperties];
-    superProperties[property] = value;
-    [self registerSuperProperties:superProperties];
+    [self registerSuperProperties:@{ property : value }];
+}
+
+- (void)incrementSuperProperty:(NSString *)property
+{
+    dispatch_async(self.superPropertiesQueue, ^{
+        NSUInteger propertyValue = [self.currentSuperProperties[property] integerValue];
+        [self registerSuperProperties:@{ property : @(++propertyValue) }];
+    });
 }
 
 - (void)registerSuperProperties:(NSDictionary *)superProperties
 {
-    [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    dispatch_async(self.superPropertiesQueue, ^{
+        [[Mixpanel sharedInstance] registerSuperProperties:superProperties];
+    });
 }
 
 - (void)identify:(NSString *)username
