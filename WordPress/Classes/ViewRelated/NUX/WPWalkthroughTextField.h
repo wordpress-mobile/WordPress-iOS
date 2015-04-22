@@ -3,7 +3,7 @@
 @interface WPWalkthroughTextField : UITextField
 
 @property (nonatomic) UIEdgeInsets textInsets;
-@property (nonatomic) CGPoint rightViewPadding;
+@property (nonatomic) UIOffset rightViewPadding;
 @property (nonatomic) BOOL showTopLineSeparator;
 @property (nonatomic) BOOL showSecureTextEntryToggle;
 
