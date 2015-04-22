@@ -143,8 +143,9 @@
  *  This method will bring up the 1Password extension
  *
  *  @param viewController the view controller that will display the 1Password extension
+ *  @param sender the control that triggered this action
  */
-- (void)onePasswordButtonActionForViewController:(UIViewController *)viewController;
+- (void)onePasswordButtonActionForViewController:(UIViewController *)viewController sender:(id)sender;
 
 /**
  *  The method returns the base site url

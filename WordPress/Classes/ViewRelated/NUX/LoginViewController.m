@@ -295,7 +295,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    [self.viewModel onePasswordButtonActionForViewController:self];
+    [self.viewModel onePasswordButtonActionForViewController:self sender:sender];
 }
 
 - (IBAction)sendVerificationCode:(id)sender
