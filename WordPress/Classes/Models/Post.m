@@ -261,7 +261,7 @@
 
 - (NSString *)statusForDisplay
 {
-    if ([self.status isEqualToString:PostStatusPublish]) {
+    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
         return [NSString string];
     }
     return [self statusTitle];
