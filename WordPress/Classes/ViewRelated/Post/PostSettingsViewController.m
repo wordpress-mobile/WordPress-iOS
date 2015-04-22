@@ -23,6 +23,7 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
+#import <WPMediaPicker/WPMediaPickerViewController.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
@@ -46,8 +47,8 @@ static NSInteger RowIndexForDatePicker = 0;
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 
-@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate> {
-}
+@interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
+UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -908,13 +909,10 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 - (void)showPhotoPicker
 {
-    UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-    picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    picker.assetsFilter = [ALAssetsFilter allPhotos];
     picker.delegate = self;
-    picker.allowsEditing = NO;
-    picker.navigationBar.translucent = NO;
-    picker.modalPresentationStyle = UIModalPresentationCurrentContext;
-    picker.navigationBar.barStyle = UIBarStyleBlack;
+    picker.allowMultipleSelection = NO;
 
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -1101,34 +1099,37 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     }
 }
 
-#pragma mark - UIImagePickerControllerDelegate methods
+#pragma mark - WPMediaPickerViewControllerDelegate methods
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    __weak __typeof(self) weakSelf = self;
+    if (assets.count == 0){
+        return;
+    }
+    ALAsset *asset = assets[0];
+    if (!asset.defaultRepresentation) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                            message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+        return;
+    }
+    
     self.isUploadingMedia = YES;
-    // On iOS7 the image picker seems to override our preferred setting so we force the status bar color back.
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    NSURL *assetURL = [info objectForKey:UIImagePickerControllerReferenceURL];
-    ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc] init];
-    [assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset){
-        if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
-            return;
-        }
-        [weakSelf uploadFeatureImage:asset];
-        if (IS_IPAD) {
-            [weakSelf.popover dismissPopoverAnimated:YES];
-        } else {
-            [weakSelf.navigationController dismissViewControllerAnimated:YES completion:nil];
-        }
-        // Reload the featured image row so that way the activity indicator will be displayed.        
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
-    } failureBlock:^(NSError *error){
-        DDLogError(@"can't get asset %@: %@", assetURL, [error localizedDescription]);
-        weakSelf.isUploadingMedia = NO;
-    }];
+    [self uploadFeatureImage:assets[0]];
+    if (IS_IPAD) {
+        [self.popover dismissPopoverAnimated:YES];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+    // Reload the featured image row so that way the activity indicator will be displayed.
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
+    if (IS_IPAD) {
+        [self.popover dismissPopoverAnimated:YES];
+    } else {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
 }
 
 #pragma mark - UIPopoverControllerDelegate methods
