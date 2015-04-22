@@ -24,6 +24,7 @@
 #pragma mark ==========================================================================================
 
 static NSInteger const CommentsDetailsNumberOfSections  = 1;
+static NSInteger const CommentsDetailsHiddenRowNumber   = -1;
 
 typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     CommentsDetailsRowHeader    = 0,
@@ -45,6 +46,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 @property (nonatomic, strong) NSDictionary          *layoutIdentifiersMap;
 @property (nonatomic, strong) NSDictionary          *reuseIdentifiersMap;
+@property (nonatomic, assign) NSUInteger            numberOfRows;
 @property (nonatomic, assign) NSUInteger            rowNumberForHeader;
 @property (nonatomic, assign) NSUInteger            rowNumberForComment;
 @property (nonatomic, assign) NSUInteger            rowNumberForActions;
@@ -252,7 +254,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.shouldShowHeaderForPostDetails ? CommentsDetailsRowCount : CommentsDetailsRowCount - 1;
+    return self.numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -740,22 +742,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     return self.shouldAttachReplyTextView && shouldShowSuggestions;
 }
 
-- (BOOL)shouldShowHeaderForPostDetails
-{
-    // If the post is not set for the comment, we don't want to show an empty cell for the post details
-    return self.comment.post != nil;
-}
-
 - (void)reloadData
 {
-    // Hide the header, if needed
-    self.rowNumberForHeader  = CommentsDetailsRowHeader;
-    if (!self.shouldShowHeaderForPostDetails) {
-        self.rowNumberForHeader -= 1;
-    }
-    
-    self.rowNumberForComment = self.rowNumberForHeader + 1;
-    self.rowNumberForActions = self.rowNumberForComment + 1;
+    // If we don't have the associated post, let's hide the Header
+    BOOL shouldShowHeader       = self.comment.post != nil;;
+
+    // Number of Rows
+    self.numberOfRows           = shouldShowHeader ? CommentsDetailsRowCount  : CommentsDetailsRowCount - 1;
+    self.rowNumberForHeader     = shouldShowHeader ? CommentsDetailsRowHeader : CommentsDetailsHiddenRowNumber;
+    self.rowNumberForComment    = self.rowNumberForHeader + 1;
+    self.rowNumberForActions    = self.rowNumberForComment + 1;
     
     // Arrange the Reuse + Layout Identifier Map(s)
     self.reuseIdentifiersMap = @{
