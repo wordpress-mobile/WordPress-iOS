@@ -5,7 +5,6 @@
 
 @interface MixpanelProxy ()
 
-@property (nonatomic, strong) NSLock *lock;
 @property (nonatomic, strong) dispatch_queue_t superPropertiesQueue;
 
 @end
@@ -16,7 +15,6 @@
 {
     self = [super init];
     if (self) {
-        _lock = [NSLock new];
         _superPropertiesQueue = dispatch_queue_create("org.wordpress.analytics.mixpanelproxy", DISPATCH_QUEUE_SERIAL);
     }
     return self;
