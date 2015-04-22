@@ -42,9 +42,8 @@ public class NoteSeparatorsView : UIView
 
     
     // MARK: - UIView methods
-    public override init() {
-        super.init()
-        setupView()
+    convenience init() {
+        self.init(frame: CGRectZero)
     }
 
     required override public init(frame: CGRect) {
