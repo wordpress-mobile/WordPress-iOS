@@ -118,6 +118,10 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor]
         
+        public static let blockNoticonStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockNoticonFont!,
+                                                        NSForegroundColorAttributeName: blockNoticonColor ]
+        
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
@@ -190,6 +194,7 @@ extension WPStyleGuide
         private static let sectionHeaderTextColor   = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
         private static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
         private static let subjectNoticonColor      = noticonReadColor
+        private static let blockNoticonColor        = noticonReadColor
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
         
@@ -202,5 +207,6 @@ extension WPStyleGuide
         private static let headerTitleRegularFont   = blockRegularFont
         private static let headerTitleItalicsFont   = blockItalicsFont
         private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
+        private static let blockNoticonFont         = subjectNoticonFont
     }
 }
