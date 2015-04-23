@@ -449,6 +449,7 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
     item.callback = ^{
         [weakSelf viewPostAction];
     };
+    item.imageInsets = UIEdgeInsetsMake(2.0, 0.0, 0.0, 0.0);
     [items addObject:item];
 
     if ([self.contentProvider isWPcom]) {
