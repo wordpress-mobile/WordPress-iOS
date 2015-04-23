@@ -216,6 +216,7 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
     [button setTitle:item.title forState:UIControlStateNormal];
     [button setTitle:item.title forState:UIControlStateHighlighted];
     [button setImage:item.image forState:UIControlStateNormal];
+    [button setImageEdgeInsets:item.imageInsets];
     [button setImage:item.highlightedImage forState:UIControlStateHighlighted];
 }
 
@@ -295,10 +296,12 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Back", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-back"]
                                    highlightedImage:nil];
+        item.imageInsets = UIEdgeInsetsMake(1.0, 0.0, 0.0, 0.0);
     } else {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"More", @"")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-more"]
                                    highlightedImage:nil];
+        item.imageInsets = UIEdgeInsetsMake(3.0, 0.0, 0.0, 4.0);
     }
     return item;
 }

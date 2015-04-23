@@ -6,6 +6,7 @@ typedef void(^PostCardActionBarItemCallback)();
 
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) UIImage *image;
+@property (nonatomic, assign) UIEdgeInsets imageInsets;
 @property (nonatomic, strong) UIImage *highlightedImage;
 @property (nonatomic, copy) PostCardActionBarItemCallback callback;
 
