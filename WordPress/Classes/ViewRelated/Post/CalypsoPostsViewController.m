@@ -103,6 +103,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Calypso" bundle:[NSBundle mainBundle]];
     CalypsoPostsViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"CalypsoPostsViewController"];
     controller.blog = blog;
+    controller.restorationClass = [self class];
     return controller;
 }
 
