@@ -5,6 +5,8 @@
 
 + (UIColor *)postListSearchBarTextColor;
 
++ (UIColor *)postCardBorderColor;
+
 + (void)applyPostAuthorFilterStyle:(UISegmentedControl *)segmentControl;
 
 + (void)applyPostCardStyle:(UITableViewCell *)cell;

@@ -23,6 +23,11 @@
 
 #pragma mark - Card View Styles
 
++ (UIColor *)postCardBorderColor
+{
+    return [UIColor colorWithRed:215.0/255.0 green:227.0/255.0 blue:235.0/255.0 alpha:1.0];
+}
+
 + (void)applyPostCardStyle:(UITableViewCell *)cell
 {
     cell.backgroundColor = [self greyLighten30];
