@@ -14,6 +14,7 @@
 
 @interface WPAnalyticsTrackerMixpanel ()
 
+@property (nonatomic, strong) NSManagedObjectContext *context;
 @property (nonatomic, strong) MixpanelProxy *mixpanelProxy;
 
 @end
@@ -27,10 +28,22 @@ NSString *const SessionCount = @"session_count";
 
 - (instancetype)init
 {
+    [self doesNotRecognizeSelector:_cmd];
+    return nil;
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context
+{
+    return [self initWithManagedObjectContext:context mixpanelProxy:[MixpanelProxy new]];
+}
+
+- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context mixpanelProxy:(MixpanelProxy *)mixpanelProxy
+{
     self = [super init];
     if (self) {
         _aggregatedStatProperties = [[NSMutableDictionary alloc] init];
-        _mixpanelProxy = [MixpanelProxy new];
+        _mixpanelProxy = mixpanelProxy;
+        _context = context;
     }
     return self;
 }
@@ -93,14 +106,13 @@ NSString *const SessionCount = @"session_count";
 
 - (void)refreshMetadata
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     __block NSUInteger blogCount;
     __block NSString *username;
     __block NSString *emailAddress;
     __block BOOL accountPresent = NO;
     __block BOOL jetpackBlogsPresent = NO;
-    [context performBlockAndWait:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    [self.context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.context];
         WPAccount *account = [accountService defaultWordPressComAccount];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
         
@@ -132,18 +144,18 @@ NSString *const SessionCount = @"session_count";
 
     if (accountPresent && [username length] > 0) {
         [self.mixpanelProxy identify:username];
-        [self.mixpanelProxy setPeopleProperties:@{ @"$username": username, @"$first_name" : username }];
+        NSMutableDictionary *peopleProperties = [[NSMutableDictionary alloc] initWithDictionary:@{ @"$username": username, @"$first_name" : username }];
         if ([emailAddress length] > 0) {
-            [self.mixpanelProxy setPeopleProperties:@{ @"$email": emailAddress }];
+            peopleProperties[@"$email"] = emailAddress;
         }
+        [self.mixpanelProxy setPeopleProperties:peopleProperties];
     }
 }
 
 - (void)aliasNewUser
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    [context performBlockAndWait:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    [self.context performBlockAndWait:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.context];
         WPAccount *account = [accountService defaultWordPressComAccount];
         NSString *username = account.username;
         
@@ -160,8 +172,7 @@ NSString *const SessionCount = @"session_count";
 
 - (BOOL)connectedToWordPressDotCom
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return [[defaultAccount restApi] hasCredentials];
