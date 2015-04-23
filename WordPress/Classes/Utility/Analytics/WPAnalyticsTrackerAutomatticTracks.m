@@ -125,7 +125,7 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     
-    if (accountPresent && [username length] > 0) {
+    if (dotcom_user == YES && [username length] > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
 #endif
