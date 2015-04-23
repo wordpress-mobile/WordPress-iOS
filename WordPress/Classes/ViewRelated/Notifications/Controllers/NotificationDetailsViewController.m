@@ -785,8 +785,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationRange *range    = [self.note notificationRangeWithUrl:url];
     BOOL success                = false;
     
-    if (range.isPost || range.isComment) {
+    if (range.isPost) {
         success = [self displayReaderWithPostId:range.postID siteID:range.siteID];
+    }
+    
+    if (range.isComment) {
+        success = [self displayCommentsWithPostId:range.postID siteID:range.siteID];
     }
     
     if (!success && range.isStats) {
