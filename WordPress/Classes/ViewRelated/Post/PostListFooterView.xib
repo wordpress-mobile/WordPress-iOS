@@ -18,15 +18,15 @@
                     <rect key="frame" x="0.0" y="0.0" width="300" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBZ-lN-HGt">
-                            <rect key="frame" x="10" y="22" width="119" height="1"/>
-                            <color key="backgroundColor" red="0.50980392159999999" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="6" y="22" width="125" height="1"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="gOn-eC-zhZ"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wKm-Mr-TCA">
-                            <rect key="frame" x="171" y="22" width="119" height="1"/>
-                            <color key="backgroundColor" red="0.50980392159999999" green="0.65098039220000004" blue="0.74901960779999999" alpha="1" colorSpace="calibratedRGB"/>
+                            <rect key="frame" x="169" y="22" width="125" height="1"/>
+                            <color key="backgroundColor" red="0.78431372549019607" green="0.84313725490196079" blue="0.88235294117647056" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="k2g-PF-m8U"/>
                             </constraints>
@@ -44,10 +44,10 @@
                         <constraint firstAttribute="centerX" secondItem="2lx-TZ-H9w" secondAttribute="centerX" id="BXl-cW-Ywt"/>
                         <constraint firstAttribute="centerY" secondItem="MBZ-lN-HGt" secondAttribute="centerY" constant="-0.5" id="SM7-09-i4J"/>
                         <constraint firstAttribute="centerY" secondItem="wKm-Mr-TCA" secondAttribute="centerY" constant="-0.5" id="X37-jz-nrb"/>
-                        <constraint firstItem="2lx-TZ-H9w" firstAttribute="leading" secondItem="MBZ-lN-HGt" secondAttribute="trailing" constant="10" id="Y0M-I9-BOr"/>
-                        <constraint firstAttribute="trailing" secondItem="wKm-Mr-TCA" secondAttribute="trailing" constant="10" id="b0b-rA-YhB"/>
-                        <constraint firstItem="MBZ-lN-HGt" firstAttribute="leading" secondItem="AoX-vc-zrF" secondAttribute="leading" constant="10" id="gr5-vp-wLh"/>
-                        <constraint firstItem="wKm-Mr-TCA" firstAttribute="leading" secondItem="2lx-TZ-H9w" secondAttribute="trailing" constant="10" id="qGB-cG-EAL"/>
+                        <constraint firstItem="2lx-TZ-H9w" firstAttribute="leading" secondItem="MBZ-lN-HGt" secondAttribute="trailing" constant="8" id="Y0M-I9-BOr"/>
+                        <constraint firstAttribute="trailing" secondItem="wKm-Mr-TCA" secondAttribute="trailing" constant="6" id="b0b-rA-YhB"/>
+                        <constraint firstItem="MBZ-lN-HGt" firstAttribute="leading" secondItem="AoX-vc-zrF" secondAttribute="leading" constant="6" id="gr5-vp-wLh"/>
+                        <constraint firstItem="wKm-Mr-TCA" firstAttribute="leading" secondItem="2lx-TZ-H9w" secondAttribute="trailing" constant="8" id="qGB-cG-EAL"/>
                         <constraint firstAttribute="centerY" secondItem="2lx-TZ-H9w" secondAttribute="centerY" id="wf6-gD-lPc"/>
                     </constraints>
                 </view>
