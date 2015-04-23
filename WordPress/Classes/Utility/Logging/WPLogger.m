@@ -1,7 +1,7 @@
 #import "WPLogger.h"
 
 // Pods
-#import <CocoaLumberjack/DDLog.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <CocoaLumberjack/DDASLLogger.h>
 #import <CocoaLumberjack/DDFileLogger.h>
 #import <CocoaLumberjack/DDTTYLogger.h>
@@ -54,7 +54,7 @@
     
     BOOL extraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"];
     if (extraDebug) {
-        ddLogLevel = LOG_LEVEL_VERBOSE;
+        ddLogLevel = DDLogLevelVerbose;
     }
 }
 
