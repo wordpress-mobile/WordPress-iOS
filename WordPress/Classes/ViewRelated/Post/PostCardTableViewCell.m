@@ -222,7 +222,7 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonRight];
     [WPStyleGuide applyPostMetaButtonStyle:self.metaButtonLeft];
     self.actionBar.backgroundColor = [WPStyleGuide lightGrey];
-    self.shadowView.backgroundColor = [WPStyleGuide greyLighten20];
+    self.shadowView.backgroundColor = [WPStyleGuide postCardBorderColor];
 }
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
