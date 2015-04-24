@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
@@ -11,7 +11,7 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="65" id="cm8-te-h9Y" customClass="RestorePostTableViewCell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="cm8-te-h9Y" id="n47-YY-a6J">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="cm8-te-h9Y" id="n47-YY-a6J">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gcy-ef-aVi">
@@ -101,10 +101,10 @@
                 </subviews>
                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                 <constraints>
-                    <constraint firstAttribute="trailingMargin" secondItem="gcy-ef-aVi" secondAttribute="trailing" constant="-8" id="Cdf-Qt-fOa"/>
-                    <constraint firstItem="gcy-ef-aVi" firstAttribute="leading" secondItem="n47-YY-a6J" secondAttribute="leadingMargin" constant="-8" id="M9y-0x-jAB"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="gcy-ef-aVi" secondAttribute="bottom" constant="-8" id="TQO-di-ZU2"/>
-                    <constraint firstItem="gcy-ef-aVi" firstAttribute="top" secondItem="n47-YY-a6J" secondAttribute="topMargin" constant="-8" id="ore-oS-c22"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="gcy-ef-aVi" secondAttribute="bottom" constant="-8" id="1fm-BB-GMU"/>
+                    <constraint firstAttribute="trailing" secondItem="gcy-ef-aVi" secondAttribute="trailing" id="3jw-Hl-OoM"/>
+                    <constraint firstItem="gcy-ef-aVi" firstAttribute="top" secondItem="n47-YY-a6J" secondAttribute="topMargin" constant="-8" id="mPx-Eq-ymj"/>
+                    <constraint firstItem="gcy-ef-aVi" firstAttribute="leading" secondItem="n47-YY-a6J" secondAttribute="leading" id="pao-FZ-URB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
