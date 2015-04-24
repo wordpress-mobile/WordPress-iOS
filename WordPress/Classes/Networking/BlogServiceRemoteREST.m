@@ -90,7 +90,8 @@
                                     @"software_version",
                                     @"videopress_enabled",
                                     @"timezone",
-                                    @"gmt_offset"
+                                    @"gmt_offset",
+                                    @"allowed_file_types",
                                     ];
 
         for (NSString *key in optionsDirectMapKeys) {

@@ -16,7 +16,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
     override func viewDidLoad() {
         super.viewDidLoad()
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        self.siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
 
         visitorsLabel?.text = NSLocalizedString("Visitors", comment: "Stats Visitors Label")
         viewsLabel?.text = NSLocalizedString("Views", comment: "Stats Views Label")
@@ -60,7 +60,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         // If there's an update, use NCUpdateResult.NewData
         
         let sharedDefaults = NSUserDefaults(suiteName: WPAppGroupName)!
-        let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as NSNumber?
+        let siteId = sharedDefaults.objectForKey(WPStatsTodayWidgetUserDefaultsSiteIdKey) as! NSNumber?
         self.siteName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteNameKey) ?? ""
         let timeZoneName = sharedDefaults.stringForKey(WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey)
         let oauth2Token = self.getOAuth2Token()
@@ -101,7 +101,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         var oauth2Token:NSString? = SFHFKeychainUtils.getPasswordForUsername(WPStatsTodayWidgetOAuth2TokenKeychainUsername, andServiceName: WPStatsTodayWidgetOAuth2TokenKeychainServiceName, accessGroup: WPStatsTodayWidgetOAuth2TokenKeychainAccessGroup, error: &error)
         
-        return oauth2Token
+        return oauth2Token as String?
     }
     
 }
