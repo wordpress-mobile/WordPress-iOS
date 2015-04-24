@@ -2,7 +2,7 @@
 
 @class Blog;
 
-@interface CalypsoPostsViewController : UIViewController
+@interface PostListViewController : UIViewController
 
 @property (nonatomic, strong) Blog *blog;
 

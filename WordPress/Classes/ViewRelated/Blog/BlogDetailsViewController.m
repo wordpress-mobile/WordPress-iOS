@@ -31,7 +31,7 @@
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
-#import "CalypsoPostsViewController.h"
+#import "PostListViewController.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -388,7 +388,7 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
 - (void)showPostList {
     [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-    UIViewController *controller = [CalypsoPostsViewController controllerWithBlog:self.blog];
+    UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
