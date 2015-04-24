@@ -391,6 +391,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return self.blogID;
 }
 
+- (NSSet *)allowedFileTypes
+{
+    NSArray * allowedFileTypes = self.options[@"allowed_file_types"][@"value"];
+    if (!allowedFileTypes || allowedFileTypes.count == 0) {
+        return nil;
+    }
+    
+    return [NSSet setWithArray:allowedFileTypes];
+}
+
 #pragma mark - api accessor
 
 - (WPXMLRPCClient *)api
