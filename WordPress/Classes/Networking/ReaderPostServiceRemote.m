@@ -4,8 +4,6 @@
 #import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
 
-static const NSInteger FeaturedImageMinimumWidth = 640;
-
 @interface ReaderPostServiceRemote ()
 
 @property (nonatomic, strong) WordPressComApi *api;
