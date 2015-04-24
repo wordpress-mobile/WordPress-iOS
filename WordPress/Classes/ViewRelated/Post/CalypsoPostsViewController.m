@@ -8,6 +8,7 @@
 #import "Post.h"
 #import "PostService.h"
 #import "PostCardTableViewCell.h"
+#import "RestorePostTableViewCell.h"
 #import "PostListFilter.h"
 #import "PostListFooterView.h"
 #import "PostPreviewViewController.h"
@@ -36,9 +37,11 @@ typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
 static NSString * const PostCardThumbCellIdentifier = @"PostCardThumbCellIdentifier";
+static NSString * const PostCardRestoreCellIdentifier = @"PostCardRestoreCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
 static NSString * const PostCardThumbCellNibName = @"PostCardThumbCell";
+static NSString * const PostCardRestoreCellNibName = @"RestorePostTableViewCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
 static NSString * const CurrentPostListStatusFilterKey = @"CurrentPostListStatusFilterKey";
@@ -51,6 +54,7 @@ static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
+static const CGFloat PostCardRestoreCellRowHeight = 54.0;
 static const CGFloat PostsSearchBarWidth = 280.0;
 static const CGFloat PostsSearchBariPadWidth = 210.0;
 static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
@@ -89,8 +93,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 @property (nonatomic, strong) NSArray *postListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
-@property (nonatomic, strong) NSMutableArray *recentlyRestoredPostIDs; // IDs of posts restored from the trash. A helper to avoid clobbering non-reusable cells that may be animating.
-@property (nonatomic, strong) NSMutableDictionary *nonReusuablePostCells;
+//@property (nonatomic, strong) NSMutableArray *recentlyRestoredPostIDs; // IDs of posts restored from the trash. A helper to avoid clobbering non-reusable cells that may be animating.
+//@property (nonatomic, strong) NSMutableDictionary *nonReusuablePostCells;
 
 @end
 
@@ -144,8 +148,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     [super viewDidLoad];
     self.recentlyTrashedPostIDs = [NSMutableArray array];
-    self.recentlyRestoredPostIDs = [NSMutableArray array];
-    self.nonReusuablePostCells = [NSMutableDictionary dictionary];
+//    self.recentlyRestoredPostIDs = [NSMutableArray array];
+//    self.nonReusuablePostCells = [NSMutableDictionary dictionary];
 
     self.title = NSLocalizedString(@"Posts", @"Tile of the screen showing the list of posts for a blog.");
     self.tableView = self.postListViewController.tableView;
@@ -166,6 +170,13 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView reloadData];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+
+    [self configureNoResultsView];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -252,6 +263,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     UINib *postCardThumbCellNib = [UINib nibWithNibName:PostCardThumbCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardThumbCellNib forCellReuseIdentifier:PostCardThumbCellIdentifier];
+
+    UINib *postCardRestoreCellNib = [UINib nibWithNibName:PostCardRestoreCellNibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:postCardRestoreCellNib forCellReuseIdentifier:PostCardRestoreCellIdentifier];
 }
 
 - (void)configureFooterView
@@ -591,7 +605,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    [self.recentlyRestoredPostIDs removeAllObjects];
+//    [self.recentlyRestoredPostIDs removeAllObjects];
     if ([self.recentlyTrashedPostIDs count]) {
         [self.recentlyTrashedPostIDs removeAllObjects];
         [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
@@ -756,27 +770,36 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return predicate;
 }
 
-- (void)tableViewDidChangeContent:(UITableView *)tableView
-{
-    // Part of mechanism to defer cleaning up trashed post IDs until after
-    // coredata saves, triggering the tableview to refresh. Helps prevent
-    // in progress animations from being abruptly clobbered.
-    for (NSNumber *postID in self.recentlyRestoredPostIDs) {
-        [self.recentlyTrashedPostIDs removeObject:postID];
-    }
-    [self.recentlyRestoredPostIDs removeAllObjects];
-}
+//- (void)tableViewDidChangeContent:(UITableView *)tableView
+//{
+//    // Part of mechanism to defer cleaning up trashed post IDs until after
+//    // coredata saves, triggering the tableview to refresh. Helps prevent
+//    // in progress animations from being abruptly clobbered.
+//    for (NSNumber *postID in self.recentlyRestoredPostIDs) {
+//        [self.recentlyTrashedPostIDs removeObject:postID];
+//    }
+//    [self.recentlyRestoredPostIDs removeAllObjects];
+//}
 
 
 #pragma mark - Table View Handling
 
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+        return PostCardRestoreCellRowHeight;
+    }
     return PostCardEstimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+        return PostCardRestoreCellRowHeight;
+    }
+
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
@@ -828,22 +851,25 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self editPost:post];
 }
 
-- (void)atableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Clean up nonReusableCells once they are off screen.
-    if (indexPath.row < [self.tableViewHandler.resultsController.fetchedObjects count]) {
-        Post *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-        [self.nonReusuablePostCells removeObjectForKey:post.postID];
-    }
-}
+//- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    // Clean up nonReusableCells once they are off screen.
+//    if (indexPath.row < [self.tableViewHandler.resultsController.fetchedObjects count]) {
+//        Post *post = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+//        [self.nonReusuablePostCells removeObjectForKey:post.postID];
+//    }
+//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    if ([self needsNonReusableCellForPost:post]) {
-        cell = [self nonReusableCellForPost:post];
+    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardRestoreCellIdentifier];
+
+//    } else if ([self needsNonReusableCellForPost:post]) {
+//        cell = [self nonReusableCellForPost:post];
     } else {
         // Dequeue reusable cell
         NSString *identifier = [self cellIdentifierForPost:post];
@@ -859,51 +885,53 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     cell.accessoryType = UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
-    PostCardTableViewCell *postCell = (PostCardTableViewCell *)cell;
+    id<PostCardCell>postCell = (id<PostCardCell>)cell;
+
+//    PostCardTableViewCell *postCell = (PostCardTableViewCell *)cell;
     postCell.delegate = self;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    postCell.canShowRestoreView = [self cellCanShowRestoreViewForPost:post];
+//    postCell.canShowRestoreView = [self cellCanShowRestoreViewForPost:post];
     [postCell configureCell:post];
 }
 
-- (BOOL)needsNonReusableCellForPost:(Post *)post
-{
-    // Is the post currently uploading?
-    BOOL isPushing = post.remoteStatus == AbstractPostRemoteStatusPushing;
-
-    return isPushing || [self cellCanShowRestoreViewForPost:post];
-}
-
-- (BOOL)cellCanShowRestoreViewForPost:(Post *)post
-{
-    // Is the post trashed but we're not viewing the trash filter.
-    BOOL isNotViewingTrashFolder = [self currentPostListFilter].filterType != PostListStatusFilterTrashed;
-
-    // Is this a trashed post...
-    BOOL isTrashedPost = [self.recentlyTrashedPostIDs containsObject:post.postID];
-
-    return (isNotViewingTrashFolder && isTrashedPost);
-}
-
-- (PostCardTableViewCell *)nonReusableCellForPost:(Post *)post
-{
-    PostCardTableViewCell *cell = [self.nonReusuablePostCells objectForKey:post.postID];
-    if (cell) {
-        return cell;
-    }
-    NSString *identifier = [self cellIdentifierForPost:post];
-    if ([identifier isEqualToString:PostCardImageCellIdentifier]) {
-        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
-    } else if ([identifier isEqualToString:PostCardTextCellIdentifier]) {
-        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
-    } else {
-        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
-    }
-    [self.nonReusuablePostCells setObject:cell forKey:post.postID];
-
-    return cell;
-}
+//- (BOOL)needsNonReusableCellForPost:(Post *)post
+//{
+//    // Is the post currently uploading?
+//    BOOL isPushing = post.remoteStatus == AbstractPostRemoteStatusPushing;
+//
+//    return isPushing || [self cellCanShowRestoreViewForPost:post];
+//}
+//
+//- (BOOL)cellCanShowRestoreViewForPost:(Post *)post
+//{
+//    // Is the post trashed but we're not viewing the trash filter.
+//    BOOL isNotViewingTrashFolder = [self currentPostListFilter].filterType != PostListStatusFilterTrashed;
+//
+//    // Is this a trashed post...
+//    BOOL isTrashedPost = [self.recentlyTrashedPostIDs containsObject:post.postID];
+//
+//    return (isNotViewingTrashFolder && isTrashedPost);
+//}
+//
+//- (PostCardTableViewCell *)nonReusableCellForPost:(Post *)post
+//{
+//    PostCardTableViewCell *cell = [self.nonReusuablePostCells objectForKey:post.postID];
+//    if (cell) {
+//        return cell;
+//    }
+//    NSString *identifier = [self cellIdentifierForPost:post];
+//    if ([identifier isEqualToString:PostCardImageCellIdentifier]) {
+//        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
+//    } else if ([identifier isEqualToString:PostCardTextCellIdentifier]) {
+//        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardTextCellNibName owner:nil options:nil] firstObject];
+//    } else {
+//        cell = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
+//    }
+//    [self.nonReusuablePostCells setObject:cell forKey:post.postID];
+//
+//    return cell;
+//}
 
 - (NSString *)cellIdentifierForPost:(Post *)post
 {
@@ -1023,8 +1051,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService restorePost:apost
                      success:^() {
+                         [self.recentlyTrashedPostIDs removeObject:postID];
                          [self updateAndPerformFetchRequestClearingCachedRowHeights:NO]; // ensures we have the correct row height.
-                         [self.recentlyRestoredPostIDs addObject:postID]; // Notes the ID to be cleaned up after the next table view content change.
+//                         [self.recentlyRestoredPostIDs addObject:postID]; // Notes the ID to be cleaned up after the next table view content change.
 
                          // Make sure the post still exists.
                          NSError *err;
@@ -1138,7 +1167,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     }
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
-    [self.recentlyRestoredPostIDs removeAllObjects];
+//    [self.recentlyRestoredPostIDs removeAllObjects];
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
 }
@@ -1186,7 +1215,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:CurrentPostListStatusFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
-    [self.recentlyRestoredPostIDs removeAllObjects];
+//    [self.recentlyRestoredPostIDs removeAllObjects];
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateFilterTitle];
     [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
