@@ -123,7 +123,7 @@ extension NotificationBlock
         
         var ranges = [NSValue: UIImage]()
         
-        for theMedia in media as [NotificationMedia] {
+        for theMedia in media as! [NotificationMedia] {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
             if theMedia.mediaURL == nil {
                 continue
@@ -197,7 +197,7 @@ extension NotificationBlock
         // Apply the Ranges
         var lengthShift = 0
         
-        for range in ranges as [NotificationRange] {
+        for range in ranges as! [NotificationRange] {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 

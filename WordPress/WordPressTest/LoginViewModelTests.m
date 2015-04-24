@@ -624,8 +624,10 @@ describe(@"signInButton", ^{
 describe(@"onePasswordButtonActionForViewController", ^{
     
     __block id mockViewController;
+    __block id mockSender;
     before(^{
         mockViewController = [OCMockObject niceMockForClass:[UIViewController class]];
+        mockSender = [OCMockObject niceMockForClass:[UIButton class]];
     });
     
     __block NSError *error;
@@ -633,9 +635,9 @@ describe(@"onePasswordButtonActionForViewController", ^{
     __block NSString *password;
     
     void (^forceOnePasswordExtensionCallbackToExecute)() = ^{
-        [OCMStub([mockOnePasswordFacade findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+        [OCMStub([mockOnePasswordFacade findLoginForURLString:OCMOCK_ANY viewController:OCMOCK_ANY sender:OCMOCK_ANY completion:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
             void (^ __unsafe_unretained callback)(NSString *, NSString *, NSError *);
-            [invocation getArgument:&callback atIndex:4];
+            [invocation getArgument:&callback atIndex:5];
             
             callback(username, password, error);
         }];
@@ -659,7 +661,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
                 
-                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
                 [mockViewModelPresenter verify];
             });
@@ -669,7 +671,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
                     XCTFail(@"Shouldn't get here");
                 }];
                 
-                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             });
         });
         
@@ -684,7 +686,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
                 [[mockViewModelPresenter reject] setUsernameTextValue:OCMOCK_ANY];
                 [[mockViewModelPresenter reject] setPasswordTextValue:OCMOCK_ANY];
                 
-                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
                 
                 [mockViewModelPresenter verify];
             });
@@ -694,7 +696,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
                     XCTFail(@"Shouldn't get here");
                 }];
                 
-                [viewModel onePasswordButtonActionForViewController:mockViewController];
+                [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             });
         });
     });
@@ -713,7 +715,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
             [[mockViewModelPresenter expect] setUsernameTextValue:viewModel.username];
             [[mockViewModelPresenter expect] setPasswordTextValue:viewModel.password];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockViewModelPresenter verify];
         });
@@ -724,7 +726,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
                 signInAttempted = YES;
             }];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             expect(signInAttempted).to.beTruthy();
         });
@@ -737,7 +739,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
         it(@"should occur", ^{
             [[mockViewModelPresenter expect] endViewEditing];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockViewModelPresenter verify];
         });
@@ -757,7 +759,7 @@ describe(@"onePasswordButtonActionForViewController", ^{
             viewModel.siteUrl = @"";
             [[mockViewModelPresenter expect] displayOnePasswordEmptySiteAlert];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockViewModelPresenter verify];
         });
@@ -765,15 +767,15 @@ describe(@"onePasswordButtonActionForViewController", ^{
         it(@"if the user has a site url it should not display an error", ^{
             [[mockViewModelPresenter reject] displayOnePasswordEmptySiteAlert];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockViewModelPresenter verify];
         });
         
         it(@"should use OnePassword to find the users credentials", ^{
-            [[mockOnePasswordFacade expect] findLoginForURLString:viewModel.siteUrl viewController:mockViewController completion:OCMOCK_ANY];
+            [[mockOnePasswordFacade expect] findLoginForURLString:viewModel.siteUrl viewController:mockViewController sender:OCMOCK_ANY completion:OCMOCK_ANY];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockOnePasswordFacade verify];
         });
@@ -790,9 +792,9 @@ describe(@"onePasswordButtonActionForViewController", ^{
         });
         
         it(@"should use OnePassword to find the users credentials", ^{
-            [[mockOnePasswordFacade expect] findLoginForURLString:@"wordpress.com" viewController:mockViewController completion:OCMOCK_ANY];
+            [[mockOnePasswordFacade expect] findLoginForURLString:@"wordpress.com" viewController:mockViewController sender:OCMOCK_ANY completion:OCMOCK_ANY];
             
-            [viewModel onePasswordButtonActionForViewController:mockViewController];
+            [viewModel onePasswordButtonActionForViewController:mockViewController sender:mockSender];
             
             [mockOnePasswordFacade verify];
         });
