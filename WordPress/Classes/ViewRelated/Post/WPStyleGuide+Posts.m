@@ -1,6 +1,7 @@
 #import "WPStyleGuide+Posts.h"
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import "WordPress-Swift.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation WPStyleGuide (Posts)
 
@@ -13,6 +14,8 @@
     [segmentControl setTitleTextAttributes:attributes forState:UIControlStateNormal];
     segmentControl.tintColor = [WPStyleGuide grey];
     segmentControl.backgroundColor = [UIColor whiteColor];
+    segmentControl.clipsToBounds = YES;
+    segmentControl.layer.cornerRadius = 3.0; // Clip the corners of the background color.
 }
 
 + (UIColor *)postListSearchBarTextColor
