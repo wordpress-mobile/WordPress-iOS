@@ -31,8 +31,12 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5bW-zk-smP">
-                                        <rect key="frame" x="248" y="0.0" width="52" height="44"/>
+                                        <rect key="frame" x="234" y="0.0" width="66" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="oHA-R3-tyO"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
                                         <state key="normal" title="Undo" image="icon-post-undo">
                                             <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
@@ -104,10 +108,13 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="innerContentView" destination="gcy-ef-aVi" id="mqQ-7M-n4l"/>
+                <outlet property="postContentView" destination="XWn-76-OyW" id="BWV-ef-k8w"/>
                 <outlet property="restoreButton" destination="5bW-zk-smP" id="ooK-Wf-Ygo"/>
                 <outlet property="restoreLabel" destination="tDg-aX-r9a" id="hWK-bR-Ar8"/>
+                <outlet property="shadowView" destination="xvL-vB-zkU" id="QNz-Hy-riG"/>
             </connections>
-            <point key="canvasLocation" x="568" y="227.5"/>
+            <point key="canvasLocation" x="568" y="220.5"/>
         </tableViewCell>
     </objects>
     <resources>

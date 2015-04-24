@@ -1,22 +1,14 @@
 #import "PostCardTableViewCell.h"
 #import "BasePost.h"
-#import "PostCardActionBarItem.h"
-#import "PostCardRestoreView.h"
 #import "NSDate+StringFormatting.h"
+#import "PostCardActionBar.h"
+#import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
 #import "WPStyleGuide+Posts.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "Wordpress-Swift.h"
 
 #import <SDWebImage/UIImageView+WebCache.h>
-
-typedef NS_ENUM(NSUInteger, PostCardCellRestoreViewState) {
-    PostCardCellRestoreViewStateNone,
-    PostCardCellRestoreViewStateDisplayBusy,
-    PostCardCellRestoreViewStateDisplayDialog,
-};
-
-static CGFloat RestoreViewAnimationDuration = 0.2;
 
 @interface PostCardTableViewCell()
 
@@ -61,12 +53,12 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 @property (nonatomic, assign) CGFloat dateViewLowerMargin;
 @property (nonatomic, assign) CGFloat statusViewHeight;
 @property (nonatomic, assign) CGFloat statusViewLowerMargin;
-@property (nonatomic, strong) PostCardRestoreView *restoreView;
-@property (nonatomic, assign) PostCardCellRestoreViewState restoreViewState;
 
 @end
 
 @implementation PostCardTableViewCell
+
+@synthesize delegate;
 
 #pragma mark - Life Cycle
 
@@ -167,10 +159,6 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
 
 - (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
 {
-    if (_contentProvider != contentProvider) {
-        [self removeRestoreView];
-    }
-
     _contentProvider = contentProvider;
 
     [self configureHeader];
@@ -181,10 +169,6 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
     [self configureStatusView];
     [self configureMetaButtons];
     [self configureActionBar];
-
-    if (!self.reuseIdentifier) {
-        [self configureRestoreView];
-    }
 
     [self setNeedsUpdateConstraints];
 }
@@ -320,53 +304,6 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
     }
 
     [self.statusView setNeedsUpdateConstraints];
-}
-
-- (void)configureRestoreView
-{
-    BOOL isUploading = [self.contentProvider isUploading];
-    BOOL canBeRestored = self.canShowRestoreView && [[self.contentProvider status] isEqualToString:PostStatusTrash];
-
-    if (isUploading) {
-        [self buildRestoreView];
-        [self showRestoreViewBusy];
-
-    } else if (canBeRestored) {
-        [self buildRestoreView];
-        [self showRestoreViewDialog];
-
-    } else if (self.restoreView) {
-        [self hideRestoreView];
-    }
-}
-
-- (void)buildRestoreView
-{
-    if (self.restoreView) {
-        return;
-    }
-
-    self.restoreView = [PostCardRestoreView newPostCardRestoreView];
-    self.restoreView.translatesAutoresizingMaskIntoConstraints = NO;
-    self.restoreView.tintColor = [WPStyleGuide errorRed];
-    [self.restoreView setMessage:NSLocalizedString(@"Moved to Trash", @"A short message confirming that a post was just moved to the trash folder.")
-                  andButtonTitle:NSLocalizedString(@"Restore", @"Title of the restore trashed post button. Tapping the button moves a trashed post out of the trash folder.")];
-
-    __weak __typeof(self) weakSelf = self;
-    self.restoreView.callback = ^(){
-        [weakSelf restorePostAction];
-    };
-    [self addSubview:self.restoreView];
-
-    NSDictionary *views = NSDictionaryOfVariableBindings(_restoreView);
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_restoreView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_restoreView]|"
-                                                                 options:0
-                                                                 metrics:nil
-                                                                   views:views]];
 }
 
 
@@ -578,93 +515,6 @@ static CGFloat RestoreViewAnimationDuration = 0.2;
     if ([self.delegate respondsToSelector:@selector(cell:receivedStatsActionForProvider:)]) {
         [self.delegate cell:self receivedStatsActionForProvider:self.contentProvider];
     }
-}
-
-
-#pragma mark - Instance Methods
-
-- (void)removeRestoreView
-{
-    if (!self.restoreView) {
-        return;
-    }
-    self.restoreViewState = PostCardCellRestoreViewStateNone;
-    [self.restoreView removeFromSuperview];
-    self.restoreView = nil;
-}
-
-
-- (void)showRestoreViewBusy
-{
-    if (self.restoreViewState == PostCardCellRestoreViewStateDisplayBusy) {
-        return; // already showing the busy view
-    }
-    
-    if (self.restoreViewState == PostCardCellRestoreViewStateDisplayDialog) {
-        // Fade in the spinner and fade out the dialog
-        [self.restoreView showSpinner:YES animated:YES];
-
-    } else {
-        // Fade in the view, showing the spinner.
-        [self.restoreView showSpinner:YES animated:NO];
-        self.restoreView.alpha = 0.0;
-        [UIView animateWithDuration:RestoreViewAnimationDuration
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.restoreView.alpha = 1.0;
-                         }
-                         completion:nil];
-    }
-
-    // Update the state last.
-    self.restoreViewState = PostCardCellRestoreViewStateDisplayBusy;
-}
-
-- (void)showRestoreViewDialog
-{
-    if (self.restoreViewState == PostCardCellRestoreViewStateDisplayDialog) {
-        return; // already showing the dialog
-    }
-
-    if (self.restoreViewState == PostCardCellRestoreViewStateDisplayBusy) {
-        // Fade in the dialog and fade out the spinner
-        [self.restoreView showSpinner:NO animated:YES];
-
-    } else {
-        // Fade in the view, showing the dialog.
-        [self.restoreView showSpinner:NO animated:NO];
-        self.restoreView.alpha = 0.0;
-        [UIView animateWithDuration:RestoreViewAnimationDuration
-                              delay:0.0
-                            options:UIViewAnimationOptionBeginFromCurrentState
-                         animations:^{
-                             self.restoreView.alpha = 1.0;
-                         }
-                         completion:nil];
-
-    }
-
-    // Update the state last.
-    self.restoreViewState = PostCardCellRestoreViewStateDisplayDialog;
-}
-
-- (void)hideRestoreView
-{
-    if (self.restoreViewState == PostCardCellRestoreViewStateNone) {
-        return;
-    }
-
-    self.restoreView.alpha = 1.0;
-    [UIView animateWithDuration:RestoreViewAnimationDuration
-                          delay:0.0
-                        options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^{
-                         self.restoreView.alpha = 0.0;
-                     } completion:^(BOOL finished) {
-                         [self removeRestoreView];
-                     }];
-    self.restoreViewState = PostCardCellRestoreViewStateNone;
 }
 
 @end

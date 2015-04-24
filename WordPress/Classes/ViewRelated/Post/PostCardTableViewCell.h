@@ -1,15 +1,6 @@
 #import <UIKit/UIKit.h>
-#import "PostCardActionBar.h"
-#import "WPPostContentViewProvider.h"
-#import "PostCardTableViewCellDelegate.h"
+#import "PostCardCell.h"
 
-@protocol PostCardTableViewCellDelegate;
-
-@interface PostCardTableViewCell : UITableViewCell
-
-@property (nonatomic, weak) id<PostCardTableViewCellDelegate>delegate;
-@property (nonatomic, assign) BOOL canShowRestoreView;
-
-- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider;
+@interface PostCardTableViewCell : UITableViewCell <PostCardCell>
 
 @end
