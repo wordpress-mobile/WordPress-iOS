@@ -678,7 +678,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)promptForPasswordWithMessage:(NSString *)message
 {
-    // TODO: Needs testing!!!
     if (message == nil) {
         message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     }
