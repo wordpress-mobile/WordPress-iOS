@@ -771,16 +771,17 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
         return PostCardRestoreCellRowHeight;
     }
+
     return PostCardEstimatedRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
         return PostCardRestoreCellRowHeight;
     }
 
@@ -837,19 +838,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
-        cell = [self.tableView dequeueReusableCellWithIdentifier:PostCardRestoreCellIdentifier];
-
-    } else {
-        // Dequeue reusable cell
-        NSString *identifier = [self cellIdentifierForPost:post];
-        cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
-    }
-
+    NSString *identifier = [self cellIdentifierForPost:post];
+    PostCardTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     [self configureCell:cell atIndexPath:indexPath];
+
     return cell;
 }
 
@@ -868,7 +862,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (NSString *)cellIdentifierForPost:(Post *)post
 {
     NSString *identifier;
-    if (![post.pathForDisplayImage length]) {
+    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+        identifier = PostCardRestoreCellIdentifier;
+    } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
     } else if (post.post_thumbnail) {
         identifier = PostCardThumbCellIdentifier;
@@ -955,22 +951,26 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     NSNumber *postID = apost.postID;
     [self.recentlyTrashedPostIDs addObject:postID];
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:apost];
+    [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
     // Update the fetch request *before* making the service call.
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
+    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService trashPost:apost
-                   success:^(){
-                       [self updateAndPerformFetchRequestClearingCachedRowHeights:NO];
-                   }
+                   success:nil
                     failure:^(NSError *error) {
                         if([error code] == 403) {
                             [self promptForPasswordWithMessage:nil];
                         } else {
                             [WPError showXMLRPCErrorAlert:error];
                         }
+
                         [self.recentlyTrashedPostIDs removeObject:postID];
+                        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
+                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                     }];
 }
 
@@ -980,12 +980,11 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     NSNumber *postID = apost.postID;
     NSManagedObjectID *postObjectID = apost.objectID;
 
+    [self.recentlyTrashedPostIDs removeObject:postID];
+
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService restorePost:apost
                      success:^() {
-                         [self.recentlyTrashedPostIDs removeObject:postID];
-                         [self updateAndPerformFetchRequestClearingCachedRowHeights:NO]; // ensures we have the correct row height.
-
                          // Make sure the post still exists.
                          NSError *err;
                          AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -1010,6 +1009,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                          } else {
                              [WPError showXMLRPCErrorAlert:error];
                          }
+                         [self.recentlyTrashedPostIDs addObject:postID];
                      }];
 }
 
