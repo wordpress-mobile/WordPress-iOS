@@ -25,6 +25,9 @@
 
 + (void)applyPostMetaButtonStyle:(UIButton *)button;
 
++ (void)applyRestorePostLabelStyle:(UILabel *)label;
+
++ (void)applyRestorePostButtonStyle:(UIButton *)button;
 
 
 + (NSDictionary *)postCardAuthorSiteAttributes;

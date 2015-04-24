@@ -107,6 +107,8 @@
 		5D2415CB1A8842C9009BD444 /* ReaderPreviewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2415CA1A8842C9009BD444 /* ReaderPreviewHeaderView.m */; };
 		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
 		5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */; };
+		5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */; };
+		5D2FB2861AE98C6600F1D4ED /* RestorePostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */; };
 		5D37941B19216B1300E26CA4 /* RebloggingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D37941A19216B1300E26CA4 /* RebloggingViewController.m */; };
 		5D3D559718F88C3500782892 /* ReaderPostService.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559618F88C3500782892 /* ReaderPostService.m */; };
 		5D3D559A18F88C5E00782892 /* ReaderPostServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */; };
@@ -719,6 +721,10 @@
 		5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSourceTest.m; sourceTree = "<group>"; };
 		5D2C05541AD2F56200A753FE /* NavbarTitleDropdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarTitleDropdownButton.h; sourceTree = "<group>"; };
 		5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBarTitleDropdownButton.m; sourceTree = "<group>"; };
+		5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RestorePostTableViewCell.xib; sourceTree = "<group>"; };
+		5D2FB2841AE98C6600F1D4ED /* RestorePostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestorePostTableViewCell.h; sourceTree = "<group>"; };
+		5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestorePostTableViewCell.m; sourceTree = "<group>"; };
+		5D2FB2871AE99B0B00F1D4ED /* PostCardTableViewCellDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostCardTableViewCellDelegate.h; sourceTree = "<group>"; };
 		5D333A561AA7A9E200DA295F /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
 		5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPCommentContentViewProvider.h; sourceTree = "<group>"; };
 		5D37941919216B1300E26CA4 /* RebloggingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RebloggingViewController.h; sourceTree = "<group>"; };
@@ -2063,6 +2069,7 @@
 		5DF3DD6A1A93772D0051A229 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5D2FB2871AE99B0B00F1D4ED /* PostCardTableViewCellDelegate.h */,
 				5D17530D1A97D2CA0031A082 /* PostCardTableViewCell.h */,
 				5D17530E1A97D2CA0031A082 /* PostCardTableViewCell.m */,
 				5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */,
@@ -2080,6 +2087,9 @@
 				5D732F951AE84E3C00CD89E7 /* PostListFooterView.h */,
 				5D732F961AE84E3C00CD89E7 /* PostListFooterView.m */,
 				5D732F981AE84E5400CD89E7 /* PostListFooterView.xib */,
+				5D2FB2841AE98C6600F1D4ED /* RestorePostTableViewCell.h */,
+				5D2FB2851AE98C6600F1D4ED /* RestorePostTableViewCell.m */,
+				5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -3364,6 +3374,7 @@
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				5D91B26D1ADC5EDF00591C43 /* PostCardRestoreView.xib in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
+				5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */,
 				B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */,
 				5D732F991AE84E5400CD89E7 /* PostListFooterView.xib in Resources */,
 				5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */,
@@ -3638,6 +3649,7 @@
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
+				5D2FB2861AE98C6600F1D4ED /* RestorePostTableViewCell.m in Sources */,
 				E1A6DBE519DC7D230071AC1E /* PostService.m in Sources */,
 				C58349C51806F95100B64089 /* IOS7CorrectedTextView.m in Sources */,
 				594DB2951AB891A200E2E456 /* WPUserAgent.m in Sources */,
