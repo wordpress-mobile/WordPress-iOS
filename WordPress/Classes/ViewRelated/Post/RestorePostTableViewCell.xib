@@ -25,13 +25,13 @@
                                 <rect key="frame" x="6" y="10" width="308" height="44"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDg-aX-r9a">
-                                        <rect key="frame" x="14" y="0.0" width="135" height="44"/>
+                                        <rect key="frame" x="13" y="0.0" width="135" height="44"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5bW-zk-smP">
-                                        <rect key="frame" x="234" y="0.0" width="66" height="44"/>
+                                        <rect key="frame" x="228" y="0.0" width="66" height="44"/>
                                         <constraints>
                                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="oHA-R3-tyO"/>
                                         </constraints>
@@ -49,11 +49,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="5bW-zk-smP" secondAttribute="trailing" constant="8" id="8G2-zh-deP">
-                                        <variation key="heightClass=regular-widthClass=regular" constant="16"/>
-                                    </constraint>
-                                    <constraint firstItem="tDg-aX-r9a" firstAttribute="leading" secondItem="XWn-76-OyW" secondAttribute="leading" constant="14" id="Cd4-wE-Coz">
+                                    <constraint firstAttribute="trailing" secondItem="5bW-zk-smP" secondAttribute="trailing" constant="14" id="8G2-zh-deP">
                                         <variation key="heightClass=regular-widthClass=regular" constant="24"/>
+                                    </constraint>
+                                    <constraint firstItem="tDg-aX-r9a" firstAttribute="leading" secondItem="XWn-76-OyW" secondAttribute="leading" constant="13" id="Cd4-wE-Coz">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="22"/>
                                     </constraint>
                                     <constraint firstAttribute="bottom" secondItem="tDg-aX-r9a" secondAttribute="bottom" id="NVR-Tx-ea4"/>
                                     <constraint firstItem="tDg-aX-r9a" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="ay6-0i-iUF"/>
