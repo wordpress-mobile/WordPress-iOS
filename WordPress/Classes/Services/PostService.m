@@ -339,13 +339,14 @@ const NSInteger PostServiceNumberToFetch = 40;
         // Local draft. Nuke it and be through.
         [self.managedObjectContext deleteObject:post];
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        if (success) {
+            success();
+        }
         return;
     }
 
+    post.restorableStatus = post.status;
     NSManagedObjectID *postObjectID = post.objectID;
-    post.remoteStatus = AbstractPostRemoteStatusPushing;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
     void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
@@ -357,7 +358,6 @@ const NSInteger PostServiceNumberToFetch = 40;
                 [self.managedObjectContext deleteObject:post];
             } else {
                 [self updatePost:postInContext withRemotePost:remotePost];
-                postInContext.remoteStatus = AbstractPostRemoteStatusSync;
             }
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
@@ -373,8 +373,7 @@ const NSInteger PostServiceNumberToFetch = 40;
             DDLogError(@"%@", err);
         }
         if (postInContext) {
-            postInContext.remoteStatus = AbstractPostRemoteStatusSync;
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            postInContext.restorableStatus = nil;
         }
         if (failure){
             failure(error);
@@ -391,18 +390,21 @@ const NSInteger PostServiceNumberToFetch = 40;
             failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *postObjectID = post.objectID;
-    post.remoteStatus = AbstractPostRemoteStatusPushing;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    if (post.restorableStatus) {
+        // Optimistically update and save.
+        post.status = post.restorableStatus;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }
 
     void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
         NSError *err;
         Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+        postInContext.restorableStatus = nil;
         if (err) {
             DDLogError(@"%@", err);
         }
         if (postInContext) {
             [self updatePost:postInContext withRemotePost:remotePost];
-            postInContext.remoteStatus = AbstractPostRemoteStatusSync;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
         if (success) {
@@ -417,7 +419,8 @@ const NSInteger PostServiceNumberToFetch = 40;
             DDLogError(@"%@", err);
         }
         if (postInContext) {
-            postInContext.remoteStatus = AbstractPostRemoteStatusSync;
+            // Put the post back in the trash bin.
+            postInContext.status = PostStatusTrash;
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }
         if (failure){
@@ -426,11 +429,15 @@ const NSInteger PostServiceNumberToFetch = 40;
     };
 
     RemotePost *remotePost = [self remotePostWithPost:post];
-    // Assign a status of draft to the remote post. The WordPress.com REST API will
-    // ignore this and should restore the post's previous status. The XML-RPC API
-    // needs a status assigned to move a post out of the trash folder. Draft is the
-    // safest option.
-    remotePost.status = PostStatusDraft;
+    if (post.restorableStatus) {
+        remotePost.status = post.restorableStatus;
+    } else {
+        // Assign a status of draft to the remote post. The WordPress.com REST API will
+        // ignore this and should restore the post's previous status. The XML-RPC API
+        // needs a status assigned to move a post out of the trash folder. Draft is the
+        // safest option when we don't know what the status was previously.
+        remotePost.status = PostStatusDraft;
+    }
 
     id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
     [remote restorePost:remotePost forBlog:post.blog success:successBlock failure:failureBlock];
