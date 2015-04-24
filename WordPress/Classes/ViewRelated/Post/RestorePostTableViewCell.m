@@ -14,6 +14,8 @@
 
 @implementation RestorePostTableViewCell
 
+@synthesize delegate;
+
 #pragma mark - Life Cycle
 
 - (void)awakeFromNib {
