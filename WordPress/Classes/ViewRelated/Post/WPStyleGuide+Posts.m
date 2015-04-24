@@ -76,6 +76,20 @@
 {
     CGFloat fontSize = [UIDevice isPad] ? 14.0 : 12.0;
     [button setTitleColor:[self grey] forState:UIControlStateNormal];
+    [button.titleLabel setFont:[WPFontManager openSansRegularFontOfSize:fontSize]];
+}
+
++ (void)applyRestorePostLabelStyle:(UILabel *)label
+{
+    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    label.font = [WPFontManager openSansRegularFontOfSize:fontSize];
+    label.textColor = [self grey];
+}
+
++ (void)applyRestorePostButtonStyle:(UIButton *)button
+{
+    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    [button setTitleColor:[self grey] forState:UIControlStateNormal];
     [button setTitleColor:[self jazzyOrange] forState:UIControlStateSelected];
     [button.titleLabel setFont:[WPFontManager openSansRegularFontOfSize:fontSize]];
 }
