@@ -1,4 +1,4 @@
-#import "CalypsoPostsViewController.h"
+#import "PostListViewController.h"
 
 #import "Blog.h"
 #import "BlogService.h"
@@ -61,7 +61,7 @@ static const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 static const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
-@interface CalypsoPostsViewController () <WPTableViewHandlerDelegate,
+@interface PostListViewController () <WPTableViewHandlerDelegate,
                                             WPContentSyncHelperDelegate,
                                             UIViewControllerRestoration,
                                             WPNoResultsViewDelegate,
@@ -96,14 +96,14 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 @end
 
-@implementation CalypsoPostsViewController
+@implementation PostListViewController
 
 #pragma mark - Lifecycle Methods
 
 + (instancetype)controllerWithBlog:(Blog *)blog
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Calypso" bundle:[NSBundle mainBundle]];
-    CalypsoPostsViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"CalypsoPostsViewController"];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Posts" bundle:[NSBundle mainBundle]];
+    PostListViewController *controller = [storyboard instantiateViewControllerWithIdentifier:@"PostListViewController"];
     controller.blog = blog;
     controller.restorationClass = [self class];
     return controller;
