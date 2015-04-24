@@ -15,6 +15,8 @@
 
 @implementation ReaderPostContentView
 
+@dynamic delegate;
+
 #pragma mark - LifeCycle Methods
 
 - (instancetype)initWithFrame:(CGRect)frame

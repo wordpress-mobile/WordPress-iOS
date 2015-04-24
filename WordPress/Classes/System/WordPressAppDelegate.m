@@ -70,7 +70,7 @@
 #import "WPTabBarController.h"
 #import <WPMediaPickerViewController.h>
 
-int ddLogLevel                                                  = LOG_LEVEL_INFO;
+int ddLogLevel                                                  = DDLogLevelInfo;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -900,7 +900,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
         [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
-        ddLogLevel = LOG_LEVEL_VERBOSE;
+        ddLogLevel = DDLogLevelVerbose;
         [NSUserDefaults resetStandardUserDefaults];
     } else {
         NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
@@ -914,7 +914,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [NSUserDefaults resetStandardUserDefaults];
 
         if ([origExtraDebug boolValue]) {
-            ddLogLevel = LOG_LEVEL_VERBOSE;
+            ddLogLevel = DDLogLevelVerbose;
         }
     }
 }

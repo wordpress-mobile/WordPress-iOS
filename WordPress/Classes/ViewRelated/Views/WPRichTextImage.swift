@@ -32,9 +32,9 @@ class WPRichTextImage : UIControl, WPRichTextMediaAttachment {
     }
 
     required init(coder aDecoder: NSCoder) {
-        imageView = aDecoder.decodeObjectForKey(UIImage.classNameWithoutNamespaces()) as UIImageView
-        contentURL = aDecoder.decodeObjectForKey("contentURL") as NSURL?
-        linkURL = aDecoder.decodeObjectForKey("linkURL") as NSURL?
+        imageView = aDecoder.decodeObjectForKey(UIImage.classNameWithoutNamespaces()) as! UIImageView
+        contentURL = aDecoder.decodeObjectForKey("contentURL") as! NSURL?
+        linkURL = aDecoder.decodeObjectForKey("linkURL") as! NSURL?
 
         super.init(coder: aDecoder)
     }
