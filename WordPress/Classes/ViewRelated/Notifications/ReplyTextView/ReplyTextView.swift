@@ -92,23 +92,23 @@ import Foundation
     
     
     // MARK: - UITextViewDelegate Methods
-    public func textViewShouldBeginEditing(textView: UITextView!) -> Bool {
+    public func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         return delegate?.textViewShouldBeginEditing?(textView) ?? true
     }
     
-    public func textViewDidBeginEditing(textView: UITextView!) {
+    public func textViewDidBeginEditing(textView: UITextView) {
         delegate?.textViewDidBeginEditing?(textView)
     }
     
-    public func textViewShouldEndEditing(textView: UITextView!) -> Bool {
+    public func textViewShouldEndEditing(textView: UITextView) -> Bool {
         return delegate?.textViewShouldEndEditing?(textView) ?? true
     }
 
-    public func textViewDidEndEditing(textView: UITextView!) {
+    public func textViewDidEndEditing(textView: UITextView) {
         delegate?.textViewDidEndEditing?(textView)
     }
     
-    public func textView(textView: UITextView!, shouldChangeTextInRange range: NSRange, replacementText text: String!) -> Bool {
+    public func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         let shouldChange = delegate?.textView?(textView, shouldChangeTextInRange: range, replacementText: text) ?? true
         let respondsToDidType = delegate?.respondsToSelector(Selector("textView:didTypeWord:")) ?? false
 
@@ -117,20 +117,20 @@ import Foundation
             let prerange = NSMakeRange(0, range.location)
             let pretext: NSString = textViewText.substringWithRange(prerange) + text
             let words = pretext.componentsSeparatedByCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
-            let lastWord: NSString = words.last as NSString
+            let lastWord: NSString = words.last as! NSString
             
-            delegate?.textView?(textView, didTypeWord: lastWord)
+            delegate?.textView?(textView, didTypeWord: lastWord as String)
         }
         
         return shouldChange
     }
 
-    public func textViewDidChange(textView: UITextView!) {
+    public func textViewDidChange(textView: UITextView) {
         refreshInterface()
         delegate?.textViewDidChange?(textView)
     }
     
-    public func textView(textView: UITextView!, shouldInteractWithURL URL: NSURL!, inRange characterRange: NSRange) -> Bool {
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         return delegate?.textView?(textView, shouldInteractWithURL: URL, inRange: characterRange) ?? true
     }
     
