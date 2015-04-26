@@ -1048,4 +1048,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.view endEditing:NO];
 }
 
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end
