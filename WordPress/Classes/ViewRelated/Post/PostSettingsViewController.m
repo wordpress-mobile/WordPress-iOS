@@ -125,12 +125,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
     
-    // Do not hide the status bar on iPads
-    if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                withAnimation:nil];
-    }
-    
     [self reloadData];
 }
 
@@ -1128,6 +1122,14 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     // Reset delegate and nil popover property
     self.popover.delegate = nil;
     self.popover = nil;
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Do not hide the status bar on iPad
+    return self.shouldHideStatusBar && !IS_IPAD;
 }
 
 @end
