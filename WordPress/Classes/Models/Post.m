@@ -275,7 +275,6 @@
 - (NSURL *)featuredImageURLForDisplay
 {
     NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
-NSLog(@"URL: %@", url);
     return url;
 }
 
