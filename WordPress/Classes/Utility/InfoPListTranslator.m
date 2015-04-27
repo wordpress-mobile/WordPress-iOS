@@ -4,11 +4,11 @@
 
 + (void)translateStrings
 {
-    NSLocalizedString(@"NSLocationUsageDescription", @"Sentence to show when app asks permission from the user to use is location. At the moment this sentence in english is: WordPress would like to add your location to posts on sites where you have enabled geotagging.");
-    NSLocalizedString(@"NSLocationWhenInUseUsageDescription", @"Sentence to show when app asks permission from the user to use is location. At the moment this sentence in english is: WordPress would like to add your location to posts on sites where you have enabled geotagging.");
-    NSLocalizedString(@"NSCameraUsageDescription", @"Sentence to show when app asks permission from the user to use is camera. At the moment this sentence in english is:To take photos or videos to use in your posts.");
-    NSLocalizedString(@"NSPhotoLibraryUsageDescription", @"Sentence to show when app asks permission from the user to access is Media Library. At the moment this sentence in english is: To add photos or videos to your posts.");
-    NSLocalizedString(@"NSMicrophoneUsageDescription", @"Sentence to show when app asks permission from the user access is microphone to save sound on videos. At the moment this sentence in english is: For your videos to have sound on them.");
+    NSLocalizedString(@"WordPress would like to add your location to posts on sites where you have enabled geotagging.", @"NSLocationUsageDescription: This sentence is show when the app asks permission from the user to use is location. ");
+    NSLocalizedString(@"WordPress would like to add your location to posts on sites where you have enabled geotagging.", @"NSLocationWhenInUseUsageDescription: this sentence is show when the app asks permission from the user to use is location.");
+    NSLocalizedString(@"To take photos or videos to use in your posts.", @"NSCameraUsageDescription: Sentence to justify why the app is asking permission from the user to use is camera.");
+    NSLocalizedString(@"To add photos or videos to your posts.", @"NSPhotoLibraryUsageDescription: Sentence to justify why the app asks permission from the user to access is Media Library.");
+    NSLocalizedString(@"For your videos to have sound on them.", @"NSMicrophoneUsageDescription: Sentence to justify why the app asks permission from the user to access the device microphone.");
 }
 
 @end
