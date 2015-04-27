@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,14 +14,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="P6C-o2-FTR">
-                        <rect key="frame" x="0.0" y="0.0" width="612" height="238"/>
+                        <rect key="frame" x="0.0" y="0.0" width="612" height="237"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nUV-EO-Wtj">
-                                <rect key="frame" x="5" y="9" width="602" height="219"/>
+                                <rect key="frame" x="5" y="9" width="602" height="218"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Lk7-nZ-b0t">
-                                <rect key="frame" x="6" y="10" width="600" height="217"/>
+                                <rect key="frame" x="6" y="10" width="600" height="216"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OuO-i7-2Ds">
                                         <rect key="frame" x="14" y="15" width="572" height="34"/>
@@ -177,7 +176,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BlB-Gp-P6A" customClass="PostCardActionBar">
-                                        <rect key="frame" x="0.0" y="180" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="179" width="600" height="37"/>
                                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="37" id="tqV-2T-l9Q"/>
@@ -277,10 +276,10 @@
                 </subviews>
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstItem="P6C-o2-FTR" firstAttribute="top" secondItem="MWK-lj-FaS" secondAttribute="topMargin" constant="-8" id="GyR-99-Apd"/>
-                    <constraint firstItem="P6C-o2-FTR" firstAttribute="leading" secondItem="MWK-lj-FaS" secondAttribute="leadingMargin" constant="-8" id="X1O-6B-bP5"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="P6C-o2-FTR" secondAttribute="trailing" constant="-8" id="eDE-fW-zbf"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="P6C-o2-FTR" secondAttribute="bottom" constant="-9" id="fA1-2T-Wcv"/>
+                    <constraint firstItem="P6C-o2-FTR" firstAttribute="top" secondItem="MWK-lj-FaS" secondAttribute="top" id="GyR-99-Apd"/>
+                    <constraint firstItem="P6C-o2-FTR" firstAttribute="leading" secondItem="MWK-lj-FaS" secondAttribute="leading" id="X1O-6B-bP5"/>
+                    <constraint firstAttribute="trailing" secondItem="P6C-o2-FTR" secondAttribute="trailing" id="eDE-fW-zbf"/>
+                    <constraint firstAttribute="bottom" secondItem="P6C-o2-FTR" secondAttribute="bottom" id="fA1-2T-Wcv"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

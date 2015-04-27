@@ -3,7 +3,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -99,11 +98,11 @@
                         </variation>
                     </view>
                 </subviews>
-                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" secondItem="gcy-ef-aVi" secondAttribute="bottom" constant="-8" id="1fm-BB-GMU"/>
+                    <constraint firstAttribute="bottom" secondItem="gcy-ef-aVi" secondAttribute="bottom" id="1fm-BB-GMU"/>
                     <constraint firstAttribute="trailing" secondItem="gcy-ef-aVi" secondAttribute="trailing" id="3jw-Hl-OoM"/>
-                    <constraint firstItem="gcy-ef-aVi" firstAttribute="top" secondItem="n47-YY-a6J" secondAttribute="topMargin" constant="-8" id="mPx-Eq-ymj"/>
+                    <constraint firstItem="gcy-ef-aVi" firstAttribute="top" secondItem="n47-YY-a6J" secondAttribute="top" id="mPx-Eq-ymj"/>
                     <constraint firstItem="gcy-ef-aVi" firstAttribute="leading" secondItem="n47-YY-a6J" secondAttribute="leading" id="pao-FZ-URB"/>
                 </constraints>
             </tableViewCellContentView>
