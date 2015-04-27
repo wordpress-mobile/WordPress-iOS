@@ -19,38 +19,38 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
 
     NSString *imageToDisplay;
 
-    attachments = [self sanitizeAttachmentsArray:attachments];
-    NSSortDescriptor *descriptor = [[NSSortDescriptor alloc] initWithKey:@"width" ascending:NO];
-    attachments = [attachments sortedArrayUsingDescriptors:@[descriptor]];
+    attachments = [self filteredAttachmentsArray:attachments];
+
     NSDictionary *attachment = [attachments firstObject];
-    NSString *mimeType = [attachment stringForKey:@"mime_type"];
     NSInteger width = [[attachment numberForKey:@"width"] integerValue];
-    if ([mimeType rangeOfString:@"image"].location != NSNotFound && width >= FeaturedImageMinimumWidth) {
+    if (width >= FeaturedImageMinimumWidth) {
         imageToDisplay = [attachment stringForKey:@"URL"];
     }
 
     return imageToDisplay;
 }
 
-/**
- Loops over the passed attachments array. For each attachment dictionary
- the value of the `width` key is ensured to be an NSNumber. If the value
- was an empty string the NSNumber zero is substituted.
- */
-+ (NSArray *)sanitizeAttachmentsArray:(NSArray *)attachments
++ (NSArray *)filteredAttachmentsArray:(NSArray *)attachments
 {
-    NSMutableArray *marr = [NSMutableArray array];
-    NSString *key = @"width";
-    for (NSDictionary *attachment in attachments) {
-        NSMutableDictionary *mdict = [attachment mutableCopy];
-        NSNumber *numVal = [attachment numberForKey:key];
-        if (!numVal) {
-            numVal = @0;
+    NSString *key = @"mime_type";
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", key, @"image"];
+    attachments = [attachments filteredArrayUsingPredicate:predicate];
+
+    return [attachments sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        NSDictionary *attachmentA = (NSDictionary *)obj1;
+        NSDictionary *attachmentB = (NSDictionary *)obj2;
+        NSString *key = @"width";
+        NSNumber *widthA = [attachmentA numberForKey:key] ?: @(0);
+        NSNumber *widthB = [attachmentB numberForKey:key] ?: @(0);
+
+        if ([widthA integerValue] < [widthB integerValue]) {
+            return NSOrderedDescending;
+        } else if ([widthA integerValue] > [widthB integerValue]) {
+            return NSOrderedAscending;
+        } else {
+            return NSOrderedSame;
         }
-        [mdict setObject:numVal forKey:key];
-        [marr addObject:mdict];
-    }
-    return [marr copy];
+    }];
 }
 
 /**
