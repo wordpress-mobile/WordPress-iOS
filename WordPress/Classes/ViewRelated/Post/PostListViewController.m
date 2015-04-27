@@ -13,6 +13,7 @@
 #import "PostListFooterView.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
+#import "PrivateSiteURLProtocol.h"
 #import "StatsPostDetailsTableViewController.h"
 #import "WPStatsService.h"
 #import "UIView+Subviews.h"
@@ -135,6 +136,20 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:PostsViewControllerRestorationKey];
     [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)dealloc
+{
+    [PrivateSiteURLProtocol unregisterPrivateSiteURLProtocol];
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
+    }
+    return self;
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
