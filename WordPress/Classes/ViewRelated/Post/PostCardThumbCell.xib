@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -15,14 +14,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PyT-LL-ggF">
-                        <rect key="frame" x="0.0" y="0.0" width="612" height="333"/>
+                        <rect key="frame" x="0.0" y="0.0" width="612" height="332"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2iQ-Pq-6Rd">
-                                <rect key="frame" x="5" y="9" width="602" height="314"/>
+                                <rect key="frame" x="5" y="9" width="602" height="313"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rBG-Fz-4M0">
-                                <rect key="frame" x="6" y="10" width="600" height="312"/>
+                                <rect key="frame" x="6" y="10" width="600" height="311"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5aC-8S-MUJ">
                                         <rect key="frame" x="14" y="15" width="572" height="34"/>
@@ -200,7 +199,7 @@
                                         </constraints>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bt1-bL-ati" customClass="PostCardActionBar">
-                                        <rect key="frame" x="0.0" y="275" width="600" height="37"/>
+                                        <rect key="frame" x="0.0" y="274" width="600" height="37"/>
                                         <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="37" id="twD-wL-7Kt"/>
@@ -300,10 +299,10 @@
                 </subviews>
                 <color key="backgroundColor" red="0.60000002379999995" green="0.60000002379999995" blue="0.60000002379999995" alpha="1" colorSpace="calibratedRGB"/>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" secondItem="PyT-LL-ggF" secondAttribute="bottom" constant="-9" id="6UE-Kt-vMD"/>
-                    <constraint firstItem="PyT-LL-ggF" firstAttribute="top" secondItem="Pgw-uC-FuD" secondAttribute="topMargin" constant="-8" id="Geg-FC-UbV"/>
-                    <constraint firstItem="PyT-LL-ggF" firstAttribute="leading" secondItem="Pgw-uC-FuD" secondAttribute="leadingMargin" constant="-8" id="nzx-qR-9vF"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="PyT-LL-ggF" secondAttribute="trailing" constant="-8" id="qvf-hB-MJ8"/>
+                    <constraint firstAttribute="bottom" secondItem="PyT-LL-ggF" secondAttribute="bottom" id="6UE-Kt-vMD"/>
+                    <constraint firstItem="PyT-LL-ggF" firstAttribute="top" secondItem="Pgw-uC-FuD" secondAttribute="top" id="Geg-FC-UbV"/>
+                    <constraint firstItem="PyT-LL-ggF" firstAttribute="leading" secondItem="Pgw-uC-FuD" secondAttribute="leading" id="nzx-qR-9vF"/>
+                    <constraint firstAttribute="trailing" secondItem="PyT-LL-ggF" secondAttribute="trailing" id="qvf-hB-MJ8"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
