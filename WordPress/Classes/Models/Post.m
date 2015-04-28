@@ -26,6 +26,8 @@
 
 - (void)awakeFromFetch
 {
+    [super awakeFromFetch];
+
     [self buildContentPreview];
 }
 

@@ -19,6 +19,8 @@
 #pragma mark - Life Cycle
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+
     [self configureView];
     [self applyStyles];
 }
