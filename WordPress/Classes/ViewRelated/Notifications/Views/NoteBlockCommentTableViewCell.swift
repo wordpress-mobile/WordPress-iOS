@@ -108,8 +108,8 @@ import Foundation
         gravatarURL = url
     }
 
-    public func downloadGravatarWithGravatarEmail(email: NSString?) {
-        gravatarImageView.setImageWithGravatarEmail(email as String?)
+    public func downloadGravatarWithGravatarEmail(email: String?) {
+        gravatarImageView.setImageWithGravatarEmail(email)
     }
 
     // MARK: - View Methods

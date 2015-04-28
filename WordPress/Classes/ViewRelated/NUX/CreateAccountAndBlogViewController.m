@@ -309,7 +309,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     // Add OnePassword
     if (_onePasswordButton == nil) {
         _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-wp-button"] forState:UIControlStateNormal];
         [_onePasswordButton addTarget:self action:@selector(saveLoginToOnePassword:) forControlEvents:UIControlEventTouchUpInside];
         [_onePasswordButton sizeToFit];
     
