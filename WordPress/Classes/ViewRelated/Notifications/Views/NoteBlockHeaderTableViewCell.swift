@@ -31,6 +31,7 @@ import Foundation
         }
     }
     
+    
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
@@ -60,12 +61,18 @@ import Foundation
         headerDetailsLabel.font         = WPStyleGuide.Notifications.headerDetailsRegularFont
         headerDetailsLabel.textColor    = WPStyleGuide.Notifications.headerDetailsColor
         gravatarImageView.image         = WPStyleGuide.Notifications.gravatarPlaceholderImage!
-
+        
         // iPad: Use a bigger image size!
         if UIDevice.isPad() {
             gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
             gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
         }
+    }
+    
+    // MARK: - Overriden Methods
+    public override func refreshSeparators() {
+        separatorsView.hidden           = false
+        separatorsView.bottomInsets     = UIEdgeInsetsZero
     }
     
 

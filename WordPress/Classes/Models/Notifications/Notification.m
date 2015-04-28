@@ -335,6 +335,16 @@ NSString const *NotePostIdKey           = @"post_id";
     self.dynamicAttributesCache[key] = value;
 }
 
++ (NotificationBlock *)firstBlockOfType:(NoteBlockType)type fromBlocksArray:(NSArray *)blocks
+{
+    for (NotificationBlock *block in blocks) {
+        if (block.type == type) {
+            return block;
+        }
+    }
+    return nil;
+}
+
 + (NSArray *)blocksFromArray:(NSArray *)rawBlocks notification:(Notification *)notification
 {
     if (![rawBlocks isKindOfClass:[NSArray class]]) {
@@ -416,12 +426,7 @@ NSString const *NotePostIdKey           = @"post_id";
 
 - (NotificationBlock *)blockOfType:(NoteBlockType)type
 {
-    for (NotificationBlock *block in self.blocks) {
-        if (block.type == type) {
-            return block;
-        }
-    }
-    return nil;
+    return [NotificationBlock firstBlockOfType:type fromBlocksArray:self.blocks];
 }
 
 - (NSSet *)imageUrlsForBlocksOfTypes:(NSSet *)types
@@ -470,8 +475,34 @@ NSString const *NotePostIdKey           = @"post_id";
         
     // Comment: Contains a User + Comment Block
     } else if (notification.isComment) {
-        [groups addObject:[NotificationBlockGroup groupWithBlocks:blocks type:NoteBlockGroupTypeComment]];
-       
+        
+        //  Note:
+        //  I find myself, again, surrounded by the forces of Duck Typing. Comment Notifications are now
+        //  required to always render the Actions at the very bottom. This snippet is meant to adapt the backend
+        //  data structure, so that a single NotificationBlockGroup can be easily mapped against a single UI entity.
+        //
+        //  -   NoteBlockGroupTypeComment: NoteBlockTypeComment + NoteBlockTypeUser
+        //  -   Anything
+        //  -   NoteBlockGroupTypeActions: A copy of the NoteBlockTypeComment block
+        
+        NotificationBlock *commentBlock = [NotificationBlock firstBlockOfType:NoteBlockTypeComment fromBlocksArray:blocks];
+        NotificationBlock *userBlock    = [NotificationBlock firstBlockOfType:NoteBlockTypeUser fromBlocksArray:blocks];
+        NSArray *commentGroupBlocks     = @[commentBlock, userBlock];
+        NSArray *actionsGroupBlocks     = @[commentBlock];
+        
+        NSMutableArray *middleBlocks    = [blocks mutableCopy];
+        [middleBlocks removeObjectsInArray:commentGroupBlocks];
+        
+        // Finally, arrange the Block Groups
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:commentGroupBlocks type:NoteBlockGroupTypeComment]];
+
+        for (NotificationBlock *block in middleBlocks) {
+            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:block.type]];
+        }
+
+        [groups addObject:[NotificationBlockGroup groupWithBlocks:actionsGroupBlocks type:NoteBlockGroupTypeActions]];
+        
+        
     // Rest: 1-1 relationship
     } else {
         for (NotificationBlock *block in blocks) {
