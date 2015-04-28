@@ -374,6 +374,16 @@ NSString *const SeenLegacyEditor = @"seen_legacy_editor";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_added_photo_via_wp_media_library"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_added_photo_via_wp_media_library_to_post"];
             break;
+        case WPAnalyticsStatEditorAddedVideoViaLocalLibrary:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Added Video via Local Library"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_added_video_via_local_library"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_added_video_via_local_library_to_post"];
+            break;
+        case WPAnalyticsStatEditorAddedVideoViaWPMediaLibrary:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Added Video via WP Media Library"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_added_video_via_wp_media_library"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_added_video_via_wp_media_library_to_post"];
+            break;
         case WPAnalyticsStatEditorPublishedPost:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Published Post"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_editor_published_post"];
