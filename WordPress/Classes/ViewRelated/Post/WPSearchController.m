@@ -97,42 +97,31 @@
 
 - (BOOL)searchBarShouldBeginEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     return YES;
 }
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     self.active = YES;
 }
 
 - (BOOL)searchBarShouldEndEditing:(UISearchBar *)searchBar
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     return YES;
-}
-
-- (void)searchBarTextDidEndEditing:(UISearchBar *)searchBar
-{
-    NSLog(@"%@", NSStringFromSelector(_cmd));
 }
 
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     [self updateResults];
 }
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     self.active = NO;
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
 {
-    NSLog(@"%@", NSStringFromSelector(_cmd));
     self.active = NO;
 }
 
