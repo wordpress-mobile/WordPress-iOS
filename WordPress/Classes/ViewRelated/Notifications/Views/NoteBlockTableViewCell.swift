@@ -38,5 +38,5 @@ import Foundation
     
     // MARK: - Private Constants
     private let fullSeparatorInsets     = UIEdgeInsetsZero
-    private let indentedSeparatorInsets = UIEdgeInsetsMake(0.0, 12.0, 0.0, 0.0)
+    private let indentedSeparatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
 }
