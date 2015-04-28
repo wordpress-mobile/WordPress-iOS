@@ -30,7 +30,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     CommentsDetailsRowHeader    = 0,
     CommentsDetailsRowText      = 1,
     CommentsDetailsRowActions   = 2,
-    CommentsDetailsRowCount     = 3
+    CommentsDetailsRowCount     = 3     // Should always be the last element
 };
 
 
@@ -747,7 +747,9 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     // If we don't have the associated post, let's hide the Header
     BOOL shouldShowHeader       = self.comment.post != nil;;
 
-    // Number of Rows
+    // Number of Rows:
+    // NOTE: If the post wasn't retrieved yet, we'll need to hide the Header.
+    // For that reason, the Row Count is decreased, and rowNumberForHeader is set with a different index.
     self.numberOfRows           = shouldShowHeader ? CommentsDetailsRowCount  : CommentsDetailsRowCount - 1;
     self.rowNumberForHeader     = shouldShowHeader ? CommentsDetailsRowHeader : CommentsDetailsHiddenRowNumber;
     self.rowNumberForComment    = self.rowNumberForHeader + 1;
