@@ -63,6 +63,8 @@
 #pragma mark - Life Cycle
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+
     [self applyStyles];
 
     self.headerViewHeight = self.headerViewHeightConstraint.constant;
