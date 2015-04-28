@@ -52,7 +52,7 @@ PODS:
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.10.2)
-  - HockeySDK (3.6.2)
+  - HockeySDK (3.6.4)
   - KIF/IdentifierTests (3.2.1):
     - KIF/XCTest
   - KIF/XCTest (3.2.1)
@@ -236,7 +236,7 @@ SPEC CHECKSUMS:
   Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
-  HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
+  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
