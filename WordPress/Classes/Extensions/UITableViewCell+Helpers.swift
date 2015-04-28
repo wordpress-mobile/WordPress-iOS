@@ -19,6 +19,10 @@ extension UITableViewCell
         return ceil(layoutSize.height) + PaddingY;
     }
     
+    public func isLayoutCell() -> Bool {
+        return self.dynamicType.layoutIdentifier() == reuseIdentifier
+    }
+    
     public class func reuseIdentifier() -> String {
         return classNameWithoutNamespaces()
     }
