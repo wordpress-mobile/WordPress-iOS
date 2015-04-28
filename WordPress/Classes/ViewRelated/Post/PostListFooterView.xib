@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -43,6 +43,7 @@
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="2lx-TZ-H9w" secondAttribute="centerX" id="BXl-cW-Ywt"/>
                         <constraint firstAttribute="centerY" secondItem="MBZ-lN-HGt" secondAttribute="centerY" constant="-0.5" id="SM7-09-i4J"/>
+                        <constraint firstAttribute="width" constant="612" id="URY-Vf-eVc"/>
                         <constraint firstAttribute="centerY" secondItem="wKm-Mr-TCA" secondAttribute="centerY" constant="-0.5" id="X37-jz-nrb"/>
                         <constraint firstItem="2lx-TZ-H9w" firstAttribute="leading" secondItem="MBZ-lN-HGt" secondAttribute="trailing" constant="8" id="Y0M-I9-BOr"/>
                         <constraint firstAttribute="trailing" secondItem="wKm-Mr-TCA" secondAttribute="trailing" constant="6" id="b0b-rA-YhB"/>
@@ -50,6 +51,16 @@
                         <constraint firstItem="wKm-Mr-TCA" firstAttribute="leading" secondItem="2lx-TZ-H9w" secondAttribute="trailing" constant="8" id="qGB-cG-EAL"/>
                         <constraint firstAttribute="centerY" secondItem="2lx-TZ-H9w" secondAttribute="centerY" id="wf6-gD-lPc"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="URY-Vf-eVc"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="URY-Vf-eVc"/>
+                        </mask>
+                    </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -59,12 +70,25 @@
                 <constraint firstAttribute="centerY" secondItem="F4q-47-pPM" secondAttribute="centerY" id="To4-Mu-Kww"/>
                 <constraint firstAttribute="trailing" secondItem="AoX-vc-zrF" secondAttribute="trailing" id="ciu-4z-aHt"/>
                 <constraint firstAttribute="centerX" secondItem="F4q-47-pPM" secondAttribute="centerX" id="oUw-md-T9d"/>
+                <constraint firstAttribute="centerX" secondItem="AoX-vc-zrF" secondAttribute="centerX" id="v8G-ji-OPE"/>
                 <constraint firstItem="AoX-vc-zrF" firstAttribute="leading" secondItem="TCZ-n9-coy" secondAttribute="leading" id="znD-ba-XuU"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="v8G-ji-OPE"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="ciu-4z-aHt"/>
+                    <include reference="v8G-ji-OPE"/>
+                    <exclude reference="znD-ba-XuU"/>
+                </mask>
+            </variation>
             <connections>
                 <outlet property="activityView" destination="F4q-47-pPM" id="zVo-Q1-ggr"/>
                 <outlet property="bannerView" destination="AoX-vc-zrF" id="hSc-aF-tjn"/>
