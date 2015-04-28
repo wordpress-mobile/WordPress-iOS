@@ -101,8 +101,13 @@ import Foundation
         separatorsView.leftColor            = Style.blockUnapprovedSideColor
         
         // Bottom Separator
+        var bottomInsets                    = separatorUnapprovedInsets
+        if isApproved {
+            bottomInsets                    = isReplied ? separatorRepliedInsets : separatorApprovedInsets
+        }
+        
         separatorsView.bottomVisible        = true
-        separatorsView.bottomInsets         = isApproved ? separatorApprovedInsets : separatorUnapprovedInsets
+        separatorsView.bottomInsets         = bottomInsets
     }
 
     // MARK: - Private Methods
@@ -151,8 +156,9 @@ import Foundation
     
     // MARK: - Private Constants
     private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
-    private let separatorApprovedInsets             = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     private let separatorUnapprovedInsets           = UIEdgeInsetsZero
+    private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
