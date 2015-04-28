@@ -66,6 +66,8 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
+        selectionStyle              = .None
+        
         let textNormalColor         = WPStyleGuide.Notifications.blockActionDisabledColor
         let textSelectedColor       = WPStyleGuide.Notifications.blockActionEnabledColor
         
