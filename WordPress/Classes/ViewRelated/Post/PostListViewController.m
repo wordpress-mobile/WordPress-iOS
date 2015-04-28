@@ -780,7 +780,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     NSString *searchText = self.searchController.searchBar.text;
     if ([searchText length] > 0) {
-        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS %@", searchText];
+        NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
         [predicates addObject:searchPredicate];
     }
 
