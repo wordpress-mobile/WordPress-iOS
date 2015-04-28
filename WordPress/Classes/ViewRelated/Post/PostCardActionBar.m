@@ -74,6 +74,11 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
                                              selector:@selector(orientationDidChange:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
+
+    // Trap double taps to prevent touches from regstering in the parent cell while the bar is animating.
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleDoubleTap:)];
+    tgr.numberOfTapsRequired = 2;
+    [self addGestureRecognizer:tgr];
 }
 
 - (void)setupConstraints
@@ -242,7 +247,6 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
     [self addSubview:viewNewState];
     self.contentView.hidden = YES;
 
-    self.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.3 animations:^{
         viewOldState.frame = smallFrame;
         viewOldState.alpha = 0;
@@ -252,7 +256,6 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
     } completion:^(BOOL finished) {
         [viewOldState removeFromSuperview];
         [viewNewState removeFromSuperview];
-        self.userInteractionEnabled = YES;
         self.contentView.hidden = NO;
     }];
 }
@@ -352,5 +355,11 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
         item.callback();
     }
 }
+
+- (void)handleDoubleTap:(UITapGestureRecognizer *)sender
+{
+    // noop.
+}
+
 
 @end
