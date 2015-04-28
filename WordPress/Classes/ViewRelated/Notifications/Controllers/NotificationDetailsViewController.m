@@ -102,7 +102,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     [super viewDidLoad];
     
-    self.title                              = self.note.title;
     self.restorationClass                   = [self class];
     self.view.backgroundColor               = [WPStyleGuide itsEverywhereGrey];
     
@@ -200,6 +199,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     self.blockGroups = blockGroups;
     
+    // Reload UI
+    self.title = self.note.title;
     [self.tableView reloadData];
     [self adjustTableInsetsIfNeeded];
 }
