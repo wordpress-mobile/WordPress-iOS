@@ -636,6 +636,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
     cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     cell.isApproved                 = [commentBlock isActionOn:NoteActionApproveKey] || ![commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isReplied                  = self.note.isReplied;
     
     // Setup the Callbacks
     __weak __typeof(self) weakSelf  = self;
