@@ -709,17 +709,15 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)setupImageCell:(NoteBlockImageTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
 {
+    // Download the Image (If Needed!)
+    if (cell.isLayoutCell) {
+        return;
+    }
+    
     NotificationBlock *imageBlock   = blockGroup.blocks.firstObject;
     NSAssert(imageBlock, @"Missing Image Block for Notification %@", self.note.simperiumKey);
     
     NotificationMedia *media        = imageBlock.media.firstObject;
-    cell.isBadge                    = media.isBadge;
-    
-    // Download the Gravatar (If Needed!)
-    if (cell.isLayoutCell) {
-        return;
-    }
-
     [cell downloadImageWithURL:media.mediaURL];
 }
 
@@ -737,7 +735,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     
     // Setup the Cell
     cell.attributedText             = [text stringByEmbeddingImageAttachments:mediaRanges];
-    cell.isBadge                    = textBlock.isBadge;
     
     // Setup the Callbacks
     __weak __typeof(self) weakSelf  = self;
