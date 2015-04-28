@@ -25,6 +25,12 @@ import Foundation
     public var isApproved: Bool = false {
         didSet {
             refreshApprovalColors()
+            refreshSeparators()
+        }
+    }
+    public var isReplied: Bool = false {
+        didSet {
+            refreshSeparators()
         }
     }
     public var name: String? {
@@ -72,10 +78,6 @@ import Foundation
     public override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Bottom + Left Separators
-        separatorsView.bottomVisible        = true
-        separatorsView.leftColor            = Style.blockUnapprovedSideColor
-        
         // Setup Labels
         titleLabel.font                     = Style.blockBoldFont
         detailsLabel.font                   = Style.blockRegularFont
@@ -92,6 +94,17 @@ import Foundation
     }
     
 
+    // MARK: - Separator Helpers
+    public override func refreshSeparators() {
+        // Left Separator
+        separatorsView.leftVisible          = !isApproved
+        separatorsView.leftColor            = Style.blockUnapprovedSideColor
+        
+        // Bottom Separator
+        separatorsView.bottomVisible        = true
+        separatorsView.bottomInsets         = isApproved ? separatorApprovedInsets : separatorUnapprovedInsets
+    }
+
     // MARK: - Private Methods
     private func refreshDetails() {
         var details = timestamp ?? String()
@@ -104,9 +117,7 @@ import Foundation
 
     private func refreshApprovalColors() {
         // Separators
-        separatorsView.bottomInsets = isApproved ? separatorApprovedInsets : separatorUnapprovedInsets
         separatorsView.bottomColor  = Style.blockSeparatorColorForComment(isApproved: isApproved)
-        separatorsView.leftVisible  = !isApproved
         
         // Background
         contentView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
@@ -117,7 +128,7 @@ import Foundation
         super.linkColor             = Style.blockLinkColorForComment(isApproved: isApproved)
         super.attributedText        = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
-
+    
     private var attributedCommentUnapprovedText : NSAttributedString? {
         if attributedCommentText == nil {
             return nil
