@@ -71,7 +71,7 @@ import Foundation
     
     // MARK: - Overriden Methods
     public override func refreshSeparators() {
-        separatorsView.hidden           = false
+        separatorsView.bottomVisible    = true
         separatorsView.bottomInsets     = UIEdgeInsetsZero
     }
     
