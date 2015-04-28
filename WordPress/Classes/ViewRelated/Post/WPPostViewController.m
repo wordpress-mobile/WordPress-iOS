@@ -9,6 +9,7 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <SVProgressHUD.h>
+#import <WPMediaPicker/WPMediaPickerViewController.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -82,7 +83,15 @@ static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
-@interface WPPostViewController ()<CTAssetsPickerControllerDelegate, UIActionSheetDelegate, UIPopoverControllerDelegate, UITextFieldDelegate, UITextViewDelegate, UIViewControllerRestoration, EditImageDetailsViewControllerDelegate>
+@interface WPPostViewController () <
+WPMediaPickerViewControllerDelegate,
+UIActionSheetDelegate,
+UIPopoverControllerDelegate,
+UITextFieldDelegate,
+UITextViewDelegate,
+UIViewControllerRestoration,
+EditImageDetailsViewControllerDelegate
+>
 
 #pragma mark - Misc properties
 @property (nonatomic, strong) UIButton *blogPickerButton;
@@ -764,18 +773,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 {
     [self.editorView saveSelection];
     
-    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
-	picker.delegate = self;
-    
-    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[UIToolbar class], [CTAssetsPickerController class], nil];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
-    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateDisabled];
-    
-    // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allAssets];
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+	picker.delegate = self;        
     
     [self presentViewController:picker animated:YES completion:nil];
-    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 #pragma mark - Data Model: Post
@@ -2138,16 +2139,21 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-#pragma mark - CTAssetsPickerControllerDelegate
+#pragma mark - WPMediaPickerViewControllerDelegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     [self dismissViewControllerAnimated:YES completion:^{
         [self addMediaAssets:assets];
     }];
 }
 
-- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+- (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
     
