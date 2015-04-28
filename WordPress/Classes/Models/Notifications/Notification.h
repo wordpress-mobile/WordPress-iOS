@@ -77,11 +77,13 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) NSNumber               *metaSiteID;
 @property (nonatomic, assign,  readonly) NSNumber               *metaPostID;
 @property (nonatomic, strong,  readonly) NSNumber               *metaCommentID;
+@property (nonatomic, strong,  readonly) NSNumber               *metaReplyID;
 @property (nonatomic, strong,  readonly) NSURL                  *iconURL;
 @property (nonatomic, strong,  readonly) NSDate                 *timestampAsDate;
 
 @property (nonatomic, assign,  readonly) BOOL                   isMatcher;
 @property (nonatomic, assign,  readonly) BOOL                   isComment;
+@property (nonatomic, assign,  readonly) BOOL                   isReplied;
 @property (nonatomic, assign,  readonly) BOOL                   isPost;
 @property (nonatomic, assign,  readonly) BOOL                   isFollow;
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
