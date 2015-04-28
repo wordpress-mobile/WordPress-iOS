@@ -45,9 +45,6 @@
 static UIEdgeInsets NotificationTableInsetsPhone        = {0.0f,  0.0f, 20.0f, 0.0f};
 static UIEdgeInsets NotificationTableInsetsPad          = {40.0f, 0.0f, 20.0f, 0.0f};
 
-static UIEdgeInsets NotificationFullSeparatorInsets     = {0.0f,  0.0f,  0.0f, 0.0f};
-static UIEdgeInsets NotificationIndentedSeparatorInsets = {0.0f, 12.0f,  0.0f, 0.0f};
-
 static NSTimeInterval NotificationFiveMinutes           = 60 * 5;
 static NSInteger NotificationSectionCount               = 1;
 
@@ -750,28 +747,12 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 }
 
 
-#pragma mark - Cell Separators Logic
+#pragma mark - Setup properties required by Cell Separator Logic
 
 - (void)setupSeparators:(NoteBlockTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
 {
-    NoteSeparatorsView *separatorsView  = cell.separatorsView;
-    
-    // Exception: Badges require no separators
-    if (self.note.isBadge) {
-        separatorsView.bottomVisible = NO;
-        return;
-    }
-    
-    // Exception: Comments setups its own separators (depending on the approval status!)
-    if ([cell isKindOfClass:[NoteBlockCommentTableViewCell class]]) {
-        return;
-    }
-    
-    // Headers + Last Rows: Require full separators
-    BOOL isHeaderCell               = [cell isKindOfClass:[NoteBlockHeaderTableViewCell class]];
-    BOOL isLastCell                 = (indexPath.row >= self.blockGroups.count - 1);
-    separatorsView.bottomInsets     = (isHeaderCell || isLastCell) ? NotificationFullSeparatorInsets : NotificationIndentedSeparatorInsets;
-    separatorsView.bottomVisible    = YES;
+    cell.isBadge                    = self.note.isBadge;
+    cell.isLastRow                  = (indexPath.row >= self.blockGroups.count - 1);
 }
 
 
