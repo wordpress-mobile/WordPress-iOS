@@ -522,12 +522,9 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
         cell.tag = PostSettingsRowPublishDate;
-
     } else if (indexPath.row == 0 && self.datePicker) {
         // Date picker
         cell = [self getWPTableViewDatePickerCell];
-        [cell.contentView addSubview:self.datePicker];
-
     } else if (indexPath.row == 1) {
         // Publish Status
         cell = [self getWPTableViewCell];
@@ -698,10 +695,14 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
     if (!cell) {
         cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:wpTableViewCellIdentifier];
         cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [WPStyleGuide configureTableViewCell:cell];
+        CGRect frame = self.datePicker.frame;
+        frame.size.width = cell.contentView.frame.size.width;
+        self.datePicker.frame = frame;
+        [cell.contentView addSubview:self.datePicker];
     }
-    [[cell.contentView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    cell.tag = 0;
+    cell.tag = PostSettingsRowPublishDate;
     return cell;
 }
 
