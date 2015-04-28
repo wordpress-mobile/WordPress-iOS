@@ -39,14 +39,14 @@
 
 + (void)applyPostAuthorSiteStyle:(UILabel *)label
 {
-    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    CGFloat fontSize = 14.0;
     label.font = [WPFontManager openSansRegularFontOfSize:fontSize];
     label.textColor = [self greyDarken20];
 }
 
 + (void)applyPostAuthorNameStyle:(UILabel *)label
 {
-    CGFloat fontSize = [UIDevice isPad] ? 14.0 : 12.0;
+    CGFloat fontSize = 12.0;
     label.font = [WPFontManager openSansRegularFontOfSize:fontSize];
     label.textColor = [self grey];
 }
