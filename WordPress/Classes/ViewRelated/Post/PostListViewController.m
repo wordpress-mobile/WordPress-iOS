@@ -203,10 +203,24 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     self.searchController.active = NO;
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    if ([UIDevice isPad]) {
+        return;
+    }
+
+    CGRect bounds = self.view.window.frame;
+    CGFloat width = CGRectGetWidth(bounds);
+    CGFloat height = CGRectGetHeight(bounds);
+    if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        width = MIN(width, height);
+    } else {
+        width = MAX(width, height);
+    }
+
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+
     if (self.searchWrapperViewHeightConstraint.constant > 0) {
         self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     }
