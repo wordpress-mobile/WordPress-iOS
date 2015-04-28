@@ -39,10 +39,8 @@ msgid ""
 "blog, wordpress\n"
 msgstr ""
 
-
-msgctxt "v5.0-whats-new"
+msgctxt "v5.1-whats-new"
 msgid ""
-"• New multifactor auth support, which means you no longer need to generate app-specific passwords to log in to WordPress for iOS."
-"• New stats sections for items published and post authors, and a new post details screen."
-"• Improvements to the notifications section."
+"• New: Video support - add videos into posts and pages from the editor."
+"• Fixed: various bugs."
 msgstr ""
