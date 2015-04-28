@@ -104,9 +104,6 @@ PODS:
   - ReactiveCocoa/no-arc (2.4.7)
   - ReactiveCocoa/UI (2.4.7):
     - ReactiveCocoa/Core
-  - SDWebImage (3.7.2):
-    - SDWebImage/Core (= 3.7.2)
-  - SDWebImage/Core (3.7.2)
   - Simperium (0.7.9):
     - Google-Diff-Match-Patch
   - SocketRocket (0.3.1-beta2)
@@ -165,7 +162,6 @@ DEPENDENCIES:
   - OHHTTPStubs (= 1.1.1)
   - Reachability (= 3.1.1)
   - ReactiveCocoa (~> 2.4.7)
-  - SDWebImage (~> 3.6)
   - Simperium (= 0.7.9)
   - SocketRocket (from `https://github.com/jleandroperez/SocketRocket.git`, commit
     `3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927`)
@@ -253,7 +249,6 @@ SPEC CHECKSUMS:
   OHHTTPStubs: ad00ed452d4e3805ffb95977163879bd5bb121ea
   Reachability: dd9aa4fb6667b9f787690a74f53cb7634ce99893
   ReactiveCocoa: eb38dee0a0e698f73a9b25e5c1faea2bb4c79240
-  SDWebImage: 71b7cdc1d1721d6a82ed62889030225f2c249e29
   Simperium: 7d0a207d7f0ce918b36ba9e690cdb0d0d730cc28
   SocketRocket: 77c536491ce78315d4f26a06057ed49aa36cef5e
   Specta: eb90708ed77569bbda089f8ead10bb99b8e9489e
