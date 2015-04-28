@@ -238,6 +238,7 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
 
     UIView *viewNewState = [self.contentView snapshotViewAfterScreenUpdates:YES];
     viewNewState.frame = smallFrame;
+    viewNewState.alpha = 0;
     [self addSubview:viewNewState];
     self.contentView.hidden = YES;
 
@@ -246,6 +247,7 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
         viewOldState.frame = smallFrame;
         viewOldState.alpha = 0;
         viewNewState.frame = frame;
+        viewNewState.alpha = 1;
 
     } completion:^(BOOL finished) {
         [viewOldState removeFromSuperview];
