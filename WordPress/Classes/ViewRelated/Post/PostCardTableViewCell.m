@@ -8,8 +8,6 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "Wordpress-Swift.h"
 
-#import <SDWebImage/UIImageView+WebCache.h>
-
 @interface PostCardTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UIView *innerContentView;
@@ -279,8 +277,8 @@
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
-    [self.avatarImageView sd_setImageWithURL:[self blavatarURL]
-                            placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
+    [self.avatarImageView setImageWithURL:[self blavatarURL]
+                         placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
 }
 
 - (void)configureCardImage
@@ -299,7 +297,8 @@
         url = [self photonURLForURL:url];
     }
 
-    [self.postCardImageView sd_setImageWithURL:url placeholderImage:nil];
+    self.postCardImageView.image = nil; // Clear the image so we know its not stale.
+    [self.postCardImageView setImageWithURL:url placeholderImage:nil];
 }
 
 - (void)configureTitle
