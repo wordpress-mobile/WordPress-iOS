@@ -369,7 +369,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
     // Add OnePassword
     UIButton *onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-wp-button"] forState:UIControlStateNormal];
     [onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
     [onePasswordButton sizeToFit];
     
