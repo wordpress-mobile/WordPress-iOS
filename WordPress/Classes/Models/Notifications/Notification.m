@@ -57,6 +57,7 @@ NSString const *NoteRangeIdKey          = @"id";
 NSString const *NoteRangeValueKey       = @"value";
 NSString const *NoteSiteIdKey           = @"site_id";
 NSString const *NotePostIdKey           = @"post_id";
+NSString const *NoteReplyIdKey          = @"reply_comment";
 
 
 #pragma mark ====================================================================================
@@ -638,6 +639,11 @@ NSString const *NotePostIdKey           = @"post_id";
     return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteCommentKey];
 }
 
+- (NSNumber *)metaReplyID
+{
+    return [[self.meta dictionaryForKey:NoteIdsKey] numberForKey:NoteReplyIdKey];
+}
+
 - (BOOL)isMatcher
 {
     return [self.type isEqual:NoteTypeMatcher];
@@ -646,6 +652,11 @@ NSString const *NotePostIdKey           = @"post_id";
 - (BOOL)isComment
 {
     return [self.type isEqual:NoteTypeComment];
+}
+
+- (BOOL)isReplied
+{
+    return self.isComment && self.metaReplyID != nil;
 }
 
 - (BOOL)isPost
