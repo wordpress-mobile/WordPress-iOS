@@ -12,6 +12,8 @@
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     self.backgroundColor = [WPStyleGuide greyLighten30];
     self.bannerView.backgroundColor = [WPStyleGuide greyLighten30];
 }
