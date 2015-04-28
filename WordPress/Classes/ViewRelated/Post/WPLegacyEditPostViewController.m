@@ -19,14 +19,14 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WPMediaPicker/WPMediaPickerViewController.h>
 #import "WordPress-Swift.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 10;
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate>
+@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
@@ -359,15 +359,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showMediaOptions
 {
-    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
 
-    // Only show photos for now (not videos)
     picker.assetsFilter = [ALAssetsFilter allPhotos];
 
     [self presentViewController:picker animated:YES completion:nil];
-    
-    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing
@@ -1153,16 +1150,16 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self showPreview];
 }
 
-#pragma mark - CTAssetsPickerController delegate
+#pragma mark - WPMediaPickerViewController delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     [self dismissViewControllerAnimated:YES completion:^{
         [self addMediaAssets:assets];
     }];
 }
 
-- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
         // If the image is from a shared photo stream it may not be available locally to be used
@@ -1171,15 +1168,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                 message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
-        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
-            [WPError showAlertWithTitle:nil
-                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]  withSupportButton:NO];
-            return NO;
-        }
         return YES;
     }
 
     return YES;
+}
+
+- (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - KVO

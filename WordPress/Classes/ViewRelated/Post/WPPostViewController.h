@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <WordPress-iOS-Editor/WPEditorViewController.h>
-#import "CTAssetsPickerController.h"
 
 @class AbstractPost;
 @class Blog;
