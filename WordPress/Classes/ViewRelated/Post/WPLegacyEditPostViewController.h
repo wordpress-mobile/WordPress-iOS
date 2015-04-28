@@ -1,12 +1,11 @@
 #import <UIKit/UIKit.h>
 #import <WordPress-iOS-Editor/WPLegacyEditorViewController.h>
-#import "CTAssetsPickerController.h"
 
 @class AbstractPost;
 
 extern NSString *const WPLegacyEditorNavigationRestorationID;
 
-@interface WPLegacyEditPostViewController : WPLegacyEditorViewController <UINavigationControllerDelegate, CTAssetsPickerControllerDelegate, WPLegacyEditorViewControllerDelegate>
+@interface WPLegacyEditPostViewController : WPLegacyEditorViewController <UINavigationControllerDelegate, WPLegacyEditorViewControllerDelegate>
 
 /*
  EditPostViewController instance will execute the onClose callback, if provided, whenever the UI is dismissed.
