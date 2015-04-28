@@ -38,6 +38,16 @@
     self.specialType = nil;
 }
 
+- (void)didSave
+{
+    [super didSave];
+    if ([self isDeleted]) {
+        return;
+    }
+    [self buildContentPreview];
+}
+
+
 #pragma mark -
 
 - (void)buildContentPreview
