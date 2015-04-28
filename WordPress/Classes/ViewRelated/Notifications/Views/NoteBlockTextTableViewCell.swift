@@ -15,7 +15,7 @@ import Foundation
         }
     }
     
-    public var isBadge: Bool = false {
+    public override var isBadge: Bool {
         didSet {
             backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
         }
