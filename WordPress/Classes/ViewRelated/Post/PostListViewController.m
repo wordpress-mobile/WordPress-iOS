@@ -807,6 +807,13 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return predicate;
 }
 
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    // After any change, make sure that the no results view is properly
+    // configured.
+    [self configureNoResultsView];
+}
+
 
 #pragma mark - Table View Handling
 
