@@ -1188,11 +1188,11 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         [titles addObject:filter.title];
     }
     NSDictionary *dict = @{
-                          @"DefaultValue"   : [self.postListFilters firstObject],
-                          @"Title"          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
-                          @"Titles"         : titles,
-                          @"Values"         : self.postListFilters,
-                          @"CurrentValue"   : [self currentPostListFilter]
+                          SettingsSelectionDefaultValueKey   : [self.postListFilters firstObject],
+                          SettingsSelectionTitleKey          : NSLocalizedString(@"Filters", @"Title of the list of post status filters."),
+                          SettingsSelectionTitlesKey         : titles,
+                          SettingsSelectionValuesKey         : self.postListFilters,
+                          SettingsSelectionCurrentValueKey   : [self currentPostListFilter]
                           };
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
