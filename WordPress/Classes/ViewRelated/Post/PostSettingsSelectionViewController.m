@@ -86,6 +86,9 @@
 - (void)didTapCancelButton:(id)sender
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+    if (self.onCancel) {
+        self.onCancel();
+    }
 }
 
 
