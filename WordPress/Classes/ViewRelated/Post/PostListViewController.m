@@ -697,9 +697,6 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         if (error.code == 403) {
             [self promptForPasswordWithMessage:nil];
             return;
-        } else if (error.code == 425) {
-            [self promptForPasswordWithMessage:[error localizedDescription]];
-            return;
         }
     }
     [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.")];
