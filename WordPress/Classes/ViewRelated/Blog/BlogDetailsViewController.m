@@ -306,11 +306,8 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     } else if (indexPath.section == TableViewSectionPublishType) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
-            {
                 [self showPostList];
                 return;
-            }
-                break;
             case BlogDetailsRowPages:
                 [WPAnalytics track:WPAnalyticsStatOpenedPages];
                 controllerClass = [PagesViewController class];
