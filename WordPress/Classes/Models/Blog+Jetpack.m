@@ -168,6 +168,8 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  [account addJetpackBlogsObject:self];
                                  [self dataSave];
 
+                                 [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
+
                                  // Sadly we don't care if this succeeds or not
                                  BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                  [blogService syncBlogsForAccount:account success:nil failure:nil];
