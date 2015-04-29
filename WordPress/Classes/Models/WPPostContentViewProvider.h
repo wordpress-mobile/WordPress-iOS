@@ -10,6 +10,7 @@
 - (NSString *)blogNameForDisplay;
 - (NSURL *)blogURL;
 - (NSString *)blogURLForDisplay;
+- (NSString *)blavatarForDisplay;
 
 // Content accessors
 - (NSString *)titleForDisplay;
