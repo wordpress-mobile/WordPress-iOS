@@ -51,7 +51,7 @@
  *  @param media An array containing picked Media objects.
  *
  */
-- (void)mediaPickerController:(WPBlogMediaPickerViewController *)picker didFinishPickingMedia:(NSArray *)media;
+- (void)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker didFinishPickingMedia:(NSArray *)media;
 
 @optional
 
@@ -61,7 +61,7 @@
  *  @param picker The controller object managing the media picker interface.
  *
  */
-- (void)mediaPickerControllerDidCancel:(WPBlogMediaPickerViewController *)picker;
+- (void)blogMediaPickerControllerDidCancel:(WPBlogMediaPickerViewController *)picker;
 
 /**
  *  @name Managing the Selected Media
@@ -76,7 +76,7 @@
  *  @return `YES` if the media should be selected or `NO` if it should not.
  *
  */
-- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldSelectMedia:(Media *)media;
+- (BOOL)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker shouldSelectMedia:(Media *)media;
 
 /**
  *  Tells the delegate that the media was selected.
@@ -85,7 +85,7 @@
  *  @param media  The media that was selected.
  *
  */
-- (void)mediaPickerController:(WPBlogMediaPickerViewController *)picker didSelectMedia:(Media *)media;
+- (void)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker didSelectMedia:(Media *)media;
 
 /**
  *  Asks the delegate if the specified media should be deselected.
@@ -95,9 +95,9 @@
  *
  *  @return `YES` if the media should be deselected or `NO` if it should not.
  *
- *  @see mediaPickerController:shouldSelectMedia:
+ *  @see blogMediaPickerController:shouldSelectMedia:
  */
-- (BOOL)mediaPickerController:(WPBlogMediaPickerViewController *)picker shouldDeselectMedia:(Media *)media;
+- (BOOL)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker shouldDeselectMedia:(Media *)media;
 
 /**
  *  Tells the delegate that the item at the specified path was deselected.
@@ -106,6 +106,6 @@
  *  @param media  The media that was deselected.
  *
  */
-- (void)mediaPickerController:(WPBlogMediaPickerViewController *)picker didDeselectMedia:(Media *)media;
+- (void)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker didDeselectMedia:(Media *)media;
 
 @end

@@ -45,7 +45,7 @@ import Foundation
             return snippetLabel.attributedText
         }
     }
-    public var noticon: NSString? {
+    public var noticon: String? {
         set {
             noticonLabel.text = newValue
         }

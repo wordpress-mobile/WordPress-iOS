@@ -1,7 +1,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import <Helpshift/Helpshift.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <1PasswordExtension/OnePasswordExtension.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
 
 #import "CreateAccountAndBlogViewController.h"
 #import "SupportViewController.h"
@@ -34,38 +34,13 @@
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
-
-
-#pragma mark ====================================================================================
-#pragma mark Constants
-#pragma mark ====================================================================================
-
-static NSString *const ForgotPasswordDotComBaseUrl              = @"https://wordpress.com";
-static NSString *const ForgotPasswordRelativeUrl                = @"/wp-login.php?action=lostpassword&redirect_to=wordpress%3A%2F%2F";
-static NSString *const GenerateApplicationSpecificPasswordUrl   = @"http://en.support.wordpress.com/security/two-step-authentication/#application-specific-passwords";
-
-static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
-static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
-static CGSize const GeneralWalkthroughTextFieldSize             = {320.0, 44.0};
-static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1.0;
-static CGSize const GeneralWalkthroughButtonSize                = {290.0, 41.0};
-static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
-static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
-
-static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
-static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
-static CGFloat const GeneralWalkthroughAlphaDisabled            = 0.5f;
-static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
-
-static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
-static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
-
+#import "LoginViewModel.h"
 
 #pragma mark ====================================================================================
 #pragma mark Private
 #pragma mark ====================================================================================
 
-@interface LoginViewController () <UITextFieldDelegate>
+@interface LoginViewController () <UITextFieldDelegate, LoginViewModelPresenter>
 
 // Views
 @property (nonatomic, strong) UIView                    *mainView;
@@ -86,13 +61,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 @property (nonatomic, strong) UILabel                   *statusLabel;
 @property (nonatomic, strong) UITapGestureRecognizer    *tapGestureRecognizer;
 
+@property (nonatomic, strong) LoginViewModel *viewModel;
+
 // Measurements
-@property (nonatomic, strong) Blog                      *blog;
 @property (nonatomic, assign) CGFloat                   keyboardOffset;
-@property (nonatomic, assign) BOOL                      userIsDotCom;
-@property (nonatomic, assign) BOOL                      hasDefaultAccount;
-@property (nonatomic, assign) BOOL                      shouldDisplayMultifactor;
-@property (nonatomic, assign) BOOL                      authenticating;
 
 @end
 
@@ -103,9 +75,38 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 @implementation LoginViewController
 
+static CGFloat const GeneralWalkthroughStandardOffset           = 15.0;
+static CGFloat const GeneralWalkthroughMaxTextWidth             = 290.0;
+static CGSize const GeneralWalkthroughTextFieldSize             = {320.0, 44.0};
+static CGFloat const GeneralWalkthroughTextFieldOverlapY        = 1.0;
+static CGSize const GeneralWalkthroughButtonSize                = {290.0, 41.0};
+static CGFloat const GeneralWalkthroughSecondaryButtonHeight    = 33.0;
+static CGFloat const GeneralWalkthroughStatusBarOffset          = 20.0;
+
+static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
+static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
+static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
+
+static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
+static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (instancetype)init
+{
+    if (self = [super init]) {
+        [self initializeViewModel];
+    }
+    return self;
+}
+
+- (void)initializeViewModel
+{
+    _viewModel = [LoginViewModel new];
+    _viewModel.presenter = self;
 }
 
 - (void)viewDidLoad
@@ -114,26 +115,37 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController setNavigationBarHidden:YES animated:NO];
     self.view.backgroundColor = [WPStyleGuide wordPressBlue];
     
+    // Initialize Interface
+    [self addMainView];
+    [self addControls];
+    [self bindToViewModel];
+}
+
+- (void)bindToViewModel
+{
+    RAC(self.viewModel, username) = self.usernameText.rac_textSignal;
+    RAC(self.viewModel, password) = self.passwordText.rac_textSignal;
+    RAC(self.viewModel, multifactorCode) = self.multifactorText.rac_textSignal;
+    RAC(self.viewModel, siteUrl) = self.siteUrlText.rac_textSignal;
+    
     // Do we have a default account?
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
+    
     // Initialize flags!
-    self.hasDefaultAccount = (defaultAccount != nil);
-    self.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
+    self.viewModel.onlyDotComAllowed = self.onlyDotComAllowed;
+    self.viewModel.cancellable = self.cancellable;
+    self.viewModel.hasDefaultAccount = (defaultAccount != nil);
+    self.viewModel.userIsDotCom = (defaultAccount == nil) && (self.onlyDotComAllowed || !self.prefersSelfHosted);
+    self.viewModel.shouldDisplayMultifactor = NO;
+    self.viewModel.shouldReauthenticateDefaultAccount = self.shouldReauthenticateDefaultAccount;
     
-    // Initialize Interface
-    [self addMainView];
-    [self addControls];
-    
-    // Reauth: Pre-populate username. If needed
-    if (!self.shouldReauthenticateDefaultAccount) {
-        return;
+    if (self.viewModel.shouldReauthenticateDefaultAccount) {
+        self.usernameText.text = defaultAccount.username;
+        self.viewModel.username = defaultAccount.username;
+        self.viewModel.userIsDotCom = YES;
     }
-    
-    self.usernameText.text = defaultAccount.username;
-    self.userIsDotCom = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -145,7 +157,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [nc addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [nc addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [nc addObserver:self selector:@selector(helpshiftUnreadCountUpdated:) name:HelpshiftUnreadCountUpdatedNotification object:nil];
-    [nc addObserver:self selector:@selector(textFieldDidChange:) name:UITextFieldTextDidChangeNotification object:nil];
     
     [HelpshiftUtils refreshUnreadNotificationCount];
 
@@ -178,7 +189,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     if (textField == self.usernameText) {
         [self.passwordText becomeFirstResponder];
     } else if (textField == self.passwordText) {
-        if (self.userIsDotCom) {
+        if (self.viewModel.userIsDotCom) {
             [self signInButtonAction:nil];
         } else {
             [self.siteUrlText becomeFirstResponder];
@@ -196,22 +207,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return YES;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
-{
-    return YES;
-}
-
-- (void)textFieldDidChange:(NSNotification *)note
-{
-    [self updateControls];
-}
-
-
 #pragma mark - Displaying of Error Messages
 
 - (WPWalkthroughOverlayView *)baseLoginErrorOverlayView:(NSString *)message
@@ -228,85 +223,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     return overlayView;
 }
 
-- (void)displayErrorMessageForXMLRPC:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.primaryButtonText = NSLocalizedString(@"Enable Now", nil);
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpViewController:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-
-        NSString *path = nil;
-        NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"http\\S+writing.php"
-                                                                               options:NSRegularExpressionCaseInsensitive
-                                                                                 error:nil];
-        NSRange rng = [regex rangeOfFirstMatchInString:message options:0 range:NSMakeRange(0, [message length])];
-
-        if (rng.location == NSNotFound) {
-            path = [self getSiteUrl];
-            path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-            path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-        } else {
-            path = [message substringWithRange:rng];
-        }
-
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[NSURL URLWithString:path]];
-        [webViewController setUsername:self.usernameText.text];
-        [webViewController setPassword:self.passwordText.text];
-        webViewController.shouldScrollToBottom = YES;
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:NO];
-    };
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayErrorMessageForBadUrl:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = [NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"];
-        [self.navigationController setNavigationBarHidden:NO animated:NO];
-        [self.navigationController pushViewController:webViewController animated:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayGenericErrorMessage:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpViewController:NO];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    overlayView.accessibilityIdentifier = @"GenericErrorMessage";
-    [self.view addSubview:overlayView];
-}
-
-- (void)displayGenericErrorMessageWithHelpshiftButton:(NSString *)message
-{
-    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
-    overlayView.secondaryButtonText = NSLocalizedString(@"Contact Us", @"The text on the button at the bottom of the ""error message when a user has repeated trouble logging in");
-    overlayView.secondaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-        [self showHelpshiftConversationView];
-    };
-    overlayView.primaryButtonCompletionBlock = ^(WPWalkthroughOverlayView *overlayView){
-        [overlayView dismiss];
-    };
-    [self.view addSubview:overlayView];
-}
+#pragma mark - 1Password Related
 
 - (void)displayOnePasswordEmptySiteAlert
 {
@@ -322,17 +239,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     
     [alertView show];
 }
-
-- (void)displayErrorMessages
-{
-    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
-}
-
-- (void)displayReservedNameErrorMessage
-{
-    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
-}
-
 
 #pragma mark - Button Handlers
 
@@ -359,37 +265,17 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (IBAction)signInButtonAction:(id)sender
 {
     [self.view endEditing:YES];
-
-    if (![ReachabilityUtils isInternetReachable]) {
-        [ReachabilityUtils showAlertNoInternetConnection];
-        return;
-    }
-
-    if (![self areFieldsValid]) {
-        [self displayErrorMessages];
-        return;
-    }
-
-    if ([self isUserNameReserved]) {
-        [self displayReservedNameErrorMessage];
-        [self toggleSignInFormAction:nil];
-        [self.siteUrlText becomeFirstResponder];
-        return;
-    }
-
-    [self signIn];
+    [self.viewModel signInButtonAction];
 }
 
 - (IBAction)toggleSignInFormAction:(id)sender
 {
-    self.shouldDisplayMultifactor = false;
-    self.userIsDotCom = !self.userIsDotCom;
-    self.passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
-
     // Controls are layed out in initializeView. Calling this method in an animation block will animate the controls
     // to their new positions.
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = NO;
+                         self.viewModel.userIsDotCom = !self.viewModel.userIsDotCom;
                          [self reloadInterface];
                      }];
 }
@@ -404,54 +290,17 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (IBAction)forgotPassword:(id)sender
 {
-    NSString *baseUrl = self.userIsDotCom ? ForgotPasswordDotComBaseUrl : [self getSiteUrl];
-    NSURL *forgotPasswordURL = [NSURL URLWithString:[baseUrl stringByAppendingString:ForgotPasswordRelativeUrl]];
-    
-    [[UIApplication sharedApplication] openURL:forgotPasswordURL];
+    [self.viewModel forgotPasswordButtonAction];
 }
 
 - (IBAction)findLoginFromOnePassword:(id)sender
 {
-    // Resign first responder
-    [self.view endEditing:NO];
-    
-    // Proceed only if needed
-    if (self.userIsDotCom == false && self.siteUrlText.text.isEmpty) {
-        [self displayOnePasswordEmptySiteAlert];
-        return;
-    }
- 
-    NSString *loginURL = self.userIsDotCom ? WPOnePasswordWordPressComURL : self.siteUrlText.text;
-    
-    [[OnePasswordExtension sharedExtension] findLoginForURLString:loginURL
-                                                forViewController:self
-                                                           sender:sender
-                                                       completion:^(NSDictionary *loginDict, NSError *error) {
-        if (!loginDict) {
-            if (error.code != AppExtensionErrorCodeCancelledByUser) {
-                DDLogError(@"OnePassword Error: %@", error);
-                [WPAnalytics track:WPAnalyticsStatOnePasswordFailed];
-            }
-            return;
-        }
-
-        self.usernameText.text = loginDict[AppExtensionUsernameKey];
-        self.passwordText.text = loginDict[AppExtensionPasswordKey];
-                                                           
-        [WPAnalytics track:WPAnalyticsStatOnePasswordLogin];
-        [self signIn];
-    }];
+    [self.viewModel onePasswordButtonActionForViewController:self sender:sender];
 }
 
 - (IBAction)sendVerificationCode:(id)sender
 {
-    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
-    [client requestOneTimeCodeWithUsername:self.usernameText.text
-                                  password:self.passwordText.text
-                                   success:^{
-                                       [WPAnalytics track:WPAnalyticsStatTwoFactorSentSMS];
-                                   }
-                                   failure:nil];
+    [self.viewModel requestOneTimeCode];
 }
 
 
@@ -520,12 +369,14 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
     // Add OnePassword
     UIButton *onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+    [onePasswordButton setImage:[UIImage imageNamed:@"onepassword-wp-button"] forState:UIControlStateNormal];
     [onePasswordButton addTarget:self action:@selector(findLoginFromOnePassword:) forControlEvents:UIControlEventTouchUpInside];
     [onePasswordButton sizeToFit];
     
     usernameText.rightView = onePasswordButton;
     usernameText.rightViewPadding = LoginOnePasswordPadding;
+    
+    usernameText.rightViewMode = [self.viewModel isOnePasswordEnabled] ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
     
     // Add Password
     WPWalkthroughTextField *passwordText = [[WPWalkthroughTextField alloc] initWithLeftViewImage:[UIImage imageNamed:@"icon-password-field"]];
@@ -534,7 +385,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     passwordText.font = [WPNUXUtility textFieldFont];
     passwordText.delegate = self;
     passwordText.secureTextEntry = YES;
-    passwordText.returnKeyType = self.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
+    passwordText.returnKeyType = self.viewModel.userIsDotCom ? UIReturnKeyDone : UIReturnKeyNext;
     passwordText.showSecureTextEntryToggle = YES;
     passwordText.showTopLineSeparator = YES;
     passwordText.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
@@ -673,47 +524,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)reloadInterface
 {
-    [self updateControls];
     [self layoutControls];
-}
-
-- (void)updateControls
-{
-    // Spinner!
-    [self.signInButton showActivityIndicator:self.authenticating];
-    
-    // One Password
-    BOOL isOnePasswordAvailable             = [[OnePasswordExtension sharedExtension] isAppExtensionAvailable];
-    self.usernameText.rightViewMode         = isOnePasswordAvailable ? UITextFieldViewModeAlways : UITextFieldViewModeNever;
-    
-    // TextFields
-    self.usernameText.alpha                 = self.usernameAlpha;
-    self.passwordText.alpha                 = self.passwordAlpha;
-    self.siteUrlText.alpha                  = self.siteAlpha;
-    self.multifactorText.alpha              = self.multifactorAlpha;
-    
-    self.usernameText.enabled               = self.isUsernameEnabled;
-    self.passwordText.enabled               = self.isPasswordEnabled;
-    self.siteUrlText.enabled                = self.isSiteUrlEnabled;
-    self.multifactorText.enabled            = self.isMultifactorEnabled;
-    
-    // Buttons
-    self.cancelButton.hidden                = !self.cancellable;
-    self.forgotPassword.hidden              = self.isForgotPasswordHidden;
-    self.sendVerificationCodeButton.hidden  = self.isSendCodeHidden;
-    self.skipToCreateAccount.hidden         = self.isAccountCreationHidden;
-    
-    // SignIn Button
-    NSString *signInTitle                   = self.signInButtonTitle;
-    self.signInButton.enabled               = self.isSignInEnabled;
-    self.signInButton.accessibilityIdentifier = signInTitle;
-    [self.signInButton setTitle:signInTitle forState:UIControlStateNormal];
-    
-    // Dotcom / SelfHosted Button
-    NSString *toggleTitle                   = self.toggleSignInButtonTitle;
-    self.toggleSignInForm.hidden            = self.isSignInToggleHidden;
-    self.toggleSignInForm.accessibilityIdentifier = toggleTitle;
-    [self.toggleSignInForm setTitle:toggleTitle forState:UIControlStateNormal];
 }
 
 - (void)layoutControls
@@ -741,7 +552,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(self.cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls
-    CGFloat heightOfControls = CGRectGetHeight(self.icon.frame) + GeneralWalkthroughStandardOffset + (self.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
+    CGFloat heightOfControls = CGRectGetHeight(self.icon.frame) + GeneralWalkthroughStandardOffset + (self.viewModel.userIsDotCom ? 2 : 3) * GeneralWalkthroughTextFieldSize.height + GeneralWalkthroughStandardOffset + GeneralWalkthroughButtonSize.height;
     CGFloat startingYForCenteredControls = floorf((viewHeight - 2 * GeneralWalkthroughSecondaryButtonHeight - heightOfControls)/2.0);
 
     CGFloat iconX = (viewWidth - CGRectGetWidth(self.icon.frame)) * 0.5f;
@@ -761,7 +572,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.siteUrlText.frame = CGRectIntegral(CGRectMake(textFieldX, siteUrlTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
 
     // Layout Multifactor
-    CGFloat multifactorTextY = self.userIsDotCom ? CGRectGetMaxY(self.passwordText.frame) : CGRectGetMaxY(self.siteUrlText.frame);
+    CGFloat multifactorTextY = self.viewModel.userIsDotCom ? CGRectGetMaxY(self.passwordText.frame) : CGRectGetMaxY(self.siteUrlText.frame);
     multifactorTextY -= GeneralWalkthroughTextFieldOverlapY;
     self.multifactorText.frame = CGRectIntegral(CGRectMake(textFieldX, multifactorTextY, GeneralWalkthroughTextFieldSize.width, GeneralWalkthroughTextFieldSize.height));
     
@@ -821,10 +632,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthentication
+- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
 {
-    [self finishedAuthenticating];
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    Blog *blog = [blogService blogByBlogId:blogId];
+    NSAssert(blog != nil, @"blog should not be nil here");
+    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
     jetpackSettingsViewController.canBeSkipped = YES;
     [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
         if (didAuthenticate) {
@@ -846,219 +660,20 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:supportViewController animated:animated];
 }
 
-- (void)showHelpshiftConversationView
-{
-    NSDictionary *metaData = @{@"Source": @"Failed login",
-                               @"Username": self.usernameText.text,
-                               @"SiteURL": self.siteUrlText.text};
-
-    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
-    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
-}
-
-- (NSString *)getSiteUrl
-{
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
-    NSString *url = [siteURL absoluteString];
-
-    // If the user enters a WordPress.com url we want to ensure we are communicating over https
-    if (url.isWordPressComPath) {
-        if (siteURL.scheme == nil) {
-            url = [NSString stringWithFormat:@"https://%@", url];
-        } else {
-            if ([url rangeOfString:@"http://" options:NSCaseInsensitiveSearch].location != NSNotFound) {
-                url = [url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://" options:NSCaseInsensitiveSearch range:NSMakeRange(0, [url length])];
-            }
-        }
-    } else {
-        if (siteURL.scheme == nil) {
-            url = [NSString stringWithFormat:@"http://%@", url];
-        }
-    }
-
-    NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-    NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:nil];
-
-    url = [wplogin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-    url = [wpadmin stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-    url = [trailingslash stringByReplacingMatchesInString:url options:0 range:NSMakeRange(0, [url length]) withTemplate:@""];
-
-    return url;
-}
-
-
 #pragma mark - Validation Helpers
-
-- (BOOL)areFieldsValid
-{
-    if ([self areSelfHostedFieldsFilled] && !self.userIsDotCom) {
-        return [self isUrlValid];
-    }
-
-    return [self areDotComFieldsFilled];
-}
-
-- (BOOL)isUsernameFilled
-{
-    return [[self.usernameText.text trim] length] != 0;
-}
-
-- (BOOL)isPasswordFilled
-{
-    return [[self.passwordText.text trim] length] != 0;
-}
 
 - (BOOL)isMultifactorFilled
 {
-    return self.multifactorText.text.isEmpty == NO;
+    return self.viewModel.multifactorCode.isEmpty == NO;
 }
-
-- (BOOL)isSiteUrlFilled
-{
-    return [[self.siteUrlText.text trim] length] != 0;
-}
-
-- (BOOL)areDotComFieldsFilled
-{
-    BOOL areCredentialsFilled = [self isUsernameFilled] && [self isPasswordFilled];
-    
-    if (![self shouldDisplayMultifactor]) {
-        return areCredentialsFilled;
-    }
-    
-    return areCredentialsFilled && [self isMultifactorFilled];
-}
-
-- (BOOL)areSelfHostedFieldsFilled
-{
-    return [self areDotComFieldsFilled] && [self isSiteUrlFilled];
-}
-
-- (BOOL)isUrlValid
-{
-    if (self.siteUrlText.text.length == 0) {
-        return NO;
-    }
-    NSURL *siteURL = [NSURL URLWithString:[NSURL IDNEncodedURL:self.siteUrlText.text]];
-    return siteURL != nil;
-}
-
-- (BOOL)isUserNameReserved
-{
-    if (!self.userIsDotCom) {
-        return NO;
-    }
-    NSString *username = [[self.usernameText.text trim] lowercaseString];
-    NSArray *reservedUserNames = @[@"admin",@"administrator",@"root"];
-    
-    return [reservedUserNames containsObject:username];
-}
-
-
-#pragma mark - Interface Helpers: TextFields
-
-- (BOOL)isUsernameEnabled
-{
-    return !self.shouldDisplayMultifactor;
-}
-
-- (BOOL)isPasswordEnabled
-{
-    return !self.shouldDisplayMultifactor;
-}
-
-- (BOOL)isSiteUrlEnabled
-{
-    return !self.userIsDotCom;
-}
-
-- (BOOL)isMultifactorEnabled
-{
-    return self.shouldDisplayMultifactor;
-}
-
-- (CGFloat)usernameAlpha
-{
-    return self.isUsernameEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
-}
-
-- (CGFloat)passwordAlpha
-{
-    return self.isPasswordEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaDisabled;
-}
-
-- (CGFloat)siteAlpha
-{
-    if (self.isSiteUrlEnabled) {
-        return self.isMultifactorEnabled ? GeneralWalkthroughAlphaDisabled : GeneralWalkthroughAlphaEnabled;
-    }
-    
-    return GeneralWalkthroughAlphaHidden;
-}
-
-- (CGFloat)multifactorAlpha
-{
-    return self.isMultifactorEnabled ? GeneralWalkthroughAlphaEnabled : GeneralWalkthroughAlphaHidden;
-}
-
 
 #pragma mark - Interface Helpers: Buttons
 
-- (BOOL)isSignInEnabled
-{
-    return self.userIsDotCom ? [self areDotComFieldsFilled] : [self areSelfHostedFieldsFilled];
-}
-
-- (BOOL)isSignInToggleHidden
-{
-    return self.onlyDotComAllowed || self.hasDefaultAccount || self.authenticating;
-}
-
-- (BOOL)isSendCodeHidden
-{
-    return !self.shouldDisplayMultifactor || self.authenticating;
-}
-
-- (BOOL)isAccountCreationHidden
-{
-    return self.hasDefaultAccount || self.authenticating;
-}
-
-- (BOOL)isForgotPasswordHidden
-{
-    BOOL isEnabled = self.userIsDotCom || self.isUrlValid;
-    return !isEnabled || self.authenticating || self.shouldDisplayMultifactor;
-}
-
-
-#pragma mark - Text Helpers
-
-- (NSString *)signInButtonTitle
-{
-    if (self.shouldDisplayMultifactor) {
-        return NSLocalizedString(@"Verify", @"Button title for Two Factor code verification");
-    } else if (self.userIsDotCom) {
-        return NSLocalizedString(@"Sign In", @"Button title for Sign In Action");
-    }
-    
-    return NSLocalizedString(@"Add Site", @"Button title for Add SelfHosted Site");
-}
-
-- (NSString *)toggleSignInButtonTitle
-{
-    if (self.userIsDotCom) {
-        return NSLocalizedString(@"Add Self-Hosted Site", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
-    }
-    
-    return NSLocalizedString(@"Sign in to WordPress.com", @"Button title for Toggle Sign Mode (Self Hosted vs DotCom");
-}
-
 - (CGFloat)lastTextfieldMaxY
 {
-    if (self.shouldDisplayMultifactor) {
+    if (self.viewModel.shouldDisplayMultifactor) {
         return CGRectGetMaxY(self.multifactorText.frame);
-    } else if (self.userIsDotCom) {
+    } else if (self.viewModel.userIsDotCom) {
         return CGRectGetMaxY(self.passwordText.frame);
     }
     
@@ -1067,7 +682,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (CGFloat)editionModeMaxY
 {
-    UIView *bottomView = self.shouldDisplayMultifactor ? self.sendVerificationCodeButton : self.signInButton;
+    UIView *bottomView = self.viewModel.shouldDisplayMultifactor ? self.sendVerificationCodeButton : self.signInButton;
     return CGRectGetMaxY(bottomView.frame);
 }
 
@@ -1086,253 +701,23 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)setAuthenticating:(BOOL)authenticating status:(NSString *)status
 {
-    self.authenticating = authenticating;
+    self.viewModel.authenticating = authenticating;
     
     self.statusLabel.hidden = !(status.length > 0);
     self.statusLabel.text = status;
     
     self.view.userInteractionEnabled = !authenticating;
-    
-    [self updateControls];
 }
-
-
-#pragma mark - Backend Helpers
-
-- (void)signIn
-{
-    NSString *username = self.usernameText.text;
-    NSString *password = self.passwordText.text;
-    NSString *multifactor = self.shouldDisplayMultifactor ? self.multifactorText.text : nil;
-
-    if (self.userIsDotCom || self.siteUrlText.text.isWordPressComPath) {
-        [self signInWithWPComForUsername:username password:password multifactor:multifactor];
-        return;
-    }
-
-    void (^guessXMLRPCURLSuccess)(NSURL *) = ^(NSURL *xmlRPCURL) {
-        WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRPCURL username:username password:password];
-
-        [api getBlogOptionsWithSuccess:^(id options){
-            [self finishedAuthenticating];
-
-            if ([options objectForKey:@"wordpress.com"] != nil) {
-                [self signInWithWPComForUsername:username password:password multifactor:multifactor];
-            } else {
-                NSString *xmlrpc = [xmlRPCURL absoluteString];
-                [self createSelfHostedAccountAndBlogWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            }
-        } failure:^(NSError *error){
-            [WPAnalytics track:WPAnalyticsStatLoginFailed];
-            [self finishedAuthenticating];
-            [self displayRemoteError:error];
-        }];
-    };
-
-    void (^guessXMLRPCURLFailure)(NSError *) = ^(NSError *error){
-        [WPAnalytics track:WPAnalyticsStatLoginFailedToGuessXMLRPC];
-        [self handleGuessXMLRPCURLFailure:error];
-    };
-
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Authenticating", nil)];
-    
-    NSString *siteUrl = [NSURL IDNEncodedURL:self.siteUrlText.text];
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:siteUrl success:guessXMLRPCURLSuccess failure:guessXMLRPCURLFailure];
-}
-
-- (void)signInWithWPComForUsername:(NSString *)username
-                          password:(NSString *)password
-                       multifactor:(NSString *)multifactor
-{
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Connecting to WordPress.com", nil)];
-
-    WordPressComOAuthClient *client = [WordPressComOAuthClient client];
-    [client authenticateWithUsername:username
-                            password:password
-                     multifactorCode:multifactor
-                             success:^(NSString *authToken) {
-                                 
-                                 [self finishedAuthenticating];
-                                 [self removeLegacyAccountIfNeeded:username];
-                                 [self createWordPressComAccountForUsername:username authToken:authToken];
-                                 
-                             } failure:^(NSError *error) {
-                                 
-                                 // Remove the Spinner + Status Message
-                                 [self finishedAuthenticating];
-                                 
-                                 // If needed, show the multifactor field
-                                 if (error.code == WordPressComOAuthErrorNeedsMultifactorCode) {
-                                     [self displayMultifactorTextfield];
-                                 } else {
-                                     NSDictionary *properties = @{ @"multifactor" : @(self.shouldDisplayMultifactor) };
-                                     [WPAnalytics track:WPAnalyticsStatLoginFailed withProperties:properties];
-                                     
-                                     [self displayRemoteError:error];
-                                 }
-                             }];
-}
-
-- (void)removeLegacyAccountIfNeeded:(NSString *)newUsername
-{
-    NSParameterAssert(newUsername);
-    
-    //  Note:
-    //  Reauthentication Mode + Old Username != New Username: In this case, we should nuke the "legacy" defaultAccount
-    if (!self.shouldReauthenticateDefaultAccount) {
-        return;
-    }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    
-    if (![accountService.defaultWordPressComAccount.username isEqual:newUsername]) {
-        [accountService removeDefaultWordPressComAccount];
-    }
-}
-
-- (void)createWordPressComAccountForUsername:(NSString *)username authToken:(NSString *)authToken
-{
-    [self startedAuthenticatingWithMessage:NSLocalizedString(@"Getting account information", nil)];
-    
-    self.userIsDotCom = YES;
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlogsForAccount:account
-                                success:^{
-                                    // Dismiss the UI
-                                    [self finishedAuthenticating];
-                                    [self dismiss];
-                                    
-                                    // Hit the Tracker
-                                    NSDictionary *properties = @{
-                                        @"multifactor" : @(self.shouldDisplayMultifactor),
-                                        @"dotcom_user" : @(YES)
-                                    };
-                                    
-                                    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:properties];
-                                    [WPAnalytics refreshMetadata];
-
-                                    // once blogs for the accounts are synced, we want to update account details for it
-                                    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
-                                }
-                                failure:^(NSError *error) {
-                                    [self finishedAuthenticating];
-                                    [self displayRemoteError:error];
-                                }];
-}
-
-- (void)createSelfHostedAccountAndBlogWithUsername:(NSString *)username
-                                          password:(NSString *)password
-                                            xmlrpc:(NSString *)xmlrpc
-                                           options:(NSDictionary *)options
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-    WPAccount *account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    NSString *blogName = [options stringForKeyPath:@"blog_title.value"];
-    NSString *url = [options stringForKeyPath:@"home_url.value"];
-    if (!url) {
-        url = [options stringForKeyPath:@"blog_url.value"];
-    }
-    self.blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
-    if (!self.blog) {
-        self.blog = [blogService createBlogWithAccount:account];
-        if (url) {
-            self.blog.url = url;
-        }
-        if (blogName) {
-            self.blog.blogName = [blogName stringByDecodingXMLCharacters];
-        }
-    }
-    self.blog.xmlrpc = xmlrpc;
-    self.blog.options = options;
-    [self.blog dataSave];
-    [blogService syncBlog:self.blog success:nil failure:nil];
-
-    if ([self.blog hasJetpack]) {
-        if ([self.blog hasJetpackAndIsConnectedToWPCom]) {
-            [self showJetpackAuthentication];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSiteButJetpackNotConnectedToWPCom];
-            [self dismiss];
-        }
-    } else {
-        [self dismiss];
-    }
-
-    [WPAnalytics track:WPAnalyticsStatAddedSelfHostedSite];
-    [WPAnalytics track:WPAnalyticsStatSignedIn withProperties:@{ @"dotcom_user" : @(NO) }];
-    [WPAnalytics refreshMetadata];
-}
-
-- (void)handleGuessXMLRPCURLFailure:(NSError *)error
-{
-    [self finishedAuthenticating];
-    if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-        [self displayRemoteError:nil];
-    } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
-        [self displayRemoteError:error];
-    } else if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
-        NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", nil), [error localizedDescription]];
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
-        NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
-        [self displayRemoteError:err];
-    } else {
-        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", nil)};
-        NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
-        [self displayRemoteError:err];
-    }
-}
-
-- (void)displayRemoteError:(NSError *)error
-{
-    DDLogError(@"%@", error);
-    NSString *message = [error localizedDescription];
-    if (![[error domain] isEqualToString:WPXMLRPCFaultErrorDomain]) {
-        if ([HelpshiftUtils isHelpshiftEnabled]) {
-            [self displayGenericErrorMessageWithHelpshiftButton:message];
-        } else {
-            [self displayGenericErrorMessage:message];
-        }
-        return;
-    }
-    if ([error code] == 403) {
-        message = NSLocalizedString(@"Please try entering your login details again.", nil);
-    }
-
-    if ([[message trim] length] == 0) {
-        message = NSLocalizedString(@"Sign in failed. Please try again.", nil);
-    }
-
-    if ([error code] == 405) {
-        [self displayErrorMessageForXMLRPC:message];
-    } else {
-        if ([error code] == NSURLErrorBadURL) {
-            [self displayErrorMessageForBadUrl:message];
-        } else {
-            [self displayGenericErrorMessage:message];
-        }
-    }
-}
-
 
 #pragma mark - Multifactor Helpers
 
 - (void)displayMultifactorTextfield
 {
     [WPAnalytics track:WPAnalyticsStatTwoFactorCodeRequested];
-    self.shouldDisplayMultifactor = YES;
     
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = YES;
                          [self reloadInterface];
                          [self.multifactorText becomeFirstResponder];
                      }];
@@ -1340,13 +725,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 
 - (void)hideMultifactorTextfieldIfNeeded
 {
-    if (!self.shouldDisplayMultifactor) {
+    if (!self.viewModel.shouldDisplayMultifactor) {
         return;
     }
     
-    self.shouldDisplayMultifactor = NO;
     [UIView animateWithDuration:GeneralWalkthroughAnimationDuration
                      animations:^{
+                         self.viewModel.shouldDisplayMultifactor = NO;
                          [self reloadInterface];
                      } completion:^(BOOL finished) {
                          self.multifactorText.text = nil;
@@ -1440,7 +825,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     self.helpBadge.hidden = (unreadCount == 0);
 }
 
-
 #pragma mark - Static Helpers
 
 + (void)presentModalReauthScreen
@@ -1460,6 +844,208 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+#pragma mark - LoginViewModelPresenter
+
+- (void)showActivityIndicator:(BOOL)show
+{
+    [self.signInButton showActivityIndicator:show];
+}
+
+- (void)setUsernameAlpha:(CGFloat)alpha
+{
+    self.usernameText.alpha = alpha;
+}
+
+- (void)setUsernameEnabled:(BOOL)enabled
+{
+    self.usernameText.enabled = enabled;
+}
+
+- (void)setUsernameTextValue:(NSString *)username
+{
+    self.usernameText.text = username;
+}
+
+- (void)setPasswordAlpha:(CGFloat)alpha
+{
+    self.passwordText.alpha = alpha;
+}
+
+- (void)setPasswordEnabled:(BOOL)enabled
+{
+    self.passwordText.enabled = enabled;
+}
+
+- (void)setPasswordTextValue:(NSString *)passwordText
+{
+    self.passwordText.text = passwordText;
+}
+
+- (void)setSiteAlpha:(CGFloat)alpha
+{
+    self.siteUrlText.alpha = alpha;
+}
+
+- (void)setMultiFactorAlpha:(CGFloat)alpha
+{
+    self.multifactorText.alpha = alpha;
+}
+
+- (void)setSiteUrlEnabled:(BOOL)enabled
+{
+    self.siteUrlText.enabled = enabled;
+}
+
+- (void)setMultifactorEnabled:(BOOL)enabled
+{
+    self.multifactorText.enabled = enabled;
+}
+
+- (void)setCancelButtonHidden:(BOOL)hidden
+{
+    self.cancelButton.hidden = hidden;
+}
+
+- (void)setForgotPasswordHidden:(BOOL)hidden
+{
+    self.forgotPassword.hidden = hidden;
+}
+
+- (void)setSendVerificationCodeButtonHidden:(BOOL)hidden
+{
+    self.sendVerificationCodeButton.hidden = hidden;
+}
+
+- (void)setAccountCreationButtonHidden:(BOOL)hidden
+{
+    self.skipToCreateAccount.hidden = hidden;
+}
+
+- (void)setSignInButtonEnabled:(BOOL)enabled
+{
+    self.signInButton.enabled = enabled;
+}
+
+- (void)setSignInButtonTitle:(NSString *)title
+{
+    self.signInButton.accessibilityIdentifier = title;
+    [self.signInButton setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)setToggleSignInButtonTitle:(NSString *)title
+{
+    self.toggleSignInForm.accessibilityIdentifier = title;
+    [self.toggleSignInForm setTitle:title forState:UIControlStateNormal];
+}
+
+- (void)setToggleSignInButtonHidden:(BOOL)hidden
+{
+    self.toggleSignInForm.hidden = hidden;
+}
+
+- (void)setPasswordTextReturnKeyType:(UIReturnKeyType)returnKeyType
+{
+    self.passwordText.returnKeyType = returnKeyType;
+}
+
+- (void)displayErrorMessageForInvalidOrMissingFields
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Please fill out all the fields", nil) withSupportButton:NO];
+}
+
+- (void)displayReservedNameErrorMessage
+{
+    [WPError showAlertWithTitle:NSLocalizedString(@"Self-hosted site?", nil) message:NSLocalizedString(@"Please enter the URL of your WordPress site.", nil) withSupportButton:NO];
+}
+
+- (void)reloadInterfaceWithAnimation:(BOOL)animated
+{
+    if (animated) {
+        [UIView animateWithDuration:GeneralWalkthroughAnimationDuration animations:^{
+            [self reloadInterface];
+        }];
+    } else {
+        [self reloadInterface];
+    }
+}
+
+- (void)openURLInSafari:(NSURL *)url
+{
+    [[UIApplication sharedApplication] openURL:url];
+}
+
+- (void)displayLoginMessage:(NSString *)message
+{
+    [self startedAuthenticatingWithMessage:message];
+}
+
+- (void)dismissLoginMessage
+{
+    [self finishedAuthenticating];
+}
+
+- (void)setFocusToSiteUrlText
+{
+    [self.siteUrlText becomeFirstResponder];
+}
+
+- (void)setFocusToMultifactorText
+{
+    [self.multifactorText becomeFirstResponder];
+}
+
+- (void)dismissLoginView
+{
+    [self dismiss];
+}
+
+- (void)displayOverlayViewWithMessage:(NSString *)message firstButtonText:(NSString *)firstButtonText firstButtonCallback:(OverlayViewCallback)firstButtonCallback secondButtonText:(NSString *)secondButtonText secondButtonCallback:(OverlayViewCallback)secondButtonCallback accessibilityIdentifier:(NSString *)accessibilityIdentifier;
+{
+    WPWalkthroughOverlayView *overlayView = [self baseLoginErrorOverlayView:message];
+    overlayView.primaryButtonText = firstButtonText;
+    overlayView.primaryButtonCompletionBlock = firstButtonCallback;
+    overlayView.secondaryButtonText = secondButtonText;
+    overlayView.secondaryButtonCompletionBlock = secondButtonCallback;
+    
+    if (accessibilityIdentifier.length > 0) {
+        overlayView.accessibilityIdentifier = accessibilityIdentifier;
+    }
+    
+    [self.view addSubview:overlayView];
+}
+
+- (void)displayHelpViewControllerWithAnimation:(BOOL)animated
+{
+    [self showHelpViewController:animated];
+}
+
+- (void)displayHelpshiftConversationView
+{
+    NSDictionary *metaData = @{@"Source": @"Failed login",
+                               @"Username": self.viewModel.username,
+                               @"SiteURL": self.viewModel.siteUrl};
+
+    [[Helpshift sharedInstance] showConversation:self withOptions:@{HSCustomMetadataKey: metaData}];
+    [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
+}
+
+- (void)displayWebViewForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password;
+{
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    webViewController.url = url;
+    if (username.length > 0 && password.length > 0) {
+        webViewController.username = username;
+        webViewController.password = password;
+    }
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    [self.navigationController pushViewController:webViewController animated:NO];
+}
+
+- (void)endViewEditing
+{
+    [self.view endEditing:NO];
 }
 
 @end

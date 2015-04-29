@@ -123,7 +123,7 @@ extension NotificationBlock
         
         var ranges = [NSValue: UIImage]()
         
-        for theMedia in media as [NotificationMedia] {
+        for theMedia in media as! [NotificationMedia] {
             // Failsafe: if the mediaURL couldn't be parsed, don't proceed
             if theMedia.mediaURL == nil {
                 continue
@@ -197,18 +197,19 @@ extension NotificationBlock
         // Apply the Ranges
         var lengthShift = 0
         
-        for range in ranges as [NotificationRange] {
+        for range in ranges as! [NotificationRange] {
             var shiftedRange        = range.range
             shiftedRange.location   += lengthShift
 
-            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [NSString: AnyObject] {
-                theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
+            if range.isNoticon {
+                let noticon         = "\(range.value) "
+                theString.replaceCharactersInRange(shiftedRange, withString: noticon)
+                lengthShift         += count(noticon)
+                shiftedRange.length += count(noticon)
             }
             
-            if range.isNoticon {
-                let noticon = NSAttributedString(string: "\(range.value) ", attributes: Styles.subjectNoticonStyle)
-                theString.replaceCharactersInRange(shiftedRange, withAttributedString: noticon)
-                lengthShift += noticon.length
+            if let unwrappedRangeStyle = rangeStylesMap?[range.type] as? [NSString: AnyObject] {
+                theString.addAttributes(unwrappedRangeStyle, range: shiftedRange)
             }
             
             if range.url != nil && linksColor != nil {
@@ -228,7 +229,8 @@ extension NotificationBlock
             NoteRangeTypeUser               : Styles.subjectBoldStyle,
             NoteRangeTypePost               : Styles.subjectItalicsStyle,
             NoteRangeTypeComment            : Styles.subjectItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.subjectQuotedStyle
+            NoteRangeTypeBlockquote         : Styles.subjectQuotedStyle,
+            NoteRangeTypeNoticon            : Styles.subjectNoticonStyle
         ]
 
         static let headerTitleRangeStylesMap = [
@@ -241,7 +243,8 @@ extension NotificationBlock
             NoteRangeTypeUser               : Styles.blockBoldStyle,
             NoteRangeTypePost               : Styles.blockItalicsStyle,
             NoteRangeTypeComment            : Styles.blockItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.blockQuotedStyle
+            NoteRangeTypeBlockquote         : Styles.blockQuotedStyle,
+            NoteRangeTypeNoticon            : Styles.blockNoticonStyle
         ]
         
         static let badgeRangeStylesMap = [

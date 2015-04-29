@@ -96,6 +96,8 @@ extension WPStyleGuide
         public static let blockSubtitleColor        = UIColor(red: 0x00/255.0, green: 0xAA/255.0, blue: 0xDC/255.0, alpha: 0xFF/255.0)
         public static let blockSeparatorColor       = WPStyleGuide.readGrey()
 
+        public static let blockApprovedBgColor      = UIColor.clearColor()
+        
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
@@ -116,6 +118,10 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            blockItalicsFont,
                                                         NSForegroundColorAttributeName: blockQuotedColor]
         
+        public static let blockNoticonStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockNoticonFont!,
+                                                        NSForegroundColorAttributeName: blockNoticonColor ]
+        
         // Action Buttons
         public static let blockActionDisabledColor  = UIColor(red: 0x7F/255.0, green: 0x9E/255.0, blue: 0xB4/255.0, alpha: 0xFF/255.0)
         public static let blockActionEnabledColor   = UIColor(red: 0xEA/255.0, green: 0x6D/255.0, blue: 0x1B/255.0, alpha: 0xFF/255.0)
@@ -126,11 +132,19 @@ extension WPStyleGuide
         }
         
         //  Comment Helpers
-        public static func blockTextColorForComment(isApproved approved: Bool) -> UIColor {
+        public static func blockSeparatorColorForComment(isApproved approved: Bool) -> UIColor {
+            return approved ? blockSeparatorColor : blockUnapprovedSideColor
+        }
+
+        public static func blockBackgroundColorForComment(isApproved approved: Bool) -> UIColor {
+            return approved ? blockApprovedBgColor : blockUnapprovedBgColor
+        }
+        
+        public static func blockTitleColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockTextColor : blockUnapprovedTextColor
         }
 
-        public static func blockTimestampColorForComment(isApproved approved: Bool) -> UIColor {
+        public static func blockDetailsColorForComment(isApproved approved: Bool) -> UIColor {
             return approved ? blockQuotedColor : blockUnapprovedTextColor
         }
         
@@ -180,6 +194,7 @@ extension WPStyleGuide
         private static let sectionHeaderTextColor   = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
         private static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
         private static let subjectNoticonColor      = noticonReadColor
+        private static let blockNoticonColor        = blockLinkColor
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
         
@@ -192,10 +207,6 @@ extension WPStyleGuide
         private static let headerTitleRegularFont   = blockRegularFont
         private static let headerTitleItalicsFont   = blockItalicsFont
         private static let blockItalicsFont         = WPFontManager.openSansItalicFontOfSize(blockFontSize)
-    }
-    
-    // MARK: - ObjectiveC Helpers: Nuke me once NotificationDetailsViewController is Swifted!
-    public class func notificationsBlockSeparatorColor() -> UIColor {
-        return Notifications.blockSeparatorColor
+        private static let blockNoticonFont         = subjectNoticonFont
     }
 }

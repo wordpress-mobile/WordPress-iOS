@@ -88,15 +88,15 @@ static NSString * const ArrowDown = @"\u25be";
 
 - (void)cancelPicker:(UIBarButtonItem *)sender
 {
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerControllerDidCancel:)]){
-        [self.picker.delegate mediaPickerControllerDidCancel:self.picker];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerControllerDidCancel:)]){
+        [self.picker.delegate blogMediaPickerControllerDidCancel:self.picker];
     }
 }
 
 - (void)finishPicker:(UIBarButtonItem *)sender
 {
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerController:didFinishPickingMedia:)]){
-        [self.picker.delegate mediaPickerController:self.picker didFinishPickingMedia:[self.selected copy]];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerController:didFinishPickingMedia:)]){
+        [self.picker.delegate blogMediaPickerController:self.picker didFinishPickingMedia:[self.selected copy]];
     }
    
 }
@@ -165,8 +165,8 @@ static NSString * const ArrowDown = @"\u25be";
 {
     Media *media = (Media *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerController:shouldSelectMedia:)]){
-        return [self.picker.delegate mediaPickerController:self.picker shouldSelectMedia:media];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerController:shouldSelectMedia:)]){
+        return [self.picker.delegate blogMediaPickerController:self.picker shouldSelectMedia:media];
     }
     return YES;
 }
@@ -182,8 +182,8 @@ static NSString * const ArrowDown = @"\u25be";
         [self.collectionView reloadItemsAtIndexPaths:@[indexPath]];
     }];
     
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerController:didSelectMedia:)]){
-        [self.picker.delegate mediaPickerController:self.picker didSelectMedia:media];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerController:didSelectMedia:)]){
+        [self.picker.delegate blogMediaPickerController:self.picker didSelectMedia:media];
     }
 }
 
@@ -191,8 +191,8 @@ static NSString * const ArrowDown = @"\u25be";
 {
     Media *media = (Media *)[self.fetchedResultsController objectAtIndexPath:indexPath];
     
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerController:shouldDeselectMedia:)]){
-        return [self.picker.delegate mediaPickerController:self.picker shouldDeselectMedia:media];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerController:shouldDeselectMedia:)]){
+        return [self.picker.delegate blogMediaPickerController:self.picker shouldDeselectMedia:media];
     }
     return YES;
 }
@@ -212,8 +212,8 @@ static NSString * const ArrowDown = @"\u25be";
         [self.collectionView reloadItemsAtIndexPaths:self.collectionView.indexPathsForSelectedItems];
     }];
     
-    if ([self.picker.delegate respondsToSelector:@selector(mediaPickerController:didDeselectMedia:)]){
-        [self.picker.delegate mediaPickerController:self.picker didDeselectMedia:media];
+    if ([self.picker.delegate respondsToSelector:@selector(blogMediaPickerController:didDeselectMedia:)]){
+        [self.picker.delegate blogMediaPickerController:self.picker didDeselectMedia:media];
     }
 }
 
