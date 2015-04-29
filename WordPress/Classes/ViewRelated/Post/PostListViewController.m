@@ -799,7 +799,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     }
 
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    if ([self.recentlyTrashedPostIDs count] > 0) {
+    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
         NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
         predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, trashedPredicate]];
     }
