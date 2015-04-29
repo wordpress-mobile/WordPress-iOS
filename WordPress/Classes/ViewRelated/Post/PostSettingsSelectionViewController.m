@@ -3,6 +3,12 @@
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
 
+NSString * const SettingsSelectionTitleKey = @"Title";
+NSString * const SettingsSelectionTitlesKey = @"Titles";
+NSString * const SettingsSelectionValuesKey = @"Values";
+NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
+NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
+
 @interface PostSettingsSelectionViewController ()
 
 @property (nonatomic, strong) NSArray *titles;
@@ -46,11 +52,11 @@
 {
     self = [self initWithStyle:style];
     if (self) {
-        self.title = [dictionary objectForKey:@"Title"];
-        _titles = [dictionary objectForKey:@"Titles"];
-        _values = [dictionary objectForKey:@"Values"];
-        _defaultValue = [dictionary objectForKey:@"DefaultValue"];
-        _currentValue = [dictionary objectForKey:@"CurrentValue"];
+        self.title = [dictionary objectForKey:SettingsSelectionTitleKey];
+        _titles = [dictionary objectForKey:SettingsSelectionTitlesKey];
+        _values = [dictionary objectForKey:SettingsSelectionValuesKey];
+        _defaultValue = [dictionary objectForKey:SettingsSelectionDefaultValueKey];
+        _currentValue = [dictionary objectForKey:SettingsSelectionCurrentValueKey];
 
         if (_currentValue == nil) {
             _currentValue = _defaultValue;
