@@ -904,7 +904,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (NSString *)cellIdentifierForPost:(Post *)post
 {
     NSString *identifier;
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID]) {
+    if ([self.recentlyTrashedPostIDs containsObject:post.postID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
         identifier = PostCardRestoreCellIdentifier;
     } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
