@@ -335,13 +335,9 @@ const NSInteger PostServiceNumberToFetch = 40;
           failure:(void (^)(NSError *error))failure
 {
     NSNumber *postID = post.postID;
-    if ([postID longLongValue] == 0) {
-        // Local draft. Nuke it and be through.
-        [self.managedObjectContext deleteObject:post];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        if (success) {
-            success();
-        }
+    if ([postID longLongValue] == 0 || [post.status isEqualToString:PostStatusTrash]) {
+        // Local draft, or a trashed post. Hand off to the delete method.
+        [self deletePost:post success:success failure:failure];
         return;
     }
 
