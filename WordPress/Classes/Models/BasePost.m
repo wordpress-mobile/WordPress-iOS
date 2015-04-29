@@ -5,6 +5,11 @@
 #import "WPComLanguages.h"
 #import "NSString+XMLExtensions.h"
 
+NSString *const BasePostStatusDraft = @"draft";
+NSString *const BasePostStatusPending = @"pending";
+NSString *const BasePostStatusPrivate = @"private";
+NSString *const BasePostStatusPublished = @"publish";
+
 @interface BasePost(ProtectedMethods)
 + (NSString *)titleForStatus:(NSString *)status;
 + (NSString *)statusForTitle:(NSString *)title;
@@ -31,13 +36,13 @@
 
 + (NSString *)titleForStatus:(NSString *)status
 {
-    if ([status isEqualToString:@"draft"]) {
+    if ([status isEqualToString:BasePostStatusDraft]) {
         return NSLocalizedString(@"Draft", @"");
-    } else if ([status isEqualToString:@"pending"]) {
+    } else if ([status isEqualToString:BasePostStatusPending]) {
         return NSLocalizedString(@"Pending review", @"");
-    } else if ([status isEqualToString:@"private"]) {
+    } else if ([status isEqualToString:BasePostStatusPrivate]) {
         return NSLocalizedString(@"Privately published", @"");
-    } else if ([status isEqualToString:@"publish"]) {
+    } else if ([status isEqualToString:BasePostStatusPublished]) {
         return NSLocalizedString(@"Published", @"");
     }
 
@@ -47,13 +52,13 @@
 + (NSString *)statusForTitle:(NSString *)title
 {
     if ([title isEqualToString:NSLocalizedString(@"Draft", @"")]) {
-        return @"draft";
+        return BasePostStatusDraft;
     } else if ([title isEqualToString:NSLocalizedString(@"Pending review", @"")]) {
-        return @"pending";
+        return BasePostStatusPending;
     } else if ([title isEqualToString:NSLocalizedString(@"Private", @"")]) {
-        return @"private";
+        return BasePostStatusPrivate;
     } else if ([title isEqualToString:NSLocalizedString(@"Published", @"")]) {
-        return @"publish";
+        return BasePostStatusPublished;
     }
 
     return title;
@@ -61,10 +66,10 @@
 
 - (NSArray *)availableStatuses
 {
-    return @[NSLocalizedString(@"Draft", @""),
-             NSLocalizedString(@"Pending review", @""),
-             NSLocalizedString(@"Private", @""),
-             NSLocalizedString(@"Published", @"")];
+    return @[[BasePost titleForStatus:BasePostStatusDraft],
+             [BasePost titleForStatus:BasePostStatusPending],
+             [BasePost titleForStatus:BasePostStatusPrivate],
+             [BasePost titleForStatus:BasePostStatusPublished]];
 }
 
 - (BOOL)hasRemote
@@ -199,9 +204,9 @@
 - (NSString *)statusForDisplay
 {
     if (self.remoteStatus == AbstractPostRemoteStatusSync) {
-        if ([self.status isEqualToString:@"pending"]) {
+        if ([self.status isEqualToString:BasePostStatusPending]) {
             return NSLocalizedString(@"Pending", @"");
-        } else if ([self.status isEqualToString:@"draft"]) {
+        } else if ([self.status isEqualToString:BasePostStatusDraft]) {
             return self.statusTitle;
         }
 
