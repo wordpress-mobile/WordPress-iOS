@@ -108,6 +108,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
     self.reuseIdentifierMap = @{
         @(NoteBlockGroupTypeHeader)         : NoteBlockHeaderTableViewCell.reuseIdentifier,
+        @(NoteBlockGroupTypeFooter)         : NoteBlockTextTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeText)           : NoteBlockTextTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeComment)        : NoteBlockCommentTableViewCell.reuseIdentifier,
         @(NoteBlockGroupTypeActions)        : NoteBlockActionsTableViewCell.reuseIdentifier,
@@ -225,6 +226,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     UITableView *tableView  = self.tableView;
     _layoutCellMap = @{
         @(NoteBlockGroupTypeHeader)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockHeaderTableViewCell.layoutIdentifier],
+        @(NoteBlockGroupTypeFooter)    : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
         @(NoteBlockGroupTypeText)      : [tableView dequeueReusableCellWithIdentifier:NoteBlockTextTableViewCell.layoutIdentifier],
         @(NoteBlockGroupTypeComment)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockCommentTableViewCell.layoutIdentifier],
         @(NoteBlockGroupTypeActions)   : [tableView dequeueReusableCellWithIdentifier:NoteBlockActionsTableViewCell.layoutIdentifier],
@@ -495,6 +497,14 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     } else if (group.type == NoteBlockGroupTypeHeader) {
         
         [self openNotificationHeader:group];
+
+    // Footer-Level:
+    } else if (group.type == NoteBlockGroupTypeFooter) {
+        
+        NotificationBlock *block    = [group blockOfType:NoteBlockTypeText];
+        NotificationRange *range    = [block notificationRangeWithCommentId:self.note.metaReplyID];
+        
+        [self openURL:range.url];
     }
 }
 
@@ -535,7 +545,10 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Note: This is gonna look awesome in Swift
     if (blockGroup.type == NoteBlockGroupTypeHeader) {
         [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell blockGroup:blockGroup];
-        
+
+    } else if (blockGroup.type == NoteBlockGroupTypeFooter) {
+        [self setupFooterCell:(NoteBlockTextTableViewCell *)cell blockGroup:blockGroup];
+            
     } else if (blockGroup.type == NoteBlockGroupTypeUser) {
         [self setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:blockGroup];
         
@@ -575,6 +588,17 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
     NotificationMedia *media            = gravatarBlock.media.firstObject;
     [cell downloadGravatarWithURL:media.mediaURL];
+}
+
+- (void)setupFooterCell:(NoteBlockTextTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
+{
+    NotificationBlock *textBlock    = blockGroup.blocks.firstObject;
+    NSAssert(textBlock, @"Missing Text Block for Notification %@", self.note.simperiumKey);
+    
+    // Setup the Cell
+    cell.attributedText             = textBlock.attributedFooterText;
+    cell.isTextViewSelectable       = false;
+    cell.isTextViewClickable        = false;
 }
 
 - (void)setupUserCell:(NoteBlockUserTableViewCell *)cell blockGroup:(NotificationBlockGroup *)blockGroup
