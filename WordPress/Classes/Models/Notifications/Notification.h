@@ -141,6 +141,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+- (NotificationRange *)notificationRangeWithCommentId:(NSNumber *)commentId;
 - (NSArray *)imageUrls;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
