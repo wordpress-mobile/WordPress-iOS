@@ -228,7 +228,7 @@
 - (NSURL *)blavatarURL
 {
     NSInteger size = (NSInteger)ceil(CGRectGetWidth(self.avatarImageView.frame) * [[UIScreen mainScreen] scale]);
-    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blogURLForDisplay] withSize:size];
+    return [self.avatarImageView blavatarURLForHost:[self.contentProvider blavatarForDisplay] withSize:size];
 }
 
 - (NSURL *)photonURLForURL:(NSURL *)url
