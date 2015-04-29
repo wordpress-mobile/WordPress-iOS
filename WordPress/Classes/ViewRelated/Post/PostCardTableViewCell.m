@@ -1,6 +1,7 @@
 #import "PostCardTableViewCell.h"
 #import "BasePost.h"
 #import "NSDate+StringFormatting.h"
+#import "PhotonImageURLHelper.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
 #import "UIImageView+Gravatar.h"
@@ -231,15 +232,6 @@
     return [self.avatarImageView blavatarURLForHost:[self.contentProvider blavatarForDisplay] withSize:size];
 }
 
-- (NSURL *)photonURLForURL:(NSURL *)url
-{
-    CGSize size = self.postCardImageView.frame.size;
-    NSString *imagePath = [NSString stringWithFormat:@"%@%@", url.host, url.path];
-    NSString *queryStr = [NSString stringWithFormat:@"resize=%.f,%.f&quality=80", size.width, size.height];
-    NSString *photonStr = [NSString stringWithFormat:@"https://i0.wp.com/%@?%@", imagePath, queryStr];
-    return [NSURL URLWithString:photonStr];
-}
-
 
 #pragma mark - Configuration
 
@@ -294,7 +286,8 @@
     NSURL *url = [self.contentProvider featuredImageURLForDisplay];
     // if not private create photon url
     if (![self.contentProvider isPrivate]) {
-        url = [self photonURLForURL:url];
+        CGSize imageSize = self.postCardImageView.frame.size;
+        url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
     }
 
     self.postCardImageView.image = nil; // Clear the image so we know its not stale.
