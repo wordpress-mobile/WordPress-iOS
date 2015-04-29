@@ -223,7 +223,6 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 @interface NotificationBlock ()
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *actionsOverride;
 @property (nonatomic, assign, readwrite) NoteBlockType          type;
-@property (nonatomic, assign, readwrite) BOOL                   isBadge;
 @property (nonatomic, strong, readwrite) NSMutableDictionary    *dynamicAttributesCache;
 @end
 
@@ -352,8 +351,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         return nil;
     }
     
-    NSMutableArray *parsed  = [NSMutableArray array];
-    BOOL isBadge = false;
+    NSMutableArray *parsed = [NSMutableArray array];
     
     for (NSDictionary *rawDict in rawBlocks) {
         if (![rawDict isKindOfClass:[NSDictionary class]]) {
@@ -374,38 +372,17 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         //  Comments
         } else if ([block.metaCommentID isEqual:notification.metaCommentID] && block.metaSiteID != nil) {
             block.type = NoteBlockTypeComment;
-            
+
         //  Images
         } else if (media.isImage || media.isBadge) {
             block.type = NoteBlockTypeImage;
-            
+         
         //  Text
         } else {
             block.type = NoteBlockTypeText;
         }
 
-        // Figure out if this is a badge
-        for (NotificationMedia *media in block.media) {
-            if (media.isBadge) {
-                isBadge = true;
-            }
-            
-            // TODO:
-            // We've received crashlogs caused by a missing mediaURL field. This assert will only affect debug builds,
-            // and will help us troubleshoot the issue. Please: Feel free to remove this snippet once the bug has been
-            // fixed backend side.
-            //
-            NSAssert(media.mediaURL, @"Missing mediaURL for Notification with SimperiumKey %@", notification.simperiumKey);
-        }
-        
         [parsed addObject:block];
-    }
-    
-    // Note: Seriously. Duck typing should be abolished.
-    if (isBadge) {
-        for (NotificationBlock *block in parsed) {
-            block.isBadge = true;
-        }
     }
     
     return parsed;
@@ -676,8 +653,10 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     //
     for (NotificationBlockGroup *group in self.bodyBlockGroups) {
         for (NotificationBlock *block in group.blocks) {
-            if (block.isBadge) {
-                return true;
+            for (NotificationMedia *media in block.media) {
+                if (media.isBadge) {
+                    return true;
+                }
             }
         }
     }

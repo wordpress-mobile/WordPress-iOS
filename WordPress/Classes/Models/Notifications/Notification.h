@@ -131,7 +131,6 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 
 // Derived Properties
 @property (nonatomic, assign, readonly) NoteBlockType       type;
-@property (nonatomic, assign, readonly) BOOL                isBadge;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
