@@ -251,6 +251,11 @@
     return nil;
 }
 
+- (NSString *)blavatarForDisplay
+{
+    return self.blog.blavatarUrl;
+}
+
 - (NSURL *)avatarURLForDisplay
 {
     return nil;
