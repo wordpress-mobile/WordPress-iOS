@@ -1205,6 +1205,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         }
         [self setCurrentFilterIndex:[self.postListFilters indexOfObject:selectedValue]];
     };
+    controller.onCancel = ^() {
+        [self handleFilterSelectionCanceled];
+    };
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     if ([UIDevice isPad]) {
@@ -1234,6 +1237,13 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     controller.modalPresentationStyle = UIModalPresentationPageSheet;
     controller.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self presentViewController:controller animated:YES completion:nil];
+}
+
+- (void)handleFilterSelectionCanceled
+{
+    if (self.postFilterPopoverController) {
+        [self popoverControllerDidDismissPopover:self.postFilterPopoverController];
+    }
 }
 
 
