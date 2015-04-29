@@ -732,7 +732,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSDictionary *mediaRanges       = [textBlock buildRangesToImagesMap:mediaMap];
     
     // Load the attributedText
-    NSAttributedString *text        = textBlock.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText;
+    NSAttributedString *text        = self.note.isBadge ? textBlock.attributedBadgeText : textBlock.attributedRichText;
     
     // Setup the Cell
     cell.attributedText             = [text stringByEmbeddingImageAttachments:mediaRanges];
