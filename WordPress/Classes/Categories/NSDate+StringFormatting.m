@@ -37,9 +37,9 @@
         }
     } else {
         if (isFutureDate) {
-            shortString = [NSString stringWithFormat:NSLocalizedString(@"In %is", @"In _ seconds, Seconds duration single character abbreviation"), second];
+            shortString = [NSString stringWithFormat:NSLocalizedString(@"In seconds", @"A short phrase indicating something due to happen in a few moments. An example is when a scheduled post will published in under a minute."), second];
         } else {
-            shortString = [NSString stringWithFormat:NSLocalizedString(@"%is", @"Seconds duration single character abbreviation"), second];
+            shortString = [NSString stringWithFormat:NSLocalizedString(@"Just now", @"A short phrase indicating something that happened moments ago. An example is when a post was published less than a minute ago."), second];
         }
     }
 
