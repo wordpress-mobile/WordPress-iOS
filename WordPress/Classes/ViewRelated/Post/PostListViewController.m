@@ -18,6 +18,7 @@
 #import "WPStatsService.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
+#import "WPAnimatedBox.h"
 #import "WPLegacyEditPostViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPPostViewController.h"
@@ -81,6 +82,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 @property (nonatomic, strong) PostCardTableViewCell *thumbCellForLayout;
 @property (nonatomic, strong) WPNoResultsView *noResultsView;
 @property (nonatomic, strong) PostListFooterView *postListFooterView;
+@property (nonatomic, strong) WPAnimatedBox *animatedBox;
 @property (nonatomic, weak) IBOutlet NavBarTitleDropdownButton *filterButton;
 @property (nonatomic, weak) IBOutlet UIView *rightBarButtonView;
 @property (nonatomic, weak) IBOutlet UIButton *searchButton;
@@ -351,6 +353,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (NSString *)noResultsTitleText
 {
+    if (self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
+    }
     PostListFilter *filter = [self currentPostListFilter];
     NSString *title;
     switch (filter.filterType) {
@@ -371,6 +376,9 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 }
 
 - (NSString *)noResultsMessageText {
+    if (self.syncHelper.isSyncing) {
+        return [NSString string];
+    }
     NSString *message;
     PostListFilter *filter = [self currentPostListFilter];
     switch (filter.filterType) {
@@ -391,11 +399,20 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 }
 
 - (UIView *)noResultsAccessoryView {
+    if (self.syncHelper.isSyncing) {
+        if (!self.animatedBox) {
+            self.animatedBox = [WPAnimatedBox new];
+        }
+        return self.animatedBox;
+    }
     return [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"penandink"]];
 }
 
 - (NSString *)noResultsButtonText
 {
+    if (self.syncHelper.isSyncing) {
+        return nil;
+    }
     NSString *title;
     PostListFilter *filter = [self currentPostListFilter];
     switch (filter.filterType) {
@@ -616,8 +633,8 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction
 {
-    [self configureNoResultsView];
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
+    [self configureNoResultsView];
 }
 
 - (void)setHasMore:(BOOL)hasMore forFilter:(PostListFilter *)filter
