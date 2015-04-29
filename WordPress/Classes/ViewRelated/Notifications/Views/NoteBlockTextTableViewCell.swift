@@ -50,7 +50,15 @@ import Foundation
             return textView.selectable
         }
     }
-    
+
+    public var isTextViewClickable: Bool {
+        set {
+            textView.userInteractionEnabled = newValue
+        }
+        get {
+            return textView.userInteractionEnabled
+        }
+    }
     
     // MARK: - View Methods
     public override func awakeFromNib() {
