@@ -649,7 +649,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     if ([self.recentlyTrashedPostIDs count]) {
         [self.recentlyTrashedPostIDs removeAllObjects];
-        [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+        [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     }
 
     PostListFilter *filter = [self currentPostListFilter];
@@ -759,7 +759,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     return fetchRequest;
 }
 
-- (void)updateAndPerformFetchRequestClearingCachedRowHeights:(BOOL)clearCachedRowHeights
+- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
 {
     NSAssert([NSThread isMainThread], @"PostsViewController Error: NSFetchedResultsController accessed in BG");
 
@@ -770,9 +770,10 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
     }
-    if (clearCachedRowHeights) {
-        [self.tableViewHandler clearCachedRowHeights];
-    }
+
+    CGFloat width = CGRectGetWidth(self.tableView.bounds);
+    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
+
     [self.tableView reloadData];
     [self configureNoResultsView];
 }
@@ -1005,7 +1006,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 
     // Update the fetch request *before* making the service call.
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService trashPost:apost
@@ -1149,7 +1150,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
     [self.recentlyTrashedPostIDs removeAllObjects];
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (PostListFilter *)currentPostListFilter
@@ -1197,7 +1198,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateFilterTitle];
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (void)updateFilterTitle
@@ -1354,12 +1355,12 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     }];
 
     self.searchController.searchBar.text = nil;
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
-    [self updateAndPerformFetchRequestClearingCachedRowHeights:YES];
+    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 @end
