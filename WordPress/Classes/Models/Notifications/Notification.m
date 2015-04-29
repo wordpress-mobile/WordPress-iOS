@@ -279,6 +279,17 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return nil;
 }
 
+- (NotificationRange *)notificationRangeWithCommentId:(NSNumber *)commentId
+{
+    for (NotificationRange *range in self.ranges) {
+        if ([range.commentID isEqual:commentId]) {
+            return range;
+        }
+    }
+    
+    return nil;
+}
+
 - (NSArray *)imageUrls
 {
     NSMutableArray *urls = [NSMutableArray array];
@@ -475,9 +486,17 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         [groups addObject:[NotificationBlockGroup groupWithBlocks:commentGroupBlocks type:NoteBlockGroupTypeComment]];
 
         for (NotificationBlock *block in middleBlocks) {
-            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:block.type]];
+            
+            // Duck Typing Again:
+            // If the block contains a range that matches with the metaReplyID field, we'll need to render this
+            // with a custom style
+            //
+            BOOL isReply                = [block notificationRangeWithCommentId:notification.metaReplyID] != nil;
+            NoteBlockGroupType type     = isReply ? NoteBlockGroupTypeFooter : block.type;
+            
+            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:type]];
         }
-
+        
         [groups addObject:[NotificationBlockGroup groupWithBlocks:actionsGroupBlocks type:NoteBlockGroupTypeActions]];
         
         
