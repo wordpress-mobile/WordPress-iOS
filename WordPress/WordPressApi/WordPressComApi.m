@@ -70,6 +70,8 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     if (self) {
         _authToken = authToken;
         self.requestSerializer = [AFJSONRequestSerializer serializer];
+
+        [self setupSecurityPolicy];
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
@@ -78,6 +80,21 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	}
 	
 	return self;
+}
+
+- (void)setupSecurityPolicy
+{
+    NSArray *certificateFiles = @[ @"wordpress.com", @"intermediate", @"root" ];
+    NSMutableArray *certificates = [NSMutableArray arrayWithCapacity:certificateFiles.count];
+    for (NSString *certificateFile in certificateFiles) {
+        NSString *certificatePath = [[NSBundle mainBundle] pathForResource:certificateFile ofType:@"cer"];
+        NSData *certificateData = [NSData dataWithContentsOfFile:certificatePath];
+        [certificates addObject:certificateData];
+    }
+    AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
+    securityPolicy.pinnedCertificates = [NSArray arrayWithArray:certificates];
+    securityPolicy.validatesCertificateChain = YES;
+    self.securityPolicy = securityPolicy;
 }
 
 - (AFHTTPRequestOperation *)HTTPRequestOperationWithRequest:(NSURLRequest *)request
