@@ -394,7 +394,6 @@
     [metaButton setImage:image forState:UIControlStateHighlighted];
     metaButton.selected = NO;
     metaButton.hidden = NO;
-    [metaButton sizeToFit];
 }
 
 

@@ -152,11 +152,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-MB-03K">
                                         <rect key="frame" x="509" y="332" width="77" height="18"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4X-fn-9uf">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4X-fn-9uf">
                                                 <rect key="frame" x="47" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="YVF-bx-Qxo"/>
-                                                    <constraint firstAttribute="width" constant="30" id="bog-Fu-vOf"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="bog-Fu-vOf"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -164,11 +164,11 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2K-8g-nnA">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2K-8g-nnA">
                                                 <rect key="frame" x="4" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="GFc-LE-9Ao"/>
-                                                    <constraint firstAttribute="width" constant="30" id="tYz-rL-6ud"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="tYz-rL-6ud"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
