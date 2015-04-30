@@ -534,6 +534,8 @@ const NSInteger PostServiceNumberToFetch = 40;
         pagePost.parentID = remotePost.parentID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.commentCount = remotePost.commentCount;
+        postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];

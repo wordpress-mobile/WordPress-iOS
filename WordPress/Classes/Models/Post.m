@@ -12,6 +12,8 @@
 
 @implementation Post
 
+@dynamic commentCount;
+@dynamic likeCount;
 @dynamic geolocation;
 @dynamic tags;
 @dynamic postFormat;
@@ -196,24 +198,20 @@
     return self.blog.displayURL;
 }
 
-- (NSInteger)commentCount
-{
+- (NSInteger)numberOfComments
+{return 999;
+    if (self.commentCount) {
+        return [self.commentCount integerValue];
+    }
     return 0;
 }
 
-- (NSInteger)likeCount
-{
+- (NSInteger)numberOfLikes
+{return 999;
+    if (self.likeCount) {
+        return [self.likeCount integerValue];
+    }
     return 0;
-}
-
-- (BOOL)hasCommented
-{
-    return NO;
-}
-
-- (BOOL)hasLiked
-{
-    return NO;
 }
 
 - (NSString *)titleForDisplay
