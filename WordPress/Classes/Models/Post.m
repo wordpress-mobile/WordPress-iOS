@@ -199,7 +199,7 @@
 }
 
 - (NSInteger)numberOfComments
-{return 999;
+{
     if (self.commentCount) {
         return [self.commentCount integerValue];
     }
@@ -207,7 +207,7 @@
 }
 
 - (NSInteger)numberOfLikes
-{return 999;
+{
     if (self.likeCount) {
         return [self.likeCount integerValue];
     }

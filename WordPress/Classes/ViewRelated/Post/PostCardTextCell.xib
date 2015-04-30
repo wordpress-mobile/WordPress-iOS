@@ -138,11 +138,11 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YwV-AJ-Nvl">
                                         <rect key="frame" x="509" y="120" width="77" height="18"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovg-ci-Pfb">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovg-ci-Pfb" customClass="PostMetaButton">
                                                 <rect key="frame" x="47" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="SlV-Re-dd7"/>
-                                                    <constraint firstAttribute="width" constant="30" id="i4C-dQ-DIP"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="i4C-dQ-DIP"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
@@ -150,11 +150,11 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uDE-AO-Rii">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uDE-AO-Rii" customClass="PostMetaButton">
                                                 <rect key="frame" x="4" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="D2o-Od-Xsw"/>
-                                                    <constraint firstAttribute="width" constant="30" id="v14-tX-E5k"/>
+                                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="v14-tX-E5k"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
