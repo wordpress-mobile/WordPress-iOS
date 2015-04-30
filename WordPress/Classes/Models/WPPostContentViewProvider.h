@@ -23,10 +23,8 @@
 - (NSString *)status;
 - (NSString *)statusForDisplay;
 - (BOOL)unreadStatusForDisplay;
-- (NSInteger)commentCount;
-- (NSInteger)likeCount;
-- (BOOL)hasLiked;
-- (BOOL)hasCommented;
+- (NSInteger)numberOfComments;
+- (NSInteger)numberOfLikes;
 - (BOOL)isWPcom;
 - (BOOL)isPrivate;
 - (BOOL)isMultiAuthorBlog;

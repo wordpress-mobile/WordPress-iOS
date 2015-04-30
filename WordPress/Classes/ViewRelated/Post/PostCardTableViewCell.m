@@ -363,35 +363,38 @@
     }
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([self.contentProvider commentCount] > 0) {
+    if ([self.contentProvider numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider commentCount]];
+        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([self.contentProvider likeCount] > 0) {
+    if ([self.contentProvider numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
-        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider likeCount]];
+        NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfLikes]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-like"]];
     }
 }
 
 - (void)resetMetaButton:(UIButton *)metaButton
 {
-    [metaButton setTitle:nil forState:UIControlStateNormal | UIControlStateSelected];
-    [metaButton setImage:nil forState:UIControlStateNormal | UIControlStateSelected];
+    [metaButton setTitle:nil forState:UIControlStateNormal];
+    [metaButton setImage:nil forState:UIControlStateNormal];
+    [metaButton setImage:nil forState:UIControlStateHighlighted];
     metaButton.selected = NO;
     metaButton.hidden = YES;
 }
 
 - (void)configureMetaButton:(UIButton *)metaButton withTitle:(NSString *)title andImage:(UIImage *)image
 {
-    [metaButton setTitle:title forState:UIControlStateNormal | UIControlStateSelected];
-    [metaButton setImage:image forState:UIControlStateNormal | UIControlStateSelected];
+    [metaButton setTitle:title forState:UIControlStateNormal];
+    [metaButton setImage:image forState:UIControlStateNormal];
+    [metaButton setImage:image forState:UIControlStateHighlighted];
     metaButton.selected = NO;
     metaButton.hidden = NO;
+    [metaButton sizeToFit];
 }
 
 
