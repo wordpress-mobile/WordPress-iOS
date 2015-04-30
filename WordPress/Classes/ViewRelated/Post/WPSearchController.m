@@ -117,7 +117,18 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    self.active = NO;
+    [searchBar resignFirstResponder];
+    // HACK: The cancel button is disabled when the search bar resigns first responder.
+    // We want the button to remain enabled (as it should be with UISearchController).
+    // Walk the view hierarchy and enable any buttons found.
+    for (UIView *view in searchBar.subviews) {
+        for (UIView *maybeButton in view.subviews) {
+            if ([maybeButton isKindOfClass:[UIButton class]]) {
+                UIButton *button = (UIButton *)maybeButton;
+                [button setEnabled:YES];
+            }
+        }
+    }
 }
 
 - (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
