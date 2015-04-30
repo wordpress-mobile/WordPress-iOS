@@ -452,10 +452,11 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
-    [self.blogListNavigationController popToRootViewControllerAnimated:NO];
-    [self.readerNavigationController popToRootViewControllerAnimated:NO];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
-    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    if (notification.object == nil) {
+        [self.readerNavigationController popToRootViewControllerAnimated:NO];
+        [self.meNavigationController popToRootViewControllerAnimated:NO];
+        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 #pragma mark - Handling Badges
