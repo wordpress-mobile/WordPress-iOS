@@ -71,8 +71,28 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 + (NSString *)createSummaryFromContent:(NSString *)string
 {
     string = [self makePlainText:string];
+    string = [self stripShortcodesFromString:string];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
+}
+
++ (NSString *)stripShortcodesFromString:(NSString *)string
+{
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        NSString *pattern = @"\\[[^\\]]+\\]";
+        regex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+        if (error) {
+            DDLogError(@"Error parsing regex: %@", error);
+        }
+    });
+    NSRange range = NSMakeRange(0, [string length]);
+    return [regex stringByReplacingMatchesInString:string
+                                           options:NSMatchingReportCompletion
+                                             range:range
+                                      withTemplate:@""];
 }
 
 - (NSArray *)availableStatusesForEditing
