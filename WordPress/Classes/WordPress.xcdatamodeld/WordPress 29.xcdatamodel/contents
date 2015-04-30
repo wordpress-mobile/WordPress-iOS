@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="6751" systemVersion="13F1077" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7549" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
@@ -290,12 +290,14 @@
         <userInfo/>
     </entity>
     <entity name="Post" representedClassName="Post" parentEntity="AbstractPost">
+        <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="geolocation" optional="YES" attributeType="Transformable">
             <userInfo/>
         </attribute>
         <attribute name="latitudeID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="longitudeID" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -392,7 +394,7 @@
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
-        <element name="Post" positionX="0" positionY="0" width="128" height="148"/>
+        <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="465"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="210"/>
