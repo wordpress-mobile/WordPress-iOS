@@ -92,6 +92,11 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     return viewController;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
@@ -119,6 +124,11 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
     [blogService syncBlog:_blog success:nil failure:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleDataModelChange:)
+                                                 name:NSManagedObjectContextObjectsDidChangeNotification
+                                               object:context];
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
@@ -412,6 +422,16 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
+}
+
+#pragma mark - Notification handlers
+
+- (void)handleDataModelChange:(NSNotification *)note
+{
+    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    if ([deletedObjects containsObject:self.blog]) {
+        [self.navigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 @end
