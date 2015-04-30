@@ -16,6 +16,17 @@ extern NSInteger const MediaMaxImageSizeDimension;
 + (void)setMaxImageSizeSetting:(CGSize)imageSize;
 
 /**
+ Sync all Media objects from the server to local database
+ 
+ @param blog
+ @success a block that will be invoked when the sync succeeds
+ @failure a block that will be invoked when the sync fails
+ */
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure;
+
+/**
  Create a Media object using the asset as the source and making it a child of the post with postObjectId.
  
  @param asset
@@ -64,6 +75,17 @@ extern NSInteger const MediaMaxImageSizeDimension;
 - (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog;
 
 /**
+ Create a thumbnail for a Media by downloading its image
+ 
+ @param media
+ @success a block that will be invoked when the media is retrieved
+ @failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ */
+- (void)getThumbnailForMedia:(Media *)media
+                     success:(void (^)(UIImage *image))success
+                     failure:(void (^)(NSError *error))failure;
+
+/**
  *  Obtains the  video url and poster image url for the video with the videoPressID
  *
  *  @param videoPressID ID of video in VideoPress
@@ -75,6 +97,5 @@ extern NSInteger const MediaMaxImageSizeDimension;
                              inBlog:(Blog *)blog
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure;
-
 
 @end

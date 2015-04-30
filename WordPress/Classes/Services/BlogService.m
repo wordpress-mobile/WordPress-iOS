@@ -19,6 +19,7 @@
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
+#import "MediaService.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -260,7 +261,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            success:[self postFormatsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
-
+    
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
     // Right now, none of the callers care about the results of the sync
     // We're ignoring the callbacks here but this needs refactoring
@@ -284,6 +285,10 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                          success:nil
                          failure:nil];
 
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [mediaService syncMediaLibraryForBlog:blog
+                                  success:nil
+                                  failure:nil];
 }
 
 - (void)syncBlogStaggeringRequests:(Blog *)blog
@@ -302,14 +307,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             [remote syncPostFormatsForBlog:blog success:[strongSelf postFormatsHandlerWithBlogObjectID:blog.objectID completionHandler:nil] failure:^(NSError *error) {
                 DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error);
             }];
-
+            
             CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
             // Right now, none of the callers care about the results of the sync
             // We're ignoring the callbacks here but this needs refactoring
-            [commentService syncCommentsForBlog:blog success:nil failure:nil];
+            [commentService syncCommentsForBlog:blog
+                                        success:nil
+                                        failure:nil];
 
             PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
-            [categoryService syncCategoriesForBlog:blog success:nil failure:nil];
+            [categoryService syncCategoriesForBlog:blog
+                                           success:nil
+                                           failure:nil];
+
+            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:strongSelf.managedObjectContext];
+            [mediaService syncMediaLibraryForBlog:blog
+                                          success:nil
+                                          failure:nil];
         } failure:nil];
     } failure:nil];
 

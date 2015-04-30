@@ -9,11 +9,16 @@
 #import "RemoteMedia.h"
 #import "WPAssetExporter.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "AccountService.h"
+#import "WPImageSource.h"
+#import "UIImage+Resize.h"
+#import "WPBlogMediaCollectionViewController.h"
 
-NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
+static NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
 CGSize const MediaMaxImageSize = {3000, 3000};
 NSInteger const MediaMinImageSizeDimension = 150;
 NSInteger const MediaMaxImageSizeDimension = 3000;
+static NSInteger const MediaPreloadThumbnailCount = 100;
 
 @interface MediaService ()
 
@@ -54,6 +59,142 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
 
     return self;
+}
+
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryForBlog:blog
+                           success:^(NSArray *media) {
+                               [self.managedObjectContext performBlock:^{
+                                   [self mergeMedia:media forBlog:blog completionHandler:success];
+                               }];
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
+- (void)mergeMedia:(NSArray *)media forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+{
+    NSMutableArray *mediaToKeep = [NSMutableArray array];
+    for (RemoteMedia *remote in media) {
+        Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+        if (!local) {
+            local = [self newMediaForBlog:blog];
+            local.remoteStatus = MediaRemoteStatusSync;
+        }
+        [self updateMedia:local withRemoteMedia:remote];
+        [mediaToKeep addObject:local];
+    }
+    
+    NSSet *existingMedia = blog.media;
+    NSMutableOrderedSet *mediaToThumbnail = [NSMutableOrderedSet orderedSet];
+    if (existingMedia.count > 0) {
+        for (Media *existing in existingMedia) {
+            if (![mediaToKeep containsObject:existing] && existing.remoteURL != nil) {
+                [self.managedObjectContext deleteObject:existing];
+            } else if (existing.remoteURL.length && !existing.thumbnail && existing.mediaType == MediaTypeImage) {
+                [mediaToThumbnail addObject:existing];
+            }
+        }
+    }
+    
+    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
+    
+    [mediaToThumbnail sortUsingComparator:^NSComparisonResult(Media *left, Media *right) {
+        return [right.creationDate compare:left.creationDate];
+    }];
+    // balance offline convenience and data usage
+    if (MediaPreloadThumbnailCount < [mediaToThumbnail count]) {
+        NSRange ignore = NSMakeRange(MediaPreloadThumbnailCount, [mediaToThumbnail count] - MediaPreloadThumbnailCount);
+        [mediaToThumbnail removeObjectsInRange:ignore];
+    }
+    [self getThumbnailsForMedia:mediaToThumbnail];
+    
+    if (completion) {
+        dispatch_async(dispatch_get_main_queue(), completion);
+    }
+}
+
+- (void)getThumbnailsForMedia:(NSMutableOrderedSet *)media
+{
+    Media *item = nil;
+    do {
+        item = media.firstObject;
+        [media removeObject:item];
+        // might have updated it to show in browser since last sync
+        [self.managedObjectContext refreshObject:item mergeChanges:YES];
+        if (!item.remoteURL.length || item.thumbnail || item.mediaType != MediaTypeImage) {
+            item = nil;
+            continue;
+        }
+    } while (!item && [media count]);
+    if (!item) {
+        return;
+    }
+
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0),^{
+        [self getThumbnailForMedia:item
+                           success:^(UIImage *image) {
+                               [self performSelector:@selector(getThumbnailsForMedia:) withObject:media afterDelay:0.1];
+                           }
+                           failure:^(NSError *error) {
+                               DDLogError(@"Failed getting thumbnail image: %@", error);
+                           }];
+    });
+}
+
+- (void)getThumbnailForMedia:(Media *)media
+                     success:(void (^)(UIImage *image))success
+                     failure:(void (^)(NSError *error))failure
+{
+    __block NSURL *thumbnailUrl = nil;
+    __block BOOL isPrivate = NO;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSString *remote = media.remoteURL;
+        if (media.blog.isWPcom) {
+            remote = [NSString stringWithFormat:@"%@?w=%ld", remote, [Media preferredThumbnailWidthScreenPixels]];
+        }
+        thumbnailUrl = [NSURL URLWithString:remote];
+        isPrivate = media.blog.isPrivate;
+    }];
+     
+    void (^successBlock)(UIImage *) = ^(UIImage *image) {
+        UIImage *thumbnail = [Media thumbnailImageFromImage:image];
+        NSData *thumbnailData = [Media thumbnailDataFrom:thumbnail];
+
+        [self.managedObjectContext performBlock:^{
+            media.thumbnail = thumbnailData;
+            [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    success(thumbnail);
+                }
+            }];
+        }];
+    };
+
+    if (isPrivate) {
+        __block NSString *authToken = nil;
+        [self.managedObjectContext performBlockAndWait:^{
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+        }];
+        [[WPImageSource sharedSource] downloadImageForURL:thumbnailUrl
+                                                authToken:authToken
+                                              withSuccess:successBlock
+                                                  failure:failure];
+    } else {
+        [[WPImageSource sharedSource] downloadImageForURL:thumbnailUrl
+                                              withSuccess:successBlock
+                                                  failure:failure];
+    }
 }
 
 - (void)createMediaWithAsset:(ALAsset *)asset
@@ -316,19 +457,33 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 {
     media.mediaID =  remoteMedia.mediaID;
     media.remoteURL = [remoteMedia.url absoluteString];
-    media.creationDate = remoteMedia.date;
     media.filename = remoteMedia.file;
     [media mediaTypeFromUrl:[remoteMedia extension]];
-    media.title = remoteMedia.title;
-    media.caption = remoteMedia.caption;
-    media.desc = remoteMedia.descriptionText;
-    media.height = remoteMedia.height;
-    media.width = remoteMedia.width;
-    //media.exif = remoteMedia.exif;
-    media.shortcode = remoteMedia.shortcode;
+    // these aren't maintained during upload
+    if ([remoteMedia.title isKindOfClass:[NSString class]]) {
+        media.title = remoteMedia.title;
+    }
+    if ([remoteMedia.caption isKindOfClass:[NSString class]]) {
+        media.caption = remoteMedia.caption;
+    }
+    if ([remoteMedia.date isKindOfClass:[NSDate class]]) {
+        media.creationDate = remoteMedia.date;
+    }
+    if ([remoteMedia.descriptionText isKindOfClass:[NSString class]]) {
+        media.desc = remoteMedia.descriptionText;
+    }
+    if ([remoteMedia.height isKindOfClass:[NSNumber class]]) {
+        media.height = remoteMedia.height;
+    }
+    if ([remoteMedia.width isKindOfClass:[NSNumber class]]) {
+        media.width = remoteMedia.width;
+    }
+    if ([remoteMedia.shortcode isKindOfClass:[NSString class]]) {
+        media.shortcode = remoteMedia.shortcode;
+    }
 }
 
-- (RemoteMedia *) remoteMediaFromMedia:(Media *)media
+- (RemoteMedia *)remoteMediaFromMedia:(Media *)media
 {
     RemoteMedia *remoteMedia = [[RemoteMedia alloc] init];
     remoteMedia.mediaID = media.mediaID;

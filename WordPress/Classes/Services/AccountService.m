@@ -60,15 +60,17 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"uuid == %@", uuid];
     fetchRequest.predicate = predicate;
     
-    NSError *error = nil;
-    NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
-    WPAccount *defaultAccount = nil;
-    if (fetchedObjects.count > 0) {
-        defaultAccount = fetchedObjects.firstObject;
-    } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
+    __block WPAccount *defaultAccount = nil;
+    [self.managedObjectContext performBlockAndWait:^{
+        NSError *error = nil;
+        NSArray *fetchedObjects = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        if (fetchedObjects.count > 0) {
+            defaultAccount = fetchedObjects.firstObject;
+        } else {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+    }];
     
     return defaultAccount;
 }

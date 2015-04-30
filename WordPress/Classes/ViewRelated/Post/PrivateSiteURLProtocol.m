@@ -49,7 +49,10 @@ static NSInteger regcount = 0;
 
 + (NSString *)bearerToken
 {
-    NSString *token = [[self defaultWPComAccount] authToken];
+    __block NSString *token = nil;
+    [[[ContextManager sharedInstance] mainContext] performBlockAndWait:^{
+        token = [[self defaultWPComAccount] authToken];
+    }];
     return token;
 }
 

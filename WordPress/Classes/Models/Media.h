@@ -1,4 +1,5 @@
-#import <CoreData/CoreData.h>
+@import CoreData;
+@import AssetsLibrary;
 #import "Blog.h"
 #import "AbstractPost.h"
 
@@ -64,6 +65,20 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
+
+/**
+ For calculating layouts and file dimensions involving thumbnails
+ */
++ (CGFloat)preferredThumbnailSpacing;
++ (CGFloat)preferredThumbnailWidthScreenPixels;
++ (CGFloat)thumbnailWidthFor:(CGFloat)width;
+
+/**
+ For producing thumbnails as images and files
+ */
++ (UIImage *)thumbnailImageFromAsset:(ALAsset *)asset;
++ (UIImage *)thumbnailImageFromImage:(UIImage *)image;
++ (NSData *)thumbnailDataFrom:(UIImage *)thumbnail;
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
 

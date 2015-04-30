@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
 #import "Blog.h"
+#import "NSDate+WordPressJSON.h"
 
 @interface BlogServiceRemoteREST ()
 
@@ -19,7 +20,9 @@
     return self;
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(OptionsHandler)success
+                   failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);
@@ -39,7 +42,9 @@
           }];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(PostFormatsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);

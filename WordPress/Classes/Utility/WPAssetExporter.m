@@ -1,5 +1,6 @@
 #import "WPAssetExporter.h"
 #import "WPImageOptimizer.h"
+#import "Media.h"
 #import "WPVideoOptimizer.h"
 
 NSString * const WPAssetExportErrorDomain = @"org.wordpress.assetexporter";
@@ -86,9 +87,8 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
     }
     
     [self.operationQueue addOperationWithBlock:^{
-        
-        UIImage *thumbnail = [UIImage imageWithCGImage:asset.thumbnail];
-        NSData *thumbnailJPEGData = UIImageJPEGRepresentation(thumbnail, 1.0);
+        UIImage *thumbnail = [Media thumbnailImageFromAsset:asset];
+        NSData *thumbnailJPEGData = [Media thumbnailDataFrom:thumbnail];
         
         WPImageOptimizer *imageOptimizer = [[WPImageOptimizer alloc] init];
         CGSize newSize = [imageOptimizer sizeForOriginalSize:targetSize fittingSize:targetSize];

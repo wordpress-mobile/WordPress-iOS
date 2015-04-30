@@ -15,5 +15,4 @@ typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
                        success:(PostFormatsHandler)success
                        failure:(void (^)(NSError *error))failure;
 
-
 @end

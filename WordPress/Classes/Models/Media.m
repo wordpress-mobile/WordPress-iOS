@@ -4,7 +4,7 @@
 #import "NSString+Util.h"
 #import "AFHTTPRequestOperation.h"
 #import "ContextManager.h"
-#import <ImageIO/ImageIO.h>
+@import ImageIO;
 
 @interface Media (PrivateMethods)
 
@@ -40,8 +40,10 @@
 
 @synthesize unattached;
 
-NSUInteger const MediaDefaultThumbnailSize = 75;
-CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
+static CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
+static CGFloat const MediaSpaceBetweenThumbnails = 2.0;
+static CGFloat const MediaMinimumThumbnailsForLine = 3.0;
+static CGFloat const MediaMinimumThumbnailSize = 105.0;
 
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
@@ -58,6 +60,122 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     media.blog = blog;
     media.mediaID = @0;
     return media;
+}
+
++ (CGFloat)preferredThumbnailSpacing
+{
+    return MediaSpaceBetweenThumbnails;
+}
+
++ (CGFloat)preferredThumbnailWidthScreenPixels
+{
+    CGFloat screenPixels = [UIScreen mainScreen].bounds.size.width;
+    CGFloat thumbnailWidth = [Media thumbnailWidthFor:screenPixels];
+    thumbnailWidth *= [UIScreen mainScreen].scale;
+    return thumbnailWidth;
+}
+
++ (CGFloat)thumbnailWidthFor:(CGFloat)width
+{
+    CGFloat rowCells = MAX(MediaMinimumThumbnailsForLine, trunc(width / (MediaMinimumThumbnailSize + MediaSpaceBetweenThumbnails)));
+    CGFloat thumbnailWidth = ( width - ( (rowCells - 1) * MediaSpaceBetweenThumbnails) ) / rowCells;
+    thumbnailWidth = MAX(trunc(thumbnailWidth), MediaMinimumThumbnailSize);
+    return thumbnailWidth;
+}
+
++ (UIImage *)thumbnailImageFromAsset:(ALAsset *)asset
+{
+    NSDictionary *thumbnailOptions = @{
+        (id)kCGImageSourceCreateThumbnailWithTransform : @YES,
+        (id)kCGImageSourceCreateThumbnailFromImageAlways : @YES,
+        (id)kCGImageSourceThumbnailMaxPixelSize : @([Media preferredThumbnailWidthScreenPixels]),
+    };
+    
+    CGImageRef generated = [asset.defaultRepresentation CGImageWithOptions:thumbnailOptions];
+    UIImage *image = [UIImage imageWithCGImage:generated];
+    UIImage *thumbnail = [Media thumbnailImageFromImage:image];
+    return thumbnail;
+}
+
++ (UIImage *)thumbnailImageFromImage:(UIImage *)image
+{
+    CGFloat thumbnailSize = [Media preferredThumbnailWidthScreenPixels];
+    if (image.size.width <= thumbnailSize && image.size.height <= thumbnailSize) {
+        return image;
+    }
+    
+    UIImage *thumbnail = [image thumbnailImage:thumbnailSize transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+    return thumbnail;
+}
+
++ (NSData *)thumbnailDataFrom:(UIImage *)thumbnail
+{
+    NSData *thumbnailData = UIImageJPEGRepresentation(thumbnail, MediaDefaultJPEGCompressionQuality);
+    return thumbnailData;
+}
+
++ (Media *)createOrReplaceMediaFromJSON:(NSDictionary *)json forBlog:(Blog *)blog
+{
+    NSSet *existing = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"mediaID == %@", [json[@"attachment_id"] numericValue]]];
+    if (existing.count > 0) {
+        [existing.allObjects[0] updateFromDictionary:json];
+        return existing.allObjects[0];
+    }
+
+    Media *media = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:blog.managedObjectContext];
+    [media updateFromDictionary:json];
+    media.blog = blog;
+    return media;
+}
+
++ (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog
+{
+    if ([blog isDeleted] || blog.managedObjectContext == nil) {
+        return;
+    }
+
+    NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
+    [backgroundMOC performBlock:^{
+        Blog *contextBlog = (Blog *)[backgroundMOC objectWithID:blog.objectID];
+        NSMutableArray *mediaToKeep = [NSMutableArray array];
+        for (NSDictionary *item in media) {
+            Media *mediaItem = [Media createOrReplaceMediaFromJSON:item forBlog:contextBlog];
+            [mediaToKeep addObject:mediaItem];
+        }
+        NSSet *syncedMedia = contextBlog.media;
+        if (syncedMedia && (syncedMedia.count > 0)) {
+            for (Media *m in syncedMedia) {
+                if (![mediaToKeep containsObject:m] && m.remoteURL != nil) {
+                    DDLogVerbose(@"Deleting media %@", m);
+                    [backgroundMOC deleteObject:m];
+                }
+            }
+        }
+
+        [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
+    }];
+}
+
+- (void)updateFromDictionary:(NSDictionary*)json
+{
+    self.remoteURL = [json stringForKey:@"link"];
+    self.title = [json stringForKey:@"title"];
+    self.width = [json numberForKeyPath:@"metadata.width"];
+    self.height = [json numberForKeyPath:@"metadata.height"];
+    self.mediaID = [json numberForKey:@"attachment_id"];
+    self.filename = [[json objectForKeyPath:@"metadata.file"] lastPathComponent];
+    self.creationDate = json[@"date_created_gmt"];
+    self.caption = [json stringForKey:@"caption"];
+    self.desc = [json stringForKey:@"description"];
+
+    [self mediaTypeFromUrl:[[json stringForKey:@"link"] pathExtension]];
+}
+
+- (NSDictionary*)XMLRPCDictionaryForUpdate
+{
+    return @{@"post_title": self.title ? self.title : @"",
+             @"post_content": self.desc ? self.desc : @"",
+             @"post_excerpt": self.caption ? self.caption : @""};
 }
 
 - (void)mediaTypeFromUrl:(NSString *)ext
@@ -336,4 +454,5 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
         return nil;
     }
 }
+
 @end

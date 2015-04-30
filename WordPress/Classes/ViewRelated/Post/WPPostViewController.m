@@ -17,6 +17,8 @@
 #import "EditImageDetailsViewController.h"
 #import "LocationService.h"
 #import "Media.h"
+#import "WPBlogMediaPickerViewController.h"
+#import "WPBlogMediaCollectionViewController.h"
 #import "MediaService.h"
 #import "NSString+Helpers.h"
 #import "Post.h"
@@ -35,6 +37,7 @@
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 #import "WPTooltip.h"
+#import "WPEditorToolbarView.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -43,7 +46,7 @@ typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagFailedMediaBeforeEdit,
     EditPostViewControllerAlertTagFailedMediaBeforeSave,
     EditPostViewControllerAlertTagSwitchBlogs,
-    EditPostViewControllerAlertCancelMediaUpload,
+    EditPostViewControllerAlertTagCancelMediaUpload,
 };
 
 // State Restoration
@@ -74,7 +77,8 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetCancelUpload = 202,
     WPPostViewControllerActionSheetRetryUpload = 203,
     WPPostViewControllerActionSheetCancelVideoUpload = 204,
-    WPPostViewControllerActionSheetRetryVideoUpload = 205
+    WPPostViewControllerActionSheetRetryVideoUpload = 205,
+    WPPostViewControllerActionSheetMediaOptions = 206,
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -85,6 +89,7 @@ static NSDictionary *EnabledButtonBarStyle;
 static void *ProgressObserverContext = &ProgressObserverContext;
 @interface WPPostViewController () <
 WPMediaPickerViewControllerDelegate,
+WPBlogMediaPickerViewControllerDelegate,
 UIActionSheetDelegate,
 UIPopoverControllerDelegate,
 UITextFieldDelegate,
@@ -705,7 +710,7 @@ EditImageDetailsViewControllerDelegate
                                                        delegate:self
                                               cancelButtonTitle:NSLocalizedString(@"Not Now", "Nicer dialog answer for \"No\".")
                                               otherButtonTitles:NSLocalizedString(@"Yes", "Yes"), nil];
-    alertView.tag = EditPostViewControllerAlertCancelMediaUpload;
+    alertView.tag = EditPostViewControllerAlertTagCancelMediaUpload;
     [alertView show];
 }
 
@@ -771,12 +776,82 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaOptions
+- (void)showMediaOptions:(WPEditorViewController *)editorController
 {
     [self.editorView saveSelection];
     
+    NSString *optionsTitle = NSLocalizedString(@"Insert image from:", @"Title of image source options");
+    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Image source: device");
+    NSString *optionBlog = [WPBlogMediaCollectionViewController title];
+    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
+    
+    // Expect this alert is a temporary measure that editor shouldn't officially support
+    WPEditorToolbarView *toolbarView = [editorController valueForKey:@"toolbarView"];
+    UIBarButtonItem *buttonItem = toolbarView.items.firstObject;
+    if (![buttonItem isKindOfClass:[UIBarButtonItem class]]) {
+        buttonItem = nil;
+    }
+    if (NSClassFromString(@"UIAlertController")) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:optionsTitle
+                                                                       message:nil
+                                                                preferredStyle:UIAlertControllerStyleActionSheet];
+        [alert addAction:[UIAlertAction actionWithTitle:optionLocal
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+             [self showMediaLocal];
+        }]];
+        [alert addAction:[UIAlertAction actionWithTitle:optionBlog
+                                                  style:UIAlertActionStyleDefault
+                                                handler:^(UIAlertAction *action) {
+             [self showMediaBlog];
+        }]];
+        
+        UIPopoverPresentationController *popover = alert.popoverPresentationController;
+        if (popover)
+        {
+            if (buttonItem) {
+                popover.barButtonItem = buttonItem;
+            } else {
+                popover.sourceView = toolbarView ?: self.editorView;
+                popover.sourceRect = popover.sourceView.bounds;
+            }
+            popover.permittedArrowDirections = UIPopoverArrowDirectionAny;
+        } else {
+            [alert addAction:[UIAlertAction actionWithTitle:cancel
+                                                      style:UIAlertActionStyleCancel
+                                                    handler:nil]];
+        }
+        [self presentViewController:alert animated:YES completion:nil];
+    } else {
+        UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
+                                                           delegate:self
+                                                  cancelButtonTitle:!IS_IPAD ? cancel : nil
+                                             destructiveButtonTitle:nil
+                                                  otherButtonTitles:optionLocal, optionBlog, nil];
+        alert.tag = WPPostViewControllerActionSheetMediaOptions;
+        alert.actionSheetStyle = UIActionSheetStyleAutomatic;
+        if (IS_IPAD && buttonItem) {
+            [alert showFromBarButtonItem:buttonItem animated:YES];
+        } else {
+            [alert showInView:self.editorView];
+        }
+    }
+}
+
+- (void)showMediaLocal
+{
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
 	picker.delegate = self;        
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)showMediaBlog
+{
+    WPBlogMediaPickerViewController *picker = [[WPBlogMediaPickerViewController alloc] init];
+    picker.blog = self.post.blog;
+    picker.showMostRecentFirst = YES;
+    picker.delegate = self;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -1846,7 +1921,7 @@ EditImageDetailsViewControllerDelegate
                 [self showBlogSelector];
             }
         } break;
-        case (EditPostViewControllerAlertCancelMediaUpload): {
+        case (EditPostViewControllerAlertTagCancelMediaUpload): {
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 [self cancelMediaUploads];
             }
@@ -1919,6 +1994,13 @@ EditImageDetailsViewControllerDelegate
                 [self retryUploadOfMediaWithId:self.selectedMediaID];
             }
             self.selectedMediaID = nil;
+        } break;
+        case (WPPostViewControllerActionSheetMediaOptions): {
+            if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+                [self showMediaLocal];
+            } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
+                [self showMediaBlog];
+            }
         } break;
     }
     
@@ -2002,7 +2084,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaOptions];
+    [self showMediaOptions:editorController];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
@@ -2190,6 +2272,22 @@ EditImageDetailsViewControllerDelegate
     }
     
     return YES;
+}
+
+#pragma mark - WPBlogMediaPickerViewControllerDelegate
+
+- (void)blogMediaPickerController:(WPBlogMediaPickerViewController *)picker didFinishPickingMedia:(NSArray *)media
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        for (Media *item in media) {
+            [self.editorView insertImage:item.remoteURL alt:item.title];
+        }
+    }];
+}
+
+- (void)blogMediaPickerControllerDidCancel:(WPBlogMediaPickerViewController *)browser
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - KVO
