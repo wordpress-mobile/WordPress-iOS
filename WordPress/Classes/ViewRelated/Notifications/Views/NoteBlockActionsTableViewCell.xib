@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="44" id="vbp-eh-kPo" userLabel="Actions" customClass="NoteBlockActionsTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="vbp-eh-kPo" id="g83-Wv-yJ5">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7aS-Nh-Fkn" userLabel="Actions">
+                        <rect key="frame" x="50" y="3" width="220" height="29.5"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DXE-y2-DWd" userLabel="Reply" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="20" y="0.0" width="20" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="bGa-bG-COl"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Like" image="notifications-reply">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="notifications-reply-highlighted"/>
+                                <state key="highlighted" image="notifications-reply-highlighted"/>
+                                <connections>
+                                    <action selector="replyWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="llo-Tq-bVM"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e8r-Uo-uFk" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="60" y="0.0" width="20" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="bXC-wE-QDO"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Like" image="notifications-like">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="notifications-liked"/>
+                                <state key="highlighted" image="notifications-liked"/>
+                                <connections>
+                                    <action selector="likeWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="Gij-LE-gQ5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Agc-K2-0vs" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="100" y="0.0" width="20" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="2hn-PC-Yxs"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Approve" image="notifications-approve">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="selected" image="notifications-approved"/>
+                                <state key="highlighted" image="notifications-approved"/>
+                                <connections>
+                                    <action selector="approveWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="SJC-Dn-jzf"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TYK-fl-vc7" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="140" y="0.0" width="20" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="Cvd-xS-e5I"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Trash" image="notifications-trash">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="trashWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="ayd-CK-vjN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hU3-yd-ZtO" customClass="VerticallyStackedButton">
+                                <rect key="frame" x="180" y="0.0" width="20" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="OBj-Qu-Mty"/>
+                                    <constraint firstAttribute="width" constant="20" id="Rq6-Ta-vBZ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Spam" image="notifications-spam">
+                                    <color key="titleColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="spamWasPressed:" destination="vbp-eh-kPo" eventType="touchUpInside" id="pG5-AN-pz0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="TYK-fl-vc7" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="0sD-Qa-CGa"/>
+                            <constraint firstItem="Agc-K2-0vs" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="4d3-NO-7we"/>
+                            <constraint firstItem="e8r-Uo-uFk" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="Boh-Di-4ek"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="DXE-y2-DWd" secondAttribute="height" id="CzD-na-SOX"/>
+                            <constraint firstItem="DXE-y2-DWd" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="LRj-KB-nRs"/>
+                            <constraint firstItem="e8r-Uo-uFk" firstAttribute="leading" secondItem="DXE-y2-DWd" secondAttribute="trailing" constant="20" id="LpT-dK-A3g"/>
+                            <constraint firstItem="DXE-y2-DWd" firstAttribute="leading" secondItem="7aS-Nh-Fkn" secondAttribute="leading" constant="20" id="Ozb-Jd-fS7"/>
+                            <constraint firstItem="e8r-Uo-uFk" firstAttribute="height" secondItem="hU3-yd-ZtO" secondAttribute="height" id="Z8d-nZ-uPw"/>
+                            <constraint firstAttribute="trailing" secondItem="hU3-yd-ZtO" secondAttribute="trailing" constant="20" id="b8X-Xh-yav"/>
+                            <constraint firstItem="Agc-K2-0vs" firstAttribute="leading" secondItem="e8r-Uo-uFk" secondAttribute="trailing" constant="20" id="bjL-bL-DlE"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="leading" secondItem="TYK-fl-vc7" secondAttribute="trailing" constant="20" id="cCJ-rQ-DbA"/>
+                            <constraint firstItem="TYK-fl-vc7" firstAttribute="leading" secondItem="Agc-K2-0vs" secondAttribute="trailing" constant="20" id="iC1-AT-QOl"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="Agc-K2-0vs" secondAttribute="height" id="jnB-D7-ep5"/>
+                            <constraint firstAttribute="height" priority="750" constant="34" id="k05-Zf-Pnk"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="height" secondItem="TYK-fl-vc7" secondAttribute="height" id="ojT-Hh-TeB"/>
+                            <constraint firstItem="hU3-yd-ZtO" firstAttribute="top" secondItem="7aS-Nh-Fkn" secondAttribute="top" id="vMb-9V-FZx"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="centerX" secondItem="7aS-Nh-Fkn" secondAttribute="centerX" id="aja-dN-aFu"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="7aS-Nh-Fkn" secondAttribute="bottom" constant="3" id="n78-il-JTa"/>
+                    <constraint firstItem="7aS-Nh-Fkn" firstAttribute="top" secondItem="g83-Wv-yJ5" secondAttribute="top" constant="3" id="yZg-Jv-scK"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="actionsView" destination="7aS-Nh-Fkn" id="3Hu-jw-co3"/>
+                <outlet property="btnApprove" destination="Agc-K2-0vs" id="7mX-9C-ieh"/>
+                <outlet property="btnLike" destination="e8r-Uo-uFk" id="zQu-vq-aFT"/>
+                <outlet property="btnReply" destination="DXE-y2-DWd" id="a3c-Jw-2bD"/>
+                <outlet property="btnSpam" destination="hU3-yd-ZtO" id="H1K-eP-bp7"/>
+                <outlet property="btnTrash" destination="TYK-fl-vc7" id="amO-Qa-IZv"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="notifications-approve" width="21" height="21"/>
+        <image name="notifications-approved" width="21" height="21"/>
+        <image name="notifications-like" width="21" height="21"/>
+        <image name="notifications-liked" width="21" height="21"/>
+        <image name="notifications-reply" width="21" height="21"/>
+        <image name="notifications-reply-highlighted" width="21" height="19"/>
+        <image name="notifications-spam" width="21" height="21"/>
+        <image name="notifications-trash" width="21" height="21"/>
+    </resources>
+</document>
