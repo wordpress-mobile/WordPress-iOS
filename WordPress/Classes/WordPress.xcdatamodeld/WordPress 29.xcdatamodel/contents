@@ -85,6 +85,7 @@
         </attribute>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isAdmin" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <attribute name="isMultiAuthor" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="lastCommentsSync" optional="YES" attributeType="Date">
             <userInfo/>
         </attribute>
@@ -382,7 +383,7 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="105"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="480"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
