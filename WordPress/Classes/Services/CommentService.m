@@ -116,7 +116,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
         NSString *entityName = NSStringFromClass([Comment class]);
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL"];
+        request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL && blog=%@", blog];
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
         request.sortDescriptors = @[sortDescriptor];
         Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
