@@ -45,7 +45,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
 {
     BOOL dontRestoreIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
-    
+
     if (dontRestoreIfNewEditorIsEnabled) {
         return nil;
     }
@@ -173,8 +173,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    
-    //layout mediaProgressView 
+
+    //layout mediaProgressView
     CGRect frame = self.mediaProgressView.frame;
     frame.size.width = self.view.frame.size.width;
     frame.origin.y = self.navigationController.navigationBar.frame.size.height-frame.size.height;
@@ -197,7 +197,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     NSInteger blogCount = [blogService blogCountForAllAccounts];
-    
+
     self.mediaProgressView.hidden = ![self isMediaUploading];
     if ([self isMediaUploading]) {
         [self refreshMediaProgress];
@@ -292,10 +292,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [self createRevisionOfPost];
 
             NSManagedObjectContext* context = oldPost.original.managedObjectContext;
-            
+
             [oldPost.original deleteRevision];
             [oldPost.original remove];
-            
+
             [[ContextManager sharedInstance] saveContext:context];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
@@ -387,7 +387,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     UIActionSheet *actionSheet;
-    if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+    if (![self.post.original.status isEqualToString:PostStatusDraft] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -493,10 +493,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     // Right nav button: Publish Button
     NSString *buttonTitle;
     if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+        if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
-        } else if ([self.post.status isEqualToString:@"publish"]) {
+        } else if ([self.post.status isEqualToString:PostStatusPublish]) {
             buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
 
         } else {
@@ -511,7 +511,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                                                        style:[WPStyleGuide barButtonStyleForDone]
                                                                       target:self
                                                                       action:@selector(saveAction)];
-        
+
         // Seems to be a bug with UIBarButtonItem respecting the UIControlStateDisabled text color
         [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
         [saveButton setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]} forState:UIControlStateDisabled];
@@ -600,9 +600,9 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
     if (self.editMode == EditPostViewControllerModeNewPost) {
         NSManagedObjectContext* context = self.post.original.managedObjectContext;
-        
+
         [self.post.original remove];
-        
+
         [[ContextManager sharedInstance] saveContext:context];
     }
 }
@@ -764,29 +764,29 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self.blogSelectorPopover dismissPopoverAnimated:YES];
         self.blogSelectorPopover = nil;
     }
-    
+
     WPMediaProgressTableViewController *vc = [[WPMediaProgressTableViewController alloc] initWithMasterProgress:self.mediaGlobalProgress childrenProgress:self.mediaInProgress.allValues];
-    
+
     vc.title = NSLocalizedString(@"Media Uploading", @"Title for view that shows progress of multiple uploads");
-    
+
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-    
+
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
-        
+
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
+
         self.mediaProgressPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
         self.mediaProgressPopover.delegate = self;
         [self.mediaProgressPopover presentPopoverFromRect:titleRect inView:self.navigationController.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-        
+
     } else {
         navController.modalPresentationStyle = UIModalPresentationPageSheet;
         navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-        
+
         [self presentViewController:navController animated:YES completion:nil];
     }
 }
@@ -899,7 +899,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     if (!uniqueMediaId) {
         return;
     }
-    
+
     self.mediaInProgress[uniqueMediaId] = progress;
 }
 
@@ -910,7 +910,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
         [self.mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
         self.mediaGlobalProgress = nil;
     }
-    
+
     if (!self.mediaGlobalProgress){
         self.mediaGlobalProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
                                                              userInfo:nil];
@@ -936,7 +936,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
             createMediaProgress.totalUnitCount = 2;
             [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-            
+
             [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
                 if (error){
                     [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
@@ -947,7 +947,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                     return;
                 }
                 createMediaProgress.completedUnitCount++;
-                
+
                 [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
                 NSProgress *uploadProgress = nil;
                 [mediaService uploadMedia:media progress:&uploadProgress success:^{
@@ -985,7 +985,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 - (void)insertMedia:(Media *)media
 {
     [WPAnalytics track:WPAnalyticsStatEditorAddedPhotoViaLocalLibrary];
-    
+
     NSString *prefix = @"<br /><br />";
 
     if (self.post.content == nil || [self.post.content isEqualToString:@""]) {
@@ -996,7 +996,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     NSMutableString *content = [[NSMutableString alloc] initWithString:self.post.content];
     NSRange imgHTML = [content rangeOfString: media.html];
     NSRange imgHTMLPre = [content rangeOfString:[NSString stringWithFormat:@"%@%@", @"<br /><br />", media.html]];
-     NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
+    NSRange imgHTMLPost = [content rangeOfString:[NSString stringWithFormat:@"%@%@", media.html, @"<br /><br />"]];
 
     if (imgHTMLPre.location == NSNotFound && imgHTMLPost.location == NSNotFound && imgHTML.location == NSNotFound) {
         [content appendString:[NSString stringWithFormat:@"%@%@", prefix, media.html]];
@@ -1041,7 +1041,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 #pragma mark - UIPopoverControllerDelegate methods
 
 - (void)popoverController:(UIPopoverController *)popoverController
-    willRepositionPopoverToRect:(inout CGRect *)rect
+willRepositionPopoverToRect:(inout CGRect *)rect
                    inView:(inout UIView **)view
 {
     if (popoverController == self.blogSelectorPopover) {
@@ -1092,7 +1092,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             [self dismissEditView];
             [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
         }
-        
+
         if (buttonIndex == 1) {
             // Cancel / Keep editing
             if ([actionSheet numberOfButtons] == 2) {
@@ -1100,8 +1100,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             } else {
                 // Save draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
+                if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+                    self.post.status = PostStatusDraft;
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];

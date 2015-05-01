@@ -148,15 +148,15 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initInFailedStateRestorationMode
 {
     self = [super init];
-    
+
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         self.hidesBottomBarWhenPushed = YES;
-        
+
         _failedStateRestorationMode = YES;
     }
-    
+
     return self;
 }
 
@@ -168,7 +168,7 @@ EditImageDetailsViewControllerDelegate
     Blog *blog = [blogService lastUsedOrFirstBlog];
     NSAssert([blog isKindOfClass:[Blog class]],
              @"There should be no issues in obtaining the last used blog.");
-    
+
     [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
 
     return [self initWithDraftForBlog:blog];
@@ -177,22 +177,22 @@ EditImageDetailsViewControllerDelegate
 - (instancetype)initWithDraftForBlog:(Blog*)blog
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    
+
     AbstractPost *post = [self createNewDraftForBlog:blog];
     NSAssert([post isKindOfClass:[AbstractPost class]],
              @"There should be no issues in creating a draft post.");
-    
+
     if (self = [self initWithPost:post mode:kWPPostViewControllerModeEdit]) {
         _ownsPost = YES;
     }
-    
+
     return self;
 }
 
 - (instancetype)initWithPost:(AbstractPost *)post
 {
     NSParameterAssert([post isKindOfClass:[Post class]]);
-    
+
     return [self initWithPost:post
                          mode:kWPPostViewControllerModePreview];
 }
@@ -202,36 +202,36 @@ EditImageDetailsViewControllerDelegate
 {
     BOOL changeToEditModeDueToUnsavedChanges = (mode == kWPEditorViewControllerModePreview
                                                 && [post hasUnsavedChanges]);
-    
+
     if (changeToEditModeDueToUnsavedChanges) {
         mode = kWPEditorViewControllerModeEdit;
     }
-    
+
     self = [super initWithMode:mode];
-	
+
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
         self.hidesBottomBarWhenPushed = YES;
-        
+
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
-        
+
         if (post.blog.isWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
     }
-	
+
     return self;
 }
 
 - (id)initWithTitle:(NSString *)title
-		 andContent:(NSString *)content
-			andTags:(NSString *)tags
-		   andImage:(NSString *)image
+         andContent:(NSString *)content
+            andTags:(NSString *)tags
+           andImage:(NSString *)image
 {
     self = [self initWithDraftForLastUsedBlog];
-	
+
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
@@ -240,13 +240,13 @@ EditImageDetailsViewControllerDelegate
         post.postTitle = title;
         post.content = content;
         post.tags = tags;
-        
+
         if (image) {
             NSURL *imageURL = [NSURL URLWithString:image];
-			
+
             if (imageURL) {
-				static NSString* const kFormat = @"<a href=\"%@\"><img src=\"%@\"></a>";
-				
+                static NSString* const kFormat = @"<a href=\"%@\"><img src=\"%@\"></a>";
+
                 NSString *aimg = [NSString stringWithFormat:kFormat, [imageURL absoluteString], [imageURL absoluteString]];
                 content = [NSString stringWithFormat:@"%@\n%@", aimg, content];
                 post.content = content;
@@ -266,16 +266,16 @@ EditImageDetailsViewControllerDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     DisabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor colorWithWhite:1.0 alpha:0.25]};
     EnabledButtonBarStyle = @{NSFontAttributeName: [WPStyleGuide regularTextFontSemiBold], NSForegroundColorAttributeName: [UIColor whiteColor]};
-    
+
     // This is a trick to kick the starting UIButtonBarItem to the left
     self.negativeSeparator = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     self.negativeSeparator.width = -12;
-    
+
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
-    
+
     [self geotagNewPost];
     self.delegate = self;
     self.failedMediaAlertView = nil;
@@ -286,7 +286,7 @@ EditImageDetailsViewControllerDelegate
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    
+
     if (self.failedStateRestorationMode) {
         [self dismissEditView];
     } else {
@@ -319,7 +319,7 @@ EditImageDetailsViewControllerDelegate
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    
+
     //layout mediaProgressView
     CGRect frame = self.mediaProgressView.frame;
     frame.size.width = self.view.frame.size.width;
@@ -332,17 +332,17 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - UIViewControllerRestoration
 
 + (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents
-															coder:(NSCoder *)coder
+                                                            coder:(NSCoder *)coder
 {
     UIViewController* restoredViewController = nil;
-    
+
     BOOL restoreOnlyIfNewEditorIsEnabled = [WPPostViewController isNewEditorEnabled];
-    
+
     if (restoreOnlyIfNewEditorIsEnabled) {
         restoredViewController = [self restoreViewControllerWithIdentifierPath:identifierComponents
                                                                          coder:coder];
     }
-    
+
     return restoredViewController;
 }
 
@@ -353,7 +353,7 @@ EditImageDetailsViewControllerDelegate
     UINavigationController *navController = [[UINavigationController alloc] init];
     navController.restorationIdentifier = WPEditorNavigationRestorationID;
     navController.restorationClass = self;
-    
+
     return navController;
 }
 
@@ -361,14 +361,14 @@ EditImageDetailsViewControllerDelegate
                                                        coder:(NSCoder *)coder
 {
     UIViewController *restoredViewController = nil;
-    
+
     if ([self isParentNavigationControllerIdentifierPath:identifierComponents]) {
-        
+
         restoredViewController = [self restoreParentNavigationController];
     } else if ([self isSelfIdentifierPath:identifierComponents]) {
         restoredViewController = [self restoreViewControllerWithCoder:coder];
     }
-    
+
     return restoredViewController;
 }
 
@@ -376,16 +376,16 @@ EditImageDetailsViewControllerDelegate
 {
     UIViewController *restoredViewController = nil;
     AbstractPost *restoredPost = [self decodePostFromCoder:coder];
-    
+
     if (restoredPost) {
         WPPostViewControllerMode mode = [self decodeEditModeFromCoder:coder];
-        
+
         restoredViewController = [[self alloc] initWithPost:restoredPost
                                                        mode:mode];
     } else {
         restoredViewController = [[self alloc] initInFailedStateRestorationMode];
     }
-    
+
     return restoredViewController;
 }
 
@@ -394,7 +394,7 @@ EditImageDetailsViewControllerDelegate
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
     BOOL ownsPost = [[self class] decodeOwnsPostFromCoder:coder];
-    
+
     self.ownsPost = ownsPost;
 }
 
@@ -403,7 +403,7 @@ EditImageDetailsViewControllerDelegate
     [self encodeEditModeInCoder:coder];
     [self encodeOwnsPostInCoder:coder];
     [self encodePostInCoder:coder];
-    
+
     [super encodeRestorableStateWithCoder:coder];
 }
 
@@ -429,7 +429,7 @@ EditImageDetailsViewControllerDelegate
 - (void)encodeEditModeInCoder:(NSCoder*)coder
 {
     BOOL isInEditMode = self.isEditing;
-    
+
     [coder encodeBool:isInEditMode forKey:WPPostViewControllerEditModeRestorationKey];
 }
 
@@ -441,7 +441,7 @@ EditImageDetailsViewControllerDelegate
 - (void)encodeOwnsPostInCoder:(NSCoder*)coder
 {
     BOOL ownsPost = self.ownsPost;
-    
+
     [coder encodeBool:ownsPost forKey:WPPostViewControllerOwnsPostRestorationKey];
 }
 
@@ -468,15 +468,15 @@ EditImageDetailsViewControllerDelegate
 + (WPPostViewControllerMode)decodeEditModeFromCoder:(NSCoder*)coder
 {
     NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
-    
+
     BOOL isInEditMode = [coder decodeBoolForKey:WPPostViewControllerEditModeRestorationKey];
-    
+
     WPPostViewControllerMode mode = kWPEditorViewControllerModePreview;
-    
+
     if (isInEditMode) {
         mode = kWPEditorViewControllerModeEdit;
     }
-    
+
     return mode;
 }
 
@@ -490,9 +490,9 @@ EditImageDetailsViewControllerDelegate
 + (BOOL)decodeOwnsPostFromCoder:(NSCoder*)coder
 {
     NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
-    
+
     BOOL ownsPost = [coder decodeBoolForKey:WPPostViewControllerOwnsPostRestorationKey];
-    
+
     return ownsPost;
 }
 
@@ -506,14 +506,14 @@ EditImageDetailsViewControllerDelegate
 + (AbstractPost*)decodePostFromCoder:(NSCoder*)coder
 {
     NSParameterAssert([coder isKindOfClass:[NSCoder class]]);
-    
+
     AbstractPost* post = nil;
     NSURL* postURIRepresentation = [coder decodeObjectForKey:WPPostViewControllerPostRestorationKey];
-    
+
     if (postURIRepresentation) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:postURIRepresentation];
-        
+
         if (objectID) {
             NSError *error = nil;
             AbstractPost *restoredPost = (AbstractPost *)[context existingObjectWithID:objectID error:&error];
@@ -522,7 +522,7 @@ EditImageDetailsViewControllerDelegate
             }
         }
     }
-    
+
     return post;
 }
 
@@ -542,13 +542,13 @@ EditImageDetailsViewControllerDelegate
                                         @"Title of the alert that lets the users know there are unsaved changes in a post they're opening.");
     NSString *message = NSLocalizedString(@"This post has local changes that were not saved. You can now save them or discard them.",
                                           @"Message of the alert that lets the users know there are unsaved changes in a post they're opening.");
-    
+
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:message
                                                        delegate:self
                                               cancelButtonTitle:nil
                                               otherButtonTitles:NSLocalizedString(@"OK",@""), nil];
-    
+
     [alertView show];
 }
 
@@ -584,12 +584,12 @@ EditImageDetailsViewControllerDelegate
 /**
  *	@brief      Handles the UIControlEventTouchUpInside event for the blog selector button.
  *	@details    This method handles a the touch up inside event for the blog selector button.
-                Since there are two different modes this button can have, we have a few
-                different scenarios to consider:  1) If the user is editing an existing post 
-                exit the screen we are currently on and return. 2) If the user is creating a
-                new post and the post does not have site-specific changes, show the blog selector
-                3) If the user is creating a new post and the post does have site-specific 
-                changes, display a blog change warning.
+ Since there are two different modes this button can have, we have a few
+ different scenarios to consider:  1) If the user is editing an existing post
+ exit the screen we are currently on and return. 2) If the user is creating a
+ new post and the post does not have site-specific changes, show the blog selector
+ 3) If the user is creating a new post and the post does have site-specific
+ changes, display a blog change warning.
  *
  *	@param      sender The WPBlogSelectorButton triggering this action.
  */
@@ -599,7 +599,7 @@ EditImageDetailsViewControllerDelegate
         [self cancelEditingOrDismiss];
         return;
     }
-    
+
     if (![self.post hasSiteSpecificChanges]) {
         [self showBlogSelector];
         return;
@@ -619,7 +619,7 @@ EditImageDetailsViewControllerDelegate
         [self.blogSelectorPopover dismissPopoverAnimated:YES];
         self.blogSelectorPopover = nil;
     }
-    
+
     void (^dismissHandler)() = ^(void) {
         if (IS_IPAD) {
             [self.blogSelectorPopover dismissPopoverAnimated:YES];
@@ -632,14 +632,14 @@ EditImageDetailsViewControllerDelegate
     void (^selectedCompletion)(NSManagedObjectID *) = ^(NSManagedObjectID *selectedObjectID) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         Blog *blog = (Blog *)[context objectWithID:selectedObjectID];
-        
+
         if (blog) {
             BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
 
             [blogService flagBlogAsLastUsed:blog];
             AbstractPost *newPost = [self createNewDraftForBlog:blog];
             AbstractPost *oldPost = self.post;
-            
+
             NSString *content = oldPost.content;
             if ([oldPost.media count] > 0) {
                 for (Media *media in oldPost.media) {
@@ -651,26 +651,26 @@ EditImageDetailsViewControllerDelegate
             newPost.password = oldPost.password;
             newPost.status = oldPost.status;
             newPost.dateCreated = oldPost.dateCreated;
-            
+
             if ([newPost isKindOfClass:[Post class]]) {
                 ((Post *)newPost).tags = ((Post *)oldPost).tags;
             }
-            
+
             NSAssert(self.isEditing,
                      @"We assume that changing blogs is only enabled during editing.");
-            
+
             [self discardChanges];
             self.post = newPost;
             [self createRevisionOfPost];
 
             [self syncOptionsIfNecessaryForBlog:blog afterBlogChanged:YES];
         }
-        
+
         [self refreshUIForCurrentPost];
         [self refreshNavigationBarButtons:NO];
         dismissHandler();
     };
-    
+
     BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.post.blog.objectID
                                                                                    selectedCompletion:selectedCompletion
                                                                                      cancelCompletion:dismissHandler];
@@ -678,7 +678,7 @@ EditImageDetailsViewControllerDelegate
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];
     navController.navigationBar.translucent = NO;
     navController.navigationBar.barStyle = UIBarStyleBlack;
-    
+
     if (IS_IPAD) {
         vc.preferredContentSize = CGSizeMake(320.0, 500);
         self.blogSelectorPopover = [[UIPopoverController alloc] initWithContentViewController:navController];
@@ -723,23 +723,23 @@ EditImageDetailsViewControllerDelegate
 - (void)showFailedMediaRemovalAlert
 {
     UIAlertView * failedMediaAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to save post with failed media items")
-                                                                              message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
-                                                                             delegate:self
-                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
+                                                                    message:NSLocalizedString(@"Some media uploads failed. This action will remove all failed media from the post.\nSave anyway?", @"Confirms with the user if they save the post all media that failed to upload will be removed from it.")
+                                                                   delegate:self
+                                                          cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
+                                                          otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeSave;
     [failedMediaAlertView show];
 
-    
+
 }
 
 - (void)showFailedMediaBeforeEditAlert
 {
     UIAlertView * failedMediaBeforeEditAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Uploads failed", @"Title for alert when trying to edit html post with failed media items")
-                                                           message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
-                                                          delegate:self
-                                                 cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
-                                                 otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
+                                                                              message:NSLocalizedString(@"Some media uploads failed. Switching to the HTML view of this post will remove failed media.\nSwitch anyway?", @"Confirms with the user if they manually edit the post HTML all media that failed to upload will be removed from it.")
+                                                                             delegate:self
+                                                                    cancelButtonTitle:NSLocalizedString(@"Not Now", @"")
+                                                                    otherButtonTitles:NSLocalizedString(@"Yes", @""), nil];
     failedMediaBeforeEditAlertView.tag = EditPostViewControllerAlertTagFailedMediaBeforeEdit;
     [failedMediaBeforeEditAlertView show];
 }
@@ -750,10 +750,10 @@ EditImageDetailsViewControllerDelegate
         [self showMediaUploadingAlert];
         return;
     }
-    
+
     Post *post = (Post *)self.post;
     PostSettingsViewController *vc = [[[self classForSettingsViewController] alloc] initWithPost:post shouldHideStatusBar:YES];
-	vc.hidesBottomBarWhenPushed = YES;
+    vc.hidesBottomBarWhenPushed = YES;
     [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -764,9 +764,9 @@ EditImageDetailsViewControllerDelegate
         [self showMediaUploadingAlert];
         return;
     }
-    
+
     PostPreviewViewController *vc = [[PostPreviewViewController alloc] initWithPost:self.post shouldHideStatusBar:self.isEditing];
-	vc.hidesBottomBarWhenPushed = YES;
+    vc.hidesBottomBarWhenPushed = YES;
     [self.editorView saveSelection];
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -774,10 +774,10 @@ EditImageDetailsViewControllerDelegate
 - (void)showMediaOptions
 {
     [self.editorView saveSelection];
-    
+
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-	picker.delegate = self;        
-    
+    picker.delegate = self;
+
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -796,10 +796,10 @@ EditImageDetailsViewControllerDelegate
         [self showMediaUploadingAlert];
         return;
     }
-    
+
     [self.editorView saveSelection];
     [self.editorView.focusedField blur];
-	
+
     if ([self.post hasLocalChanges]) {
         [self showPostHasChangesActionSheet];
     } else {
@@ -810,14 +810,14 @@ EditImageDetailsViewControllerDelegate
 
 - (void)showPostHasChangesActionSheet
 {
-	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && ![self isPostLocal]) {
+    UIActionSheet *actionSheet;
+    if (![self.post.original.status isEqualToString:PostStatusDraft] && ![self isPostLocal]) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
-		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-												  delegate:self
+        actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+                                                  delegate:self
                                          cancelButtonTitle:NSLocalizedString(@"Keep Editing", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
-										 otherButtonTitles:nil];
+                                         otherButtonTitles:nil];
     } else if ([self isPostLocal]) {
         // The post is a local draft or an autosaved draft: Discard or Save
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
@@ -833,7 +833,7 @@ EditImageDetailsViewControllerDelegate
                                     destructiveButtonTitle:NSLocalizedString(@"Discard", @"Button shown if there are unsaved changes and the author is trying to move away from the post.")
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
-    
+
     actionSheet.tag = WPPostViewControllerActionSheetSaveOnExit;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
@@ -846,7 +846,7 @@ EditImageDetailsViewControllerDelegate
 - (void)startEditing
 {
     [self createRevisionOfPost];
-    
+
     [super startEditing];
 }
 
@@ -854,9 +854,9 @@ EditImageDetailsViewControllerDelegate
 
 + (void)setNewEditorAvailable:(BOOL)isAvailable
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-	[defaults setBool:isAvailable forKey:kUserDefaultsNewEditorAvailable];
-	[defaults synchronize];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:isAvailable forKey:kUserDefaultsNewEditorAvailable];
+    [defaults synchronize];
 }
 
 + (void)setNewEditorEnabled:(BOOL)isEnabled
@@ -864,7 +864,7 @@ EditImageDetailsViewControllerDelegate
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setBool:isEnabled forKey:kUserDefaultsNewEditorEnabled];
     [defaults synchronize];
-    
+
     if (isEnabled) {
         [WPAnalytics track:WPAnalyticsStatEditorEnabledNewVersion];
     }
@@ -874,24 +874,24 @@ EditImageDetailsViewControllerDelegate
 {
     BOOL result = NO;
     BOOL newVisualEditorNotAvailable = ![WPPostViewController isNewEditorAvailable];
-    
+
     if (newVisualEditorNotAvailable) {
-        
+
         result = YES;
         [WPPostViewController setNewEditorAvailable:YES];
         [WPPostViewController setNewEditorEnabled:YES];
     }
-    
+
     return result;
 }
 
 + (BOOL)isNewEditorAvailable
 {
-	return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorAvailable];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorAvailable];
 }
 
 + (BOOL)isNewEditorEnabled
-{    
+{
     return [[NSUserDefaults standardUserDefaults] boolForKey:kUserDefaultsNewEditorEnabled];
 }
 
@@ -910,21 +910,21 @@ EditImageDetailsViewControllerDelegate
 {
     UIGraphicsBeginImageContextWithOptions(image.size, NO, [[UIScreen mainScreen] scale]);
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     CGContextTranslateCTM(context, 0, image.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
-    
+
     CGRect rect = CGRectMake(0, 0, image.size.width, image.size.height);
-    
+
     // draw alpha-mask
     CGContextSetBlendMode(context, kCGBlendModeNormal);
     CGContextDrawImage(context, rect, image.CGImage);
-    
+
     // draw tint color, preserving alpha values of original image
     CGContextSetBlendMode(context, kCGBlendModeSourceIn);
     [tintColor setFill];
     CGContextFillRect(context, rect);
-    
+
     UIImage *coloredImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return coloredImage;
@@ -938,7 +938,7 @@ EditImageDetailsViewControllerDelegate
     if (![self isPostLocal]) {
         return;
     }
-    
+
     if (self.post.blog.geolocationEnabled && ![LocationService sharedService].locationServicesDisabled) {
         [[LocationService sharedService] getCurrentLocationAndAddress:^(CLLocation *location, NSString *address, NSError *error) {
             if (location) {
@@ -955,8 +955,8 @@ EditImageDetailsViewControllerDelegate
 
 /*
  Sync the blog if desired info is missing.
- 
- Always sync after a blog switch to ensure options are updated. Otherwise, 
+
+ Always sync after a blog switch to ensure options are updated. Otherwise,
  only sync for new posts when launched from the post tab vs the posts list.
  */
 - (void)syncOptionsIfNecessaryForBlog:(Blog *)blog afterBlogChanged:(BOOL)blogChanged
@@ -994,7 +994,7 @@ EditImageDetailsViewControllerDelegate
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     blogCount = [blogService blogCountForAllAccounts];
-    
+
     return blogCount;
 }
 
@@ -1002,7 +1002,7 @@ EditImageDetailsViewControllerDelegate
 
 /**
  *  @brief      Refreshes the navigation bar buttons.
- *  
+ *
  *  @param      editingChanged      Should be YES if this call is triggered by an editing status
  *                                  change (ie: it it's triggered by the VC going into edit mode
  *                                  or vice-versa).
@@ -1018,7 +1018,7 @@ EditImageDetailsViewControllerDelegate
 {
     UIBarButtonItem *secondaryleftHandButton = self.secondaryLeftUIBarButtonItem;
     NSArray* leftBarButtons;
-    
+
     if ([self isEditing] && !self.post.hasRemote) {
         // Editing a new post
         leftBarButtons = @[self.negativeSeparator, self.cancelXButton, secondaryleftHandButton];
@@ -1027,12 +1027,12 @@ EditImageDetailsViewControllerDelegate
         // Editing an existing post (draft or published)
         leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
         self.currentCancelButton = self.cancelChevronButton;
-	} else {
+    } else {
         // Previewing a post (no edit)
         leftBarButtons = @[self.negativeSeparator, self.cancelChevronButton, secondaryleftHandButton];
         self.currentCancelButton = self.cancelChevronButton;
-	}
-    
+    }
+
     if (![leftBarButtons isEqualToArray:self.navigationItem.leftBarButtonItems]) {
         [self.navigationItem setLeftBarButtonItems:nil];
         [self.navigationItem setLeftBarButtonItems:leftBarButtons];
@@ -1046,37 +1046,37 @@ EditImageDetailsViewControllerDelegate
             NSArray* rightBarButtons = @[self.saveBarButtonItem,
                                          [self optionsBarButtonItem],
                                          [self previewBarButtonItem]];
-            
+
             [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
         } else {
             self.saveBarButtonItem.title = [self saveBarButtonItemTitle];
         }
 
-		BOOL updateEnabled = [self.post canSave];
-        
-		[self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];		
-	} else {
-		NSArray* rightBarButtons = @[self.editBarButtonItem,
-									 [self previewBarButtonItem]];
-		
-		[self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
-	}
+        BOOL updateEnabled = [self.post canSave];
+
+        [self.navigationItem.rightBarButtonItem setEnabled:updateEnabled];
+    } else {
+        NSArray* rightBarButtons = @[self.editBarButtonItem,
+                                     [self previewBarButtonItem]];
+
+        [self.navigationItem setRightBarButtonItems:rightBarButtons animated:YES];
+    }
 }
 
 - (void)refreshUIForCurrentPost
 {
     self.titleText = self.post.postTitle;
-    
+
     if(self.post.content == nil || [self.post.content isEmpty]) {
         self.bodyText = @"";
     } else {
         if ((self.post.mt_text_more != nil) && ([self.post.mt_text_more length] > 0)) {
-			self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
+            self.bodyText = [NSString stringWithFormat:@"%@\n<!--more-->\n%@", self.post.content, self.post.mt_text_more];
         } else {
-			self.bodyText = self.post.content;
+            self.bodyText = self.post.content;
         }
     }
-    
+
     [self refreshNavigationBarButtons:YES];
 }
 
@@ -1101,21 +1101,21 @@ EditImageDetailsViewControllerDelegate
 #pragma mark - Custom UI elements
 
 - (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
-												  frame:(CGRect)frame
-												 target:(id)target
-											   selector:(SEL)selector
+                                                  frame:(CGRect)frame
+                                                 target:(id)target
+                                               selector:(SEL)selector
 {
-	NSAssert([imageName isKindOfClass:[NSString class]],
-			 @"Expected imageName to be a non nil string.");
+    NSAssert([imageName isKindOfClass:[NSString class]],
+             @"Expected imageName to be a non nil string.");
 
-	UIImage* image = [UIImage imageNamed:imageName];
-	
-	WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
-	
-	[button setImage:image forState:UIControlStateNormal];
-	[button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-	
-	return button;
+    UIImage* image = [UIImage imageNamed:imageName];
+
+    WPButtonForNavigationBar* button = [[WPButtonForNavigationBar alloc] initWithFrame:frame];
+
+    [button setImage:image forState:UIControlStateNormal];
+    [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+
+    return button;
 }
 
 - (UIBarButtonItem*)cancelChevronButton
@@ -1123,7 +1123,7 @@ EditImageDetailsViewControllerDelegate
     if (_cancelChevronButton) {
         return _cancelChevronButton;
     }
-    
+
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-chevron"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
@@ -1131,7 +1131,7 @@ EditImageDetailsViewControllerDelegate
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
-    
+
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close editor and cancel changes or insertion of post");
     _cancelChevronButton = button;
@@ -1143,7 +1143,7 @@ EditImageDetailsViewControllerDelegate
     if (_cancelXButton) {
         return _cancelXButton;
     }
-    
+
     WPButtonForNavigationBar* cancelButton = [self buttonForBarWithImageNamed:@"icon-posts-editor-x"
                                                                         frame:NavigationBarButtonRect
                                                                        target:self
@@ -1151,11 +1151,11 @@ EditImageDetailsViewControllerDelegate
     cancelButton.removeDefaultLeftSpacing = YES;
     cancelButton.removeDefaultRightSpacing = YES;
     cancelButton.rightSpacing = RightSpacingOnExitNavbarButton;
-    
+
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:cancelButton];
     _cancelXButton = button;
     button.accessibilityLabel = NSLocalizedString(@"Cancel", @"Action button to close edior and cancel changes or insertion of post");
-	return _cancelXButton;
+    return _cancelXButton;
 }
 
 - (UIBarButtonItem *)editBarButtonItem
@@ -1163,29 +1163,29 @@ EditImageDetailsViewControllerDelegate
     if (!_editBarButtonItem) {
         NSString* buttonTitle = NSLocalizedString(@"Edit",
                                                   @"Label for the button to edit the current post.");
-        
+
         UIBarButtonItem *editButton = [[UIBarButtonItem alloc] initWithTitle:buttonTitle
-                                                                   style:UIBarButtonItemStylePlain
-                                                                  target:self
-                                                                  action:@selector(startEditing)];
-        
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self
+                                                                      action:@selector(startEditing)];
+
         // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
         [editButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
         [editButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
         _editBarButtonItem = editButton;
     }
-    
-	return _editBarButtonItem;
+
+    return _editBarButtonItem;
 }
 
 - (UIBarButtonItem *)optionsBarButtonItem
 {
-	if (!_optionsBarButtonItem) {
+    if (!_optionsBarButtonItem) {
         WPButtonForNavigationBar *button = [self buttonForBarWithImageNamed:@"icon-posts-editor-options"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showSettings)];
-        
+
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         button.removeDefaultLeftSpacing = YES;
@@ -1195,18 +1195,18 @@ EditImageDetailsViewControllerDelegate
         button.accessibilityIdentifier = @"Options";
         _optionsBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
-    
-	return _optionsBarButtonItem;
+
+    return _optionsBarButtonItem;
 }
 
 - (UIBarButtonItem *)previewBarButtonItem
 {
-	if (!_previewBarButtonItem) {
+    if (!_previewBarButtonItem) {
         WPButtonForNavigationBar* button = [self buttonForBarWithImageNamed:@"icon-posts-editor-preview"
                                                                       frame:NavigationBarButtonRect
                                                                      target:self
                                                                    selector:@selector(showPreview)];
-        
+
         button.removeDefaultRightSpacing = YES;
         button.rightSpacing = SpacingBetweeenNavbarButtons / 2.0f;
         button.removeDefaultLeftSpacing = YES;
@@ -1214,8 +1214,8 @@ EditImageDetailsViewControllerDelegate
         _previewBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
         _previewBarButtonItem.accessibilityLabel = NSLocalizedString(@"Preview", @"Action button to preview the content of post or page on the  live site");
     }
-	
-	return _previewBarButtonItem;
+
+    return _previewBarButtonItem;
 }
 
 - (UIBarButtonItem *)saveBarButtonItem
@@ -1227,27 +1227,27 @@ EditImageDetailsViewControllerDelegate
                                                                        style:[WPStyleGuide barButtonStyleForDone]
                                                                       target:self
                                                                       action:@selector(saveAction)];
-        
+
         // Seems to be an issue witht the appearance proxy not being respected, so resetting these here
         [saveButton setTitleTextAttributes:EnabledButtonBarStyle forState:UIControlStateNormal];
         [saveButton setTitleTextAttributes:DisabledButtonBarStyle forState:UIControlStateDisabled];
         _saveBarButtonItem = saveButton;
     }
 
-	return _saveBarButtonItem;
+    return _saveBarButtonItem;
 }
 
 - (NSString*)saveBarButtonItemTitle
 {
     NSString *buttonTitle = nil;
-    
+
     if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+        if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
-            
-        } else if ([self.post.status isEqualToString:@"publish"]){
+
+        } else if ([self.post.status isEqualToString:PostStatusPublish]){
             buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
-            
+
         } else {
             buttonTitle = NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment).");
         }
@@ -1255,14 +1255,14 @@ EditImageDetailsViewControllerDelegate
         buttonTitle = NSLocalizedString(@"Update", @"Update button label (saving content, ex: Post, Page, Comment).");
     }
     NSAssert([buttonTitle isKindOfClass:[NSString class]], @"Expected to have a title at this point.");
-    
+
     return buttonTitle;
 }
 
 - (UIBarButtonItem *)secondaryLeftUIBarButtonItem
 {
     UIBarButtonItem *aUIButtonBarItem;
-    
+
     if ([self isMediaUploading]) {
         aUIButtonBarItem = self.uploadStatusButton;
     } else {
@@ -1270,13 +1270,13 @@ EditImageDetailsViewControllerDelegate
         NSString *blogName = [self.post.blog.blogName length] == 0 ? self.post.blog.url : self.post.blog.blogName;
         NSMutableAttributedString *titleText = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@", blogName]
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0] }];
-        
+
         [blogButton setAttributedTitle:titleText forState:UIControlStateNormal];
         if (IS_IPAD) {
             //size to fit here so the iPad popover works properly
             [blogButton sizeToFit];
         }
-        
+
         // The blog picker is in single site mode if one of the following is true:
         // editor screen is in preview mode, there is only 1 blog, or the user
         // is editing an existing post.
@@ -1287,7 +1287,7 @@ EditImageDetailsViewControllerDelegate
         }
         aUIButtonBarItem = [[UIBarButtonItem alloc] initWithCustomView:blogButton];
     }
-    
+
     _secondaryLeftUIBarButtonItem = aUIButtonBarItem;
     return _secondaryLeftUIBarButtonItem;
 }
@@ -1300,7 +1300,7 @@ EditImageDetailsViewControllerDelegate
         [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
     }
-    
+
     return _blogPickerButton;
 }
 
@@ -1312,7 +1312,7 @@ EditImageDetailsViewControllerDelegate
         [button addTarget:self action:@selector(showCancelMediaUploadPrompt) forControlEvents:UIControlEventTouchUpInside];
         _uploadStatusButton = [[UIBarButtonItem alloc] initWithCustomView:button];
     }
-    
+
     return _uploadStatusButton;
 }
 
@@ -1354,17 +1354,17 @@ EditImageDetailsViewControllerDelegate
     NSManagedObjectContext* context = self.post.managedObjectContext;
     NSAssert([context isKindOfClass:[NSManagedObjectContext class]],
              @"The object should be related to a managed object context here.");
-    
+
     self.post = self.post.original;
     [self.post deleteRevision];
-    
+
     if (self.ownsPost) {
         [self.post remove];
         self.post = nil;
     }
-    
+
     [[ContextManager sharedInstance] saveContext:context];
-    
+
     [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
 }
 
@@ -1376,7 +1376,7 @@ EditImageDetailsViewControllerDelegate
 - (void)discardChangesAndUpdateGUI
 {
     [self discardChanges];
-    
+
     if (!self.post) {
         [self dismissEditView];
     } else {
@@ -1389,12 +1389,12 @@ EditImageDetailsViewControllerDelegate
     if (self.onClose) {
         self.onClose();
         self.onClose = nil;
-	} else if (self.presentingViewController) {
-		[self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-	} else {
-		[self.navigationController popViewControllerAnimated:YES];
-	}
-    
+    } else if (self.presentingViewController) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
     [WPAnalytics track:WPAnalyticsStatEditorClosed];
 }
 
@@ -1404,13 +1404,13 @@ EditImageDetailsViewControllerDelegate
         [_currentActionSheet dismissWithClickedButtonIndex:-1 animated:YES];
         _currentActionSheet = nil;
     }
-    
-	if ([self isMediaUploading] ) {
-		[self showMediaUploadingAlert];
-		return;
-	}
-    
-	[self savePostAndDismissVC];
+
+    if ([self isMediaUploading] ) {
+        [self showMediaUploadingAlert];
+        return;
+    }
+
+    [self savePostAndDismissVC];
 }
 
 /**
@@ -1429,7 +1429,7 @@ EditImageDetailsViewControllerDelegate
 
 /**
  *  @brief      Saves the post being edited and uploads it.
- *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled, 
+ *  @details    Saves the post being edited and uploads it. If the post is NOT already scheduled,
  *              changing from 'draft' status to 'publish' will set the date to now.
  */
 - (void)savePost
@@ -1438,18 +1438,18 @@ EditImageDetailsViewControllerDelegate
     [self logSavePostStats];
 
     [self.view endEditing:YES];
-    
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:@"draft"]  && [self.post.status isEqualToString:@"publish"]) {
+
+    if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
     self.post = self.post.original;
     [self.post applyRevision];
     [self.post deleteRevision];
-    
-	__block NSString *postTitle = self.post.postTitle;
+
+    __block NSString *postTitle = self.post.postTitle;
     __block NSString *postStatus = self.post.status;
     __block BOOL postIsScheduled = self.post.isScheduled;
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:context];
     [postService uploadPost:self.post
@@ -1490,7 +1490,7 @@ EditImageDetailsViewControllerDelegate
 - (void)logSavePostStats
 {
     NSString *buttonTitle = self.navigationItem.rightBarButtonItem.title;
-    
+
     // This word counting algorithm is from : http://stackoverflow.com/a/13367063
     __block NSInteger originalWordCount = 0;
     [self.post.original.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.original.content length])
@@ -1498,35 +1498,35 @@ EditImageDetailsViewControllerDelegate
                                                 usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
                                                     originalWordCount++;
                                                 }];
-    
+
     __block NSInteger wordCount = 0;
     [self.post.content enumerateSubstringsInRange:NSMakeRange(0, [self.post.content length])
                                           options:NSStringEnumerationByWords | NSStringEnumerationLocalized
                                        usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop){
                                            wordCount++;
                                        }];
-    
+
     NSMutableDictionary *properties = [[NSMutableDictionary alloc] initWithCapacity:2];
     properties[@"word_count"] = @(wordCount);
     if ([self.post hasRemote]) {
         properties[@"word_diff_count"] = @(wordCount - originalWordCount);
     }
-    
+
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-        
+
         if ([self.post hasPhoto]) {
             [WPAnalytics track:WPAnalyticsStatPublishedPostWithPhoto];
         }
-        
+
         if ([self.post hasVideo]) {
             [WPAnalytics track:WPAnalyticsStatPublishedPostWithVideo];
         }
-        
+
         if ([self.post hasCategories]) {
             [WPAnalytics track:WPAnalyticsStatPublishedPostWithCategories];
         }
-        
+
         if ([self.post hasTags]) {
             [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
         }
@@ -1545,17 +1545,17 @@ EditImageDetailsViewControllerDelegate
 - (void)autosaveContent
 {
     self.post.postTitle = self.titleText;
-    
+
     self.post.content = self.bodyText;
     if ([self.post.content rangeOfString:@"<!--more-->"].location != NSNotFound)
         self.post.mt_text_more = @"";
-    
+
     if ( self.post.original.password != nil ) { //original post was password protected
         if ( self.post.password == nil || [self.post.password isEqualToString:@""] ) { //removed the password
             self.post.password = @"";
         }
     }
-    
+
     [self.post save];
 }
 
@@ -1672,7 +1672,7 @@ EditImageDetailsViewControllerDelegate
     if (!uniqueMediaId) {
         return;
     }
-    
+
     self.mediaInProgress[uniqueMediaId] = progress;
 }
 
@@ -1683,7 +1683,7 @@ EditImageDetailsViewControllerDelegate
         [self.mediaGlobalProgress removeObserver:self forKeyPath:NSStringFromSelector(@selector(fractionCompleted))];
         self.mediaGlobalProgress = nil;
     }
-    
+
     if (!self.mediaGlobalProgress){
         self.mediaGlobalProgress = [[NSProgress alloc] initWithParent:[NSProgress currentProgress]
                                                              userInfo:nil];
@@ -1749,12 +1749,12 @@ EditImageDetailsViewControllerDelegate
     if (!progress) {
         return;
     }
-    
+
     Media *media = progress.userInfo[WPProgressMedia];
     if (!media) {
         return;
     }
-    
+
     [self prepareMediaProgressForNumberOfAssets:1];
     [self uploadMedia:media trackingId:imageUniqueId];
 }
@@ -1794,7 +1794,7 @@ EditImageDetailsViewControllerDelegate
                 NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
                 [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
             }
-            
+
             [self uploadMedia:media trackingId:mediaUniqueID];
         }];
     }
@@ -1811,10 +1811,10 @@ EditImageDetailsViewControllerDelegate
 
 - (NSString *)removeMedia:(Media *)media fromString:(NSString *)string
 {
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
-	string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
-    
+    string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"<br /><br />%@", media.html] withString:@""];
+    string = [string stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@"%@<br /><br />", media.html] withString:@""];
+    string = [string stringByReplacingOccurrencesOfString:media.html withString:@""];
+
     return string;
 }
 
@@ -1824,7 +1824,7 @@ EditImageDetailsViewControllerDelegate
     if (popoverController == self.blogSelectorPopover) {
         CGRect titleRect = self.navigationItem.titleView.frame;
         titleRect = [self.navigationController.view convertRect:titleRect fromView:self.navigationItem.titleView.superview];
-        
+
         *view = self.navigationController.view;
         *rect = titleRect;
     }
@@ -1864,7 +1864,7 @@ EditImageDetailsViewControllerDelegate
             }
         } break;
     }
-    
+
     return;
 }
 
@@ -1875,7 +1875,7 @@ EditImageDetailsViewControllerDelegate
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
+
     switch ([actionSheet tag]){
         case(WPPostViewControllerActionSheetSaveOnExit): {
             if (buttonIndex == actionSheet.destructiveButtonIndex) {
@@ -1921,7 +1921,7 @@ EditImageDetailsViewControllerDelegate
             self.selectedMediaID = nil;
         } break;
     }
-    
+
     _currentActionSheet = nil;
 }
 
@@ -1940,12 +1940,12 @@ EditImageDetailsViewControllerDelegate
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-        self.post.status = @"draft";
+    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+        self.post.status = PostStatusDraft;
     }
-    
+
     DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-    
+
     [self savePostAndDismissVC];
 }
 
@@ -1953,19 +1953,19 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
-	if ([self shouldHideStatusBarWhileTyping])
-	{
-		[[UIApplication sharedApplication] setStatusBarHidden:YES
-												withAnimation:UIStatusBarAnimationSlide];
-	}
-    
+    if ([self shouldHideStatusBarWhileTyping])
+    {
+        [[UIApplication sharedApplication] setStatusBarHidden:YES
+                                                withAnimation:UIStatusBarAnimationSlide];
+    }
+
     [self refreshNavigationBarButtons:YES];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
 {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO
-											withAnimation:UIStatusBarAnimationSlide];
+    [[UIApplication sharedApplication] setStatusBarHidden:NO
+                                            withAnimation:UIStatusBarAnimationSlide];
 }
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController
@@ -1984,14 +1984,14 @@ EditImageDetailsViewControllerDelegate
 {
     if ([self isMediaUploading]) {
         [self showMediaUploadingAlert];
-        return NO;        
+        return NO;
     }
-    
+
     if ([self hasFailedMedia]) {
         [self showFailedMediaBeforeEditAlert];
         return NO;
     }
-    
+
     return YES;
 }
 
@@ -2055,21 +2055,21 @@ EditImageDetailsViewControllerDelegate
     MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
     [mediaService getMediaURLFromVideoPressID:videoID
-        inBlog:self.post.blog
-        success:^(NSString *videoURL, NSString *posterURL) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [weakSelf.editorView setVideoPress:videoID source:videoURL poster:posterURL];
-            });            
-        }
-        failure:^(NSError *error){
+                                       inBlog:self.post.blog
+                                      success:^(NSString *videoURL, NSString *posterURL) {
+                                          dispatch_async(dispatch_get_main_queue(), ^{
+                                              [weakSelf.editorView setVideoPress:videoID source:videoURL poster:posterURL];
+                                          });
+                                      }
+                                      failure:^(NSError *error){
 
-        }];
+                                      }];
 }
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
     [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
-    
+
     EditImageDetailsViewController *controller = [EditImageDetailsViewController controllerForDetails:imageMeta forPost:self.post];
     controller.delegate = self;
 
@@ -2083,9 +2083,9 @@ EditImageDetailsViewControllerDelegate
     if (imageId.length == 0) {
         return;
     }
-    
+
     self.selectedMediaID= imageId;
-    
+
     NSProgress * mediaProgress = self.mediaInProgress[imageId];
     if (!mediaProgress){
         // The image is already uploaded so nothing to here, but in the future we could plug in image actions here
@@ -2096,7 +2096,7 @@ EditImageDetailsViewControllerDelegate
     if (self.currentActionSheet != nil){
         return;
     }
-    
+
     // Is upload still going?
     if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
         UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -2112,7 +2112,7 @@ EditImageDetailsViewControllerDelegate
                                                     destructiveButtonTitle:NSLocalizedString(@"Remove Image", @"User action to remove image that failed upload")
                                                          otherButtonTitles:NSLocalizedString(@"Retry Upload", @"User action to retry upload the image"), nil];
         actionSheet.tag = WPPostViewControllerActionSheetRetryUpload;
-        [actionSheet showInView:self.editorView];        
+        [actionSheet showInView:self.editorView];
     }
 }
 
@@ -2121,19 +2121,19 @@ EditImageDetailsViewControllerDelegate
     if (videoID.length == 0) {
         return;
     }
-    
+
     self.selectedMediaID= videoID;
-    
+
     NSProgress * mediaProgress = self.mediaInProgress[videoID];
     if (!mediaProgress){
         return;
     }
-    
+
     //Are we showing another action sheet?
     if (self.currentActionSheet != nil){
         return;
     }
-    
+
     // Is upload still going?
     if (mediaProgress.completedUnitCount < mediaProgress.totalUnitCount) {
         UIActionSheet * actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -2170,11 +2170,11 @@ EditImageDetailsViewControllerDelegate
 - (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
-    
+
     if (assetType == ALAssetTypeUnknown) {
         return NO;
     }
-    
+
     // If the media is from a shared photo stream it may not be available locally to be used
     if (!asset.defaultRepresentation) {
         if (assetType == ALAssetTypePhoto) {
