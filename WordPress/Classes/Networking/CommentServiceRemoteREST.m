@@ -44,6 +44,7 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
+                                 @"number": @(100)
                                  }];
     if (options) {
         [parameters addEntriesFromDictionary:options];
