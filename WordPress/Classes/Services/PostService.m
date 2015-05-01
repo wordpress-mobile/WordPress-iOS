@@ -145,7 +145,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
         NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL"];
+        request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL AND blog=%@", blog];
         NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
         request.sortDescriptors = @[sortDescriptor];
         Post *oldestPost = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
