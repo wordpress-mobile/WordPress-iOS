@@ -685,6 +685,7 @@
 		5D1BE1AC1AF3DECA009B1516 /* PhotonImageURLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotonImageURLHelper.m; sourceTree = "<group>"; };
 		5D1BE1AF1AF3DEFF009B1516 /* DisplayableImageHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayableImageHelperTest.m; sourceTree = "<group>"; };
 		5D1BE1B11AF3F31A009B1516 /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
+		5D1BE1B21AF3F832009B1516 /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
 		5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderEditableSubscriptionPage.h; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
@@ -1721,6 +1722,7 @@
 				E105E9CE1726955600C0D9E7 /* WPAccount.m */,
 				46F84612185A8B7E009D0DA5 /* WPContentViewProvider.h */,
 				5D35F7581A042255004E7B0D /* WPCommentContentViewProvider.h */,
+				5D1BE1B21AF3F832009B1516 /* WPPostContentViewProvider.h */,
 			);
 			path = Models;
 			sourceTree = "<group>";
