@@ -78,6 +78,9 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 + (NSString *)stripShortcodesFromString:(NSString *)string
 {
+    if (!string) {
+        return nil;
+    }
     static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
