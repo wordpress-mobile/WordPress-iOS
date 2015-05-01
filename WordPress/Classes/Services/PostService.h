@@ -32,6 +32,18 @@ extern NSString * const PostServiceTypeAny;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
+- (void)syncPostsOfType:(NSString *)postType
+           withStatuses:(NSArray *)postStatus
+                forBlog:(Blog *)blog
+                success:(void (^)(BOOL hasMore))success
+                failure:(void (^)(NSError *))failure;
+
+- (void)loadMorePostsOfType:(NSString *)postType
+               withStatuses:(NSArray *)postStatus
+                    forBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *))failure;
+
 - (void)uploadPost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
@@ -39,5 +51,13 @@ extern NSString * const PostServiceTypeAny;
 - (void)deletePost:(AbstractPost *)post
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
+
+- (void)trashPost:(AbstractPost *)post
+          success:(void (^)())success
+          failure:(void (^)(NSError *error))failure;
+
+- (void)restorePost:(AbstractPost *)post
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure;
 
 @end

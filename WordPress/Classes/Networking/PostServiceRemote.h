@@ -11,8 +11,8 @@
 
 - (void)getPostsOfType:(NSString *)postType
                forBlog:(Blog *)blog
-                success:(void (^)(NSArray *posts))success
-                failure:(void (^)(NSError *error))failure;
+               success:(void (^)(NSArray *posts))success
+               failure:(void (^)(NSError *error))failure;
 
 - (void)getPostsOfType:(NSString *)postType
                forBlog:(Blog *)blog
@@ -34,5 +34,15 @@
            forBlog:(Blog *)blog
            success:(void (^)())success
            failure:(void (^)(NSError *error))failure;
+
+- (void)trashPost:(RemotePost *)post
+          forBlog:(Blog *)blog
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure;
+
+- (void)restorePost:(RemotePost *)post
+            forBlog:(Blog *)blog
+            success:(void (^)(RemotePost *))success
+            failure:(void (^)(NSError *error))failure;
 
 @end
