@@ -360,6 +360,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+    }
+}
+
 
 #pragma mark - TableView Datasource Methods
 
@@ -469,13 +476,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     [self.tableView endUpdates];
-    
+
     if (self.indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
     } else if (self.indexPathSelectedBeforeUpdates) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedBeforeUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
-    
+
     self.indexPathSelectedBeforeUpdates = nil;
     self.indexPathSelectedAfterUpdates = nil;
 
@@ -504,7 +511,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
     }
-    
+
     switch(type) {
         case NSFetchedResultsChangeInsert:
         {
