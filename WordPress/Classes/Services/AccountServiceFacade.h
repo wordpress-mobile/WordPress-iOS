@@ -4,7 +4,7 @@
 
 /**
  *  This protocol represents a class that will handle some basic functions regarding
-    a user's account.
+ a user's account.
  */
 @protocol AccountServiceFacade
 
@@ -34,11 +34,13 @@
 
 
 /**
- *  This retrieves the email address for a `WPAccount`.
+ *  This retrieves user details (email, username, userID, etc.) for a `WPAccount`.
  *
  *  @param account a valid WordPress.com account.
  */
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
+- (void)updateUserDetailsForAccount:(WPAccount *)account
+                            success:(void (^)())success
+                            failure:(void (^)(NSError *error))failure;
 
 /**
  *  This will remove a previous legacy `WPAccount`.

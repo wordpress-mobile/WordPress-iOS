@@ -11,12 +11,12 @@
 
 - (id)initWithApi:(WordPressComApi *)api
 {
-        self = [super init];
-        if (self) {
-            _api = api;
-        }
+    self = [super init];
+    if (self) {
+        _api = api;
+    }
 
-        return self;
+    return self;
 }
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
@@ -34,24 +34,18 @@
           }];
 }
 
-- (void)getDetailsWithSuccess:(void (^)(NSDictionary *userDetails))success failure:(void (^)(NSError *error))failure
+- (void)getDetailsForAccount:(WPAccount *)account success:(void (^)(RemoteUser *remoteUser))success failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"me";
     [self.api GET:path
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              if (success) {
-                  NSString *email = responseObject[@"email"];
-                  NSNumber *primaryBlogId = responseObject[@"primary_blog"];
-                  NSMutableDictionary *userDetails = [NSMutableDictionary new];
-                  if (email) {
-                      userDetails[@"email"] = email;
-                  }
-                  if (primaryBlogId) {
-                      userDetails[@"primary_blog"] = primaryBlogId;
-                  }
-                  success(userDetails);
+              if (!success) {
+                  return;
               }
+              NSDictionary *response = (NSDictionary *)responseObject;
+              RemoteUser *remoteUser = [self remoteUserFromDictionary:response];
+              success(remoteUser);
           }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -60,7 +54,20 @@
           }];
 }
 
+
 #pragma mark - Private Methods
+
+- (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
+{
+    RemoteUser *remoteUser = [RemoteUser new];
+    remoteUser.userID = [dictionary numberForKey:@"ID"];
+    remoteUser.username = [dictionary stringForKey:@"username"];
+    remoteUser.email = [dictionary stringForKey:@"email"];
+    remoteUser.displayName = [dictionary stringForKey:@"display_name"];
+    remoteUser.primaryBlogID = [dictionary numberForKey:@"primary_blog"];
+    remoteUser.avatarURL = [dictionary stringForKey:@"avatar_URL"];
+    return remoteUser;
+}
 
 - (NSArray *)remoteBlogsFromJSONArray:(NSArray *)jsonBlogs
 {
