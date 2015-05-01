@@ -5,6 +5,8 @@
 #import "NSDate+WordPressJSON.h"
 #import <NSObject+SafeExpectations.h>
 
+static const NSInteger NumberOfCommentsToSync = 100;
+
 @interface CommentServiceRemoteREST ()
 
 @property (nonatomic, strong) WordPressComApi *api;
@@ -44,7 +46,7 @@
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
-                                 @"number": @(100)
+                                 @"number": @(NumberOfCommentsToSync)
                                  }];
     if (options) {
         [parameters addEntriesFromDictionary:options];
