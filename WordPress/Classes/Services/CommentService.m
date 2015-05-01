@@ -11,6 +11,7 @@
 #import "WPAccount.h"
 #import "PostService.h"
 #import "AbstractPost.h"
+#import "NSDate+WordPressJSON.h"
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
@@ -93,7 +94,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [remote getCommentsForBlog:blog
                        success:^(NSArray *comments) {
                            [self.managedObjectContext performBlock:^{
-                               [self mergeComments:comments forBlog:blog completionHandler:success];
+                               [self mergeComments:comments forBlog:blog
+                                     purgeExisting:YES
+                                 completionHandler:success];
                            }];
                        } failure:^(NSError *error) {
                            if (failure) {
@@ -102,6 +105,51 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                }];
                            }
                        }];
+}
+
+- (void)loadMoreCommentsForBlog:(Blog *)blog
+                        success:(void (^)(BOOL hasMore))success
+                        failure:(void (^)(NSError *))failure
+{
+    id<CommentServiceRemote> remote = [self remoteForBlog:blog];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
+        NSString *entityName = NSStringFromClass([Comment class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL"];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
+        request.sortDescriptors = @[sortDescriptor];
+        Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+        if (oldestComment.dateCreated) {
+            options[@"before"] = [oldestComment.dateCreated WordPressComJSONString];
+            options[@"order"] = @"desc";
+        }
+    } else if ([remote isKindOfClass:[CommentServiceRemoteXMLRPC class]]) {
+        NSUInteger postCount = [blog.posts count];
+        postCount += 40;
+        options[@"number"] = @(postCount);
+    }
+    [remote getCommentsForBlog:blog
+        options:options
+        success:^(NSArray *comments) {
+                       [self.managedObjectContext performBlock:^{
+                           [self mergeComments:comments
+                                       forBlog:blog
+                                 purgeExisting:NO
+                             completionHandler:^{
+                                 if (success) {
+                                     success(comments.count > 1);
+                                 }
+                             }];
+                       }];
+        }
+        failure:^(NSError *error) {
+                       if (failure) {
+                           [self.managedObjectContext performBlock:^{
+                               failure(error);
+                           }];
+                       }
+        }];
 }
 
 // Upload comment
@@ -530,7 +578,10 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     }];
 }
 
-- (void)mergeComments:(NSArray *)comments forBlog:(Blog *)blog completionHandler:(void (^)(void))completion
+- (void)mergeComments:(NSArray *)comments
+              forBlog:(Blog *)blog
+        purgeExisting:(BOOL)purgeExisting
+    completionHandler:(void (^)(void))completion
 {
     NSMutableArray *commentsToKeep = [NSMutableArray array];
     for (RemoteComment *remoteComment in comments) {
@@ -542,13 +593,15 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
         [commentsToKeep addObject:comment];
     }
 
-    NSSet *existingComments = blog.comments;
-    if (existingComments.count > 0) {
-        for (Comment *comment in existingComments) {
-            // Don't delete unpublished comments
-            if (![commentsToKeep containsObject:comment] && comment.commentID != nil) {
-                DDLogInfo(@"Deleting Comment: %@", comment);
-                [self.managedObjectContext deleteObject:comment];
+    if (purgeExisting) {
+        NSSet *existingComments = blog.comments;
+        if (existingComments.count > 0) {
+            for (Comment *comment in existingComments) {
+                // Don't delete unpublished comments
+                if (![commentsToKeep containsObject:comment] && comment.commentID != nil) {
+                    DDLogInfo(@"Deleting Comment: %@", comment);
+                    [self.managedObjectContext deleteObject:comment];
+                }
             }
         }
     }
