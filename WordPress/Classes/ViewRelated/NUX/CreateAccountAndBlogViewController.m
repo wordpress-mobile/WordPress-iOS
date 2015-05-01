@@ -838,6 +838,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
             [[ContextManager sharedInstance] saveContext:context];
 
+            [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
             [blogService syncBlog:blog success:nil failure:nil];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
