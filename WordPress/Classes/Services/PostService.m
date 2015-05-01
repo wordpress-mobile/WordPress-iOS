@@ -151,6 +151,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         Post *oldestPost = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
         if (oldestPost.date_created_gmt) {
             options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
+            options[@"order"] = @"desc";
         }
     } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
         NSUInteger postCount = [blog.posts count];
