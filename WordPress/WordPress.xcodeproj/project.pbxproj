@@ -94,6 +94,8 @@
 		5D1BE1AD1AF3DECA009B1516 /* DisplayableImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1AA1AF3DECA009B1516 /* DisplayableImageHelper.m */; };
 		5D1BE1AE1AF3DECA009B1516 /* PhotonImageURLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1AC1AF3DECA009B1516 /* PhotonImageURLHelper.m */; };
 		5D1BE1B01AF3DEFF009B1516 /* DisplayableImageHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1AF1AF3DEFF009B1516 /* DisplayableImageHelperTest.m */; };
+		5D1BE1B81AF4043E009B1516 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1B71AF4043E009B1516 /* RemoteUser.m */; };
+		5D1BE1B91AF4043E009B1516 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1B71AF4043E009B1516 /* RemoteUser.m */; };
 		5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
 		5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
 		5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
@@ -686,6 +688,8 @@
 		5D1BE1AF1AF3DEFF009B1516 /* DisplayableImageHelperTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayableImageHelperTest.m; sourceTree = "<group>"; };
 		5D1BE1B11AF3F31A009B1516 /* WordPress 29.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 29.xcdatamodel"; sourceTree = "<group>"; };
 		5D1BE1B21AF3F832009B1516 /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
+		5D1BE1B61AF4043E009B1516 /* RemoteUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteUser.h; path = "Remote Objects/RemoteUser.h"; sourceTree = "<group>"; };
+		5D1BE1B71AF4043E009B1516 /* RemoteUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteUser.m; path = "Remote Objects/RemoteUser.m"; sourceTree = "<group>"; };
 		5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderEditableSubscriptionPage.h; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
@@ -2805,6 +2809,8 @@
 		E1249B4019408C6F0035E895 /* Remote Objects */ = {
 			isa = PBXGroup;
 			children = (
+				5D1BE1B61AF4043E009B1516 /* RemoteUser.h */,
+				5D1BE1B71AF4043E009B1516 /* RemoteUser.m */,
 				E1A6DBD619DC7D080071AC1E /* RemotePostCategory.h */,
 				E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */,
 				E1A6DBD819DC7D080071AC1E /* RemotePost.h */,
@@ -3615,6 +3621,7 @@
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */,
 				E1B62A7B13AA61A100A6FCA4 /* WPWebViewController.m in Sources */,
+				5D1BE1B81AF4043E009B1516 /* RemoteUser.m in Sources */,
 				B587798119B799D800E57C5A /* UITableViewCell+Helpers.swift in Sources */,
 				B587798019B799D800E57C5A /* UITableView+Helpers.swift in Sources */,
 				5D157B8C1A8AB73C003ADF4C /* ReaderSiteHeaderView.m in Sources */,
@@ -3864,6 +3871,7 @@
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				B5AEEC721ACACF2F008BF2A4 /* NotificationTests.m in Sources */,
+				5D1BE1B91AF4043E009B1516 /* RemoteUser.m in Sources */,
 				9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */,
 				931D26F819ED7F7800114F17 /* ReaderTopicServiceTest.m in Sources */,
 				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
