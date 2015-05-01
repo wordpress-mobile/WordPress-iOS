@@ -39,6 +39,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     [super viewDidLoad];
     self.moreCommentsAvailable = YES;
     self.infiniteScrollEnabled = YES;
+    self.incrementalLoadingSupported = YES;
     self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -48,9 +49,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     }
 
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
-
-    // Do not show row dividers for empty cells.
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -208,16 +206,21 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
+    self.blog.isSyncingComments = YES;
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (blogInContext) {
             [commentService syncCommentsForBlog:blogInContext success:^{
                 if (success) {
-                    dispatch_async(dispatch_get_main_queue(), success);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        self.blog.isSyncingComments = NO;
+                        success();
+                    });
                 }
             } failure:^(NSError *error) {
                 if (failure) {
                     dispatch_async(dispatch_get_main_queue(), ^{
+                        self.blog.isSyncingComments = NO;
                         failure(error);
                     });
                 }
@@ -255,13 +258,20 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    self.blog.isSyncingComments = YES;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
         self.moreCommentsAvailable = hasMore;
+        self.blog.isSyncingComments = NO;
         if (success) {
             success();
         }
-    } failure:failure];
+    } failure:^(NSError *error) {
+        self.blog.isSyncingComments = NO;
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 @end
