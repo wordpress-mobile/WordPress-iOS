@@ -23,9 +23,20 @@
                    success:(void (^)(NSArray *))success
                    failure:(void (^)(NSError *))failure
 {
-    NSDictionary *extraParameters = @{
-                                     @"number": @100
-                                     };
+    [self getCommentsForBlog:blog options:nil success:success failure:failure];
+}
+
+- (void)getCommentsForBlog:(Blog *)blog
+                   options:(NSDictionary *)options
+                   success:(void (^)(NSArray *))success
+                   failure:(void (^)(NSError *))failure
+{
+    NSMutableDictionary *extraParameters = [NSMutableDictionary dictionaryWithDictionary:@{
+                                      @"number": @100
+                                      }];
+    if (options) {
+        [extraParameters addEntriesFromDictionary:options];
+    }
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:extraParameters];
     [self.api callMethod:@"wp.getComments"
               parameters:parameters

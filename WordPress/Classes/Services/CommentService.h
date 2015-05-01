@@ -26,6 +26,11 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure;
 
+// Load extra comments
+- (void)loadMoreCommentsForBlog:(Blog *)blog
+                        success:(void (^)(BOOL hasMore))success
+                        failure:(void (^)(NSError *))failure;
+
 // Upload comment
 - (void)uploadComment:(Comment *)comment
               success:(void (^)())success

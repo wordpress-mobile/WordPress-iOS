@@ -13,7 +13,7 @@
 @interface CommentsViewController ()
 
 @property (nonatomic,strong) NSIndexPath *currentIndexPath;
-
+@property (nonatomic,assign) BOOL moreCommentsAvailable;
 @end
 
 @implementation CommentsViewController
@@ -37,7 +37,8 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     DDLogMethod();
 
     [super viewDidLoad];
-
+    self.moreCommentsAvailable = YES;
+    self.infiniteScrollEnabled = YES;
     self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -179,11 +180,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return @"Comment";
 }
 
-- (NSDate *)lastSyncDate
-{
-    return self.blog.lastCommentsSync;
-}
-
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
@@ -245,5 +241,27 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         self.editButtonItem.enabled = NO;
         self.currentIndexPath = nil;
     }
+}
+
+#pragma mark - Syncs methods
+
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastCommentsSync;
+}
+
+- (BOOL)hasMoreContent {
+    return self.moreCommentsAvailable;
+}
+
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
+        self.moreCommentsAvailable = hasMore;
+        if (success) {
+            success();
+        }
+    } failure:failure];
 }
 @end
