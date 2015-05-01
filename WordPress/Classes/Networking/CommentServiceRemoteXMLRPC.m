@@ -3,6 +3,8 @@
 #import "RemoteComment.h"
 #import <WordPressApi.h>
 
+static const NSInteger NumberOfCommentsToSync = 100;
+
 @interface CommentServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WPXMLRPCClient *api;
 @end
@@ -32,7 +34,7 @@
                    failure:(void (^)(NSError *))failure
 {
     NSMutableDictionary *extraParameters = [NSMutableDictionary dictionaryWithDictionary:@{
-                                      @"number": @100
+                                      @"number": @(NumberOfCommentsToSync)
                                       }];
     if (options) {
         [extraParameters addEntriesFromDictionary:options];
