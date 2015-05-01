@@ -24,7 +24,7 @@
 
 /**
  Returns the wpcom blog currently flagged as the one last used, or the first wpcom
- blog in an alphanumerically sorted list, if no wpcom blog is currently flagged as 
+ blog in an alphanumerically sorted list, if no wpcom blog is currently flagged as
  last used.
  */
 - (Blog *)lastUsedOrFirstWPcomBlog;
@@ -84,7 +84,7 @@
 
 /*! Determine timezone for blog from blog options.  If no timezone information is stored on
  *  the device, then assume GMT+0 is the default.
- *  
+ *
  *  \param blog     The blog/site to determine the timezone for.
  */
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
