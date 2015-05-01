@@ -51,11 +51,11 @@ NSString * const ReaderDetailTypeNormal = @"normal";
 NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 @interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
-                                        UIActionSheetDelegate,
-                                        WPContentSyncHelperDelegate,
-                                        WPTableImageSourceDelegate,
-                                        WPTableViewHandlerDelegate,
-                                        ReaderPostContentViewDelegate>
+UIActionSheetDelegate,
+WPContentSyncHelperDelegate,
+WPTableImageSourceDelegate,
+WPTableViewHandlerDelegate,
+ReaderPostContentViewDelegate>
 
 
 @property (nonatomic, assign) BOOL viewHasAppeared;
@@ -232,7 +232,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         && UIInterfaceOrientationIsPortrait(self.previousOrientation) != UIInterfaceOrientationIsPortrait(self.interfaceOrientation))
     {
         [self.tableViewHandler refreshCachedRowHeightsForWidth:CGRectGetWidth(self.view.frame)];
-        
+
         return YES;
     } else {
         return NO;
@@ -243,10 +243,10 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     BOOL currentlyHasVisibleWPComAccount = [blogService hasVisibleWPComAccounts];
-    
+
     if (self.hasVisibleWPComAccount != currentlyHasVisibleWPComAccount) {
         self.hasVisibleWPComAccount = currentlyHasVisibleWPComAccount;
-        
+
         return YES;
     } else {
         return NO;
@@ -281,7 +281,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.accessibilityIdentifier = @"Reader Table";
-    
+
     // Note: UIEdgeInsets are not always enforced. After logging in, the table might autoscroll up to the first row.
     if (UIDevice.isPad && !self.skipIpadTopPadding) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:RPVCTableHeaderFrame];
@@ -721,7 +721,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
     // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
     // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
-    // methods are called. However, check here just in case there is an unnexpected edgecase. 
+    // methods are called. However, check here just in case there is an unnexpected edgecase.
     if (self.contextForSync) {
         return;
     }
@@ -729,7 +729,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
-- (void)syncItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncItemsWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
@@ -742,7 +742,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
-                    success(count, hasMore);
+                    success(hasMore);
                 }
             });
         } failure:^(NSError *error) {
@@ -755,7 +755,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }];
 }
 
-- (void)backfillItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)backfillItemsWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
@@ -768,7 +768,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
-                    success(count, hasMore);
+                    success(hasMore);
                 }
             });
         } failure:^(NSError *error) {
@@ -781,7 +781,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     self.shouldSkipRowAnimation = NO;
@@ -793,7 +793,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
@@ -815,14 +815,14 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf = self;
-    
+
     [context performBlock:^{
         ReaderTopic *topicInContext = [self topicInContext:context];
         [service fetchPostsForTopic:topicInContext earlierThan:earlierThan success:^(NSInteger count, BOOL hasMore){
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     weakSelf.shouldSkipRowAnimation = YES;
-                    success(count, hasMore);
+                    success(hasMore);
                 });
             }
         } failure:^(NSError *error) {
@@ -833,7 +833,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             }
         }];
     }];
-    
+
     [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
 }
 
@@ -945,7 +945,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 - (void)updateAndPerformFetchRequest
 {
     NSAssert([NSThread isMainThread], @"ReaderPostsViewController Error: NSFetchedResultsController accessed in BG");
-    
+
     NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:[self predicateForFetchRequest]];
     [self.tableViewHandler.resultsController performFetch:&error];
@@ -1118,16 +1118,16 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 {
     ReaderPost *post = [self postFromCellSubview:sender];
     BOOL wasLiked = post.isLiked;
-    
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
+
     [context performBlock:^{
         ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
         if (!postInContext) {
             return;
         }
-        
+
         [service toggleLikedForPost:postInContext success:^{
             if (wasLiked) {
                 return;
@@ -1168,17 +1168,17 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-    
+
     [context performBlock:^{
         ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
         if (!postInContext) {
             return;
         }
-        
+
         [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-                [followButton setSelected:post.isFollowing];                
+                [followButton setSelected:post.isFollowing];
             });
         }];
     }];

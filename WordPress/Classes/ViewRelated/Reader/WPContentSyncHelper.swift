@@ -2,8 +2,8 @@ import UIKit
 
 
 @objc protocol WPContentSyncHelperDelegate: NSObjectProtocol {
-    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((count: Int, hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
-    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((count: Int, hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
+    func syncHelper(syncHelper:WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
+    func syncHelper(syncHelper:WPContentSyncHelper, syncMoreWithSuccess success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?)
     optional func syncContentEnded()
     optional func hasNoMoreContent()
 }
@@ -46,17 +46,17 @@ class WPContentSyncHelper: NSObject {
         isSyncing = true
 
         delegate?.syncHelper(self, syncContentWithUserInteraction: userInteraction, success: {
-            [weak self] (count: Int, hasMore: Bool) -> Void in
+            [weak self] (hasMore: Bool) -> Void in
             if let weakSelf = self {
                 weakSelf.hasMoreContent = hasMore
                 weakSelf.syncContentEnded()
             }
-        }, failure: {
-            [weak self] (error: NSError) -> Void in
-            if let weakSelf = self {
-                weakSelf.syncContentEnded()
-            }
-        })
+            }, failure: {
+                [weak self] (error: NSError) -> Void in
+                if let weakSelf = self {
+                    weakSelf.syncContentEnded()
+                }
+            })
 
         return true
     }
@@ -71,29 +71,29 @@ class WPContentSyncHelper: NSObject {
         isLoadingMore = true
 
         delegate?.syncHelper(self, syncMoreWithSuccess: {
-            [weak self] (count: Int, hasMore: Bool) -> Void in
+            [weak self] (hasMore: Bool) -> Void in
             if let weakSelf = self {
                 weakSelf.hasMoreContent = hasMore
                 weakSelf.syncContentEnded()
             }
-        }, failure: {
-            [weak self] (error: NSError) -> Void in
-            if let weakSelf = self {
-                weakSelf.syncContentEnded()
-            }
-        })
+            }, failure: {
+                [weak self] (error: NSError) -> Void in
+                if let weakSelf = self {
+                    weakSelf.syncContentEnded()
+                }
+            })
 
         return true
     }
 
 
     // MARK: - Private Methods
-
+    
     private func syncContentEnded() {
         isSyncing = false
         isLoadingMore = false
-
+        
         delegate?.syncContentEnded?()
     }
-
+    
 }

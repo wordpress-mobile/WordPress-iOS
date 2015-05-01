@@ -40,11 +40,11 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 
 @interface ReaderCommentsViewController () <NSFetchedResultsControllerDelegate,
-                                            CommentContentViewDelegate,
-                                            ReplyTextViewDelegate,
-                                            WPContentSyncHelperDelegate,
-                                            WPTableViewHandlerDelegate,
-                                            SuggestionsTableViewDelegate>
+CommentContentViewDelegate,
+ReplyTextViewDelegate,
+WPContentSyncHelperDelegate,
+WPTableViewHandlerDelegate,
+SuggestionsTableViewDelegate>
 
 @property (nonatomic, strong, readwrite) ReaderPost *post;
 @property (nonatomic, strong) NSNumber *postSiteID;
@@ -115,9 +115,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [self configureSuggestionsTableView];
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    
+
     [self refreshAndSync];
 }
 
@@ -237,7 +237,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configurePostHeader
 {
     __typeof(self) __weak weakSelf = self;
-    
+
     // Wrapper view
     UIView *headerWrapper = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, CGRectGetWidth(self.view.bounds), PostHeaderHeight)];
     headerWrapper.translatesAutoresizingMaskIntoConstraints = NO;
@@ -330,7 +330,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     };
     replyTextView.delegate = self;
     self.replyTextView = replyTextView;
-    
+
     [self refreshReplyTextViewPlaceholder];
 
     [self.view addSubview:self.replyTextView];
@@ -341,7 +341,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     NSNumber *siteID = self.siteID;
     NSParameterAssert(siteID);
-    
+
     self.suggestionsTableView = [[SuggestionsTableView alloc] initWithSiteID:siteID];
     self.suggestionsTableView.suggestionsDelegate = self;
     [self.suggestionsTableView setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -361,18 +361,18 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configureViewConstraints
 {
     NSDictionary *views         = @{
-        @"tableView"        : self.tableView,
-        @"postHeader"       : self.postHeaderWrapper,
-        @"mainView"         : self.view,
-        @"suggestionsview"  : self.suggestionsTableView,
-        @"replyTextView"    : self.replyTextView
-    };
-    
+                                    @"tableView"        : self.tableView,
+                                    @"postHeader"       : self.postHeaderWrapper,
+                                    @"mainView"         : self.view,
+                                    @"suggestionsview"  : self.suggestionsTableView,
+                                    @"replyTextView"    : self.replyTextView
+                                    };
+
     NSDictionary *metrics = @{
-        @"WPTableViewWidth" : @(WPTableViewFixedWidth),
-        @"headerHeight"     : @(PostHeaderHeight)
-    };
-    
+                              @"WPTableViewWidth" : @(WPTableViewFixedWidth),
+                              @"headerHeight"     : @(PostHeaderHeight)
+                              };
+
     // PostHeader Constraints
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.postHeaderWrapper
                                                           attribute:NSLayoutAttributeCenterX
@@ -393,13 +393,13 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                           metrics:metrics
                                                                             views:views]];
     }
-    
+
     // TableView Contraints
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[postHeader(headerHeight)][tableView][replyTextView]"
                                                                       options:0
                                                                       metrics:metrics
                                                                         views:views]];
-    
+
     [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[tableView]|"
                                                                       options:0
                                                                       metrics:nil
@@ -424,7 +424,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
 
     [self.view addConstraint:self.replyTextViewBottomConstraint];
-    
+
     if ([UIDevice isPad]) {
         [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[replyTextView(WPTableViewWidth)]"
                                                                           options:0
@@ -436,7 +436,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                           metrics:metrics
                                                                             views:views]];
     }
-    
+
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
     [self.view addConstraint:[NSLayoutConstraint constraintWithItem:self.suggestionsTableView
@@ -459,7 +459,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                       options:0
                                                                       metrics:nil
                                                                         views:views]];
-    
+
     // TODO:
     // This LayoutConstraint is just a helper, meant to hide / display the ReplyTextView, as needed.
     // Whenever iOS 8 is set as the deployment target, let's always attach this one, and enable / disable it as needed!
@@ -481,7 +481,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (self.isLoadingPost || self.syncHelper.isSyncing) {
         return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
     }
-    
+
     return NSLocalizedString(@"Be the first to leave a commment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
 }
 
@@ -614,14 +614,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     NSParameterAssert(self.postHeaderView);
     NSParameterAssert(self.postHeaderWrapper);
-    
+
     self.postHeaderWrapper.hidden = self.isLoadingPost;
     if (self.isLoadingPost) {
         return;
     }
-    
+
     [self.postHeaderView setTitle:self.post.titleForDisplay];
-    
+
     CGSize imageSize = CGSizeMake(PostHeaderViewAvatarSize, PostHeaderViewAvatarSize);
     UIImage *image = [self.post cachedAvatarWithSize:imageSize];
     if (image) {
@@ -637,7 +637,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     BOOL showsReplyTextView = self.shouldDisplayReplyTextView;
     self.replyTextView.hidden = !showsReplyTextView;
-    
+
     if (showsReplyTextView) {
         [self.view removeConstraint:self.replyTextViewHeightConstraint];
     } else {
@@ -667,7 +667,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         footerView.autoresizingMask = UIViewAutoresizingFlexibleWidth;
         [footerView addSubview:self.activityFooter];
         self.tableView.tableFooterView = footerView;
-        
+
     } else {
         self.tableView.tableFooterView = nil;
         self.activityFooter = nil;
@@ -679,17 +679,17 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 {
     BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
     BOOL shouldPerformAnimation = self.noResultsView.hidden;
-    
+
     self.noResultsView.hidden = !isTableViewEmpty;
-    
+
     if (!isTableViewEmpty) {
         return;
     }
-    
+
     // Refresh the NoResultsView Properties
     self.noResultsView.titleText = self.noResultsTitleText;
     [self.noResultsView centerInSuperview];
-    
+
     if (shouldPerformAnimation) {
         [self.noResultsView fadeInWithAnimation];
     }
@@ -855,20 +855,28 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Sync methods
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:success failure:failure];
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
     [self refreshNoResultsView];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
 }
 
 - (void)syncContentEnded
@@ -885,14 +893,14 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderPostService *service      = [[ReaderPostService alloc] initWithManagedObjectContext:context];
     __weak __typeof(self) weakSelf  = self;
-    
+
     self.postSiteID = siteID;
-    
+
     [service fetchPost:postID.integerValue forSite:siteID.integerValue success:^(ReaderPost *post) {
 
         [weakSelf setPost:post];
         [weakSelf refreshAndSync];
-        
+
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
     }];
@@ -1183,7 +1191,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if (!self.allowsPushingPostDetails) {
         return;
     }
-    
+
     // Note: Let's manually hide the comments button, in order to prevent recursion in the flow
     ReaderPostDetailViewController *detailsViewController = [ReaderPostDetailViewController detailControllerWithPost:self.post];
     [detailsViewController setShouldHideComments:YES];
