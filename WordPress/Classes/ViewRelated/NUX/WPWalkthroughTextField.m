@@ -140,9 +140,12 @@
 
 - (void)secureTextEntryToggleAction:(id)sender
 {
-    [self setSecureTextEntry:!self.isSecureTextEntry];
-    self.text = self.text; // Fixes cursor position after toggling
-    [self setNeedsDisplay];
+    self.secureTextEntry = !self.secureTextEntry;
+    
+    // Save and re-apply the current selection range to save the cursor position
+    UITextRange *currentTextRange = self.selectedTextRange;
+    [self becomeFirstResponder];
+    [self setSelectedTextRange:currentTextRange];
 }
 
 - (void)updateSecureTextEntryToggleImage
