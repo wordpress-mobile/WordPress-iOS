@@ -206,32 +206,24 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
-    self.blog.isSyncingComments = YES;
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
         if (blogInContext) {
             [commentService syncCommentsForBlog:blogInContext success:^{
                 if (success) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        self.blog.isSyncingComments = NO;
                         success();
                     });
                 }
             } failure:^(NSError *error) {
                 if (failure) {
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        self.blog.isSyncingComments = NO;
                         failure(error);
                     });
                 }
             }];
         }
     }];
-}
-
-- (BOOL)isSyncing
-{
-    return self.blog.isSyncingComments;
 }
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
@@ -248,6 +240,11 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 #pragma mark - Syncs methods
 
+- (BOOL)isSyncing
+{
+    return [CommentService isSyncingCommentsForBlogID:self.blog.blogID];
+}
+
 - (NSDate *)lastSyncDate
 {
     return self.blog.lastCommentsSync;
@@ -258,17 +255,14 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 }
 
 - (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    self.blog.isSyncingComments = YES;
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
         self.moreCommentsAvailable = hasMore;
-        self.blog.isSyncingComments = NO;
         if (success) {
             success();
         }
     } failure:^(NSError *error) {
-        self.blog.isSyncingComments = NO;
         if (failure) {
             failure(error);
         }
