@@ -10,6 +10,8 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 
 @interface CommentService : NSObject <LocalCoreDataService>
 
++ (BOOL)isSyncingCommentsForBlogID:(NSNumber *)blogID;
+
 // Create comment
 - (Comment *)createCommentForBlog:(Blog *)blog;
 

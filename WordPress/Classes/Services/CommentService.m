@@ -23,6 +23,35 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
 @implementation CommentService
 
++ (NSMutableSet *)syncingCommentsLocks
+{
+    static NSMutableSet *syncingCommentsLocks;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        syncingCommentsLocks = [NSMutableSet set];
+    });
+    return syncingCommentsLocks;
+}
+
++ (BOOL)isSyncingCommentsForBlogID:(NSNumber *)blogID
+{
+    return [[self syncingCommentsLocks] containsObject:blogID];
+}
+
++ (void)startSyncingCommentsForBlog:(NSNumber *)blogID
+{
+    @synchronized([self syncingCommentsLocks]) {
+        [[self syncingCommentsLocks] addObject:blogID];
+    }
+}
+
++ (void)stopSyncingCommentsForBlog:(NSNumber *)blogID
+{
+    @synchronized([self syncingCommentsLocks]) {
+        [[self syncingCommentsLocks] removeObject:blogID];
+    }
+}
+
 - (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
 {
     self = [super init];
@@ -90,15 +119,24 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
+    NSNumber *blogID = blog.blogID;
+    if ([[self class] isSyncingCommentsForBlogID:blogID]){
+        return;
+    }
+    [[self class] startSyncingCommentsForBlog:blogID];
+    
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     [remote getCommentsForBlog:blog
                        success:^(NSArray *comments) {
                            [self.managedObjectContext performBlock:^{
                                [self mergeComments:comments forBlog:blog
                                      purgeExisting:YES
-                                 completionHandler:success];
+                                 completionHandler:^{
+                                     [[self class] stopSyncingCommentsForBlog:blogID];
+                                 }];
                            }];
                        } failure:^(NSError *error) {
+                           [[self class] stopSyncingCommentsForBlog:blogID];
                            if (failure) {
                                [self.managedObjectContext performBlock:^{
                                    failure(error);
@@ -121,6 +159,12 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
 {
+    NSNumber *blogID = blog.blogID;
+    if ([[self class] isSyncingCommentsForBlogID:blogID]){
+        return;
+    }
+    [[self class] startSyncingCommentsForBlog:blogID];
+
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
@@ -136,23 +180,25 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [remote getCommentsForBlog:blog
         options:options
         success:^(NSArray *comments) {
-                       [self.managedObjectContext performBlock:^{
-                           [self mergeComments:comments
-                                       forBlog:blog
-                                 purgeExisting:NO
-                             completionHandler:^{
-                                 if (success) {
-                                     success(comments.count > 1);
-                                 }
-                             }];
-                       }];
+           [self.managedObjectContext performBlock:^{
+               [self mergeComments:comments
+                           forBlog:blog
+                     purgeExisting:NO
+                 completionHandler:^{
+                      [[self class] stopSyncingCommentsForBlog:blogID];
+                     if (success) {
+                         success(comments.count > 1);
+                     }
+                 }];
+           }];
         }
         failure:^(NSError *error) {
-                       if (failure) {
-                           [self.managedObjectContext performBlock:^{
-                               failure(error);
-                           }];
-                       }
+           [[self class] stopSyncingCommentsForBlog:blogID];
+           if (failure) {
+               [self.managedObjectContext performBlock:^{
+                   failure(error);
+               }];
+           }
         }];
 }
 
@@ -611,11 +657,11 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 
     [self deleteUnownedComments];
-    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext];
-
-    if (completion) {
-        dispatch_async(dispatch_get_main_queue(), completion);
-    }
+    [[ContextManager sharedInstance] saveDerivedContext:self.managedObjectContext withCompletionBlock:^{
+        if (completion) {
+            dispatch_async(dispatch_get_main_queue(), completion);
+        }
+    }];
 }
 
 - (Comment *)findCommentWithID:(NSNumber *)commentID inBlog:(Blog *)blog
