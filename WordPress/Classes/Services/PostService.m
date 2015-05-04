@@ -152,6 +152,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         if (oldestPost.date_created_gmt) {
             options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
             options[@"order"] = @"desc";
+            options[@"order_by"] = @"date";
         }
     } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
         NSUInteger postCount = [blog.posts count];
