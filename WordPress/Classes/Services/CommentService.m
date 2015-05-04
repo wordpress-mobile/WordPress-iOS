@@ -125,8 +125,8 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
             options[@"order"] = @"desc";
         }
     } else if ([remote isKindOfClass:[CommentServiceRemoteXMLRPC class]]) {
-        NSUInteger postCount = [blog.posts count];
-        options[@"offset"] = @(postCount);
+        NSUInteger commentCount = [blog.comments count];
+        options[@"offset"] = @(commentCount);
     }
     [remote getCommentsForBlog:blog
         options:options
