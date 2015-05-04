@@ -34,7 +34,12 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     NSString *key = AttachmentsDictionaryKeyMimeType;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", key, @"image"];
     attachments = [attachments filteredArrayUsingPredicate:predicate];
+    attachments = [self sortAttachmentsArray:attachments];
+    return attachments;
+}
 
++ (NSArray *)sortAttachmentsArray:(NSArray *)attachments
+{
     return [attachments sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *attachmentA, NSDictionary *attachmentB) {
         NSString *key = AttachmentsDictionaryKeyWidth;
         NSNumber *widthA = [attachmentA numberForKey:key] ?: @(0);
