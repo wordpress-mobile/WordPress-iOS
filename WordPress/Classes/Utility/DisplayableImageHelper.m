@@ -9,12 +9,6 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
 @implementation DisplayableImageHelper
 
-/**
- Get the url path of the image to display for a post.
-
- @param dict A dictionary representing a posts attachments from the REST API.
- @return The url path for the featured image or nil
- */
 + (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict
 {
     NSArray *attachments = [[attachmentsDict dictionaryForKey:AttachmentsDictionaryKeyAttachments] allValues];
@@ -41,9 +35,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", key, @"image"];
     attachments = [attachments filteredArrayUsingPredicate:predicate];
 
-    return [attachments sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSDictionary *attachmentA = (NSDictionary *)obj1;
-        NSDictionary *attachmentB = (NSDictionary *)obj2;
+    return [attachments sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *attachmentA, NSDictionary *attachmentB) {
         NSString *key = AttachmentsDictionaryKeyWidth;
         NSNumber *widthA = [attachmentA numberForKey:key] ?: @(0);
         NSNumber *widthB = [attachmentB numberForKey:key] ?: @(0);
@@ -58,12 +50,6 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     }];
 }
 
-/**
- Search the passed string for an image that is a good candidate to feature.
-
- @param content The content string to search.
- @return The url path for the image or an empty string.
- */
 + (NSString *)searchPostContentForImageToDisplay:(NSString *)content
 {
     NSString *imageSrc = @"";
@@ -82,12 +68,13 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         srcRegex = [NSRegularExpression regularExpressionWithPattern:@"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
+    // Find all the image tags in the content passed.
     NSArray *matches = [imgRegex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
 
     NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
     for (NSTextCheckingResult *match in matches) {
         NSString *tag = [content substringWithRange:match.range];
-        // Get the source
+        // Get the src of the image, triming off everything but the url itself.
         NSRange srcRng = [srcRegex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
         NSString *src = [tag substringWithRange:srcRng];
         NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
