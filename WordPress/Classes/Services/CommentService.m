@@ -107,6 +107,16 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                        }];
 }
 
+- (Comment *)oldestCommentForBlog:(Blog *)blog {
+    NSString *entityName = NSStringFromClass([Comment class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL && blog=%@", blog];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+    return oldestComment;
+}
+
 - (void)loadMoreCommentsForBlog:(Blog *)blog
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
@@ -114,12 +124,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[CommentServiceRemoteREST class]]) {
-        NSString *entityName = NSStringFromClass([Comment class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [NSPredicate predicateWithFormat:@"dateCreated != NULL && blog=%@", blog];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:YES];
-        request.sortDescriptors = @[sortDescriptor];
-        Comment *oldestComment = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+        Comment *oldestComment = [self oldestCommentForBlog:blog];
         if (oldestComment.dateCreated) {
             options[@"before"] = [oldestComment.dateCreated WordPressComJSONString];
             options[@"order"] = @"desc";
