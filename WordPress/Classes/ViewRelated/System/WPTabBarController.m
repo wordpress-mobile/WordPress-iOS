@@ -20,6 +20,7 @@
 #import "WPScrollableViewController.h"
 #import "HelpshiftUtils.h"
 #import <WordPress-iOS-Shared/WPDeviceIdentification.h>
+#import <QuartzCore/QuartzCore.h>
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
@@ -41,7 +42,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait 
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 236;
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
 
-@interface WPTabBarController () <UITabBarControllerDelegate>
+@interface WPTabBarController () <UITabBarControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) ReaderViewController *readerViewController;
@@ -54,6 +55,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 @property (nonatomic, strong) UINavigationController *notificationsNavigationController;
 @property (nonatomic, strong) UINavigationController *meNavigationController;
 
+@property (nonatomic, strong) UIView *notificationBadgeIconWrapper;
 @property (nonatomic, strong) UIImageView *notificationBadgeIconView;
 
 @end
@@ -137,6 +139,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
     [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
+    _blogListNavigationController.delegate = self;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -165,6 +168,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
     [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
+    _readerNavigationController.delegate = self;
 
     return _readerNavigationController;
 }
@@ -207,6 +211,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
     self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    _meNavigationController.delegate = self;
 
     return _meNavigationController;
 }
@@ -227,6 +232,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
+    _notificationsNavigationController.delegate = self;
 
     return _notificationsNavigationController;
 }
@@ -491,6 +497,12 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)addNotificationBadgeIcon
 {
+    // The wrapper view is only used in order to hide/show if the tabbar visibility changes
+    // Since we already show/hide/animate the image, the wrapper makes it simpler to completely show/hide the image
+    self.notificationBadgeIconWrapper = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
+    self.notificationBadgeIconWrapper.layer.zPosition = MAXFLOAT;
+    [self.view addSubview:self.notificationBadgeIconWrapper];
+
     self.notificationBadgeIconView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
     self.notificationBadgeIconView.image = [UIImage imageWithColor:[WPStyleGuide jazzyOrange]
                                                         havingSize:CGSizeMake(WPNotificationBadgeIconSize, WPNotificationBadgeIconSize)];
@@ -499,7 +511,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     self.notificationBadgeIconView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.notificationBadgeIconView.layer.borderWidth = 1.0;
     self.notificationBadgeIconView.hidden = YES;
-    [self.view addSubview:self.notificationBadgeIconView];
+    [self.notificationBadgeIconWrapper addSubview:self.notificationBadgeIconView];
 
     [self updateNotificationBadgeIconPosition];
     [self updateNotificationBadgeVisibility];
@@ -527,10 +539,10 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     CGFloat notificationTabCenter = horizontalOffset + ((WPTabNotifications + 0.5) * tabItemWidth);
     CGFloat horizontalPosition = notificationTabCenter - WPNotificationBadgeIconHorizontalOffsetFromCenter;
 
-    CGRect rect = self.notificationBadgeIconView.frame;
+    CGRect rect = self.notificationBadgeIconWrapper.frame;
     rect.origin.x = floorf(horizontalPosition);
     rect.origin.y = floorf(verticalPosition);
-    self.notificationBadgeIconView.frame = rect;
+    self.notificationBadgeIconWrapper.frame = rect;
 }
 
 - (void)animateNotificationBadgeIcon
@@ -576,6 +588,22 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
 
     [self updateNotificationBadgeIconPosition];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (viewController.hidesBottomBarWhenPushed) {
+        self.notificationBadgeIconWrapper.hidden = YES;
+    }
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if (!viewController.hidesBottomBarWhenPushed) {
+        self.notificationBadgeIconWrapper.hidden = NO;
+    }
 }
 
 @end
