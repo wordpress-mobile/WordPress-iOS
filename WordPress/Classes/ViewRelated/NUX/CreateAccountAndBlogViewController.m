@@ -269,6 +269,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _emailField.keyboardType = UIKeyboardTypeEmailAddress;
         _emailField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _emailField.accessibilityIdentifier = @"Email Address";
+        _emailField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_emailField];
     }
 
@@ -285,6 +286,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _usernameField.showTopLineSeparator = YES;
         _usernameField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _usernameField.accessibilityIdentifier = @"Username";
+        _usernameField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_usernameField];
     }
 
@@ -303,6 +305,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _passwordField.showTopLineSeparator = YES;
         _passwordField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _passwordField.accessibilityIdentifier = @"Password";
+        _passwordField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_passwordField];
     }
     
@@ -331,6 +334,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _siteAddressField.delegate = self;
         _siteAddressField.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteAddressField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteAddressField.returnKeyType = UIReturnKeyDone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _siteAddressField.accessibilityIdentifier = @"Site Address (URL)";
