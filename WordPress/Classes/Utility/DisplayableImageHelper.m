@@ -2,6 +2,11 @@
 
 static const NSInteger FeaturedImageMinimumWidth = 640;
 
+static NSString * const AttachmentsDictionaryKeyAttachments = @"attachments";
+static NSString * const AttachmentsDictionaryKeyWidth = @"width";
+static NSString * const AttachmentsDictionaryKeyURL = @"URL";
+static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
+
 @implementation DisplayableImageHelper
 
 /**
@@ -12,7 +17,7 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
  */
 + (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict
 {
-    NSArray *attachments = [[attachmentsDict dictionaryForKey:@"attachments"] allValues];
+    NSArray *attachments = [[attachmentsDict dictionaryForKey:AttachmentsDictionaryKeyAttachments] allValues];
     if ([attachments count] == 0) {
         return nil;
     }
@@ -22,9 +27,9 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     attachments = [self filteredAttachmentsArray:attachments];
 
     NSDictionary *attachment = [attachments firstObject];
-    NSInteger width = [[attachment numberForKey:@"width"] integerValue];
+    NSInteger width = [[attachment numberForKey:AttachmentsDictionaryKeyWidth] integerValue];
     if (width >= FeaturedImageMinimumWidth) {
-        imageToDisplay = [attachment stringForKey:@"URL"];
+        imageToDisplay = [attachment stringForKey:AttachmentsDictionaryKeyURL];
     }
 
     return imageToDisplay;
@@ -32,14 +37,14 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
 
 + (NSArray *)filteredAttachmentsArray:(NSArray *)attachments
 {
-    NSString *key = @"mime_type";
+    NSString *key = AttachmentsDictionaryKeyMimeType;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", key, @"image"];
     attachments = [attachments filteredArrayUsingPredicate:predicate];
 
     return [attachments sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
         NSDictionary *attachmentA = (NSDictionary *)obj1;
         NSDictionary *attachmentB = (NSDictionary *)obj2;
-        NSString *key = @"width";
+        NSString *key = AttachmentsDictionaryKeyWidth;
         NSNumber *widthA = [attachmentA numberForKey:key] ?: @(0);
         NSNumber *widthB = [attachmentB numberForKey:key] ?: @(0);
 
