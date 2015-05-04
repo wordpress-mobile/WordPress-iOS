@@ -242,7 +242,7 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
 
 - (BOOL)isSyncing
 {
-    return [CommentService isSyncingCommentsForBlogID:self.blog.blogID];
+    return [CommentService isSyncingCommentsForBlog:self.blog];
 }
 
 - (NSDate *)lastSyncDate
