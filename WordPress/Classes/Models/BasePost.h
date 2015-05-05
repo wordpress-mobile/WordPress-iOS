@@ -61,20 +61,12 @@ extern NSString * const PostStatusDeleted;
 + (NSString *)titleForStatus:(NSString *)status;
 
 /**
- Transforms the specified string to plain text.  HTML markup is removed and HTML entities are decoded.
-
- @param string The string to transform.
- @return The transformed string.
- */
-+ (NSString *)makePlainText:(NSString *)string;
-
-/**
  Create a summary for the post based on the post's content.
 
  @param string The post's content string. This should be the formatted content string.
  @return A summary for the post.
  */
-+ (NSString *)createSummaryFromContent:(NSString *)string;
++ (NSString *)summaryFromContent:(NSString *)string;
 
 /**
  An array of statuses available to a post while editing
