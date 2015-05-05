@@ -64,30 +64,21 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     }
 
     // Get all the things
-    static NSRegularExpression *imgRegex;
-    static NSRegularExpression *srcRegex;
+    static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
         NSString *imgPattern = @"<img(\\s+.*?)(?:src\\s*=\\s*(?:'|\")(.*?)(?:'|\"))(.*?)>";
-        NSString *srcPattern = @"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")";
-        imgRegex = [NSRegularExpression regularExpressionWithPattern:imgPattern options:NSRegularExpressionCaseInsensitive error:&error];
-        srcRegex = [NSRegularExpression regularExpressionWithPattern:srcPattern options:NSRegularExpressionCaseInsensitive error:&error];
+        regex = [NSRegularExpression regularExpressionWithPattern:imgPattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     // Find all the image tags in the content passed.
-    NSArray *matches = [imgRegex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
+    NSArray *matches = [regex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
 
     NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
     for (NSTextCheckingResult *match in matches) {
         NSString *tag = [content substringWithRange:match.range];
-        // Get the src of the image, triming off everything but the url itself.
-        NSRange srcRng = [srcRegex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
-        NSString *src = [tag substringWithRange:srcRng];
-        NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
-        NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
-        src = [src substringFromIndex:quoteRng.location];
-        src = [src stringByTrimmingCharactersInSet:charSet];
+        NSString *src = [self extractSrcFromImgTag:tag];
 
         // Check the tag for a good width
         NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
@@ -98,6 +89,31 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     }
 
     return imageSrc;
+}
+
+/**
+ Extract the path to an image from an image tag.
+ 
+ @param tag An image tag.
+ @return The value of the src param.
+ */
++ (NSString *)extractSrcFromImgTag:(NSString *)tag
+{
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        NSString *srcPattern = @"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")";
+        regex = [NSRegularExpression regularExpressionWithPattern:srcPattern options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSRange srcRng = [regex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
+    NSString *src = [tag substringWithRange:srcRng];
+    NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
+    NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
+    src = [src substringFromIndex:quoteRng.location];
+    src = [src stringByTrimmingCharactersInSet:charSet];
+    return src;
 }
 
 /**
