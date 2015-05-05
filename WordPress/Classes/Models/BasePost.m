@@ -97,11 +97,7 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
 
 - (NSArray *)availableStatusesForEditing
 {
-    // Subset of status a user may assign to a post they are editing.
-    // Private is not listed as this is determined by the visibility settings.
-    // Scheduled is not listed as this should be handled by assigning a
-    // future date.
-    // Trash is not listed as this should be handled via a delete action.
+    // Note: Read method description before changing values.
     return @[PostStatusDraft,
              PostStatusPending,
              PostStatusPublish];
@@ -177,7 +173,6 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return self.date_created_gmt;
 }
 
-// TODO: Double check to make sure this logic matches wp-admin
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
