@@ -4,9 +4,8 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#ifdef TRACKS_ENABLED
-#import <TracksService.h>
-#endif
+#import <Mixpanel/MPTweakInline.h>
+#import <Automattic-Tracks-iOS/TracksService.h>
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
@@ -19,10 +18,8 @@
 
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
-#ifdef TRACKS_ENABLED
 @property (nonatomic, strong) TracksContextManager *contextManager;
 @property (nonatomic, strong) TracksService *tracksService;
-#endif
 @property (nonatomic, strong) NSDictionary *userProperties;
 @property (nonatomic, strong) NSString *anonymousID;
 
@@ -37,10 +34,10 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 {
     self = [super init];
     if (self) {
-#ifdef TRACKS_ENABLED
-        _contextManager = [TracksContextManager new];
-        _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
-#endif
+        if (MPTweakValue(@"Nosara Tracks Enabled", YES)) {
+            _contextManager = [TracksContextManager new];
+            _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
+        }
     }
     return self;
 }
@@ -52,15 +49,17 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
+    if (!MPTweakValue(@"Nosara Tracks Enabled", YES)) {
+        return;
+    }
+
     TracksEventPair *eventPair = [self eventPairForStat:stat];
     NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
 
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-#ifdef TRACKS_ENABLED
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
-#endif
 }
 
 - (void)beginSession
@@ -84,6 +83,10 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 
 - (void)refreshMetadata
 {
+    if (!MPTweakValue(@"Nosara Tracks Enabled", YES)) {
+        return;
+    }
+
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     __block NSUInteger blogCount;
     __block NSString *username;
@@ -122,7 +125,6 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
 
-#ifdef TRACKS_ENABLED
     self.tracksService.userProperties = userProperties;
     
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
@@ -130,7 +132,6 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     if (dotcom_user == YES && [username length] > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
-#endif
 }
 
 - (void)beginTimerForStat:(WPAnalyticsStat)stat
