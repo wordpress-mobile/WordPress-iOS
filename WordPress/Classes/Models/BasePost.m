@@ -153,8 +153,8 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     self.date_created_gmt = localDate;
 
     /*
-     If the date is nil it means publish immediately so set the status to publish. 
-     If the date is in the future set the status to publish. 
+     If the date is nil it means publish immediately so set the status to publish.
+     If the date is in the future set the status to scheduled.
      If the date is now or in the past, and the status is scheduled, set the status
      to published.
      */
