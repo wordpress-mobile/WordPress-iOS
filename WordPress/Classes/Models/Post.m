@@ -3,6 +3,7 @@
 #import "PostCategory.h"
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
+#import "NSString+Helpers.h"
 #import "ContextManager.h"
 #import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
@@ -56,9 +57,9 @@
 {
     NSString *str = self.mt_excerpt;
     if ([str length]) {
-        str = [BasePost makePlainText:str];
+        str = [NSString makePlainText:str];
     } else {
-        str = [BasePost createSummaryFromContent:self.content];
+        str = [BasePost summaryFromContent:self.content];
     }
     self.storedContentPreviewForDisplay = str ? str : @"";
 }

@@ -1,11 +1,18 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
 static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
+
++ (NSString *)makePlainText:(NSString *)string
+{
+    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
+}
 
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
