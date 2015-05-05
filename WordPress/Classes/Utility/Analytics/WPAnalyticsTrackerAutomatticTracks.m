@@ -342,10 +342,10 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
             eventName = @"notifications_replied_to";
             break;
         case WPAnalyticsStatNotificationTrashed:
-            eventName = @"notifications_trashed";
+            eventName = @"notifications_comment_trashed";
             break;
         case WPAnalyticsStatNotificationUnapproved:
-            eventName = @"notifications_unapproved";
+            eventName = @"notifications_comment_unapproved";
             break;
         case WPAnalyticsStatNotificationUnfollowAction:
             eventName = @"notifications_unfollow_action";
@@ -357,7 +357,7 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
             eventName = @"notifications_missing_sync_warning";
             break;
         case WPAnalyticsStatNotificationsOpenedNotificationDetails:
-            eventName = @"notifications_opened_notification_details";
+            eventName = @"notifications_notification_details_opened";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
