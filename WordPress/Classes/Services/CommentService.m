@@ -140,6 +140,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                                      purgeExisting:YES
                                  completionHandler:^{
                                      [[self class] stopSyncingCommentsForBlog:blogID];
+                                     if (success) {
+                                         success();
+                                     }
                                  }];
                            }];
                        } failure:^(NSError *error) {
