@@ -40,8 +40,15 @@ extern NSString * const PostStatusDeleted;
 @property (nonatomic, strong) NSNumber * post_thumbnail;
 
 // Helpers
-@property (nonatomic, strong) NSString *pathForDisplayImage; // Cached path of an image from the post to use for display purposes. Not part of the post's canoncial data.
-@property (nonatomic, assign) BOOL isFeaturedImageChanged; // BOOL flag if the feature image was changed.
+/**
+ Cached path of an image from the post to use for display purposes. 
+ Not part of the post's canoncial data.
+ */
+@property (nonatomic, strong) NSString *pathForDisplayImage;
+/**
+ BOOL flag if the feature image was changed.
+ */
+@property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 /**
  Returns the localized title for the specified status.  Status should be 
@@ -70,7 +77,13 @@ extern NSString * const PostStatusDeleted;
 + (NSString *)createSummaryFromContent:(NSString *)string;
 
 /**
- An array of statuses available to a post while editing. 
+ An array of statuses available to a post while editing
+ @details Subset of status a user may assign to a post they are editing. 
+ Status included are: draft, pending, and publish.
+ Private is not listed as this is determined by the visibility settings.
+ Scheduled is not listed as this should be handled by assigning a
+ future date.
+ Trash is not listed as this should be handled via a delete action.
  */
 - (NSArray *)availableStatusesForEditing;
 
