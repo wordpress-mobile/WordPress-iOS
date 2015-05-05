@@ -10,6 +10,14 @@
  */
 + (NSString *)makePlainText:(NSString *)string;
 
+/**
+ Removes shortcodes from the passed string.
+
+ @param string The string to remove shortcodes from.
+ @return The modified string.
+ */
++ (NSString *)stripShortcodesFromString:(NSString *)string;
+
 - (NSString *)stringByUrlEncoding;
 - (NSString *)md5;
 - (NSMutableDictionary *)dictionaryFromQueryString;
