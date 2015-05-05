@@ -217,8 +217,7 @@
 
 - (NSString *)titleForDisplay
 {
-    NSString *title = self.postTitle ? self.postTitle : @"";
-    title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
     return [title stringByDecodingXMLCharacters];
 }
 
