@@ -34,16 +34,16 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 }
 
 + (BOOL)isSyncingCommentsForBlog:(Blog *)blog {
-    return [self isSyncingCommentsForBlogID:blog.objectID.URIRepresentation];
+    return [self isSyncingCommentsForBlogID:blog.objectID];
 }
 
-+ (BOOL)isSyncingCommentsForBlogID:(NSURL *)blogID
++ (BOOL)isSyncingCommentsForBlogID:(NSManagedObjectID *)blogID
 {
     NSParameterAssert(blogID);
     return [[self syncingCommentsLocks] containsObject:blogID];
 }
 
-+ (BOOL)startSyncingCommentsForBlog:(NSURL *)blogID
++ (BOOL)startSyncingCommentsForBlog:(NSManagedObjectID *)blogID
 {
     NSParameterAssert(blogID);
     @synchronized([self syncingCommentsLocks]) {
@@ -55,7 +55,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     }
 }
 
-+ (void)stopSyncingCommentsForBlog:(NSURL *)blogID
++ (void)stopSyncingCommentsForBlog:(NSManagedObjectID *)blogID
 {
     NSParameterAssert(blogID);
     @synchronized([self syncingCommentsLocks]) {
@@ -130,7 +130,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    NSURL * blogID= blog.objectID.URIRepresentation;
+    NSManagedObjectID *blogID= blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         return;
     }
@@ -172,7 +172,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                         success:(void (^)(BOOL hasMore))success
                         failure:(void (^)(NSError *))failure
 {
-    NSURL * blogID= blog.objectID.URIRepresentation;
+    NSManagedObjectID *blogID= blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         return;
     }
