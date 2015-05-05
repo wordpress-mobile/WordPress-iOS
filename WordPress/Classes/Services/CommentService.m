@@ -43,11 +43,15 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     return [[self syncingCommentsLocks] containsObject:blogID];
 }
 
-+ (void)startSyncingCommentsForBlog:(NSURL *)blogID
++ (BOOL)startSyncingCommentsForBlog:(NSURL *)blogID
 {
     NSParameterAssert(blogID);
     @synchronized([self syncingCommentsLocks]) {
+        if ([self isSyncingCommentsForBlogID:blogID]){
+            return NO;
+        }
         [[self syncingCommentsLocks] addObject:blogID];
+         return YES;
     }
 }
 
@@ -127,10 +131,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     failure:(void (^)(NSError *error))failure
 {
     NSURL * blogID= blog.objectID.URIRepresentation;
-    if ([[self class] isSyncingCommentsForBlogID:blogID]){
+    if (![[self class] startSyncingCommentsForBlog:blogID]){
         return;
     }
-    [[self class] startSyncingCommentsForBlog:blogID];
     
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     [remote getCommentsForBlog:blog
@@ -170,10 +173,9 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                         failure:(void (^)(NSError *))failure
 {
     NSURL * blogID= blog.objectID.URIRepresentation;
-    if ([[self class] isSyncingCommentsForBlogID:blogID]){
+    if (![[self class] startSyncingCommentsForBlog:blogID]){
         return;
     }
-    [[self class] startSyncingCommentsForBlog:blogID];
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
