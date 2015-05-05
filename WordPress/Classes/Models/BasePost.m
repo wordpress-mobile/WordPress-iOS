@@ -3,8 +3,8 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
 #import "WPComLanguages.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 #import "NSString+Helpers.h"
 
 static const NSUInteger PostDerivedSummaryLength = 150;
@@ -62,15 +62,9 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return status;
 }
 
-+ (NSString *)makePlainText:(NSString *)string
++ (NSString *)summaryFromContent:(NSString *)string
 {
-    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
-}
-
-+ (NSString *)createSummaryFromContent:(NSString *)string
-{
-    string = [self makePlainText:string];
+    string = [NSString makePlainText:string];
     string = [self stripShortcodesFromString:string];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
