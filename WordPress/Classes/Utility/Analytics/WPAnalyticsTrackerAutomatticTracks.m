@@ -20,6 +20,7 @@
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
 #ifdef TRACKS_ENABLED
+@property (nonatomic, strong) TracksContextManager *contextManager;
 @property (nonatomic, strong) TracksService *tracksService;
 #endif
 @property (nonatomic, strong) NSDictionary *userProperties;
@@ -37,7 +38,8 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     self = [super init];
     if (self) {
 #ifdef TRACKS_ENABLED
-        _tracksService = [TracksService new];
+        _contextManager = [TracksContextManager new];
+        _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
 #endif
     }
     return self;
