@@ -195,8 +195,8 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
                     DDLogVerbose(@"Background Fetch Completed with New Data!");
                 } else {
                     DDLogVerbose(@"Background Fetch Completed with No Data..");
-                        }
-                        completionHandler(result);
+                }
+                completionHandler(result);
             }];
         }
     }
