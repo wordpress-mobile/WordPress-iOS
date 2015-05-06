@@ -140,8 +140,30 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 // Overrides
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
+
+/**
+ *	@brief      Finds the first NotificationRange instance that maps to a given URL.
+ *
+ *	@param		url         The URL mapped by the NotificationRange instance we need to find.
+ *  @returns                A NotificationRange instance mapping to a given URL.
+ */
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+
+
+/**
+ *	@brief      Finds the first NotificationRange instance that maps to a given CommentID.
+ *
+ *	@param		commentID   The CommentID mapped by the NotificationRange instance we need to find.
+ *  @returns                A NotificationRange instance referencing to a given commentID.
+ */
 - (NotificationRange *)notificationRangeWithCommentId:(NSNumber *)commentId;
+
+
+/**
+ *	@brief      Collects all of the Image URL's referenced by the NotificationMedia instances
+ *
+ *  @returns                An array of NSURL instances, mapping to images required by this block.
+ */
 - (NSArray *)imageUrls;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
