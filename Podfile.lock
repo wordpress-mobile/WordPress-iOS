@@ -21,8 +21,8 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AMPopTip (0.7.1)
-  - Automattic-Tracks-iOS (0.0.1):
+  - AMPopTip (0.7.2)
+  - Automattic-Tracks-iOS (0.0.2):
     - UIDeviceIdentifier (~> 0.4)
   - CocoaLumberjack (1.9.2):
     - CocoaLumberjack/Extensions (= 1.9.2)
@@ -47,10 +47,10 @@ PODS:
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.10.2)
-  - HockeySDK (3.6.2)
-  - KIF/IdentifierTests (3.2.1):
+  - HockeySDK (3.6.4)
+  - KIF/IdentifierTests (3.2.2):
     - KIF/XCTest
-  - KIF/XCTest (3.2.1)
+  - KIF/XCTest (3.2.2)
   - Lookback (0.9.2)
   - MGImageUtilities (0.0.1)
   - Mixpanel (2.5.4)
@@ -125,7 +125,7 @@ DEPENDENCIES:
   - 1PasswordExtension (= 1.1.2)
   - AFNetworking (~> 2.5.3)
   - AMPopTip (~> 0.7)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.1`)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, tag `0.0.2`)
   - CocoaLumberjack (~> 1.9)
   - CrashlyticsLumberjack (~> 1.0.0)
   - CTAssetsPickerController (~> 2.9.3)
@@ -160,7 +160,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.1
+    :tag: 0.0.2
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -176,7 +176,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.1
+    :tag: 0.0.2
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
@@ -190,8 +190,8 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  AMPopTip: 5a78abc067fe3e2fb5d3980072ffae51c8c4f6c5
-  Automattic-Tracks-iOS: c06baf6619f268d839ebe2b0891764e40c0482f7
+  AMPopTip: 85f39d509fec9746b51a08c18857777dd68566cc
+  Automattic-Tracks-iOS: 6f9f791e59691bf07072c4c915bd63b7d4ffc04e
   CocoaLumberjack: 628fca2e88ef06f7cf6817309aa405f325d9a6fa
   CrashlyticsLumberjack: 36f8440f1f8a2e472816ecd51e9142f60b13fdce
   CTAssetsPickerController: 56a4a228dcb48a9375ab8d4922e82ac74af74aa1
@@ -201,8 +201,8 @@ SPEC CHECKSUMS:
   Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
-  HockeySDK: 51ade1aff04463137e852797d2eb4dfb2511d6a9
-  KIF: ef1691e54e1d969c3b4fd0b5b56a3d7ddf37f216
+  HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
+  KIF: b0bd762b0c7890b04920cf618021d6d4fd5127bd
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
   MGImageUtilities: ce03a910781d7e189814d668af340bc1c0238363
   Mixpanel: 61f3f69428ec1f4c32245392471ccc2292c05e32

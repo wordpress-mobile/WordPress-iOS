@@ -123,7 +123,8 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
 
 #ifdef TRACKS_ENABLED
-    self.tracksService.userProperties = userProperties;
+    [self.tracksService.userProperties removeAllObjects];
+    [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
     
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     
