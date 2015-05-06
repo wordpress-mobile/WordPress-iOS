@@ -135,6 +135,16 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
                    }];
 }
 
+- (Post *)oldestPostOfType:(NSString *)postType forBlog:(Blog *)blog {
+    NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL AND blog=%@", blog];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    Post *oldestPost = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+    return oldestPost;
+}
+
 - (void)loadMorePostsOfType:(NSString *)postType
                     forBlog:(Blog *)blog
                     success:(void (^)())success
@@ -143,14 +153,11 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
-        NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
-        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-        request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL"];
-        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
-        request.sortDescriptors = @[sortDescriptor];
-        Post *oldestPost = [[self.managedObjectContext executeFetchRequest:request error:nil] firstObject];
+        Post *oldestPost = [self oldestPostOfType:postType forBlog:blog];
         if (oldestPost.date_created_gmt) {
             options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
+            options[@"order"] = @"desc";
+            options[@"order_by"] = @"date";
         }
     } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
         NSUInteger postCount = [blog.posts count];
