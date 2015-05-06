@@ -186,9 +186,13 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     }
     
     // WordPress.com Push Authentication Notification
+    // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+    // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+    // notifications when in BG mode.
+    //
     PushAuthenticationManager *authenticationManager = [PushAuthenticationManager sharedInstance];
-    if ([authenticationManager shouldHandleNotification:userInfo]) {
-        [authenticationManager handlePushNotification:userInfo];
+    if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
+        [authenticationManager handlePushAuthenticationNotification:userInfo];
         return;
     }
     
