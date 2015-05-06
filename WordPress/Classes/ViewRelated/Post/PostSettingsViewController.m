@@ -53,7 +53,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UITextField *tagsTextField;
-@property (nonatomic, strong) NSArray *statusList;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) WPTableImageSource *imageSource;
@@ -96,12 +95,9 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    NSMutableArray *allStatuses = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
-    [allStatuses removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
-    self.statusList = [NSArray arrayWithArray:allStatuses];
     self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                           NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
-                           NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
+                            NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
+                            NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
     self.formatsList = self.post.blog.sortedPostFormatNames;
 
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissTagsKeyboardIfAppropriate:)];
@@ -128,13 +124,13 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
     [self.navigationController setNavigationBarHidden:NO animated:NO];
     [self.navigationController setToolbarHidden:YES];
-    
+
     // Do not hide the status bar on iPads
     if (self.shouldHideStatusBar && !IS_IPAD) {
         [[UIApplication sharedApplication] setStatusBarHidden:YES
                                                 withAnimation:nil];
     }
-    
+
     [self reloadData];
 }
 
@@ -175,14 +171,14 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 - (void)addPostPropertiesObserver
 {
     [self.post addObserver:self
-             forKeyPath:@"post_thumbnail"
-                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
+                forKeyPath:@"post_thumbnail"
+                   options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                   context:nil];
 
     [self.post addObserver:self
-             forKeyPath:@"geolocation"
-                options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
-                context:nil];
+                forKeyPath:@"geolocation"
+                   options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld
+                   context:nil];
 }
 
 - (void)removePostPropertiesObserver
@@ -247,16 +243,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 - (void)datePickerChanged:(NSDate *)date
 {
     self.apost.dateCreated = date;
-
-    // Try to match behavior in wp-admin.
-    // A nil value for date means "publish immediately", so also change status to publish.
-    // If a draft post is given a future date, change its status to publish.
-    // This approximates the behavior of wp-admin with only a single button to save vs a button
-    // to save as a draft, and a button to update/schedule/publish
-    if ((date == nil) ||
-        ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending && [self.apost.status isEqualToString:@"draft"])) {
-        self.apost.status = @"publish";
-    }
 }
 
 #pragma mark - TextField Delegate Methods
@@ -291,8 +277,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 }
 
 - (BOOL)textField:(UITextField *)textField
-        shouldChangeCharactersInRange:(NSRange)range
-        replacementString:(NSString *)string
+shouldChangeCharactersInRange:(NSRange)range
+replacementString:(NSString *)string
 {
     if (textField == self.tagsTextField) {
         self.post.tags = [self.tagsTextField.text stringByReplacingCharactersInRange:range withString:string];
@@ -508,7 +494,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         // Publish date
         cell = [self getWPTableViewCell];
         if (self.apost.dateCreated) {
-            if ([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending) {
+            if ([self.apost isScheduled]) {
                 cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
             } else {
                 cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
@@ -531,14 +517,9 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         cell = [self getWPTableViewCell];
         cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
         cell.accessibilityIdentifier = @"Status";
-        if (([self.apost.dateCreated compare:[NSDate date]] == NSOrderedDescending)
-            && ([self.apost.status isEqualToString:@"publish"])) {
-            cell.detailTextLabel.text = NSLocalizedString(@"Scheduled", @"If a post is scheduled for later, this string is used for the post's status. Should use the same translation as core WP.");
-        } else {
-            cell.detailTextLabel.text = self.apost.statusTitle;
-        }
+        cell.detailTextLabel.text = self.apost.statusTitle;
 
-        if ([self.apost.status isEqualToString:@"private"]) {
+        if ([self.apost.status isEqualToString:PostStatusPrivate]) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else {
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -566,7 +547,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
         cell = textCell;
         cell.tag = PostSettingsRowPassword;
-        
+
         self.passwordTextField = textCell.textField;
         self.passwordTextField.accessibilityIdentifier = @"Password Value";
     }
@@ -772,24 +753,27 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)showPostStatusSelector
 {
-    if ([self.apost.status isEqualToString:@"private"]) {
+    if ([self.apost.status isEqualToString:PostStatusPrivate]) {
         return;
     }
 
-    NSMutableArray *titles = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
-    [titles removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
+    NSArray *statuses = [self.apost availableStatusesForEditing];
+    NSMutableArray *titles = [NSMutableArray array];
+    for (NSString *status in statuses) {
+        [titles addObject:[BasePost titleForStatus:status]];
+    }
 
     NSDictionary *statusDict = @{
                                  @"DefaultValue": NSLocalizedString(@"Published", @""),
                                  @"Title" : NSLocalizedString(@"Status", nil),
                                  @"Titles" : titles,
-                                 @"Values" : titles,
-                                 @"CurrentValue" : self.apost.statusTitle
+                                 @"Values" : statuses,
+                                 @"CurrentValue" : self.apost.status
                                  };
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *status) {
-        [self.apost setStatusTitle:status];
+    vc.onItemSelected = ^(NSObject *status) {
+        self.apost.status = (NSString *)status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
@@ -811,36 +795,37 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                                     @"CurrentValue" : [self titleForVisibility]};
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *visibility) {
+    vc.onItemSelected = ^(NSObject *selectedVis) {
+        NSString *visibility = (NSString *)selectedVis;
         [weakVc dismiss];
-        
+
         NSAssert(_apost != nil, @"The post should not be nil here.");
         NSAssert(!_apost.isFault, @"The post should not be a fault here here.");
         NSAssert(_apost.managedObjectContext != nil, @"The post's MOC should not be nil here.");
 
         if ([visibility isEqualToString:NSLocalizedString(@"Private", @"Post privacy status in the Post Editor/Settings area (compare with WP core translations).")]) {
-            self.apost.status = @"private";
+            self.apost.status = PostStatusPrivate;
             self.apost.password = nil;
         } else {
-            if ([self.apost.status isEqualToString:@"private"]) {
-                if ([self.apost.original.status isEqualToString:@"private"]) {
-                    self.apost.status = @"publish";
+            if ([self.apost.status isEqualToString:PostStatusPrivate]) {
+                if ([self.apost.original.status isEqualToString:PostStatusPrivate]) {
+                    self.apost.status = PostStatusPublish;
                 } else {
                     // restore the original status
                     self.apost.status = self.apost.original.status;
                 }
             }
             if ([visibility isEqualToString:NSLocalizedString(@"Password protected", @"Post password protection in the Post Editor/Settings area (compare with WP core translations).")]) {
-                
+
                 NSString *password = @"";
-                
+
                 NSAssert(_apost.original != nil,
                          @"We're expecting to have a reference to the original post here.");
                 NSAssert(!_apost.original.isFault,
                          @"The original post should not be a fault here here.");
                 NSAssert(_apost.original.managedObjectContext != nil,
                          @"The original post's MOC should not be nil here.");
-                
+
                 if (self.apost.original.password) {
                     // restore the original password
                     password = self.apost.original.password;
@@ -866,19 +851,19 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     }
 
     NSDictionary *postFormatsDict = @{
-        @"DefaultValue"   : [titles firstObject],
-        @"Title"          : NSLocalizedString(@"Post Format", nil),
-        @"Titles"         : titles,
-        @"Values"         : titles,
-        @"CurrentValue"   : post.postFormatText
-    };
+                                      @"DefaultValue"   : [titles firstObject],
+                                      @"Title"          : NSLocalizedString(@"Post Format", nil),
+                                      @"Titles"         : titles,
+                                      @"Values"         : titles,
+                                      @"CurrentValue"   : post.postFormatText
+                                      };
 
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *status) {
+    vc.onItemSelected = ^(NSObject *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            post.postFormatText = status;
+            post.postFormatText = (NSString *)status;
             [weakVc dismiss];
             [self.tableView reloadData];
         }
@@ -946,7 +931,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         width = width - (PostFeaturedImageCellMargin * 2); // left and right cell margins
         CGFloat height = ceilf(width * 0.66);
         CGSize imageSize = CGSizeMake(width, height);
-        
+
         [self.imageSource fetchImageForURL:url
                                   withSize:imageSize
                                  indexPath:indexPath
@@ -956,7 +941,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         successBlock(media);
         return;
     }
-    
+
     [mediaService getMediaWithID:self.apost.post_thumbnail inBlog:self.apost.blog withSuccess:successBlock failure:^(NSError *error) {
         [self featuredImageFailedLoading:indexPath withError:error];
     }];
@@ -1055,7 +1040,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 {
     if (self.apost.password) {
         return NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP.");
-    } else if ([self.apost.status isEqualToString:@"private"]) {
+    } else if ([self.apost.status isEqualToString:PostStatusPrivate]) {
         return NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.");
     }
 
@@ -1113,7 +1098,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                             message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
         return;
     }
-    
+
     self.isUploadingMedia = YES;
     [self uploadFeatureImage:assets[0]];
     if (IS_IPAD) {

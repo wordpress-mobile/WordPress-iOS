@@ -4,8 +4,10 @@
 
 @implementation AbstractPost
 
-@dynamic blog, media;
+@dynamic blog;
+@dynamic media;
 @dynamic comments;
+@synthesize restorableStatus;
 
 - (void)remove
 {
