@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 
 /**
@@ -19,18 +20,29 @@ import Foundation
     
     
     /**
-    *  @details     Checks if a given Push Notification is of the Push Authentication type.
+    *  @brief       Checks if a given Push Notification should be handled by this helper.
+    *  @details     A Push Notification should be handled by this helper, whenever the following conditions are met:
+    *
+    *                   -   The App must NOT be running in BG. We check for this because, due to the Background
+    *                       Notifications Entitlement, this code might get hit multiple times for the same note.
+    *                   -   The AlertView is not already onscreen
+    *                   -   The 'Type' field contains 'push_auth'.
     *
     *  @param       userInfo    Is the Notification's payload. Can be nil.
-    *  @returns     True if the notification is of Push Authentication type
+    *  @returns     True if the notification should be handled by this class
     */
-    public func isPushAuthenticationNotification(userInfo: NSDictionary?) -> Bool {
-        if let unwrappedNoteType = userInfo?["type"] as? String {
-            return unwrappedNoteType == pushAuthenticationNoteType
+    public func shouldHandleNotification(userInfo: NSDictionary?) -> Bool {
+
+        let isRunningInForeground   = UIApplication.sharedApplication().applicationState != .Background
+        let unwrappedNoteType       = userInfo?["type"] as? String
+        
+        if unwrappedNoteType == nil {
+            return false
         }
 
-        return false
+        return  isRunningInForeground && unwrappedNoteType == pushAuthenticationNoteType && !isAlertViewOnScreen
     }
+
 
     /**
     *  @details     Will display a popup requesting for permission to verify a WordPress.com login
@@ -39,14 +51,14 @@ import Foundation
     *
     *  @param       userInfo    Is the Notification's payload.
     */
-    public func handlPushAuthenticationNotification(userInfo: NSDictionary?) {
+    public func handlePushNotification(userInfo: NSDictionary?) {
         
         let token   = userInfo?["push_auth_token"] as? String
         let title   = userInfo?["title"] as? String
         let aps     = userInfo?["aps"] as? NSDictionary
         let message = aps?["alert"] as? String
 
-        if isAlertViewOnScreen != false || token == nil || title == nil || message == nil {
+        if token == nil || title == nil || message == nil {
             return
         }
 
