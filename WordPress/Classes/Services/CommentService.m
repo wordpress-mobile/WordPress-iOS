@@ -132,6 +132,10 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSManagedObjectID *blogID= blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
+        // We assume success because a sync is already running and it will change the comments
+        if (success) {
+            success();
+        }
         return;
     }
     
@@ -174,7 +178,10 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 {
     NSManagedObjectID *blogID= blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
-        return;
+        // We assume success because a sync is already running and it will change the comments
+        if (success) {
+            success(YES);
+        }
     }
 
     id<CommentServiceRemote> remote = [self remoteForBlog:blog];
