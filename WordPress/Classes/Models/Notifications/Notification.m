@@ -650,11 +650,6 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return [self.type isEqual:NoteTypeComment];
 }
 
-- (BOOL)isReplied
-{
-    return self.isComment && self.metaReplyID != nil;
-}
-
 - (BOOL)isPost
 {
     return [self.type isEqual:NoteTypePost];
@@ -681,6 +676,11 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     }
     
     return false;
+}
+
+- (BOOL)hasReply
+{
+    return self.isComment && self.metaReplyID != nil;
 }
 
 

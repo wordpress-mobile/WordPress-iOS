@@ -28,7 +28,7 @@ import Foundation
             refreshSeparators()
         }
     }
-    public var isReplied: Bool = false {
+    public var hasReply: Bool = false {
         didSet {
             refreshSeparators()
         }
@@ -103,7 +103,7 @@ import Foundation
         // Bottom Separator
         var bottomInsets                    = separatorUnapprovedInsets
         if isApproved {
-            bottomInsets                    = isReplied ? separatorRepliedInsets : separatorApprovedInsets
+            bottomInsets                    = hasReply ? separatorRepliedInsets : separatorApprovedInsets
         }
         
         separatorsView.bottomVisible        = true
