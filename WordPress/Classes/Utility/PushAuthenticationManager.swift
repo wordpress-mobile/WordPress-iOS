@@ -46,10 +46,10 @@ import Foundation
         let aps     = userInfo?["aps"] as? NSDictionary
         let message = aps?["alert"] as? String
 
-        if token == nil || title == nil || message == nil {
+        if isAlertViewOnScreen != false || token == nil || title == nil || message == nil {
             return
         }
-                
+
         showAlertView(title!, message: message!) { (accepted) -> () in
             if !accepted {
                 return
@@ -74,12 +74,16 @@ import Foundation
         let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
 
+        isAlertViewOnScreen = true
+        
         UIAlertView.showWithTitle(title,
             message: message,
             cancelButtonTitle: cancelButtonTitle,
             otherButtonTitles: [acceptButtonTitle as AnyObject])
             {
                 (theAlertView: UIAlertView!, buttonIndex: Int) -> Void in
+                
+                self.isAlertViewOnScreen = false
                 let accepted = theAlertView.cancelButtonIndex != buttonIndex
                 completion(accepted: accepted)
             }
@@ -88,4 +92,7 @@ import Foundation
     
     // MARK: - Private Internal Constants
     private let pushAuthenticationNoteType = "push_auth"
+    
+    // MARK: - Private Internal Properties
+    private var isAlertViewOnScreen: Bool = false
 }
