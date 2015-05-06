@@ -83,14 +83,44 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 - (void)setupSecurityPolicy
-{
+{    
     NSArray *certificateFiles = @[ @"wordpress.com", @"intermediate", @"root" ];
+    
     NSMutableArray *certificates = [NSMutableArray arrayWithCapacity:certificateFiles.count];
+    CFMutableArrayRef certificateRefs = CFArrayCreateMutable(kCFAllocatorDefault, certificateFiles.count, NULL);
+
     for (NSString *certificateFile in certificateFiles) {
         NSString *certificatePath = [[NSBundle mainBundle] pathForResource:certificateFile ofType:@"cer"];
         NSData *certificateData = [NSData dataWithContentsOfFile:certificatePath];
         [certificates addObject:certificateData];
+        
+        SecCertificateRef certificateRef = SecCertificateCreateWithData(kCFAllocatorDefault, (__bridge CFDataRef)certificateData);
+        CFArrayAppendValue(certificateRefs, certificateRef);
     }
+    
+    // test to see if the local cert is expired or not trustworthy
+    SecPolicyRef policyRef = SecPolicyCreateSSL(true, (__bridge CFStringRef)@"*.wordpress.com");
+    SecTrustRef trustRef;
+    SecTrustCreateWithCertificates(certificateRefs, policyRef, &trustRef);
+    
+    // we don't want to make a network call as it will block the thread
+    // we are also more-so trying to verify the local cert expiration
+    SecTrustSetNetworkFetchAllowed(trustRef, NO);
+    SecTrustSetAnchorCertificates(trustRef, certificateRefs);
+    
+    SecTrustResultType trustResult;
+    SecTrustEvaluate(trustRef, &trustResult);
+    
+    CFRelease(policyRef);
+    CFRelease(certificateRefs);
+    CFRelease(trustRef);
+    
+    if(!(trustResult == kSecTrustResultProceed || trustResult == kSecTrustResultUnspecified)) {
+        // cert was expired or failed or another reason
+        // do not continue with pinned cert implementation
+        return;
+    }
+    
     AFSecurityPolicy *securityPolicy = [AFSecurityPolicy policyWithPinningMode:AFSSLPinningModeCertificate];
     securityPolicy.pinnedCertificates = [NSArray arrayWithArray:certificates];
     securityPolicy.validatesCertificateChain = YES;
