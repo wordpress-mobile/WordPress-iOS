@@ -135,7 +135,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
                    }];
 }
 
-- (Post *)oldesPostOfType:(NSString *)postType forBlog:(Blog *)blog {
+- (Post *)oldestPostOfType:(NSString *)postType forBlog:(Blog *)blog {
     NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     request.predicate = [NSPredicate predicateWithFormat:@"date_created_gmt != NULL AND blog=%@", blog];
@@ -153,7 +153,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
-        Post *oldestPost = [self oldesPostOfType:postType forBlog:blog];
+        Post *oldestPost = [self oldestPostOfType:postType forBlog:blog];
         if (oldestPost.date_created_gmt) {
             options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
             options[@"order"] = @"desc";
