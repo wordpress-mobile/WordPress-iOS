@@ -18,6 +18,8 @@
 #import <Mixpanel/Mixpanel.h>
 #import "Blog.h"
 
+#import "WordPress-Swift.h"
+
 
 
 #pragma mark ====================================================================================
@@ -183,7 +185,14 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         return;
     }
     
-
+    // WordPress.com Push Authentication Notification
+    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager sharedInstance];
+    if ([authenticationManager shouldHandleNotification:userInfo]) {
+        [authenticationManager handlePushNotification:userInfo];
+        return;
+    }
+    
+    // Notification-Y Push Notifications
     if (state == UIApplicationStateInactive) {
         NSString *notificationID = [[userInfo numberForKey:@"note_id"] stringValue];
         [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
