@@ -66,6 +66,22 @@ extension NotificationBlock
     }
 
     /**
+    *	@brief      Formats a NotificationBlock for usage in NoteBlockFooterTableViewCell
+    *
+    *	@returns	A Header Attributed String
+    */
+    public func attributedFooterText() -> NSAttributedString {
+        let attributedText = memoize { () -> NSAttributedString in
+            return self.textWithStyles(Styles.footerRegularStyle,
+                quoteStyles:    nil,
+                rangeStylesMap: Constants.footerStylesMap,
+                linksColor:     nil)
+        }
+        
+        return attributedText(Constants.richHeaderTitleCacheKey)
+    }
+    
+    /**
     *	@brief      Formats a NotificationBlock for usage into both, NoteBlockTextTableViewCell 
     *               and NoteBlockCommentTableViewCell.
     *
@@ -237,6 +253,10 @@ extension NotificationBlock
             NoteRangeTypeUser               : Styles.headerTitleBoldStyle,
             NoteRangeTypePost               : Styles.headerTitleContextStyle,
             NoteRangeTypeComment            : Styles.headerTitleContextStyle
+        ]
+
+        static let footerStylesMap = [
+            NoteRangeTypeNoticon            : Styles.blockNoticonStyle
         ]
         
         static let richRangeStylesMap = [
