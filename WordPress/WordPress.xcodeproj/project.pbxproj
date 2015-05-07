@@ -231,6 +231,7 @@
 		83F3E2D311276371004CD686 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83F3E2D211276371004CD686 /* CoreLocation.framework */; };
 		83FEFC7611FF6C5A0078B462 /* EditSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */; };
 		85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */; };
+		8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */; };
 		8516972C169D42F4006C5DED /* WPToast.m in Sources */ = {isa = PBXBuildFile; fileRef = 8516972B169D42F4006C5DED /* WPToast.m */; };
 		851734431798C64700A30E27 /* NSURL+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 851734421798C64700A30E27 /* NSURL+Util.m */; };
 		852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 852416CE1A12EBDD0030700C /* AppRatingUtility.m */; };
@@ -262,6 +263,8 @@
 		85D239BC1AE5A6620074768D /* LoginViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BA1AE5A6620074768D /* LoginViewModel.m */; };
 		85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BE1AE5A7020074768D /* LoginFacadeTests.m */; };
 		85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BF1AE5A7020074768D /* LoginViewModelTests.m */; };
+		85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D790A81AE5BF1F0033AE83 /* MixpanelProxy.m */; };
+		85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */; };
 		85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 85D80557171630B30075EEAC /* DotCom-Languages.plist */; };
 		85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */; };
 		85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */ = {isa = PBXBuildFile; fileRef = 85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */; };
@@ -965,6 +968,7 @@
 		83FEFC7411FF6C5A0078B462 /* EditSiteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSiteViewController.m; sourceTree = "<group>"; };
 		8514973F171E13DF00B87F3F /* WPAsyncBlockOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAsyncBlockOperation.h; sourceTree = "<group>"; };
 		85149740171E13DF00B87F3F /* WPAsyncBlockOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAsyncBlockOperation.m; sourceTree = "<group>"; };
+		8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerMixpanelTests.m; sourceTree = "<group>"; };
 		8516972A169D42F4006C5DED /* WPToast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPToast.h; sourceTree = "<group>"; };
 		8516972B169D42F4006C5DED /* WPToast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPToast.m; sourceTree = "<group>"; };
 		851734411798C64700A30E27 /* NSURL+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSURL+Util.h"; sourceTree = "<group>"; };
@@ -1024,6 +1028,9 @@
 		85D239BA1AE5A6620074768D /* LoginViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewModel.m; sourceTree = "<group>"; };
 		85D239BE1AE5A7020074768D /* LoginFacadeTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacadeTests.m; sourceTree = "<group>"; };
 		85D239BF1AE5A7020074768D /* LoginViewModelTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewModelTests.m; sourceTree = "<group>"; };
+		85D790A71AE5BF1F0033AE83 /* MixpanelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MixpanelProxy.h; sourceTree = "<group>"; };
+		85D790A81AE5BF1F0033AE83 /* MixpanelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixpanelProxy.m; sourceTree = "<group>"; };
+		85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MixpanelProxyTests.m; sourceTree = "<group>"; };
 		85D80557171630B30075EEAC /* DotCom-Languages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "DotCom-Languages.plist"; sourceTree = "<group>"; };
 		85D8055B171631F10075EEAC /* SelectWPComLanguageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectWPComLanguageViewController.h; sourceTree = "<group>"; };
 		85D8055C171631F10075EEAC /* SelectWPComLanguageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectWPComLanguageViewController.m; sourceTree = "<group>"; };
@@ -2271,6 +2278,8 @@
 				5DA3EE191925111700294E0B /* WPImageOptimizerTest.m */,
 				5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */,
 				5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */,
+				85D790AB1AE5D95E0033AE83 /* MixpanelProxyTests.m */,
+				8514B8D31AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -2425,6 +2434,8 @@
 				85DA8C4318F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m */,
 				5948AD0C1AB734F2006E8882 /* WPAppAnalytics.h */,
 				5948AD0D1AB734F2006E8882 /* WPAppAnalytics.m */,
+				85D790A71AE5BF1F0033AE83 /* MixpanelProxy.h */,
+				85D790A81AE5BF1F0033AE83 /* MixpanelProxy.m */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -3941,6 +3952,7 @@
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
 				591A428F1A6DC6F2003807A6 /* WPGUIConstants.m in Sources */,
+				85D790AA1AE5C6790033AE83 /* MixpanelProxy.m in Sources */,
 				857610D618C0377300EDF406 /* StatsWebViewController.m in Sources */,
 				5DBFC8A71A9BC34F00E00DE4 /* PostListViewController.m in Sources */,
 				5D08B90419648C3400D5B381 /* ReaderSubscriptionViewController.m in Sources */,
@@ -3980,6 +3992,7 @@
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */,
+				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */,
@@ -3992,6 +4005,7 @@
 				B5D689FD1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */,
+				85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,

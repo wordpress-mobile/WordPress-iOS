@@ -2066,6 +2066,11 @@ EditImageDetailsViewControllerDelegate
         }];
 }
 
+- (void)editorViewController:(WPEditorViewController *)editorViewController mediaRemoved:(NSString *)mediaID
+{
+    [self cancelUploadOfMediaWithId:mediaID];
+}
+
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
 {
     [WPAnalytics track:WPAnalyticsStatEditorEditedImage];
