@@ -3,8 +3,8 @@
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
 #import "WPComLanguages.h"
-#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 #import "NSString+Helpers.h"
 
 static const NSUInteger PostDerivedSummaryLength = 150;
@@ -62,46 +62,17 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return status;
 }
 
-+ (NSString *)makePlainText:(NSString *)string
++ (NSString *)summaryFromContent:(NSString *)string
 {
-    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
-    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
-}
-
-+ (NSString *)createSummaryFromContent:(NSString *)string
-{
-    string = [self makePlainText:string];
-    string = [self stripShortcodesFromString:string];
+    string = [NSString makePlainText:string];
+    string = [NSString stripShortcodesFromString:string];
     string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
     return [string stringByEllipsizingWithMaxLength:PostDerivedSummaryLength preserveWords:YES];
 }
 
-+ (NSString *)stripShortcodesFromString:(NSString *)string
-{
-    static NSRegularExpression *regex;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        NSError *error;
-        NSString *pattern = @"\\[[^\\]]+\\]";
-        regex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
-        if (error) {
-            DDLogError(@"Error parsing regex: %@", error);
-        }
-    });
-    NSRange range = NSMakeRange(0, [string length]);
-    return [regex stringByReplacingMatchesInString:string
-                                           options:NSMatchingReportCompletion
-                                             range:range
-                                      withTemplate:@""];
-}
-
 - (NSArray *)availableStatusesForEditing
 {
-    // Subset of status a user may assign to a post they are editing.
-    // Private is not listed as this is determined by the visibility settings.
-    // Scheduled is not listed as this should be handled by assigning a
-    // future date.
-    // Trash is not listed as this should be handled via a delete action.
+    // Note: Read method description before changing values.
     return @[PostStatusDraft,
              PostStatusPending,
              PostStatusPublish];
@@ -177,14 +148,13 @@ NSString * const PostStatusDeleted = @"deleted"; // Returned by wpcom REST API w
     return self.date_created_gmt;
 }
 
-// TODO: Double check to make sure this logic matches wp-admin
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
 
     /*
-     If the date is nil it means publish immediately so set the status to publish. 
-     If the date is in the future set the status to publish. 
+     If the date is nil it means publish immediately so set the status to publish.
+     If the date is in the future set the status to scheduled.
      If the date is now or in the past, and the status is scheduled, set the status
      to published.
      */

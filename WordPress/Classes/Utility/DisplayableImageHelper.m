@@ -2,17 +2,16 @@
 
 static const NSInteger FeaturedImageMinimumWidth = 640;
 
+static NSString * const AttachmentsDictionaryKeyAttachments = @"attachments";
+static NSString * const AttachmentsDictionaryKeyWidth = @"width";
+static NSString * const AttachmentsDictionaryKeyURL = @"URL";
+static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
+
 @implementation DisplayableImageHelper
 
-/**
- Get the url path of the image to display for a post.
-
- @param dict A dictionary representing a posts attachments from the REST API.
- @return The url path for the featured image or nil
- */
 + (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict
 {
-    NSArray *attachments = [[attachmentsDict dictionaryForKey:@"attachments"] allValues];
+    NSArray *attachments = [[attachmentsDict dictionaryForKey:AttachmentsDictionaryKeyAttachments] allValues];
     if ([attachments count] == 0) {
         return nil;
     }
@@ -22,9 +21,9 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     attachments = [self filteredAttachmentsArray:attachments];
 
     NSDictionary *attachment = [attachments firstObject];
-    NSInteger width = [[attachment numberForKey:@"width"] integerValue];
+    NSInteger width = [[attachment numberForKey:AttachmentsDictionaryKeyWidth] integerValue];
     if (width >= FeaturedImageMinimumWidth) {
-        imageToDisplay = [attachment stringForKey:@"URL"];
+        imageToDisplay = [attachment stringForKey:AttachmentsDictionaryKeyURL];
     }
 
     return imageToDisplay;
@@ -32,14 +31,17 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
 
 + (NSArray *)filteredAttachmentsArray:(NSArray *)attachments
 {
-    NSString *key = @"mime_type";
+    NSString *key = AttachmentsDictionaryKeyMimeType;
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"%K BEGINSWITH %@", key, @"image"];
     attachments = [attachments filteredArrayUsingPredicate:predicate];
+    attachments = [self sortAttachmentsArray:attachments];
+    return attachments;
+}
 
-    return [attachments sortedArrayUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        NSDictionary *attachmentA = (NSDictionary *)obj1;
-        NSDictionary *attachmentB = (NSDictionary *)obj2;
-        NSString *key = @"width";
++ (NSArray *)sortAttachmentsArray:(NSArray *)attachments
+{
+    return [attachments sortedArrayUsingComparator:^NSComparisonResult(NSDictionary *attachmentA, NSDictionary *attachmentB) {
+        NSString *key = AttachmentsDictionaryKeyWidth;
         NSNumber *widthA = [attachmentA numberForKey:key] ?: @(0);
         NSNumber *widthB = [attachmentB numberForKey:key] ?: @(0);
 
@@ -53,12 +55,6 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }];
 }
 
-/**
- Search the passed string for an image that is a good candidate to feature.
-
- @param content The content string to search.
- @return The url path for the image or an empty string.
- */
 + (NSString *)searchPostContentForImageToDisplay:(NSString *)content
 {
     NSString *imageSrc = @"";
@@ -68,27 +64,21 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
 
     // Get all the things
-    static NSRegularExpression *imgRegex;
-    static NSRegularExpression *srcRegex;
+    static NSRegularExpression *regex;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        imgRegex = [NSRegularExpression regularExpressionWithPattern:@"<img(\\s+.*?)(?:src\\s*=\\s*(?:'|\")(.*?)(?:'|\"))(.*?)>" options:NSRegularExpressionCaseInsensitive error:&error];
-        srcRegex = [NSRegularExpression regularExpressionWithPattern:@"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSString *imgPattern = @"<img(\\s+.*?)(?:src\\s*=\\s*(?:'|\")(.*?)(?:'|\"))(.*?)>";
+        regex = [NSRegularExpression regularExpressionWithPattern:imgPattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
-    NSArray *matches = [imgRegex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
+    // Find all the image tags in the content passed.
+    NSArray *matches = [regex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
 
     NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
     for (NSTextCheckingResult *match in matches) {
         NSString *tag = [content substringWithRange:match.range];
-        // Get the source
-        NSRange srcRng = [srcRegex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
-        NSString *src = [tag substringWithRange:srcRng];
-        NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
-        NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
-        src = [src substringFromIndex:quoteRng.location];
-        src = [src stringByTrimmingCharactersInSet:charSet];
+        NSString *src = [self extractSrcFromImgTag:tag];
 
         // Check the tag for a good width
         NSInteger width = MAX([self widthFromElementAttribute:tag], [self widthFromQueryString:src]);
@@ -99,6 +89,31 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     }
 
     return imageSrc;
+}
+
+/**
+ Extract the path to an image from an image tag.
+ 
+ @param tag An image tag.
+ @return The value of the src param.
+ */
++ (NSString *)extractSrcFromImgTag:(NSString *)tag
+{
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        NSString *srcPattern = @"src\\s*=\\s*(?:'|\")(.*?)(?:'|\")";
+        regex = [NSRegularExpression regularExpressionWithPattern:srcPattern options:NSRegularExpressionCaseInsensitive error:&error];
+    });
+
+    NSRange srcRng = [regex rangeOfFirstMatchInString:tag options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [tag length])];
+    NSString *src = [tag substringWithRange:srcRng];
+    NSCharacterSet *charSet = [NSCharacterSet characterSetWithCharactersInString:@"\"'="];
+    NSRange quoteRng = [src rangeOfCharacterFromSet:charSet];
+    src = [src substringFromIndex:quoteRng.location];
+    src = [src stringByTrimmingCharactersInSet:charSet];
+    return src;
 }
 
 /**
@@ -137,7 +152,8 @@ static const NSInteger FeaturedImageMinimumWidth = 640;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         NSError *error;
-        regex = [NSRegularExpression regularExpressionWithPattern:@"src=\"\\S+\"" options:NSRegularExpressionCaseInsensitive error:&error];
+        NSString *pattern = @"src=\"\\S+\"";
+        regex = [NSRegularExpression regularExpressionWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
     });
     NSInteger length = [content length] - range.location;
     range = [regex rangeOfFirstMatchInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(range.location, length)];

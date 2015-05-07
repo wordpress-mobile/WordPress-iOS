@@ -50,7 +50,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
-@synthesize isSyncingComments;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 
