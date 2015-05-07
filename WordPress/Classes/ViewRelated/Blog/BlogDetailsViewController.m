@@ -18,7 +18,6 @@
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
 #import "EditSiteViewController.h"
-#import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "StatsViewController.h"
