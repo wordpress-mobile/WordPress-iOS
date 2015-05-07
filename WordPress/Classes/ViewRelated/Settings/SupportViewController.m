@@ -19,6 +19,7 @@
 #import "WPTabBarController.h"
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
+#import "WPLogger.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
@@ -449,7 +450,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [messageBody appendFormat:@"OS Version: %@\n", iosVersion];
 
     WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    DDFileLogger *fileLogger = delegate.fileLogger;
+    DDFileLogger *fileLogger = delegate.logger.fileLogger;
     NSArray *logFiles = fileLogger.logFileManager.sortedLogFileInfos;
 
     MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];
