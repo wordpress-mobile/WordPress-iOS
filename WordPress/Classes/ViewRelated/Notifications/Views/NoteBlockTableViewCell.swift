@@ -29,6 +29,19 @@ import Foundation
         separatorsView.bottomVisible    = true
         
     }
+
+    public func isLayoutCell() -> Bool {
+        return self.dynamicType.layoutIdentifier() == reuseIdentifier
+    }
+    
+    public class func reuseIdentifier() -> String {
+        return classNameWithoutNamespaces()
+    }
+    
+    public class func layoutIdentifier() -> String {
+        return classNameWithoutNamespaces() + "-Layout"
+    }
+    
     
     // MARK: - View Methods
     public override func awakeFromNib() {
