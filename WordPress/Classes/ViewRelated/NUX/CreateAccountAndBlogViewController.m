@@ -67,7 +67,7 @@ static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
+static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (id)init
 {
