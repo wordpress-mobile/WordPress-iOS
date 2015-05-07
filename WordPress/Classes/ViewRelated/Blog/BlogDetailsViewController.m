@@ -32,6 +32,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "PostListViewController.h"
+#import "PageListViewController.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -319,9 +320,8 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
                 [self showPostList];
                 return;
             case BlogDetailsRowPages:
-                [WPAnalytics track:WPAnalyticsStatOpenedPages];
-                controllerClass = [PagesViewController class];
-                break;
+                [self showPageList];
+                return;
             case BlogDetailsRowComments:
                 [WPAnalytics track:WPAnalyticsStatOpenedComments];
                 controllerClass = [CommentsViewController class];
@@ -396,6 +396,12 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 - (void)showPostList {
     [WPAnalytics track:WPAnalyticsStatOpenedPosts];
     UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPageList {
+    [WPAnalytics track:WPAnalyticsStatOpenedPages];
+    UIViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
