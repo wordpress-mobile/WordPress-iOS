@@ -12,7 +12,7 @@
 #import "BlogDetailsViewController.h"
 #import "MeViewController.h"
 #import "NotificationsViewController.h"
-#import "PostsViewController.h"
+#import "PostListViewController.h"
 #import "ReaderViewController.h"
 #import "StatsViewController.h"
 #import "WPPostViewController.h"
@@ -308,8 +308,8 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
     // Check which VC is showing.
     UIViewController *topVC = self.blogListNavigationController.topViewController;
-    if ([topVC isKindOfClass:[PostsViewController class]]) {
-        Blog *blog = ((PostsViewController *)topVC).blog;
+    if ([topVC isKindOfClass:[PostListViewController class]]) {
+        Blog *blog = ((PostListViewController *)topVC).blog;
         if ([post.blog.objectID isEqual:blog.objectID]) {
             // The desired post view controller is already the top viewController for the tab.
             // Nothing to see here.  Move along.
@@ -321,8 +321,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
     blogDetailsViewController.blog = post.blog;
 
-    PostsViewController *postsViewController = [[PostsViewController alloc] init];
-    [postsViewController setBlog:post.blog];
+    PostListViewController *postsViewController = [PostListViewController controllerWithBlog:post.blog];
 
     [self.blogListNavigationController setViewControllers:@[self.blogListViewController, blogDetailsViewController, postsViewController]];
 }
