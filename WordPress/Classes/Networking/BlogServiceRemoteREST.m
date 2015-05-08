@@ -19,7 +19,9 @@
     return self;
 }
 
-- (void)checkMultiAuthorForBlog:(Blog *)blog success:(void(^)(BOOL isMultiAuthor))success failure:(void (^)(NSError *error))failure
+- (void)checkMultiAuthorForBlog:(Blog *)blog
+                        success:(void(^)(BOOL isMultiAuthor))success
+                        failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(blog != nil);
     NSParameterAssert(blog.dotComID != nil);
