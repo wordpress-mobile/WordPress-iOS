@@ -7,6 +7,8 @@
 #import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi.h>
 
+const NSInteger HTTP404ErrorCode = 404;
+
 @interface PostServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WPXMLRPCClient *api;
 @end
@@ -190,7 +192,7 @@
                 success(post);
             }
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            if (error.code == 404) {
+            if (error.code == HTTP404ErrorCode) {
                 // The post was deleted.
                 if (success) {
                     success(post);
