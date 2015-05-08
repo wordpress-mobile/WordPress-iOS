@@ -111,8 +111,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
     self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-    self.navigationItem.leftBarButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
+    self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self setupHeaderView];
     
@@ -136,6 +135,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
+    [self updateEditButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -160,9 +160,20 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     return [[self.resultsController fetchedObjects] count];
 }
 
-- (BOOL)hasDotComAndSelfHosted
+- (NSUInteger)numberOfDotComSites
 {
-    return ([[self.resultsController sections] count] > 1);
+    NSPredicate *predicate = [self fetchRequestPredicateForDotComOnly];
+    NSArray *dotComSites = [[self.resultsController fetchedObjects] filteredArrayUsingPredicate:predicate];
+    return [dotComSites count];
+}
+
+- (void)updateEditButton
+{
+    if ([self numberOfDotComSites] > 0) {
+        self.navigationItem.leftBarButtonItem = self.editButtonItem;
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Header methods
@@ -266,10 +277,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
-    if (![self hasDotComAndSelfHosted]) {
-        return nil;
-    }
-    return [[self.resultsController sectionIndexTitles] objectAtIndex:section];
+    return nil;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -478,10 +486,15 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (NSPredicate *)fetchRequestPredicate
 {
     if ([self.tableView isEditing]) {
-        return [NSPredicate predicateWithFormat:@"account.isWpcom = YES"];
+        return [self fetchRequestPredicateForDotComOnly];
     }
 
     return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+- (NSPredicate *)fetchRequestPredicateForDotComOnly
+{
+    return [NSPredicate predicateWithFormat:@"account.isWpcom = YES"];
 }
 
 - (void)updateFetchRequest
@@ -499,6 +512,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [self.tableView reloadData];
+    [self updateEditButton];
 }
 
 @end
