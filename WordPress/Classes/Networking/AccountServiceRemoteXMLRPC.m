@@ -4,6 +4,11 @@
 #import "WPAccount.h"
 #import "BLog.h"
 
+static NSString * const UserDictionaryIDKey = @"user_id";
+static NSString * const UserDictionaryUsernameKey = @"username";
+static NSString * const UserDictionaryEmailKey = @"email";
+static NSString * const UserDictionaryDisplaynameKey = @"display_name";
+
 @interface AccountServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WordPressXMLRPCApi *api;
 @end
@@ -56,10 +61,10 @@
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
 {
     RemoteUser *remoteUser = [RemoteUser new];
-    remoteUser.userID = [dictionary numberForKey:@"user_id"];
-    remoteUser.username = [dictionary stringForKey:@"username"];
-    remoteUser.email = [dictionary stringForKey:@"email"];
-    remoteUser.displayName = [dictionary stringForKey:@"display_name"];
+    remoteUser.userID = [dictionary numberForKey:UserDictionaryIDKey];
+    remoteUser.username = [dictionary stringForKey:UserDictionaryUsernameKey];
+    remoteUser.email = [dictionary stringForKey:UserDictionaryEmailKey];
+    remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
     return remoteUser;
 }
 
