@@ -31,7 +31,10 @@ extern NSString * const PostServiceTypeAny;
               failure:(void (^)(NSError *))failure;
 
 /**
- Sync an initial batch of posts from the specified blog
+ Sync an initial batch of posts from the specified blog.
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
 
  @param postType The type (post or page) of post to sync
  @param blog The blog that has the posts.
@@ -45,6 +48,9 @@ extern NSString * const PostServiceTypeAny;
 
 /**
  Sync additional posts from the specified blog
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
 
  @param postType The type (post or page) of post to sync
  @param blog The blog that has the posts.
@@ -58,6 +64,9 @@ extern NSString * const PostServiceTypeAny;
 
 /**
  Sync an initial batch of posts of the specific status types from the specified blog
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
 
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
@@ -73,7 +82,10 @@ extern NSString * const PostServiceTypeAny;
 
 /**
  Sync additional posts of the specific status types from the specified blog
-
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
+ 
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
  @param blog The blog that has the posts.
