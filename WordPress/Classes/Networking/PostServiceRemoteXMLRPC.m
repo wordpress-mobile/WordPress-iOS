@@ -55,6 +55,7 @@
     NSDictionary *extraParameters = @{
                                       @"number": @40,
                                       @"post_type": postType,
+                                      @"post_status": @"any",
                                       };
     if (options) {
         NSMutableDictionary *mutableParameters = [extraParameters mutableCopy];
