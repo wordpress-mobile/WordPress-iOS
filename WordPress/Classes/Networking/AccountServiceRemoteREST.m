@@ -16,7 +16,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 @implementation AccountServiceRemoteREST
 
-- (id)initWithApi:(WordPressComApi *)api
+- (instancetype)initWithApi:(WordPressComApi *)api
 {
         self = [super init];
         if (self) {
