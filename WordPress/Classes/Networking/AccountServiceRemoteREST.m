@@ -3,6 +3,13 @@
 #import "RemoteBlog.h"
 #import "Constants.h"
 
+static NSString * const UserDictionaryIDKey = @"ID";
+static NSString * const UserDictionaryUsernameKey = @"username";
+static NSString * const UserDictionaryEmailKey = @"email";
+static NSString * const UserDictionaryDisplaynameKey = @"display_name";
+static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
+static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
+
 @interface AccountServiceRemoteREST ()
 @property (nonatomic, strong) WordPressComApi *api;
 @end
@@ -39,12 +46,11 @@
     NSString *path = @"me";
     [self.api GET:path
        parameters:nil
-          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
               if (!success) {
                   return;
               }
-              NSDictionary *response = (NSDictionary *)responseObject;
-              RemoteUser *remoteUser = [self remoteUserFromDictionary:response];
+              RemoteUser *remoteUser = [self remoteUserFromDictionary:responseObject];
               success(remoteUser);
           }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
@@ -60,12 +66,12 @@
 - (RemoteUser *)remoteUserFromDictionary:(NSDictionary *)dictionary
 {
     RemoteUser *remoteUser = [RemoteUser new];
-    remoteUser.userID = [dictionary numberForKey:@"ID"];
-    remoteUser.username = [dictionary stringForKey:@"username"];
-    remoteUser.email = [dictionary stringForKey:@"email"];
-    remoteUser.displayName = [dictionary stringForKey:@"display_name"];
-    remoteUser.primaryBlogID = [dictionary numberForKey:@"primary_blog"];
-    remoteUser.avatarURL = [dictionary stringForKey:@"avatar_URL"];
+    remoteUser.userID = [dictionary numberForKey:UserDictionaryIDKey];
+    remoteUser.username = [dictionary stringForKey:UserDictionaryUsernameKey];
+    remoteUser.email = [dictionary stringForKey:UserDictionaryEmailKey];
+    remoteUser.displayName = [dictionary stringForKey:UserDictionaryDisplaynameKey];
+    remoteUser.primaryBlogID = [dictionary numberForKey:UserDictionaryPrimaryBlogKey];
+    remoteUser.avatarURL = [dictionary stringForKey:UserDictionaryAvatarURLKey];
     return remoteUser;
 }
 
