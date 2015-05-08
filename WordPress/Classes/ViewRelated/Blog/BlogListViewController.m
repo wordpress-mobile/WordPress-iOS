@@ -379,6 +379,12 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
         [self presentViewController:loginNavigationController animated:YES completion:nil];
     } else if (self.tableView.isEditing) {
+        UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+        UISwitch *visibleSwitch = (UISwitch *)cell.accessoryView;
+        if (visibleSwitch && [visibleSwitch isKindOfClass:[UISwitch class]]) {
+            visibleSwitch.on = !visibleSwitch.on;
+            [self visibilitySwitchAction:visibleSwitch];
+        }
         return;
     } else {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
