@@ -24,6 +24,7 @@
                         success:(void(^)(BOOL isMultiAuthor))success
                         failure:(void (^)(NSError *error))failure
 {
+    NSParameterAssert(blog != nil);
     NSDictionary *filter = @{@"who":@"authors"};
     NSArray *parameters = [blog getXMLRPCArgsWithExtra:filter];
     [self.api callMethod:@"wp.getUsers"
