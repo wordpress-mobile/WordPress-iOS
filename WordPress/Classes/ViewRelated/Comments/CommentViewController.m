@@ -262,10 +262,11 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     NSString *reuseIdentifier = self.reuseIdentifiersMap[@(indexPath.row)];
     NSAssert(reuseIdentifier, @"Missing Layout Identifier!");
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
-    NSAssert(cell, @"Missing layout cell!");
+    NoteBlockTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    NSAssert([cell isKindOfClass:[NoteBlockTableViewCell class]], @"Missing cell!");
     
     [self setupCell:cell];
+    [self setupSeparators:cell indexPath:indexPath];
     
     return cell;
 }
@@ -427,6 +428,14 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.onSpamClick = ^(UIButton *sender){
         [weakSelf spamComment];
     };
+}
+
+
+#pragma mark - Setup properties required by Cell Separator Logic
+
+- (void)setupSeparators:(NoteBlockTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    cell.isLastRow = (indexPath.row >= self.numberOfRows - 1);
 }
 
 
@@ -627,7 +636,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               if (buttonIndex != alertView.cancelButtonIndex) {
