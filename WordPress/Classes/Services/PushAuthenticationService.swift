@@ -21,33 +21,21 @@ import Foundation
 
     /**
     *  @details     Authorizes a WordPress.com Login Attempt (2FA Protected Accounts)
-    *  @param       token   The Token sent over by the backend, via Push Notifications.
-    */
-    public func authorizeLogin(token: String) {
-        authorizeLogin(token, retryCount: zeroRetryCount)
-    }
-
-    
-    /**
-    *  @details     Authorizes a WordPress.com Login Attempt (2FA Protected Accounts).
-    *               The maximum allowed retries is specified by the 'maxRetryCount' constant.
     *  @param       token       The Token sent over by the backend, via Push Notifications.
-    *  @param       retryCount  The number of retries that have taken place.
+    *  @param       completion  The completion block to be executed when the remote call finishes.
     */
-    private func authorizeLogin(token: String, retryCount: Int) {
-        if retryCount == maxRetryCount {
-            return
-        }
-        
+    public func authorizeLogin(token: String, completion: ((Bool) -> ())) {
         let remoteService = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
         if remoteService == nil {
             return
         }
         
         remoteService!.authorizeLogin(token,
-            success:    nil,
+            success:    {
+                            completion(true)
+                        },
             failure:    {
-                            self.authorizeLogin(token, retryCount: (retryCount + 1))
+                            completion(false)
                         })
 
     }
@@ -66,11 +54,7 @@ import Foundation
         
         return nil
     }
-    
-    
-    // MARK: - Private Constants
-    private let zeroRetryCount  = 0
-    private let maxRetryCount   = 3
+
     
     // MARK: - Private Internal Properties
     private var managedObjectContext : NSManagedObjectContext!

@@ -13,11 +13,20 @@ import UIKit
 
 @objc public class PushAuthenticationManager
 {
+    //
+    // MARK: - Public Properties
+    //
+    
     /**
     *  @brief      Returns the PushAuthenticator Singleton Instance
     */
     static let sharedInstance = PushAuthenticationManager()
     
+
+    
+    //
+    // MARK: - Public Methods
+    //
     
     /**
     *  @brief       Checks if a given Push Notification is a Push Authentication.
@@ -35,7 +44,6 @@ import UIKit
         return false
     }
 
-
     /**
     *  @details     Will display a popup requesting for permission to verify a WordPress.com login
     *               attempt. The notification's type *is expected* to be of the Push Authentication kind
@@ -47,18 +55,52 @@ import UIKit
         // Expired: Display a message!
         if isNotificationExpired(userInfo) {
             showLoginExpiredAlert()
+            WPAnalytics.track(.PushAuthenticationExpired)
             return
         }
         
-        // Valid: Ask for approval
-        if let token   = userInfo?["push_auth_token"]           as? String,
-               message = userInfo?.valueForKeyPath("aps.alert") as? String
-        {
-            showLoginVerificationAlert(message) {
-                let mainContext = ContextManager.sharedInstance().mainContext
-                let service     = PushAuthenticationService(managedObjectContext: mainContext)
-                
-                service.authorizeLogin(token)
+        // Verify: Ask for approval
+        let token   = userInfo?["push_auth_token"]           as? String
+        let message = userInfo?.valueForKeyPath("aps.alert") as? String
+            
+        if token == nil || message == nil {
+            return
+        }
+        
+        showLoginVerificationAlert(message!) { (approved) -> () in
+            if approved {
+                self.authorizeLogin(token!, retryCount: self.initialRetryCount)
+                WPAnalytics.track(.PushAuthenticationApproved)
+            } else {
+                WPAnalytics.track(.PushAuthenticationIgnored)
+            }
+        }
+    }
+    
+    
+    
+    //
+    // MARK: - Private Helpers
+    //
+    
+    /**
+    *  @details     Authorizes a WordPress.com login attempt.
+    *
+    *  @param       token       The login request token received in the Push Notification itself.
+    *  @param       retryCount  The number of retries that have taken place.
+    */
+    private func authorizeLogin(token: String, retryCount: Int) {
+        if retryCount == maximumRetryCount {
+            WPAnalytics.track(.PushAuthenticationFailed)
+            return
+        }
+        
+        let mainContext = ContextManager.sharedInstance().mainContext
+        let service     = PushAuthenticationService(managedObjectContext: mainContext)
+
+        service.authorizeLogin(token) { (success) -> () in
+            if !success {
+                self.authorizeLogin(token, retryCount: (retryCount + 1))
             }
         }
     }
@@ -103,10 +145,10 @@ import UIKit
     *  @param       completion  A closure that receives a parameter, indicating whether the login attempt was
     *                           confirmed or not.
     */
-    private func showLoginVerificationAlert(message: String, onApprove: (() -> ())) {
+    private func showLoginVerificationAlert(message: String, completion: ((approved: Bool) -> ())) {
         let title               = NSLocalizedString("Verify Login", comment: "Push Authentication Alert Title")
-        let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
-        let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
+        let cancelButtonTitle   = NSLocalizedString("Ignore",       comment: "Ignore action. Verb")
+        let acceptButtonTitle   = NSLocalizedString("Approve",      comment: "Approve action. Verb")
         
         UIAlertView.showWithTitle(title,
             message:            message,
@@ -114,18 +156,15 @@ import UIKit
             otherButtonTitles: [acceptButtonTitle as AnyObject])
             {
                 (theAlertView: UIAlertView!, buttonIndex: Int) -> Void in
-                
-                if theAlertView.cancelButtonIndex != buttonIndex {
-                    onApprove()
-                }
+                let approved = theAlertView.cancelButtonIndex != buttonIndex
+                completion(approved: approved)
             }
     }
     
     
     // MARK: - Private Internal Constants
-    private let pushAuthenticationNoteType      = "push_auth"
+    private let initialRetryCount               = 0
+    private let maximumRetryCount               = 3
     private let minimumRemainingExpirationTime  = NSTimeInterval(5)
-    
-    // MARK: - Private Internal Properties
-    private var isAlertViewOnScreen: Bool       = false
+    private let pushAuthenticationNoteType      = "push_auth"
 }
