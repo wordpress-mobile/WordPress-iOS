@@ -1221,7 +1221,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                           };
 
     PostSettingsSelectionViewController *controller = [[PostSettingsSelectionViewController alloc] initWithStyle:UITableViewStylePlain andDictionary:dict];
-    controller.onItemSelected = ^(NSObject *selectedValue) {
+    controller.onItemSelected = ^(NSDictionary *selectedValue) {
         if (self.postFilterPopoverController) {
             [self.postFilterPopoverController dismissPopoverAnimated:YES];
             self.postFilterPopoverController = nil;
