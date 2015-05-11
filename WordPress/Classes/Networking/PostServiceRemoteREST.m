@@ -149,6 +149,9 @@
           success:(void (^)(RemotePost *))success
           failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert(post != nil);
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil
@@ -169,6 +172,9 @@
             success:(void (^)(RemotePost *))success
             failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert(post != nil);
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil

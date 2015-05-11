@@ -909,7 +909,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
 {
-    return [BasePost createSummaryFromContent:string];
+    return [BasePost summaryFromContent:string];
 }
 
 /**
@@ -920,7 +920,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [BasePost makePlainText:string];
+    return [NSString makePlainText:string];
 }
 
 /**

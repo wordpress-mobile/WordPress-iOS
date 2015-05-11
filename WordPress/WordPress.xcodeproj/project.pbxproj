@@ -88,6 +88,7 @@
 		5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
 		5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
 		5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
+		5D13FA521AF94A0600F06492 /* BasePostTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D13FA511AF94A0600F06492 /* BasePostTest.m */; };
 		5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */; };
 		5D157B8C1A8AB73C003ADF4C /* ReaderSiteHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D157B8B1A8AB73C003ADF4C /* ReaderSiteHeaderView.m */; };
 		5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D17F0BD1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m */; };
@@ -96,40 +97,6 @@
 		5D1BE1B01AF3DEFF009B1516 /* DisplayableImageHelperTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1AF1AF3DEFF009B1516 /* DisplayableImageHelperTest.m */; };
 		5D1BE1B81AF4043E009B1516 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1B71AF4043E009B1516 /* RemoteUser.m */; };
 		5D1BE1B91AF4043E009B1516 /* RemoteUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1B71AF4043E009B1516 /* RemoteUser.m */; };
-		5D1BE1DC1AF41185009B1516 /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1BF1AF41185009B1516 /* NavBarTitleDropdownButton.m */; };
-		5D1BE1DD1AF41185009B1516 /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1BF1AF41185009B1516 /* NavBarTitleDropdownButton.m */; };
-		5D1BE1DE1AF41185009B1516 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C11AF41185009B1516 /* PostCardActionBar.m */; };
-		5D1BE1DF1AF41185009B1516 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C11AF41185009B1516 /* PostCardActionBar.m */; };
-		5D1BE1E01AF41185009B1516 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C31AF41185009B1516 /* PostCardActionBarItem.m */; };
-		5D1BE1E11AF41185009B1516 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C31AF41185009B1516 /* PostCardActionBarItem.m */; };
-		5D1BE1E21AF41185009B1516 /* PostCardImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C51AF41185009B1516 /* PostCardImageCell.xib */; };
-		5D1BE1E31AF41185009B1516 /* PostCardImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C51AF41185009B1516 /* PostCardImageCell.xib */; };
-		5D1BE1E41AF41185009B1516 /* PostCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C71AF41185009B1516 /* PostCardTableViewCell.m */; };
-		5D1BE1E51AF41185009B1516 /* PostCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C71AF41185009B1516 /* PostCardTableViewCell.m */; };
-		5D1BE1E61AF41185009B1516 /* PostCardTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C91AF41185009B1516 /* PostCardTextCell.xib */; };
-		5D1BE1E71AF41185009B1516 /* PostCardTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1C91AF41185009B1516 /* PostCardTextCell.xib */; };
-		5D1BE1E81AF41185009B1516 /* PostCardThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CA1AF41185009B1516 /* PostCardThumbCell.xib */; };
-		5D1BE1E91AF41185009B1516 /* PostCardThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CA1AF41185009B1516 /* PostCardThumbCell.xib */; };
-		5D1BE1EA1AF41185009B1516 /* PostListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CC1AF41185009B1516 /* PostListFilter.m */; };
-		5D1BE1EB1AF41185009B1516 /* PostListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CC1AF41185009B1516 /* PostListFilter.m */; };
-		5D1BE1EC1AF41185009B1516 /* PostListFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CE1AF41185009B1516 /* PostListFooterView.m */; };
-		5D1BE1ED1AF41185009B1516 /* PostListFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CE1AF41185009B1516 /* PostListFooterView.m */; };
-		5D1BE1EE1AF41185009B1516 /* PostListFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CF1AF41185009B1516 /* PostListFooterView.xib */; };
-		5D1BE1EF1AF41185009B1516 /* PostListFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1CF1AF41185009B1516 /* PostListFooterView.xib */; };
-		5D1BE1F01AF41185009B1516 /* PostListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D11AF41185009B1516 /* PostListViewController.m */; };
-		5D1BE1F11AF41185009B1516 /* PostListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D11AF41185009B1516 /* PostListViewController.m */; };
-		5D1BE1F21AF41185009B1516 /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D31AF41185009B1516 /* PostMetaButton.m */; };
-		5D1BE1F31AF41185009B1516 /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D31AF41185009B1516 /* PostMetaButton.m */; };
-		5D1BE1F41AF41185009B1516 /* Posts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D41AF41185009B1516 /* Posts.storyboard */; };
-		5D1BE1F51AF41185009B1516 /* Posts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D41AF41185009B1516 /* Posts.storyboard */; };
-		5D1BE1F61AF41185009B1516 /* RestorePostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D61AF41185009B1516 /* RestorePostTableViewCell.m */; };
-		5D1BE1F71AF41185009B1516 /* RestorePostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D61AF41185009B1516 /* RestorePostTableViewCell.m */; };
-		5D1BE1F81AF41185009B1516 /* RestorePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D71AF41185009B1516 /* RestorePostTableViewCell.xib */; };
-		5D1BE1F91AF41185009B1516 /* RestorePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D71AF41185009B1516 /* RestorePostTableViewCell.xib */; };
-		5D1BE1FA1AF41185009B1516 /* WPSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D91AF41185009B1516 /* WPSearchController.m */; };
-		5D1BE1FB1AF41185009B1516 /* WPSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1D91AF41185009B1516 /* WPSearchController.m */; };
-		5D1BE1FC1AF41185009B1516 /* WPStyleGuide+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1DB1AF41185009B1516 /* WPStyleGuide+Posts.m */; };
-		5D1BE1FD1AF41185009B1516 /* WPStyleGuide+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1BE1DB1AF41185009B1516 /* WPStyleGuide+Posts.m */; };
 		5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1B1988243700378BD6 /* RemoteReaderPost.m */; };
 		5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE211988245B00378BD6 /* RemoteReaderSite.m */; };
 		5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */; };
@@ -196,6 +163,23 @@
 		5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DC02A3618E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib */; };
 		5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */; };
 		5DCC4CD819A50CC0003E548C /* ReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DCC4CD719A50CC0003E548C /* ReaderSite.m */; };
+		5DDACB6A1B01042500E907CE /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB4D1B01042500E907CE /* NavBarTitleDropdownButton.m */; };
+		5DDACB6B1B01042500E907CE /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB4F1B01042500E907CE /* PostCardActionBar.m */; };
+		5DDACB6C1B01042500E907CE /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB511B01042500E907CE /* PostCardActionBarItem.m */; };
+		5DDACB6D1B01042500E907CE /* PostCardImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB531B01042500E907CE /* PostCardImageCell.xib */; };
+		5DDACB6E1B01042500E907CE /* PostCardTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB551B01042500E907CE /* PostCardTableViewCell.m */; };
+		5DDACB6F1B01042500E907CE /* PostCardTextCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB571B01042500E907CE /* PostCardTextCell.xib */; };
+		5DDACB701B01042500E907CE /* PostCardThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB581B01042500E907CE /* PostCardThumbCell.xib */; };
+		5DDACB711B01042500E907CE /* PostListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB5A1B01042500E907CE /* PostListFilter.m */; };
+		5DDACB721B01042500E907CE /* PostListFooterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB5C1B01042500E907CE /* PostListFooterView.m */; };
+		5DDACB731B01042500E907CE /* PostListFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB5D1B01042500E907CE /* PostListFooterView.xib */; };
+		5DDACB741B01042500E907CE /* PostListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB5F1B01042500E907CE /* PostListViewController.m */; };
+		5DDACB751B01042500E907CE /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB611B01042500E907CE /* PostMetaButton.m */; };
+		5DDACB761B01042500E907CE /* Posts.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB621B01042500E907CE /* Posts.storyboard */; };
+		5DDACB771B01042500E907CE /* RestorePostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB641B01042500E907CE /* RestorePostTableViewCell.m */; };
+		5DDACB781B01042500E907CE /* RestorePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DDACB651B01042500E907CE /* RestorePostTableViewCell.xib */; };
+		5DDACB791B01042500E907CE /* WPSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB671B01042500E907CE /* WPSearchController.m */; };
+		5DDACB7A1B01042500E907CE /* WPStyleGuide+Posts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDACB691B01042500E907CE /* WPStyleGuide+Posts.m */; };
 		5DDC44671A72BB07007F538E /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC44661A72BB07007F538E /* ReaderViewController.m */; };
 		5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
@@ -219,6 +203,7 @@
 		5DF94E501962BAEB00359241 /* ReaderPostAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E491962BAEB00359241 /* ReaderPostAttributionView.m */; };
 		5DF94E511962BAEB00359241 /* ReaderPostContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E4B1962BAEB00359241 /* ReaderPostContentView.m */; };
 		5DF94E531962BAEB00359241 /* ReaderPostSimpleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E4F1962BAEB00359241 /* ReaderPostSimpleContentView.m */; };
+		5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFA7EBB1AF7B8D30072023B /* NSDateStringFormattingTest.m */; };
 		7059CD210F332B6500A0660B /* WPCategoryTree.m in Sources */ = {isa = PBXBuildFile; fileRef = 7059CD200F332B6500A0660B /* WPCategoryTree.m */; };
 		740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 740BD8341A0D4C3600F04D18 /* WPUploadStatusButton.m */; };
 		74BB6F1A19AE7B9400FB7829 /* WPLegacyEditPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BB6F1919AE7B9400FB7829 /* WPLegacyEditPageViewController.m */; };
@@ -709,6 +694,7 @@
 		5D12FE1D1988243700378BD6 /* RemoteReaderTopic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderTopic.m; path = "Remote Objects/RemoteReaderTopic.m"; sourceTree = "<group>"; };
 		5D12FE201988245B00378BD6 /* RemoteReaderSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteReaderSite.h; path = "Remote Objects/RemoteReaderSite.h"; sourceTree = "<group>"; };
 		5D12FE211988245B00378BD6 /* RemoteReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteReaderSite.m; path = "Remote Objects/RemoteReaderSite.m"; sourceTree = "<group>"; };
+		5D13FA511AF94A0600F06492 /* BasePostTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasePostTest.m; sourceTree = "<group>"; };
 		5D146EB9189857ED0068FDC6 /* FeaturedImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeaturedImageViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		5D146EBA189857ED0068FDC6 /* FeaturedImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeaturedImageViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		5D157B8A1A8AB73C003ADF4C /* ReaderSiteHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSiteHeaderView.h; sourceTree = "<group>"; };
@@ -724,36 +710,6 @@
 		5D1BE1B21AF3F832009B1516 /* WPPostContentViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPPostContentViewProvider.h; sourceTree = "<group>"; };
 		5D1BE1B61AF4043E009B1516 /* RemoteUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteUser.h; path = "Remote Objects/RemoteUser.h"; sourceTree = "<group>"; };
 		5D1BE1B71AF4043E009B1516 /* RemoteUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteUser.m; path = "Remote Objects/RemoteUser.m"; sourceTree = "<group>"; };
-		5D1BE1BE1AF41185009B1516 /* NavbarTitleDropdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarTitleDropdownButton.h; sourceTree = "<group>"; };
-		5D1BE1BF1AF41185009B1516 /* NavBarTitleDropdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBarTitleDropdownButton.m; sourceTree = "<group>"; };
-		5D1BE1C01AF41185009B1516 /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
-		5D1BE1C11AF41185009B1516 /* PostCardActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBar.m; sourceTree = "<group>"; };
-		5D1BE1C21AF41185009B1516 /* PostCardActionBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBarItem.h; sourceTree = "<group>"; };
-		5D1BE1C31AF41185009B1516 /* PostCardActionBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBarItem.m; sourceTree = "<group>"; };
-		5D1BE1C41AF41185009B1516 /* PostCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardCell.h; sourceTree = "<group>"; };
-		5D1BE1C51AF41185009B1516 /* PostCardImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardImageCell.xib; sourceTree = "<group>"; };
-		5D1BE1C61AF41185009B1516 /* PostCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardTableViewCell.h; sourceTree = "<group>"; };
-		5D1BE1C71AF41185009B1516 /* PostCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardTableViewCell.m; sourceTree = "<group>"; };
-		5D1BE1C81AF41185009B1516 /* PostCardTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardTableViewCellDelegate.h; sourceTree = "<group>"; };
-		5D1BE1C91AF41185009B1516 /* PostCardTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardTextCell.xib; sourceTree = "<group>"; };
-		5D1BE1CA1AF41185009B1516 /* PostCardThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardThumbCell.xib; sourceTree = "<group>"; };
-		5D1BE1CB1AF41185009B1516 /* PostListFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListFilter.h; sourceTree = "<group>"; };
-		5D1BE1CC1AF41185009B1516 /* PostListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListFilter.m; sourceTree = "<group>"; };
-		5D1BE1CD1AF41185009B1516 /* PostListFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListFooterView.h; sourceTree = "<group>"; };
-		5D1BE1CE1AF41185009B1516 /* PostListFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListFooterView.m; sourceTree = "<group>"; };
-		5D1BE1CF1AF41185009B1516 /* PostListFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostListFooterView.xib; sourceTree = "<group>"; };
-		5D1BE1D01AF41185009B1516 /* PostListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListViewController.h; sourceTree = "<group>"; };
-		5D1BE1D11AF41185009B1516 /* PostListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListViewController.m; sourceTree = "<group>"; };
-		5D1BE1D21AF41185009B1516 /* PostMetaButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMetaButton.h; sourceTree = "<group>"; };
-		5D1BE1D31AF41185009B1516 /* PostMetaButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMetaButton.m; sourceTree = "<group>"; };
-		5D1BE1D41AF41185009B1516 /* Posts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Posts.storyboard; sourceTree = "<group>"; };
-		5D1BE1D51AF41185009B1516 /* RestorePostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestorePostTableViewCell.h; sourceTree = "<group>"; };
-		5D1BE1D61AF41185009B1516 /* RestorePostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestorePostTableViewCell.m; sourceTree = "<group>"; };
-		5D1BE1D71AF41185009B1516 /* RestorePostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RestorePostTableViewCell.xib; sourceTree = "<group>"; };
-		5D1BE1D81AF41185009B1516 /* WPSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSearchController.h; sourceTree = "<group>"; };
-		5D1BE1D91AF41185009B1516 /* WPSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSearchController.m; sourceTree = "<group>"; };
-		5D1BE1DA1AF41185009B1516 /* WPStyleGuide+Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Posts.h"; sourceTree = "<group>"; };
-		5D1BE1DB1AF41185009B1516 /* WPStyleGuide+Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Posts.m"; sourceTree = "<group>"; };
 		5D1D9C5319885B01009D13B7 /* ReaderEditableSubscriptionPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReaderEditableSubscriptionPage.h; sourceTree = "<group>"; };
 		5D1EE7FF15E7AF3E007F1F02 /* JetpackSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JetpackSettingsViewController.h; sourceTree = "<group>"; };
 		5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JetpackSettingsViewController.m; sourceTree = "<group>"; };
@@ -880,6 +836,36 @@
 		5DC3A44C1610B9BC00A890BE /* UINavigationController+Rotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Rotation.m"; sourceTree = "<group>"; };
 		5DCC4CD619A50CC0003E548C /* ReaderSite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderSite.h; sourceTree = "<group>"; };
 		5DCC4CD719A50CC0003E548C /* ReaderSite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderSite.m; sourceTree = "<group>"; };
+		5DDACB4C1B01042500E907CE /* NavbarTitleDropdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarTitleDropdownButton.h; sourceTree = "<group>"; };
+		5DDACB4D1B01042500E907CE /* NavBarTitleDropdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBarTitleDropdownButton.m; sourceTree = "<group>"; };
+		5DDACB4E1B01042500E907CE /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
+		5DDACB4F1B01042500E907CE /* PostCardActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBar.m; sourceTree = "<group>"; };
+		5DDACB501B01042500E907CE /* PostCardActionBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBarItem.h; sourceTree = "<group>"; };
+		5DDACB511B01042500E907CE /* PostCardActionBarItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBarItem.m; sourceTree = "<group>"; };
+		5DDACB521B01042500E907CE /* PostCardCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardCell.h; sourceTree = "<group>"; };
+		5DDACB531B01042500E907CE /* PostCardImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardImageCell.xib; sourceTree = "<group>"; };
+		5DDACB541B01042500E907CE /* PostCardTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardTableViewCell.h; sourceTree = "<group>"; };
+		5DDACB551B01042500E907CE /* PostCardTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardTableViewCell.m; sourceTree = "<group>"; };
+		5DDACB561B01042500E907CE /* PostCardTableViewCellDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardTableViewCellDelegate.h; sourceTree = "<group>"; };
+		5DDACB571B01042500E907CE /* PostCardTextCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardTextCell.xib; sourceTree = "<group>"; };
+		5DDACB581B01042500E907CE /* PostCardThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardThumbCell.xib; sourceTree = "<group>"; };
+		5DDACB591B01042500E907CE /* PostListFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListFilter.h; sourceTree = "<group>"; };
+		5DDACB5A1B01042500E907CE /* PostListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListFilter.m; sourceTree = "<group>"; };
+		5DDACB5B1B01042500E907CE /* PostListFooterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListFooterView.h; sourceTree = "<group>"; };
+		5DDACB5C1B01042500E907CE /* PostListFooterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListFooterView.m; sourceTree = "<group>"; };
+		5DDACB5D1B01042500E907CE /* PostListFooterView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostListFooterView.xib; sourceTree = "<group>"; };
+		5DDACB5E1B01042500E907CE /* PostListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListViewController.h; sourceTree = "<group>"; };
+		5DDACB5F1B01042500E907CE /* PostListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListViewController.m; sourceTree = "<group>"; };
+		5DDACB601B01042500E907CE /* PostMetaButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostMetaButton.h; sourceTree = "<group>"; };
+		5DDACB611B01042500E907CE /* PostMetaButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostMetaButton.m; sourceTree = "<group>"; };
+		5DDACB621B01042500E907CE /* Posts.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Posts.storyboard; sourceTree = "<group>"; };
+		5DDACB631B01042500E907CE /* RestorePostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestorePostTableViewCell.h; sourceTree = "<group>"; };
+		5DDACB641B01042500E907CE /* RestorePostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestorePostTableViewCell.m; sourceTree = "<group>"; };
+		5DDACB651B01042500E907CE /* RestorePostTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RestorePostTableViewCell.xib; sourceTree = "<group>"; };
+		5DDACB661B01042500E907CE /* WPSearchController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPSearchController.h; sourceTree = "<group>"; };
+		5DDACB671B01042500E907CE /* WPSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPSearchController.m; sourceTree = "<group>"; };
+		5DDACB681B01042500E907CE /* WPStyleGuide+Posts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+Posts.h"; sourceTree = "<group>"; };
+		5DDACB691B01042500E907CE /* WPStyleGuide+Posts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+Posts.m"; sourceTree = "<group>"; };
 		5DDC44651A72BB07007F538E /* ReaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderViewController.h; sourceTree = "<group>"; };
 		5DDC44661A72BB07007F538E /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		5DE88FA81A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostUnattributedTableViewCell.h; sourceTree = "<group>"; };
@@ -927,6 +913,7 @@
 		5DF94E4C1962BAEB00359241 /* ReaderPostRichContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostRichContentView.h; sourceTree = "<group>"; };
 		5DF94E4E1962BAEB00359241 /* ReaderPostSimpleContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostSimpleContentView.h; sourceTree = "<group>"; };
 		5DF94E4F1962BAEB00359241 /* ReaderPostSimpleContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostSimpleContentView.m; sourceTree = "<group>"; };
+		5DFA7EBB1AF7B8D30072023B /* NSDateStringFormattingTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDateStringFormattingTest.m; sourceTree = "<group>"; };
 		5DFA9D19196B1BA30061FF96 /* ReaderTopicServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceTest.m; sourceTree = "<group>"; };
 		67040029265369CB7FAE64FA /* Pods-WordPressTodayWidget.distribution.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTodayWidget.distribution.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTodayWidget/Pods-WordPressTodayWidget.distribution.xcconfig"; sourceTree = "<group>"; };
 		69187343EC8F435684EFFAF1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1965,61 +1952,12 @@
 			name = Utils;
 			sourceTree = "<group>";
 		};
-		5D1BE1BA1AF40E3A009B1516 /* Style */ = {
+		5D13FA4F1AF949B800F06492 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5D1BE1DA1AF41185009B1516 /* WPStyleGuide+Posts.h */,
-				5D1BE1DB1AF41185009B1516 /* WPStyleGuide+Posts.m */,
+				5D13FA511AF94A0600F06492 /* BasePostTest.m */,
 			);
-			name = Style;
-			sourceTree = "<group>";
-		};
-		5D1BE1BB1AF40E41009B1516 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				5D1BE1D01AF41185009B1516 /* PostListViewController.h */,
-				5D1BE1D11AF41185009B1516 /* PostListViewController.m */,
-			);
-			name = Controllers;
-			sourceTree = "<group>";
-		};
-		5D1BE1BC1AF40E4E009B1516 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				5D1BE1BE1AF41185009B1516 /* NavbarTitleDropdownButton.h */,
-				5D1BE1BF1AF41185009B1516 /* NavBarTitleDropdownButton.m */,
-				5D1BE1C01AF41185009B1516 /* PostCardActionBar.h */,
-				5D1BE1C11AF41185009B1516 /* PostCardActionBar.m */,
-				5D1BE1C21AF41185009B1516 /* PostCardActionBarItem.h */,
-				5D1BE1C31AF41185009B1516 /* PostCardActionBarItem.m */,
-				5D1BE1C41AF41185009B1516 /* PostCardCell.h */,
-				5D1BE1C51AF41185009B1516 /* PostCardImageCell.xib */,
-				5D1BE1C61AF41185009B1516 /* PostCardTableViewCell.h */,
-				5D1BE1C71AF41185009B1516 /* PostCardTableViewCell.m */,
-				5D1BE1C81AF41185009B1516 /* PostCardTableViewCellDelegate.h */,
-				5D1BE1C91AF41185009B1516 /* PostCardTextCell.xib */,
-				5D1BE1CA1AF41185009B1516 /* PostCardThumbCell.xib */,
-				5D1BE1CD1AF41185009B1516 /* PostListFooterView.h */,
-				5D1BE1CE1AF41185009B1516 /* PostListFooterView.m */,
-				5D1BE1CF1AF41185009B1516 /* PostListFooterView.xib */,
-				5D1BE1D21AF41185009B1516 /* PostMetaButton.h */,
-				5D1BE1D31AF41185009B1516 /* PostMetaButton.m */,
-				5D1BE1D51AF41185009B1516 /* RestorePostTableViewCell.h */,
-				5D1BE1D61AF41185009B1516 /* RestorePostTableViewCell.m */,
-				5D1BE1D71AF41185009B1516 /* RestorePostTableViewCell.xib */,
-			);
-			name = Views;
-			sourceTree = "<group>";
-		};
-		5D1BE1BD1AF40E64009B1516 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				5D1BE1CB1AF41185009B1516 /* PostListFilter.h */,
-				5D1BE1CC1AF41185009B1516 /* PostListFilter.m */,
-				5D1BE1D81AF41185009B1516 /* WPSearchController.h */,
-				5D1BE1D91AF41185009B1516 /* WPSearchController.m */,
-			);
-			name = Utils;
+			name = Models;
 			sourceTree = "<group>";
 		};
 		5D1EBF56187C9B95003393F8 /* Categories */ = {
@@ -2115,6 +2053,63 @@
 				5DC02A3618E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib */,
 			);
 			name = Themes;
+			sourceTree = "<group>";
+		};
+		5DDACB481B0103E900E907CE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				5DDACB5E1B01042500E907CE /* PostListViewController.h */,
+				5DDACB5F1B01042500E907CE /* PostListViewController.m */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		5DDACB491B0103F000E907CE /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				5DDACB681B01042500E907CE /* WPStyleGuide+Posts.h */,
+				5DDACB691B01042500E907CE /* WPStyleGuide+Posts.m */,
+			);
+			name = Style;
+			sourceTree = "<group>";
+		};
+		5DDACB4A1B0103F600E907CE /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				5DDACB591B01042500E907CE /* PostListFilter.h */,
+				5DDACB5A1B01042500E907CE /* PostListFilter.m */,
+				5DDACB661B01042500E907CE /* WPSearchController.h */,
+				5DDACB671B01042500E907CE /* WPSearchController.m */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
+		5DDACB4B1B0103FE00E907CE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				5DDACB4C1B01042500E907CE /* NavbarTitleDropdownButton.h */,
+				5DDACB4D1B01042500E907CE /* NavBarTitleDropdownButton.m */,
+				5DDACB4E1B01042500E907CE /* PostCardActionBar.h */,
+				5DDACB4F1B01042500E907CE /* PostCardActionBar.m */,
+				5DDACB501B01042500E907CE /* PostCardActionBarItem.h */,
+				5DDACB511B01042500E907CE /* PostCardActionBarItem.m */,
+				5DDACB521B01042500E907CE /* PostCardCell.h */,
+				5DDACB531B01042500E907CE /* PostCardImageCell.xib */,
+				5DDACB541B01042500E907CE /* PostCardTableViewCell.h */,
+				5DDACB551B01042500E907CE /* PostCardTableViewCell.m */,
+				5DDACB561B01042500E907CE /* PostCardTableViewCellDelegate.h */,
+				5DDACB571B01042500E907CE /* PostCardTextCell.xib */,
+				5DDACB581B01042500E907CE /* PostCardThumbCell.xib */,
+				5DDACB5B1B01042500E907CE /* PostListFooterView.h */,
+				5DDACB5C1B01042500E907CE /* PostListFooterView.m */,
+				5DDACB5D1B01042500E907CE /* PostListFooterView.xib */,
+				5DDACB601B01042500E907CE /* PostMetaButton.h */,
+				5DDACB611B01042500E907CE /* PostMetaButton.m */,
+				5DDACB631B01042500E907CE /* RestorePostTableViewCell.h */,
+				5DDACB641B01042500E907CE /* RestorePostTableViewCell.m */,
+				5DDACB651B01042500E907CE /* RestorePostTableViewCell.xib */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		5DF94E351962BA5F00359241 /* Reader */ = {
@@ -2545,11 +2540,11 @@
 		AC3439790E11434600E5D79B /* Post */ = {
 			isa = PBXGroup;
 			children = (
-				5D1BE1D41AF41185009B1516 /* Posts.storyboard */,
-				5D1BE1BB1AF40E41009B1516 /* Controllers */,
-				5D1BE1BA1AF40E3A009B1516 /* Style */,
-				5D1BE1BD1AF40E64009B1516 /* Utils */,
-				5D1BE1BC1AF40E4E009B1516 /* Views */,
+				5DDACB621B01042500E907CE /* Posts.storyboard */,
+				5DDACB481B0103E900E907CE /* Controllers */,
+				5DDACB491B0103F000E907CE /* Style */,
+				5DDACB4A1B0103F600E907CE /* Utils */,
+				5DDACB4B1B0103FE00E907CE /* Views */,
 				5D577D301891278D00B964C3 /* Geolocation */,
 				5D1EBF56187C9B95003393F8 /* Categories */,
 				ACC156CA0E10E67600D6E1A0 /* WPPostViewController.h */,
@@ -2690,6 +2685,7 @@
 			isa = PBXGroup;
 			children = (
 				F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */,
+				5DFA7EBB1AF7B8D30072023B /* NSDateStringFormattingTest.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -2920,6 +2916,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				5D13FA4F1AF949B800F06492 /* Models */,
 				85D239BD1AE5A6EE0074768D /* NUX */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
 				B5AEEC731ACACF3B008BF2A4 /* Core Data */,
@@ -3358,16 +3355,16 @@
 				28AD73600D9D9599002E5188 /* MainWindow.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */,
-				5D1BE1E81AF41185009B1516 /* PostCardThumbCell.xib in Resources */,
+				5DDACB701B01042500E907CE /* PostCardThumbCell.xib in Resources */,
 				2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */,
 				595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
-				5D1BE1F81AF41185009B1516 /* RestorePostTableViewCell.xib in Resources */,
+				5DDACB781B01042500E907CE /* RestorePostTableViewCell.xib in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
 				5DF94E341962B9D800359241 /* WPAlertViewSideBySide.xib in Resources */,
-				5D1BE1E21AF41185009B1516 /* PostCardImageCell.xib in Resources */,
+				5DDACB6D1B01042500E907CE /* PostCardImageCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
 				8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */,
@@ -3385,11 +3382,11 @@
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
 				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
-				5D1BE1F41AF41185009B1516 /* Posts.storyboard in Resources */,
+				5DDACB761B01042500E907CE /* Posts.storyboard in Resources */,
 				E1FC3DB413C7788700F6B60F /* WPWebViewController~ipad.xib in Resources */,
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
-				5D1BE1EE1AF41185009B1516 /* PostListFooterView.xib in Resources */,
+				5DDACB731B01042500E907CE /* PostListFooterView.xib in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
@@ -3402,7 +3399,7 @@
 				B5509A9519CA3B9F006D2E49 /* EditReplyViewController.xib in Resources */,
 				5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */,
 				85D80558171630B30075EEAC /* DotCom-Languages.plist in Resources */,
-				5D1BE1E61AF41185009B1516 /* PostCardTextCell.xib in Resources */,
+				5DDACB6F1B01042500E907CE /* PostCardTextCell.xib in Resources */,
 				B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */,
 				5DC02A3718E4C5BD009A1765 /* ThemeBrowserViewController.xib in Resources */,
 				A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */,
@@ -3426,22 +3423,16 @@
 				E16AB93414D978240047A2E5 /* InfoPlist.strings in Resources */,
 				93594BD5191D2F5A0079E6B2 /* stats-batch.json in Resources */,
 				93CD939319099BE70049096E /* authtoken.json in Resources */,
-				5D1BE1E71AF41185009B1516 /* PostCardTextCell.xib in Resources */,
 				E1E4CE0F1774563F00430844 /* misteryman.jpg in Resources */,
 				855408881A6F106800DDBD79 /* app-review-prompt-notifications-disabled.json in Resources */,
-				5D1BE1F91AF41185009B1516 /* RestorePostTableViewCell.xib in Resources */,
-				5D1BE1EF1AF41185009B1516 /* PostListFooterView.xib in Resources */,
-				5D1BE1E91AF41185009B1516 /* PostCardThumbCell.xib in Resources */,
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				B5AEEC7A1ACACFDA008BF2A4 /* notifications-like.json in Resources */,
 				E1E4CE0617739FAB00430844 /* test-image.jpg in Resources */,
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
-				5D1BE1F51AF41185009B1516 /* Posts.storyboard in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
-				5D1BE1E31AF41185009B1516 /* PostCardImageCell.xib in Resources */,
 				E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
@@ -3745,7 +3736,7 @@
 				B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */,
 				83D180FA12329B1A002DCCB0 /* EditPageViewController.m in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
-				5D1BE1DC1AF41185009B1516 /* NavBarTitleDropdownButton.m in Sources */,
+				5DDACB6A1B01042500E907CE /* NavBarTitleDropdownButton.m in Sources */,
 				E125451812BF68F900D87A0A /* Page.m in Sources */,
 				598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */,
 				937D9A1119F838C2007B9D5F /* AccountToAccount22to23.swift in Sources */,
@@ -3788,8 +3779,8 @@
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
 				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
-				5D1BE1E01AF41185009B1516 /* PostCardActionBarItem.m in Sources */,
-				5D1BE1EC1AF41185009B1516 /* PostListFooterView.m in Sources */,
+				5DDACB6C1B01042500E907CE /* PostCardActionBarItem.m in Sources */,
+				5DDACB721B01042500E907CE /* PostListFooterView.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
 				5D49B03B19BE3CAD00703A9B /* SafeReaderTopicToReaderTopic.m in Sources */,
@@ -3836,9 +3827,9 @@
 				E1523EB516D3B305002C5A36 /* InstapaperActivity.m in Sources */,
 				E1D0D81616D3B86800E33F4C /* SafariActivity.m in Sources */,
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
-				5D1BE1F01AF41185009B1516 /* PostListViewController.m in Sources */,
+				5DDACB741B01042500E907CE /* PostListViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
-				5D1BE1FA1AF41185009B1516 /* WPSearchController.m in Sources */,
+				5DDACB791B01042500E907CE /* WPSearchController.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */,
@@ -3849,7 +3840,7 @@
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				E2DA78061864B11E007BA447 /* WPFixedWidthScrollView.m in Sources */,
 				E15051CB16CA5DDB00D3DDDC /* Blog+Jetpack.m in Sources */,
-				5D1BE1FC1AF41185009B1516 /* WPStyleGuide+Posts.m in Sources */,
+				5DDACB7A1B01042500E907CE /* WPStyleGuide+Posts.m in Sources */,
 				5DA5BF3F18E32DCF005F11F9 /* InputViewButton.m in Sources */,
 				85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */,
 				E149D65019349E69006A843D /* MediaServiceRemoteREST.m in Sources */,
@@ -3864,7 +3855,7 @@
 				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
 				B5CC05F61962150600975CAC /* Constants.m in Sources */,
 				5D146EBB189857ED0068FDC6 /* FeaturedImageViewController.m in Sources */,
-				5D1BE1DE1AF41185009B1516 /* PostCardActionBar.m in Sources */,
+				5DDACB6B1B01042500E907CE /* PostCardActionBar.m in Sources */,
 				31EC15081A5B6675009FC8B3 /* WPStyleGuide+Suggestions.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */,
@@ -3914,7 +3905,7 @@
 				462F4E0B18369F0B0028D2F8 /* BlogListViewController.m in Sources */,
 				5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
-				5D1BE1F21AF41185009B1516 /* PostMetaButton.m in Sources */,
+				5DDACB751B01042500E907CE /* PostMetaButton.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E149D64F19349E69006A843D /* AccountServiceRemoteXMLRPC.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
@@ -3922,10 +3913,10 @@
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				5D1BE1F61AF41185009B1516 /* RestorePostTableViewCell.m in Sources */,
+				5DDACB771B01042500E907CE /* RestorePostTableViewCell.m in Sources */,
 				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
 				85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */,
-				5D1BE1E41AF41185009B1516 /* PostCardTableViewCell.m in Sources */,
+				5DDACB6E1B01042500E907CE /* PostCardTableViewCell.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				E1556CF2193F6FE900FC52EA /* CommentService.m in Sources */,
 				5D42A3FD175E75EE005CFF05 /* ReaderPostTableViewCell.m in Sources */,
@@ -3947,7 +3938,7 @@
 				B5FD4543199D0F2800286FBB /* NotificationDetailsViewController.m in Sources */,
 				74D5FFD619ACDF6700389E8F /* WPLegacyEditPostViewController.m in Sources */,
 				B54E1DF41A0A7BBF00807537 /* NotificationMediaDownloader.swift in Sources */,
-				5D1BE1EA1AF41185009B1516 /* PostListFilter.m in Sources */,
+				5DDACB711B01042500E907CE /* PostListFilter.m in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
 				E100C6BB1741473000AE48D8 /* WordPress-11-12.xcmappingmodel in Sources */,
 				E1A03EE217422DCF0085D192 /* BlogToAccount.m in Sources */,
@@ -4002,15 +3993,13 @@
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
+				5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
-				5D1BE1F11AF41185009B1516 /* PostListViewController.m in Sources */,
-				5D1BE1FD1AF41185009B1516 /* WPStyleGuide+Posts.m in Sources */,
 				5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
-				5D1BE1E51AF41185009B1516 /* PostCardTableViewCell.m in Sources */,
+				5D13FA521AF94A0600F06492 /* BasePostTest.m in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */,
-				5D1BE1EB1AF41185009B1516 /* PostListFilter.m in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
 				85D239C01AE5A7020074768D /* LoginFacadeTests.m in Sources */,
 				5D1BE1B01AF3DEFF009B1516 /* DisplayableImageHelperTest.m in Sources */,
@@ -4021,18 +4010,11 @@
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
-				5D1BE1F31AF41185009B1516 /* PostMetaButton.m in Sources */,
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
-				5D1BE1FB1AF41185009B1516 /* WPSearchController.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
-				5D1BE1DF1AF41185009B1516 /* PostCardActionBar.m in Sources */,
-				5D1BE1F71AF41185009B1516 /* RestorePostTableViewCell.m in Sources */,
 				B5AEEC721ACACF2F008BF2A4 /* NotificationTests.m in Sources */,
 				5D1BE1B91AF4043E009B1516 /* RemoteUser.m in Sources */,
 				9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */,
-				5D1BE1ED1AF41185009B1516 /* PostListFooterView.m in Sources */,
-				5D1BE1E11AF41185009B1516 /* PostCardActionBarItem.m in Sources */,
-				5D1BE1DD1AF41185009B1516 /* NavBarTitleDropdownButton.m in Sources */,
 				931D26F819ED7F7800114F17 /* ReaderTopicServiceTest.m in Sources */,
 				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
 			);
