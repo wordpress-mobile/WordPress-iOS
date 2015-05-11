@@ -238,6 +238,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         self.pushNotificationID     = nil;
         self.pushNotificationDate   = nil;
     }
+    
+    // Mark as read immediately (if we're onscreen!)
+    if (changeType == SPBucketChangeInsert && self.isViewOnScreen) {
+        [self resetApplicationBadge];
+        [self updateLastSeenTime];
+    }
 }
 
 
