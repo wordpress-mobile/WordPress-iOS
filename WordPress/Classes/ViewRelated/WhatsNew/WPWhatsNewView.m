@@ -58,6 +58,9 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
     self.title.font = titleFont;
     self.details.font = detailsFont;
     self.acceptButton.titleLabel.font = buttonFont;
+
+    NSString *acceptButtonTitle = NSLocalizedString(@"Great, thanks!", @"Displayed as the 'close' button label on the What's New dialog. A short acknowledgement that the user is aware of the new features. Tapping dismisses the dialog.");
+    [self.acceptButton setTitle:acceptButtonTitle forState:UIControlStateNormal];
 }
 
 #pragma mark - Showing & hiding
