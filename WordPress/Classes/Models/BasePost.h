@@ -10,6 +10,11 @@ typedef enum {
     AbstractPostRemoteStatusSync,       // Post uploaded
 } AbstractPostRemoteStatus;
 
+extern NSString *const BasePostStatusDraft;
+extern NSString *const BasePostStatusPending;
+extern NSString *const BasePostStatusPrivate;
+extern NSString *const BasePostStatusPublished;
+
 @interface BasePost : NSManagedObject<WPContentViewProvider> {
 
 }
