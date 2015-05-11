@@ -28,6 +28,8 @@ static CGFloat ActionBarMinButtonWidth = 100.0;
 
 - (void)awakeFromNib
 {
+    [super awakeFromNib];
+
     [self setupView];
 }
 
