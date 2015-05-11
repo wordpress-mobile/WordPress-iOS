@@ -177,6 +177,18 @@
     XCTAssertNotNil(note.metaCommentID, @"Missing commentID");
 }
 
+- (void)testFindingNotificationRangeSearchingByReplyCommentID
+{
+    Notification *note = [self loadCommentNotification];
+    XCTAssertNotNil(note.metaReplyID, @"Missing Reply ID");
+    
+    NotificationBlockGroup *footerGroup = [note blockGroupOfType:NoteBlockGroupTypeFooter];
+    NotificationBlock *textBlock = [footerGroup blockOfType:NoteBlockGroupTypeText];
+    XCTAssertNotNil(textBlock, @"Missing View Reply Text Block");
+    
+    NotificationRange *range = [textBlock notificationRangeWithCommentId:note.metaReplyID];
+    XCTAssertNotNil(range, @"Missing Reply Range");
+}
 
 
 #pragma mark - Helpers
