@@ -772,8 +772,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                                  };
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSObject *status) {
-        self.apost.status = (NSString *)status;
+    vc.onItemSelected = ^(NSString *status) {
+        self.apost.status = status;
         [weakVc dismiss];
         [self.tableView reloadData];
     };
@@ -795,8 +795,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                                     @"CurrentValue" : [self titleForVisibility]};
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:visiblityDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSObject *selectedVis) {
-        NSString *visibility = (NSString *)selectedVis;
+    vc.onItemSelected = ^(NSString *visibility) {
         [weakVc dismiss];
         
         NSAssert(_apost != nil, @"The post should not be nil here.");
@@ -860,10 +859,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSObject *status) {
+    vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            post.postFormatText = (NSString *)status;
+            post.postFormatText = status;
             [weakVc dismiss];
             [self.tableView reloadData];
         }

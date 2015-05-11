@@ -8,7 +8,7 @@ extern NSString * const SettingsSelectionCurrentValueKey;
 
 @interface PostSettingsSelectionViewController : UITableViewController
 
-@property (nonatomic, copy) void(^onItemSelected)(NSObject *);
+@property (nonatomic, copy) void(^onItemSelected)(id);
 @property (nonatomic, copy) void(^onCancel)();
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;
