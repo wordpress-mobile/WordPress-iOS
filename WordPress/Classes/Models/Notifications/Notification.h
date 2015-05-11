@@ -45,7 +45,8 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
     NoteBlockGroupTypeComment  = NoteBlockTypeComment,      // Blocks: User  + Comment
     NoteBlockGroupTypeActions  = 100,                       // Blocks: Comment
     NoteBlockGroupTypeSubject  = 200,                       // Blocks: Text  + Text
-    NoteBlockGroupTypeHeader   = 300                        // Blocks: Image + Text
+    NoteBlockGroupTypeHeader   = 300,                       // Blocks: Image + Text
+    NoteBlockGroupTypeFooter   = 400                        // Blocks: Text
 };
 
 
@@ -77,6 +78,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) NSNumber               *metaSiteID;
 @property (nonatomic, assign,  readonly) NSNumber               *metaPostID;
 @property (nonatomic, strong,  readonly) NSNumber               *metaCommentID;
+@property (nonatomic, strong,  readonly) NSNumber               *metaReplyID;
 @property (nonatomic, strong,  readonly) NSURL                  *iconURL;
 @property (nonatomic, strong,  readonly) NSDate                 *timestampAsDate;
 
@@ -85,6 +87,7 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) BOOL                   isPost;
 @property (nonatomic, assign,  readonly) BOOL                   isFollow;
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
+@property (nonatomic, assign,  readonly) BOOL                   hasReply;
 
 // Helpers
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
@@ -129,7 +132,6 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 
 // Derived Properties
 @property (nonatomic, assign, readonly) NoteBlockType       type;
-@property (nonatomic, assign, readonly) BOOL                isBadge;
 @property (nonatomic, strong, readonly) NSNumber            *metaSiteID;
 @property (nonatomic, strong, readonly) NSNumber            *metaCommentID;
 @property (nonatomic, strong, readonly) NSString            *metaLinksHome;
@@ -138,7 +140,30 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 // Overrides
 @property (nonatomic, strong, readwrite) NSString           *textOverride;
 
+
+/**
+ *	@brief      Finds the first NotificationRange instance that maps to a given URL.
+ *
+ *	@param		url         The URL mapped by the NotificationRange instance we need to find.
+ *  @returns                A NotificationRange instance mapping to a given URL.
+ */
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;
+
+
+/**
+ *	@brief      Finds the first NotificationRange instance that maps to a given CommentID.
+ *
+ *	@param		commentID   The CommentID mapped by the NotificationRange instance we need to find.
+ *  @returns                A NotificationRange instance referencing to a given commentID.
+ */
+- (NotificationRange *)notificationRangeWithCommentId:(NSNumber *)commentId;
+
+
+/**
+ *	@brief      Collects all of the Image URL's referenced by the NotificationMedia instances
+ *
+ *  @returns                An array of NSURL instances, mapping to images required by this block.
+ */
 - (NSArray *)imageUrls;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;

@@ -73,6 +73,11 @@ extension WPStyleGuide
                                                         NSFontAttributeName:            headerTitleItalicsFont,
                                                         NSForegroundColorAttributeName: headerTitleContextColor]
         
+        //  Footer
+        public static let footerRegularStyle        = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: footerTextColor]
+        
         //  Badges
         public static let badgeBackgroundColor      = UIColor.clearColor()
         public static let badgeLinkColor            = blockLinkColor
@@ -194,7 +199,8 @@ extension WPStyleGuide
         private static let sectionHeaderTextColor   = UIColor(red: 0xA7/255.0, green: 0xBB/255.0, blue: 0xCA/255.0, alpha: 0xFF/255.0)
         private static let subjectTextColor         = WPStyleGuide.littleEddieGrey()
         private static let subjectNoticonColor      = noticonReadColor
-        private static let blockNoticonColor        = blockLinkColor
+        private static let footerTextColor          = WPStyleGuide.allTAllShadeGrey()
+        private static let blockNoticonColor        = WPStyleGuide.allTAllShadeGrey()
         private static let snippetColor             = WPStyleGuide.allTAllShadeGrey()
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
         
