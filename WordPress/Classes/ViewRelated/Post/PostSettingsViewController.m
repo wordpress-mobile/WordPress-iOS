@@ -779,12 +779,17 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     NSMutableArray *titles = [NSMutableArray arrayWithArray:[self.apost availableStatuses]];
     [titles removeObject:NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
 
+    NSString *postStatusTitle = @"";
+    if(self.apost.status.length) {
+        postStatusTitle = self.apost.statusTitle;
+    }
+       
     NSDictionary *statusDict = @{
                                  @"DefaultValue": NSLocalizedString(@"Published", @""),
                                  @"Title" : NSLocalizedString(@"Status", nil),
                                  @"Titles" : titles,
                                  @"Values" : titles,
-                                 @"CurrentValue" : self.apost.statusTitle
+                                 @"CurrentValue" : postStatusTitle
                                  };
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:statusDict];
     __weak PostSettingsSelectionViewController *weakVc = vc;

@@ -1,6 +1,7 @@
 #import "Post.h"
 #import "Media.h"
 #import "PostCategory.h"
+#import "PostStatus.h"
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "ContextManager.h"
@@ -19,6 +20,79 @@
     [super didTurnIntoFault];
 
     self.specialType = nil;
+}
+
+#pragma mark - Super methods
+
+- (NSArray *)availableStatuses
+{
+    NSArray *defaultStatuses = [super availableStatuses];
+    NSSet *blogStatuses = self.blog.statuses;
+    if(blogStatuses.count) {
+        
+        NSArray *filteredStatuses = @[@"auto-draft", @"inherit", @"trash"];
+        
+        NSMutableArray *availableStatuses = [NSMutableArray arrayWithCapacity:blogStatuses.count];
+        for(PostStatus *status in blogStatuses) {
+            if([filteredStatuses containsObject:status.name]) {
+                continue;
+            }
+            
+            [availableStatuses addObject:status.label];
+        }
+        
+        [availableStatuses sortUsingSelector:@selector(localizedCaseInsensitiveCompare:)];
+        return availableStatuses;
+    }
+ 
+    return defaultStatuses;
+}
+
+- (NSString *)statusTitle
+{
+    NSSet *blogStatuses = self.blog.statuses;
+    if(blogStatuses.count) {
+        
+        NSString *title = nil;
+        for(PostStatus *status in blogStatuses) {
+
+            if([status.name isEqualToString:self.status]) {
+                
+                title = status.label;
+                break;
+            }
+        }
+        
+        if(title) {
+            return title;
+        }
+    }
+    
+    return [super statusTitle];
+}
+
+- (void)setStatusTitle:(NSString *)aTitle
+{
+    NSSet *blogStatuses = self.blog.statuses;
+    if(blogStatuses.count) {
+        
+        NSString *statusName = nil;
+        for(PostStatus *status in blogStatuses) {
+            
+            if([status.label isEqualToString:aTitle]) {
+                
+                statusName = status.name;
+                break;
+            }
+        }
+        
+        if(statusName) {
+            self.status = statusName;
+            return;
+        }
+    }
+    
+    [super setStatusTitle:aTitle];
 }
 
 #pragma mark -
