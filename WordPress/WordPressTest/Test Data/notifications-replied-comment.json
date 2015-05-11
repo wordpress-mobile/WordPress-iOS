@@ -131,12 +131,30 @@
             },
             "type": "comment",
             "nest_level": 1
+        },
+        {
+             "text": "You replied to this comment.",
+             "ranges": [
+                {
+                    "indices": [0, 0],
+                    "type": "noticon",
+                    "value": "\uf300"
+                },
+                {
+                    "indices": [4, 11],
+                    "type": "comment",
+                    "url": "https://mobilerequests.wordpress.com/2015/04/28/android-field-for-verification-code#comment-2893",
+                    "id": 991,
+                    "post_id": 3252,
+                    "site_id": 61509427
+                }
+            ]
         }
     ],
     "meta": {
         "ids": {
             "user": 5,
-            "comment": 19191919,
+            "comment": 990,
             "post": 970,
             "site": 1919191919,
             "parent_comment": 989,
