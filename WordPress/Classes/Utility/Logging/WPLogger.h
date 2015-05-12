@@ -1,10 +1,14 @@
 #import <Foundation/Foundation.h>
 
+@class DDFileLogger;
+
 /**
  *  @class      WPlogger
  *  @brief      This module takes care of the logging setup for WPiOS.
  */
 @interface WPLogger : NSObject
+
+@property (nonatomic, strong, readonly) DDFileLogger *fileLogger;
 
 #pragma mark - Reading from the log
 

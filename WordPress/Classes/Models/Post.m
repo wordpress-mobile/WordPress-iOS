@@ -41,9 +41,9 @@
     self.specialType = nil;
 }
 
-- (void)didSave
+- (void)willSave
 {
-    [super didSave];
+    [super willSave];
     if ([self isDeleted]) {
         return;
     }

@@ -9,6 +9,8 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "Wordpress-Swift.h"
 
+static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
+
 @interface PostCardTableViewCell()
 
 @property (nonatomic, strong) IBOutlet UIView *innerContentView;
@@ -44,7 +46,7 @@
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetWrapperViewHeightConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetThumbPaddingWidthConstraint;
 
-@property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
+@property (nonatomic, weak) id<WPPostContentViewProvider>contentProvider;
 @property (nonatomic, assign) CGFloat headerViewHeight;
 @property (nonatomic, assign) CGFloat headerViewLowerMargin;
 @property (nonatomic, assign) CGFloat titleViewLowerMargin;
@@ -431,7 +433,7 @@
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = UIEdgeInsetsMake(2.0, 0.0, 0.0, 0.0);
+    item.imageInsets = ViewButtonImageInsets;;
     [items addObject:item];
 
     if ([self.contentProvider isWPcom]) {
