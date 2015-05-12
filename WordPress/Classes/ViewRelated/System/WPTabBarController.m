@@ -452,10 +452,11 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
-    [self.blogListNavigationController popToRootViewControllerAnimated:NO];
-    [self.readerNavigationController popToRootViewControllerAnimated:NO];
-    [self.meNavigationController popToRootViewControllerAnimated:NO];
-    [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    if (notification.object == nil) {
+        [self.readerNavigationController popToRootViewControllerAnimated:NO];
+        [self.meNavigationController popToRootViewControllerAnimated:NO];
+        [self.notificationsNavigationController popToRootViewControllerAnimated:NO];
+    }
 }
 
 #pragma mark - Handling Badges
@@ -463,13 +464,16 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 - (void)updateNotificationBadgeVisibility
 {
     NSInteger count = [[UIApplication sharedApplication] applicationIconBadgeNumber];
+    UITabBarItem *tabBarItem = self.notificationsNavigationController.tabBarItem;
     if (count == 0) {
         self.notificationBadgeIconView.hidden = YES;
+        tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
         return;
     }
 
     BOOL wasNotificationBadgeHidden = self.notificationBadgeIconView.hidden;
     self.notificationBadgeIconView.hidden = NO;
+    tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications Unread", @"Notifications tab bar item accessibility label, unread notifications state");
     if (wasNotificationBadgeHidden) {
         [self animateNotificationBadgeIcon];
     }

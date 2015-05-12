@@ -46,6 +46,7 @@ static CGFloat const NoteEstimatedHeight                = 70;
 static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
 static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
+static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 
 #pragma mark ====================================================================================
@@ -237,6 +238,12 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
         self.pushNotificationID     = nil;
         self.pushNotificationDate   = nil;
     }
+    
+    // Mark as read immediately (if we're onscreen!)
+    if (changeType == SPBucketChangeInsert && self.isViewOnScreen) {
+        [self resetApplicationBadge];
+        [self updateLastSeenTime];
+    }
 }
 
 
@@ -337,7 +344,10 @@ static NSTimeInterval NotificationsSyncTimeout          = 10;
 
 - (void)trackSyncTimeout
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning];
+    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
+    NSDictionary *properties = @{ NotificationsNetworkStatusKey : simperium.networkStatus };
+    
+    [WPAnalytics track:WPAnalyticsStatNotificationsMissingSyncWarning withProperties:properties];
 }
 
 

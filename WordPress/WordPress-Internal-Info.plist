@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>5.0</string>
+	<string>5.1</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -45,7 +45,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5.0</string>
+	<string>5.1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -54,6 +54,12 @@
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>To take photos or videos to use in your posts.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>To add photos or videos to your posts.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>For your videos to have sound on them.</string>    
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>

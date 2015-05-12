@@ -49,7 +49,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
-@synthesize isSyncingComments;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 
@@ -388,6 +387,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
 - (NSNumber *)dotComID
 {
     return self.blogID;
+}
+
+- (NSSet *)allowedFileTypes
+{
+    NSArray * allowedFileTypes = self.options[@"allowed_file_types"][@"value"];
+    if (!allowedFileTypes || allowedFileTypes.count == 0) {
+        return nil;
+    }
+    
+    return [NSSet setWithArray:allowedFileTypes];
 }
 
 #pragma mark - api accessor
