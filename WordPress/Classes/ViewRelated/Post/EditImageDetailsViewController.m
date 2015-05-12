@@ -525,9 +525,9 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSObject *status) {
+    vc.onItemSelected = ^(NSString *status) {
         // do interesting work here... like updating the value of image meta.
-        self.imageDetails.align = (NSString *)status;
+        self.imageDetails.align = status;
 
         [weakVc dismiss];
         [self.tableView reloadData];
@@ -557,8 +557,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     NSDictionary *sizes = [self.post.blog getImageResizeDimensions];
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:dict];
     __weak PostSettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSObject *selectedStatus) {
-        NSString *status = (NSString *)selectedStatus;
+    vc.onItemSelected = ^(NSString *status) {
         CGSize maxSize = CGSizeZero;
 
         if ([status isEqualToString:@"thumbnail"]) {
