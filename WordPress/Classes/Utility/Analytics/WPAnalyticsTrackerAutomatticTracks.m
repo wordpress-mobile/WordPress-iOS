@@ -20,6 +20,7 @@
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
 #ifdef TRACKS_ENABLED
+@property (nonatomic, strong) TracksContextManager *contextManager;
 @property (nonatomic, strong) TracksService *tracksService;
 #endif
 @property (nonatomic, strong) NSDictionary *userProperties;
@@ -37,7 +38,8 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     self = [super init];
     if (self) {
 #ifdef TRACKS_ENABLED
-        _tracksService = [TracksService new];
+        _contextManager = [TracksContextManager new];
+        _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
 #endif
     }
     return self;
@@ -121,7 +123,8 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
 
 #ifdef TRACKS_ENABLED
-    self.tracksService.userProperties = userProperties;
+    [self.tracksService.userProperties removeAllObjects];
+    [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
     
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
     
@@ -340,10 +343,10 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
             eventName = @"notifications_replied_to";
             break;
         case WPAnalyticsStatNotificationTrashed:
-            eventName = @"notifications_trashed";
+            eventName = @"notifications_comment_trashed";
             break;
         case WPAnalyticsStatNotificationUnapproved:
-            eventName = @"notifications_unapproved";
+            eventName = @"notifications_comment_unapproved";
             break;
         case WPAnalyticsStatNotificationUnfollowAction:
             eventName = @"notifications_unfollow_action";
@@ -355,7 +358,7 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
             eventName = @"notifications_missing_sync_warning";
             break;
         case WPAnalyticsStatNotificationsOpenedNotificationDetails:
-            eventName = @"notifications_opened_notification_details";
+            eventName = @"notifications_notification_details_opened";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
