@@ -190,7 +190,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
     // notifications when in BG mode.
     //
-    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager sharedInstance];
+    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager new];
     if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
         [authenticationManager handlePushAuthenticationNotification:userInfo];
         return;
