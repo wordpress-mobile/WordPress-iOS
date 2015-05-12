@@ -284,7 +284,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         }
     } else if (indexPath.section == TableViewSectionRemove) {
         if (indexPath.row == BlogDetailsRowRemove) {
-            cell.textLabel.text = NSLocalizedString(@"Remove site", nil);
+            cell.textLabel.text = NSLocalizedString(@"Remove site", @"Button to remove a site from the app");
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor = [WPStyleGuide errorRed];
             cell.imageView.image = nil;
@@ -459,7 +459,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     self.removeSiteActionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", @"Button to remove a site")
+                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", @"Button to remove a site from the app")
                                                     otherButtonTitles:nil];
     [self.removeSiteActionSheet showInView:self.view];
 }
