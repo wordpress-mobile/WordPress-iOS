@@ -2,37 +2,7 @@ import Foundation
 import XCTest
 
 class PushAuthenticationServiceRemoteTests : XCTestCase {
-    
-    class MockWordPressComApi : WordPressComApi {
-        var postMethodCalled = false
-        var URLStringPassedIn:String?
-        var parametersPassedIn:AnyObject?
-        
-        var shouldCallSuccessCallback = false
-        func callSuccessCallback() {
-           shouldCallSuccessCallback = true
-        }
-        
-        var shouldCallFailureCallback = false
-        func callFailureCallback() {
-           shouldCallFailureCallback = true
-        }
-    
-        override func POST(URLString: String!, parameters: AnyObject!, success: ((AFHTTPRequestOperation!, AnyObject!) -> Void)!, failure: ((AFHTTPRequestOperation!, NSError!) -> Void)!) -> AFHTTPRequestOperation! {
-            postMethodCalled = true
-            URLStringPassedIn = URLString
-            parametersPassedIn = parameters
-            
-            if (shouldCallSuccessCallback) {
-                success?(AFHTTPRequestOperation(), [])
-            } else if (shouldCallFailureCallback) {
-                failure?(AFHTTPRequestOperation(), NSError())
-            }
-            
-            return AFHTTPRequestOperation()
-        }
-    }
-    
+
     var pushAuthenticationServiceRemote:PushAuthenticationServiceRemote?
     var mockRemoteApi:MockWordPressComApi?
     let token = "token"
@@ -40,10 +10,6 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         super.setUp()
         mockRemoteApi = MockWordPressComApi()
         pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: mockRemoteApi)
-    }
-    
-    override func tearDown() {
-        super.tearDown()
     }
     
     func testAuthorizeLoginUsesTheCorrectPath() {
