@@ -33,16 +33,14 @@
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
 
-typedef NS_ENUM(NSInteger, BlogDetailsRow) {
-    BlogDetailsRowViewSite = 0,
-    BlogDetailsRowStats = 1,
-    BlogDetailsRowBlogPosts = 0,
-    BlogDetailsRowPages = 1,
-    BlogDetailsRowComments = 2,
-    BlogDetailsRowEditSite = 0,
-    BlogDetailsRowViewAdmin = 0,
-    BlogDetailsRowRemove = 0
-};
+const NSInteger BlogDetailsRowViewSite = 0;
+const NSInteger BlogDetailsRowStats = 1;
+const NSInteger BlogDetailsRowBlogPosts = 0;
+const NSInteger BlogDetailsRowPages = 1;
+const NSInteger BlogDetailsRowComments = 2;
+const NSInteger BlogDetailsRowEditSite = 0;
+const NSInteger BlogDetailsRowViewAdmin = 0;
+const NSInteger BlogDetailsRowRemove = 0;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
