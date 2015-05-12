@@ -11,22 +11,22 @@ import UIKit
 *                   by this specific class.
 */
 
-@objc public class PushAuthenticationManager
+@objc public class PushAuthenticationManager : NSObject
 {
-    //
-    // MARK: - Public Properties
-    //
-    
-    /**
-    *  @brief      Returns the PushAuthenticator Singleton Instance
-    */
-    static let sharedInstance = PushAuthenticationManager()
-    
-
-    
     //
     // MARK: - Public Methods
     //
+    var alertViewProxy = UIAlertViewProxy()
+    let pushAuthenticationService:PushAuthenticationService
+    
+    override convenience init() {
+        self.init(pushAuthenticationService: PushAuthenticationService(managedObjectContext: ContextManager.sharedInstance().mainContext))
+    }
+    
+    public init(pushAuthenticationService: PushAuthenticationService) {
+        self.pushAuthenticationService = pushAuthenticationService
+        super.init()
+    }
     
     /**
     *  @brief       Checks if a given Push Notification is a Push Authentication.
@@ -94,11 +94,8 @@ import UIKit
             WPAnalytics.track(.PushAuthenticationFailed)
             return
         }
-        
-        let mainContext = ContextManager.sharedInstance().mainContext
-        let service     = PushAuthenticationService(managedObjectContext: mainContext)
 
-        service.authorizeLogin(token) { (success) -> () in
+        self.pushAuthenticationService.authorizeLogin(token) { (success) -> () in
             if !success {
                 self.authorizeLogin(token, retryCount: (retryCount + 1))
             }
@@ -131,7 +128,7 @@ import UIKit
                                                     comment: "WordPress.com Push Authentication Expired message")
         let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
         
-        UIAlertView.showWithTitle(title,
+        self.alertViewProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle:  acceptButtonTitle,
             otherButtonTitles:  nil,
@@ -150,7 +147,7 @@ import UIKit
         let cancelButtonTitle   = NSLocalizedString("Ignore",       comment: "Ignore action. Verb")
         let acceptButtonTitle   = NSLocalizedString("Approve",      comment: "Approve action. Verb")
         
-        UIAlertView.showWithTitle(title,
+        self.alertViewProxy.showWithTitle(title,
             message:            message,
             cancelButtonTitle: cancelButtonTitle,
             otherButtonTitles: [acceptButtonTitle as AnyObject])
