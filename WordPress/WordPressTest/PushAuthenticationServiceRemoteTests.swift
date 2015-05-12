@@ -31,10 +31,10 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
     
     func testAuthorizeLoginCallsSuccessBlock() {
         var successBlockCalled = false
-        mockRemoteApi?.callSuccessCallback()
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: { () -> () in
            successBlockCalled = true
         }, failure: nil)
+        mockRemoteApi?.successBlockPassedIn?(AFHTTPRequestOperation(), [])
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(successBlockCalled, "Success block not called")
@@ -42,12 +42,10 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
     
     func testAuthorizeLoginCallsFailureBlock() {
         var failureBlockCalled = false
-        mockRemoteApi?.callFailureCallback()
         pushAuthenticationServiceRemote!.authorizeLogin(token, success: nil, failure: { () -> () in
             failureBlockCalled = true
         })
-        
-        pushAuthenticationServiceRemote?.authorizeLogin(token, success: nil, failure: nil)
+        mockRemoteApi?.failureBlockPassedIn?(AFHTTPRequestOperation(), NSError())
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
         XCTAssertTrue(failureBlockCalled, "Failure block not called")
