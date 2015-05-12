@@ -65,10 +65,10 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
-@interface BlogDetailsViewController () <UIAlertViewDelegate>
+@interface BlogDetailsViewController () <UIActionSheetDelegate>
 
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
-@property (nonatomic, strong) UIAlertView *removeSiteAlertView;
+@property (nonatomic, strong) UIActionSheet *removeSiteActionSheet;
 
 @end
 
@@ -102,7 +102,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)dealloc
 {
-    self.removeSiteAlertView.delegate = nil;
+    self.removeSiteActionSheet.delegate = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -454,12 +454,14 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)showRemoveSiteForBlog:(Blog *)blog
 {
-    self.removeSiteAlertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Remove site", @"Title for the remove site confirmation alert")
-                                                          message:NSLocalizedString(@"Are you sure you want to remove this site?", nil)
-                                                         delegate:self
-                                                cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                                otherButtonTitles:NSLocalizedString(@"Remove site", nil), nil];
-    [self.removeSiteAlertView show];
+    NSString *model = [[UIDevice currentDevice] localizedModel];
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert"), model];
+    self.removeSiteActionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                             delegate:self
+                                                    cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", nil)
+                                                    otherButtonTitles:nil];
+    [self.removeSiteActionSheet showInView:self.view];
 }
 
 #pragma mark - Notification handlers
@@ -472,11 +474,11 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     }
 }
 
-#pragma mark - Alert view delegate
+#pragma mark - Action sheet delegate
 
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (buttonIndex == alertView.firstOtherButtonIndex) {
+    if (buttonIndex == actionSheet.destructiveButtonIndex) {
         [self.blog remove];
         [self.navigationController popViewControllerAnimated:YES];
     }
