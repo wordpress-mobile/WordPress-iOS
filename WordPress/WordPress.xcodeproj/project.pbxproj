@@ -224,6 +224,7 @@
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
 		85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */; };
 		85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */; };
+		85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */; };
 		85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */; };
 		85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */; };
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
@@ -3879,6 +3880,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
+				85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
