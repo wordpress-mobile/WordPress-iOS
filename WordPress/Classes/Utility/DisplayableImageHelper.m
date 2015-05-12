@@ -2,7 +2,6 @@
 
 static const NSInteger FeaturedImageMinimumWidth = 640;
 
-static NSString * const AttachmentsDictionaryKeyAttachments = @"attachments";
 static NSString * const AttachmentsDictionaryKeyWidth = @"width";
 static NSString * const AttachmentsDictionaryKeyURL = @"URL";
 static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
@@ -11,7 +10,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
 
 + (NSString *)searchPostAttachmentsForImageToDisplay:(NSDictionary *)attachmentsDict
 {
-    NSArray *attachments = [[attachmentsDict dictionaryForKey:AttachmentsDictionaryKeyAttachments] allValues];
+    NSArray *attachments = [attachmentsDict allValues];
     if ([attachments count] == 0) {
         return nil;
     }
