@@ -765,7 +765,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         DDLogError(@"Error sending reply: %@", error);
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               if (buttonIndex != alertView.cancelButtonIndex) {
