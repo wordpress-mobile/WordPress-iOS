@@ -53,6 +53,7 @@ static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
 static const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 
+static const NSInteger HTTPErrorCodeForbidden = 403;
 static const NSInteger PostsLoadMoreThreshold = 4;
 static const NSInteger PostsFetchRequestBatchSize = 10;
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
@@ -711,7 +712,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 - (void)handleSyncFailure:(NSError *)error
 {
     if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
-        if (error.code == 403) {
+        if (error.code == HTTPErrorCodeForbidden) {
             [self promptForPasswordWithMessage:nil];
             return;
         }
@@ -961,7 +962,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [postService uploadPost:apost
                     success:nil
                     failure:^(NSError *error) {
-                        if([error code] == 403) {
+                        if([error code] == HTTPErrorCodeForbidden) {
                             [self promptForPasswordWithMessage:nil];
                         } else {
                             [WPError showXMLRPCErrorAlert:error];
@@ -1012,7 +1013,7 @@ static const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [postService trashPost:apost
                    success:nil
                     failure:^(NSError *error) {
-                        if([error code] == 403) {
+                        if([error code] == HTTPErrorCodeForbidden) {
                             [self promptForPasswordWithMessage:nil];
                         } else {
                             [WPError showXMLRPCErrorAlert:error];
