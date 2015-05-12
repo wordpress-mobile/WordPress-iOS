@@ -58,7 +58,7 @@ static NSString * const PathForAttachmentD = @"http://www.example.com/exampleD.p
 - (void)testSearchPostAttachmentsForImageToDisplay
 {
     NSDictionary *attachments = [self attachmentsDictionary];
-    NSString *path = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:@{@"attachments":attachments}];
+    NSString *path = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:attachments];
     XCTAssertTrue([path isEqualToString:PathForAttachmentD], @"Example D should be the matched attachment.");
 }
 
