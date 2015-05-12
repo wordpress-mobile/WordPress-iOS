@@ -8,7 +8,7 @@
 @property (nonatomic, strong) IBOutlet UIView *postContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
-@property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
+@property (nonatomic, weak) id<WPPostContentViewProvider> contentProvider;
 
 @end
 
