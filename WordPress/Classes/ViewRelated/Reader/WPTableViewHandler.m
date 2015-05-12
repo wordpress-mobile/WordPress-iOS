@@ -360,6 +360,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+    }
+}
+
 
 #pragma mark - TableView Datasource Methods
 

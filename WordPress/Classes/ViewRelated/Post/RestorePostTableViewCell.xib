@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="65" id="cm8-te-h9Y" customClass="RestorePostTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="cm8-te-h9Y" id="n47-YY-a6J">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gcy-ef-aVi">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xvL-vB-zkU">
+                                <rect key="frame" x="5" y="9" width="310" height="46"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XWn-76-OyW">
+                                <rect key="frame" x="6" y="10" width="308" height="44"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tDg-aX-r9a">
+                                        <rect key="frame" x="13" y="0.0" width="135" height="44"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5bW-zk-smP">
+                                        <rect key="frame" x="228" y="0.0" width="66" height="44"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="oHA-R3-tyO"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
+                                        <state key="normal" title="Undo" image="icon-post-undo">
+                                            <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="restorePostAction:" destination="cm8-te-h9Y" eventType="touchUpInside" id="hvw-f9-pHe"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="5bW-zk-smP" secondAttribute="trailing" constant="14" id="8G2-zh-deP">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="24"/>
+                                    </constraint>
+                                    <constraint firstItem="tDg-aX-r9a" firstAttribute="leading" secondItem="XWn-76-OyW" secondAttribute="leading" constant="13" id="Cd4-wE-Coz">
+                                        <variation key="heightClass=regular-widthClass=regular" constant="22"/>
+                                    </constraint>
+                                    <constraint firstAttribute="bottom" secondItem="tDg-aX-r9a" secondAttribute="bottom" id="NVR-Tx-ea4"/>
+                                    <constraint firstItem="tDg-aX-r9a" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="ay6-0i-iUF"/>
+                                    <constraint firstAttribute="bottom" secondItem="5bW-zk-smP" secondAttribute="bottom" id="fd1-Xw-yJ2"/>
+                                    <constraint firstItem="5bW-zk-smP" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" id="lZy-0i-LeW"/>
+                                    <constraint firstAttribute="width" constant="600" id="zH8-kM-TvE"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="zH8-kM-TvE"/>
+                                    </mask>
+                                </variation>
+                                <variation key="heightClass=regular-widthClass=regular">
+                                    <mask key="constraints">
+                                        <include reference="zH8-kM-TvE"/>
+                                    </mask>
+                                </variation>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="XWn-76-OyW" secondAttribute="centerX" id="2wV-mH-4yr"/>
+                            <constraint firstItem="xvL-vB-zkU" firstAttribute="top" secondItem="XWn-76-OyW" secondAttribute="top" constant="-1" id="7VD-3Z-mSf"/>
+                            <constraint firstItem="XWn-76-OyW" firstAttribute="leading" secondItem="gcy-ef-aVi" secondAttribute="leading" constant="6" id="NEt-GT-pbh"/>
+                            <constraint firstItem="XWn-76-OyW" firstAttribute="top" secondItem="gcy-ef-aVi" secondAttribute="top" constant="10" id="eJm-2u-3Fj"/>
+                            <constraint firstAttribute="trailing" secondItem="XWn-76-OyW" secondAttribute="trailing" constant="6" id="gJL-pe-U6k"/>
+                            <constraint firstItem="xvL-vB-zkU" firstAttribute="leading" secondItem="XWn-76-OyW" secondAttribute="leading" constant="-1" id="lXP-3e-wIH"/>
+                            <constraint firstAttribute="bottom" secondItem="XWn-76-OyW" secondAttribute="bottom" constant="10" id="oMM-ZU-bDR"/>
+                            <constraint firstItem="xvL-vB-zkU" firstAttribute="trailing" secondItem="XWn-76-OyW" secondAttribute="trailing" constant="1" id="rmt-Ui-YMc"/>
+                            <constraint firstItem="xvL-vB-zkU" firstAttribute="bottom" secondItem="XWn-76-OyW" secondAttribute="bottom" constant="1" id="vo1-d7-zGo"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="2wV-mH-4yr"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="2wV-mH-4yr"/>
+                                <exclude reference="NEt-GT-pbh"/>
+                                <exclude reference="gJL-pe-U6k"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="gcy-ef-aVi" secondAttribute="bottom" id="1fm-BB-GMU"/>
+                    <constraint firstAttribute="trailing" secondItem="gcy-ef-aVi" secondAttribute="trailing" id="3jw-Hl-OoM"/>
+                    <constraint firstItem="gcy-ef-aVi" firstAttribute="top" secondItem="n47-YY-a6J" secondAttribute="top" id="mPx-Eq-ymj"/>
+                    <constraint firstItem="gcy-ef-aVi" firstAttribute="leading" secondItem="n47-YY-a6J" secondAttribute="leading" id="pao-FZ-URB"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="innerContentView" destination="gcy-ef-aVi" id="mqQ-7M-n4l"/>
+                <outlet property="postContentView" destination="XWn-76-OyW" id="BWV-ef-k8w"/>
+                <outlet property="restoreButton" destination="5bW-zk-smP" id="ooK-Wf-Ygo"/>
+                <outlet property="restoreLabel" destination="tDg-aX-r9a" id="hWK-bR-Ar8"/>
+                <outlet property="shadowView" destination="xvL-vB-zkU" id="QNz-Hy-riG"/>
+            </connections>
+            <point key="canvasLocation" x="568" y="220.5"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon-post-undo" width="16" height="16"/>
+    </resources>
+</document>

@@ -1,9 +1,13 @@
 #import "PostServiceRemoteXMLRPC.h"
 #import "Blog.h"
+#import "BasePost.h"
+#import "DisplayableImageHelper.h"
 #import "RemotePost.h"
 #import "RemotePostCategory.h"
 #import "NSMutableDictionary+Helpers.h"
 #import <WordPressApi.h>
+
+const NSInteger HTTP404ErrorCode = 404;
 
 @interface PostServiceRemoteXMLRPC ()
 @property (nonatomic, strong) WPXMLRPCClient *api;
@@ -52,9 +56,12 @@
                options:(NSDictionary *)options
                success:(void (^)(NSArray *posts))success
                failure:(void (^)(NSError *error))failure {
+    NSArray *statuses = @[PostStatusDraft, PostStatusPending, PostStatusPrivate, PostStatusPublish, PostStatusScheduled, PostStatusTrash];
+    NSString *postStatus = [statuses componentsJoinedByString:@","];
     NSDictionary *extraParameters = @{
                                       @"number": @40,
                                       @"post_type": postType,
+                                      @"post_status": postStatus,
                                       };
     if (options) {
         NSMutableDictionary *mutableParameters = [extraParameters mutableCopy];
@@ -164,6 +171,54 @@
     }
 }
 
+- (void)trashPost:(RemotePost *)post
+          forBlog:(Blog *)blog
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([post.postID longLongValue] > 0);
+    NSNumber *postID = post.postID;
+    if ([postID longLongValue] > 0) {
+        NSArray *parameters = [blog getXMLRPCArgsWithExtra:postID];
+
+        WPXMLRPCRequest *deletePostRequest = [self.api XMLRPCRequestWithMethod:@"wp.deletePost" parameters:parameters];
+        WPXMLRPCRequestOperation *delOperation = [self.api XMLRPCRequestOperationWithRequest:deletePostRequest success:nil failure:nil];
+
+        WPXMLRPCRequest *getPostRequest = [self.api XMLRPCRequestWithMethod:@"wp.getPost" parameters:parameters];
+        WPXMLRPCRequestOperation *getOperation = [self.api XMLRPCRequestOperationWithRequest:getPostRequest success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            if (success) {
+                // The post was trashed but not yet deleted.
+                RemotePost *post = [self remotePostFromXMLRPCDictionary:responseObject];
+                success(post);
+            }
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            if (error.code == HTTP404ErrorCode) {
+                // The post was deleted.
+                if (success) {
+                    success(post);
+                }
+            }
+        }];
+
+        AFHTTPRequestOperation *operation = [self.api combinedHTTPRequestOperationWithOperations:@[delOperation, getOperation]
+                                                                                         success:nil
+                                                                                         failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                                                                             if (failure) {
+                                                                                                 failure(error);
+                                                                                             }
+                                                                                         }];
+        [self.api enqueueHTTPRequestOperation:operation];
+    }
+}
+
+- (void)restorePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *error))failure
+{
+    [self updatePost:post forBlog:blog success:success failure:failure];
+}
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromXMLRPCArray:(NSArray *)xmlrpcArray {
@@ -186,14 +241,17 @@
     post.content = xmlrpcDictionary[@"post_content"];
     post.excerpt = xmlrpcDictionary[@"post_excerpt"];
     post.slug = xmlrpcDictionary[@"post_name"];
-    post.status = xmlrpcDictionary[@"post_status"];
+    post.authorID = [xmlrpcDictionary numberForKey:@"post_author"];
+    post.status = [self statusForPostStatus:xmlrpcDictionary[@"post_status"] andDate:post.date];
     post.password = xmlrpcDictionary[@"post_password"];
     if ([post.password isEmpty]) {
         post.password = nil;
     }
     post.parentID = [xmlrpcDictionary numberForKey:@"post_parent"];
     // When there is no featured image, post_thumbnail is an empty array :(
-    post.postThumbnailID = [[xmlrpcDictionary dictionaryForKey:@"post_thumbnail"] numberForKey:@"attachment_id"];
+    NSDictionary *thumbnailDict = [xmlrpcDictionary dictionaryForKey:@"post_thumbnail"];
+    post.postThumbnailID = [thumbnailDict numberForKey:@"attachment_id"];
+    post.postThumbnailPath = [thumbnailDict stringForKey:@"link"];
     post.type = xmlrpcDictionary[@"post_type"];
     post.format = xmlrpcDictionary[@"post_format"];
 
@@ -203,7 +261,25 @@
     post.tags = [self tagsFromXMLRPCTermsArray:terms];
     post.categories = [self remoteCategoriesFromXMLRPCTermsArray:terms];
 
+    // Pick an image to use for display
+    if (post.postThumbnailPath) {
+        post.pathForDisplayImage = post.postThumbnailPath;
+    } else {
+        // parse content for a suitable image.
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+    }
+
     return post;
+}
+
+- (NSString *)statusForPostStatus:(NSString *)status andDate:(NSDate *)date
+{
+    // Scheduled posts are synced with a post_status of 'publish' but we want to
+    // work with a status of 'future' from within the app.
+    if (date == [date laterDate:[NSDate date]]) {
+        return PostStatusScheduled;
+    }
+    return status;
 }
 
 - (NSArray *)tagsFromXMLRPCTermsArray:(NSArray *)terms {
@@ -278,8 +354,13 @@
         postParams[@"custom_fields"] = post.metadata;
     }
 
-    if (post.status == nil) {
-        post.status = @"publish";
+    // Scheduled posts need to sync with a status of 'publish'.
+    // Passing a status of 'future' will set the post status to 'draft'
+    // This is an apparent inconsistency in the XML-RPC API as 'future' should
+    // be a valid status.
+    // https://codex.wordpress.org/Post_Status_Transitions
+    if (post.status == nil || [post.status isEqualToString:PostStatusScheduled]) {
+        post.status = PostStatusPublish;
     }
 
     if ([post.type isEqualToString:@"page"]) {
