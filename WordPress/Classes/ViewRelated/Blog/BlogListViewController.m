@@ -136,6 +136,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self.resultsController performFetch:nil];
     [self.tableView reloadData];
     [self updateEditButton];
+    [self maybeShowNUX];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -173,6 +174,20 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
+    }
+}
+
+- (void)maybeShowNUX
+{
+    if ([self numSites] > 0) {
+        return;
+    }
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (!defaultAccount) {
+        [WPAnalytics track:WPAnalyticsStatLogout];
+        [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
 }
 
@@ -513,6 +528,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [self.tableView reloadData];
     [self updateEditButton];
+    [self maybeShowNUX];
 }
 
 @end
