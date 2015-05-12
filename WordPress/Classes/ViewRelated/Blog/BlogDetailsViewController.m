@@ -286,6 +286,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         if (indexPath.row == BlogDetailsRowRemove) {
             cell.textLabel.text = NSLocalizedString(@"Remove site", nil);
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [WPStyleGuide errorRed];
             cell.imageView.image = nil;
             cell.accessoryType = UITableViewCellAccessoryNone;
         }
@@ -297,8 +298,8 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:BlogDetailsCellIdentifier];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
-    [self configureCell:cell atIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
+    [self configureCell:cell atIndexPath:indexPath];
 
     return cell;
 }
