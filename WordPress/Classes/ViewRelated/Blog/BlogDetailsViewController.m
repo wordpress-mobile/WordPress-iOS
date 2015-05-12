@@ -25,10 +25,13 @@
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
 #import "ContextManager.h"
+#import "AccountService.h"
 #import "BlogService.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
+#import "WPAccount.h"
+#import "PostListViewController.h"
 
 const typedef enum {
     BlogDetailsRowViewSite = 0,
@@ -122,8 +125,13 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
     [blogService syncBlog:_blog success:nil failure:nil];
+
+    if (!self.blog.account.userID) {
+        // User's who upgrade may not have a userID recorded.
+        AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
+        [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
+    }
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
@@ -132,6 +140,9 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:self.blog.blogName style:UIBarButtonItemStylePlain target:nil action:nil];
+    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)configureBlogDetailHeader
@@ -305,9 +316,8 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
     } else if (indexPath.section == TableViewSectionPublishType) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
-                [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-                controllerClass = [PostsViewController class];
-                break;
+                [self showPostList];
+                return;
             case BlogDetailsRowPages:
                 [WPAnalytics track:WPAnalyticsStatOpenedPages];
                 controllerClass = [PagesViewController class];
@@ -382,6 +392,13 @@ NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 }
 
 #pragma mark - Private methods
+
+- (void)showPostList {
+    [WPAnalytics track:WPAnalyticsStatOpenedPosts];
+    UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)showViewSiteForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
