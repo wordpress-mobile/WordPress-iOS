@@ -123,8 +123,8 @@
 - (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
     CGRect textRect = [super rightViewRectForBounds:bounds];
-    textRect.origin.x -= _rightViewPadding.x;
-    textRect.origin.y -= _rightViewPadding.y;
+    textRect.origin.x -= _rightViewPadding.horizontal;
+    textRect.origin.y -= _rightViewPadding.vertical;
     
     return textRect;
 }

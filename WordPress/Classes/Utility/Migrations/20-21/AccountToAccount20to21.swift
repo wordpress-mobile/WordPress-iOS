@@ -18,7 +18,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         // Note: 
         // NSEntityMigrationPolicy instance might not be the same all over. Let's use NSUserDefaults
         if let unwrappedAccount = legacyDefaultWordPressAccount(manager.sourceContext) {
-            let username = unwrappedAccount.valueForKey("username") as String
+            let username = unwrappedAccount.valueForKey("username") as! String
             
             let userDefaults = NSUserDefaults.standardUserDefaults()
             userDefaults.setValue(username, forKey: defaultDotcomUsernameKey)
@@ -43,7 +43,7 @@ class AccountToAccount20to21: NSEntityMigrationPolicy {
         let predicate = NSPredicate(format: "username == %@ AND isWpcom == true", defaultUsername)
         request.predicate = predicate
         
-        let accounts = context.executeFetchRequest(request, error: nil) as [NSManagedObject]?
+        let accounts = context.executeFetchRequest(request, error: nil) as! [NSManagedObject]?
         
         if let defaultAccount = accounts?.first {
             setLegacyDefaultWordPressAccount(defaultAccount)

@@ -23,7 +23,6 @@
 @property (nonatomic, strong, readwrite) NSString       *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPages;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingComments;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingMedia;
 @property (nonatomic, strong, readwrite) NSDate         *lastPostsSync;
 @property (nonatomic, strong, readwrite) NSDate         *lastPagesSync;
@@ -47,6 +46,7 @@
 @property (nonatomic, strong,  readonly) NSString       *username;
 @property (nonatomic, strong,  readonly) NSString       *password;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
+@property (nonatomic, strong,  readonly) NSSet *allowedFileTypes;
 
 
 /**

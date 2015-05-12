@@ -617,6 +617,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction
 {
     if ([self isSyncing]) {
+        if (self.didTriggerRefresh) {
+            [self hideRefreshHeader];
+        }
         return;
     }
 

@@ -68,8 +68,9 @@
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
 #import "WPTabBarController.h"
+#import <WPMediaPickerViewController.h>
 
-int ddLogLevel                                                  = LOG_LEVEL_INFO;
+int ddLogLevel                                                  = DDLogLevelInfo;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
 
 @interface WordPressAppDelegate () <UITabBarControllerDelegate, UIAlertViewDelegate, BITHockeyManagerDelegate>
@@ -606,6 +607,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [SVProgressHUD setFont:[WPFontManager openSansRegularFontOfSize:18.0]];
     [SVProgressHUD setErrorImage:[UIImage imageNamed:@"hud_error"]];
     [SVProgressHUD setSuccessImage:[UIImage imageNamed:@"hud_success"]];
+    
+    // Media Picker styles
+    UIBarButtonItem *barButtonItem = [UIBarButtonItem appearanceWhenContainedIn:[WPMediaPickerViewController class], nil];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
+    [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
+    [[UICollectionView appearanceWhenContainedIn:[WPMediaPickerViewController class],nil] setBackgroundColor:[WPStyleGuide greyLighten30]];
 }
 
 #pragma mark - Analytics
@@ -903,7 +910,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] boolForKey:@"extra_debug"] ? @"YES" : @"NO";
         [[NSUserDefaults standardUserDefaults] setObject:origExtraDebug forKey:@"orig_extra_debug"];
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"extra_debug"];
-        ddLogLevel = LOG_LEVEL_VERBOSE;
+        ddLogLevel = DDLogLevelVerbose;
         [NSUserDefaults resetStandardUserDefaults];
     } else {
         NSString *origExtraDebug = [[NSUserDefaults standardUserDefaults] stringForKey:@"orig_extra_debug"];
@@ -917,7 +924,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [NSUserDefaults resetStandardUserDefaults];
 
         if ([origExtraDebug boolValue]) {
-            ddLogLevel = LOG_LEVEL_VERBOSE;
+            ddLogLevel = DDLogLevelVerbose;
         }
     }
 }

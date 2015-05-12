@@ -1,7 +1,9 @@
 #import "WPAppAnalytics.h"
 
+#import "ContextManager.h"
 #import "WPAnalyticsTrackerMixpanel.h"
 #import "WPAnalyticsTrackerWPCom.h"
+#import "WPAnalyticsTrackerAutomatticTracks.h"
 #import "WPTabBarController.h"
 #import "WordPressComApiCredentials.h"
 
@@ -66,10 +68,14 @@ static NSString* const WPAppAnalyticsKeyTimeInApp = @"time_in_app";
     [self initializeUsageTrackingIfNecessary];
     
     if ([WordPressComApiCredentials mixpanelAPIToken].length > 0) {
-        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] init]];
+        [WPAnalytics registerTracker:[[WPAnalyticsTrackerMixpanel alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]]];
     }
 
     [WPAnalytics registerTracker:[[WPAnalyticsTrackerWPCom alloc] init]];
+    
+#ifdef TRACKS_ENABLED
+    [WPAnalytics registerTracker:[WPAnalyticsTrackerAutomatticTracks new]];
+#endif
 
     if ([self isTrackingUsage]) {
         [self beginSession];

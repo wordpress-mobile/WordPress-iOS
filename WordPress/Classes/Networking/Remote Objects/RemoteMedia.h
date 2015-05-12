@@ -14,6 +14,7 @@
 @property (nonatomic, strong) NSString * descriptionText;
 @property (nonatomic, strong) NSNumber * height;
 @property (nonatomic, strong) NSNumber * width;
+@property (nonatomic, strong) NSString * shortcode;
 @property (nonatomic, strong) NSDictionary * exif;
 
 @end

@@ -10,6 +10,8 @@
 
 @implementation ReaderPostRichContentView
 
+@dynamic delegate;
+
 #pragma mark - Life Cycle Methods
 
 - (void)dealloc
