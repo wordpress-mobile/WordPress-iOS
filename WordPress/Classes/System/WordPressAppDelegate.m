@@ -494,7 +494,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if (self.isWelcomeScreenVisible || !([self noBlogs] && [self noWordPressDotComAccount])) {
+    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
     
@@ -512,13 +512,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
-    BOOL hasWordpressAccountButNoBlogs = [self noBlogs] && ![self noWordPressDotComAccount];
+    BOOL hasWordpressAccountButNoSelfHostedBlogs = [self noSelfHostedBlogs] && ![self noWordPressDotComAccount];
     
     __weak __typeof(self) weakSelf = self;
     
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
-    loginViewController.cancellable = hasWordpressAccountButNoBlogs;
+    loginViewController.cancellable = hasWordpressAccountButNoSelfHostedBlogs;
     loginViewController.dismissBlock = ^{
         
         __strong __typeof(weakSelf) strongSelf = self;
@@ -552,7 +552,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return !defaultAccount;
 }
 
-- (BOOL)noBlogs
+- (BOOL)noSelfHostedBlogs
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -900,7 +900,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)toggleExtraDebuggingIfNeeded
 {
-    if ([self noBlogs] && [self noWordPressDotComAccount]) {
+    if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
@@ -962,7 +962,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             }
         }];
     } else {
-        if ([self noBlogs] && [self noWordPressDotComAccount]) {
+        if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
         [self logoutSimperiumAndResetNotifications];
@@ -1007,7 +1007,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)showWhatsNewIfNeeded
 {
     if (!self.wasWhatsNewShown) {
-        BOOL userIsLoggedIn = !([self noBlogs] && [self noWordPressDotComAccount]);
+        BOOL userIsLoggedIn = !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
         
         if (userIsLoggedIn) {
             if ([self mustShowWhatsNewPopup]) {
