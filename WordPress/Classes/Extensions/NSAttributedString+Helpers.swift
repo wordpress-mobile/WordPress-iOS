@@ -16,7 +16,7 @@ extension NSAttributedString
         
         // Proceed embedding!
         let unwrappedEmbeds = embeds!
-        let theString       = self.mutableCopy() as NSMutableAttributedString
+        let theString       = self.mutableCopy() as! NSMutableAttributedString
         var rangeDelta      = 0
         
         for (value, image) in unwrappedEmbeds {

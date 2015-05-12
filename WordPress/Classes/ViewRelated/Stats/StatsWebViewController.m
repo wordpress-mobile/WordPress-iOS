@@ -225,7 +225,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
     } else {
         // Check for credentials.
-        if (![blog.jetpackUsername length] || ![blog.jetpackPassword length]) {
+        if (![blog.jetpackUsername length] || ![blog.authToken length]) {
             prompt = YES;
         }
     }
@@ -270,7 +270,6 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     }
 
     NSString *username = blog.isWPcom ? blog.username : blog.jetpackUsername;
-    NSString *password = blog.isWPcom ? blog.password : blog.jetpackPassword;
     
     // Skip the auth call to reduce loadtime if its the same username as before.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
@@ -285,7 +284,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                               redirectURL:redirectURL
                                                                  username:username
-                                                                 password:password
+                                                                 password:[NSString string]
                                                               bearerToken:blog.authToken
                                                                 userAgent:nil];
     

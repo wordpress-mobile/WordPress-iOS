@@ -5,11 +5,11 @@
 static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
-static const CGFloat CommentContentViewMetaHeight = 16.0;
+static const CGFloat CommentContentViewMetaHeight = 20.0;
 static const CGFloat CommentContentViewButtonHeight = 16.0;
 static const CGFloat CommentContentViewMetaStandardSpacing = 8.0;
 static const CGFloat CommentContentViewMetaReplyButtonRightMargin = 20.0;
-static const CGFloat CommentContentViewButtonSpacingTop = 4.0;
+static const CGFloat CommentContentViewButtonSpacingTop = 2.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
 static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
@@ -153,7 +153,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 
 
     self.likeButtonLeftMarginConstraint = [NSLayoutConstraint constraintWithItem:self.likeButton
-                                                                       attribute:NSLayoutAttributeLeftMargin
+                                                                       attribute:NSLayoutAttributeLeading
                                                                        relatedBy:NSLayoutRelationEqual
                                                                           toItem:self.commentMeta
                                                                        attribute:NSLayoutAttributeLeftMargin
@@ -169,7 +169,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                   constant:0.0]];
 
     self.numberOfLikesLabelLeftMarginConstraint = [NSLayoutConstraint constraintWithItem:self.numberOfLikesLabel
-                                                                               attribute:NSLayoutAttributeLeftMargin
+                                                                               attribute:NSLayoutAttributeLeading
                                                                                relatedBy:NSLayoutRelationEqual
                                                                                   toItem:self.commentMeta
                                                                                attribute:NSLayoutAttributeLeftMargin

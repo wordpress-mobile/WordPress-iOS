@@ -67,7 +67,7 @@ static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
+static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (id)init
 {
@@ -269,6 +269,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _emailField.keyboardType = UIKeyboardTypeEmailAddress;
         _emailField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _emailField.accessibilityIdentifier = @"Email Address";
+        _emailField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_emailField];
     }
 
@@ -285,6 +286,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _usernameField.showTopLineSeparator = YES;
         _usernameField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _usernameField.accessibilityIdentifier = @"Username";
+        _usernameField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_usernameField];
     }
 
@@ -303,13 +305,14 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _passwordField.showTopLineSeparator = YES;
         _passwordField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _passwordField.accessibilityIdentifier = @"Password";
+        _passwordField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_passwordField];
     }
     
     // Add OnePassword
     if (_onePasswordButton == nil) {
         _onePasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-button"] forState:UIControlStateNormal];
+        [_onePasswordButton setImage:[UIImage imageNamed:@"onepassword-wp-button"] forState:UIControlStateNormal];
         [_onePasswordButton addTarget:self action:@selector(saveLoginToOnePassword:) forControlEvents:UIControlEventTouchUpInside];
         [_onePasswordButton sizeToFit];
     
@@ -331,6 +334,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _siteAddressField.delegate = self;
         _siteAddressField.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteAddressField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteAddressField.returnKeyType = UIReturnKeyDone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _siteAddressField.accessibilityIdentifier = @"Site Address (URL)";
@@ -509,6 +513,10 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (IBAction)saveLoginToOnePassword:(id)sender
 {
+    // Dismiss the keyboard right away
+    [self.view endEditing:YES];
+    
+    // Hit 1Password!
     NSDictionary *newLoginDetails = @{
         AppExtensionTitleKey        : WPOnePasswordWordPressTitle,
         AppExtensionUsernameKey     : _usernameField.text ?: [NSString string],
@@ -539,6 +547,10 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _passwordField.text = loginDict[AppExtensionPasswordKey] ?: [NSString string];
                                                             
         [WPAnalytics track:WPAnalyticsStatOnePasswordSignup];
+                 
+        // Note: Since the Site field is right below the 1Password field, let's continue with the edition flow
+        // and make the SiteAddress Field the first responder.
+        [_siteAddressField becomeFirstResponder];
     }];
 }
 

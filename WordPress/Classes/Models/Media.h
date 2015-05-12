@@ -59,20 +59,15 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, assign, readonly) BOOL unattached;
 @property (nonatomic, assign) BOOL featured;
 
+@property (nonatomic, strong, readonly) NSString * thumbnailLocalURL;
+
 + (Media *)newMediaForPost:(AbstractPost *)post;
 + (Media *)newMediaForBlog:(Blog *)blog;
 + (NSString *)mediaTypeForFeaturedImage;
 
 - (void)mediaTypeFromUrl:(NSString *)ext;
 
-+ (Media *)createOrReplaceMediaFromJSON:(NSDictionary*)json forBlog:(Blog *)blog;
-+ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure;
-+ (void)mergeNewMedia:(NSArray *)media forBlog:(Blog *)blog;
-
-- (void)cancelUpload;
-- (void)uploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 - (void)remove;
 - (void)save;
-- (void)remoteUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
 
 @end
