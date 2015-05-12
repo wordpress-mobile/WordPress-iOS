@@ -455,11 +455,11 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (void)showRemoveSiteForBlog:(Blog *)blog
 {
     NSString *model = [[UIDevice currentDevice] localizedModel];
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert"), model];
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
     self.removeSiteActionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", nil)
+                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", @"Button to remove a site")
                                                     otherButtonTitles:nil];
     [self.removeSiteActionSheet showInView:self.view];
 }
