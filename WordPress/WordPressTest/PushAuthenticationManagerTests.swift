@@ -9,7 +9,6 @@ class PushAuthenticationManagerTests : XCTestCase {
         var messagePassedIn:String?
         var cancelButtonTitlePassedIn:String?
         var otherButtonTitlesPassedIn:[AnyObject]?
-        var shouldCallTapBlock = false
         var tapBlockPassedIn:UIAlertViewCompletionBlock?
         var showWithTitleCalled = false
         

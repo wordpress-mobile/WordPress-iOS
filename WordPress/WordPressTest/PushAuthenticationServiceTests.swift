@@ -11,26 +11,13 @@ class PushAuthenticationServiceTests : XCTestCase {
     class MockPushAuthenticationServiceRemote : PushAuthenticationServiceRemote {
         
         var authorizeLoginCalled = false
+        var successBlockPassedIn:(() -> ())?
+        var failureBlockPassedIn:(() -> ())?
+        
         override func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
             authorizeLoginCalled = true
-            
-            if (shouldCallSuccessBlock) {
-               success?()
-            }
-            
-            if (shouldCallFailureBlock) {
-                failure?()
-            }
-        }
-        
-        var shouldCallSuccessBlock = false
-        func callSuccessBlock() {
-           shouldCallSuccessBlock = true
-        }
-        
-        var shouldCallFailureBlock = false
-        func callFailureBlock() {
-           shouldCallFailureBlock = true
+            successBlockPassedIn = success
+            failureBlockPassedIn = failure
         }
     }
     
@@ -57,21 +44,23 @@ class PushAuthenticationServiceTests : XCTestCase {
     
     func testAuthorizeLoginCallsCompletionCallbackWithTrueIfSuccessful() {
         var methodCalled = false
-        mockPushAuthenticationServiceRemote?.callSuccessBlock()
         pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
             methodCalled = true
             XCTAssertTrue(completed, "Success callback should have been called with a value of true")
         })
+        mockPushAuthenticationServiceRemote?.successBlockPassedIn?()
+        
         XCTAssertTrue(methodCalled, "Success callback was not called")
     }
     
     func testAuthorizeLoginCallsCompletionCallbackWithFalseIfSuccessful() {
         var methodCalled = false
-        mockPushAuthenticationServiceRemote?.callFailureBlock()
         pushAuthenticationService?.authorizeLogin(token, completion: { (completed:Bool) -> () in
             methodCalled = true
             XCTAssertFalse(completed, "Failure callback should have been called with a value of false")
         })
+        mockPushAuthenticationServiceRemote?.failureBlockPassedIn?()
+        
         XCTAssertTrue(methodCalled, "Failure callback was not called")
     }
     

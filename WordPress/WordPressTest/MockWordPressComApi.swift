@@ -4,27 +4,15 @@ class MockWordPressComApi : WordPressComApi {
     var postMethodCalled = false
     var URLStringPassedIn:String?
     var parametersPassedIn:AnyObject?
-    
-    var shouldCallSuccessCallback = false
-    func callSuccessCallback() {
-        shouldCallSuccessCallback = true
-    }
-    
-    var shouldCallFailureCallback = false
-    func callFailureCallback() {
-        shouldCallFailureCallback = true
-    }
+    var successBlockPassedIn:((AFHTTPRequestOperation!, AnyObject!) -> Void)?
+    var failureBlockPassedIn:((AFHTTPRequestOperation!, NSError!) -> Void)?
     
     override func POST(URLString: String!, parameters: AnyObject!, success: ((AFHTTPRequestOperation!, AnyObject!) -> Void)!, failure: ((AFHTTPRequestOperation!, NSError!) -> Void)!) -> AFHTTPRequestOperation! {
         postMethodCalled = true
         URLStringPassedIn = URLString
         parametersPassedIn = parameters
-        
-        if (shouldCallSuccessCallback) {
-            success?(AFHTTPRequestOperation(), [])
-        } else if (shouldCallFailureCallback) {
-            failure?(AFHTTPRequestOperation(), NSError())
-        }
+        successBlockPassedIn = success
+        failureBlockPassedIn = failure
         
         return AFHTTPRequestOperation()
     }
