@@ -27,7 +27,7 @@ int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
-static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
 static CGFloat const SupportRowHeight = 44.0f;
 
@@ -393,14 +393,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/"]];
             }
         } else if (indexPath.row == 1) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"]];
             }
         }
     } else if (indexPath.section == SettingsSectionFeedback) {
