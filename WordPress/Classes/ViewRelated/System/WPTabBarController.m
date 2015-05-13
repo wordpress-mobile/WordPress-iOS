@@ -500,7 +500,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     self.notificationBadgeIconView.layer.borderColor = [[UIColor whiteColor] CGColor];
     self.notificationBadgeIconView.layer.borderWidth = 1.0;
     self.notificationBadgeIconView.hidden = YES;
-    [self.view addSubview:self.notificationBadgeIconView];
+    [self.tabBar addSubview:self.notificationBadgeIconView];
 
     [self updateNotificationBadgeIconPosition];
     [self updateNotificationBadgeVisibility];
@@ -519,7 +519,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     else if (isLandscape && WPDeviceIdentification.isiPhoneSixPlus) {
         horizontalOffset = WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape;
     }
-    CGFloat verticalPosition = CGRectGetHeight(self.view.bounds) - (self.tabBar.frame.size.height - WPNotificationBadgeIconVerticalOffsetFromTop);
+    CGFloat verticalPosition = WPNotificationBadgeIconVerticalOffsetFromTop;
     // Subtract the space before & after the tabbar
     CGFloat tabBarContentWidth = self.tabBar.frame.size.width - (horizontalOffset * 2);
     CGFloat tabItemWidth = tabBarContentWidth / self.tabBar.items.count;
