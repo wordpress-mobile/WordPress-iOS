@@ -498,7 +498,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         [WPAnalytics refreshMetadata];
         
         // once blogs for the accounts are synced, we want to update account details for it
-        [self.accountServiceFacade updateEmailAndDefaultBlogForWordPressComAccount:account];
+        [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
     } failure:^(NSError *error) {
         [self dismissLoginMessage];
         [self displayRemoteError:error];
@@ -516,6 +516,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
         [self.presenter dismissLoginMessage];
         [self.presenter showJetpackAuthenticationForBlog:blogId];
     } finishedSync:^{
+        // once blogs for the accounts are synced, we want to update account details for it
+        [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
         [self finishedLogin];
     }];
 }
@@ -579,7 +581,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];

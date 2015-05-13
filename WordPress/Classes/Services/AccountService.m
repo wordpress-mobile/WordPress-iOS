@@ -7,6 +7,7 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "AccountServiceRemoteREST.h"
+#import "AccountServiceRemoteXMLRPC.h"
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
@@ -224,27 +225,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
-{
-    if (!account) {
-        return;
-    }
-    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
-        account.email = userDetails[@"email"];
-        NSNumber *primaryBlogId = userDetails[@"primary_blog"];
-        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:account];
-            [WPAnalytics refreshMetadata];
-        });
-    } failure:^(NSError *error) {
-        DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
-    }];
-}
-
 - (void)removeWordPressComAccountPasswordIfNeeded
 {
     // Let's do this just once!
@@ -258,6 +238,53 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     
     [defaults setBool:YES forKey:DefaultDotcomAccountPasswordRemovedKey];
     [defaults synchronize];
+}
+
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSAssert(account, @"Account can not be nil");
+    NSAssert(account.username, @"account.username can not be nil");
+    NSAssert(account.xmlrpc, @"account.xmlrpc can not be nil");
+
+    NSString *username = account.username;
+    NSString *xmlrpc = account.xmlrpc;
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
+    [remote getDetailsForAccount:account success:^(RemoteUser *remoteUser) {
+        // account.objectID can be temporary, so fetch via username/xmlrpc instead.
+        WPAccount *fetchedAccount = [self findAccountWithUsername:username andXmlrpc:xmlrpc];
+        [self updateAccount:fetchedAccount withUserDetails:remoteUser];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPAnalytics refreshMetadata];
+        });
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        DDLogError(@"Failed to fetch user details for account %@.  %@", account, error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
+{
+    if (account.restApi) {
+        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    }
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
+}
+
+- (void)updateAccount:(WPAccount *)account withUserDetails:(RemoteUser *)userDetails
+{
+    account.userID = userDetails.userID;
+    account.username = userDetails.username;
+    account.email = userDetails.email;
+    account.avatarURL = userDetails.avatarURL;
+    if (userDetails.primaryBlogID) {
+        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
 @end

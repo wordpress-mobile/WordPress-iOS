@@ -21,7 +21,7 @@
 #pragma mark ====================================================================================
 
 static NSString *JetpackInstallRelativePath                 = @"plugin-install.php?tab=plugin-information&plugin=jetpack";
-static NSString *JetpackMoreInformationURL                  = @"http://ios.wordpress.org/faq/#faq_15";
+static NSString *JetpackMoreInformationURL                  = @"https://apps.wordpress.org/support/#faq-ios-15";
 
 static CGFloat const JetpackiOS7StatusBarOffset             = 20.0;
 static CGFloat const JetpackStandardOffset                  = 16;

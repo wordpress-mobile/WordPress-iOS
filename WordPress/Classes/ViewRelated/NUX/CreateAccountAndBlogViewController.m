@@ -569,7 +569,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 - (IBAction)TOSLabelWasTapped
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
+    [webViewController setUrl:[NSURL URLWithString:@"https://en.wordpress.com/tos/"]];
     [self.navigationController pushViewController:webViewController animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
@@ -838,6 +838,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
             [[ContextManager sharedInstance] saveContext:context];
 
+            [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
             [blogService syncBlog:blog success:nil failure:nil];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];

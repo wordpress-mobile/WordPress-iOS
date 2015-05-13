@@ -1,11 +1,40 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
 static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
+
++ (NSString *)makePlainText:(NSString *)string
+{
+    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
+}
+
++ (NSString *)stripShortcodesFromString:(NSString *)string
+{
+    if (!string) {
+        return nil;
+    }
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        NSString *pattern = @"\\[[^\\]]+\\]";
+        regex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+        if (error) {
+            DDLogError(@"Error parsing regex: %@", error);
+        }
+    });
+    NSRange range = NSMakeRange(0, [string length]);
+    return [regex stringByReplacingMatchesInString:string
+                                           options:NSMatchingReportCompletion
+                                             range:range
+                                      withTemplate:@""];
+}
 
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
