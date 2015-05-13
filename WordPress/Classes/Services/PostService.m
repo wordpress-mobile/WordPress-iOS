@@ -17,6 +17,7 @@ NSString * const PostServiceTypePost = @"post";
 NSString * const PostServiceTypePage = @"page";
 NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
+const NSInteger PostServiceNumberToFetch = 40;
 
 @interface PostService ()
 
@@ -127,7 +128,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
                        [self.managedObjectContext performBlock:^{
                            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
                            if (blogInContext) {
-                               [self mergePosts:posts ofType:postType forBlog:blog purgeExisting:YES completionHandler:success];
+                               [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
                            }
                        }];
                    } failure:^(NSError *error) {
@@ -173,7 +174,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
                    options:options
                    success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
-            [self mergePosts:posts ofType:postType forBlog:blog purgeExisting:NO completionHandler:success];
+            [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:NO completionHandler:success];
         }];
     } failure:^(NSError *error) {
         if (failure) {
@@ -182,6 +183,99 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
             }];
         }
     }];
+}
+
+- (void)syncPostsOfType:(NSString *)postType
+           withStatuses:(NSArray *)postStatus
+                forBlog:(Blog *)blog
+                success:(void (^)(BOOL hasMore))success
+                failure:(void (^)(NSError *))failure
+{
+    NSString *status = [postStatus componentsJoinedByString:@","];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        options[@"status"] = status;
+    } else {
+        options[@"post_status"] = status;
+    }
+    options[@"number"] = @(PostServiceNumberToFetch);
+    [remote getPostsOfType:postType
+                   forBlog:blog
+                   options:options
+                   success:^(NSArray *posts) {
+                       BOOL hasMore = ([posts count] < PostServiceNumberToFetch) ? NO : YES;
+                       [self.managedObjectContext performBlock:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus forBlog:blog purgeExisting:YES completionHandler:^{
+                               if (success) {
+                                   success(hasMore);
+                               }
+                           }];
+                       }];
+                   } failure:^(NSError *error) {
+                       if (failure) {
+                           [self.managedObjectContext performBlock:^{
+                               failure(error);
+                           }];
+                       }
+                   }];
+}
+
+- (void)loadMorePostsOfType:(NSString *)postType
+               withStatuses:(NSArray *)postStatus
+                    forBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *))failure
+{
+    id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    NSInteger postCount = PostServiceNumberToFetch;
+    NSString *status = [postStatus componentsJoinedByString:@","];
+    NSMutableDictionary *options = [NSMutableDictionary dictionary];
+
+    NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [self predicateForPostsWithStatuses:postStatus forBlog:blog];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
+
+    if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
+        Post *oldestPost = [posts firstObject];
+        if (oldestPost.date_created_gmt) {
+            options[@"before"] = [oldestPost.date_created_gmt WordPressComJSONString];
+        }
+        if ([postStatus count] > 0) {
+            options[@"status"] = status;
+        }
+
+    } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
+        postCount = [posts count];
+        postCount += 40;
+        if ([postStatus count] > 0) {
+            options[@"post_status"] = status;
+        }
+    }
+
+    options[@"number"] = @(postCount);
+    [remote getPostsOfType:postType
+                   forBlog:blog
+                   options:options
+                   success:^(NSArray *posts) {
+                       BOOL hasMore = ([posts count] < postCount) ? NO : YES;
+                       [self.managedObjectContext performBlock:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus forBlog:blog purgeExisting:NO completionHandler:^{
+                               if (success) {
+                                   success(hasMore);
+                               }
+                           }];
+                       }];
+                   } failure:^(NSError *error) {
+                       if (failure) {
+                           [self.managedObjectContext performBlock:^{
+                               failure(error);
+                           }];
+                       }
+                   }];
 }
 
 - (void)uploadPost:(AbstractPost *)post
@@ -247,14 +341,139 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
+- (void)trashPost:(AbstractPost *)post
+          success:(void (^)())success
+          failure:(void (^)(NSError *error))failure
+{
+    NSNumber *postID = post.postID;
+    if ([postID longLongValue] == 0 || [post.status isEqualToString:PostStatusTrash]) {
+        // Local draft, or a trashed post. Hand off to the delete method.
+        [self deletePost:post success:success failure:failure];
+        return;
+    }
+
+    post.restorableStatus = post.status;
+    NSManagedObjectID *postObjectID = post.objectID;
+    void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
+        NSError *err;
+        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+        if (err) {
+            DDLogError(@"%@", err);
+        }
+        if (postInContext) {
+            if (!remotePost || [remotePost.status isEqualToString:PostStatusDeleted]) {
+                [self.managedObjectContext deleteObject:post];
+            } else {
+                [self updatePost:postInContext withRemotePost:remotePost];
+            }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+        if (success) {
+            success();
+        }
+    };
+
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        NSError *err;
+        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+        if (err) {
+            DDLogError(@"%@", err);
+        }
+        if (postInContext) {
+            postInContext.restorableStatus = nil;
+        }
+        if (failure){
+            failure(error);
+        }
+    };
+
+    RemotePost *remotePost = [self remotePostWithPost:post];
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    [remote trashPost:remotePost forBlog:post.blog success:successBlock failure:failureBlock];
+}
+
+- (void)restorePost:(AbstractPost *)post
+            success:(void (^)())success
+            failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *postObjectID = post.objectID;
+    if (post.restorableStatus) {
+        // Optimistically update and save.
+        post.status = post.restorableStatus;
+        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    }
+
+    void (^successBlock)(RemotePost *post) = ^(RemotePost *remotePost) {
+        NSError *err;
+        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+        postInContext.restorableStatus = nil;
+        if (err) {
+            DDLogError(@"%@", err);
+        }
+        if (postInContext) {
+            [self updatePost:postInContext withRemotePost:remotePost];
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+        if (success) {
+            success();
+        }
+    };
+
+    void (^failureBlock)(NSError *error) = ^(NSError *error) {
+        NSError *err;
+        Post *postInContext = (Post *)[self.managedObjectContext existingObjectWithID:postObjectID error:&err];
+        if (err) {
+            DDLogError(@"%@", err);
+        }
+        if (postInContext) {
+            // Put the post back in the trash bin.
+            postInContext.status = PostStatusTrash;
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+        }
+        if (failure){
+            failure(error);
+        }
+    };
+
+    RemotePost *remotePost = [self remotePostWithPost:post];
+    if (post.restorableStatus) {
+        remotePost.status = post.restorableStatus;
+    } else {
+        // Assign a status of draft to the remote post. The WordPress.com REST API will
+        // ignore this and should restore the post's previous status. The XML-RPC API
+        // needs a status assigned to move a post out of the trash folder. Draft is the
+        // safest option when we don't know what the status was previously.
+        remotePost.status = PostStatusDraft;
+    }
+
+    id<PostServiceRemote> remote = [self remoteForBlog:post.blog];
+    [remote restorePost:remotePost forBlog:post.blog success:successBlock failure:failureBlock];
+}
+
 #pragma mark -
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = @"publish";
+    post.status = PostStatusPublish;
 }
 
-- (void)mergePosts:(NSArray *)posts ofType:(NSString *)postType forBlog:(Blog *)blog purgeExisting:(BOOL)purge completionHandler:(void (^)(void))completion {
+- (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus forBlog:(Blog *)blog
+{
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+    if ([postStatus count] > 0) {
+        NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", postStatus];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
+    }
+    return predicate;
+}
+
+- (void)mergePosts:(NSArray *)posts
+            ofType:(NSString *)postType
+      withStatuses:(NSArray *)postStatus
+           forBlog:(Blog *)blog
+     purgeExisting:(BOOL)purge
+ completionHandler:(void (^)(void))completion
+{
     NSMutableSet *postsToKeep = [NSMutableSet setWithCapacity:posts.count];
     for (RemotePost *remotePost in posts) {
         AbstractPost *post = [self findPostWithID:remotePost.postID inBlog:blog];
@@ -279,7 +498,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         } else {
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
         }
-        request.predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        request.predicate = [self predicateForPostsWithStatuses:postStatus forBlog:blog];
         NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
         NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
         [postsToDelete minusSet:postsToKeep];
@@ -305,6 +524,7 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     post.author = remotePost.authorDisplayName;
+    post.authorID = remotePost.authorID;
     post.date_created_gmt = remotePost.date;
     post.postTitle = remotePost.title;
     post.permaLink = [remotePost.URL absoluteString];
@@ -312,7 +532,9 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
     post.status = remotePost.status;
     post.password = remotePost.password;
     post.post_thumbnail = remotePost.postThumbnailID;
+    post.pathForDisplayImage = remotePost.pathForDisplayImage;
     post.authorAvatarURL = remotePost.authorAvatarURL;
+    post.mt_excerpt = remotePost.excerpt;
 
     if (remotePost.postID != previousPostID) {
         [self updateCommentsForPost:post];
@@ -323,6 +545,8 @@ NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
         pagePost.parentID = remotePost.parentID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
+        postPost.commentCount = remotePost.commentCount;
+        postPost.likeCount = remotePost.likeCount;
         postPost.postFormat = remotePost.format;
         postPost.tags = [remotePost.tags componentsJoinedByString:@","];
         [self updatePost:postPost withRemoteCategories:remotePost.categories];
