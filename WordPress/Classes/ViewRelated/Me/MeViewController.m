@@ -226,7 +226,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 cell.accessibilityIdentifier = signOutString;
             }
             else {
-                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com Account",
+                NSString *signInString = NSLocalizedString(@"Connect to WordPress.com",
                                                            @"Label for connecting to WordPress.com account");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
