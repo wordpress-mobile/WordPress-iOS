@@ -581,7 +581,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 {
     OverlayViewCallback secondButtonCallback = ^(WPWalkthroughOverlayView *overlayView) {
         [overlayView dismiss];
-        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+        [self.presenter displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
     };
     
     [self displayOverlayViewWithMessage:message firstButtonText:nil firstButtonCallback:nil secondButtonText:nil secondButtonCallback:secondButtonCallback accessibilityIdentifier:nil];
