@@ -64,4 +64,10 @@ post_install do |installer_representation|
       end
     end
   end
+  
+  # Directly set the Targeted Device Family
+  # See https://github.com/CocoaPods/CocoaPods/issues/2292
+  installer_representation.project.build_configurations.each do |config|
+      config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
+  end
 end
