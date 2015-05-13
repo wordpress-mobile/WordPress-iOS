@@ -401,6 +401,18 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
             break;
+        case WPAnalyticsStatPushAuthenticationApproved:
+            eventName = @"push_authentication_approved";
+            break;
+        case WPAnalyticsStatPushAuthenticationExpired:
+            eventName = @"push_authentication_expired";
+            break;
+        case WPAnalyticsStatPushAuthenticationFailed:
+            eventName = @"push_authentication_failed";
+            break;
+        case WPAnalyticsStatPushAuthenticationIgnored:
+            eventName = @"push_authentication_ignored";
+            break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             eventName = @"push_notification_alert_tapped";
             break;
