@@ -15,8 +15,8 @@
 // + Admin
 // | View Admin
 //
-// + Remove site (only for self hosted)
-// | Remove site
+// + Remove Site (only for self hosted)
+// | Remove Site
 
 #import "BlogDetailsViewController.h"
 #import "Blog+Jetpack.h"
@@ -282,7 +282,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         }
     } else if (indexPath.section == TableViewSectionRemove) {
         if (indexPath.row == BlogDetailsRowRemove) {
-            cell.textLabel.text = NSLocalizedString(@"Remove site", @"Button to remove a site from the app");
+            cell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
             cell.textLabel.textColor = [WPStyleGuide errorRed];
             cell.imageView.image = nil;
@@ -457,7 +457,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     self.removeSiteActionSheet = [[UIActionSheet alloc] initWithTitle:title
                                                              delegate:self
                                                     cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-                                               destructiveButtonTitle:NSLocalizedString(@"Remove site", @"Button to remove a site from the app")
+                                               destructiveButtonTitle:NSLocalizedString(@"Remove Site", @"Button to remove a site from the app")
                                                     otherButtonTitles:nil];
     [self.removeSiteActionSheet showInView:self.view];
 }
