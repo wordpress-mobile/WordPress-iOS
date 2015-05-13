@@ -7,7 +7,7 @@ NSString *const WPComXMLRPCUrl                                      = @"https://
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
-NSString *const WPNotificationsJetpackInformationURL                = @"http://jetpack.me/about/";
+NSString *const WPNotificationsJetpackInformationURL                = @"https://jetpack.me/about/";
 
 #ifdef INTERNAL_BUILD
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
