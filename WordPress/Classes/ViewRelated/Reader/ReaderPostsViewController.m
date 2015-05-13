@@ -729,7 +729,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self.syncHelper syncContentWithUserInteraction:userInteraction];
 }
 
-- (void)syncItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncItemsWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
@@ -742,7 +742,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
-                    success(count, hasMore);
+                    success(hasMore);
                 }
             });
         } failure:^(NSError *error) {
@@ -755,7 +755,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }];
 }
 
-- (void)backfillItemsWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)backfillItemsWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     __weak __typeof(self) weakSelf = self;
@@ -768,7 +768,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             dispatch_async(dispatch_get_main_queue(), ^{
                 [weakSelf removeAllBlockedPostIDs];
                 if (success) {
-                    success(count, hasMore);
+                    success(hasMore);
                 }
             });
         } failure:^(NSError *error) {
@@ -781,7 +781,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     self.shouldSkipRowAnimation = NO;
@@ -793,7 +793,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     DDLogMethod();
     if ([self.tableViewHandler.resultsController.fetchedObjects count] == 0) {
@@ -822,7 +822,7 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
             if (success) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     weakSelf.shouldSkipRowAnimation = YES;
-                    success(count, hasMore);
+                    success(hasMore);
                 });
             }
         } failure:^(NSError *error) {

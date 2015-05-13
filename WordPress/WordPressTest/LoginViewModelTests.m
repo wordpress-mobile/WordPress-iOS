@@ -1616,8 +1616,8 @@ describe(@"LoginFacadeDelegate methods", ^{
                     [mockViewModelPresenter verify];
                 });
                 
-                it(@"should update the email and default blog for the newly created account", ^{
-                    [[mockAccountServiceFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
+                it(@"should update the user details for the newly created account", ^{
+                    [[mockAccountServiceFacade expect] updateUserDetailsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
