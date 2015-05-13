@@ -1,10 +1,9 @@
 #import <UIKit/UIKit.h>
+#import "AbstractPostListViewController.h"
 
 @class Blog;
 
-@interface PageListViewController : UIViewController
-
-@property (nonatomic, strong) Blog *blog;
+@interface PageListViewController : AbstractPostListViewController
 
 + (instancetype)controllerWithBlog:(Blog *)blog;
 
