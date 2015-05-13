@@ -9,15 +9,18 @@ import Foundation
 
 @objc public class PushAuthenticationService : NSObject, LocalCoreDataService
 {
+    var authenticationServiceRemote:PushAuthenticationServiceRemote?
+    
     /**
     *  @details     Designated Initializer
     *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with
     *                                       the Core Data Persistent Store.
     */
     public required init(managedObjectContext: NSManagedObjectContext) {
+        super.init()
         self.managedObjectContext = managedObjectContext
+        self.authenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
     }
-    
 
     /**
     *  @details     Authorizes a WordPress.com Login Attempt (2FA Protected Accounts)
@@ -25,12 +28,11 @@ import Foundation
     *  @param       completion  The completion block to be executed when the remote call finishes.
     */
     public func authorizeLogin(token: String, completion: ((Bool) -> ())) {
-        let remoteService = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
-        if remoteService == nil {
+        if self.authenticationServiceRemote == nil {
             return
         }
         
-        remoteService!.authorizeLogin(token,
+        self.authenticationServiceRemote!.authorizeLogin(token,
             success:    {
                             completion(true)
                         },
