@@ -377,7 +377,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (section == SettingsSectionFAQForums) {
         return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
     } else if (section == SettingsSectionActivityLog) {
-        return NSLocalizedString(@"Turning on Extra Debug will log additional items to assist with us helping you with resolving a problem.", @"");
+        return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }
     return nil;
 }
