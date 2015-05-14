@@ -3928,6 +3928,7 @@
 				A20971B819B0BC570058F395 /* pt-BR */,
 			);
 			name = InfoPlist.strings;
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		E16AB93214D978240047A2E5 /* InfoPlist.strings */ = {
