@@ -23,11 +23,6 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 #pragma mark - Lifecycle Methods
 
-- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -535,6 +530,14 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
         }
     }
 }
+
+- (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    AssertSubclassMethod();
+}
+
+
+#pragma mark - Actions
 
 - (void)publishPost:(AbstractPost *)apost
 {
