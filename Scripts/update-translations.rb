@@ -74,7 +74,7 @@ LANGS.each do |code,local|
   lang_dir = File.join('WordPress', 'Resources', "#{local}.lproj")
   puts "Updating #{code}"
   system "cp #{lang_dir}/Localizable.strings #{lang_dir}/Localizable.strings.bak"
-  system "curl -so #{lang_dir}/Localizable.strings https://translate.wordpress.org/projects/ios/dev/#{code}/default/export-translations?format=strings" or begin
+  system "curl -fso #{lang_dir}/Localizable.strings https://translate.wordpress.org/projects/apps/ios/dev/#{code}/default/export-translations?format=strings" or begin
     puts "Error downloading #{code}"
   end
   system "php fix-translation.php #{lang_dir}/Localizable.strings"
