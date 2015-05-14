@@ -8,6 +8,8 @@
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
 
+@property (nonatomic, assign) BOOL shouldHideStatusBar;
+
 @end
 
 @implementation WPImageViewController
@@ -138,9 +140,17 @@
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
 {
-
-    [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-
+    self.shouldHideStatusBar = hide;
+    
+    // Force an update of the status bar appearance and visiblity
+    if (animated) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             [self setNeedsStatusBarAppearanceUpdate];
+                         }];
+    } else {
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
 }
 
 - (void)centerImage
@@ -203,6 +213,23 @@
     }
 
     _imageView.frame = frame;
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.shouldHideStatusBar;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
 }
 
 @end

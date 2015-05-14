@@ -870,4 +870,11 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     [_operationQueue addOperation:blogCreation];
 }
 
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 @end
