@@ -18,7 +18,8 @@
 
 @synthesize delegate;
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     [self applyStyles];
 }
