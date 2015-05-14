@@ -967,9 +967,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }
         [self logoutSimperiumAndResetNotifications];
         [self removeTodayWidgetConfiguration];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self showWelcomeScreenIfNeededAnimated:NO];
-        });
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
     [self toggleExtraDebuggingIfNeeded];
