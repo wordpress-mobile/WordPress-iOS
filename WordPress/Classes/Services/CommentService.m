@@ -130,7 +130,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    NSManagedObjectID *blogID= blog.objectID;
+    NSManagedObjectID *blogID = blog.objectID;
     if (![[self class] startSyncingCommentsForBlog:blogID]){
         // We assume success because a sync is already running and it will change the comments
         if (success) {
@@ -143,14 +143,17 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     [remote getCommentsForBlog:blog
                        success:^(NSArray *comments) {
                            [self.managedObjectContext performBlock:^{
-                               [self mergeComments:comments forBlog:blog
-                                     purgeExisting:YES
-                                 completionHandler:^{
-                                     [[self class] stopSyncingCommentsForBlog:blogID];
-                                     if (success) {
-                                         success();
-                                     }
-                                 }];
+                               Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                               if (blogInContext) {
+                                   [self mergeComments:comments forBlog:blog
+                                         purgeExisting:YES
+                                     completionHandler:^{
+                                         [[self class] stopSyncingCommentsForBlog:blogID];
+                                         if (success) {
+                                             success();
+                                         }
+                                     }];
+                               }
                            }];
                        } failure:^(NSError *error) {
                            [[self class] stopSyncingCommentsForBlog:blogID];
