@@ -57,9 +57,6 @@
 {
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
-    if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
-    }
     [self refreshWebView];
 }
 
@@ -305,6 +302,14 @@
 {
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Do not hide status bar on iPad
+    return (self.shouldHideStatusBar && !IS_IPAD);
 }
 
 @end
