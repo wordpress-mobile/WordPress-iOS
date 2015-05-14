@@ -966,8 +966,10 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
         [self logoutSimperiumAndResetNotifications];
-        [self showWelcomeScreenIfNeededAnimated:NO];
         [self removeTodayWidgetConfiguration];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showWelcomeScreenIfNeededAnimated:NO];
+        });
     }
     
     [self toggleExtraDebuggingIfNeeded];
