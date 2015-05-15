@@ -1690,34 +1690,18 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
         
         it(@"should sync the newly added site", ^{
-            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY];
+            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
             [mockBlogSyncFacade verify];
         });
-        
-        it(@"should show jetpack authentication when the blog syncing facade tells it to", ^{
-            [[mockViewModelPresenter expect] showJetpackAuthenticationForBlog:OCMOCK_ANY];
-            
-            // Retrieve jetpack block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
-                void (^ __unsafe_unretained jetpackStub)(NSNumber *);
-                [invocation getArgument:&jetpackStub atIndex:7];
                 
-                jetpackStub(@1);
-            }];
-            
-            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            
-            [mockViewModelPresenter verify];
-        });
-        
         it(@"should dismiss the login view", ^{
             [[mockViewModelPresenter expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
                 [invocation getArgument:&finishedSyncStub atIndex:8];
                 
