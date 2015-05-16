@@ -861,7 +861,7 @@ describe(@"displayRemoteError", ^{
     NSString *sharedExamplesForAButtonThatOpensUpTheFAQ = @"a button that opens up the FAQ";
     sharedExamplesFor(sharedExamplesForAButtonThatOpensUpTheFAQ, ^(NSDictionary *data) {
         it(@"should open the FAQ on the website", ^{
-            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
             
             [viewModel displayRemoteError:error];
             
@@ -1103,8 +1103,11 @@ describe(@"displayRemoteError", ^{
         
         context(@"when the url is bad", ^{
             
-            it(@"should display an overlay with the default button text", ^{
+            beforeEach(^{
                 error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            });
+            
+            it(@"should display an overlay with the default button text", ^{
                 [[mockViewModelPresenter expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
                 
                 [viewModel displayRemoteError:error];
@@ -1703,7 +1706,7 @@ describe(@"LoginFacadeDelegate methods", ^{
             // Retrieve finishedSync block and execute it when appropriate
             [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
-                [invocation getArgument:&finishedSyncStub atIndex:8];
+                [invocation getArgument:&finishedSyncStub atIndex:7];
                 
                 finishedSyncStub();
             }];
