@@ -166,7 +166,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     usernameTextField.delegate = self;
     usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    usernameTextField.text = self.blog.jetpackUsername;
+    usernameTextField.text = self.blog.jetpack.connectedUsername;
     usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
@@ -178,7 +178,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     passwordTextField.delegate = self;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.showSecureTextEntryToggle = YES;
-    passwordTextField.text = self.blog.jetpackPassword;
+    passwordTextField.text = @"";
     passwordTextField.clearsOnBeginEditing = YES;
     passwordTextField.showTopLineSeparator = YES;
     passwordTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -322,7 +322,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)updateControls
 {
-    BOOL hasJetpack                         = self.blog.hasJetpack;
+    BOOL hasJetpack                         = self.blog.jetpack.isInstalled;
     
     self.usernameTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
     self.passwordTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
@@ -405,7 +405,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     _skipButton.frame = CGRectMake(skipButtonX, skipButtonY, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
 
     NSArray *viewsToCenter;
-    if (self.blog.hasJetpack) {
+    if (self.blog.jetpack.isInstalled) {
         viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _sendVerificationCodeButton, _signInButton];
     } else {
         viewsToCenter = @[_icon, _descriptionLabel, _installJetbackButton, _moreInformationButton];
@@ -670,7 +670,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)updateMessage
 {
-    if (self.blog.hasJetpack) {
+    if (self.blog.jetpack.isInstalled) {
         self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
     } else {
         self.descriptionLabel.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
@@ -682,8 +682,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)checkForJetpack
 {
-    if (self.blog.hasJetpack) {
-        if (!self.blog.jetpackUsername || !self.blog.jetpackPassword) {
+    if (self.blog.jetpack.isInstalled) {
+        if (!self.blog.jetpack.connectedUsername) {
             NSString *jetpackUsernameFromBlogOptions = [self.blog getOptionValue:@"jetpack_user_login"];
             if (jetpackUsernameFromBlogOptions) {
                 self.usernameTextField.text = jetpackUsernameFromBlogOptions;
@@ -703,7 +703,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncOptionsForBlog:self.blog success:^{
-        if (self.blog.hasJetpack) {
+        if (self.blog.jetpack.isInstalled) {
             [self updateMessage];
         }
     } failure:^(NSError *error) {

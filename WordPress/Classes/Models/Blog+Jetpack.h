@@ -25,56 +25,6 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
  */
 @interface Blog (Jetpack)
 
-///--------------------------------------
-///@name Information about Jetpack support
-///---------------------------------------
-
-/**
- Returns a Boolean value indicating whether the blog has Jetpack installed
- 
- @return YES if the receiver blog has Jetpack installed or NO if it does not.
-*/
-- (BOOL)hasJetpack;
-
-/**
- Returns a Boolean value indicating whether the blog has Jetpack installed AND is connected to WordPress.com. An account is defined as connected to WordPress.com if the site has jetpack installed, enabled and has linked their Jetpack plugin with a WordPress.com account.
- 
- @return YES if the receiver blog has Jetpack installed and is connected to WordPress.com
-*/
-- (BOOL)hasJetpackAndIsConnectedToWPCom;
-
-/**
- Returns the jetpack version installed in the blog
- 
- @return the jetpack version installed in the blog
- */
-- (NSString *)jetpackVersion;
-
-/**
- Returns the WordPress.com blog ID assigned to the blog
- 
- @returns the WordPress.com blog ID assigned to the blog
- */
-- (NSNumber *)jetpackBlogID;
-
-///----------------------------------
-///@name Managing Jetpack credentials
-///----------------------------------
-
-/**
- Returns the WordPress.com username associated with the blog
- 
- @returns the WordPress.com username associated with the blog
- */
-- (NSString *)jetpackUsername;
-
-/**
- Returns the WordPress.com password associated with the blog
-
- @returns the WordPress.com password associated with the blog
- */
-- (NSString *)jetpackPassword;
-
 /**
  Checks if the provided WordPress.com username and password are valid and associated to the blog
  
