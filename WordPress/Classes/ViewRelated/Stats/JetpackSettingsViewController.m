@@ -105,6 +105,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:self.showFullScreen animated:animated];
     [self reloadInterface];
+    [self updateForm];
+    [self checkForJetpack];
 }
 
 - (void)viewDidLoad
@@ -125,12 +127,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self addControls];
     [self addGesturesRecognizer];
     [self addSkipButtonIfNeeded];
-    
-    [self updateMessage];
-    [self updateSaveButton];
-
-    double delayInSeconds = 0.1;
-    [self performSelector:@selector(checkForJetpack) withObject:nil afterDelay:delayInSeconds];
 }
 
 // This resolves a crash due to JetpackSettingsViewController previously using a .xib.
@@ -316,13 +312,14 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)reloadInterface
 {
+    [self updateMessage];
     [self updateControls];
     [self layoutControls];
 }
 
 - (void)updateControls
 {
-    BOOL hasJetpack                         = self.blog.jetpack.isInstalled;
+    BOOL hasJetpack                         = self.blog.jetpack.isInstalled && self.blog.jetpack.isUpdatedToRequiredVersion;
     
     self.usernameTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
     self.passwordTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
@@ -663,49 +660,53 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)dismissBrowser
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self checkForJetpack];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateMessage
 {
     if (self.blog.jetpack.isInstalled) {
-        self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+        if (self.blog.jetpack.isUpdatedToRequiredVersion) {
+            self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+        } else {
+            self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Jetpack %@ or later is required for stats. Do you want to update Jetpack?", @""), JetpackVersionMinimumRequired];
+            [self.installJetpackButton setTitle:NSLocalizedString(@"Update Jetpack", @"") forState:UIControlStateNormal];
+        }
     } else {
-        self.descriptionLabel.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
+        self.descriptionLabel.text = NSLocalizedString(@"Jetpack is required for stats. Do you want to install Jetpack?", @"");
+        [self.installJetpackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
     }
     [self.descriptionLabel sizeToFit];
 
     [self layoutControls];
 }
 
+- (void)updateForm
+{
+    if (self.blog.jetpack.isConnected) {
+        if (self.blog.jetpack.connectedUsername) {
+            self.usernameTextField.text = self.blog.jetpack.connectedUsername;
+        } else {
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+            self.usernameTextField.text = defaultAccount.username;
+            self.passwordTextField.text = defaultAccount.password;
+        }
+        [self updateSaveButton];
+    }
+}
+
 - (void)checkForJetpack
 {
-    if (self.blog.jetpack.isInstalled) {
-        if (!self.blog.jetpack.connectedUsername) {
-            NSString *jetpackUsernameFromBlogOptions = [self.blog getOptionValue:@"jetpack_user_login"];
-            if (jetpackUsernameFromBlogOptions) {
-                self.usernameTextField.text = jetpackUsernameFromBlogOptions;
-            } else {
-                NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-                self.usernameTextField.text = defaultAccount.username;
-                self.passwordTextField.text = defaultAccount.password;
-            }
-            [self updateSaveButton];
-        }
-        return;
-    }
-
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncOptionsForBlog:self.blog success:^{
         if (self.blog.jetpack.isInstalled) {
-            [self updateMessage];
+            [self updateForm];
         }
+        [self reloadInterface];
     } failure:^(NSError *error) {
         [WPError showNetworkingAlertWithError:error];
     }];
