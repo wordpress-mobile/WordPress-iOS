@@ -6,6 +6,7 @@
 
 @class WPAccount;
 @class WordPressComApi;
+@class JetpackState;
 
 @interface Blog : NSManagedObject
 
@@ -48,6 +49,10 @@
 @property (nonatomic, strong,  readonly) NSString       *password;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
 @property (nonatomic, strong,  readonly) NSSet *allowedFileTypes;
+/**
+ Contains the Jetpack state. Returns nil if the blog options haven't been downloaded yet
+ */
+@property (nonatomic, strong,  readonly) JetpackState *jetpack;
 
 
 /**
