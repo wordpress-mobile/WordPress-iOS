@@ -274,12 +274,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-- (void)dataSave
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-
 - (void)setXmlrpc:(NSString *)xmlrpc
 {
     [self willChangeValueForKey:@"xmlrpc"];

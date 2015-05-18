@@ -433,7 +433,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
     // Save the change
     self.blog.geolocationEnabled = self.geolocationEnabled;
-    [self.blog dataSave];
+    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -649,7 +649,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
     if (self.blog) {
         self.blog.geolocationEnabled = self.geolocationEnabled;
-        [self.blog dataSave];
+        [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
     }
     if (self.blog == nil || self.blog.username == nil) {
         [self validateUrl];
