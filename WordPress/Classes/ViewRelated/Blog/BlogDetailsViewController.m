@@ -496,7 +496,9 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)confirmRemoveSite
 {
-    [self.blog remove];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService removeBlog:self.blog];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

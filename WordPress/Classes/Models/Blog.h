@@ -103,6 +103,5 @@
 
 // TODO - Remove these methods when persistence/network code removed from VCs
 - (void)dataSave;
-- (void)remove;
 
 @end
