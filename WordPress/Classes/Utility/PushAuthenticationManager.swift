@@ -48,6 +48,8 @@ import UIKit
     *  @details     Will display a popup requesting for permission to verify a WordPress.com login
     *               attempt. The notification's type *is expected* to be of the Push Authentication kind
     *               If the alertView is confirmed, will proceed notifying WordPress.com's backend.
+    *               On error, the backend call to verify the WordPress.com login attempt will be retried
+    *               a maximum of (three) times, automatically.
     *
     *  @param       userInfo    Is the Notification's payload.
     */
