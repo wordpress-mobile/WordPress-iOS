@@ -45,8 +45,8 @@
     [blog dataSave];
     [blogService syncBlog:blog success:nil failure:nil];
 
-    if ([blog hasJetpack]) {
-        if ([blog hasJetpackAndIsConnectedToWPCom]) {
+    if (blog.jetpack.isInstalled) {
+        if (blog.jetpack.isConnected) {
             if (needsJetpack != nil) {
                 needsJetpack(blog.blogID);
             }
