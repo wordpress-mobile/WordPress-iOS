@@ -3,10 +3,10 @@
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
 
+#import "JetpackState.h"
 
 @class WPAccount;
 @class WordPressComApi;
-@class JetpackState;
 
 @interface Blog : NSManagedObject
 

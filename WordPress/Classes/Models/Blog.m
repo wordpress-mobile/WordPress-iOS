@@ -5,7 +5,6 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
-#import "JetpackState.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -375,7 +374,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)authToken
 {
-    return self.account.authToken;
+    return [self isWPcom] ? self.account.authToken : self.jetpackAccount.authToken;
 }
 
 - (BOOL)supportsFeaturedImages
@@ -390,7 +389,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSNumber *)dotComID
 {
-    return self.blogID;
+    return [self isWPcom] ? self.blogID : self.jetpack.siteID;
 }
 
 - (NSSet *)allowedFileTypes
@@ -441,7 +440,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
     _jetpack = [JetpackState new];
     _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
     _jetpack.version = [self getOptionValue:@"jetpack_version"];
-    _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
+    if (self.jetpackAccount.username) {
+        _jetpack.connectedUsername = self.jetpackAccount.username;
+    } else {
+        _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
+    }
     _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
     return _jetpack;
 }
