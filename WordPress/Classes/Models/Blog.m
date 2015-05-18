@@ -402,6 +402,19 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSSet setWithArray:allowedFileTypes];
 }
 
+- (void)setOptions:(NSDictionary *)options
+{
+    [self willChangeValueForKey:@"options"];
+    [self setPrimitiveValue:options forKey:@"options"];
+    self.jetpack = nil;
+    [self didChangeValueForKey:@"options"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingJetpack
+{
+    return [NSSet setWithObject:@"options"];
+}
+
 #pragma mark - api accessor
 
 - (WPXMLRPCClient *)api
