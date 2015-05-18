@@ -97,4 +97,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)removeWordPressComAccountPasswordIfNeeded;
 
+- (void)purgeSelfHostedAccount:(WPAccount *)account;
+- (void)purgeJetpackAccount:(WPAccount *)account;
+
 @end
