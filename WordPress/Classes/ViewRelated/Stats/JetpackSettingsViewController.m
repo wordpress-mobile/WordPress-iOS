@@ -53,7 +53,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 @property (nonatomic, strong) WPWalkthroughTextField    *multifactorTextField;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
-@property (nonatomic, strong) WPNUXMainButton           *installJetbackButton;
+@property (nonatomic, strong) WPNUXMainButton           *installJetpackButton;
 @property (nonatomic, strong) UIButton                  *moreInformationButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *skipButton;
 
@@ -229,10 +229,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
 
     // Add Download Button
-    WPNUXMainButton *installJetbackButton = [[WPNUXMainButton alloc] init];
-    [installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
-    [installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
-    installJetbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    WPNUXMainButton *installJetpackButton = [[WPNUXMainButton alloc] init];
+    [installJetpackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
+    [installJetpackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
+    installJetpackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Add More Information Button
     UIButton *moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -250,7 +250,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self.view addSubview:multifactorText];
     [self.view addSubview:signInButton];
     [self.view addSubview:sendVerificationCodeButton];
-    [self.view addSubview:installJetbackButton];
+    [self.view addSubview:installJetpackButton];
     [self.view addSubview:moreInformationButton];
     
     // Keep the Reference!
@@ -261,7 +261,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.multifactorTextField = multifactorText;
     self.signInButton = signInButton;
     self.sendVerificationCodeButton = sendVerificationCodeButton;
-    self.installJetbackButton = installJetbackButton;
+    self.installJetpackButton = installJetpackButton;
     self.moreInformationButton = moreInformationButton;
 }
 
@@ -337,7 +337,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.multifactorTextField.hidden        = !hasJetpack;
     self.signInButton.hidden                = !hasJetpack;
     self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
-    self.installJetbackButton.hidden        = hasJetpack;
+    self.installJetpackButton.hidden        = hasJetpack;
     self.moreInformationButton.hidden       = hasJetpack;
     
     
@@ -393,10 +393,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     
     // Layout Download Button
     CGFloat installJetpackButtonY = CGRectGetMaxY(_descriptionLabel.frame) + JetpackStandardOffset;
-    _installJetbackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
+    _installJetpackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout More Information Button
-    CGFloat moreInformationButtonY = CGRectGetMaxY(_installJetbackButton.frame);
+    CGFloat moreInformationButtonY = CGRectGetMaxY(_installJetpackButton.frame);
     _moreInformationButton.frame = CGRectIntegral(CGRectMake(buttonX, moreInformationButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout Skip Button
@@ -408,7 +408,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     if (self.blog.jetpack.isInstalled) {
         viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _sendVerificationCodeButton, _signInButton];
     } else {
-        viewsToCenter = @[_icon, _descriptionLabel, _installJetbackButton, _moreInformationButton];
+        viewsToCenter = @[_icon, _descriptionLabel, _installJetpackButton, _moreInformationButton];
     }
     
     UIView *endingView = [viewsToCenter lastObject];
