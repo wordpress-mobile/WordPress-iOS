@@ -5,6 +5,7 @@
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
+#import "JetpackState.h"
 
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
@@ -16,6 +17,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @interface Blog ()
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, weak, readwrite) NSString *blavatarUrl;
+@property (nonatomic, strong, readwrite) JetpackState *jetpack;
 @end
 
 @implementation Blog
@@ -52,6 +54,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
+@synthesize jetpack = _jetpack;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -423,6 +426,24 @@ static NSInteger const ImageSizeLargeHeight = 480;
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+#pragma mark - Jetpack
+
+- (JetpackState *)jetpack
+{
+    if (_jetpack) {
+        return _jetpack;
+    }
+    if ([self.options count] == 0) {
+        return nil;
+    }
+    _jetpack = [JetpackState new];
+    _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
+    _jetpack.version = [self getOptionValue:@"jetpack_version"];
+    _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
+    _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
+    return _jetpack;
 }
 
 - (BOOL)jetpackRESTSupported
