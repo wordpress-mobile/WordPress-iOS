@@ -120,12 +120,16 @@ const NSInteger PostServiceNumberToFetch = 40;
                 success:(void (^)())success
                 failure:(void (^)(NSError *))failure
 {
+    NSManagedObjectID *blogObjectID = blog.objectID;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     [remote getPostsOfType:postType
                    forBlog:blog
                    success:^(NSArray *posts) {
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
+                           Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+                           if (blogInContext) {
+                               [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
+                           }
                        }];
                    } failure:^(NSError *error) {
                        if (failure) {
