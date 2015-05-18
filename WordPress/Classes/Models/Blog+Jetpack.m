@@ -123,7 +123,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                  WPAccount *account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
                                  self.jetpackAccount = account;
                                  [account addJetpackBlogsObject:self];
-                                 [self dataSave];
+                                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
                                  if ([[accountService defaultWordPressComAccount] isEqual:account]) {
                                      // Sadly we don't care if this succeeds or not
@@ -146,7 +146,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
                                  if (account) {
                                      self.jetpackAccount = account;
-                                     [self dataSave];
+                                     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
                                      if (success) {
                                          success();
                                      }
