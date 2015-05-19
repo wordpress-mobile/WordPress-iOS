@@ -86,24 +86,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     }];
 }
 
-- (void)removeJetpackCredentials
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    // If the associated jetpack account is not used for anything else, remove it
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    WPAccount *jetpackAccount = self.jetpackAccount;
-    if (jetpackAccount
-        && [jetpackAccount.jetpackBlogs count] == 1
-        && [[jetpackAccount.jetpackBlogs anyObject] isEqual:self]
-        && [jetpackAccount.visibleBlogs count] == 0
-        && ![defaultAccount isEqual:jetpackAccount]) {
-        DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", jetpackAccount.username);
-        [self.managedObjectContext deleteObject:jetpackAccount];
-    }
-}
-
 #pragma mark - Private methods
 
 - (void)saveJetpackUsername:(NSString *)username
@@ -156,28 +138,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      }
                                  }
                              }];
-}
-
-/*
- Replacement method for `-[Blog remove]`
-
- @warning Don't call this directly
- */
-- (void)removeWithoutJetpack
-{
-    if (![self isWPcom]) {
-        [self removeJetpackCredentials];
-    }
-
-    // Since we exchanged implementations, this actually calls `-[Blog remove]`
-    [self removeWithoutJetpack];
-}
-
-+ (void)load
-{
-    Method originalRemove = class_getInstanceMethod(self, @selector(remove));
-    Method customRemove = class_getInstanceMethod(self, @selector(removeWithoutJetpack));
-    method_exchangeImplementations(originalRemove, customRemove);
 }
 
 @end
