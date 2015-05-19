@@ -1,7 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "WordPressAppDelegate.h"
 #import "UITableViewTextFieldCell.h"
-#import "Blog+Jetpack.h"
 #import "SettingsViewControllerDelegate.h"
 
 @class Blog;

@@ -1,5 +1,5 @@
 #import "StatsViewController.h"
-#import "Blog+Jetpack.h"
+#import "Blog.h"
 #import "WordPressAppDelegate.h"
 #import "JetpackSettingsViewController.h"
 #import "StatsWebViewController.h"
