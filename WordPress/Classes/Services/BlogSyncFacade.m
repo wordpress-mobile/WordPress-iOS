@@ -2,7 +2,6 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "Blog.h"
-#import "Blog+Jetpack.h"
 
 #import <NSString+XMLExtensions.h>
 

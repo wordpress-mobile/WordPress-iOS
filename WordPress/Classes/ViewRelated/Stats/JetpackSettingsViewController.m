@@ -1,5 +1,5 @@
 #import "JetpackSettingsViewController.h"
-#import "Blog+Jetpack.h"
+#import "Blog.h"
 #import "WordPressComApi.h"
 #import "WPWebViewController.h"
 #import "WPAccount.h"
@@ -12,6 +12,7 @@
 #import "WordPressComOAuthClient.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "JetpackService.h"
 #import "ContextManager.h"
 
 
@@ -455,11 +456,14 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
         [self handleSignInError:error];
     };
 
-    [self.blog validateJetpackUsername:self.usernameTextField.text
-                              password:self.passwordTextField.text
-                       multifactorCode:self.multifactorTextField.text
-                               success:finishedBlock
-                               failure:failureBlock];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    JetpackService *jetpackService = [[JetpackService alloc] initWithManagedObjectContext:context];
+    [jetpackService validateAndLoginWithUsername:self.usernameTextField.text
+                                        password:self.passwordTextField.text
+                                 multifactorCode:self.multifactorTextField.text
+                                          siteID:self.blog.jetpack.siteID
+                                         success:finishedBlock
+                                         failure:failureBlock];
 }
 
 - (IBAction)sendVerificationCode:(id)sender

@@ -7,6 +7,7 @@
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
+#import "Blog.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
