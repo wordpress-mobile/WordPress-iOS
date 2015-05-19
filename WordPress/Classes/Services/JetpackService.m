@@ -78,10 +78,9 @@
                                      BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
                                      [self associateBlogIDs:blogIDs withJetpackAccount:account];
                                      if ([[accountService defaultWordPressComAccount] isEqual:account]) {
-                                         [blogService syncBlogsForAccount:account success:^{
-                                             success(account);
-                                         } failure:failure];
-                                     } else if (success) {
+                                         [blogService syncBlogsForAccount:account success:nil failure:nil];
+                                     }
+                                     if (success) {
                                          success(account);
                                      }
                                  }];
