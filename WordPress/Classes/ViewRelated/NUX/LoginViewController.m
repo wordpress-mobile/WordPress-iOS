@@ -88,7 +88,7 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
-static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)dealloc
 {
