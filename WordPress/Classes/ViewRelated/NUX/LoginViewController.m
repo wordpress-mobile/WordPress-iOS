@@ -35,6 +35,8 @@
 #import "WordPress-Swift.h"
 
 #import "LoginViewModel.h"
+#import "SVProgressHUD.h"
+
 
 #pragma mark ====================================================================================
 #pragma mark Private
@@ -851,6 +853,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)showActivityIndicator:(BOOL)show
 {
     [self.signInButton showActivityIndicator:show];
+}
+
+- (void)showAlertWithMessage:(NSString *)message
+{
+    NSParameterAssert(message);
+    [SVProgressHUD showSuccessWithStatus:message];
 }
 
 - (void)setUsernameAlpha:(CGFloat)alpha
