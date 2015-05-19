@@ -556,13 +556,21 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (!note) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // Failsafe: Make sure that the Notification (still) exists
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        [tableView deselectSelectedRowWithAnimation:YES];
         return;
     }
-
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
     // At last, push the details
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [self showDetailsForNotification:note];
 }
 
