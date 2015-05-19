@@ -42,12 +42,4 @@ typedef NS_ENUM(NSInteger, BlogJetpackErrorCode) {
                         success:(void (^)())success
                         failure:(void (^)(NSError *error))failure;
 
-/**
- Removes the stored Jetpack credentials for this blog
- 
- For now, the password is not removed from the keychain, since that same password could be used by other Jetpack or WordPress.com blog.
- This might change in a future version, when we have a more centralized account system
- */
-- (void)removeJetpackCredentials;
-
 @end
