@@ -97,7 +97,17 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)removeWordPressComAccountPasswordIfNeeded;
 
+/**
+ Removes an account if it has no more blogs.
+ */
 - (void)purgeSelfHostedAccount:(WPAccount *)account;
+
+/**
+ Removes a Jetpack account if it's not used anymore.
+ 
+ This method will remove the account if it has no blogs associated and it's not
+ the default WordPress.com account.
+ */
 - (void)purgeJetpackAccount:(WPAccount *)account;
 
 @end
