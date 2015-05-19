@@ -189,6 +189,7 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 @protocol LoginViewModelPresenter
 
 - (void)showActivityIndicator:(BOOL)show;
+- (void)showAlertWithMessage:(NSString *)message;
 
 - (void)setUsernameAlpha:(CGFloat)alpha;
 - (void)setUsernameEnabled:(BOOL)enabled;
