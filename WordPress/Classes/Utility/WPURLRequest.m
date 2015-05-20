@@ -22,6 +22,12 @@
     NSParameterAssert(password != nil || bearerToken != nil);
     
     NSMutableURLRequest *request = [self mutableRequestWithURL:loginUrl userAgent:userAgent];
+
+    NSString *hostname = [loginUrl host];
+    if (![hostname isEqualToString:@"wordpress.com"] && ![hostname hasSuffix:@".wordpress.com"]) {
+        // Let's make sure we don't send OAuth2 tokens outside of wordpress.com
+        bearerToken = nil;
+    }
     
     // If we've got a token, let's make sure the password never gets sent
     NSString *encodedPassword = bearerToken.length == 0 ? [password stringByUrlEncoding] : nil;
