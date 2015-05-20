@@ -15,49 +15,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
 @implementation Blog (Jetpack)
 
-- (BOOL)hasJetpack
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    return (nil != [self jetpackVersion]);
-}
-
-- (BOOL)hasJetpackAndIsConnectedToWPCom
-{
-    BOOL hasJetpack = [self hasJetpack];
-    BOOL connectedToWPCom = [[self jetpackBlogID] doubleValue] > 0.0;
-
-    return hasJetpack && connectedToWPCom;
-}
-
-- (NSString *)jetpackVersion
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    return [self.options stringForKeyPath:@"jetpack_version.value"];
-}
-
-- (NSNumber *)jetpackBlogID
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    return [self.options numberForKeyPath:@"jetpack_client_id.value"];
-}
-
-- (NSString *)jetpackUsername
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    return self.jetpackAccount.username;
-}
-
-- (NSString *)jetpackPassword
-{
-    NSAssert(![self isWPcom], @"Blog+Jetpack doesn't support WordPress.com blogs");
-
-    return self.jetpackAccount.password;
-}
-
 - (void)validateJetpackUsername:(NSString *)username
                        password:(NSString *)password
                 multifactorCode:(NSString *)multifactorCode
@@ -89,7 +46,7 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                   success:^(AFHTTPRequestOperation *operation, id responseObject)
     {
         NSArray *blogs = [responseObject arrayForKeyPath:@"userinfo.blog"];
-        NSNumber *searchID = [self jetpackBlogID];
+        NSNumber *searchID = self.jetpack.siteID;
         NSString *searchURL = self.url;
         DDLogInfo(@"Available wp.com/jetpack sites for %@: %@", username, blogs);
         NSArray *foundBlogs = [blogs filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
@@ -216,37 +173,11 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     [self removeWithoutJetpack];
 }
 
-- (NSNumber *)jetpackDotComID
-{
-    // For WordPress.com blogs, don't override the blog ID
-    if ([self isWPcom]) {
-        return [self jetpackDotComID];
-    }
-
-    // For self hosted, return the jetpackBlogID, which will be nil if there's no Jetpack
-    return [self jetpackBlogID];
-}
-
-- (NSString *)jetpackAuthToken
-{
-    if ([self isWPcom]) {
-        return [self jetpackAuthToken];
-    } else {
-        return self.jetpackAccount.authToken;
-    }
-}
-
 + (void)load
 {
     Method originalRemove = class_getInstanceMethod(self, @selector(remove));
     Method customRemove = class_getInstanceMethod(self, @selector(removeWithoutJetpack));
     method_exchangeImplementations(originalRemove, customRemove);
-    Method originalDotcomId = class_getInstanceMethod(self, @selector(dotComID));
-    Method customDotcomId = class_getInstanceMethod(self, @selector(jetpackDotComID));
-    method_exchangeImplementations(originalDotcomId, customDotcomId);
-    Method originalAuthToken = class_getInstanceMethod(self, @selector(authToken));
-    Method customAuthToken = class_getInstanceMethod(self, @selector(jetpackAuthToken));
-    method_exchangeImplementations(originalAuthToken, customAuthToken);
 }
 
 @end
