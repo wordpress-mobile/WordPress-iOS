@@ -21,7 +21,6 @@ pod 'google-plus-ios-sdk', '~>1.5'
 pod 'CrashlyticsLumberjack', '2.0.1-beta'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
-pod 'CTAssetsPickerController', '~> 2.9.3'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
@@ -37,7 +36,7 @@ pod 'WordPressCom-Stats-iOS', '0.3.4'
 pod 'WordPressCom-Analytics-iOS', '0.0.31'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
-pod 'WPMediaPicker', '~>0.3.3'
+pod 'WPMediaPicker', '~>0.3.5'
 pod 'ReactiveCocoa', '~> 2.4.7'
 
 target 'WordPressTodayWidget', :exclusive => true do
