@@ -218,12 +218,16 @@
         if (needsLogin) {
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
-            
+            NSString *token;
+            if ([self.apost.blog isWPcom]) {
+                token = self.apost.blog.authToken;
+            }
+
             NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                                       redirectURL:redirectURL
                                                                          username:self.apost.blog.username
                                                                          password:self.apost.blog.password
-                                                                      bearerToken:self.apost.blog.authToken
+                                                                      bearerToken:token
                                                                         userAgent:nil];
             [self.webView loadRequest:request];
             DDLogInfo(@"Showing real preview (login) for %@", link);
