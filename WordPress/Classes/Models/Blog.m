@@ -406,6 +406,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 {
     [self willChangeValueForKey:@"options"];
     [self setPrimitiveValue:options forKey:@"options"];
+    // Invalidate the Jetpack state since it's constructed from options
     self.jetpack = nil;
     [self didChangeValueForKey:@"options"];
 }
