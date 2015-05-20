@@ -2,6 +2,7 @@
 #import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
@@ -385,6 +386,39 @@ static NSInteger const ImageSizeLargeHeight = 480;
     }
 
     return NO;
+}
+
+- (BOOL)supports:(BlogFeature)feature
+{
+    switch (feature) {
+        case BlogFeatureRemovable:
+            return ![self accountIsDefaultAccount];
+        case BlogFeatureVisibility:
+            return [self accountIsDefaultAccount];
+        case BlogFeatureREST:
+        case BlogFeatureLikes:
+        case BlogFeatureStats:
+            return [self restApi] != nil;
+        case BlogFeatureReblog:
+        case BlogFeatureMentions:
+            return [self isHostedAtWPcom];
+        default:
+            return NO;
+    }
+}
+
+- (BOOL)accountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.account];
+}
+
+- (BOOL)isHostedAtWPcom
+{
+    // FIXME: cheating, we need to add a jetpack property
+    // and set it when we sync blogs
+    return self.account.isWpcom && !self.jetpack.siteID;
 }
 
 - (NSNumber *)dotComID
