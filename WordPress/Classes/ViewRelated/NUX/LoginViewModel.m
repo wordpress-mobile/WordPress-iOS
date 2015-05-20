@@ -187,7 +187,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)requestOneTimeCode
 {
-    NSString *message = NSLocalizedString(@"SMS Sent!", @"One Time Code has been sent via SMS");
+    NSString *message = NSLocalizedString(@"SMS Sent", @"One Time Code has been sent via SMS");
     [self.presenter showAlertWithMessage:message];
     [self.loginFacade requestOneTimeCodeWithLoginFields:[self loginFields]];
 }
