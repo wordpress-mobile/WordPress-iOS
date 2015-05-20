@@ -230,6 +230,7 @@ import Foundation
         replyButton.titleLabel?.font    = WPStyleGuide.Reply.buttonFont
         replyButton.setTitleColor(WPStyleGuide.Reply.disabledColor, forState: .Disabled)
         replyButton.setTitleColor(WPStyleGuide.Reply.enabledColor,  forState: .Normal)
+        replyButton.titleLabel?.adjustsFontSizeToFitWidth = true
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
