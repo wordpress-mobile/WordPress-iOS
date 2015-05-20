@@ -20,7 +20,6 @@
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
-static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
 
 @interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
@@ -127,7 +126,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
     [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:JetpackConnectedCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -141,9 +139,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv
 {
-    if (self.blog && ![self.blog isWPcom]) {
-        return 3;
-    }
     return 2;
 }
 
@@ -163,8 +158,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
                 return 2;
             }
 
-            return 1;
-        case 2:
             return 1;
         default:
             break;
@@ -201,8 +194,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
             return self.blog.blogName;
         case 1:
             return NSLocalizedString(@"Settings", @"");
-        case 2:
-            return NSLocalizedString(@"Jetpack Stats", @"");
         default:
             break;
     }
@@ -298,21 +289,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
-    } else if (indexPath.section == 2) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
-
-        cell.textLabel.text = NSLocalizedString(@"Configure", @"");
-        if (self.blog.jetpack.connectedUsername) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpack.connectedUsername];
-        } else {
-            cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        [WPStyleGuide configureTableViewCell:cell];
-
-        return cell;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -333,15 +309,6 @@ static CGFloat const EditSiteRowHeight = 48.0;
         }
     }
     [tv deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (indexPath.section == 2) {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-        controller.showFullScreen = NO;
-        [controller setCompletionBlock:^(BOOL didAuthenticate) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
 }
 
 #pragma mark - UITextField methods
