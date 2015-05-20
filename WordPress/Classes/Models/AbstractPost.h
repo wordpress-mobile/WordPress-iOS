@@ -13,6 +13,10 @@
 @property (weak, readonly) AbstractPost *revision;
 @property (nonatomic, strong) NSMutableSet *comments;
 @property (nonatomic, strong) Media *featuredImage;
+/**
+ Used to store the post's status before its sent to the trash.
+ */
+@property (nonatomic, strong) NSString *restorableStatus;
 
 // Revision management
 - (AbstractPost *)createRevision;

@@ -123,8 +123,8 @@
 - (CGRect)rightViewRectForBounds:(CGRect)bounds
 {
     CGRect textRect = [super rightViewRectForBounds:bounds];
-    textRect.origin.x -= _rightViewPadding.x;
-    textRect.origin.y -= _rightViewPadding.y;
+    textRect.origin.x -= _rightViewPadding.horizontal;
+    textRect.origin.y -= _rightViewPadding.vertical;
     
     return textRect;
 }
@@ -140,9 +140,12 @@
 
 - (void)secureTextEntryToggleAction:(id)sender
 {
-    [self setSecureTextEntry:!self.isSecureTextEntry];
-    self.text = self.text; // Fixes cursor position after toggling
-    [self setNeedsDisplay];
+    self.secureTextEntry = !self.secureTextEntry;
+    
+    // Save and re-apply the current selection range to save the cursor position
+    UITextRange *currentTextRange = self.selectedTextRange;
+    [self becomeFirstResponder];
+    [self setSelectedTextRange:currentTextRange];
 }
 
 - (void)updateSecureTextEntryToggleImage

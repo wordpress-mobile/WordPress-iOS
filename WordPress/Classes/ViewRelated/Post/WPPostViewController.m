@@ -293,10 +293,7 @@ EditImageDetailsViewControllerDelegate
         [self refreshNavigationBarButtons:NO];
         [self.navigationController.navigationBar addSubview:self.mediaProgressView];
         if (self.isEditing) {
-            if ([self shouldHideStatusBarWhileTyping]) {
-                [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                        withAnimation:UIStatusBarAnimationSlide];
-            }
+            [self setNeedsStatusBarAppearanceUpdate];
         } else {
             // Preview mode...show the onboarding hint the first time through only
             if (!self.wasOnboardingShown) {
@@ -811,7 +808,7 @@ EditImageDetailsViewControllerDelegate
 - (void)showPostHasChangesActionSheet
 {
 	UIActionSheet *actionSheet;
-	if (![self.post.original.status isEqualToString:@"draft"] && ![self isPostLocal]) {
+	if (![self.post.original.status isEqualToString:PostStatusDraft] && ![self isPostLocal]) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
 		actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
 												  delegate:self
@@ -1080,24 +1077,6 @@ EditImageDetailsViewControllerDelegate
     [self refreshNavigationBarButtons:YES];
 }
 
-/**
- *	@brief		Returns a BOOL specifying if the status bar should be hidden while typing.
- *	@details	The status bar should never hide on the iPad.
- *
- *	@returns	YES if the keyboard should be hidden, NO otherwise.
- */
-- (BOOL)shouldHideStatusBarWhileTyping
-{
-    /*
-     Never hide for the iPad.
-     Always hide on the iPhone except for portrait + external keyboard
-     */
-    if (IS_IPAD) {
-        return NO;
-    }
-    return YES;
-}
-
 #pragma mark - Custom UI elements
 
 - (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
@@ -1242,10 +1221,10 @@ EditImageDetailsViewControllerDelegate
     NSString *buttonTitle = nil;
     
     if(![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+        if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
             
-        } else if ([self.post.status isEqualToString:@"publish"]){
+        } else if ([self.post.status isEqualToString:PostStatusPublish]){
             buttonTitle = NSLocalizedString(@"Post", @"Publish button label.");
             
         } else {
@@ -1439,7 +1418,7 @@ EditImageDetailsViewControllerDelegate
 
     [self.view endEditing:YES];
     
-    if (!self.post.isScheduled && [self.post.original.status isEqualToString:@"draft"]  && [self.post.status isEqualToString:@"publish"]) {
+    if (!self.post.isScheduled && [self.post.original.status isEqualToString:PostStatusDraft]  && [self.post.status isEqualToString:PostStatusPublish]) {
         self.post.dateCreated = [NSDate date];
     }
     self.post = self.post.original;
@@ -1940,8 +1919,8 @@ EditImageDetailsViewControllerDelegate
 
 - (void)actionSheetSaveDraftButtonPressed
 {
-    if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-        self.post.status = @"draft";
+    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+        self.post.status = PostStatusDraft;
     }
     
     DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
@@ -1953,19 +1932,13 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
-	if ([self shouldHideStatusBarWhileTyping])
-	{
-		[[UIApplication sharedApplication] setStatusBarHidden:YES
-												withAnimation:UIStatusBarAnimationSlide];
-	}
-    
+    [self setNeedsStatusBarAppearanceUpdate];
     [self refreshNavigationBarButtons:YES];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
 {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO
-											withAnimation:UIStatusBarAnimationSlide];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController
@@ -2064,6 +2037,11 @@ EditImageDetailsViewControllerDelegate
         failure:^(NSError *error){
 
         }];
+}
+
+- (void)editorViewController:(WPEditorViewController *)editorViewController mediaRemoved:(NSString *)mediaID
+{
+    [self cancelUploadOfMediaWithId:mediaID];
 }
 
 - (void)displayImageDetailsForMeta:(WPImageMeta *)imageMeta
@@ -2209,6 +2187,27 @@ EditImageDetailsViewControllerDelegate
 - (void)editImageDetailsViewController:(EditImageDetailsViewController *)controller didFinishEditingImageDetails:(WPImageMeta *)imageMeta
 {
     [self.editorView updateCurrentImageMeta:imageMeta];
+}
+
+
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    /**
+     Never hide for the iPad. 
+     Always hide on the iPhone except when user is not editing
+     */
+    if (IS_IPAD || !self.isEditing) {
+        return NO;
+    }
+    return YES;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
 @end

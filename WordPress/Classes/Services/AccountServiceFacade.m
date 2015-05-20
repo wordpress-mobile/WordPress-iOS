@@ -25,11 +25,11 @@
     return [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
 }
 
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
+    [accountService updateUserDetailsForAccount:account success:success failure:failure];
 }
 
 -(void)removeLegacyAccount:(NSString *)newUsername
