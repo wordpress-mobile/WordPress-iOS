@@ -514,8 +514,9 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         BOOL canContainFooter = notification.isFollow || notification.isLike || notification.isCommentLike;
         
         for (NotificationBlock *block in blocks) {
-            BOOL isFooter           = block.type == NoteBlockTypeText && blocks.lastObject == block;
-            NoteBlockGroupType type = canContainFooter && isFooter ? NoteBlockGroupTypeFooter : block.type;
+            // If we infer that this is a footer, override the BlockGroupType
+            BOOL isFooter           = canContainFooter && block.type == NoteBlockTypeText && blocks.lastObject == block;
+            NoteBlockGroupType type = isFooter ? NoteBlockGroupTypeFooter : block.type;
             
             [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:type]];
         }
