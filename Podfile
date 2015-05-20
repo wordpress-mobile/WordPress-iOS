@@ -23,7 +23,8 @@ pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
-pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.3', :configurations => ['Debug', 'Release-Internal']
+
+pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.4', :configurations => ['Debug', 'Release-Internal']
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
