@@ -88,7 +88,7 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
-static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)dealloc
 {
@@ -630,27 +630,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 {
     CreateAccountAndBlogViewController *createAccountViewController = [[CreateAccountAndBlogViewController alloc] init];
     [self.navigationController pushViewController:createAccountViewController animated:YES];
-}
-
-- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService blogByBlogId:blogId];
-    NSAssert(blog != nil, @"blog should not be nil here");
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-    jetpackSettingsViewController.canBeSkipped = YES;
-    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics refreshMetadata];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
-        }
-
-        [self dismiss];
-    }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
 }
 
 - (void)showHelpViewController:(BOOL)animated
