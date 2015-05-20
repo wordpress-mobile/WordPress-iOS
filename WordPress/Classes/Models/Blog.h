@@ -23,7 +23,6 @@
 @property (nonatomic, strong, readwrite) NSString       *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPages;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingComments;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingMedia;
 @property (nonatomic, strong, readwrite) NSDate         *lastPostsSync;
 @property (nonatomic, strong, readwrite) NSDate         *lastPagesSync;
@@ -38,6 +37,7 @@
 @property (nonatomic, strong, readwrite) WPAccount      *account;
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
+@property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;

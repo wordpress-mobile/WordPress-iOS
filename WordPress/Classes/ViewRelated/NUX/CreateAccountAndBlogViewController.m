@@ -67,7 +67,7 @@ static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
 static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
 static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
+static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (id)init
 {
@@ -269,6 +269,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _emailField.keyboardType = UIKeyboardTypeEmailAddress;
         _emailField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _emailField.accessibilityIdentifier = @"Email Address";
+        _emailField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_emailField];
     }
 
@@ -285,6 +286,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _usernameField.showTopLineSeparator = YES;
         _usernameField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _usernameField.accessibilityIdentifier = @"Username";
+        _usernameField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_usernameField];
     }
 
@@ -303,6 +305,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _passwordField.showTopLineSeparator = YES;
         _passwordField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _passwordField.accessibilityIdentifier = @"Password";
+        _passwordField.returnKeyType = UIReturnKeyNext;
         [self.view addSubview:_passwordField];
     }
     
@@ -331,6 +334,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
         _siteAddressField.delegate = self;
         _siteAddressField.autocorrectionType = UITextAutocorrectionTypeNo;
         _siteAddressField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        _siteAddressField.returnKeyType = UIReturnKeyDone;
         _siteAddressField.showTopLineSeparator = YES;
         _siteAddressField.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
         _siteAddressField.accessibilityIdentifier = @"Site Address (URL)";
@@ -565,7 +569,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 - (IBAction)TOSLabelWasTapped
 {
     WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
+    [webViewController setUrl:[NSURL URLWithString:@"https://en.wordpress.com/tos/"]];
     [self.navigationController pushViewController:webViewController animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
@@ -834,6 +838,7 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
             [[ContextManager sharedInstance] saveContext:context];
 
+            [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
             [blogService syncBlog:blog success:nil failure:nil];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
@@ -863,6 +868,13 @@ static CGPoint const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
     [_operationQueue addOperation:blogCreation];
+}
+
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 @end

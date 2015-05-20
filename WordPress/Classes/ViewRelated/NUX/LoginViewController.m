@@ -87,8 +87,8 @@ static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
 static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
-static CGPoint const LoginOnePasswordPadding                    = {9.0, 0.0f};
-static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
+static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)dealloc
 {
@@ -632,27 +632,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService blogByBlogId:blogId];
-    NSAssert(blog != nil, @"blog should not be nil here");
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-    jetpackSettingsViewController.canBeSkipped = YES;
-    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics refreshMetadata];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
-        }
-
-        [self dismiss];
-    }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
-}
-
 - (void)showHelpViewController:(BOOL)animated
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -1046,6 +1025,13 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)endViewEditing
 {
     [self.view endEditing:NO];
+}
+
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 @end

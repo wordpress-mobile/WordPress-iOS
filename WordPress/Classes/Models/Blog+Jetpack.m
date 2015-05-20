@@ -170,9 +170,12 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
 
                                  [accountService updateEmailAndDefaultBlogForWordPressComAccount:account];
 
-                                 // Sadly we don't care if this succeeds or not
-                                 BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
-                                 [blogService syncBlogsForAccount:account success:nil failure:nil];
+                                 if ([[accountService defaultWordPressComAccount] isEqual:account]) {
+                                     // Sadly we don't care if this succeeds or not
+                                     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.managedObjectContext];
+                                     [blogService syncBlogsForAccount:account success:nil failure:nil];
+                                 }
+
 
                                  if (success) {
                                      success();
@@ -227,6 +230,15 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     return [self jetpackBlogID];
 }
 
+- (NSString *)jetpackAuthToken
+{
+    if ([self isWPcom]) {
+        return [self jetpackAuthToken];
+    } else {
+        return self.jetpackAccount.authToken;
+    }
+}
+
 + (void)load
 {
     Method originalRemove = class_getInstanceMethod(self, @selector(remove));
@@ -235,6 +247,9 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
     Method originalDotcomId = class_getInstanceMethod(self, @selector(dotComID));
     Method customDotcomId = class_getInstanceMethod(self, @selector(jetpackDotComID));
     method_exchangeImplementations(originalDotcomId, customDotcomId);
+    Method originalAuthToken = class_getInstanceMethod(self, @selector(authToken));
+    Method customAuthToken = class_getInstanceMethod(self, @selector(jetpackAuthToken));
+    method_exchangeImplementations(originalAuthToken, customAuthToken);
 }
 
 @end

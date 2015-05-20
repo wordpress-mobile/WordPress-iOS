@@ -55,6 +55,10 @@ import Foundation
     }
     
     // MARK: - Public Methods
+    public class func reuseIdentifier() -> String {
+        return classNameWithoutNamespaces()
+    }
+    
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return
