@@ -219,13 +219,13 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Looking for a self-hosted blog with a jetpackClientId and good crednetials.
     BOOL prompt = NO;
 
-    if (![blog jetpackBlogID]) {
+    if (!blog.jetpack.siteID) {
         // needs latest jetpack
         prompt = YES;
 
     } else {
         // Check for credentials.
-        if (![blog.jetpackUsername length] || ![blog.authToken length]) {
+        if (![blog.authToken length]) {
             prompt = YES;
         }
     }
@@ -269,7 +269,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSString *username = blog.isWPcom ? blog.username : blog.jetpackUsername;
+    NSString *username = blog.isWPcom ? blog.username : blog.jetpack.connectedUsername;
     
     // Skip the auth call to reduce loadtime if its the same username as before.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
@@ -351,7 +351,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
     NSNumber *blogID = [blog blogID];
     if (![blog isWPcom]) {
-        blogID = [blog jetpackBlogID];
+        blogID = blog.jetpack.siteID;
     }
 
     NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/stats/%@", blogID];

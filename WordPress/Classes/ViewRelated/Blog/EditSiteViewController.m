@@ -387,7 +387,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return self.blog &&
-        ([self.blog isWPcom] || [self.blog hasJetpack]) &&
+        ([self.blog isWPcom] || [self.blog.jetpack isConnected]) &&
         [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
@@ -411,7 +411,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
         NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
         NSMutableDictionary *updatedPreference;
 
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSUInteger i = 0; i < [mutedBlogsArray count]; i++) {
             updatedPreference = [mutedBlogsArray[i] mutableCopy];
             NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
@@ -674,7 +674,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     if (self.notificationPreferences) {
         NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSDictionary *currentBlog in mutedBlogsArray ){
             NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
             if ([blogID intValue] == [currentBlogID intValue]) {
