@@ -27,13 +27,13 @@
  *  @param password     password for the self hosted blog.
  *  @param xmlrpc       xmlrpc url for the self hosted blog.
  *  @param options      options dictionary for the self hosted blog.
- *  @param needsJetpack a block that's called when the site needs to connect to Jetpack.
  *  @param finishedSync a block that's called when this is done.
  */
 - (void)syncBlogForAccount:(WPAccount *)account
                   username:(NSString *)username
                   password:(NSString *)password
-                    xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options needsJetpack:(void(^)(NSNumber *))needsJetpack finishedSync:(void(^)())finishedSync;
+                    xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+              finishedSync:(void(^)())finishedSync;
 
 @end
 
