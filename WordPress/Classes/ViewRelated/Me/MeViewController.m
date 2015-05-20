@@ -356,14 +356,17 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        // Sign out
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        // Sign out asynchronously so the popover animation can finish on iPad #3667
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Sign out
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-        [accountService removeDefaultWordPressComAccount];
+            [accountService removeDefaultWordPressComAccount];
 
-        // reload all table view to update the header as well
-        [self.tableView reloadData];
+            // reload all table view to update the header as well
+            [self.tableView reloadData];
+        });
     }
 }
 
