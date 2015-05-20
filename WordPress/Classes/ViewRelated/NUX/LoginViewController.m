@@ -632,27 +632,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService blogByBlogId:blogId];
-    NSAssert(blog != nil, @"blog should not be nil here");
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-    jetpackSettingsViewController.canBeSkipped = YES;
-    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics refreshMetadata];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
-        }
-
-        [self dismiss];
-    }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
-}
-
 - (void)showHelpViewController:(BOOL)animated
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
