@@ -81,7 +81,7 @@
 
 #pragma mark - CrashlyticsDelegate
 
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+- (void)crashlyticsDidDetectReportForLastExecution:(CLSReport *)report completionHandler:(void (^)(BOOL submit))completionHandler
 {
     DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -89,6 +89,9 @@
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
+    if (completionHandler) {
+        completionHandler(YES);
+    }
 }
 
 
