@@ -536,7 +536,7 @@
 
     if (self.view.frame.size.width < self.view.window.bounds.size.width) {
         NSString *js = [NSString stringWithFormat:@"var meta = document.createElement('meta');meta.setAttribute( 'name', 'viewport' ); meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );document.getElementsByTagName('head')[0].appendChild(meta)"];
-        [aWebView stringByEvaluatingJavaScriptFromString: js];
+        [aWebView stringByEvaluatingJavaScriptFromString:js];
     }
 
     if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
