@@ -21,22 +21,23 @@ pod 'google-plus-ios-sdk', '~>1.5'
 pod 'CrashlyticsLumberjack', '2.0.1-beta'
 pod 'HockeySDK', '~>3.6.0'
 pod 'Helpshift', '~>4.10.0'
+pod 'CTAssetsPickerController', '~> 2.9.3'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
-pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.1', :configurations => ['Debug', 'Release-Internal']
+pod 'Automattic-Tracks-iOS', :git => 'https://github.com/Automattic/Automattic-Tracks-iOS.git', :tag => '0.0.3', :configurations => ['Debug', 'Release-Internal']
 pod 'EmailChecker', :podspec => 'https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec'
 pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilities.git', :branch => 'gifsupport'
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.7.9'
 pod 'WordPressApi', '~> 0.3.4'
 pod 'WordPress-iOS-Shared', '0.3.2'
-pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '95df515335a4cb4b922e29fe1707977ffb38bc9f'
+pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '33dd86dc5ec6277769e185c3502c3f2469dd1edd'
 pod 'WordPressCom-Stats-iOS', '0.3.4'
 pod 'WordPressCom-Analytics-iOS', '0.0.31'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
 pod 'WordPress-AppbotX', :git => 'https://github.com/wordpress-mobile/appbotx.git', :commit => '303b8068530389ea87afde38b77466d685fe3210'
-pod 'WPMediaPicker', '~>0.3.2'
+pod 'WPMediaPicker', '~>0.3.3'
 pod 'ReactiveCocoa', '~> 2.4.7'
 
 target 'WordPressTodayWidget', :exclusive => true do
@@ -62,5 +63,11 @@ post_install do |installer_representation|
         config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)', 'AF_APP_EXTENSIONS=1']
       end
     end
+  end
+  
+  # Directly set the Targeted Device Family
+  # See https://github.com/CocoaPods/CocoaPods/issues/2292
+  installer_representation.project.build_configurations.each do |config|
+      config.build_settings['TARGETED_DEVICE_FAMILY'] = '1,2'
   end
 end
