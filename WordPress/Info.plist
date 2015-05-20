@@ -41,7 +41,7 @@
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
-		<string>***REMOVED***</string>
+		<string>FABRIC_API_KEY</string>
 		<key>Kits</key>
 		<array>
 			<dict>
