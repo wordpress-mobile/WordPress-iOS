@@ -4,7 +4,6 @@
 #import "WordPressComApi.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
-#import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "WPTableViewSectionHeaderView.h"
