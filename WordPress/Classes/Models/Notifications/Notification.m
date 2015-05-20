@@ -504,8 +504,20 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         
     // Rest: 1-1 relationship
     } else {
+        
+        //  More Duck Typing:
+        //
+        //  Follow + Like + CommentLike Notifications may contain a Footer. Since the type is not explicit,
+        //  we'll attempt to infer such blocks, and map them into NoteBlockGroupTypeFooter's, so that we can
+        //  easily handle custom rendering for them.
+        //
+        BOOL canContainFooter = notification.isFollow || notification.isLike || notification.isCommentLike;
+        
         for (NotificationBlock *block in blocks) {
-            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:block.type]];
+            BOOL isFooter           = block.type == NoteBlockTypeText && blocks.lastObject == block;
+            NoteBlockGroupType type = canContainFooter && isFooter ? NoteBlockGroupTypeFooter : block.type;
+            
+            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:type]];
         }
     }
     
