@@ -8,6 +8,23 @@
 @class WPAccount;
 @class WordPressComApi;
 
+typedef NS_ENUM(NSUInteger, BlogFeature) {
+    /// Can the blog be removed?
+    BlogFeatureRemovable,
+    /// Can the blog be hidden?
+    BlogFeatureVisibility,
+    /// Can the blog use the WordPress.com REST API?
+    BlogFeatureREST,
+    /// Does the blog support reblogs?
+    BlogFeatureReblog,
+    /// Does the blog support likes?
+    BlogFeatureLikes,
+    /// Can we show stats for the blog?
+    BlogFeatureStats,
+    /// Does the blog support mentions?
+    BlogFeatureMentions,
+};
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite) NSNumber       *blogID;
@@ -85,6 +102,7 @@
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
+- (BOOL)supports:(BlogFeature)feature;
 
 /**
  Returns a REST API client if available
