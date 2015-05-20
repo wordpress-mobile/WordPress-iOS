@@ -319,7 +319,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)updateControls
 {
-    BOOL hasJetpack                         = self.blog.jetpack.isInstalled && self.blog.jetpack.isUpdatedToRequiredVersion;
+    BOOL hasJetpack                         = [self canSetupJetpack];
     
     self.usernameTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
     self.passwordTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
@@ -402,7 +402,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     _skipButton.frame = CGRectMake(skipButtonX, skipButtonY, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
 
     NSArray *viewsToCenter;
-    if (self.blog.jetpack.isInstalled) {
+    if ([self canSetupJetpack]) {
         viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _sendVerificationCodeButton, _signInButton];
     } else {
         viewsToCenter = @[_icon, _descriptionLabel, _installJetpackButton, _moreInformationButton];
@@ -427,6 +427,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     return CGRectGetMaxY(bottomView.frame);
 }
 
+- (BOOL)canSetupJetpack
+{
+    return self.blog.jetpack.isInstalled && self.blog.jetpack.isUpdatedToRequiredVersion;
+}
 
 #pragma mark - Button Helpers
 
