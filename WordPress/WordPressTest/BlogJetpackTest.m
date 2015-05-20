@@ -53,50 +53,22 @@
     self.testContextManager = nil;
 }
 
-- (void)testAssertionsOnWPcom {
-    XCTestExpectation *saveExpectation = [self expectationWithDescription:@"Context save expectation"];
-    self.testContextManager.testExpectation = saveExpectation;
-
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
-
-    // Wait on the merge to be completed
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
-
-    _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
-    _blog.xmlrpc = @"http://test.wordpress.com/xmlrpc.php";
-    _blog.url = @"http://test.wordpress.com/";
-    _blog.account = wpComAccount;
-    
-    XCTAssertThrows([_blog hasJetpack], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog jetpackVersion], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog jetpackUsername], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog jetpackPassword], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog jetpackBlogID], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog removeJetpackCredentials], @"WordPress.com blogs don't support Jetpack methods");
-    XCTAssertThrows([_blog validateJetpackUsername:@"test" password:@"test" multifactorCode:nil success:nil failure:nil], @"WordPress.com blogs don't support Jetpack methods");
-}
-
-- (void)testHasJetpack {
-    XCTAssertTrue([_blog hasJetpack]);
+- (void)testJetpackInstalled {
+    XCTAssertTrue(_blog.jetpack.isInstalled);
     _blog.options = nil;
-    XCTAssertFalse([_blog hasJetpack]);
+    XCTAssertFalse(_blog.jetpack.isInstalled);
 }
 
 - (void)testJetpackVersion {
-    XCTAssertEqualObjects([_blog jetpackVersion], @"1.8.2");
+    XCTAssertEqualObjects(_blog.jetpack.version, @"1.8.2");
 }
 
-- (void)testJetpackBlogId {
-    XCTAssertEqualObjects([_blog jetpackBlogID], @1);
+- (void)testJetpackSiteId {
+    XCTAssertEqualObjects(_blog.jetpack.siteID, @1);
 }
 
 - (void)testJetpackUsername {
-    XCTAssertNil([_blog jetpackUsername]);
-}
-
-- (void)testJetpackPassword {
-    XCTAssertNil([_blog jetpackPassword]);
+    XCTAssertNil(_blog.jetpack.connectedUsername);
 }
 
 - (void)testValidateCredentials {

@@ -98,8 +98,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.statsVC.siteID = self.blog.jetpackBlogID;
+    if (!needsJetpackLogin && self.blog.jetpack.siteID && self.blog.jetpackAccount) {
+        self.statsVC.siteID = self.blog.jetpack.siteID;
         self.statsVC.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
         [self addStatsViewControllerToView];
 
