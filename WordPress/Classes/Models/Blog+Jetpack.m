@@ -176,7 +176,6 @@ NSString * const BlogJetpackApiPath = @"get-user-blogs/1.0";
                                      [blogService syncBlogsForAccount:account success:nil failure:nil];
                                  }
 
-
                                  if (success) {
                                      success();
                                  }
