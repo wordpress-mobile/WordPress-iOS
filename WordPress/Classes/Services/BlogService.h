@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
+#import "Blog.h"
 
-@class Blog;
 @class WPAccount;
 
 @interface BlogService : NSObject<LocalCoreDataService>
@@ -17,17 +17,17 @@
 - (void)flagBlogAsLastUsed:(Blog *)blog;
 
 /**
- Returns the blog currently flagged as the one last used, or the first blog in
- an alphanumerically sorted list, if no blog is currently flagged as last used.
+ Returns the blog currently flagged as the one last used, or the primary blog,
+ or the first blog in an alphanumerically sorted list, whichever is found first.
  */
 - (Blog *)lastUsedOrFirstBlog;
 
 /**
- Returns the wpcom blog currently flagged as the one last used, or the first wpcom
- blog in an alphanumerically sorted list, if no wpcom blog is currently flagged as 
- last used.
+ Returns the blog currently flagged as the one last used, or the primary blog,
+ or the first blog in an alphanumerically sorted list that supports the given
+ feature, whichever is found first.
  */
-- (Blog *)lastUsedOrFirstWPcomBlog;
+- (Blog *)lastUsedOrFirstBlogThatSupports:(BlogFeature)feature;
 
 /**
  Returns the blog currently flaged as the one last used.
@@ -40,9 +40,9 @@
 - (Blog *)firstBlog;
 
 /**
- Returns the first WPCom blog in an alphanumerically sorted list.
+ Returns the default WPCom blog.
  */
-- (Blog *)firstWPComBlog;
+- (Blog *)primaryBlog;
 
 - (void)syncBlogsForAccount:(WPAccount *)account
                     success:(void (^)())success
