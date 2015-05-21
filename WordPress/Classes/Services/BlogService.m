@@ -380,44 +380,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return stagger;
 }
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog
-                              success:(void (^)(BOOL enabled))success
-                              failure:(void (^)(NSError *error))failure
-{
-    if (!blog.isWPcom) {
-        if (success) {
-            success(YES);
-        }
-        
-        return;
-    }
-    
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:WPComGetFeatures
-                                                      parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        BOOL videoEnabled = YES;
-        if (([responseObject isKindOfClass:[NSDictionary class]])
-            && ([responseObject objectForKey:VideopressEnabled] != nil))
-        {
-            videoEnabled = [[responseObject objectForKey:VideopressEnabled] boolValue];
-        } else {
-            videoEnabled = YES;
-        }
-
-        if (success) {
-            success(videoEnabled);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
 - (BOOL)hasVisibleWPComAccounts
 {
     return [self blogCountVisibleForWPComAccounts] > 0;
