@@ -398,6 +398,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
         case BlogFeatureRemovable:
             return ![self accountIsDefaultAccount];
         case BlogFeatureVisibility:
+            /*
+             See -[BlogListViewController fetchRequestPredicateForHideableBlogs]
+             If the logic for this changes that needs to be updated as well
+             */
             return [self accountIsDefaultAccount];
         case BlogFeatureREST:
         case BlogFeatureLikes:
