@@ -1,9 +1,11 @@
 #import <OHHTTPStubs/OHHTTPStubs.h>
-#import "Blog+Jetpack.h"
+#import "Blog.h"
 #import "WPAccount.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "JetpackService.h"
+#import "JetpackServiceRemote.h"
 #import "TestContextManager.h"
 #import <XCTest/XCTest.h>
 
@@ -93,25 +95,34 @@
     }];
     
     XCTestExpectation *validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
-    
-    [_blog validateJetpackUsername:@"test1" password:@"test1" multifactorCode:nil success:^{
-        XCTFail(@"User test1 shouldn't have access to test.blog");
-        [validateJetpackExpectation fulfill];
-    } failure:^(NSError *error) {
-        XCTAssertEqual(error.domain, BlogJetpackErrorDomain);
-        XCTAssertEqual(error.code, BlogJetpackErrorCodeNoRecordForBlog);
-        [validateJetpackExpectation fulfill];
-    }];
-    
+
+    JetpackService *jetpackService = [[JetpackService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
+    [jetpackService validateAndLoginWithUsername:@"test1"
+                                        password:@"test1"
+                                 multifactorCode:nil
+                                          siteID:_blog.jetpack.siteID
+                                         success:^(WPAccount *account) {
+                                             XCTFail(@"User test1 shouldn't have access to test.blog");
+                                             [validateJetpackExpectation fulfill];
+                                         } failure:^(NSError *error) {
+                                             XCTAssertEqual(error.domain, JetpackServiceRemoteErrorDomain);
+                                             XCTAssertEqual(error.code, JetpackServiceRemoteErrorNoRecordForBlog);
+                                             [validateJetpackExpectation fulfill];
+                                         }];
+
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     validateJetpackExpectation = [self expectationWithDescription:@"Validate Jetpack expectation"];
-    [_blog validateJetpackUsername:@"test2" password:@"test2" multifactorCode:nil success:^{
-        [validateJetpackExpectation fulfill];
-    } failure:^(NSError *error) {
-        XCTFail(@"User test2 should have access to test.blog");
-        [validateJetpackExpectation fulfill];
-    }];
+    [jetpackService validateAndLoginWithUsername:@"test2"
+                                        password:@"test2"
+                                 multifactorCode:nil
+                                          siteID:_blog.jetpack.siteID
+                                         success:^(WPAccount *account) {
+                                             [validateJetpackExpectation fulfill];
+                                         } failure:^(NSError *error) {
+                                             XCTFail(@"User test2 should have access to test.blog");
+                                             [validateJetpackExpectation fulfill];
+                                         }];
 
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 }
