@@ -17,6 +17,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureREST,
     /// Does the blog support reblogs?
     BlogFeatureReblog,
+    /// Does the blog support comment likes?
+    BlogFeatureCommentLikes,
     /// Does the blog support likes?
     BlogFeatureLikes,
     /// Can we show stats for the blog?
