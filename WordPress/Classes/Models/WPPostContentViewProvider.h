@@ -25,7 +25,9 @@
 - (BOOL)unreadStatusForDisplay;
 - (NSInteger)numberOfComments;
 - (NSInteger)numberOfLikes;
-- (BOOL)isWPcom;
+- (BOOL)supportsComments;
+- (BOOL)supportsLikes;
+- (BOOL)supportsStats;
 - (BOOL)isPrivate;
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isUploading;
