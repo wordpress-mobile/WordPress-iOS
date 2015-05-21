@@ -407,6 +407,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         case BlogFeatureLikes:
         case BlogFeatureStats:
             return [self restApi] != nil;
+        case BlogFeatureCommentLikes:
         case BlogFeatureReblog:
         case BlogFeatureMentions:
             return [self isHostedAtWPcom];

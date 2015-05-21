@@ -390,7 +390,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     // Setup the Cell
     cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = self.comment.blog.isWPcom;
+    cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
     cell.isApproveEnabled = YES;
     cell.isTrashEnabled = YES;
     cell.isSpamEnabled = YES;
