@@ -466,7 +466,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
     if (switcher.on != blog.visible) {
         blog.visible = switcher.on;
-        [blog dataSave];
+        [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
     }
 }
 
