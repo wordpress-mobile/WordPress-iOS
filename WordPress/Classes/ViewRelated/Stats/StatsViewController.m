@@ -39,7 +39,9 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
  
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
     
-    self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:nil] instantiateInitialViewController];
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
+    NSBundle *bundle = [NSBundle bundleWithPath:path];
+    self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
     self.statsVC.statsDelegate = self;
     
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
@@ -96,8 +98,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
     // Jetpack
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
-    if (!needsJetpackLogin && self.blog.jetpackBlogID && self.blog.jetpackAccount) {
-        self.statsVC.siteID = self.blog.jetpackBlogID;
+    if (!needsJetpackLogin && self.blog.jetpack.siteID && self.blog.jetpackAccount) {
+        self.statsVC.siteID = self.blog.jetpack.siteID;
         self.statsVC.oauth2Token = self.blog.jetpackAccount.restApi.authToken;
         [self addStatsViewControllerToView];
 

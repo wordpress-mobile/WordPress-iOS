@@ -6,12 +6,10 @@
 
 @dynamic blog, media;
 @dynamic comments;
+@synthesize restorableStatus;
 
 - (void)remove
 {
-    for (Media *media in self.media) {
-        [media cancelUpload];
-    }
     [super remove];
 }
 

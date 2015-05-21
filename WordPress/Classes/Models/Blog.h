@@ -3,6 +3,7 @@
 #import <CoreData/CoreData.h>
 #import <WordPressApi/WordPressApi.h>
 
+#import "JetpackState.h"
 
 @class WPAccount;
 @class WordPressComApi;
@@ -23,7 +24,6 @@
 @property (nonatomic, strong, readwrite) NSString       *currentThemeId;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPosts;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingPages;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingComments;
 @property (nonatomic, assign, readwrite) BOOL           isSyncingMedia;
 @property (nonatomic, strong, readwrite) NSDate         *lastPostsSync;
 @property (nonatomic, strong, readwrite) NSDate         *lastPagesSync;
@@ -38,6 +38,7 @@
 @property (nonatomic, strong, readwrite) WPAccount      *account;
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
+@property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;
@@ -47,6 +48,11 @@
 @property (nonatomic, strong,  readonly) NSString       *username;
 @property (nonatomic, strong,  readonly) NSString       *password;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
+@property (nonatomic, strong,  readonly) NSSet *allowedFileTypes;
+/**
+ Contains the Jetpack state. Returns nil if the blog options haven't been downloaded yet
+ */
+@property (nonatomic, strong,  readonly) JetpackState *jetpack;
 
 
 /**

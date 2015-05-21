@@ -21,7 +21,7 @@
 #pragma mark ====================================================================================
 
 static NSString *JetpackInstallRelativePath                 = @"plugin-install.php?tab=plugin-information&plugin=jetpack";
-static NSString *JetpackMoreInformationURL                  = @"http://ios.wordpress.org/faq/#faq_15";
+static NSString *JetpackMoreInformationURL                  = @"https://apps.wordpress.org/support/#faq-ios-15";
 
 static CGFloat const JetpackiOS7StatusBarOffset             = 20.0;
 static CGFloat const JetpackStandardOffset                  = 16;
@@ -53,7 +53,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 @property (nonatomic, strong) WPWalkthroughTextField    *multifactorTextField;
 @property (nonatomic, strong) WPNUXMainButton           *signInButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *sendVerificationCodeButton;
-@property (nonatomic, strong) WPNUXMainButton           *installJetbackButton;
+@property (nonatomic, strong) WPNUXMainButton           *installJetpackButton;
 @property (nonatomic, strong) UIButton                  *moreInformationButton;
 @property (nonatomic, strong) WPNUXSecondaryButton      *skipButton;
 
@@ -105,6 +105,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:self.showFullScreen animated:animated];
     [self reloadInterface];
+    [self updateForm];
+    [self checkForJetpack];
 }
 
 - (void)viewDidLoad
@@ -125,12 +127,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self addControls];
     [self addGesturesRecognizer];
     [self addSkipButtonIfNeeded];
-    
-    [self updateMessage];
-    [self updateSaveButton];
-
-    double delayInSeconds = 0.1;
-    [self performSelector:@selector(checkForJetpack) withObject:nil afterDelay:delayInSeconds];
 }
 
 // This resolves a crash due to JetpackSettingsViewController previously using a .xib.
@@ -166,7 +162,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     usernameTextField.delegate = self;
     usernameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     usernameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    usernameTextField.text = self.blog.jetpackUsername;
+    usernameTextField.text = self.blog.jetpack.connectedUsername;
     usernameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
     usernameTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
@@ -178,7 +174,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     passwordTextField.delegate = self;
     passwordTextField.secureTextEntry = YES;
     passwordTextField.showSecureTextEntryToggle = YES;
-    passwordTextField.text = self.blog.jetpackPassword;
+    passwordTextField.text = @"";
     passwordTextField.clearsOnBeginEditing = YES;
     passwordTextField.showTopLineSeparator = YES;
     passwordTextField.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -229,10 +225,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [sendVerificationCodeButton addTarget:self action:@selector(sendVerificationCode:) forControlEvents:UIControlEventTouchUpInside];
 
     // Add Download Button
-    WPNUXMainButton *installJetbackButton = [[WPNUXMainButton alloc] init];
-    [installJetbackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
-    [installJetbackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
-    installJetbackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    WPNUXMainButton *installJetpackButton = [[WPNUXMainButton alloc] init];
+    [installJetpackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
+    [installJetpackButton addTarget:self action:@selector(openInstallJetpackURL) forControlEvents:UIControlEventTouchUpInside];
+    installJetpackButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
     
     // Add More Information Button
     UIButton *moreInformationButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -250,7 +246,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [self.view addSubview:multifactorText];
     [self.view addSubview:signInButton];
     [self.view addSubview:sendVerificationCodeButton];
-    [self.view addSubview:installJetbackButton];
+    [self.view addSubview:installJetpackButton];
     [self.view addSubview:moreInformationButton];
     
     // Keep the Reference!
@@ -261,7 +257,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.multifactorTextField = multifactorText;
     self.signInButton = signInButton;
     self.sendVerificationCodeButton = sendVerificationCodeButton;
-    self.installJetbackButton = installJetbackButton;
+    self.installJetpackButton = installJetpackButton;
     self.moreInformationButton = moreInformationButton;
 }
 
@@ -316,13 +312,14 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)reloadInterface
 {
+    [self updateMessage];
     [self updateControls];
     [self layoutControls];
 }
 
 - (void)updateControls
 {
-    BOOL hasJetpack                         = self.blog.hasJetpack;
+    BOOL hasJetpack                         = [self canSetupJetpack];
     
     self.usernameTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
     self.passwordTextField.alpha            = self.shouldDisplayMultifactor ? JetpackTextFieldAlphaDisabled : JetpackTextFieldAlphaEnabled;
@@ -337,7 +334,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.multifactorTextField.hidden        = !hasJetpack;
     self.signInButton.hidden                = !hasJetpack;
     self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
-    self.installJetbackButton.hidden        = hasJetpack;
+    self.installJetpackButton.hidden        = hasJetpack;
     self.moreInformationButton.hidden       = hasJetpack;
     
     
@@ -393,10 +390,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     
     // Layout Download Button
     CGFloat installJetpackButtonY = CGRectGetMaxY(_descriptionLabel.frame) + JetpackStandardOffset;
-    _installJetbackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
+    _installJetpackButton.frame = CGRectIntegral(CGRectMake(buttonX, installJetpackButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout More Information Button
-    CGFloat moreInformationButtonY = CGRectGetMaxY(_installJetbackButton.frame);
+    CGFloat moreInformationButtonY = CGRectGetMaxY(_installJetpackButton.frame);
     _moreInformationButton.frame = CGRectIntegral(CGRectMake(buttonX, moreInformationButtonY, JetpackSignInButtonWidth, JetpackSignInButtonHeight));
 
     // Layout Skip Button
@@ -405,10 +402,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     _skipButton.frame = CGRectMake(skipButtonX, skipButtonY, CGRectGetWidth(_skipButton.frame), CGRectGetHeight(_skipButton.frame));
 
     NSArray *viewsToCenter;
-    if (self.blog.hasJetpack) {
+    if ([self canSetupJetpack]) {
         viewsToCenter = @[_icon, _descriptionLabel, _usernameTextField, _passwordTextField, _multifactorTextField, _sendVerificationCodeButton, _signInButton];
     } else {
-        viewsToCenter = @[_icon, _descriptionLabel, _installJetbackButton, _moreInformationButton];
+        viewsToCenter = @[_icon, _descriptionLabel, _installJetpackButton, _moreInformationButton];
     }
     
     UIView *endingView = [viewsToCenter lastObject];
@@ -430,6 +427,10 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     return CGRectGetMaxY(bottomView.frame);
 }
 
+- (BOOL)canSetupJetpack
+{
+    return self.blog.jetpack.isInstalled && self.blog.jetpack.isUpdatedToRequiredVersion;
+}
 
 #pragma mark - Button Helpers
 
@@ -663,44 +664,53 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)dismissBrowser
 {
-    [self dismissViewControllerAnimated:YES completion:^{
-        [self checkForJetpack];
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateMessage
 {
-    if (self.blog.hasJetpack) {
-        self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+    if (self.blog.jetpack.isInstalled) {
+        if (self.blog.jetpack.isUpdatedToRequiredVersion) {
+            self.descriptionLabel.text = NSLocalizedString(@"Looks like you have Jetpack set up on your site. Congrats!\nSign in with your WordPress.com credentials below to enable Stats and Notifications.", @"");
+        } else {
+            self.descriptionLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Jetpack %@ or later is required for stats. Do you want to update Jetpack?", @""), JetpackVersionMinimumRequired];
+            [self.installJetpackButton setTitle:NSLocalizedString(@"Update Jetpack", @"") forState:UIControlStateNormal];
+        }
     } else {
-        self.descriptionLabel.text = NSLocalizedString(@"Jetpack 1.8.2 or later is required for stats. Do you want to install Jetpack?", @"");
+        self.descriptionLabel.text = NSLocalizedString(@"Jetpack is required for stats. Do you want to install Jetpack?", @"");
+        [self.installJetpackButton setTitle:NSLocalizedString(@"Install Jetpack", @"") forState:UIControlStateNormal];
     }
     [self.descriptionLabel sizeToFit];
 
     [self layoutControls];
 }
 
-- (void)checkForJetpack
+- (void)updateForm
 {
-    if (self.blog.hasJetpack) {
-        if (!self.blog.jetpackUsername || !self.blog.jetpackPassword) {
+    if (self.blog.jetpack.isConnected) {
+        if (self.blog.jetpack.connectedUsername) {
+            self.usernameTextField.text = self.blog.jetpack.connectedUsername;
+        } else {
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
             self.usernameTextField.text = defaultAccount.username;
             self.passwordTextField.text = defaultAccount.password;
-            [self updateSaveButton];
         }
-        return;
+        [self updateSaveButton];
     }
+}
 
+- (void)checkForJetpack
+{
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncOptionsForBlog:self.blog success:^{
-        if (self.blog.hasJetpack) {
-            [self updateMessage];
+        if (self.blog.jetpack.isInstalled) {
+            [self updateForm];
         }
+        [self reloadInterface];
     } failure:^(NSError *error) {
         [WPError showNetworkingAlertWithError:error];
     }];

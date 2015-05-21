@@ -62,11 +62,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                    object:nil];
 
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(accountEmailUpdated:)
-                                                     name:WPAccountEmailAndDefaultBlogUpdatedNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(helpshiftUnreadCountUpdated:)
                                                      name:HelpshiftUnreadCountUpdatedNotification
                                                    object:nil];
@@ -79,14 +74,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [super viewDidLoad];
 
     [self buildTableView];
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    // we want to keep email and default blog information up to date, this is probably the best place to do it
-    [accountService updateEmailAndDefaultBlogForWordPressComAccount:defaultAccount];
-
+    [self refreshAccountUserDetails];
     [self refreshHeaderView];
 }
 
@@ -130,6 +118,21 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                                         views:views]];
 }
 
+- (void)refreshAccountUserDetails
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (!defaultAccount) {
+        return;
+    }
+
+    // We want to keep email and default blog information up to date, this is a reasonable best place to do it
+    [accountService updateUserDetailsForAccount:defaultAccount success:^{
+        [self refreshHeaderViewEmail];
+    } failure:nil];
+}
+
 #pragma mark - Header methods
 
 - (void)refreshHeaderView
@@ -149,6 +152,15 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
     [self.tableView reloadData];
 }
+
+- (void)refreshHeaderViewEmail
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    [self.headerView setGravatarEmail:defaultAccount.email];
+}
+
 
 - (UILabel *)helpshiftBadgeLabel
 {
@@ -283,14 +295,14 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
             if (defaultAccount) {
                 // Present the Sign out ActionSheet
-                NSString *signOutTitle = NSLocalizedString(@"Signing out removes all of your sites associated with %@",
+                NSString *signOutTitle = NSLocalizedString(@"Disconnecting your account will remove all of @%@’s WordPress.com data from this device.",
                                                            @"Label for disconnecting WordPress.com account. The %@ is a placeholder for the user's screen name.");
                 signOutTitle = [NSString stringWithFormat:signOutTitle, [defaultAccount username]];
                 UIActionSheet *actionSheet;
                 actionSheet = [[UIActionSheet alloc] initWithTitle:signOutTitle
                                                           delegate:self
                                                  cancelButtonTitle:NSLocalizedString(@"Cancel", @"")
-                                            destructiveButtonTitle:NSLocalizedString(@"Sign Out", @"")
+                                            destructiveButtonTitle:NSLocalizedString(@"Disconnect", @"Button for confirming disconnecting WordPress.com account")
                                                  otherButtonTitles:nil];
                 actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
 
@@ -338,32 +350,23 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self refreshHeaderView];
 }
 
-- (void)accountEmailUpdated:(NSNotification *)notification
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    // check if the updated account is the default WordPress.com account
-    if (defaultAccount == [notification object]) {
-        [self.headerView setGravatarEmail:defaultAccount.email];
-    }
-}
-
 #pragma mark -
 #pragma mark Action Sheet Delegate Methods
 
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if (buttonIndex == 0) {
-        // Sign out
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        // Sign out asynchronously so the popover animation can finish on iPad #3667
+        dispatch_async(dispatch_get_main_queue(), ^{
+            // Sign out
+            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-        [accountService removeDefaultWordPressComAccount];
+            [accountService removeDefaultWordPressComAccount];
 
-        // reload all table view to update the header as well
-        [self.tableView reloadData];
+            // reload all table view to update the header as well
+            [self.tableView reloadData];
+        });
     }
 }
 
