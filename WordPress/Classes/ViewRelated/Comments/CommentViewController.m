@@ -278,13 +278,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (!self.comment.blog.isWPcom) {
-        [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
-        return;
-    }
-
     if (indexPath.row == self.rowNumberForHeader) {
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
+        if (![self.comment.blog supports:BlogFeatureREST]) {
+            [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
+            return;
+        }
+
+        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
