@@ -85,6 +85,8 @@
  */
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
+- (void)removeBlog:(Blog *)blog;
+
 ///--------------------
 /// @name Blog creation
 ///--------------------

@@ -121,10 +121,4 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 - (WordPressComApi *)restApi;
 - (NSNumber *)dotComID;
 
-#pragma mark -
-
-// TODO - Remove these methods when persistence/network code removed from VCs
-- (void)dataSave;
-- (void)remove;
-
 @end
