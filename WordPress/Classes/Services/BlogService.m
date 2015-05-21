@@ -49,20 +49,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
-
-    fetchRequest.predicate = predicate;
-
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-    if (error) {
-        DDLogError(@"Error while fetching Blog by blogID: %@", error);
-        return nil;
-    }
-
-    return [results firstObject];
+    return [self blogWithPredicate:predicate];
 }
 
 - (void)flagBlogAsLastUsed:(Blog *)blog
@@ -128,26 +116,16 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         return nil;
     }
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
+    Blog *blog = [self blogWithPredicate:predicate];
 
-    if ([results count] == 0) {
+    if (!blog) {
         // Blog might have been removed from the app. Clear the key.
         [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
         [defaults synchronize];
-        return nil;
     }
 
-    return [results firstObject];
+    return blog;
 }
 
 - (Blog *)primaryBlog
@@ -159,19 +137,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)firstBlogThatSupports:(BlogFeature)feature
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                   ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
+    NSArray *results = [self blogsWithPredicate:predicate];
 
     for (Blog *blog in results) {
         if ([blog supports:feature]) {
@@ -183,21 +150,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)firstBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                   ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
-
-    return [results firstObject];
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
+    return [self blogWithPredicate:predicate];
 }
 
 - (void)syncBlogsForAccount:(WPAccount *)account
@@ -423,38 +377,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (NSInteger)blogCountVisibleForWPComAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@ AND visible = %@"
-                                                argumentArray:@[@(YES), @(YES)]];
+    NSArray *subpredicates = @[
+                            [self predicateForVisibleBlogs],
+                            [NSPredicate predicateWithFormat:@"account.isWpcom = YES"],
+                            ];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSInteger)blogCountVisibleForAllAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@"
-                                                argumentArray:@[@(YES)]];
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSArray *)blogsForAllAccounts
 {
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                     ascending:YES];
-
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog"
-                                   inManagedObjectContext:self.managedObjectContext]];
-    [request setSortDescriptors:@[sortDescriptor]];
-
-    NSError *error;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request
-                                                              error:&error];
-
-    if (error) {
-        DDLogError(@"Error while retrieving all blogs");
-        return nil;
-    }
-
-    return blogs;
+    return [self blogsWithPredicate:nil];
 }
 
 ///--------------------
@@ -630,16 +569,32 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
+- (Blog *)blogWithPredicate:(NSPredicate *)predicate
+{
+    return [[self blogsWithPredicate:predicate] firstObject];
+}
+
+- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
+{
+    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
+                                                                     ascending:YES];
+    request.sortDescriptors = @[ sortDescriptor ];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request
+                                                                error:&error];
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs with predicate %@: %@", predicate, error);
+        return nil;
+    }
+
+    return results;
+}
+
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog"
-                                   inManagedObjectContext:self.managedObjectContext]];
-    [request setIncludesSubentities:NO];
-
-    if (predicate) {
-        [request setPredicate:predicate];
-    }
+    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
 
     NSError *err;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request
@@ -648,6 +603,19 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         count = 0;
     }
     return count;
+}
+
+- (NSFetchRequest *)fetchRequestWithPredicate:(NSPredicate *)predicate
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+    request.includesSubentities = NO;
+    request.predicate = predicate;
+    return request;
+}
+
+- (NSPredicate *)predicateForVisibleBlogs
+{
+    return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName
