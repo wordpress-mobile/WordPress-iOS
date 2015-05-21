@@ -359,20 +359,15 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [self resetMetaButton:self.metaButtonRight];
     [self resetMetaButton:self.metaButtonLeft];
 
-    // We don't have comment and like counts for self-hosted sites.
-    if (![self.contentProvider isWPcom]) {
-        return;
-    }
-
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([self.contentProvider numberOfComments] > 0) {
+    if ([self.contentProvider supportsComments] && [self.contentProvider numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([self.contentProvider numberOfLikes] > 0) {
+    if ([self.contentProvider supportsLikes] && [self.contentProvider numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfLikes]];
@@ -436,7 +431,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     item.imageInsets = ViewButtonImageInsets;;
     [items addObject:item];
 
-    if ([self.contentProvider isWPcom]) {
+    if ([self.contentProvider supportsStats]) {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
                                    highlightedImage:nil];
