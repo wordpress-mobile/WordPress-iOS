@@ -410,6 +410,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
         case BlogFeatureCommentLikes:
         case BlogFeatureReblog:
         case BlogFeatureMentions:
+        case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
         default:
             return NO;
