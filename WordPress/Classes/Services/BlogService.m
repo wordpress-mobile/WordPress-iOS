@@ -75,7 +75,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)lastUsedOrFirstBlog
 {
-    Blog *blog = [self lastUsedBlog];
+    Blog *blog = [self lastUsedOrPrimaryBlog];
 
     if (!blog) {
         blog = [self firstBlog];
@@ -84,12 +84,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return blog;
 }
 
-- (Blog *)lastUsedOrFirstWPcomBlog
+- (Blog *)lastUsedOrFirstBlogThatSupports:(BlogFeature)feature
+{
+    Blog *blog = [self lastUsedOrPrimaryBlog];
+
+    if (!blog) {
+        blog = [self firstBlogThatSupports:feature];
+    }
+
+    return blog;
+}
+
+- (Blog *)lastUsedOrPrimaryBlog
 {
     Blog *blog = [self lastUsedBlog];
 
-    if (![blog isWPcom]) {
-        blog = [self firstWPComBlog];
+    if (!blog) {
+        blog = [self primaryBlog];
     }
 
     return blog;
@@ -139,7 +150,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [results firstObject];
 }
 
-- (Blog *)firstBlog
+- (Blog *)primaryBlog
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return defaultAccount.defaultBlog;
+}
+
+- (Blog *)firstBlogThatSupports:(BlogFeature)feature
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
@@ -155,12 +173,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         return nil;
     }
 
-    return [results firstObject];
+    for (Blog *blog in results) {
+        if ([blog supports:feature]) {
+            return blog;
+        }
+    }
+    return nil;
 }
 
-- (Blog *)firstWPComBlog
+- (Blog *)firstBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     [fetchRequest setPredicate:predicate];
     fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName"
