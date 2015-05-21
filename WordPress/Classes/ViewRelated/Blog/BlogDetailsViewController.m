@@ -432,11 +432,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
 
     NSString *blogURL = blog.homeURL;
-    if (![blogURL hasPrefix:@"http"]) {
-        blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
-    } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {
-        blogURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-    }
 
     // Check if the same site already loaded
     if ([self.navigationController.visibleViewController isMemberOfClass:[WPWebViewController class]] &&
