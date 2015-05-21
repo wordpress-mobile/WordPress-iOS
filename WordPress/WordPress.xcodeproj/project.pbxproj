@@ -18,6 +18,17 @@
 			name = OCLint;
 			productName = OCLint;
 		};
+		FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FFC3F6F51B0DBF1000EFC359 /* Build configuration list for PBXAggregateTarget "UpdatePlistPreprocessor" */;
+			buildPhases = (
+				FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */,
+			);
+			dependencies = (
+			);
+			name = UpdatePlistPreprocessor;
+			productName = UpdatePlistPreprocessor;
+		};
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
@@ -549,6 +560,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
 			remoteInfo = WordPress;
+		};
+		FFC3F6FB1B0DBF7200EFC359 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FFC3F6F41B0DBF0900EFC359;
+			remoteInfo = UpdatePlistPreprocessor;
 		};
 		FFF96F8819EBE7FB00DFC821 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -3211,7 +3229,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "WordPress" */;
 			buildPhases = (
-				FF3BD2E31B05FF960042E989 /* Update PList keys */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				832D4F01120A6F7C001708D4 /* CopyFiles */,
 				855804B81A5C5EED008D5A77 /* Generate Build Icon */,
@@ -3225,6 +3242,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */,
 				93E5284519A7741A003A1A9C /* PBXTargetDependency */,
 				93E5284819A7741A003A1A9C /* PBXTargetDependency */,
 			);
@@ -3329,6 +3347,9 @@
 					E16AB92914D978240047A2E5 = {
 						TestTargetID = 1D6058900D05DD3D006BFB54;
 					};
+					FFC3F6F41B0DBF0900EFC359 = {
+						CreatedOnToolsVersion = 6.3.1;
+					};
 					FFF96F8119EBE7FB00DFC821 = {
 						CreatedOnToolsVersion = 6.1;
 						TestTargetID = 1D6058900D05DD3D006BFB54;
@@ -3376,6 +3397,7 @@
 				A2795807198819DE0031C6A3 /* OCLint */,
 				93E5283919A7741A003A1A9C /* WordPressTodayWidget */,
 				FFF96F8119EBE7FB00DFC821 /* UITests */,
+				FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */,
 			);
 		};
 /* End PBXProject section */
@@ -3662,19 +3684,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		FF3BD2E31B05FF960042E989 /* Update PList keys */ = {
+		FFC3F6FA1B0DBF1E00EFC359 /* Update Plist Preprocessor file */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Update PList keys";
+			name = "Update Plist Preprocessor file";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n touch Info.plist\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" > InfoPlist.h\n else\n echo \"warning: Crashytics API Key not found\"\n fi\n";
+			showEnvVarsInLog = 0;
 		};
 		FFF87E8219F1B6CF00206205 /* Gen Test Credentials */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -4113,6 +4136,11 @@
 			isa = PBXTargetDependency;
 			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
 			targetProxy = E16AB93E14D978520047A2E5 /* PBXContainerItemProxy */;
+		};
+		FFC3F6FC1B0DBF7200EFC359 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FFC3F6F41B0DBF0900EFC359 /* UpdatePlistPreprocessor */;
+			targetProxy = FFC3F6FB1B0DBF7200EFC359 /* PBXContainerItemProxy */;
 		};
 		FFF96F8919EBE7FB00DFC821 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -4842,6 +4870,34 @@
 			};
 			name = Distribution;
 		};
+		FFC3F6F61B0DBF1000EFC359 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FFC3F6F71B0DBF1000EFC359 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		FFC3F6F81B0DBF1000EFC359 /* Release-Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Release-Internal";
+		};
+		FFC3F6F91B0DBF1000EFC359 /* Distribution */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Distribution;
+		};
 		FFF96F8A19EBE7FB00DFC821 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 45A679DE2C6B64047BAF97E9 /* Pods-UITests.debug.xcconfig */;
@@ -5069,6 +5125,16 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		FFC3F6F51B0DBF1000EFC359 /* Build configuration list for PBXAggregateTarget "UpdatePlistPreprocessor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FFC3F6F61B0DBF1000EFC359 /* Debug */,
+				FFC3F6F71B0DBF1000EFC359 /* Release */,
+				FFC3F6F81B0DBF1000EFC359 /* Release-Internal */,
+				FFC3F6F91B0DBF1000EFC359 /* Distribution */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 		FFF96F8E19EBE7FB00DFC821 /* Build configuration list for PBXNativeTarget "UITests" */ = {
 			isa = XCConfigurationList;
