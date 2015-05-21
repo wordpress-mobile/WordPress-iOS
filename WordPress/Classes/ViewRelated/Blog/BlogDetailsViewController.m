@@ -223,7 +223,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.blog.isWPcom) {
+    if ([self.blog supports:BlogFeatureRemovable]) {
         // No "Remove Site" for wp.com
         return TableViewSectionCount - 1;
     }
