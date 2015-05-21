@@ -66,10 +66,6 @@
          success:(void (^)())success
          failure:(void (^)(NSError *error))failure;
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog
-                              success:(void (^)(BOOL enabled))success
-                              failure:(void (^)(NSError *error))failure;
-
 - (BOOL)hasVisibleWPComAccounts;
 
 - (NSInteger)blogCountForAllAccounts;
