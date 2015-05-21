@@ -259,9 +259,19 @@
     return nil;
 }
 
-- (BOOL)isWPcom
+- (BOOL)supportsComments
 {
-    return self.blog.isWPcom;
+    return [self.blog supports:BlogFeatureREST];
+}
+
+- (BOOL)supportsLikes
+{
+    return [self.blog supports:BlogFeatureLikes];
+}
+
+- (BOOL)supportsStats
+{
+    return [self.blog supports:BlogFeatureStats];
 }
 
 - (BOOL)isPrivate
