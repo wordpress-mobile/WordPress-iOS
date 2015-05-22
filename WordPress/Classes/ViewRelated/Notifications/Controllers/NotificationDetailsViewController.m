@@ -978,7 +978,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationLiked];
-    
+
+    // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
+    if (!block.isCommentApproved) {
+        [self approveCommentWithBlock:block];
+    }
+
+    // Proceed toggling the Like field
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
