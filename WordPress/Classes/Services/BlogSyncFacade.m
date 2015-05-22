@@ -48,8 +48,8 @@
     [blog dataSave];
     [blogService syncBlog:blog success:nil failure:nil];
 
-    if ([blog hasJetpack]) {
-        if ([blog hasJetpackAndIsConnectedToWPCom]) {
+    if (blog.jetpack.isInstalled) {
+        if (blog.jetpack.isConnected) {
             NSString *dotcomUsername = [blog getOptionValue:@"jetpack_user_login"];
             if (dotcomUsername) {
                 // Search for a matching .com account
