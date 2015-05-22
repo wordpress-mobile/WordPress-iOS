@@ -469,7 +469,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showDetailsForNotification:(Notification *)note
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
     
     // Mark as Read, if needed
     if(!note.read.boolValue) {
