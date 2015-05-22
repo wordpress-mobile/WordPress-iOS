@@ -166,6 +166,13 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
  */
 - (NSArray *)imageUrls;
 
+/**
+ *	@brief      Returns YES if the associated comment (if any) is approved. NO otherwise.
+ *
+ *  @returns                A boolean value indicating whether the comment is approved, or not.
+ */
+- (BOOL)isCommentApproved;
+
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
 - (NSNumber *)actionForKey:(NSString *)key;

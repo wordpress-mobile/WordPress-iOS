@@ -659,7 +659,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
     cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
-    cell.isApproved                 = [commentBlock isActionOn:NoteActionApproveKey] || ![commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
     // Setup the Callbacks
