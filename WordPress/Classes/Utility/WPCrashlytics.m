@@ -27,7 +27,6 @@
     self = [super init];
     
     if (self) {
-        [Crashlytics sharedInstance].debugMode = YES;
         [[Crashlytics sharedInstance] setDelegate:self];
         [Fabric with:@[CrashlyticsKit]];
         
