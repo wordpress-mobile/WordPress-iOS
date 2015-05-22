@@ -1257,12 +1257,18 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)handleNotificationChange:(NSNotification *)notification
 {
-    NSSet *updated = notification.userInfo[NSUpdatedObjectsKey];
-    NSSet *refreshed = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *updated      = notification.userInfo[NSUpdatedObjectsKey];
+    NSSet *refreshed    = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *deleted      = notification.userInfo[NSDeletedObjectsKey];
     
     // Reload the table, if *our* notification got updated
     if ([updated containsObject:self.note] || [refreshed containsObject:self.note]) {
         [self reloadData];
+    }
+    
+    // Dismiss this ViewController if *our* notification... just got deleted
+    if ([deleted containsObject:self.note]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 
