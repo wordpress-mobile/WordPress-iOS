@@ -3666,7 +3666,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Crashytics\";\n  exit 0;\nfi\n \nif [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n  ./Fabric.framework/run $CRASHLYTICS_API_KEY\nelse\n  echo \"warning: Crashytics API Key not found\"\nfi";
+			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n \nif [[ \"Debug\" == \"${CONFIGURATION}\" ]]; then\n  echo \"Skipping Crashytics\";\n  exit 0;\nfi\n \nif [ \"x$FABRIC_SCRIPT_KEY\" != \"x\" ]; then\n  ./Fabric.framework/run $FABRIC_SCRIPT_KEY\nelse\n  echo \"warning: Crashytics API Key not found\"\nfi";
 			showEnvVarsInLog = 0;
 		};
 		F538F2E32959A7F71EED0023 /* Check Pods Manifest.lock */ = {
