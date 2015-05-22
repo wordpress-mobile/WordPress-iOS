@@ -63,8 +63,7 @@
     NSParameterAssert(url);
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    request.cachePolicy = NSURLRequestReturnCacheDataElseLoad;
-    
+
     if (userAgent) {
         [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     }

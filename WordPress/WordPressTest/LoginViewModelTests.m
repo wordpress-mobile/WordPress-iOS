@@ -1771,6 +1771,7 @@ describe(@"requestOneTimeCode", ^{
     
     it(@"should pass on the request to the oauth client facade", ^{
         [[mockLoginFacade expect] requestOneTimeCodeWithLoginFields:OCMOCK_ANY];
+        [[mockViewModelPresenter expect] showAlertWithMessage:OCMOCK_ANY];
         
         [viewModel requestOneTimeCode];
         
