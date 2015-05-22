@@ -27,12 +27,11 @@
     self = [super init];
     
     if (self) {
-        [Fabric with:@[CrashlyticsKit]];
-        [Crashlytics startWithAPIKey:apiKey];
+        [Crashlytics sharedInstance].debugMode = YES;
         [[Crashlytics sharedInstance] setDelegate:self];
+        [Fabric with:@[CrashlyticsKit]];
         
         [self setCommonCrashlyticsParameters];
-        
         [self startObservingNotifications];
     }
     
