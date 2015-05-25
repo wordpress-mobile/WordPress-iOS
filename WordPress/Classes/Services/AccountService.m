@@ -301,7 +301,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         && [account.jetpackBlogs count] == 0
         && [account.visibleBlogs count] == 0
         && ![defaultAccount isEqual:account]) {
-        DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", account.username);
+        DDLogWarn(@"Removing Jetpack account %@ since it has no blogs associated", account.username);
         [self.managedObjectContext deleteObject:account];
     }
 }
