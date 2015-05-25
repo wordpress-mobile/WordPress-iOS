@@ -81,7 +81,10 @@ const NSInteger WPAssetExportErrorCodeMissingAsset = 1;
     if ([filePath pathExtension]) {
         // Get the UTI from the file's extension:
         CFStringRef pathExtension = (__bridge_retained CFStringRef)[filePath pathExtension];
-        type = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+        NSString * extensionType = (__bridge_transfer NSString *)UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
+        if (extensionType.length > 0) {
+            type = extensionType;
+        }
         CFRelease(pathExtension);
     }
     
