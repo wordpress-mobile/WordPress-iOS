@@ -758,7 +758,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     }
 
     NSDictionary *statusDict = @{
-                                 @"DefaultValue": NSLocalizedString(@"Published", @""),
+                                 @"DefaultValue": PostStatusPublish,
                                  @"Title" : NSLocalizedString(@"Status", nil),
                                  @"Titles" : titles,
                                  @"Values" : statuses,
