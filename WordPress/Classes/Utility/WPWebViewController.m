@@ -356,10 +356,6 @@
     };
 
     if ([UIDevice isPad]) {
-        if (self.popover) {
-            [self dismissPopover];
-            return;
-        }
         self.popover = [[UIPopoverController alloc] initWithContentViewController:activityViewController];
         self.popover.delegate = self;
         [self.popover presentPopoverFromBarButtonItem:self.optionsButton permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
