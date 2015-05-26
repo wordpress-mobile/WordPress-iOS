@@ -27,7 +27,6 @@ extern const CGFloat SearchWrapperViewPortraitHeight;
 extern const CGFloat SearchWrapperViewLandscapeHeight;
 
 @interface AbstractPostListViewController () <UIPopoverControllerDelegate,
-                                                        UIViewControllerRestoration,
                                                         WPContentSyncHelperDelegate,
                                                         WPNoResultsViewDelegate,
                                                         WPSearchControllerDelegate,

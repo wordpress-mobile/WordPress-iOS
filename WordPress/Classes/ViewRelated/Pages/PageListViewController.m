@@ -15,7 +15,7 @@ static NSString * const RestorePageCellIdentifier = @"RestorePageCellIdentifier"
 static NSString * const RestorePageCellNibName = @"RestorePageTableViewCell";
 static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatusFilterKey";
 
-@interface PageListViewController() <PageListTableViewCellDelegate, UIActionSheetDelegate>
+@interface PageListViewController() <PageListTableViewCellDelegate, UIActionSheetDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PageListTableViewCell *cellForLayout;
 @property (nonatomic, strong) NSManagedObjectID *currentActionedPageObjectID;
