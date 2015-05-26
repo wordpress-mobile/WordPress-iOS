@@ -86,6 +86,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
     if (!self.isViewLoaded) {
         return;
