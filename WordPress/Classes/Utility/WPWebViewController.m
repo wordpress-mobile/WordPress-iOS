@@ -14,6 +14,18 @@
 
 
 #pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+//  Notes:
+//   . -999: Canceled AJAX request
+//   . 102:  Frame load interrupted: canceled wp-login redirect to make the POST
+//
+static NSInteger const WPWebViewErrorAjaxCancelled         = -999;
+static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
+
+
+#pragma mark ====================================================================================
 #pragma mark Private Properties
 #pragma mark ====================================================================================
 
@@ -30,7 +42,7 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 @property (nonatomic, strong) UIBarButtonItem                   *spinnerButton;
 @property (nonatomic, strong) UIPopoverController               *popover;
-@property (nonatomic, assign) BOOL                              isLoading;
+@property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
 @end
@@ -60,8 +72,8 @@
     DDLogMethod();
     [super viewDidLoad];
 
-    [self setLoading:NO];
     self.title = NSLocalizedString(@"Loading...", @"");
+    self.loading = NO;
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
     self.backButton.accessibilityLabel = NSLocalizedString(@"Back", @"Spoken accessibility label");
@@ -151,8 +163,8 @@
 {
     self.backButton.enabled     = self.webView.canGoBack;
     self.forwardButton.enabled  = self.webView.canGoForward;
-    if (!_isLoading) {
-        self.title = [self getDocumentTitle];
+    if (!_loading) {
+        self.title              = [self getDocumentTitle];
     }
 }
 
@@ -245,7 +257,7 @@
 
 - (void)setLoading:(BOOL)loading
 {
-    if (_isLoading == loading) {
+    if (_loading == loading) {
         return;
     }
 
@@ -295,7 +307,7 @@
             self.toolbar.items = newToolbarItems;
         }
     }
-    _isLoading = loading;
+    _loading = loading;
 }
 
 
@@ -359,7 +371,7 @@
         self.refreshButton.enabled = NO;
         return;
     }
-    [self setLoading:YES];
+    self.loading = YES;
     [self.webView reload];
 }
 
@@ -394,20 +406,19 @@
             return NO;
         }
     }
-
-    [self setLoading:YES];
+    
+    self.loading = YES;
     return YES;
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    // -999: Canceled AJAX request
-    // 102:  Frame load interrupted: canceled wp-login redirect to make the POST
-    if (self.isLoading && ([error code] != -999) && [error code] != 102) {
+    
+    if (self.loading && error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
     }
-    [self setLoading:NO];
+    self.loading = NO;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
@@ -418,13 +429,14 @@
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
     DDLogMethod()
-    [self setLoading:NO];
+    self.loading = NO;
 
     if (CGRectGetWidth(self.view.frame) < CGRectGetWidth(self.view.window.bounds)) {
-        NSString *js = [NSString stringWithFormat:@"var meta = document.createElement('meta');"
-                                                    "meta.setAttribute( 'name', 'viewport' );"
-                                                    "meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );"
-                                                    "document.getElementsByTagName('head')[0].appendChild(meta)"];
+        NSString *js = @"var meta = document.createElement('meta');"
+                        "meta.setAttribute( 'name', 'viewport' );"
+                        "meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );"
+                        "document.getElementsByTagName('head')[0].appendChild(meta)";
+        
         [aWebView stringByEvaluatingJavaScriptFromString:js];
     }
     
