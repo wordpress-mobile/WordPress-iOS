@@ -358,8 +358,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
             return [self accountIsDefaultAccount];
         case BlogFeatureREST:
         case BlogFeatureLikes:
-        case BlogFeatureStats:
             return [self restApi] != nil;
+        case BlogFeatureStats:
+            return [self restApiForStats] != nil;
         case BlogFeatureCommentLikes:
         case BlogFeatureReblog:
         case BlogFeatureMentions:
@@ -447,6 +448,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
     if (self.account.isWpcom) {
         return self.account.restApi;
     } else if ([self jetpackRESTSupported]) {
+        return self.jetpackAccount.restApi;
+    }
+    return nil;
+}
+
+/*
+ 2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
+ It works like restApi, but bypasses WPJetpackRESTEnabled, since we always want to use rest for Stats.
+ */
+- (WordPressComApi *)restApiForStats
+{
+    if (self.account.isWpcom) {
+        return self.account.restApi;
+    } else if (self.jetpackAccount && self.dotComID) {
         return self.jetpackAccount.restApi;
     }
     return nil;
