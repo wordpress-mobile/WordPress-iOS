@@ -13,14 +13,34 @@
 
 
 
+#pragma mark ====================================================================================
+#pragma mark Private Properties
+#pragma mark ====================================================================================
+
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
-@property (nonatomic, strong) UIPopoverController *popover;
-@property (nonatomic, assign) BOOL isLoading;
-@property (nonatomic, assign) BOOL needsLogin;
-@property (nonatomic, assign) BOOL hasLoadedContent;
+@property (nonatomic,   weak) IBOutlet UIWebView                *webView;
+@property (nonatomic, strong) IBOutlet UIToolbar                *toolbar;
+@property (nonatomic, strong) IBOutlet UIView                   *loadingView;
+@property (nonatomic, strong) IBOutlet UIActivityIndicatorView  *activityIndicator;
+@property (nonatomic, strong) IBOutlet UILabel                  *loadingLabel;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *backButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *forwardButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *refreshButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
+@property (nonatomic, strong) UIBarButtonItem                   *spinnerButton;
+@property (nonatomic, strong) NSTimer                           *statusTimer;
+@property (nonatomic, strong) UIPopoverController               *popover;
+@property (nonatomic, assign) BOOL                              isLoading;
+@property (nonatomic, assign) BOOL                              needsLogin;
+@property (nonatomic, assign) BOOL                              hasLoadedContent;
 
 @end
+
+
+#pragma mark ====================================================================================
+#pragma mark WPWebViewController
+#pragma mark ====================================================================================
 
 @implementation WPWebViewController
 
