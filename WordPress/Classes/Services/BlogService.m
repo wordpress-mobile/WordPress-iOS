@@ -525,9 +525,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     [self.managedObjectContext processPendingChanges];
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [accountService purgeSelfHostedAccount:account];
+    [accountService purgeAccount:account];
     if (jetpackAccount) {
-        [accountService purgeJetpackAccount:jetpackAccount];
+        [accountService purgeAccount:jetpackAccount];
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
