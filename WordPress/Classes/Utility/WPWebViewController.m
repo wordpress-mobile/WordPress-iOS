@@ -9,6 +9,8 @@
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
+#import "WordPress-Swift.h"
+
 
 @class WPReaderDetailViewController;
 
@@ -42,10 +44,6 @@
     DDLogMethod();
     [super viewDidLoad];
 
-    if (IS_IPHONE) {
-        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
-    }
-
     [self setLoading:NO];
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
@@ -53,7 +51,8 @@
     self.forwardButton.accessibilityLabel = NSLocalizedString(@"Forward", @"Spoken accessibility label");
     self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
 
-    if (IS_IPHONE) {
+    if ([UIDevice isPad] == NO) {
+        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.
@@ -89,7 +88,6 @@
 
     self.optionsButton.enabled = NO;
     self.webView.scalesPageToFit = YES;
-    self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
     [self refreshWebView];
 }
@@ -161,7 +159,7 @@
     self.backButton.enabled = self.webView.canGoBack;
     self.forwardButton.enabled = self.webView.canGoForward;
     if (!_isLoading) {
-        if (IS_IPAD) {
+        if ([UIDevice isPad]) {
             if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
@@ -268,7 +266,7 @@
 
     self.optionsButton.enabled = !loading;
 
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         CGRect frame = self.loadingView.frame;
         if (loading) {
             frame.origin.y -= frame.size.height;
@@ -285,7 +283,7 @@
     if (self.refreshButton) {
         self.refreshButton.enabled = !loading;
         // If on iPhone (or iPod Touch) swap between spinner and refresh button
-        if (IS_IPHONE) {
+        if ([UIDevice isPad] == NO) {
             // Build a spinner button if we don't have one
             if (self.spinnerButton == nil) {
                 UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
@@ -356,7 +354,7 @@
         [WPActivityDefaults trackActivityType:activityType];
     };
 
-    if (IS_IPAD) {
+    if ([UIDevice isPad]) {
         if (self.popover) {
             [self dismissPopover];
             return;
@@ -452,7 +450,7 @@
     }
 
     if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
-        if (IS_IPAD) {
+        if ([UIDevice isPad]) {
             if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
             } else {
