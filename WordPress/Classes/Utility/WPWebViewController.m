@@ -29,7 +29,6 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *refreshButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 @property (nonatomic, strong) UIBarButtonItem                   *spinnerButton;
-@property (nonatomic, strong) NSTimer                           *statusTimer;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              isLoading;
 @property (nonatomic, assign) BOOL                              needsLogin;
@@ -50,7 +49,6 @@
     if (_webView.isLoading) {
         [_webView stopLoading];
     }
-    _statusTimer = nil;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
@@ -103,15 +101,11 @@
 {
     DDLogMethod()
     [super viewWillAppear:animated];
-
-    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
-    [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     DDLogMethod()
-    [self setStatusTimer:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -151,17 +145,10 @@
     return _optionsButton;
 }
 
-#pragma mark - webView related methods
 
-- (void)setStatusTimer:(NSTimer *)timer
-{
-    if (_statusTimer && timer != _statusTimer) {
-        [_statusTimer invalidate];
-    }
-    _statusTimer = timer;
-}
+#pragma mark - Helper Methods
 
-- (void)upgradeButtonsAndLabels:(NSTimer*)timer
+- (void)refreshButtonsAndLabels
 {
     self.backButton.enabled     = self.webView.canGoBack;
     self.forwardButton.enabled  = self.webView.canGoForward;
@@ -265,6 +252,8 @@
         return;
     }
 
+    [self refreshButtonsAndLabels];
+    
     self.optionsButton.enabled = !loading;
 
     if ([UIDevice isPad]) {
