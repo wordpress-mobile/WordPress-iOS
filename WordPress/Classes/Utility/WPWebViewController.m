@@ -12,7 +12,6 @@
 #import "WordPress-Swift.h"
 
 
-@class WPReaderDetailViewController;
 
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
@@ -250,11 +249,13 @@
 - (void)setUrl:(NSURL *)theURL
 {
     DDLogMethod()
-    if (_url != theURL) {
-        _url = theURL;
-        if (_url && self.webView) {
-            [self refreshWebView];
-        }
+    if (_url == theURL) {
+        return;
+    }
+    
+    _url = theURL;
+    if (_url && self.webView) {
+        [self refreshWebView];
     }
 }
 
@@ -318,7 +319,7 @@
 
 - (IBAction)goBack
 {
-    if ([self.webView isLoading]) {
+    if (self.webView.isLoading) {
         [self.webView stopLoading];
     }
     [self.webView goBack];
@@ -326,7 +327,7 @@
 
 - (IBAction)goForward
 {
-    if ([self.webView isLoading]) {
+    if (self.webView.isLoading) {
         [self.webView stopLoading];
     }
     [self.webView goForward];
@@ -384,11 +385,10 @@
 
 - (void)dismissPopover
 {
-    if (self.popover) {
-        [self.popover dismissPopoverAnimated:YES];
-        self.popover = nil;
-    }
+    [self.popover dismissPopoverAnimated:YES];
+    self.popover = nil;
 }
+
 
 #pragma mark - UIPopover Delegate
 
@@ -396,6 +396,7 @@
 {
     self.popover = nil;
 }
+
 
 #pragma mark - UIWebViewDelegate
 
