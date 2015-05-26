@@ -44,14 +44,14 @@
     [super viewDidLoad];
 
     [self setLoading:NO];
+    self.title = NSLocalizedString(@"Loading...", @"");
     self.backButton.enabled = NO;
     self.forwardButton.enabled = NO;
     self.backButton.accessibilityLabel = NSLocalizedString(@"Back", @"Spoken accessibility label");
     self.forwardButton.accessibilityLabel = NSLocalizedString(@"Forward", @"Spoken accessibility label");
     self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
-
+    
     if ([UIDevice isPad] == NO) {
-        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.
@@ -65,19 +65,7 @@
         [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
         self.refreshButton.customView = btn;
 
-        if (self.navigationController && self.navigationController.navigationBarHidden == NO) {
-            CGRect frame = self.webView.frame;
-            frame.origin.y -= self.iPadNavBar.frame.size.height;
-            frame.size.height += self.iPadNavBar.frame.size.height;
-            self.webView.frame = frame;
-            self.navigationItem.rightBarButtonItem = self.refreshButton;
-            self.title = NSLocalizedString(@"Loading...", @"");
-            [self.iPadNavBar removeFromSuperview];
-            self.iPadNavBar = self.navigationController.navigationBar;
-        } else {
-            self.refreshButton.customView = btn;
-            self.iPadNavBar.topItem.title = NSLocalizedString(@"Loading...", @"");
-        }
+        self.navigationItem.rightBarButtonItem = self.refreshButton;
         self.loadingLabel.text = NSLocalizedString(@"Loading...", @"");
     }
 
@@ -155,18 +143,10 @@
 
 - (void)upgradeButtonsAndLabels:(NSTimer*)timer
 {
-    self.backButton.enabled = self.webView.canGoBack;
-    self.forwardButton.enabled = self.webView.canGoForward;
+    self.backButton.enabled     = self.webView.canGoBack;
+    self.forwardButton.enabled  = self.webView.canGoForward;
     if (!_isLoading) {
-        if ([UIDevice isPad]) {
-            if (self.navigationController.navigationBarHidden == NO) {
-                self.title = [self getDocumentTitle];
-            } else {
-                [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
-            }
-        } else {
-            self.title = [self getDocumentTitle];
-        }
+        self.title = [self getDocumentTitle];
     }
 }
 
@@ -396,9 +376,7 @@
 
 #pragma mark - UIWebViewDelegate
 
-- (BOOL)webView:(UIWebView *)webView
-    shouldStartLoadWithRequest:(NSURLRequest *)request 
-    navigationType:(UIWebViewNavigationType)navigationType
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
     DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
 
@@ -447,16 +425,7 @@
     }
 
     if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
-        if ([UIDevice isPad]) {
-            if (self.navigationController.navigationBarHidden == NO) {
-                self.title = [self getDocumentTitle];
-            } else {
-                [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
-            }
-        } else {
-            self.navigationItem.title = [self getDocumentTitle];
-        }
-
+        self.navigationItem.title = [self getDocumentTitle];
         self.hasLoadedContent = YES;
     }
     if (self.shouldScrollToBottom) {
