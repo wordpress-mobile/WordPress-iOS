@@ -141,7 +141,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tv
 {
-    if (self.blog && ![self.blog isWPcom]) {
+    if (self.blog && !self.blog.account.isWpcom) {
         return 3;
     }
     return 2;
@@ -152,7 +152,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     switch (section) {
         case 0:
             // URL, username, [password]
-            if ([self.blog isWPcom]) {
+            if (self.blog.account.isWpcom) {
                 return 2;
             }
 
