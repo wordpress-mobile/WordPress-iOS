@@ -466,9 +466,6 @@
     }
 
     if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
-        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(nil);"]];
-        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(nil);"]];
-
         if (IS_IPAD) {
             if (self.navigationController.navigationBarHidden == NO) {
                 self.title = [self getDocumentTitle];
@@ -477,20 +474,6 @@
             }
         } else {
             self.navigationItem.title = [self getDocumentTitle];
-        }
-
-        NSString *prevItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_prev_item();"];
-        if ([prevItemAvailable rangeOfString:@"true"].location == NSNotFound) {
-            self.backButton.enabled = NO;
-        } else {
-            self.backButton.enabled = YES;
-        }
-
-        NSString *nextItemAvailable = [aWebView stringByEvaluatingJavaScriptFromString:@"Reader2.is_next_item();"];
-        if ([nextItemAvailable rangeOfString:@"true"].location == NSNotFound) {
-            self.forwardButton.enabled = NO;
-        } else {
-            self.forwardButton.enabled = YES;
         }
 
         self.hasLoadedContent = YES;
