@@ -889,7 +889,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 - (void)showPhotoPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.filter = WPMediaTypeImage;
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
 
@@ -1082,10 +1082,10 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if (assets.count == 0){
+    if (assets.count == 0 || ![[assets firstObject] isKindOfClass:[ALAsset class]]){
         return;
     }
-    ALAsset *asset = assets[0];
+    ALAsset *asset = [assets firstObject];
     if (!asset.defaultRepresentation) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
                             message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
