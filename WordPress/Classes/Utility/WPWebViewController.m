@@ -32,7 +32,6 @@
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              isLoading;
 @property (nonatomic, assign) BOOL                              needsLogin;
-@property (nonatomic, assign) BOOL                              hasLoadedContent;
 
 @end
 
@@ -428,11 +427,7 @@
                                                     "document.getElementsByTagName('head')[0].appendChild(meta)"];
         [aWebView stringByEvaluatingJavaScriptFromString:js];
     }
-
-    if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
-        self.navigationItem.title = [self getDocumentTitle];
-        self.hasLoadedContent = YES;
-    }
+    
     if (self.shouldScrollToBottom) {
         self.shouldScrollToBottom = NO;
         
