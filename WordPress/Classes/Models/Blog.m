@@ -274,53 +274,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-- (void)dataSave
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-- (void)remove
-{
-    DDLogInfo(@"<Blog:%@> remove", self.hostURL);
-    [self.api cancelAllHTTPOperations];
-    [self.managedObjectContext performBlock:^{
-        WPAccount *account = self.account;
-
-        NSManagedObjectContext *context = [self managedObjectContext];
-        [context deleteObject:self];
-        
-        [self removeSelfHostedAccountIfNeeded:account
-                                      context:context];
-        
-        [self dataSave];
-        [WPAnalytics refreshMetadata];
-    }];
-}
-
-/**
- *  @brief      For self hosted blogs, removes the account unless there are other associated blogs.
- *
- *  @param      account     The account to remove, if it matches the criteria.  Cannot be nil.
- *  @param      context     The context to use for the changes.  Cannot be nil.
- */
-- (void)removeSelfHostedAccountIfNeeded:(WPAccount*)account
-                                context:(NSManagedObjectContext*)context
-{
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
-    
-    BOOL isWpComAccount = account && !account.isWpcom;
-    
-    if (isWpComAccount) {
-        BOOL accountOnlyHasThisBlog = ([account.blogs count] == 1
-                                       && [[account.blogs anyObject] isEqual:self]);
-        
-        if (accountOnlyHasThisBlog) {
-            [context deleteObject:account];
-        }
-    }
-}
-
 - (void)setXmlrpc:(NSString *)xmlrpc
 {
     [self willChangeValueForKey:@"xmlrpc"];
