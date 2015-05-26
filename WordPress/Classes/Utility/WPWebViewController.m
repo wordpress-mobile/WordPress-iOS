@@ -14,7 +14,6 @@
 
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
-@property (nonatomic, weak, readonly) UIScrollView *scrollView;
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL isLoading;
 @property (nonatomic, assign) BOOL needsLogin;
@@ -385,22 +384,6 @@
     [self.webView reload];
 }
 
-// Find the Webview's UIScrollView backwards compatible
-- (UIScrollView *)scrollView
-{
-    UIScrollView *scrollView = nil;
-    if ([self.webView respondsToSelector:@selector(scrollView)]) {
-        scrollView = self.webView.scrollView;
-    } else {
-        for (UIView* subView in self.webView.subviews) {
-            if ([subView isKindOfClass:[UIScrollView class]]) {
-                scrollView = (UIScrollView*)subView;
-            }
-        }
-    }
-    return scrollView;
-}
-
 - (void)dismissPopover
 {
     if (self.popover) {
@@ -460,7 +443,6 @@
     DDLogMethod()
     [self setLoading:NO];
 
-    
     if (CGRectGetWidth(self.view.frame) < CGRectGetWidth(self.view.window.bounds)) {
         NSString *js = [NSString stringWithFormat:@"var meta = document.createElement('meta');"
                                                     "meta.setAttribute( 'name', 'viewport' );"
@@ -482,10 +464,12 @@
 
         self.hasLoadedContent = YES;
     }
-    if (self.shouldScrollToBottom == YES) {
+    if (self.shouldScrollToBottom) {
         self.shouldScrollToBottom = NO;
-        CGPoint bottomOffset = CGPointMake(0, self.scrollView.contentSize.height - self.scrollView.bounds.size.height);
-        [self.scrollView setContentOffset:bottomOffset animated:YES];
+        
+        UIScrollView *scrollView = self.webView.scrollView;
+        CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+        [scrollView setContentOffset:bottomOffset animated:YES];
     }
 }
 
