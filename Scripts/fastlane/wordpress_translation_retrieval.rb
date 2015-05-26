@@ -47,7 +47,7 @@ class WordPressTranslationRetrieval
     end
 
     def retrieve_file_contents_from_glotpress(glotpress_language_code)
-      url = "https://translate.wordpress.org/projects/ios/release-notes/#{glotpress_language_code}/default/export-translations?format=po"
+      url = "https://translate.wordpress.org/projects/apps/ios/release-notes/#{glotpress_language_code}/default/export-translations?format=po"
       system "curl -so temp.po #{url}"
       file_contents = File.readlines("temp.po")
       system "rm temp.po"
