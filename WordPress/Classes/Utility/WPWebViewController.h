@@ -27,7 +27,6 @@
 
 // Reader variables
 @property (nonatomic, strong) NSString *detailContent;
-@property (nonatomic, strong) NSString *detailHTML;
 @property (nonatomic, strong) NSString *readerAllItems;
 @property (nonatomic, assign) BOOL shouldScrollToBottom;
 
