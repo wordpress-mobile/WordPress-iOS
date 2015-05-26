@@ -92,12 +92,7 @@
     self.webView.scalesPageToFit = YES;
     self.scrollView.decelerationRate = UIScrollViewDecelerationRateNormal;
 
-    if (self.url) {
-        [self refreshWebView];
-    } else {
-        self.navigationItem.title = NSLocalizedString(@"Loading...", @"");
-        [self.webView loadHTMLString:self.detailHTML baseURL:[NSURL URLWithString:@"https://en.wordpress.com"]];
-    }
+    [self refreshWebView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
