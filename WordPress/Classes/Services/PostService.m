@@ -120,12 +120,16 @@ const NSInteger PostServiceNumberToFetch = 40;
                 success:(void (^)())success
                 failure:(void (^)(NSError *))failure
 {
+    NSManagedObjectID *blogObjectID = blog.objectID;
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     [remote getPostsOfType:postType
                    forBlog:blog
                    success:^(NSArray *posts) {
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
+                           Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
+                           if (blogInContext) {
+                               [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
+                           }
                        }];
                    } failure:^(NSError *error) {
                        if (failure) {
@@ -512,8 +516,10 @@ const NSInteger PostServiceNumberToFetch = 40;
 }
 
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
-    NSSet *posts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"original = NULL AND postID = %@", postID]];
-    return [posts anyObject];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND original = NULL AND postID = %@", blog, postID];
+    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [posts firstObject];
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {

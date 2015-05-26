@@ -135,7 +135,7 @@ def localize(path):
 
     if os.path.isfile(original):
         os.rename(original, old)
-        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* -name "*.m" | grep -v Vendor`' % language)
+        os.system('genstrings -q -o "%s" `find . ../Pods/WordPress* ../Pods/WPMediaPicker -name "*.m" | grep -v Vendor`' % language)
         os.rename(original, new)
         merge(merged, old, new)
         os.remove(new)

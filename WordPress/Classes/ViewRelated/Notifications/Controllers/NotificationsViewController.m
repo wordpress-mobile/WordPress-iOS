@@ -223,6 +223,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
 {
+    UIApplication *application = [UIApplication sharedApplication];
+    
     // Did the user tap on a push notification?
     if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
 
@@ -239,8 +241,14 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         self.pushNotificationDate   = nil;
     }
     
-    // Mark as read immediately (if we're onscreen!)
-    if (changeType == SPBucketChangeInsert && self.isViewOnScreen) {
+    // Mark as read immediately if:
+    //  -   We're onscreen
+    //  -   The app is in Foreground
+    //
+    // We need to make sure that the app is in FG, since this method might get called during a Background Fetch OS event,
+    // which would cause the badge to get reset on its own.
+    //
+    if (changeType == SPBucketChangeInsert && self.isViewOnScreen && application.applicationState == UIApplicationStateActive) {
         [self resetApplicationBadge];
         [self updateLastSeenTime];
     }
@@ -469,7 +477,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showDetailsForNotification:(Notification *)note
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails];
+    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
     
     // Mark as Read, if needed
     if(!note.read.boolValue) {
@@ -556,13 +564,21 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (!note) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // Failsafe: Make sure that the Notification (still) exists
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        [tableView deselectSelectedRowWithAnimation:YES];
         return;
     }
-
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
     // At last, push the details
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [self showDetailsForNotification:note];
 }
 

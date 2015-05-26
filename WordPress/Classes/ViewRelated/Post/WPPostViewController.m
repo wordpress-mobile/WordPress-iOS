@@ -293,10 +293,7 @@ EditImageDetailsViewControllerDelegate
         [self refreshNavigationBarButtons:NO];
         [self.navigationController.navigationBar addSubview:self.mediaProgressView];
         if (self.isEditing) {
-            if ([self shouldHideStatusBarWhileTyping]) {
-                [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                        withAnimation:UIStatusBarAnimationSlide];
-            }
+            [self setNeedsStatusBarAppearanceUpdate];
         } else {
             // Preview mode...show the onboarding hint the first time through only
             if (!self.wasOnboardingShown) {
@@ -1080,24 +1077,6 @@ EditImageDetailsViewControllerDelegate
     [self refreshNavigationBarButtons:YES];
 }
 
-/**
- *	@brief		Returns a BOOL specifying if the status bar should be hidden while typing.
- *	@details	The status bar should never hide on the iPad.
- *
- *	@returns	YES if the keyboard should be hidden, NO otherwise.
- */
-- (BOOL)shouldHideStatusBarWhileTyping
-{
-    /*
-     Never hide for the iPad.
-     Always hide on the iPhone except for portrait + external keyboard
-     */
-    if (IS_IPAD) {
-        return NO;
-    }
-    return YES;
-}
-
 #pragma mark - Custom UI elements
 
 - (WPButtonForNavigationBar*)buttonForBarWithImageNamed:(NSString*)imageName
@@ -1777,7 +1756,7 @@ EditImageDetailsViewControllerDelegate
                 return;
             }
             createMediaProgress.completedUnitCount++;
-            if (error) {
+            if (error || !media || !media.localURL) {
                 [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
                                                               @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
                                     message:error.localizedDescription];
@@ -1953,19 +1932,13 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidBeginEditing:(WPEditorViewController *)editorController
 {
-	if ([self shouldHideStatusBarWhileTyping])
-	{
-		[[UIApplication sharedApplication] setStatusBarHidden:YES
-												withAnimation:UIStatusBarAnimationSlide];
-	}
-    
+    [self setNeedsStatusBarAppearanceUpdate];
     [self refreshNavigationBarButtons:YES];
 }
 
 - (void)editorDidEndEditing:(WPEditorViewController *)editorController
 {
-	[[UIApplication sharedApplication] setStatusBarHidden:NO
-											withAnimation:UIStatusBarAnimationSlide];
+    [self setNeedsStatusBarAppearanceUpdate];
 }
 
 - (void)editorTitleDidChange:(WPEditorViewController *)editorController
@@ -2214,6 +2187,27 @@ EditImageDetailsViewControllerDelegate
 - (void)editImageDetailsViewController:(EditImageDetailsViewController *)controller didFinishEditingImageDetails:(WPImageMeta *)imageMeta
 {
     [self.editorView updateCurrentImageMeta:imageMeta];
+}
+
+
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    /**
+     Never hide for the iPad. 
+     Always hide on the iPhone except when user is not editing
+     */
+    if (IS_IPAD || !self.isEditing) {
+        return NO;
+    }
+    return YES;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationSlide;
 }
 
 @end

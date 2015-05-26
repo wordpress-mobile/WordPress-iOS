@@ -57,9 +57,6 @@
 {
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
-    if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
-    }
     [self refreshWebView];
 }
 
@@ -216,12 +213,16 @@
         if (needsLogin) {
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
-            
+            NSString *token;
+            if ([self.apost.blog isWPcom]) {
+                token = self.apost.blog.authToken;
+            }
+
             NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                                       redirectURL:redirectURL
                                                                          username:self.apost.blog.username
                                                                          password:self.apost.blog.password
-                                                                      bearerToken:self.apost.blog.authToken
+                                                                      bearerToken:token
                                                                         userAgent:nil];
             [self.webView loadRequest:request];
             DDLogInfo(@"Showing real preview (login) for %@", link);
@@ -305,6 +306,14 @@
 {
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Do not hide status bar on iPad
+    return (self.shouldHideStatusBar && !IS_IPAD);
 }
 
 @end
