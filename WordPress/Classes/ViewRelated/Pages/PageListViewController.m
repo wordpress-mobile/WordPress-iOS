@@ -280,9 +280,9 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     NSString *nibName = NSStringFromClass([PageListSectionHeaderView class]);
     PageListSectionHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
-    NSInteger index = [sectionInfo.name integerValue];
-    NSString *title = [NSDate conciseStringFromIndex:index];
-    [headerView setTite:title];
+//    NSInteger index = [sectionInfo.name integerValue];
+//    NSString *title = [NSDate conciseStringFromIndex:index];
+    [headerView setTite:sectionInfo.name];
 
     return headerView;
 }
