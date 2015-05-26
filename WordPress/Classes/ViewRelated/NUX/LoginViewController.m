@@ -22,7 +22,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "Blog+Jetpack.h"
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
