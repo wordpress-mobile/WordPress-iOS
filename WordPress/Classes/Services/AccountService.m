@@ -287,24 +287,27 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 }
 
-- (void)purgeSelfHostedAccount:(WPAccount *)account
+- (void)purgeAccount:(WPAccount *)account
 {
-    if (!account.isWpcom && [account.blogs count] == 0) {
+    NSParameterAssert(account);
+
+    BOOL purge = NO;
+    if (account.isWpcom) {
+        WPAccount *defaultAccount = [self defaultWordPressComAccount];
+        if ([account.jetpackBlogs count] == 0
+            && ![defaultAccount isEqual:account]) {
+            purge = YES;
+        }
+    } else {
+        if ([account.blogs count] == 0) {
+            purge = YES;
+        }
+    }
+
+    if (purge) {
+        DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", account);
         [self.managedObjectContext deleteObject:account];
     }
 }
-
-- (void)purgeJetpackAccount:(WPAccount *)account
-{
-    WPAccount *defaultAccount = [self defaultWordPressComAccount];
-    if (account
-        && [account.jetpackBlogs count] == 0
-        && [account.visibleBlogs count] == 0
-        && ![defaultAccount isEqual:account]) {
-        DDLogWarn(@"Removing jetpack account %@ since the last blog using it is being removed", account.username);
-        [self.managedObjectContext deleteObject:account];
-    }
-}
-
 
 @end
