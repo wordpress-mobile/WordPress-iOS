@@ -311,12 +311,12 @@
     _isLoading = loading;
 }
 
-- (void)dismiss
+- (IBAction)dismiss
 {
     [self.navigationController popViewControllerAnimated:NO];
 }
 
-- (void)goBack
+- (IBAction)goBack
 {
     if ([self.webView isLoading]) {
         [self.webView stopLoading];
@@ -324,7 +324,7 @@
     [self.webView goBack];
 }
 
-- (void)goForward
+- (IBAction)goForward
 {
     if ([self.webView isLoading]) {
         [self.webView stopLoading];
@@ -332,7 +332,7 @@
     [self.webView goForward];
 }
 
-- (void)showLinkOptions
+- (IBAction)showLinkOptions
 {
     NSString* permaLink = [self getDocumentPermalink];
 
@@ -367,7 +367,7 @@
     }
 }
 
-- (void)reload
+- (IBAction)reload
 {
     if (![ReachabilityUtils isInternetReachable]) {
         __weak WPWebViewController *weakSelf = self;
