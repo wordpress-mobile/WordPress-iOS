@@ -15,7 +15,6 @@
 @property (nonatomic, strong) IBOutlet UIBarButtonItem *optionsButton;
 @property (nonatomic, strong) UIBarButtonItem *spinnerButton;
 @property (nonatomic, strong) NSTimer *statusTimer;
-@property (nonatomic, assign) BOOL hidesLinkOptions;
 
 // Endpoint!
 @property (nonatomic, strong) NSURL *url;
