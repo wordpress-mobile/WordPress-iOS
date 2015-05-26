@@ -27,6 +27,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeatureStats,
     /// Does the blog support mentions?
     BlogFeatureMentions,
+    /// Does the blog support push notifications?
+    BlogFeaturePushNotifications,
 };
 
 @interface Blog : NSManagedObject

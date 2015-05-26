@@ -366,8 +366,19 @@ static NSInteger const ImageSizeLargeHeight = 480;
         case BlogFeatureMentions:
         case BlogFeatureOAuth2Login:
             return [self isHostedAtWPcom];
+        case BlogFeaturePushNotifications:
+            return [self supportsPushNotifications];
         default:
             return NO;
+    }
+}
+
+- (BOOL)supportsPushNotifications
+{
+    if (self.jetpackAccount) {
+        return [self jetpackAccountIsDefaultAccount];
+    } else {
+        return [self accountIsDefaultAccount];
     }
 }
 
@@ -376,6 +387,13 @@ static NSInteger const ImageSizeLargeHeight = 480;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     return [defaultAccount isEqual:self.account];
+}
+
+- (BOOL)jetpackAccountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.jetpackAccount];
 }
 
 - (BOOL)isHostedAtWPcom
