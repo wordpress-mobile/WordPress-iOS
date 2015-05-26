@@ -55,9 +55,7 @@
     self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
 
     if (IS_IPHONE) {
-        if (!self.hidesLinkOptions) {
-            [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
-        }
+        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
     } else {
         // We want the refresh button to be borderless, but buttons in navbars want a border.
         // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
