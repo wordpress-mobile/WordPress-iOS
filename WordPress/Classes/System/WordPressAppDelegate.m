@@ -651,7 +651,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
-
+    
     NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
