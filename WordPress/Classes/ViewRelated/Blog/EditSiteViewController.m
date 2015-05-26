@@ -422,7 +422,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return self.blog &&
-        ([self.blog isWPcom] || [self.blog.jetpack isConnected]) &&
+        [self.blog supports:BlogFeaturePushNotifications] &&
         [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
