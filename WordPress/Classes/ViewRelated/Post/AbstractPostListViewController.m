@@ -509,6 +509,11 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 #pragma mark - Table View Handling
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    AssertSubclassMethod();
+}
+
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
     // After any change, make sure that the no results view is properly
