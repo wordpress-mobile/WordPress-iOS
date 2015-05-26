@@ -429,18 +429,16 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     if ([error.domain isEqualToString:WPXMLRPCClientErrorDomain]) {
         if (error.code == HTTPErrorCodeForbidden) {
-            [self promptForPasswordWithMessage:nil];
+            [self promptForPassword];
             return;
         }
     }
     [WPError showNetworkingAlertWithError:error title:NSLocalizedString(@"Unable to Sync", @"Title of error prompt shown when a sync the user initiated fails.")];
 }
 
-- (void)promptForPasswordWithMessage:(NSString *)message
+- (void)promptForPassword
 {
-    if (message == nil) {
-        message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
-    }
+    NSString *message = NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"");
     [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Connect", @"") message:message];
 
     // bad login/pass combination
@@ -548,7 +546,7 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                     success:nil
                     failure:^(NSError *error) {
                         if([error code] == HTTPErrorCodeForbidden) {
-                            [self promptForPasswordWithMessage:nil];
+                            [self promptForPassword];
                         } else {
                             [WPError showXMLRPCErrorAlert:error];
                         }
@@ -580,7 +578,7 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                    success:nil
                    failure:^(NSError *error) {
                        if([error code] == HTTPErrorCodeForbidden) {
-                           [self promptForPasswordWithMessage:nil];
+                           [self promptForPassword];
                        } else {
                            [WPError showXMLRPCErrorAlert:error];
                        }
@@ -622,7 +620,7 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
                      }
                      failure:^(NSError *error) {
                          if([error code] == 403) {
-                             [self promptForPasswordWithMessage:nil];
+                             [self promptForPassword];
                          } else {
                              [WPError showXMLRPCErrorAlert:error];
                          }
