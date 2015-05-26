@@ -474,20 +474,28 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
     fetchRequest.predicate = [self predicateForFetchRequest];
-    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:NO];
-    fetchRequest.sortDescriptors = @[sortDescriptorDate];
+    fetchRequest.sortDescriptors = [self sortDescriptorsForFetchRequest];
     fetchRequest.fetchBatchSize = PostsFetchRequestBatchSize;
     return fetchRequest;
 }
 
+- (NSArray *)sortDescriptorsForFetchRequest
+{
+    // Ascending only for scheduled posts/pages.
+    BOOL ascending = self.currentPostListFilter.filterType == PostListStatusFilterScheduled;
+    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:ascending];
+    return @[sortDescriptorDate];
+}
 
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
 {
     NSAssert([NSThread isMainThread], @"AbstractPostListViewController Error: NSFetchedResultsController accessed in BG");
 
     NSPredicate *predicate = [self predicateForFetchRequest];
+    NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
     [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
+    [self.tableViewHandler.resultsController.fetchRequest setSortDescriptors:sortDescriptors];
     [self.tableViewHandler.resultsController performFetch:&error];
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
