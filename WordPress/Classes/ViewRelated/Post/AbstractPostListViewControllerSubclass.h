@@ -26,7 +26,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 extern const CGFloat SearchWrapperViewPortraitHeight;
 extern const CGFloat SearchWrapperViewLandscapeHeight;
 
-@interface AbstractPostListViewController (Subclass) <UIPopoverControllerDelegate,
+@interface AbstractPostListViewController () <UIPopoverControllerDelegate,
                                                         UIViewControllerRestoration,
                                                         WPContentSyncHelperDelegate,
                                                         WPNoResultsViewDelegate,
@@ -54,7 +54,6 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 @property (nonatomic, strong) NSArray *postListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
-@property (nonatomic, strong) Blog *blog;
 
 - (PostListFilter *)currentPostListFilter;
 - (void)publishPost:(AbstractPost *)apost;
