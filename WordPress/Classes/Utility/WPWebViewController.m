@@ -466,8 +466,8 @@
     }
 
     if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
-        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
-        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details();"]];
+        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(nil);"]];
+        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(nil);"]];
 
         if (IS_IPAD) {
             if (self.navigationController.navigationBarHidden == NO) {
