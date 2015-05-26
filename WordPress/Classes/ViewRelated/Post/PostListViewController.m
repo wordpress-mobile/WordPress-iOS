@@ -35,7 +35,7 @@ static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const CGFloat PostCardRestoreCellRowHeight = 54.0;
 
-@interface PostListViewController () <PostCardTableViewCellDelegate>
+@interface PostListViewController () <PostCardTableViewCellDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
