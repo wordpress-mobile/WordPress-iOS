@@ -98,6 +98,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 #pragma mark - Blog information
 - (BOOL)isWPcom;
+- (BOOL)isHostedAtWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
