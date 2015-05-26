@@ -195,11 +195,6 @@
     return ( permaLink != nil) ? permaLink : @"";
 }
 
-- (void)loadURL:(NSURL *)webURL
-{
-    // Subclass
-}
-
 - (void)refreshWebView
 {
     DDLogMethod()
@@ -232,6 +227,9 @@
     self.needsLogin = YES;
     [self refreshWebView];
 }
+
+
+#pragma mark - Properties
 
 - (void)setUrl:(NSURL *)theURL
 {
@@ -301,10 +299,8 @@
     _isLoading = loading;
 }
 
-- (IBAction)dismiss
-{
-    [self.navigationController popViewControllerAnimated:NO];
-}
+
+#pragma mark - IBAction Methods
 
 - (IBAction)goBack
 {
