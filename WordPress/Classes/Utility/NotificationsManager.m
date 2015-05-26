@@ -449,7 +449,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog = [blogService lastUsedOrFirstBlogThatSupports:BlogFeatureStats];
-    if (blog != nil && [blog isWPcom]) {
+    if (blog != nil) {
         [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
 }
