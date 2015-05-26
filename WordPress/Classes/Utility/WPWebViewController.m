@@ -239,6 +239,33 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     [self refreshWebView];
 }
 
+- (void)applyMobileViewportHackIfNeeded
+{
+    if (CGRectGetWidth(self.view.frame) >= CGRectGetWidth(self.view.window.bounds)) {
+        return;
+    }
+    
+    NSString *js = @"var meta = document.createElement('meta');"
+                    "meta.setAttribute( 'name', 'viewport' );"
+                    "meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );"
+                    "document.getElementsByTagName('head')[0].appendChild(meta)";
+    
+    [self.webView stringByEvaluatingJavaScriptFromString:js];
+}
+
+- (void)scrollToBottomIfNeeded
+{
+    if (!self.shouldScrollToBottom) {
+        return;
+    }
+    
+    self.shouldScrollToBottom = NO;
+    
+    UIScrollView *scrollView    = self.webView.scrollView;
+    CGPoint bottomOffset        = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
+    [scrollView setContentOffset:bottomOffset animated:YES];
+}
+
 
 #pragma mark - Properties
 
@@ -332,14 +359,15 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 - (IBAction)showLinkOptions
 {
     NSString* permaLink = [self getDocumentPermalink];
-
     NSString *title = [self getDocumentTitle];
+    
     NSMutableArray *activityItems = [NSMutableArray array];
     if (title) {
         [activityItems addObject:title];
     }
 
     [activityItems addObject:[NSURL URLWithString:permaLink]];
+    
     UIActivityViewController *activityViewController = [[UIActivityViewController alloc] initWithActivityItems:activityItems applicationActivities:[WPActivityDefaults defaultActivities]];
     if (title) {
         [activityViewController setValue:title forKey:@"subject"];
@@ -375,12 +403,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     [self.webView reload];
 }
 
-- (void)dismissPopover
-{
-    [self.popover dismissPopoverAnimated:YES];
-    self.popover = nil;
-}
-
 
 #pragma mark - UIPopover Delegate
 
@@ -394,20 +416,18 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), [[request URL] absoluteString]);
+    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), request.URL.absoluteString);
 
-    NSURL *requestedURL = [request URL];
-    NSString *requestedURLAbsoluteString = [requestedURL absoluteString];
-
-    if (!self.needsLogin && [requestedURLAbsoluteString rangeOfString:@"wp-login.php"].location != NSNotFound) {
-        if (self.username && self.password) {
-            DDLogInfo(@"WP is asking for credentials, let's login first");
-            [self retryWithLogin];
-            return NO;
-        }
+    NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
+    if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password)
+    {
+        DDLogInfo(@"WP is asking for credentials, let's login first");
+        [self retryWithLogin];
+        return NO;
     }
     
     self.loading = YES;
+    
     return YES;
 }
 
@@ -418,6 +438,7 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     if (self.loading && error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
     }
+    
     self.loading = NO;
 }
 
@@ -431,22 +452,8 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     DDLogMethod()
     self.loading = NO;
 
-    if (CGRectGetWidth(self.view.frame) < CGRectGetWidth(self.view.window.bounds)) {
-        NSString *js = @"var meta = document.createElement('meta');"
-                        "meta.setAttribute( 'name', 'viewport' );"
-                        "meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );"
-                        "document.getElementsByTagName('head')[0].appendChild(meta)";
-        
-        [aWebView stringByEvaluatingJavaScriptFromString:js];
-    }
-    
-    if (self.shouldScrollToBottom) {
-        self.shouldScrollToBottom = NO;
-        
-        UIScrollView *scrollView = self.webView.scrollView;
-        CGPoint bottomOffset = CGPointMake(0, scrollView.contentSize.height - scrollView.bounds.size.height);
-        [scrollView setContentOffset:bottomOffset animated:YES];
-    }
+    [self applyMobileViewportHackIfNeeded];
+    [self scrollToBottomIfNeeded];
 }
 
 
