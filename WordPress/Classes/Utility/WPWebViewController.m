@@ -100,22 +100,8 @@
     DDLogMethod()
     [super viewWillAppear:animated];
 
-    if ( self.detailContent == nil ) {
-        [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
-        [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
-    } else {
-        //do not set the timer on the detailsView
-        //change the arrows to up/down icons
-        [self.backButton setImage:[UIImage imageNamed:@"previous.png"]];
-        [self.forwardButton setImage:[UIImage imageNamed:@"next.png"]];
-
-        // Replace refresh button with options button
-        self.backButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
-        self.forwardButton.width = (self.toolbar.frame.size.width / 2.0f) - 10.0f;
-        UIBarButtonItem *spacer = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        NSArray *items = @[spacer, self.backButton, spacer, self.forwardButton, spacer];
-        self.toolbar.items = items;
-    }
+    [self setStatusTimer:[NSTimer timerWithTimeInterval:0.75 target:self selector:@selector(upgradeButtonsAndLabels:) userInfo:nil repeats:YES]];
+    [[NSRunLoop currentRunLoop] addTimer:[self statusTimer] forMode:NSDefaultRunLoopMode];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -335,58 +321,18 @@
 
 - (void)goBack
 {
-    if (self.detailContent != nil) {
-        NSString *prevItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_prev_item();"];
-        if ( [prevItemAvailable rangeOfString:@"true"].location == NSNotFound ) {
-            self.backButton.enabled = NO;
-        } else {
-            self.backButton.enabled = YES;
-        }
-
-        self.forwardButton.enabled = YES;
-
-        if (IS_IPAD) {
-            if (self.navigationController.navigationBarHidden == NO) {
-                self.title = [self getDocumentTitle];
-            } else {
-                [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
-            }
-        } else {
-            self.title = [self getDocumentTitle];
-        }
-    } else {
-        if ([self.webView isLoading]) {
-            [self.webView stopLoading];
-        }
-        [self.webView goBack];
+    if ([self.webView isLoading]) {
+        [self.webView stopLoading];
     }
+    [self.webView goBack];
 }
 
 - (void)goForward
 {
-    if (self.detailContent != nil) {
-        NSString *nextItemAvailable = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.show_next_item();"];
-        if ([nextItemAvailable rangeOfString:@"true"].location == NSNotFound) {
-            self.forwardButton.enabled = NO;
-        } else {
-            self.forwardButton.enabled = YES;
-        }
-        self.backButton.enabled = YES;
-        if (IS_IPAD) {
-            if (self.navigationController.navigationBarHidden == NO) {
-                self.title = [self getDocumentTitle];
-            } else {
-                [self.iPadNavBar.topItem setTitle:[self getDocumentTitle]];
-            }
-        } else {
-            self.title = [self getDocumentTitle];
-        }
-    } else {
-        if ([self.webView isLoading]) {
-            [self.webView stopLoading];
-        }
-        [self.webView goForward];
+    if ([self.webView isLoading]) {
+        [self.webView stopLoading];
     }
+    [self.webView goForward];
 }
 
 - (void)showLinkOptions
@@ -489,19 +435,6 @@
         }
     }
 
-    //the user clicked a link available in the detailsView, a new webView will be pushed into the stack
-    if (![requestedURL isEqual:self.url] &&
-        [requestedURLAbsoluteString rangeOfString:@"file://"].location == NSNotFound &&
-        self.detailContent != nil &&
-        navigationType == UIWebViewNavigationTypeLinkClicked
-        ) {
-
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        [webViewController setUrl:[request URL]];
-        [self.navigationController pushViewController:webViewController animated:YES];
-        return NO;
-    }
-
     [self setLoading:YES];
     return YES;
 }
@@ -532,9 +465,9 @@
         [aWebView stringByEvaluatingJavaScriptFromString:js];
     }
 
-    if (!self.hasLoadedContent && ([aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound || self.detailContent)) {
+    if (!self.hasLoadedContent && [aWebView.request.URL.absoluteString rangeOfString:WPMobileReaderDetailURL].location == NSNotFound) {
         [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.set_loaded_items(%@);", self.readerAllItems]];
-        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details(%@);", self.detailContent]];
+        [aWebView stringByEvaluatingJavaScriptFromString:[NSString stringWithFormat:@"Reader2.show_article_details();"]];
 
         if (IS_IPAD) {
             if (self.navigationController.navigationBarHidden == NO) {
