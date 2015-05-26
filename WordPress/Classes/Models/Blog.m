@@ -245,11 +245,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSArray arrayWithArray:sortedNames];
 }
 
-- (BOOL)isWPcom
-{
-    return self.account.isWpcom;
-}
-
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
