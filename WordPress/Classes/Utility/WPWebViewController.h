@@ -26,7 +26,6 @@
 @property (nonatomic, strong) NSString *authToken;
 
 // Reader variables
-@property (nonatomic, strong) NSString *readerAllItems;
 @property (nonatomic, assign) BOOL shouldScrollToBottom;
 
 - (IBAction)showLinkOptions;
