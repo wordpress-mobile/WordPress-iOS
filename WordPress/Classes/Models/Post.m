@@ -261,7 +261,7 @@
 
 - (BOOL)supportsComments
 {
-    return [self.blog supports:BlogFeatureREST];
+    return [self.blog supports:BlogFeatureWPComRESTAPI];
 }
 
 - (BOOL)supportsLikes
