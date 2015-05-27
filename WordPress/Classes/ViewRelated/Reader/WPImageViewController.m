@@ -80,6 +80,7 @@
     self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
     self.activityIndicatorView.hidesWhenStopped = YES;
     self.activityIndicatorView.center = self.view.center;
+    self.activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
     [self.view addSubview:self.activityIndicatorView];
 
     [self loadImage];
