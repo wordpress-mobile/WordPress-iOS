@@ -279,7 +279,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if (indexPath.row == self.rowNumberForHeader) {
-        if (![self.comment.blog supports:BlogFeatureREST]) {
+        if (![self.comment.blog supports:BlogFeatureWPComRESTAPI]) {
             [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
             return;
         }
