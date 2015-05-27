@@ -62,6 +62,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
+@property (nonatomic, assign, readwrite) BOOL           isJetpack;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;
