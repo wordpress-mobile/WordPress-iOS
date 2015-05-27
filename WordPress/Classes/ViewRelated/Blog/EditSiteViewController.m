@@ -73,7 +73,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     [super viewDidLoad];
 
     if (self.blog) {
-        self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
+        self.navigationItem.title = NSLocalizedString(@"Settings", @"");
 
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
