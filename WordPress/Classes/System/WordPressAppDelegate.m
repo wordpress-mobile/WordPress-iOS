@@ -872,13 +872,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
-            if (blog.account.isWpcom) {
-                DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ wp.com account: %@ blogId: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? blog.account.username : @"NO", blog.blogID);
-            } else if (blog.jetpackAccount) {
-                DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", blog.blogName, blog.url, blog.xmlrpc, blog.jetpack.version, blog.jetpackAccount.username, blog.jetpack.siteID);
-            } else {
-                DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ jetpack: %@", blog.blogName, blog.url, blog.xmlrpc, [blog.jetpack description]);
-            }
+            DDLogInfo(@"%@", [blog logDescription]);
         }
     } else {
         DDLogInfo(@"No blogs configured on device.");
