@@ -22,7 +22,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.8)
-  - Automattic-Tracks-iOS (0.0.3):
+  - Automattic-Tracks-iOS (0.0.4):
+    - CocoaLumberjack (~> 2.0)
     - UIDeviceIdentifier (~> 0.4)
   - CocoaLumberjack (2.0.0):
     - CocoaLumberjack/Default (= 2.0.0)
@@ -35,7 +36,6 @@ PODS:
   - CrashlyticsLumberjack (2.0.1-beta):
     - CocoaLumberjack/Default (~> 2.0.0)
     - CrashlyticsLumberjack/Framework (= 2.0.1-beta)
-  - CTAssetsPickerController (2.9.3)
   - DTCoreText (1.6.13):
     - DTFoundation/Core (~> 1.7.1)
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
@@ -132,7 +132,7 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS
-  - WPMediaPicker (0.3.4)
+  - WPMediaPicker (0.4.1)
   - wpxmlrpc (0.8)
 
 DEPENDENCIES:
@@ -140,10 +140,9 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5.3)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
-    tag `0.0.3`)
+    tag `0.0.4`)
   - CocoaLumberjack (~> 2.0)
   - CrashlyticsLumberjack (= 2.0.1-beta)
-  - CTAssetsPickerController (~> 2.9.3)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
@@ -178,13 +177,13 @@ DEPENDENCIES:
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.32)
   - WordPressCom-Stats-iOS (= 0.3.4)
-  - WPMediaPicker (~> 0.3.3)
+  - WPMediaPicker (~> 0.4.1)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.3
+    :tag: 0.0.4
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -206,7 +205,7 @@ EXTERNAL SOURCES:
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.3
+    :tag: 0.0.4
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
@@ -227,10 +226,9 @@ SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   AMPopTip: 2291c7a088e519a8d57794f63bc7507acde9c57b
-  Automattic-Tracks-iOS: d22bc1f15c7c898036649c0df7a9da0c4a253e3f
+  Automattic-Tracks-iOS: 41e28904cae548a5065887778e51e084888ab93e
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   CrashlyticsLumberjack: 26034b4b6d8b0bf547ea9ba201ff53c6cd50f971
-  CTAssetsPickerController: 56a4a228dcb48a9375ab8d4922e82ac74af74aa1
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
   DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
   EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
@@ -264,7 +262,7 @@ SPEC CHECKSUMS:
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: cfa514e1c2ded6256bf2864d871e0866e38cc668
   WordPressCom-Stats-iOS: 63269dc52c52087184eaacbc1ad9d502fd189450
-  WPMediaPicker: d1137b5447f1fb92cbed08742d8587b8c12c4d05
+  WPMediaPicker: 010e0ecab215bf837ab4cc42e3223d5abd738a4d
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
 COCOAPODS: 0.37.1

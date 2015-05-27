@@ -86,6 +86,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    
     // Failsafe: Manually nuke the tableView dataSource and delegate. Make sure not to force a loadView event!
     if (!self.isViewLoaded) {
         return;
@@ -659,7 +661,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
     cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
-    cell.isApproved                 = [commentBlock isActionOn:NoteActionApproveKey] || ![commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
     // Setup the Callbacks
@@ -978,7 +980,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationLiked];
-    
+
+    // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
+    if (!block.isCommentApproved) {
+        [self approveCommentWithBlock:block];
+    }
+
+    // Proceed toggling the Like field
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;

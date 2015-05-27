@@ -362,7 +362,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
 
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.filter = WPMediaTypeImage;
 
     [self presentViewController:picker animated:YES completion:nil];
 }
