@@ -563,6 +563,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        forAccount:account];
         }
         if (!blog) {
+            DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
             blog = [self createBlogWithAccount:account];
             blog.xmlrpc = remoteBlog.xmlrpc;
         }
@@ -606,6 +607,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }]] anyObject];
 
     if (jetpackBlog) {
+        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
         WPAccount *oldAccount = jetpackBlog.account;
         jetpackBlog.account = account;
         jetpackBlog.jetpackAccount = nil;
