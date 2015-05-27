@@ -14,7 +14,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog be hidden?
     BlogFeatureVisibility,
     /// Can the blog use the WordPress.com REST API?
-    BlogFeatureREST,
+    BlogFeatureWPComRESTAPI,
     /// Can we use an OAuth2 token with wp-login.php?
     BlogFeatureOAuth2Login,
     /// Does the blog support reblogs?

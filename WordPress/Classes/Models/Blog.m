@@ -352,7 +352,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
              If the logic for this changes that needs to be updated as well
              */
             return [self accountIsDefaultAccount];
-        case BlogFeatureREST:
+        case BlogFeatureWPComRESTAPI:
         case BlogFeatureLikes:
             return [self restApi] != nil;
         case BlogFeatureStats:
