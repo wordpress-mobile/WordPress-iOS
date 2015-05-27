@@ -1,7 +1,7 @@
 #import "RemoteBlog.h"
 
 @implementation RemoteBlog
-- (NSString *)debugDescription
+- (NSString *)description
 {
     NSDictionary *properties = @{
                                  @"ID": self.ID,
