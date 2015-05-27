@@ -17,9 +17,9 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-//  Notes:
-//   . -999: Canceled AJAX request
-//   . 102:  Frame load interrupted: canceled wp-login redirect to make the POST
+//  Error Codes:
+//   -999: Canceled AJAX request
+//   102:  Frame load interrupted: canceled wp-login redirect to make the POST
 //
 static NSInteger const WPWebViewErrorAjaxCancelled         = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
@@ -32,11 +32,11 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *backButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *forwardButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *refreshButton;
+@property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *forwardButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
-@property (nonatomic, strong) UIBarButtonItem                   *spinnerButton;
+@property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
@@ -58,50 +58,36 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     }
 }
 
-- (BOOL)hidesBottomBarWhenPushed
-{
-    return YES;
-}
-
 - (void)viewDidLoad
 {
     DDLogMethod();
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Loading...", @"");
-    self.loading = NO;
-    self.backButton.enabled = NO;
-    self.forwardButton.enabled = NO;
-    self.backButton.accessibilityLabel = NSLocalizedString(@"Back", @"Spoken accessibility label");
-    self.forwardButton.accessibilityLabel = NSLocalizedString(@"Forward", @"Spoken accessibility label");
-    self.refreshButton.accessibilityLabel = NSLocalizedString(@"Refresh", @"Spoken accessibility label");
+    NSAssert(self.webView,          @"Missing Outlet!");
+    NSAssert(self.progressView,     @"Missing Outlet!");
+//    NSAssert(self.backButton,       @"Missing Outlet!");
+//    NSAssert(self.forwardButton,    @"Missing Outlet!");
+    NSAssert(self.optionsButton,    @"Missing Outlet!");
     
-    if ([UIDevice isPad] == NO) {
-        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
-    } else {
-        // We want the refresh button to be borderless, but buttons in navbars want a border.
-        // We need to compose the refresh button as a UIButton that is used as the UIBarButtonItem's custom view.
-        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [btn setImage:[UIImage imageNamed:@"sync_lite"] forState:UIControlStateNormal];
-        [btn setImage:[UIImage imageNamed:@"sync"] forState:UIControlStateHighlighted];
+    //
+    self.progressView.progress = 0.1;
+    
+    // Initialize Strings
+    self.title                              = NSLocalizedString(@"Loading...", @"");
+    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back", @"Spoken accessibility label");
+    self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Spoken accessibility label");
+    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share", @"Spoken accessibility label");
 
-        btn.frame = CGRectMake(0.0f, 0.0f, 30.0f, 30.0f);
-        btn.autoresizingMask =  UIViewAutoresizingFlexibleHeight;
-        [btn addTarget:self action:@selector(reload) forControlEvents:UIControlEventTouchUpInside];
-        self.refreshButton.customView = btn;
+    self.webView.scalesPageToFit            = YES;
+    self.refreshControl                     = [[UIRefreshControl alloc] init];
+    
+    // Refresh Control: Hook Up!
+    [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    [self.webView.scrollView addSubview:self.refreshControl];
 
-        self.navigationItem.rightBarButtonItem = self.refreshButton;
-        self.loadingLabel.text = NSLocalizedString(@"Loading...", @"");
-    }
-
-    self.toolbar.translucent = NO;
-    self.toolbar.barTintColor = [WPStyleGuide littleEddieGrey];
-    self.toolbar.tintColor = [UIColor whiteColor];
-
-    self.optionsButton.enabled = NO;
-    self.webView.scalesPageToFit = YES;
-
-    [self refreshWebView];
+    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
+    
+    [self loadWebViewRequest];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -116,21 +102,9 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     [super viewWillDisappear:animated];
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-                                         duration:(NSTimeInterval)duration
+- (BOOL)hidesBottomBarWhenPushed
 {
-    CGFloat height = self.navigationController.navigationBar.frame.size.height;
-    CGRect customToolbarFrame = self.toolbar.frame;
-    customToolbarFrame.size.height = height;
-    customToolbarFrame.origin.y = self.toolbar.superview.bounds.size.height - height;
-
-    CGRect webFrame = self.webView.frame;
-    webFrame.size.height = customToolbarFrame.origin.y;
-
-    [UIView animateWithDuration:duration animations:^{
-        self.toolbar.frame = customToolbarFrame;
-        self.webView.frame = webFrame;
-    }];
+    return YES;
 }
 
 - (BOOL)expectsWidePanel
@@ -138,82 +112,41 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     return YES;
 }
 
-- (UIBarButtonItem *)optionsButton
+
+#pragma mark - Document Helpers
+
+- (NSString *)documentPermalink
 {
-    if (_optionsButton) {
-        return _optionsButton;
-    }
-    UIImage *image = [UIImage imageNamed:@"icon-posts-share"];
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-    [button setImage:image forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(showLinkOptions) forControlEvents:UIControlEventTouchUpInside];
-    _optionsButton = [[UIBarButtonItem alloc] initWithCustomView:button];
-    _optionsButton.accessibilityLabel = NSLocalizedString(@"Share", @"Spoken accessibility label");
-    return _optionsButton;
-}
+    NSString *permaLink = self.webView.request.URL.absoluteString;
 
-
-#pragma mark - Helper Methods
-
-- (void)refreshButtonsAndLabels
-{
-    self.backButton.enabled     = self.webView.canGoBack;
-    self.forwardButton.enabled  = self.webView.canGoForward;
-    if (!_loading) {
-        self.title              = [self getDocumentTitle];
-    }
-}
-
-- (NSString *)getDocumentPermalink
-{
-    NSString *permaLink = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_permalink();"];
-    if ( permaLink == nil || [[permaLink trim] isEqualToString:@""]) {
-        // try to get the loaded URL within the webView
-        NSURLRequest *currentRequest = [self.webView request];
-        if ( currentRequest != nil) {
-            NSURL *currentURL = [currentRequest URL];
-            permaLink = currentURL.absoluteString;
-        }
-
-        //make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
-        if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
-            permaLink = WPMobileReaderURL;
-        }
+    // Make sure we are not sharing URL like this: http://en.wordpress.com/reader/mobile/?v=post-16841252-1828
+    if ([permaLink rangeOfString:@"wordpress.com/reader/mobile/"].location != NSNotFound) {
+        permaLink = WPMobileReaderURL;
     }
 
     return permaLink;
 }
 
-- (NSString *)getDocumentTitle
+- (NSString *)documentTitle
 {
-    NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"Reader2.get_article_title();"];
+    NSString *title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+
     if (title != nil && [[title trim] isEqualToString:@""] == NO) {
-        return [title trim];
-    }
-
-    //load the title from the document
-    title = [self.webView stringByEvaluatingJavaScriptFromString:@"document.title"];
-
-    if ( title != nil && [[title trim] isEqualToString:@""] == NO) {
         return title;
     }
 
-    NSString* permaLink = [self getDocumentPermalink];
-    return ( permaLink != nil) ? permaLink : @"";
+    return [self documentPermalink] ?: [NSString string];
 }
 
-- (void)refreshWebView
+
+#pragma mark - Helper Methods
+
+- (void)loadWebViewRequest
 {
     DDLogMethod()
 
     if (![ReachabilityUtils isInternetReachable]) {
-        __weak WPWebViewController *weakSelf = self;
-        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
-            [weakSelf refreshWebView];
-        }];
-
-        self.optionsButton.enabled = NO;
-        self.refreshButton.enabled = NO;
+        [self showNoInternetAlertView];
         return;
     }
 
@@ -232,7 +165,24 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 - (void)retryWithLogin
 {
     self.needsLogin = YES;
-    [self refreshWebView];
+    [self loadWebViewRequest];
+}
+
+- (void)refreshInterface
+{
+    self.backButton.enabled     = self.webView.canGoBack;
+    self.forwardButton.enabled  = self.webView.canGoForward;
+    self.optionsButton.enabled  = !self.loading;
+    
+    if (self.loading) {
+        return;
+    }
+    
+    self.title = [self documentTitle];
+    
+    if (self.refreshControl.refreshing) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
 - (void)applyMobileViewportHackIfNeeded
@@ -262,102 +212,63 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     [scrollView setContentOffset:bottomOffset animated:YES];
 }
 
+- (void)showNoInternetAlertView
+{
+    __typeof(self) __weak weakSelf = self;
+    [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
+        [weakSelf loadWebViewRequest];
+    }];
+}
+
 
 #pragma mark - Properties
 
 - (void)setUrl:(NSURL *)theURL
 {
-    DDLogMethod()
     if (_url == theURL) {
         return;
     }
     
     _url = theURL;
-    if (_url && self.webView) {
-        [self refreshWebView];
-    }
-}
-
-- (void)setLoading:(BOOL)loading
-{
-    if (_loading == loading) {
-        return;
-    }
-
-    [self refreshButtonsAndLabels];
-    
-    self.optionsButton.enabled = !loading;
-
-    if ([UIDevice isPad]) {
-        CGRect frame = self.loadingView.frame;
-        if (loading) {
-            frame.origin.y -= frame.size.height;
-            [self.activityIndicator startAnimating];
-        } else {
-            frame.origin.y += frame.size.height;
-            [self.activityIndicator stopAnimating];
-        }
-
-        [UIView animateWithDuration:0.2
-                         animations:^{self.loadingView.frame = frame;}];
-    }
-
-    if (self.refreshButton) {
-        self.refreshButton.enabled = !loading;
-        // If on iPhone (or iPod Touch) swap between spinner and refresh button
-        if ([UIDevice isPad] == NO) {
-            // Build a spinner button if we don't have one
-            if (self.spinnerButton == nil) {
-                UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc]
-                                                    initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
-                UIView *customView = [[UIView alloc] initWithFrame:CGRectMake(10.0f, 0.0f, 32.0f, 32.0f)];
-                [spinner setCenter:customView.center];
-
-                [customView addSubview:spinner];
-                [spinner startAnimating];
-
-                self.spinnerButton = [[UIBarButtonItem alloc] initWithCustomView:customView];
-
-            }
-            NSMutableArray *newToolbarItems = [NSMutableArray arrayWithArray:self.toolbar.items];
-            NSUInteger spinnerButtonIndex = [newToolbarItems indexOfObject:self.spinnerButton];
-            NSUInteger refreshButtonIndex = [newToolbarItems indexOfObject:self.refreshButton];
-            if (loading && refreshButtonIndex != NSNotFound) {
-                [newToolbarItems replaceObjectAtIndex:refreshButtonIndex withObject:self.spinnerButton];
-            } else if (spinnerButtonIndex != NSNotFound) {
-                [newToolbarItems replaceObjectAtIndex:spinnerButtonIndex withObject:self.refreshButton];
-            }
-            self.toolbar.items = newToolbarItems;
-        }
-    }
-    _loading = loading;
+    [self loadWebViewRequest];
 }
 
 
 #pragma mark - IBAction Methods
 
-- (IBAction)goBack
-{
-    if (self.webView.isLoading) {
-        [self.webView stopLoading];
-    }
-    [self.webView goBack];
-}
+//- (IBAction)goBack
+//{
+//    if (self.webView.isLoading) {
+//        [self.webView stopLoading];
+//    }
+//    [self.webView goBack];
+//}
+//
+//- (IBAction)goForward
+//{
+//    if (self.webView.isLoading) {
+//        [self.webView stopLoading];
+//    }
+//    [self.webView goForward];
+//}
 
-- (IBAction)goForward
+- (IBAction)reload
 {
-    if (self.webView.isLoading) {
-        [self.webView stopLoading];
+    if (![ReachabilityUtils isInternetReachable]) {
+        [self.refreshControl endRefreshing];
+        [self showNoInternetAlertView];
+        return;
     }
-    [self.webView goForward];
+    
+    [self.webView reload];
 }
 
 - (IBAction)showLinkOptions
 {
-    NSString* permaLink = [self getDocumentPermalink];
-    NSString *title = [self getDocumentTitle];
+    NSString* permaLink             = [self documentPermalink];
+    NSString *title                 = [self documentTitle];
+    NSMutableArray *activityItems   = [NSMutableArray array];
     
-    NSMutableArray *activityItems = [NSMutableArray array];
     if (title) {
         [activityItems addObject:title];
     }
@@ -384,21 +295,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     }
 }
 
-- (IBAction)reload
-{
-    if (![ReachabilityUtils isInternetReachable]) {
-        __weak WPWebViewController *weakSelf = self;
-        [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
-            [weakSelf refreshWebView];
-        }];
-        self.optionsButton.enabled = NO;
-        self.refreshButton.enabled = NO;
-        return;
-    }
-    self.loading = YES;
-    [self.webView reload];
-}
-
 
 #pragma mark - UIPopover Delegate
 
@@ -412,7 +308,7 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), request.URL.absoluteString);
+    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), request.URL.absoluteString);
 
     NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
     if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password)
@@ -424,30 +320,36 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     
     self.loading = YES;
     
+    [self refreshInterface];
+    
     return YES;
-}
-
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
-    DDLogInfo(@"%@ %@: %@", self, NSStringFromSelector(_cmd), error);
-    
-    if (self.loading && error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
-        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
-    }
-    
-    self.loading = NO;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ %@%@", self, NSStringFromSelector(_cmd), aWebView.request.URL);
+    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), aWebView.request.URL);
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+    
+    if (error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
+        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    }
+    
+    self.loading = NO;
+    
+    [self refreshInterface];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
     DDLogMethod()
+    
     self.loading = NO;
-
+    
+    [self refreshInterface];
     [self applyMobileViewportHackIfNeeded];
     [self scrollToBottomIfNeeded];
 }
