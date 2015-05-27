@@ -1,7 +1,8 @@
+osx_image: beta-xcode6.3
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
-xcode_sdk: iphonesimulator8.1
+xcode_sdk: iphonesimulator8.3
 notifications:
   email: true
 install:
