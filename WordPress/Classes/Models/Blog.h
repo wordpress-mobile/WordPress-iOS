@@ -85,6 +85,13 @@
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
+/**
+ Returns a human readable description for logging
+ 
+ Instead of inspecting the core data object, this returns select information, more
+ useful for support.
+ */
+- (NSString *)logDescription;
 
 /**
  Returns a REST API client if available
