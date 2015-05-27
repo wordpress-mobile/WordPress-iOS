@@ -32,10 +32,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
-@property (nonatomic, strong) IBOutlet UIToolbar                *toolbar;
-@property (nonatomic, strong) IBOutlet UIView                   *loadingView;
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView  *activityIndicator;
-@property (nonatomic, strong) IBOutlet UILabel                  *loadingLabel;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *backButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *forwardButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *refreshButton;
