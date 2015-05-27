@@ -379,7 +379,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     } else {
         extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
     }
-    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@", self.blogName, self.url, self.xmlrpc, extra];
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
 }
 
 #pragma mark - api accessor
