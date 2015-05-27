@@ -9,6 +9,7 @@
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
 
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -74,6 +75,12 @@
     [tgr1 setNumberOfTapsRequired:1];
     [tgr1 requireGestureRecognizerToFail:tgr2];
     [_scrollView addGestureRecognizer:tgr1];
+    
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
+    self.activityIndicatorView.hidesWhenStopped = YES;
+    self.activityIndicatorView.center = self.view.center;
+    [self.view addSubview:self.activityIndicatorView];
 
     [self loadImage];
 }
@@ -92,19 +99,21 @@
 
     } else if (self.url) {
         self.isLoadingImage = YES;
-
+        [self.activityIndicatorView startAnimating];
         __weak UIImageView *imageViewRef = _imageView;
         __weak UIScrollView *scrollViewRef = _scrollView;
         __weak WPImageViewController *selfRef = self;
         [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
                          placeholderImage:self.image
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                      [selfRef.activityIndicatorView stopAnimating];
                                       imageViewRef.image = image;
                                       [imageViewRef sizeToFit];
                                       scrollViewRef.contentSize = imageViewRef.image.size;
                                       [selfRef centerImage];
                                       selfRef.isLoadingImage = NO;
                                   } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
+                                      [selfRef.activityIndicatorView stopAnimating];
                                       DDLogError(@"Error loading image: %@", error);
                                       selfRef.isLoadingImage = NO;
                                   }];
