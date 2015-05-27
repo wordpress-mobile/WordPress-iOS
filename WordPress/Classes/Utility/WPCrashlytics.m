@@ -27,11 +27,10 @@
     self = [super init];
     
     if (self) {
-        [Crashlytics startWithAPIKey:apiKey];
         [[Crashlytics sharedInstance] setDelegate:self];
+        [Fabric with:@[CrashlyticsKit]];
         
         [self setCommonCrashlyticsParameters];
-        
         [self startObservingNotifications];
     }
     
@@ -72,15 +71,15 @@
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
     
     BOOL loggedIn = defaultAccount != nil;
-    [Crashlytics setUserName:defaultAccount.username];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"logged_in"];
-    [Crashlytics setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
-    [Crashlytics setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
+    [[Crashlytics sharedInstance] setUserName:defaultAccount.username];
+    [[Crashlytics sharedInstance] setObjectValue:@(loggedIn) forKey:@"logged_in"];
+    [[Crashlytics sharedInstance] setObjectValue:@(loggedIn) forKey:@"connected_to_dotcom"];
+    [[Crashlytics sharedInstance] setObjectValue:@([blogService blogCountForAllAccounts]) forKey:@"number_of_blogs"];
 }
 
 #pragma mark - CrashlyticsDelegate
 
-- (void)crashlytics:(Crashlytics *)crashlytics didDetectCrashDuringPreviousExecution:(id<CLSCrashReport>)crash
+- (void)crashlyticsDidDetectReportForLastExecution:(CLSReport *)report completionHandler:(void (^)(BOOL submit))completionHandler
 {
     DDLogMethod();
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -88,6 +87,9 @@
     crashCount += 1;
     [defaults setInteger:crashCount forKey:@"crashCount"];
     [defaults synchronize];
+    if (completionHandler) {
+        completionHandler(YES);
+    }
 }
 
 

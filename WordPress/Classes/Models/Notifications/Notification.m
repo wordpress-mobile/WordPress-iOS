@@ -303,6 +303,11 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
     return urls;
 }
 
+- (BOOL)isCommentApproved
+{
+    return [self isActionOn:NoteActionApproveKey] || ![self isActionEnabled:NoteActionApproveKey];
+}
+
 - (void)setActionOverrideValue:(NSNumber *)value forKey:(NSString *)key
 {
     if (!_actionsOverride) {
