@@ -16,6 +16,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @interface Blog ()
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, weak, readwrite) NSString *blavatarUrl;
+@property (nonatomic, strong, readwrite) JetpackState *jetpack;
 @end
 
 @implementation Blog
@@ -52,6 +53,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
+@synthesize jetpack = _jetpack;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -272,53 +274,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-- (void)dataSave
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-- (void)remove
-{
-    DDLogInfo(@"<Blog:%@> remove", self.hostURL);
-    [self.api cancelAllHTTPOperations];
-    [self.managedObjectContext performBlock:^{
-        WPAccount *account = self.account;
-
-        NSManagedObjectContext *context = [self managedObjectContext];
-        [context deleteObject:self];
-        
-        [self removeSelfHostedAccountIfNeeded:account
-                                      context:context];
-        
-        [self dataSave];
-        [WPAnalytics refreshMetadata];
-    }];
-}
-
-/**
- *  @brief      For self hosted blogs, removes the account unless there are other associated blogs.
- *
- *  @param      account     The account to remove, if it matches the criteria.  Cannot be nil.
- *  @param      context     The context to use for the changes.  Cannot be nil.
- */
-- (void)removeSelfHostedAccountIfNeeded:(WPAccount*)account
-                                context:(NSManagedObjectContext*)context
-{
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
-    
-    BOOL isWpComAccount = account && !account.isWpcom;
-    
-    if (isWpComAccount) {
-        BOOL accountOnlyHasThisBlog = ([account.blogs count] == 1
-                                       && [[account.blogs anyObject] isEqual:self]);
-        
-        if (accountOnlyHasThisBlog) {
-            [context deleteObject:account];
-        }
-    }
-}
-
 - (void)setXmlrpc:(NSString *)xmlrpc
 {
     [self willChangeValueForKey:@"xmlrpc"];
@@ -372,7 +327,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)authToken
 {
-    return self.account.authToken;
+    return [self isWPcom] ? self.account.authToken : self.jetpackAccount.authToken;
 }
 
 - (BOOL)supportsFeaturedImages
@@ -387,7 +342,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSNumber *)dotComID
 {
-    return self.blogID;
+    return [self isWPcom] ? self.blogID : self.jetpack.siteID;
 }
 
 - (NSSet *)allowedFileTypes
@@ -398,6 +353,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
     }
     
     return [NSSet setWithArray:allowedFileTypes];
+}
+
+- (void)setOptions:(NSDictionary *)options
+{
+    [self willChangeValueForKey:@"options"];
+    [self setPrimitiveValue:options forKey:@"options"];
+    // Invalidate the Jetpack state since it's constructed from options
+    self.jetpack = nil;
+    [self didChangeValueForKey:@"options"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingJetpack
+{
+    return [NSSet setWithObject:@"options"];
 }
 
 #pragma mark - api accessor
@@ -423,6 +392,28 @@ static NSInteger const ImageSizeLargeHeight = 480;
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+#pragma mark - Jetpack
+
+- (JetpackState *)jetpack
+{
+    if (_jetpack) {
+        return _jetpack;
+    }
+    if ([self.options count] == 0) {
+        return nil;
+    }
+    _jetpack = [JetpackState new];
+    _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
+    _jetpack.version = [self getOptionValue:@"jetpack_version"];
+    if (self.jetpackAccount.username) {
+        _jetpack.connectedUsername = self.jetpackAccount.username;
+    } else {
+        _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
+    }
+    _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
+    return _jetpack;
 }
 
 - (BOOL)jetpackRESTSupported

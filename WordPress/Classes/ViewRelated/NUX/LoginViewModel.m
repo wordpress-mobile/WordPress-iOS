@@ -187,6 +187,8 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (void)requestOneTimeCode
 {
+    NSString *message = NSLocalizedString(@"SMS Sent", @"One Time Code has been sent via SMS");
+    [self.presenter showAlertWithMessage:message];
     [self.loginFacade requestOneTimeCodeWithLoginFields:[self loginFields]];
 }
 
@@ -512,10 +514,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
                                            options:(NSDictionary *)options
 {
     WPAccount *account = [self.accountServiceFacade createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-    [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options needsJetpack:^(NSNumber *blogId){
-        [self.presenter dismissLoginMessage];
-        [self.presenter showJetpackAuthenticationForBlog:blogId];
-    } finishedSync:^{
+    [self.blogSyncFacade syncBlogForAccount:account username:username password:password xmlrpc:xmlrpc options:options finishedSync:^{
         // once blogs for the accounts are synced, we want to update account details for it
         [self.accountServiceFacade updateUserDetailsForAccount:account success:nil failure:nil];
         [self finishedLogin];

@@ -7,6 +7,7 @@
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
+#import "Blog.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
@@ -72,7 +73,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     [super viewDidLoad];
 
     if (self.blog) {
-        self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
+        self.navigationItem.title = NSLocalizedString(@"Settings", @"");
 
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -301,8 +302,8 @@ static CGFloat const EditSiteRowHeight = 48.0;
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
 
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
-        if (self.blog.jetpackUsername) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpackUsername];
+        if (self.blog.jetpack.connectedUsername) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpack.connectedUsername];
         } else {
             cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
         }
@@ -421,7 +422,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return self.blog &&
-        ([self.blog isWPcom] || [self.blog hasJetpack]) &&
+        ([self.blog isWPcom] || [self.blog.jetpack isConnected]) &&
         [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
@@ -433,7 +434,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
     // Save the change
     self.blog.geolocationEnabled = self.geolocationEnabled;
-    [self.blog dataSave];
+    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -445,7 +446,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
         NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
         NSMutableDictionary *updatedPreference;
 
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSUInteger i = 0; i < [mutedBlogsArray count]; i++) {
             updatedPreference = [mutedBlogsArray[i] mutableCopy];
             NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
@@ -649,7 +650,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 
     if (self.blog) {
         self.blog.geolocationEnabled = self.geolocationEnabled;
-        [self.blog dataSave];
+        [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
     }
     if (self.blog == nil || self.blog.username == nil) {
         [self validateUrl];
@@ -708,7 +709,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
     if (self.notificationPreferences) {
         NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSDictionary *currentBlog in mutedBlogsArray ){
             NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
             if ([blogID intValue] == [currentBlogID intValue]) {
