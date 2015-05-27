@@ -493,6 +493,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
+        blog.isJetpack = remoteBlog.jetpack;
         
         // If non-WPcom then always default or if first from remote (assuming .com)
         if (!account.isWpcom || [blogs indexOfObject:remoteBlog] == 0) {

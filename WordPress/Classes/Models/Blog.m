@@ -48,6 +48,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic account;
 @dynamic jetpackAccount;
 @dynamic isMultiAuthor;
+@dynamic isJetpack;
 @synthesize api = _api;
 @synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
@@ -393,9 +394,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (BOOL)isHostedAtWPcom
 {
-    // FIXME: cheating, we need to add a jetpack property
-    // and set it when we sync blogs
-    return self.account.isWpcom && !self.jetpack.siteID;
+    return self.account.isWpcom && !self.isJetpack;
 }
 
 - (NSNumber *)dotComID
