@@ -189,6 +189,7 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 @protocol LoginViewModelPresenter
 
 - (void)showActivityIndicator:(BOOL)show;
+- (void)showAlertWithMessage:(NSString *)message;
 
 - (void)setUsernameAlpha:(CGFloat)alpha;
 - (void)setUsernameEnabled:(BOOL)enabled;
@@ -225,7 +226,6 @@ typedef void (^OverlayViewCallback)(WPWalkthroughOverlayView *);
 - (void)displayLoginMessage:(NSString *)message;
 - (void)dismissLoginMessage;
 - (void)dismissLoginView;
-- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId;
 - (void)displayOverlayViewWithMessage:(NSString *)message firstButtonText:(NSString *)firstButtonText firstButtonCallback:(OverlayViewCallback)firstButtonCallback secondButtonText:(NSString *)secondButtonText secondButtonCallback:(OverlayViewCallback)secondButtonCallback accessibilityIdentifier:(NSString *)accessibilityIdentifier;
 - (void)displayHelpViewControllerWithAnimation:(BOOL)animated;
 - (void)displayHelpshiftConversationView;

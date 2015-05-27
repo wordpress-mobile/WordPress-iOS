@@ -15,9 +15,6 @@
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:100 preserveWords:NO] isEqualToString:sampleText], @"Incorrect Result.");
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:0 preserveWords:NO] isEqualToString:@""], @"Incorrect Result.");
     
-    NSString *foreignLanguage = @"わたしはいぬがすきです";
-    XCTAssertTrue([[foreignLanguage stringByEllipsizingWithMaxLength:4 preserveWords:YES] isEqualToString:@"わたし…"], @"Incorrect Result.");
-    
     NSString *url = @"http://www.wordpress.com";
     XCTAssertTrue([[url stringByEllipsizingWithMaxLength:8 preserveWords:YES] isEqualToString:@"http://…"], @"Incorrect Result.");
     

@@ -30,6 +30,7 @@
 
 NSString *const TracksEventPropertyButtonKey = @"button";
 NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
+NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 @implementation WPAnalyticsTrackerAutomatticTracks
 
@@ -65,21 +66,16 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 
 - (void)beginSession
 {
-    NSString *anonymousID = [[NSUserDefaults standardUserDefaults] stringForKey:@"TracksAnonymousUserID"];
-    if (!anonymousID) {
-        anonymousID = [[NSUUID UUID] UUIDString];
-        [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:@"TracksAnonymousUserID"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }
-    
-    self.anonymousID = anonymousID;
-    
+    [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
+
     [self refreshMetadata];
 }
 
 - (void)endSession
 {
-    
+    self.anonymousID = nil;
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:TracksUserDefaultsAnonymousUserIDKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)refreshMetadata
@@ -126,8 +122,6 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
     
-    [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-    
     if (dotcom_user == YES && [username length] > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
@@ -146,6 +140,22 @@ NSString *const TracksEventPropertyMenuItemKey = @"menu_item";
 
 
 #pragma mark - Private methods
+
+- (NSString *)anonymousID
+{
+    if (_anonymousID == nil || _anonymousID.length == 0) {
+        NSString *anonymousID = [[NSUserDefaults standardUserDefaults] stringForKey:TracksUserDefaultsAnonymousUserIDKey];
+        if (anonymousID == nil) {
+            anonymousID = [[NSUUID UUID] UUIDString];
+            [[NSUserDefaults standardUserDefaults] setObject:anonymousID forKey:TracksUserDefaultsAnonymousUserIDKey];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
+        
+        _anonymousID = anonymousID;
+    }
+    
+    return _anonymousID;
+}
 
 - (TracksEventPair *)eventPairForStat:(WPAnalyticsStat)stat
 {

@@ -22,7 +22,6 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "Blog+Jetpack.h"
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
@@ -35,6 +34,8 @@
 #import "WordPress-Swift.h"
 
 #import "LoginViewModel.h"
+#import "SVProgressHUD.h"
+
 
 #pragma mark ====================================================================================
 #pragma mark Private
@@ -88,7 +89,7 @@ static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
-static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
+static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)dealloc
 {
@@ -632,27 +633,6 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
     [self.navigationController pushViewController:createAccountViewController animated:YES];
 }
 
-- (void)showJetpackAuthenticationForBlog:(NSNumber *)blogId
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService blogByBlogId:blogId];
-    NSAssert(blog != nil, @"blog should not be nil here");
-    JetpackSettingsViewController *jetpackSettingsViewController = [[JetpackSettingsViewController alloc] initWithBlog:blog];
-    jetpackSettingsViewController.canBeSkipped = YES;
-    [jetpackSettingsViewController setCompletionBlock:^(BOOL didAuthenticate) {
-        if (didAuthenticate) {
-            [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
-            [WPAnalytics refreshMetadata];
-        } else {
-            [WPAnalytics track:WPAnalyticsStatSkippedConnectingToJetpack];
-        }
-
-        [self dismiss];
-    }];
-    [self.navigationController pushViewController:jetpackSettingsViewController animated:YES];
-}
-
 - (void)showHelpViewController:(BOOL)animated
 {
     SupportViewController *supportViewController = [[SupportViewController alloc] init];
@@ -851,6 +831,12 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 2;
 - (void)showActivityIndicator:(BOOL)show
 {
     [self.signInButton showActivityIndicator:show];
+}
+
+- (void)showAlertWithMessage:(NSString *)message
+{
+    NSParameterAssert(message);
+    [SVProgressHUD showSuccessWithStatus:message];
 }
 
 - (void)setUsernameAlpha:(CGFloat)alpha

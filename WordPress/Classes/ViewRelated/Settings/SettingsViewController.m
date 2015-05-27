@@ -17,7 +17,6 @@
 #import "WordPressComApi.h"
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
-#import "Blog+Jetpack.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"
