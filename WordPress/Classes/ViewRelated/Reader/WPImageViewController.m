@@ -134,11 +134,6 @@
     [self centerImage];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 #pragma mark - Instance Methods
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
