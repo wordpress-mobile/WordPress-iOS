@@ -17,7 +17,7 @@
 
 #pragma mark - LifeCycle Methods
 
-- (id)initWithImage:(UIImage *)image
+- (instancetype)initWithImage:(UIImage *)image
 {
     self = [self init];
     if (self) {
@@ -27,7 +27,7 @@
     return self;
 }
 
-- (id)initWithURL:(NSURL *)url
+- (instancetype)initWithURL:(NSURL *)url
 {
     self = [self init];
     if (self) {
@@ -37,7 +37,7 @@
     return self;
 }
 
-- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url
+- (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
 {
     self = [self init];
     if (self) {
