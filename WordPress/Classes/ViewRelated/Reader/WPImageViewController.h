@@ -3,9 +3,6 @@
 @interface WPImageViewController : UIViewController
 
 @property (nonatomic, strong) NSURL *url;
-@property (nonatomic) BOOL isLoadingImage;
-@property (nonatomic, strong) UIScrollView *scrollView;
-@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *image;
 
 - (instancetype)initWithImage:(UIImage *)image;
