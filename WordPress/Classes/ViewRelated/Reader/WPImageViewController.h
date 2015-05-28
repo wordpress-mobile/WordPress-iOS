@@ -8,9 +8,9 @@
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *image;
 
-- (id)initWithImage:(UIImage *)image;
-- (id)initWithURL:(NSURL *)url;
-- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url;
+- (instancetype)initWithImage:(UIImage *)image;
+- (instancetype)initWithURL:(NSURL *)url;
+- (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url;
 - (void)loadImage;
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated;
 - (void)centerImage;
