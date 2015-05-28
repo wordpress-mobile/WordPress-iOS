@@ -10,7 +10,7 @@
 
 - (instancetype)initWithImage:(UIImage *)image;
 - (instancetype)initWithURL:(NSURL *)url;
-- (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url;
+- (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url NS_DESIGNATED_INITIALIZER;
 - (void)loadImage;
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated;
 - (void)centerImage;
