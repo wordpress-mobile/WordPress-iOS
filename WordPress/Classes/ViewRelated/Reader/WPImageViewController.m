@@ -5,9 +5,6 @@
 
 @interface WPImageViewController ()<UIScrollViewDelegate>
 
-- (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
-- (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
-
 @property (nonatomic) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
