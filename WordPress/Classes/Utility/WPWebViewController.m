@@ -69,9 +69,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 //    NSAssert(self.forwardButton,    @"Missing Outlet!");
     NSAssert(self.optionsButton,    @"Missing Outlet!");
     
-    //
-    self.progressView.progress = 0.1;
-    
     // Initialize Strings
     self.title                              = NSLocalizedString(@"Loading...", @"");
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back", @"Spoken accessibility label");
@@ -308,8 +305,8 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), request.URL.absoluteString);
-
+    DDLogInfo(@"%@ Should Start Loading URL: %@", NSStringFromClass([self class]), request.URL.absoluteString);
+    
     NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
     if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password)
     {
@@ -319,7 +316,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     }
     
     self.loading = YES;
-    
     [self refreshInterface];
     
     return YES;
@@ -327,12 +323,12 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), aWebView.request.URL);
+    DDLogInfo(@"%@ Started Loading URL: %@", NSStringFromClass([self class]), aWebView.request.URL);
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    DDLogInfo(@"%@.%@ :: %@", NSStringFromClass([self class]), NSStringFromSelector(_cmd), error);
+    DDLogInfo(@"%@ Error Loading URL: %@", NSStringFromClass([self class]), error);
     
     if (error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
         [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
@@ -345,10 +341,10 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
-    DDLogMethod()
-    
+    DDLogInfo(@"%@ Finished Loading URL: %@ :: %d", NSStringFromClass([self class]), aWebView.request.URL);
+
     self.loading = NO;
-    
+
     [self refreshInterface];
     [self applyMobileViewportHackIfNeeded];
     [self scrollToBottomIfNeeded];
