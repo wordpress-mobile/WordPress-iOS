@@ -22,13 +22,12 @@
 
 - (id)initWithPost:(AbstractPost *)post
 {
-    self = [super init];
+    self = [super initWithImage:nil andURL:[NSURL URLWithString:post.featuredImage.remoteURL]];
     if (self) {
         self.title = NSLocalizedString(@"Featured Image", @"");
         self.post = post;
         self.extendedLayoutIncludesOpaqueBars = YES;
         self.automaticallyAdjustsScrollViewInsets = NO;
-        self.url = [NSURL URLWithString:self.post.featuredImage.remoteURL];
     }
     return self;
 }
