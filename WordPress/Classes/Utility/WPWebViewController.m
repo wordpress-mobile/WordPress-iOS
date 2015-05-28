@@ -17,12 +17,13 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
-//  Error Codes:
-//   -999: Canceled AJAX request
-//   102:  Frame load interrupted: canceled wp-login redirect to make the POST
-//
-static NSInteger const WPWebViewErrorAjaxCancelled         = -999;
-static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
+static CGFloat const WPWebViewProgressInitial               = 0.1f;
+static CGFloat const WPWebViewProgressFinal                 = 1.0f;
+
+static CGFloat const WPWebViewAnimationShortDuration        = 0.1f;
+static CGFloat const WPWebViewAnimationLongDuration         = 0.4f;
+static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0f;
+static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 
 #pragma mark ====================================================================================
@@ -69,24 +70,26 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 //    NSAssert(self.forwardButton,    @"Missing Outlet!");
     NSAssert(self.optionsButton,    @"Missing Outlet!");
 
-    // Initialize TitleView
-    self.title                              = NSLocalizedString(@"Loading...", @"");
+    // TitleView
     self.titleView                          = [NavigationTitleView new];
+    self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
+    self.titleView.subtitleLabel.text       = self.url.host;
+    self.navigationItem.titleView           = self.titleView;
     
-    // Initialize Strings
-    self.title                              = NSLocalizedString(@"Loading...", @"");
-    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back", @"Spoken accessibility label");
+    // Buttons
+    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Spoken accessibility label");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Spoken accessibility label");
-    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share", @"Spoken accessibility label");
+    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
 
-    self.webView.scalesPageToFit            = YES;
+    // RefreshControl
     self.refreshControl                     = [[UIRefreshControl alloc] init];
-    
-    // Refresh Control: Hook Up!
     [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    
+    // WebView
+    self.webView.scalesPageToFit            = YES;
     [self.webView.scrollView addSubview:self.refreshControl];
-
-    // Share Button
+    
+    // Share
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
     
     // Fire away!
@@ -168,8 +171,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
         return;
     }
     
-    // NavigationTitleView should only be visible when we've got strings to populate it!
-    self.navigationItem.titleView       = self.titleView;
     self.titleView.titleLabel.text      = [self documentTitle];
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
     
@@ -301,44 +302,68 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
-    DDLogInfo(@"%@ Should Start Loading URL: %@", NSStringFromClass([self class]), request.URL.absoluteString);
+    DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
     
     NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
-    if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password)
-    {
+    if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
         [self retryWithLogin];
         return NO;
     }
-    
-    self.loading = YES;
-    [self refreshInterface];
+
+    //  Note:
+    //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
+    //  we're in a "loading" state just for the Top Level request.
+    //
+    if ([request.mainDocumentURL isEqual:request.URL]) {
+        self.loading = YES;
+        [self refreshInterface];
+    }
     
     return YES;
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ Started Loading URL: %@", NSStringFromClass([self class]), aWebView.request.URL);
+    DDLogInfo(@"%@ Started Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
+    
+    // Bypass if we're not loading the "Main Document"
+    if (!self.loading) {
+        return;
+    }
+    
+    [self startProgress];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
 {
-    DDLogInfo(@"%@ Error Loading URL: %@", NSStringFromClass([self class]), error);
+    DDLogInfo(@"%@ Error Loading [%@]", NSStringFromClass([self class]), error);
     
-    if (error.code != WPWebViewErrorAjaxCancelled && error.code != WPWebViewErrorFrameLoadInterrupted) {
-        [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
+    // Bypass if we're not loading the "Main Document"
+    if (!self.loading) {
+        return;
     }
     
     self.loading = NO;
+    
+    [self finishProgress];
     [self refreshInterface];
+    
+    [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ Finished Loading URL: %@", NSStringFromClass([self class]), aWebView.request.URL);
-
+    DDLogInfo(@"%@ Finished Loading [%@]", NSStringFromClass([self class]), aWebView.request.URL);
+    
+    // Bypass if we're not loading the "Main Document"
+    if (!self.loading) {
+        return;
+    }
+    
     self.loading = NO;
+    
+    [self finishProgress];
     [self refreshInterface];
     [self applyMobileViewportHackIfNeeded];
     [self scrollToBottomIfNeeded];
@@ -349,17 +374,19 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)startProgress
 {
-    
-}
-
-- (void)incrementProgress
-{
-    
+    self.progressView.alpha     = WPWebViewAnimationAlphaVisible;
+    self.progressView.progress  = WPWebViewProgressInitial;
 }
 
 - (void)finishProgress
 {
-    [self.progressView setProgress:1.0f animated:YES];
+    [UIView animateWithDuration:WPWebViewAnimationLongDuration animations:^{
+        self.progressView.progress = WPWebViewProgressFinal;
+    } completion:^(BOOL finished) {
+       [UIView animateWithDuration:WPWebViewAnimationShortDuration animations:^{
+           self.progressView.alpha = WPWebViewAnimationAlphaHidden;
+       }];
+    }];
 }
 
 

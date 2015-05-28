@@ -25,7 +25,7 @@
                         <outlet property="delegate" destination="-1" id="22"/>
                     </connections>
                 </webView>
-                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-2F-0M7">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-2F-0M7">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="2.5"/>
                     <color key="progressTintColor" red="0.023529411764705882" green="0.23921568627450981" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                 </progressView>
