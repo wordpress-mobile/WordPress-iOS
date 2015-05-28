@@ -1,17 +1,3 @@
-// Edit Site contents:
-//
-// + Blog Title
-// | URL
-// | Username
-//
-// + Settings
-// | Geotagging
-// | Push Notifications (WP.com only)
-//
-// + Jetpack stats (self hosted only)
-// | Configure
-
-
 #import <WordPressApi/WordPressApi.h>
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
@@ -50,7 +36,7 @@ static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
-NSInteger const URLMinimumLabelWidth = 30;
+NSInteger const EditSiteURLMinimumLabelWidth = 30;
 NSInteger const EditSiteSectionCount = 2;
 NSInteger const EditSiteSectionCountSelfHosted = 3;
 
@@ -256,7 +242,7 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
                 self.urlTextField.text = self.blog.url;
 
                 // Make a margin exception for URLs since they're so long
-                cell.minimumLabelWidth = URLMinimumLabelWidth;
+                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
             } else {
                 self.urlTextField.text = @"";
             }
