@@ -30,6 +30,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)dealloc
 {
+    _resultsController.delegate = nil;
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
 }
