@@ -36,6 +36,7 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
 @property (nonatomic,   weak) IBOutlet UIBarButtonItem          *forwardButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
+@property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
@@ -60,7 +61,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
     [super viewDidLoad];
 
     NSAssert(self.webView,          @"Missing Outlet!");
@@ -68,6 +68,10 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 //    NSAssert(self.backButton,       @"Missing Outlet!");
 //    NSAssert(self.forwardButton,    @"Missing Outlet!");
     NSAssert(self.optionsButton,    @"Missing Outlet!");
+
+    // Initialize TitleView
+    self.title                              = NSLocalizedString(@"Loading...", @"");
+    self.titleView                          = [NavigationTitleView new];
     
     // Initialize Strings
     self.title                              = NSLocalizedString(@"Loading...", @"");
@@ -82,21 +86,11 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     [self.webView.scrollView addSubview:self.refreshControl];
 
+    // Share Button
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
     
+    // Fire away!
     [self loadWebViewRequest];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    DDLogMethod()
-    [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    DDLogMethod()
-    [super viewWillDisappear:animated];
 }
 
 - (BOOL)hidesBottomBarWhenPushed
@@ -140,8 +134,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)loadWebViewRequest
 {
-    DDLogMethod()
-
     if (![ReachabilityUtils isInternetReachable]) {
         [self showNoInternetAlertView];
         return;
@@ -175,7 +167,10 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
         return;
     }
     
-    self.title = [self documentTitle];
+    // NavigationTitleView should only be visible when we've got strings to populate it!
+    self.navigationItem.titleView       = self.titleView;
+    self.titleView.titleLabel.text      = [self documentTitle];
+    self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
     
     if (self.refreshControl.refreshing) {
         [self.refreshControl endRefreshing];
@@ -335,19 +330,38 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
     }
     
     self.loading = NO;
-    
     [self refreshInterface];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)aWebView
 {
-    DDLogInfo(@"%@ Finished Loading URL: %@ :: %d", NSStringFromClass([self class]), aWebView.request.URL);
+    DDLogInfo(@"%@ Finished Loading URL: %@", NSStringFromClass([self class]), aWebView.request.URL);
 
+    if (aWebView.isLoading == false) {
+        NSLog(@"Finished Loading for real");
+    }
     self.loading = NO;
-
     [self refreshInterface];
     [self applyMobileViewportHackIfNeeded];
     [self scrollToBottomIfNeeded];
+}
+
+
+#pragma mark - Progress Bar Helpers
+
+- (void)startProgress
+{
+    
+}
+
+- (void)incrementProgress
+{
+    
+}
+
+- (void)finishProgress
+{
+    [self.progressView setProgress:1.0f animated:YES];
 }
 
 
