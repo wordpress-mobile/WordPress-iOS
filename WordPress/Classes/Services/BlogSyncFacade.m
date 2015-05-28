@@ -3,7 +3,6 @@
 #import "BlogService.h"
 #import "AccountService.h"
 #import "Blog.h"
-#import "Blog+Jetpack.h"
 
 #import <NSString+XMLExtensions.h>
 
@@ -45,7 +44,7 @@
     }
     blog.xmlrpc = xmlrpc;
     blog.options = options;
-    [blog dataSave];
+    [[ContextManager sharedInstance] saveContext:context];
     [blogService syncBlog:blog success:nil failure:nil];
 
     if (blog.jetpack.isInstalled) {

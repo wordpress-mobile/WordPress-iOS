@@ -10,7 +10,6 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "Blog+Jetpack.h"
 
 SpecBegin(WPAnalyticsTrackerMixpanel)
 

@@ -516,8 +516,10 @@ const NSInteger PostServiceNumberToFetch = 40;
 }
 
 - (AbstractPost *)findPostWithID:(NSNumber *)postID inBlog:(Blog *)blog {
-    NSSet *posts = [blog.posts filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"original = NULL AND postID = %@", postID]];
-    return [posts anyObject];
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([AbstractPost class])];
+    request.predicate = [NSPredicate predicateWithFormat:@"blog = %@ AND original = NULL AND postID = %@", blog, postID];
+    NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return [posts firstObject];
 }
 
 - (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost {
