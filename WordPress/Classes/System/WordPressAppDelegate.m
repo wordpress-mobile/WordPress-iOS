@@ -34,8 +34,10 @@
 
 // Data services
 #import "BlogService.h"
+#import "MediaService.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
+
 
 // Files
 #import "WPAppFilesManager.h"
@@ -159,7 +161,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
-        [WPAppFilesManager cleanUnusedMediaFileFromTmpDir];
+        [MediaService cleanUnusedMediaFileFromTmpDir];
 
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
@@ -651,7 +653,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
-
+    
     NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
     
     if (apiKey) {

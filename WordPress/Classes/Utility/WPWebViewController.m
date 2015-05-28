@@ -159,9 +159,10 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 
 - (void)refreshInterface
 {
-    self.backButton.enabled     = self.webView.canGoBack;
-    self.forwardButton.enabled  = self.webView.canGoForward;
-    self.optionsButton.enabled  = !self.loading;
+    self.backButton.enabled             = self.webView.canGoBack;
+    self.forwardButton.enabled          = self.webView.canGoForward;
+    self.optionsButton.enabled          = !self.loading;
+    self.refreshControl.enabled         = !self.loading;
     
     if (self.loading) {
         return;
@@ -337,9 +338,6 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted  = 102;
 {
     DDLogInfo(@"%@ Finished Loading URL: %@", NSStringFromClass([self class]), aWebView.request.URL);
 
-    if (aWebView.isLoading == false) {
-        NSLog(@"Finished Loading for real");
-    }
     self.loading = NO;
     [self refreshInterface];
     [self applyMobileViewportHackIfNeeded];
