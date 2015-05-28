@@ -8,6 +8,7 @@
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
 
+
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
@@ -19,27 +20,17 @@
 
 - (instancetype)initWithImage:(UIImage *)image
 {
-    self = [self init];
-    if (self) {
-        _image = [image copy];
-    }
-
-    return self;
+    return [self initWithImage:image andURL:nil];
 }
 
 - (instancetype)initWithURL:(NSURL *)url
 {
-    self = [self init];
-    if (self) {
-        _url = url;
-    }
-
-    return self;
+    return [self initWithImage:nil andURL: url];
 }
 
 - (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
 {
-    self = [self init];
+    self = [super init];
     if (self) {
         _image = [image copy];
         _url = url;
