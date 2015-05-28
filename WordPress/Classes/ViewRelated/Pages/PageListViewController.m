@@ -399,6 +399,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
                     failure:^(NSError *error) {
                         apost.status = previousStatus;
                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                        [WPError showXMLRPCErrorAlert:error];
                     }];
 }
 
