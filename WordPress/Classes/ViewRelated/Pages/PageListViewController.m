@@ -7,8 +7,9 @@
 #import "PageListTableViewCell.h"
 #import "WPLegacyEditPageViewController.h"
 
-static NSString * const PagesViewControllerRestorationKey = @"PagesViewControllerRestorationKey";
+static const CGFloat PageSectionHeaderHeight = 24.0;
 static const CGFloat PageCellEstimatedRowHeight = 44.0;
+static NSString * const PagesViewControllerRestorationKey = @"PagesViewControllerRestorationKey";
 static NSString * const PageCellIdentifier = @"PageCellIdentifier";
 static NSString * const PageCellNibName = @"PageListTableViewCell";
 static NSString * const RestorePageCellIdentifier = @"RestorePageCellIdentifier";
@@ -267,7 +268,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 24.0;
+    return PageSectionHeaderHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -280,8 +281,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     NSString *nibName = NSStringFromClass([PageListSectionHeaderView class]);
     PageListSectionHeaderView *headerView = [[[NSBundle mainBundle] loadNibNamed:nibName owner:nil options:nil] firstObject];
-//    NSInteger index = [sectionInfo.name integerValue];
-//    NSString *title = [NSDate conciseStringFromIndex:index];
     [headerView setTite:sectionInfo.name];
 
     return headerView;
