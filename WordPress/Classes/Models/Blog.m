@@ -364,8 +364,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
             return [self isHostedAtWPcom];
         case BlogFeaturePushNotifications:
             return [self supportsPushNotifications];
-        default:
-            return NO;
     }
 }
 
