@@ -8,7 +8,9 @@
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
 
-
+@property (nonatomic) BOOL isLoadingImage;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
