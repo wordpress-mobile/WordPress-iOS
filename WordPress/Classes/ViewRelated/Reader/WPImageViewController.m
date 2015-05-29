@@ -157,8 +157,8 @@ static CGFloat const MinimumZoomScale = 0.1;
 
 - (void)centerImage
 {
-    CGFloat scaleWidth = self.scrollView.frame.size.width / self.imageView.image.size.width;
-    CGFloat scaleHeight = self.scrollView.frame.size.height / self.imageView.image.size.height;
+    CGFloat scaleWidth = CGRectGetWidth(self.scrollView.frame) / self.imageView.image.size.width;
+    CGFloat scaleHeight = CGRectGetHeight(self.scrollView.frame) / self.imageView.image.size.height;
 
     self.scrollView.minimumZoomScale = MIN(scaleWidth, scaleHeight);
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
