@@ -268,6 +268,7 @@
 {
     NSParameterAssert(post.title != nil);
     NSParameterAssert(post.content != nil);
+    BOOL existingPost = ([post.postID longLongValue] > 0);
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     if (post.title) {
@@ -283,6 +284,8 @@
 
     if (post.date) {
         parameters[@"date"] = [post.date WordPressComJSONString];
+    } else if (existingPost) {
+        parameters[@"date"] = [[NSDate date] WordPressComJSONString];
     }
     if (post.excerpt) {
         parameters[@"excerpt"] = post.excerpt;
