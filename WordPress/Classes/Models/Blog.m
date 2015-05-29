@@ -369,6 +369,19 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSSet setWithObject:@"options"];
 }
 
+- (NSString *)logDescription
+{
+    NSString *extra = @"";
+    if (self.account.isWpcom) {
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account.isWpcom ? self.account.username : @"NO", self.blogID];
+    } else if (self.jetpackAccount) {
+        extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
+    } else {
+        extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
+    }
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
+}
+
 #pragma mark - api accessor
 
 - (WPXMLRPCClient *)api

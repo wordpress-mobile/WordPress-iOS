@@ -182,9 +182,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     for (int i = 0; i < allBlogs.count; i++) {
         Blog *blog = allBlogs[i];
 
-        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i-Name", i+1]: blog.blogName,
-                                   [NSString stringWithFormat:@"blog-%i-ID", i+1]: blog.blogID,
-                                   [NSString stringWithFormat:@"blog-%i-URL", i+1]: blog.url};
+        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i", i+1]: [blog logDescription]};
 
         [metaData addEntriesFromDictionary:blogData];
     }
