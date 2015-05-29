@@ -171,8 +171,8 @@
 
 - (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
 {
-    WPWebViewController *controller = [[WPWebViewController alloc] initWithNibName:nil bundle:nil];
-    controller.url = [NSURL URLWithString:self.post.blogURL];
+    NSURL *targetURL = [NSURL URLWithString:self.post.blogURL];
+    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:targetURL];
     [self.navigationController pushViewController:controller animated:YES];
 }
 

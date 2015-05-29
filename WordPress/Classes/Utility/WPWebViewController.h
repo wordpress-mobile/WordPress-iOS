@@ -11,32 +11,32 @@
 /**
  *	@brief		Represents the Endpoint URL to render
  */
-@property (nonatomic, strong, readonly) NSURL   *url;
+@property (nonatomic, strong) NSURL     *url;
 
 /**
  *	@brief		Login URL that should be used to authenticate the user.
  */
-@property (nonatomic, strong) NSURL             *wpLoginURL;
+@property (nonatomic, strong) NSURL     *wpLoginURL;
 
 /**
  *	@brief		Username. Optional, will be used in case the endpoint requires authentication.
  */
-@property (nonatomic, strong) NSString          *username;
+@property (nonatomic, strong) NSString  *username;
 
 /**
  *	@brief		Password. Optional, will be used in case the endpoint requires authentication.
  */
-@property (nonatomic, strong) NSString          *password;
+@property (nonatomic, strong) NSString  *password;
 
 /**
  *	@brief		Bearer Token. Optional, will be used in case the endpoint requires authentication.
  */
-@property (nonatomic, strong) NSString          *authToken;
+@property (nonatomic, strong) NSString  *authToken;
 
 /**
  *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
  */
-@property (nonatomic, assign) BOOL              shouldScrollToBottom;
+@property (nonatomic, assign) BOOL      shouldScrollToBottom;
 
 /**
  *	@brief      Helper method to initialize a WebViewController Instance
