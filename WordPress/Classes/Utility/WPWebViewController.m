@@ -40,7 +40,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
-@property (nonatomic, strong) NSURL                             *url;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
@@ -83,7 +82,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
 
     // RefreshControl
-    self.refreshControl                     = [[UIRefreshControl alloc] init];
+    self.refreshControl                     = [UIRefreshControl new];
     [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
     
     // WebView
@@ -417,7 +416,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 {
     NSParameterAssert(url);
     
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    WPWebViewController *webViewController = [WPWebViewController new];
     webViewController.url = url;
     return webViewController;
 }

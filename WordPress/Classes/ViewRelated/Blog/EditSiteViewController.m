@@ -602,8 +602,8 @@ static CGFloat const EditSiteRowHeight = 48.0;
         path = [msg substringWithRange:rng];
     }
 
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = [NSURL URLWithString:path];
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.authToken = self.authToken;
     webViewController.username = self.username;
     webViewController.password = self.password;
