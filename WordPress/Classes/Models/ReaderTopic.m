@@ -20,19 +20,4 @@ NSString *const ReaderTopicTypeSite = @"site";
 @dynamic topicID;
 @dynamic type;
 
-- (NSString *)titleForURL
-{
-    if ([self.slug length] > 0) {
-        return self.slug;
-    }
-
-    // Fallback
-    NSString *title = self.title;
-    NSArray *components = [self.path componentsSeparatedByString:@"/"];
-    if ([components count] > 2 && [[components lastObject] isEqualToString:@"posts"]) {
-        title = [components objectAtIndex:[components count] - 2];
-    }
-    return title;
-}
-
 @end
