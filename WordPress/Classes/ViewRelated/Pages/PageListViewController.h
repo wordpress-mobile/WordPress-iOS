@@ -3,7 +3,7 @@
 
 @class Blog;
 
-@interface PostListViewController : AbstractPostListViewController
+@interface PageListViewController : AbstractPostListViewController
 
 + (instancetype)controllerWithBlog:(Blog *)blog;
 
