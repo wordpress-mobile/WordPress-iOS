@@ -3,9 +3,13 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 
+
+static CGFloat const MaximumZoomScale = 4.0;
+static CGFloat const MinimumZoomScale = 0.1;
+
 @interface WPImageViewController ()<UIScrollViewDelegate>
 
-@property (nonatomic) BOOL isLoadingImage;
+@property (nonatomic, assign) BOOL isLoadingImage;
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) BOOL shouldHideStatusBar;
@@ -47,8 +51,8 @@
     frame = CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height);
     self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
     self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    self.scrollView.maximumZoomScale = 4.0f;
-    self.scrollView.minimumZoomScale = 0.1f;
+    self.scrollView.maximumZoomScale = MaximumZoomScale;
+    self.scrollView.minimumZoomScale = MinimumZoomScale;
     self.scrollView.scrollsToTop = NO;
     self.scrollView.delegate = self;
     [self.view addSubview:self.scrollView];
