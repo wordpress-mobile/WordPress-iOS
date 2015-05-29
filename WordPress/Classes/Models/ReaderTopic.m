@@ -14,6 +14,7 @@ NSString *const ReaderTopicTypeSite = @"site";
 @dynamic lastSynced;
 @dynamic path;
 @dynamic posts;
+@dynamic slug;
 @dynamic title;
 @dynamic topicDescription;
 @dynamic topicID;
@@ -21,6 +22,11 @@ NSString *const ReaderTopicTypeSite = @"site";
 
 - (NSString *)titleForURL
 {
+    if ([self.slug length] > 0) {
+        return self.slug;
+    }
+
+    // Fallback
     NSString *title = self.title;
     NSArray *components = [self.path componentsSeparatedByString:@"/"];
     if ([components count] > 2 && [[components lastObject] isEqualToString:@"posts"]) {
