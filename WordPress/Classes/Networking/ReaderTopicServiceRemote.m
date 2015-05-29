@@ -146,7 +146,7 @@
         NSError *error;
         regexHtmlEntities = [NSRegularExpression regularExpressionWithPattern:@"&[^\\s]*;" options:NSRegularExpressionCaseInsensitive error:&error];
         regexPeriodsWhitespace = [NSRegularExpression regularExpressionWithPattern:@"[\\.\\s]+" options:NSRegularExpressionCaseInsensitive error:&error];
-        regexNonAlphaNumNonDash = [NSRegularExpression regularExpressionWithPattern:@"[^A-Za-z0-9\\-]" options:NSRegularExpressionCaseInsensitive error:&error];
+        regexNonAlphaNumNonDash = [NSRegularExpression regularExpressionWithPattern:@"[^\\p{L}\\p{Nd}\\-]+" options:NSRegularExpressionCaseInsensitive error:&error];
     });
 
     topicName = [[topicName lowercaseString] trim];
