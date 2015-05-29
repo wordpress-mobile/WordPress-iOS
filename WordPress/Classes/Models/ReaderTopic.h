@@ -22,6 +22,4 @@ extern NSString *const ReaderTopicTypeSite;
 @property (nonatomic, strong) NSNumber *topicID;
 @property (nonatomic, strong) NSString *type;
 
-- (NSString *)titleForURL;
-
 @end

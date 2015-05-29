@@ -6,6 +6,8 @@
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
 static NSString * const TopicMenuSectionRecommendedKey = @"recommended";
+static NSString * const TopicRemovedTagKey = @"removed_tag";
+static NSString * const TopicAddedTagKey = @"added_tag";
 static NSString * const TopicDictionaryIDKey = @"ID";
 static NSString * const TopicDictionarySlugKey = @"slug";
 static NSString * const TopicDictionaryTitleKey = @"title";
@@ -72,16 +74,18 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
     }];
 }
 
-- (void)unfollowTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)unfollowTopicWithSlug:(NSString *)slug
+                  withSuccess:(void (^)(NSNumber *topicID))success
+                      failure:(void (^)(NSError *error))failure
 {
-    topicName = [self sanitizeTopicNameForAPI:topicName];
-    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", topicName];
+    NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         if (!success) {
             return;
         }
-        success();
+        NSNumber *unfollowedTag = [responseObject numberForKey:TopicRemovedTagKey];
+        success(unfollowedTag);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
@@ -90,7 +94,9 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
     }];
 }
 
-- (void)followTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
+- (void)followTopicNamed:(NSString *)topicName
+             withSuccess:(void (^)(NSNumber *topicID))success
+                 failure:(void (^)(NSError *error))failure
 {
     topicName = [self sanitizeTopicNameForAPI:topicName];
     NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
@@ -99,7 +105,8 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
         if (!success) {
             return;
         }
-        success();
+        NSNumber *followedTag = [responseObject numberForKey:TopicAddedTagKey];
+        success(followedTag);
 
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         if (failure) {
@@ -160,6 +167,8 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
     while ([topicName rangeOfString:@"--"].location != NSNotFound) {
         topicName = [topicName stringByReplacingOccurrencesOfString:@"--" withString:@"-"];
     }
+
+    topicName = [topicName stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
     return topicName;
 }
