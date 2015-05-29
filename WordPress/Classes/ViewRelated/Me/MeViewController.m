@@ -55,6 +55,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 {
     self = [super init];
     if (self) {
+        self.title = NSLocalizedString(@"Me", @"Me page title");
+
         // we want to observe for the account change notification even if the view is not visible
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
