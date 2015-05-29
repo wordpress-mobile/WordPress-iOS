@@ -9,6 +9,7 @@
 #import "WPCookie.h"
 #import "Constants.h"
 #import "WPError.h"
+#import "UIAlertView+Blocks.h"
 #import "WordPress-Swift.h"
 
 
@@ -199,6 +200,21 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     }];
 }
 
+- (void)showOpenInSafariAlertView:(NSURL *)url
+{
+    [UIAlertView showWithTitle:nil
+                       message:NSLocalizedString(@"This link will be opened in Safari", nil)
+             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
+             otherButtonTitles:@[ NSLocalizedString(@"Accept", nil) ]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                          if (buttonIndex == alertView.cancelButtonIndex) {
+                              return;
+                          }
+                          
+                          [[UIApplication sharedApplication] openURL:url];
+                      }];
+}
+
 
 #pragma mark - Properties
 
@@ -273,6 +289,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 {
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
     
+    // WP Login: Send the credentials, if needed
     NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
     if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
@@ -280,6 +297,12 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
         return NO;
     }
 
+    // External Links: Open in Safari
+    if (navigationType == UIWebViewNavigationTypeLinkClicked && ![request.mainDocumentURL isEqual:self.url]) {
+        [self showOpenInSafariAlertView:request.URL];
+        return NO;
+    }
+    
     //  Note:
     //  UIWebView callbacks will get hit for every frame that gets loaded. As a workaround, we'll consider
     //  we're in a "loading" state just for the Top Level request.
@@ -313,6 +336,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
         return;
     }
     
+    // Refresh the Interface
     self.loading = NO;
     
     [self finishProgress];
