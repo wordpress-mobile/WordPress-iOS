@@ -24,6 +24,7 @@
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
 static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 
 // used to restore the last selected tab bar item
@@ -231,12 +232,13 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     }
 
     self.meViewController = [MeViewController new];
-    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-    self.meViewController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.meViewController.tabBarItem.selectedImage = meTabBarImage;
-    self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
-    self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+    _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
+    _meNavigationController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
+    _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
+    _meNavigationController.restorationClass = [UINavigationController class];
 
     return _meNavigationController;
 }
