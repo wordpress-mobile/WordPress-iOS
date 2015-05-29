@@ -40,6 +40,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
+@property (nonatomic, strong) NSURL                             *url;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
 
@@ -407,6 +408,18 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
                                                 password:self.password
                                              bearerToken:self.authToken
                                                userAgent:userAgent];
+}
+
+
+#pragma mark - Static Helpers
+
++ (instancetype)webViewControllerWithURL:(NSURL *)url
+{
+    NSParameterAssert(url);
+    
+    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    webViewController.url = url;
+    return webViewController;
 }
 
 @end
