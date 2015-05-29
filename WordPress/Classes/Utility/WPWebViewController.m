@@ -17,6 +17,13 @@
 #pragma mark Constants
 #pragma mark ====================================================================================
 
+#pragma mark ====================================================================================
+#pragma mark Constants
+#pragma mark ====================================================================================
+
+static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
+static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
+
 static CGFloat const WPWebViewProgressInitial               = 0.1f;
 static CGFloat const WPWebViewProgressFinal                 = 1.0f;
 
@@ -34,8 +41,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
-@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
-@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *forwardButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIRefreshControl                  *refreshControl;
@@ -66,8 +71,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
     NSAssert(self.webView,          @"Missing Outlet!");
     NSAssert(self.progressView,     @"Missing Outlet!");
-//    NSAssert(self.backButton,       @"Missing Outlet!");
-//    NSAssert(self.forwardButton,    @"Missing Outlet!");
     NSAssert(self.optionsButton,    @"Missing Outlet!");
 
     // TitleView
@@ -77,8 +80,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     self.navigationItem.titleView           = self.titleView;
     
     // Buttons
-    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Spoken accessibility label");
-    self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Spoken accessibility label");
     self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
 
     // RefreshControl
@@ -162,8 +163,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 - (void)refreshInterface
 {
-    self.backButton.enabled             = self.webView.canGoBack;
-    self.forwardButton.enabled          = self.webView.canGoForward;
     self.optionsButton.enabled          = !self.loading;
     self.refreshControl.enabled         = !self.loading;
     
@@ -215,22 +214,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 
 #pragma mark - IBAction Methods
-
-//- (IBAction)goBack
-//{
-//    if (self.webView.isLoading) {
-//        [self.webView stopLoading];
-//    }
-//    [self.webView goBack];
-//}
-//
-//- (IBAction)goForward
-//{
-//    if (self.webView.isLoading) {
-//        [self.webView stopLoading];
-//    }
-//    [self.webView goForward];
-//}
 
 - (IBAction)reload
 {
@@ -334,6 +317,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     [self finishProgress];
     [self refreshInterface];
+
+    // Don't show Ajax Cancelled or Frame Load Interrupted errors
+    if (error.code == WPWebViewErrorAjaxCancelled || error.code == WPWebViewErrorFrameLoadInterrupted) {
+        return;
+    }
     
     [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
 }
@@ -385,7 +373,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     }
     
     NSURL *loginURL = self.wpLoginURL ?: [[NSURL alloc] initWithScheme:self.url.scheme host:self.url.host path:@"/wp-login.php"];
-    
     return [WPURLRequest requestForAuthenticationWithURL:loginURL
                                              redirectURL:self.url
                                                 username:self.username
