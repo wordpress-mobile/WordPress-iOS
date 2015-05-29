@@ -179,20 +179,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     }
 }
 
-- (void)applyMobileViewportHackIfNeeded
-{
-    if (CGRectGetWidth(self.view.frame) >= CGRectGetWidth(self.view.window.bounds)) {
-        return;
-    }
-    
-    NSString *js = @"var meta = document.createElement('meta');"
-                    "meta.setAttribute( 'name', 'viewport' );"
-                    "meta.setAttribute( 'content', 'width = available-width, initial-scale = 1.0, user-scalable = yes' );"
-                    "document.getElementsByTagName('head')[0].appendChild(meta)";
-    
-    [self.webView stringByEvaluatingJavaScriptFromString:js];
-}
-
 - (void)scrollToBottomIfNeeded
 {
     if (!self.shouldScrollToBottom) {
@@ -365,7 +351,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     [self finishProgress];
     [self refreshInterface];
-    [self applyMobileViewportHackIfNeeded];
     [self scrollToBottomIfNeeded];
 }
 
