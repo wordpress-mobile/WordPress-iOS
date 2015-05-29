@@ -43,12 +43,14 @@ typedef enum {
     SettingsSectionCount
 } SettingsSection;
 
+static NSString * const WPSettingsRestorationID = @"WPSettingsRestorationID";
+
 static CGFloat const HorizontalMargin = 16.0;
 static CGFloat const MediaSizeControlHeight = 44.0;
 static CGFloat const MediaSizeControlOffset = 12.0;
 static CGFloat const SettingsRowHeight = 44.0;
 
-@interface SettingsViewController ()
+@interface SettingsViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL showInternalBetaSection;
 @property (nonatomic, strong) UISlider *mediaSizeSlider;
@@ -59,10 +61,27 @@ static CGFloat const SettingsRowHeight = 44.0;
 
 @implementation SettingsViewController
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[self alloc] init];
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        self.restorationIdentifier = WPSettingsRestorationID;
+        self.restorationClass = [self class];
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+#pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
