@@ -1,4 +1,5 @@
 #import "NSDate+StringFormatting.h"
+#import "WordPress-Swift.h"
 
 @implementation NSDate (StringFormatting)
 
