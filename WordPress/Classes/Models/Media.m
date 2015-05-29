@@ -233,6 +233,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 {
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
+    [[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error];
 
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
