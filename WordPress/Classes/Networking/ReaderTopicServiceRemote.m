@@ -3,10 +3,17 @@
 #import "RemoteReaderTopic.h"
 #import "ReaderTopic.h"
 
+static NSString * const TopicMenuSectionDefaultKey = @"default";
+static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
+static NSString * const TopicMenuSectionRecommendedKey = @"recommended";
+static NSString * const TopicDictionaryIDKey = @"ID";
+static NSString * const TopicDictionarySlugKey = @"slug";
+static NSString * const TopicDictionaryTitleKey = @"title";
+static NSString * const TopicDictionaryURLKey = @"URL";
+static NSString * const TopicNotFoundMarker = @"-notfound-";
+
 @interface ReaderTopicServiceRemote ()
-
 @property (nonatomic, strong) WordPressComApi *api;
-
 @end
 
 @implementation ReaderTopicServiceRemote
@@ -39,9 +46,9 @@
         NSDictionary *response = (NSDictionary *)responseObject;
         NSMutableArray *topics = [NSMutableArray array];
 
-        NSDictionary *defaults = [response dictionaryForKey:@"default"];
-        NSMutableDictionary *subscribed = [[response dictionaryForKey:@"subscribed"] mutableCopy];
-        NSMutableDictionary *recommended = [[response dictionaryForKey:@"recommended"] mutableCopy];
+        NSDictionary *defaults = [response dictionaryForKey:TopicMenuSectionDefaultKey];
+        NSMutableDictionary *subscribed = [[response dictionaryForKey:TopicMenuSectionSubscribedKey] mutableCopy];
+        NSMutableDictionary *recommended = [[response dictionaryForKey:TopicMenuSectionRecommendedKey] mutableCopy];
         NSArray *subscribedAndRecommended;
 
         NSSet *subscribedSet = [NSSet setWithArray:[subscribed allKeys]];
@@ -50,7 +57,7 @@
         NSArray *sharedkeys = [subscribedSet allObjects];
 
         if (sharedkeys) {
-            subscribedAndRecommended = [subscribed objectsForKeys:sharedkeys notFoundMarker:@"-notfound-"];
+            subscribedAndRecommended = [subscribed objectsForKeys:sharedkeys notFoundMarker:TopicNotFoundMarker];
             [subscribed removeObjectsForKeys:sharedkeys];
             [recommended removeObjectsForKeys:sharedkeys];
         }
@@ -195,19 +202,18 @@
  */
 - (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
 {
-    NSNumber *topicID = [topicDict numberForKey:@"ID"];
+    NSNumber *topicID = [topicDict numberForKey:TopicDictionaryIDKey];
     if (topicID == nil) {
         topicID = @0;
     }
-    NSString *title = [topicDict stringForKey:@"title"];
-    NSString *url = [topicDict stringForKey:@"URL"];
 
     RemoteReaderTopic *topic = [[RemoteReaderTopic alloc] init];
     topic.topicID = topicID;
-    topic.title = title;
-    topic.path = url;
     topic.isSubscribed = subscribed;
     topic.isRecommended = recommended;
+    topic.path = [topicDict stringForKey:TopicDictionaryURLKey];
+    topic.slug = [topicDict stringForKey:TopicDictionarySlugKey];
+    topic.title = [topicDict stringForKey:TopicDictionaryTitleKey];
 
     return topic;
 }
