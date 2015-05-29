@@ -30,11 +30,9 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
-
     NSString *path = @"read/menu";
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
         if (!success) {
             return;
         }
@@ -42,8 +40,6 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
         // Normalize and flatten the results.
         // A topic can appear in both recommended and subscribed dictionaries,
         // so filter appropriately.
-
-        NSDictionary *response = (NSDictionary *)responseObject;
         NSMutableArray *topics = [NSMutableArray array];
 
         NSDictionary *defaults = [response dictionaryForKey:TopicMenuSectionDefaultKey];
@@ -51,9 +47,9 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
         NSMutableDictionary *recommended = [[response dictionaryForKey:TopicMenuSectionRecommendedKey] mutableCopy];
         NSArray *subscribedAndRecommended;
 
-        NSSet *subscribedSet = [NSSet setWithArray:[subscribed allKeys]];
+        NSMutableSet *subscribedSet = [NSMutableSet setWithArray:[subscribed allKeys]];
         NSSet *recommendedSet = [NSSet setWithArray:[recommended allKeys]];
-        [subscribedSet intersectsSet:recommendedSet];
+        [subscribedSet intersectSet:recommendedSet];
         NSArray *sharedkeys = [subscribedSet allObjects];
 
         if (sharedkeys) {
@@ -62,25 +58,10 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
             [recommended removeObjectsForKeys:sharedkeys];
         }
 
-        for (NSString *key in defaults) {
-            [topics addObject:[self normalizeMenuTopicDictionary:[defaults objectForKey:key] subscribed:NO recommended:NO]];
-        }
-
-        for (NSString *key in subscribed) {
-            [topics addObject:[self normalizeMenuTopicDictionary:[subscribed objectForKey:key] subscribed:YES recommended:NO]];
-        }
-
-        for (NSString *key in recommended) {
-            [topics addObject:[self normalizeMenuTopicDictionary:[recommended objectForKey:key] subscribed:NO recommended:YES]];
-        }
-
-        for (id topic in subscribedAndRecommended) {
-            // We should never encounter our not found marker, but just in case.
-            if ([topic isKindOfClass:[NSString class]]) {
-                continue;
-            }
-            [topics addObject:[self normalizeMenuTopicDictionary:(NSDictionary *)topic subscribed:YES recommended:YES]];
-        }
+        [topics addObjectsFromArray:[self normalizeMenuTopicsList:[defaults allValues] subscribed:NO recommended:NO]];
+        [topics addObjectsFromArray:[self normalizeMenuTopicsList:[subscribed allValues] subscribed:YES recommended:NO]];
+        [topics addObjectsFromArray:[self normalizeMenuTopicsList:[recommended allValues] subscribed:NO recommended:YES]];
+        [topics addObjectsFromArray:[self normalizeMenuTopicsList:subscribedAndRecommended subscribed:YES recommended:YES]];
 
         success(topics);
 
@@ -89,7 +70,6 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
             failure(error);
         }
     }];
-
 }
 
 - (void)unfollowTopicNamed:(NSString *)topicName withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
@@ -182,6 +162,19 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
     }
 
     return topicName;
+}
+
+- (NSArray *)normalizeMenuTopicsList:(NSArray *)rawTopics subscribed:(BOOL)subscribed recommended:(BOOL)recommended
+{
+    NSMutableArray *topics = [NSMutableArray array];
+    for (NSDictionary *topicDict in rawTopics) {
+        // Failsafe
+        if (![topicDict isKindOfClass:[NSDictionary class]]) {
+            continue;
+        }
+        [topics addObject:[self normalizeMenuTopicDictionary:topicDict subscribed:subscribed recommended:recommended]];
+    }
+    return [topics copy]; // Return immutable array.
 }
 
 - (RemoteReaderTopic *)normalizeMenuTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
