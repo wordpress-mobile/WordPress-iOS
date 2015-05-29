@@ -24,7 +24,7 @@
 {
     self = [super initWithImage:nil andURL:[NSURL URLWithString:post.featuredImage.remoteURL]];
     if (self) {
-        self.title = NSLocalizedString(@"Featured Image", @"");
+        self.title = NSLocalizedString(@"Featured Image", @"Title for the Featured Image view");
         self.post = post;
         self.extendedLayoutIncludesOpaqueBars = YES;
         self.automaticallyAdjustsScrollViewInsets = NO;
