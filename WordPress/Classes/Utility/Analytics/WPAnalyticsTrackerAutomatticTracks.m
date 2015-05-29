@@ -66,8 +66,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 
 - (void)beginSession
 {
+#ifdef TRACKS_ENABLED
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-
+#endif
     [self refreshMetadata];
 }
 
