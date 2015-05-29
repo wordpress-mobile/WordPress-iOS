@@ -21,8 +21,10 @@
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
 
+static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
+
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
+static NSString *const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
@@ -31,7 +33,7 @@ static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/
 
 static CGFloat const SupportRowHeight = 44.0f;
 
-@interface SupportViewController ()
+@interface SupportViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
 
@@ -45,6 +47,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     SettingsSectionFeedback,
     SettingsSectionActivityLog,
 };
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[self alloc] init];
+}
 
 + (void)checkIfFeedbackShouldBeEnabled
 {
@@ -101,6 +108,9 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         self.title = NSLocalizedString(@"Support", @"");
+        self.restorationIdentifier = WPSupportRestorationID;
+        self.restorationClass = [self class];
+
         _feedbackEnabled = YES;
     }
 
