@@ -163,7 +163,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _blogListNavigationController.tabBarItem.image = [mySitesTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _blogListNavigationController.tabBarItem.selectedImage = mySitesTabBarImage;
     _blogListNavigationController.restorationIdentifier = WPBlogListNavigationRestorationID;
-    _blogListNavigationController.restorationClass = [UINavigationController class];
     self.blogListViewController.title = NSLocalizedString(@"My Sites", @"");
     [_blogListNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _blogListNavigationController.tabBarItem.accessibilityIdentifier = NSLocalizedString(@"My Sites", @"");
@@ -193,7 +192,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _readerNavigationController.tabBarItem.image = [readerTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
     _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
-    _readerNavigationController.restorationClass = [UINavigationController class];
     [_readerNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
     _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"Description of the Reader tab");
 
@@ -238,7 +236,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
     _meNavigationController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
     _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
-    _meNavigationController.restorationClass = [UINavigationController class];
 
     return _meNavigationController;
 }
@@ -257,7 +254,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     _notificationsNavigationController.tabBarItem.image = [notificationsTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     _notificationsNavigationController.tabBarItem.selectedImage = notificationsTabBarImage;
     _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
-    _notificationsNavigationController.restorationClass = [UINavigationController class];
     self.notificationsViewController.title = NSLocalizedString(@"Notifications", @"");
     [_notificationsNavigationController.tabBarItem setTitlePositionAdjustment:self.tabBarTitleOffset];
 
