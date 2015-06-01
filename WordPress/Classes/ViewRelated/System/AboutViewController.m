@@ -2,6 +2,8 @@
 #import "ReachabilityUtils.h"
 #import "WPWebViewController.h"
 #import "NSBundle+VersionNumberHelper.h"
+#import "Constants.h"
+
 
 @interface AboutViewController()
 
@@ -78,17 +80,17 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 
 - (IBAction)viewTermsOfService:(id)sender
 {
-    [self openURLWithString:@"https://wordpress.com/tos/"];
+    [self openURLWithString:WPAutomatticTermsOfServiceURL];
 }
 
 - (IBAction)viewPrivacyPolicy:(id)sender
 {
-    [self openURLWithString:@"https://automattic.com/privacy/"];
+    [self openURLWithString:WPAutomatticPrivacyURL];
 }
 
 - (IBAction)viewWebsite:(id)sender
 {
-    [self openURLWithString:@"https://automattic.com/"];
+    [self openURLWithString:WPAutomatticMainURL];
 }
 
 - (void)openURLWithString:(NSString *)path
