@@ -447,8 +447,8 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         [((WPWebViewController*)self.navigationController.visibleViewController).url.absoluteString isEqual:blogURL]) {
         // Do nothing
     } else {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = [NSURL URLWithString:blogURL];
+        NSURL *targetURL = [NSURL URLWithString:blogURL];
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
         if (blog.isPrivate) {
             webViewController.authToken = blog.authToken;
             webViewController.username = blog.username;

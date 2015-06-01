@@ -443,8 +443,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = url;
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 

@@ -475,9 +475,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
         path = [msg substringWithRange:rng];
     }
 
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
-    webViewController.url = [NSURL URLWithString:path];
     webViewController.authToken = self.blog.authToken;
     webViewController.username = self.blog.username;
     webViewController.password = self.blog.password;
