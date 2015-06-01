@@ -874,7 +874,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
-            DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ isWpCom: %@ blogId: %@ jetpackAccount: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? @"YES" : @"NO", blog.blogID, !!blog.jetpackAccount ? @"PRESENT" : @"NONE");
+            DDLogInfo(@"%@", [blog logDescription]);
         }
     } else {
         DDLogInfo(@"No blogs configured on device.");

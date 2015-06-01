@@ -473,8 +473,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:linkURL];
+    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -497,8 +496,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
         } else {
-            controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
+            controller = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
         }
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];

@@ -1019,8 +1019,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
 - (void)displayWebViewForURL:(NSURL *)url username:(NSString *)username password:(NSString *)password;
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = url;
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
     if (username.length > 0 && password.length > 0) {
         webViewController.username = username;
         webViewController.password = password;

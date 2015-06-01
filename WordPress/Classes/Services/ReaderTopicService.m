@@ -224,7 +224,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     NSString *topicName = [topic.title lowercaseString];
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService followTopicNamed:topicName withSuccess:^{
+    [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
         // noop
     } failure:^(NSError *error) {
         DDLogError(@"%@ error following topic: %@", NSStringFromSelector(_cmd), error);
@@ -234,7 +234,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)unfollowTopic:(ReaderTopic *)topic withSuccess:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    NSString *topicName = [topic titleForURL];
+    NSString *slug = topic.slug;
 
     BOOL deletingCurrentTopic = [topic isEqual:self.currentTopic];
 
@@ -255,7 +255,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
     // Now do it for realz.
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService unfollowTopicNamed:topicName withSuccess:^{
+    [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID){
         // Sync the menu for good measure.
         [self fetchReaderMenuWithSuccess:success failure:failure];
     } failure:^(NSError *error) {
@@ -281,9 +281,10 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     }
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
-    [remoteService followTopicNamed:topicName withSuccess:^{
+    [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
+        __weak __typeof(self) weakSelf = self;
         [self fetchReaderMenuWithSuccess:^{
-            [self selectTopicNamed:topicName];
+            [weakSelf selectTopicWithID:topicID];
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
@@ -404,6 +405,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 }
 
 /**
+ Finds an existing topic matching the specified topicID and, if found, makes it the
+ selected topic.
+ */
+- (void)selectTopicWithID:(NSNumber *)topicID
+{
+    ReaderTopic *topic = [self findTopicWithID:topicID];
+    [self setCurrentTopic:topic];
+}
+
+/**
  Find an existing topic with the specified title.
 
  @param topicName The title of the topic to find in core data.
@@ -423,10 +434,30 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    if ([topics count] == 0) {
+    return [topics firstObject];
+}
+
+/**
+ Find an existing topic with the specified topicID.
+
+ @param topicID The topicID of the topic to find in core data.
+ @return A matching `ReaderTopic` instance or nil.
+ */
+- (ReaderTopic *)findTopicWithID:(NSNumber *)topicID
+{
+    NSError *error;
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"ReaderTopic"];
+    request.predicate = [NSPredicate predicateWithFormat:@"topicID = %@", topicID];
+
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"title" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSArray *topics = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        DDLogError(@"%@ error fetching topic: %@", NSStringFromSelector(_cmd), error);
         return nil;
     }
-    return [topics objectAtIndex:0];
+
+    return [topics firstObject];
 }
 
 /**
@@ -457,6 +488,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     topic.topicID = remoteTopic.topicID;
     topic.type = remoteTopic.type;
     topic.title = [self formatTitle:title];
+    topic.slug = remoteTopic.slug;
     topic.path = [path lowercaseString];
     topic.topicDescription = remoteTopic.topicDescription;
     topic.isMenuItem = remoteTopic.isMenuItem;
