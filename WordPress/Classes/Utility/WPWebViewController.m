@@ -14,13 +14,7 @@
 
 
 
-#pragma mark ====================================================================================
-#pragma mark Constants
-#pragma mark ====================================================================================
-
-#pragma mark ====================================================================================
-#pragma mark Constants
-#pragma mark ====================================================================================
+#pragma mark - Constants
 
 static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
@@ -34,9 +28,7 @@ static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0f;
 static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 
-#pragma mark ====================================================================================
-#pragma mark Private Properties
-#pragma mark ====================================================================================
+#pragma mark - Private Properties
 
 @interface WPWebViewController () <UIWebViewDelegate, UIPopoverControllerDelegate>
 
@@ -52,9 +44,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 @end
 
 
-#pragma mark ====================================================================================
-#pragma mark WPWebViewController
-#pragma mark ====================================================================================
+#pragma mark - WPWebViewController
 
 @implementation WPWebViewController
 
