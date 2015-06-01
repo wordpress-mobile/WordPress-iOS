@@ -25,6 +25,7 @@ NSString const *NoteRangeTypeFollow     = @"follow";
 NSString const *NoteRangeTypeBlockquote = @"blockquote";
 NSString const *NoteRangeTypeNoticon    = @"noticon";
 NSString const *NoteRangeTypeSite       = @"site";
+NSString const *NoteRangeTypeMatch      = @"match";
 
 NSString const *NoteMediaTypeImage      = @"image";
 NSString const *NoteMediaTypeBadge      = @"badge";

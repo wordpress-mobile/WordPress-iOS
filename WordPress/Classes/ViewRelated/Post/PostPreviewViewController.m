@@ -214,7 +214,7 @@
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
             NSString *token;
-            if ([self.apost.blog isWPcom]) {
+            if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
                 token = self.apost.blog.authToken;
             }
 

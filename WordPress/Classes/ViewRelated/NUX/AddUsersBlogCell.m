@@ -78,7 +78,7 @@ CGFloat const cellStandardOffset = 16.0;
     y = (rowHeight - cellBlavatarSide)/2.0;
     _blavatarImage.frame = CGRectIntegral(CGRectMake(x, y, cellBlavatarSide, cellBlavatarSide));
     NSURL *blogURL = [NSURL URLWithString:_blavatarUrl];
-    [_blavatarImage setImageWithBlavatarUrl:[blogURL host] isWPcom:self.isWPCom];
+    [_blavatarImage setImageWithBlavatarUrl:[blogURL host]];
 
     // Setup Checkbox
     x = cellWidth - cellStandardOffset - CGRectGetWidth(_checkboxImage.frame);

@@ -42,4 +42,17 @@
 
 + (NSDictionary *)postCardStatusAttributes;
 
+
+#pragma mark - Pages
+
++ (void)applyPageTitleStyle:(UILabel *)label;
+
++ (NSDictionary *)pageCellTitleAttributes;
+
++ (void)applySectionHeaderTitleStyle:(UILabel *)label;
+
++ (void)applyRestorePageLabelStyle:(UILabel *)label;
+
++ (void)applyRestorePageButtonStyle:(UIButton *)button;
+
 @end
