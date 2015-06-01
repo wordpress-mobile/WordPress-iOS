@@ -740,7 +740,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 	NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
     WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
  
-    [self.navigationController pushViewController:webViewController animated:YES];
+    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
  
     [WPAnalytics track:WPAnalyticsStatSelectedLearnMoreInConnectToJetpackScreen withProperties:@{@"source": @"notifications"}];
 }
