@@ -25,8 +25,6 @@
 - (BOOL)unreadStatusForDisplay;
 - (NSInteger)numberOfComments;
 - (NSInteger)numberOfLikes;
-- (BOOL)supportsComments;
-- (BOOL)supportsLikes;
 - (BOOL)supportsStats;
 - (BOOL)isPrivate;
 - (BOOL)isMultiAuthorBlog;
