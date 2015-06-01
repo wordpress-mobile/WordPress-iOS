@@ -179,21 +179,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     }];
 }
 
-- (void)showOpenInSafariAlertView:(NSURL *)url
-{
-    [UIAlertView showWithTitle:nil
-                       message:NSLocalizedString(@"This link will be opened in Safari", nil)
-             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Accept", nil) ]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.cancelButtonIndex) {
-                              return;
-                          }
-                          
-                          [[UIApplication sharedApplication] openURL:url];
-                      }];
-}
-
 
 #pragma mark - Properties
 
@@ -262,12 +247,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
         [self retryWithLogin];
-        return NO;
-    }
-
-    // External Links: Open in Safari
-    if (navigationType == UIWebViewNavigationTypeLinkClicked && ![request.mainDocumentURL isEqual:self.url]) {
-        [self showOpenInSafariAlertView:request.URL];
         return NO;
     }
     
