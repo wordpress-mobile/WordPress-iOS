@@ -462,15 +462,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
 
     if (rng.location == NSNotFound) {
-        path = self.blog.url;
-        if (![path hasPrefix:@"http"]) {
-            path = [NSString stringWithFormat:@"http://%@", path];
-        } else if ([self.blog isWPcom] && [path rangeOfString:@"wordpress.com"].location == NSNotFound) {
-            path = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-        }
-        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-
+        path = [self.blog adminUrlWithPath:@"/wp-admin/options-writing.php"];
     } else {
         path = [msg substringWithRange:rng];
     }

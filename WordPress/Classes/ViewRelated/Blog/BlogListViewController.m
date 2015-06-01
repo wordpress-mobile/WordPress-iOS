@@ -161,16 +161,16 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     return [[self.resultsController fetchedObjects] count];
 }
 
-- (NSUInteger)numberOfDotComSites
+- (NSUInteger)numberOfHideableBlogs
 {
-    NSPredicate *predicate = [self fetchRequestPredicateForDotComOnly];
+    NSPredicate *predicate = [self fetchRequestPredicateForHideableBlogs];
     NSArray *dotComSites = [[self.resultsController fetchedObjects] filteredArrayUsingPredicate:predicate];
     return [dotComSites count];
 }
 
 - (void)updateEditButton
 {
-    if ([self numberOfDotComSites] > 0) {
+    if ([self numberOfHideableBlogs] > 0) {
         self.navigationItem.leftBarButtonItem = self.editButtonItem;
     } else {
         self.navigationItem.leftBarButtonItem = nil;
@@ -332,8 +332,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
             cell.detailTextLabel.text = @"";
         }
 
-        [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
-        if ([self.tableView isEditing] && blog.isWPcom) {
+        [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl];
+        if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
             UISwitch *visibilitySwitch = [UISwitch new];
             visibilitySwitch.on = blog.visible;
             visibilitySwitch.tag = indexPath.row;
@@ -501,15 +501,23 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (NSPredicate *)fetchRequestPredicate
 {
     if ([self.tableView isEditing]) {
-        return [self fetchRequestPredicateForDotComOnly];
+        return [self fetchRequestPredicateForHideableBlogs];
     }
 
     return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
-- (NSPredicate *)fetchRequestPredicateForDotComOnly
+- (NSPredicate *)fetchRequestPredicateForHideableBlogs
 {
-    return [NSPredicate predicateWithFormat:@"account.isWpcom = YES"];
+    /*
+     -[Blog supports:BlogFeatureVisibility] should match this, but the logic needs
+     to be duplicated because core data can't take block predicates.
+     */
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+    return [NSPredicate predicateWithFormat:@"account = %@", defaultAccount];
 }
 
 - (void)updateFetchRequest
