@@ -233,8 +233,8 @@ static const CGFloat PostCardRestoreCellRowHeight = 54.0;
     self.authorsFilter.hidden = (!self.blog.isMultiAuthor || !self.blog.account.userID);
 
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-    if (![self.blog isMultiAuthor] && ![UIDevice isPad]) {
-        // Collapse the view on iPhone if single author blog
+    if (![self.blog isMultiAuthor]) {
+        // Collapse the view if single author blog
         self.authorsFilterViewHeightConstraint.constant = 0.0;
     }
 
@@ -242,49 +242,6 @@ static const CGFloat PostCardRestoreCellRowHeight = 54.0;
         self.authorsFilter.selectedSegmentIndex = 0;
     } else {
         self.authorsFilter.selectedSegmentIndex = 1;
-    }
-}
-
-- (void)configureSearchBarForFilterView
-{
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide postListSearchBarTextColor]]];
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    UISearchBar *searchBar = self.searchController.searchBar;
-    searchBar.barStyle = UIBarStyleDefault;
-    searchBar.barTintColor = [WPStyleGuide lightGrey];
-    searchBar.showsCancelButton = NO;
-
-    [self.authorsFilterView insertSubview:searchBar atIndex:0];
-
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{
-                              @"searchBarWidth":@(PostsSearchBarWidth),
-                              @"searchBariPadWidth":@(PostsSearchBariPadWidth)
-                              };
-    [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
-                                                                       attribute:NSLayoutAttributeCenterY
-                                                                       relatedBy:NSLayoutRelationEqual
-                                                                          toItem:self.authorsFilterView
-                                                                       attribute:NSLayoutAttributeCenterY
-                                                                      multiplier:1.0
-                                                                        constant:0.0]];
-    if (self.blog.isMultiAuthor) {
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBariPadWidth)]-|"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
-    } else {
-        [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.authorsFilterView
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                          multiplier:1.0
-                                                                            constant:0.0]];
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
     }
 }
 
