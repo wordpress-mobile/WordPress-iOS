@@ -1102,8 +1102,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    controller.url = url;
+    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:url];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -1143,8 +1142,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    controller.url = linkURL;
+    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -1167,8 +1165,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         if (matched) {
             controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
         } else {
-            controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
+            controller = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
         }
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];

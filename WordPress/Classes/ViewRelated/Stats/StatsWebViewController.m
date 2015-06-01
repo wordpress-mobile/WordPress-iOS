@@ -410,8 +410,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            webViewController.url = request.URL;
+            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
