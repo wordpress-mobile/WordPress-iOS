@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
+NSLocationWhenInUseUsageDescription = "WordPress רוצה להוסיף את המיקום שלך לפוסטים באתרים שבהם אפשרת תיוג מיקום.";
+NSCameraUsageDescription = "לצלם תמונות או סרטוני וידאו לשימוש בפוסטים שלך.";
+NSPhotoLibraryUsageDescription = "להוסיף תמונות או סרטוני וידאו לפוסטים.";
+NSMicrophoneUsageDescription = "כדי שלסרטוני הווידאו שלך יהיה קול.";

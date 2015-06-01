@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
+NSLocationWhenInUseUsageDescription = "WordPress skulle vilja lägga till din plats i inlägg på webbplatser där du har aktiverat geografisk plats.";
+NSCameraUsageDescription = "För att ta bilder eller videor som kan användas i dina inlägg.";
+NSPhotoLibraryUsageDescription = "För att lägga till bilder eller videor i dina inlägg.";
+NSMicrophoneUsageDescription = "För att dina videor ska ha ljud.";
