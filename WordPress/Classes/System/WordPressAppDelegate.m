@@ -34,8 +34,10 @@
 
 // Data services
 #import "BlogService.h"
+#import "MediaService.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
+
 
 // Files
 #import "WPAppFilesManager.h"
@@ -159,7 +161,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
-        [WPAppFilesManager cleanUnusedMediaFileFromTmpDir];
+        [MediaService cleanUnusedMediaFileFromTmpDir];
 
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
@@ -872,7 +874,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
-            DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ isWpCom: %@ blogId: %@ jetpackAccount: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? @"YES" : @"NO", blog.blogID, !!blog.jetpackAccount ? @"PRESENT" : @"NONE");
+            DDLogInfo(@"%@", [blog logDescription]);
         }
     } else {
         DDLogInfo(@"No blogs configured on device.");

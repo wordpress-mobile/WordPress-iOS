@@ -49,6 +49,25 @@ PODS:
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Expecta (0.3.2)
+  - FormatterKit (1.8.0):
+    - FormatterKit/AddressFormatter (= 1.8.0)
+    - FormatterKit/ArrayFormatter (= 1.8.0)
+    - FormatterKit/ColorFormatter (= 1.8.0)
+    - FormatterKit/LocationFormatter (= 1.8.0)
+    - FormatterKit/NameFormatter (= 1.8.0)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.0)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.0)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.0)
+    - FormatterKit/URLRequestFormatter (= 1.8.0)
+  - FormatterKit/AddressFormatter (1.8.0)
+  - FormatterKit/ArrayFormatter (1.8.0)
+  - FormatterKit/ColorFormatter (1.8.0)
+  - FormatterKit/LocationFormatter (1.8.0)
+  - FormatterKit/NameFormatter (1.8.0)
+  - FormatterKit/OrdinalNumberFormatter (1.8.0)
+  - FormatterKit/TimeIntervalFormatter (1.8.0)
+  - FormatterKit/UnitOfInformationFormatter (1.8.0)
+  - FormatterKit/URLRequestFormatter (1.8.0)
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
   - Helpshift (4.10.2)
@@ -132,7 +151,7 @@ PODS:
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS
-  - WPMediaPicker (0.3.6)
+  - WPMediaPicker (0.4.1)
   - wpxmlrpc (0.8)
 
 DEPENDENCIES:
@@ -146,6 +165,7 @@ DEPENDENCIES:
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
   - Expecta (= 0.3.2)
+  - FormatterKit (~> 1.8.0)
   - google-plus-ios-sdk (~> 1.5)
   - Helpshift (~> 4.10.0)
   - HockeySDK (~> 3.6.0)
@@ -177,7 +197,7 @@ DEPENDENCIES:
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.31)
   - WordPressCom-Stats-iOS (= 0.3.4)
-  - WPMediaPicker (~> 0.3.6)
+  - WPMediaPicker (~> 0.4.1)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -233,6 +253,7 @@ SPEC CHECKSUMS:
   DTFoundation: 1d28080c20c3da041706545363f8238ab53a6204
   EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
+  FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
   Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
@@ -262,7 +283,7 @@ SPEC CHECKSUMS:
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: a35692b0bb5a1d5081da2481614a66663dfb091f
   WordPressCom-Stats-iOS: 63269dc52c52087184eaacbc1ad9d502fd189450
-  WPMediaPicker: 2338901ebd4501e76103735ccc2e5e15ff1082ee
+  WPMediaPicker: 010e0ecab215bf837ab4cc42e3223d5abd738a4d
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
 COCOAPODS: 0.37.1

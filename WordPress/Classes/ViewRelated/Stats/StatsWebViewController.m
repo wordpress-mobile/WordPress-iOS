@@ -138,10 +138,10 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     NSString *message;
     if ([blog.account isWpcom]) {
         title = NSLocalizedString(@"Authentication Error", @"");
-        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials and try again.", @"Prompts the user the username or password they entered was incorrect.");
     } else {
         title = NSLocalizedString(@"Jetpack Sign In", @"");
-        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials and try again.", @"Prompts the user they need to update their jetpack credentals after an error.");
     }
     [WPError showAlertWithTitle:title message:message];
 }
