@@ -109,19 +109,23 @@ extension WPStyleGuide
         
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
+                                                        NSForegroundColorAttributeName: blockTextColor ]
         
         public static let blockBoldStyle            = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockBoldFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
+                                                        NSForegroundColorAttributeName: blockTextColor ]
         
         public static let blockItalicsStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockTextColor]
+                                                        NSForegroundColorAttributeName: blockTextColor ]
         
         public static let blockQuotedStyle          = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockItalicsFont,
-                                                        NSForegroundColorAttributeName: blockQuotedColor]
+                                                        NSForegroundColorAttributeName: blockQuotedColor ]
+
+        public static let blockMatchStyle           = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            blockRegularFont,
+                                                        NSForegroundColorAttributeName: blockLinkColor ]
         
         public static let blockNoticonStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockNoticonFont!,
