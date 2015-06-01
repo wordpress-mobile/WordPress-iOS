@@ -885,7 +885,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isWPcom;
+    BOOL success                    = blog.isHostedAtWPcom;
     
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
@@ -907,7 +907,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
 
-    if (!blog || !blog.isWPcom) {
+    if (!blog || !blog.isHostedAtWPcom) {
         return NO;
     }
 
@@ -1265,12 +1265,18 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)handleNotificationChange:(NSNotification *)notification
 {
-    NSSet *updated = notification.userInfo[NSUpdatedObjectsKey];
-    NSSet *refreshed = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *updated      = notification.userInfo[NSUpdatedObjectsKey];
+    NSSet *refreshed    = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *deleted      = notification.userInfo[NSDeletedObjectsKey];
     
     // Reload the table, if *our* notification got updated
     if ([updated containsObject:self.note] || [refreshed containsObject:self.note]) {
         [self reloadData];
+    }
+    
+    // Dismiss this ViewController if *our* notification... just got deleted
+    if ([deleted containsObject:self.note]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

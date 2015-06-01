@@ -227,8 +227,8 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
-    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
+    NSURL *targetURL = [NSURL URLWithString:self.theme.previewUrl];
+    WPWebViewController *livePreviewController = [WPWebViewController webViewControllerWithURL:targetURL];
     livePreviewController.authToken = defaultAccount.authToken;
     livePreviewController.username = defaultAccount.username;
     livePreviewController.password = defaultAccount.password;
