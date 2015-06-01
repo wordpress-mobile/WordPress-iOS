@@ -19,13 +19,13 @@
 static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 
-static CGFloat const WPWebViewProgressInitial               = 0.1f;
-static CGFloat const WPWebViewProgressFinal                 = 1.0f;
+static CGFloat const WPWebViewProgressInitial               = 0.1;
+static CGFloat const WPWebViewProgressFinal                 = 1.0;
 
-static CGFloat const WPWebViewAnimationShortDuration        = 0.1f;
-static CGFloat const WPWebViewAnimationLongDuration         = 0.4f;
-static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0f;
-static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
+static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
+static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
+static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
+static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 
 #pragma mark - Private Properties
