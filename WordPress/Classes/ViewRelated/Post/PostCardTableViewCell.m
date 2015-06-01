@@ -360,14 +360,14 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [self resetMetaButton:self.metaButtonLeft];
 
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
-    if ([self.contentProvider supportsComments] && [self.contentProvider numberOfComments] > 0) {
+    if ([self.contentProvider numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfComments]];
         [self configureMetaButton:button withTitle:title andImage:[UIImage imageNamed:@"icon-postmeta-comment"]];
     }
 
-    if ([self.contentProvider supportsLikes] && [self.contentProvider numberOfLikes] > 0) {
+    if ([self.contentProvider numberOfLikes] > 0) {
         UIButton *button = [mButtons lastObject];
         [mButtons removeLastObject];
         NSString *title = [NSString stringWithFormat:@"%d", [self.contentProvider numberOfLikes]];

@@ -353,7 +353,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
              */
             return [self accountIsDefaultAccount];
         case BlogFeatureWPComRESTAPI:
-        case BlogFeatureLikes:
             return [self restApi] != nil;
         case BlogFeatureStats:
             return [self restApiForStats] != nil;

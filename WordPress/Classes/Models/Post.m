@@ -259,16 +259,6 @@
     return nil;
 }
 
-- (BOOL)supportsComments
-{
-    return [self.blog supports:BlogFeatureWPComRESTAPI];
-}
-
-- (BOOL)supportsLikes
-{
-    return [self.blog supports:BlogFeatureLikes];
-}
-
 - (BOOL)supportsStats
 {
     return [self.blog supports:BlogFeatureStats];
