@@ -77,4 +77,11 @@ extern NSInteger const MediaMaxImageSizeDimension;
                             failure:(void (^)(NSError *error))failure;
 
 
+#pragma mark - Media cleanup
+
+/**
+ *  @brief      Removes all unused media files from the tmp directorys.
+ */
++ (void)cleanUnusedMediaFileFromTmpDir;
+
 @end

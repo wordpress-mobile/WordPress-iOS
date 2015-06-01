@@ -108,6 +108,13 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
+/**
+ Returns a human readable description for logging
+ 
+ Instead of inspecting the core data object, this returns select information, more
+ useful for support.
+ */
+- (NSString *)logDescription;
 
 /**
  Returns a REST API client if available
