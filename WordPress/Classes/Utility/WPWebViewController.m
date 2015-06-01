@@ -36,7 +36,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
-@property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
@@ -71,15 +70,10 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     self.navigationItem.titleView           = self.titleView;
     
     // Buttons
-    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
-
-    // RefreshControl
-    self.refreshControl                     = [UIRefreshControl new];
-    [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share", @"Spoken accessibility label");
     
     // WebView
     self.webView.scalesPageToFit            = YES;
-    [self.webView.scrollView addSubview:self.refreshControl];
     
     // Share
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
@@ -155,7 +149,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 - (void)refreshInterface
 {
     self.optionsButton.enabled          = !self.loading;
-    self.refreshControl.enabled         = !self.loading;
     
     if (self.loading) {
         return;
@@ -163,10 +156,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     self.titleView.titleLabel.text      = [self documentTitle];
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
-    
-    if (self.refreshControl.refreshing) {
-        [self.refreshControl endRefreshing];
-    }
 }
 
 - (void)scrollToBottomIfNeeded
@@ -220,17 +209,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 
 #pragma mark - IBAction Methods
-
-- (IBAction)reload
-{
-    if (![ReachabilityUtils isInternetReachable]) {
-        [self.refreshControl endRefreshing];
-        [self showNoInternetAlertView];
-        return;
-    }
-    
-    [self.webView reload];
-}
 
 - (IBAction)showLinkOptions
 {
