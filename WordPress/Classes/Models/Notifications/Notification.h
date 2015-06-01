@@ -26,6 +26,7 @@ extern NSString * NoteRangeTypeStats;
 extern NSString * NoteRangeTypeBlockquote;
 extern NSString * NoteRangeTypeNoticon;
 extern NSString * NoteRangeTypeSite;
+extern NSString * NoteRangeTypeMatch;
 
 extern NSString * NoteMediaTypeImage;
 
