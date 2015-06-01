@@ -2,9 +2,7 @@
 
 
 
-#pragma mark ====================================================================================
-#pragma mark WPWebViewController
-#pragma mark ====================================================================================
+#pragma mark - WPWebViewController
 
 @interface WPWebViewController : UIViewController
 
