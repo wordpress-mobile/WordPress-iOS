@@ -2,6 +2,7 @@
 #import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
@@ -47,6 +48,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic account;
 @dynamic jetpackAccount;
 @dynamic isMultiAuthor;
+@dynamic isJetpack;
 @synthesize api = _api;
 @synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
@@ -244,15 +246,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSArray arrayWithArray:sortedNames];
 }
 
-- (BOOL)isWPcom
-{
-    return self.account.isWpcom;
-}
-
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
+    return (self.isHostedAtWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
 }
 
 - (NSDictionary *)getImageResizeDimensions
@@ -327,7 +324,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)authToken
 {
-    return [self isWPcom] ? self.account.authToken : self.jetpackAccount.authToken;
+    if (self.jetpackAccount) {
+        return self.jetpackAccount.authToken;
+    } else {
+        return self.account.authToken;
+    }
 }
 
 - (BOOL)supportsFeaturedImages
@@ -340,9 +341,76 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return NO;
 }
 
+- (BOOL)supports:(BlogFeature)feature
+{
+    switch (feature) {
+        case BlogFeatureRemovable:
+            return ![self accountIsDefaultAccount];
+        case BlogFeatureVisibility:
+            /*
+             See -[BlogListViewController fetchRequestPredicateForHideableBlogs]
+             If the logic for this changes that needs to be updated as well
+             */
+            return [self accountIsDefaultAccount];
+        case BlogFeatureWPComRESTAPI:
+            return [self restApi] != nil;
+        case BlogFeatureStats:
+            return [self restApiForStats] != nil;
+        case BlogFeatureCommentLikes:
+        case BlogFeatureReblog:
+        case BlogFeatureMentions:
+        case BlogFeatureOAuth2Login:
+            return [self isHostedAtWPcom];
+        case BlogFeaturePushNotifications:
+            return [self supportsPushNotifications];
+    }
+}
+
+- (BOOL)supportsPushNotifications
+{
+    if (self.jetpackAccount) {
+        return [self jetpackAccountIsDefaultAccount];
+    } else {
+        return [self accountIsDefaultAccount];
+    }
+}
+
+- (BOOL)accountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.account];
+}
+
+- (BOOL)jetpackAccountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.jetpackAccount];
+}
+
+- (BOOL)isHostedAtWPcom
+{
+    return self.account.isWpcom && !self.isJetpack;
+}
+
 - (NSNumber *)dotComID
 {
-    return [self isWPcom] ? self.blogID : self.jetpack.siteID;
+    /*
+     mergeBlogs isn't atomic so there might be a small window for Jetpack sites
+     where self.account is the WordPress.com account, but self.blogID still has
+     the self hosted ID.
+     
+     Even if the blog is using Jetpack REST, self.jetpack.siteID should still
+     have the correct wp.com blog ID, so let's try that one first
+     */
+    if (self.jetpack.siteID) {
+        return self.jetpack.siteID;
+    } else if (self.account.isWpcom) {
+        return self.blogID;
+    } else {
+        return nil;
+    }
 }
 
 - (NSSet *)allowedFileTypes
@@ -389,7 +457,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     if (_api == nil) {
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
-        if (self.isWPcom) {
+        if ([self isHostedAtWPcom]) {
             [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
             [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
@@ -399,9 +467,23 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (WordPressComApi *)restApi
 {
-    if (self.isWPcom) {
+    if (self.account.isWpcom) {
         return self.account.restApi;
     } else if ([self jetpackRESTSupported]) {
+        return self.jetpackAccount.restApi;
+    }
+    return nil;
+}
+
+/*
+ 2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
+ It works like restApi, but bypasses WPJetpackRESTEnabled, since we always want to use rest for Stats.
+ */
+- (WordPressComApi *)restApiForStats
+{
+    if (self.account.isWpcom) {
+        return self.account.restApi;
+    } else if (self.jetpackAccount && self.dotComID) {
         return self.jetpackAccount.restApi;
     }
     return nil;

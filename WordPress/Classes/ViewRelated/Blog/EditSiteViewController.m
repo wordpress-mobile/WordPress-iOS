@@ -165,7 +165,7 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.blog && ![self.blog isWPcom]) {
+    if (self.blog && !self.blog.account.isWpcom) {
         return EditSiteSectionCountSelfHosted;
     }
     return EditSiteSectionCount;
@@ -174,12 +174,12 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == TableViewSectionTitle) {
-        if ([self.blog isWPcom]) {
+        if (self.blog.account.isWpcom) {
             return EditSiteRowCountForSectionTitle;
         }
         return EditSiteRowCountForSectionTitleSelfHosted;
     } else if (section == TableViewSectionSettings) {
-        if ([self.blog isWPcom]) {
+        if ([self canTogglePushNotifications]) {
             return EditSiteRowCountForSectionSettings;
         }
         return EditSiteRowCountForSectionSettingsSelfHosted;
@@ -439,7 +439,7 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return self.blog &&
-        ([self.blog isWPcom] || [self.blog.jetpack isConnected]) &&
+        [self.blog supports:BlogFeaturePushNotifications] &&
         [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }

@@ -885,7 +885,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isWPcom;
+    BOOL success                    = blog.isHostedAtWPcom;
     
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
@@ -907,7 +907,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
 
-    if (!blog || !blog.isWPcom) {
+    if (!blog || !blog.isHostedAtWPcom) {
         return NO;
     }
 
