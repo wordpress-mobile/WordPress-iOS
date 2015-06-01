@@ -279,10 +279,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         }
         return;
     }
+
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
+        __weak __typeof(self) weakSelf = self;
         [self fetchReaderMenuWithSuccess:^{
-            [self selectTopicWithID:topicID];
+            [weakSelf selectTopicWithID:topicID];
         } failure:failure];
     } failure:^(NSError *error) {
         if (failure) {
