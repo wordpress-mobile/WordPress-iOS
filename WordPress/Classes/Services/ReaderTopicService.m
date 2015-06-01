@@ -432,10 +432,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    if ([topics count] == 0) {
-        return nil;
-    }
-    return [topics objectAtIndex:0];
+    return [topics firstObject];
 }
 
 /**
@@ -458,10 +455,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return nil;
     }
 
-    if ([topics count] == 0) {
-        return nil;
-    }
-    return [topics objectAtIndex:0];
+    return [topics firstObject];
 }
 
 /**
