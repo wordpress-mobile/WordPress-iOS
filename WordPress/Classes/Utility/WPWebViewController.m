@@ -60,9 +60,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 {
     [super viewDidLoad];
 
-    NSAssert(self.webView,          @"Missing Outlet!");
-    NSAssert(self.progressView,     @"Missing Outlet!");
-    NSAssert(self.optionsButton,    @"Missing Outlet!");
+    NSAssert(_webView,       @"Missing Outlet!");
+    NSAssert(_progressView,  @"Missing Outlet!");
+    NSAssert(_optionsButton, @"Missing Outlet!");
 
     // TitleView
     self.titleView                          = [NavigationTitleView new];
