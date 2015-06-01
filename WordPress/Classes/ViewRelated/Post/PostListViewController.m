@@ -508,7 +508,7 @@ static const CGFloat PostCardRestoreCellRowHeight = 54.0;
 {
     // Check the blog
     Blog *blog = apost.blog;
-    if (!blog.isWPcom) {
+    if (![blog supports:BlogFeatureStats]) {
         // Needs Jetpack.
         return;
     }

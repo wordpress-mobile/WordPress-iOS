@@ -259,9 +259,9 @@
     return nil;
 }
 
-- (BOOL)isWPcom
+- (BOOL)supportsStats
 {
-    return self.blog.isWPcom;
+    return [self.blog supports:BlogFeatureStats];
 }
 
 - (BOOL)isPrivate
