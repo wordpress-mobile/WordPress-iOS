@@ -474,7 +474,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
     WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
@@ -505,10 +506,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    } else {
-        [self.navigationController pushViewController:controller animated:YES];
     }
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
