@@ -6,14 +6,6 @@
 #import "ContextManager.h"
 #import <ImageIO/ImageIO.h>
 
-@interface Media (PrivateMethods)
-
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-@end
-
 @implementation Media {
     AFHTTPRequestOperation *_uploadOperation;
 }
@@ -147,40 +139,6 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 + (NSString *)mediaTypeForFeaturedImage
 {
     return @"image";
-}
-
-+ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure
-{
-    __block NSMutableArray *failedDeletes = [NSMutableArray array];
-    for (NSUInteger i = 0; i < media.count; i++) {
-        Media *m = media[i];
-        // Delete locally if it was never uploaded
-        if (!m.remoteURL) {
-            [m.managedObjectContext deleteObject:m];
-            if (i == media.count-1) {
-                if (success) {
-                    success();
-                }
-                return;
-            }
-            continue;
-        }
-
-        [m xmlrpcDeleteWithSuccess:^{
-            if (i == media.count-1) {
-                if (success) {
-                    success();
-                }
-            }
-        } failure:^(NSError *error) {
-            [failedDeletes addObject:m];
-            if (i == media.count-1) {
-                if (failure) {
-                    failure(error, failedDeletes);
-                }
-            }
-        }];
-    }
 }
 
 #pragma mark -
