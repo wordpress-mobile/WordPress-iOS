@@ -1024,8 +1024,9 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
         webViewController.username = username;
         webViewController.password = password;
     }
-    [self.navigationController setNavigationBarHidden:NO animated:NO];
-    [self.navigationController pushViewController:webViewController animated:NO];
+
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)endViewEditing
