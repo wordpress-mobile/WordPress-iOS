@@ -737,7 +737,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-	NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
+    NSURL *targetURL                        = [NSURL URLWithString:WPJetpackInformationURL];
     WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
  
     UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
