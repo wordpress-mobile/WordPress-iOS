@@ -78,17 +78,17 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
 
 - (IBAction)viewTermsOfService:(id)sender
 {
-    [self openURLWithString:@"http://wordpress.com/tos/"];
+    [self openURLWithString:@"https://wordpress.com/tos/"];
 }
 
 - (IBAction)viewPrivacyPolicy:(id)sender
 {
-    [self openURLWithString:@"http://automattic.com/privacy/"];
+    [self openURLWithString:@"https://automattic.com/privacy/"];
 }
 
 - (IBAction)viewWebsite:(id)sender
 {
-    [self openURLWithString:@"http://automattic.com/"];
+    [self openURLWithString:@"https://automattic.com/"];
 }
 
 - (void)openURLWithString:(NSString *)path
@@ -97,8 +97,9 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
     }
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:path]];
+    
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 

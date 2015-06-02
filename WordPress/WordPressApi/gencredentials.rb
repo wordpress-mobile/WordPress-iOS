@@ -181,7 +181,7 @@ if rawpath.nil?
 end
 
 path = File.expand_path(rawpath)
-unless File.exists?(path)
+unless File.exist?(path)
   $stderr.puts "error: file #{path} not found"
   exit 1
 end

@@ -3,16 +3,36 @@
 #import "PostCategory.h"
 #import "Coordinate.h"
 #import "NSMutableDictionary+Helpers.h"
+#import "NSString+Helpers.h"
 #import "ContextManager.h"
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
+
+@interface Post()
+@property (nonatomic, strong) NSString *storedContentPreviewForDisplay;
+@end
 
 @implementation Post
 
-@dynamic geolocation, tags, postFormat;
-@dynamic latitudeID, longitudeID, publicID;
+@dynamic commentCount;
+@dynamic likeCount;
+@dynamic geolocation;
+@dynamic tags;
+@dynamic postFormat;
+@dynamic latitudeID;
+@dynamic longitudeID;
+@dynamic publicID;
 @dynamic categories;
 @synthesize specialType;
+@synthesize storedContentPreviewForDisplay;
 
 #pragma mark - NSManagedObject subclass methods
+
+- (void)awakeFromFetch
+{
+    [super awakeFromFetch];
+
+    [self buildContentPreview];
+}
 
 - (void)didTurnIntoFault
 {
@@ -21,7 +41,28 @@
     self.specialType = nil;
 }
 
+- (void)willSave
+{
+    [super willSave];
+    if ([self isDeleted]) {
+        return;
+    }
+    [self buildContentPreview];
+}
+
+
 #pragma mark -
+
+- (void)buildContentPreview
+{
+    NSString *str = self.mt_excerpt;
+    if ([str length]) {
+        str = [NSString makePlainText:str];
+    } else {
+        str = [BasePost summaryFromContent:self.content];
+    }
+    self.storedContentPreviewForDisplay = str ? str : @"";
+}
 
 - (NSString *)categoriesText
 {
@@ -139,6 +180,117 @@
     }
     
     return NO;
+}
+
+#pragma mark - WPPostContentViewProvider Methods
+
+- (NSString *)authorNameForDisplay
+{
+    return self.author;
+}
+
+- (NSURL *)blogURL
+{
+    return [NSURL URLWithString:self.blog.url];
+}
+
+- (NSString *)blogURLForDisplay
+{
+    return self.blog.displayURL;
+}
+
+- (NSInteger)numberOfComments
+{
+    if (self.commentCount) {
+        return [self.commentCount integerValue];
+    }
+    return 0;
+}
+
+- (NSInteger)numberOfLikes
+{
+    if (self.likeCount) {
+        return [self.likeCount integerValue];
+    }
+    return 0;
+}
+
+- (NSString *)titleForDisplay
+{
+    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
+    return [title stringByDecodingXMLCharacters];
+}
+
+- (NSString *)authorForDisplay
+{
+    return self.author;
+}
+
+- (NSString *)blogNameForDisplay
+{
+    return self.blog.blogName;
+}
+
+- (NSString *)contentForDisplay
+{
+    return self.content;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    if (self.storedContentPreviewForDisplay == nil) {
+        [self buildContentPreview];
+    }
+    return self.storedContentPreviewForDisplay;
+}
+
+- (NSString *)gravatarEmailForDisplay
+{
+    return nil;
+}
+
+- (NSString *)blavatarForDisplay
+{
+    return self.blog.blavatarUrl;
+}
+
+- (NSURL *)avatarURLForDisplay
+{
+    return nil;
+}
+
+- (BOOL)supportsStats
+{
+    return [self.blog supports:BlogFeatureStats];
+}
+
+- (BOOL)isPrivate
+{
+    return self.blog.isPrivate;
+}
+
+- (BOOL)isMultiAuthorBlog
+{
+    return self.blog.isMultiAuthor;
+}
+
+- (NSString *)statusForDisplay
+{
+    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
+        return [NSString string];
+    }
+    return [self statusTitle];
+}
+
+- (BOOL)isUploading
+{
+    return self.remoteStatus == AbstractPostRemoteStatusPushing;
+}
+
+- (NSURL *)featuredImageURLForDisplay
+{
+    NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
+    return url;
 }
 
 @end
