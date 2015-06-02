@@ -67,7 +67,7 @@
                                             </mask>
                                         </variation>
                                     </view>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y9d-Yk-F4X">
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Y9d-Yk-F4X">
                                         <rect key="frame" x="0.0" y="65" width="308" height="196"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="196" id="0wl-TX-0Ed">
