@@ -32,9 +32,6 @@
 
 @synthesize unattached;
 
-NSUInteger const MediaDefaultThumbnailSize = 75;
-CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
-
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
     Media *media = [NSEntityDescription insertNewObjectForEntityForName:@"Media" inManagedObjectContext:post.managedObjectContext];
