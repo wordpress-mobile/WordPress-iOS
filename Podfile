@@ -31,7 +31,7 @@ pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.7.9'
 pod 'WordPressApi', '~> 0.3.4'
 pod 'WordPress-iOS-Shared', '0.3.2'
-pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '33dd86dc5ec6277769e185c3502c3f2469dd1edd'
+pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => '9812b6c9a699cd654ef5c0cffe9bed9f91c06782'
 pod 'WordPressCom-Stats-iOS', '0.3.4'
 pod 'WordPressCom-Analytics-iOS', '0.0.31'
 pod 'SocketRocket', :git => 'https://github.com/jleandroperez/SocketRocket.git', :commit => '3ff6038ad95fb94fd9bd4021f5ecf07fc53a6927'
@@ -64,7 +64,7 @@ post_install do |installer_representation|
       end
     end
   end
-  
+
   # Directly set the Targeted Device Family
   # See https://github.com/CocoaPods/CocoaPods/issues/2292
   installer_representation.project.build_configurations.each do |config|
