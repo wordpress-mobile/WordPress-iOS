@@ -1,10 +1,4 @@
 #import "Media.h"
-#import "UIImage+Resize.h"
-#import "NSString+Helpers.h"
-#import "NSString+Util.h"
-#import "AFHTTPRequestOperation.h"
-#import "ContextManager.h"
-#import <ImageIO/ImageIO.h>
 
 @implementation Media {
     AFHTTPRequestOperation *_uploadOperation;
