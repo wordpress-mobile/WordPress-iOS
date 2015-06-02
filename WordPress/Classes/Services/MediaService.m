@@ -389,7 +389,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
         
-        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", nil];
+        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
         
         for (NSString *currentPath in contentsOfDir) {
             NSString *extension = currentPath.pathExtension.lowercaseString;

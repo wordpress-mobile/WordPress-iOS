@@ -18,6 +18,7 @@ const CGFloat PostsSearchBariPadWidth = 210.0;
 const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
+const CGFloat DefaultHeightForFooterView = 44.0;
 
 @implementation AbstractPostListViewController
 
@@ -94,6 +95,11 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 #pragma mark - Configuration
 
+- (CGFloat)heightForFooterView
+{
+    return DefaultHeightForFooterView;
+}
+
 - (void)configureFilters
 {
     self.postListFilters = [PostListFilter newPostListFilters];
@@ -130,6 +136,9 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
     [self.postListFooterView showSpinner:NO];
+    CGRect frame = self.postListFooterView.frame;
+    frame.size.height = [self heightForFooterView];
+    self.postListFooterView.frame = frame;
     self.tableView.tableFooterView = self.postListFooterView;
 }
 
