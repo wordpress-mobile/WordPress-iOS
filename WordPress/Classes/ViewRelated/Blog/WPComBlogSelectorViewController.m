@@ -4,11 +4,12 @@
 
 - (NSPredicate *)fetchRequestPredicate
 {
+    NSString *predicateString = @"account.isWpcom = YES AND isJetpack = NO";
     if ([self.tableView isEditing]) {
-        return [NSPredicate predicateWithFormat:@"account.isWpcom = YES"];
+        predicateString = [NSString stringWithFormat:@"%@ AND visible = YES", predicateString];
     }
 
-    return [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
+    return [NSPredicate predicateWithFormat:predicateString];
 }
 
 @end

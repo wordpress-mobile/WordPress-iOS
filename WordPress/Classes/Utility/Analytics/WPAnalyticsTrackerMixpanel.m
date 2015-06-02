@@ -652,6 +652,18 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_tags"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_tags"];
             break;
+        case WPAnalyticsStatPushAuthenticationApproved:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_approved"];
+            break;
+        case WPAnalyticsStatPushAuthenticationExpired:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_expired"];
+            break;
+        case WPAnalyticsStatPushAuthenticationFailed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_failed"];
+            break;
+        case WPAnalyticsStatPushAuthenticationIgnored:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_ignored"];
+            break;
         case WPAnalyticsStatAddedSelfHostedSite:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_added_self_hosted_site"];

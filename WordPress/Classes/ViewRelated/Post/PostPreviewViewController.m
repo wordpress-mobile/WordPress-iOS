@@ -57,9 +57,6 @@
 {
     [super viewWillAppear:animated];
     [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
-    if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:nil];
-    }
     [self refreshWebView];
 }
 
@@ -191,18 +188,16 @@
 {
     BOOL needsLogin = NO;
     NSString *status = self.apost.status;
-    NSDate *postGMTDate = self.apost.date_created_gmt;
-    NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
-    if ([status isEqualToString:@"draft"]) {
+    if ([status isEqualToString:PostStatusDraft]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"private"]) {
+    } else if ([status isEqualToString:PostStatusPrivate]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"pending"]) {
+    } else if ([status isEqualToString:PostStatusPending]) {
         needsLogin = YES;
     } else if ([self.apost.blog isPrivate]) {
         needsLogin = YES; // Private blog
-    } else if ([laterDate isEqualToDate:postGMTDate]) {
+    } else if ([self.apost isScheduled]) {
         needsLogin = YES; // Scheduled post
     }
 
@@ -219,7 +214,7 @@
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
             NSString *token;
-            if ([self.apost.blog isWPcom]) {
+            if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
                 token = self.apost.blog.authToken;
             }
 
@@ -311,6 +306,14 @@
 {
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Do not hide status bar on iPad
+    return (self.shouldHideStatusBar && !IS_IPAD);
 }
 
 @end

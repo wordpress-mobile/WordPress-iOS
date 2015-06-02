@@ -568,8 +568,8 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (IBAction)TOSLabelWasTapped
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:@"http://en.wordpress.com/tos/"]];
+    NSURL *targetURL = [NSURL URLWithString:@"https://en.wordpress.com/tos/"];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     [self.navigationController pushViewController:webViewController animated:YES];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
@@ -838,6 +838,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
             [[ContextManager sharedInstance] saveContext:context];
 
+            [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
             [blogService syncBlog:blog success:nil failure:nil];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
@@ -867,6 +868,13 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
     [_operationQueue addOperation:userCreation];
     [_operationQueue addOperation:userSignIn];
     [_operationQueue addOperation:blogCreation];
+}
+
+#pragma mark - Status bar management
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
 }
 
 @end

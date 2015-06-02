@@ -26,6 +26,7 @@ extern NSString * NoteRangeTypeStats;
 extern NSString * NoteRangeTypeBlockquote;
 extern NSString * NoteRangeTypeNoticon;
 extern NSString * NoteRangeTypeSite;
+extern NSString * NoteRangeTypeMatch;
 
 extern NSString * NoteMediaTypeImage;
 
@@ -86,6 +87,8 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) BOOL                   isComment;
 @property (nonatomic, assign,  readonly) BOOL                   isPost;
 @property (nonatomic, assign,  readonly) BOOL                   isFollow;
+@property (nonatomic, assign,  readonly) BOOL                   isLike;
+@property (nonatomic, assign,  readonly) BOOL                   isCommentLike;
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
 @property (nonatomic, assign,  readonly) BOOL                   hasReply;
 
@@ -165,6 +168,13 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
  *  @returns                An array of NSURL instances, mapping to images required by this block.
  */
 - (NSArray *)imageUrls;
+
+/**
+ *	@brief      Returns YES if the associated comment (if any) is approved. NO otherwise.
+ *
+ *  @returns                A boolean value indicating whether the comment is approved, or not.
+ */
+- (BOOL)isCommentApproved;
 
 - (void)setActionOverrideValue:(NSNumber *)obj forKey:(NSString *)key;
 - (void)removeActionOverrideForKey:(NSString *)key;
