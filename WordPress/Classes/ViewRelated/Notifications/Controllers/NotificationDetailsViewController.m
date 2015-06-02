@@ -503,8 +503,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Footer-Level:
     } else if (group.type == NoteBlockGroupTypeFooter) {
         
+        // Note:
+        // By convention, the last range is the one that always contains the targetURL.
+        //
         NotificationBlock *block    = [group blockOfType:NoteBlockTypeText];
-        NotificationRange *range    = [block notificationRangeWithCommentId:self.note.metaReplyID];
+        NotificationRange *range    = block.ranges.lastObject;
         
         [self openURL:range.url];
     }
