@@ -39,10 +39,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *dismissButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *backButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem          *forwardButton;
+@property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *forwardButton;
+@property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
 
-@property (nonatomic, strong) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
@@ -67,13 +68,15 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 {
     [super viewDidLoad];
 
-    NSAssert(_webView,       @"Missing Outlet!");
-    NSAssert(_progressView,  @"Missing Outlet!");
-    NSAssert(_dismissButton, @"Missing Outlet!");
-    NSAssert(_optionsButton, @"Missing Outlet!");
-    NSAssert(_backButton,    @"Missing Outlet!");
-    NSAssert(_forwardButton, @"Missing Outlet!");
-    NSAssert(_toolbar,       @"Missing Outlet!");
+    NSAssert(_webView,                  @"Missing Outlet!");
+    NSAssert(_progressView,             @"Missing Outlet!");
+    NSAssert(_dismissButton,            @"Missing Outlet!");
+    NSAssert(_optionsButton,            @"Missing Outlet!");
+    
+    NSAssert(_toolbar,                  @"Missing Outlet!");
+    NSAssert(_backButton,               @"Missing Outlet!");
+    NSAssert(_forwardButton,            @"Missing Outlet!");
+    NSAssert(_toolbarBottomConstraint,  @"Missing Outlet!");
     
     // TitleView
     self.titleView                          = [NavigationTitleView new];
@@ -196,6 +199,8 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (void)refreshInterface
 {
+    self.backButton.enabled             = self.webView.canGoBack;
+    self.forwardButton.enabled          = self.webView.canGoForward;
     self.optionsButton.enabled          = !self.loading;
     
     if (self.loading) {
@@ -246,6 +251,16 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 - (IBAction)dismiss
 {
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)goBack
+{
+    [self.webView goBack];
+}
+
+- (IBAction)goForward
+{
+    [self.webView goForward];
 }
 
 - (IBAction)showLinkOptions
