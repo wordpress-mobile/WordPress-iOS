@@ -1,8 +1,6 @@
 #import "Media.h"
 
-@implementation Media {
-    AFHTTPRequestOperation *_uploadOperation;
-}
+@implementation Media
 
 @dynamic mediaID;
 @dynamic remoteURL;
