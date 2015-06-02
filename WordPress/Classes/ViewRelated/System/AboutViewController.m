@@ -102,7 +102,14 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
     
     NSURL *targetURL = [NSURL URLWithString:path];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    [self.navigationController pushViewController:webViewController animated:YES];
+    
+    if (self.presentingViewController) {
+        [self.navigationController pushViewController:webViewController animated:YES];
+        return;
+    }
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 @end
