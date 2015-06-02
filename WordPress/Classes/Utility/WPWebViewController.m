@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "UIAlertView+Blocks.h"
+#import "UIImage+Util.h"
+#import "WPStyleGuide+WebView.h"
 #import "WordPress-Swift.h"
 
 
@@ -73,15 +75,44 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     
     // Buttons
     self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share", @"Spoken accessibility label");
+    self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
+    
+    // ProgressView
+    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
     
     // WebView
     self.webView.scalesPageToFit            = YES;
     
     // Share
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
+    self.navigationItem.rightBarButtonItem  = self.optionsButton;
     
     // Fire away!
+    [self applyModalStyleIfNeeded];
     [self loadWebViewRequest];
+}
+
+- (void)applyModalStyleIfNeeded
+{
+    // Proceed only if this is Modal
+    if (self.presentingViewController == nil) {
+        return;
+    }
+    
+    UIImage *navBackgroundImage             = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarBackground]];
+    UIImage *navShadowImage                 = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarShadow]];
+    
+    UINavigationBar *navigationBar          = self.navigationController.navigationBar;
+    navigationBar.shadowImage               = navShadowImage;
+    navigationBar.barStyle                  = UIBarStyleDefault;
+    [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    
+    self.titleView.titleLabel.textColor     = [WPStyleGuide darkGrey];
+    self.titleView.subtitleLabel.textColor  = [WPStyleGuide grey];
+    
+    self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
+    
+    self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
