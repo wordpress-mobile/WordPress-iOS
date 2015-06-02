@@ -35,6 +35,8 @@ NSString const *NoteTypeComment         = @"comment";
 NSString const *NoteTypeMatcher         = @"automattcher";
 NSString const *NoteTypePost            = @"post";
 NSString const *NoteTypeFollow          = @"follow";
+NSString const *NoteTypeLike            = @"like";
+NSString const *NoteTypeCommentLike     = @"comment_like";
 
 NSString const *NoteMetaKey             = @"meta";
 NSString const *NoteMediaKey            = @"media";
@@ -508,8 +510,20 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
         
     // Rest: 1-1 relationship
     } else {
+        
+        //  More Duck Typing:
+        //
+        //  -   Notifications of the kind [Follow, Like, CommentLike] may contain a Footer block.
+        //  -   We can assume that whenever the last block is of the type NoteBlockTypeText, we're dealing with a footer.
+        //  -   Whenever we detect such a block, we'll map the NotificationBlock into a NoteBlockGroupTypeFooter group.
+        //
+        BOOL canContainFooter           = notification.isFollow || notification.isLike || notification.isCommentLike;
+        
         for (NotificationBlock *block in blocks) {
-            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:block.type]];
+            BOOL isFooter               = canContainFooter && block.type == NoteBlockTypeText && blocks.lastObject == block;
+            NoteBlockGroupType type     = isFooter ? NoteBlockGroupTypeFooter : block.type;
+            
+            [groups addObject:[NotificationBlockGroup groupWithBlocks:@[block] type:type]];
         }
     }
     
@@ -664,6 +678,16 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 - (BOOL)isFollow
 {
     return [self.type isEqual:NoteTypeFollow];
+}
+
+- (BOOL)isLike
+{
+    return [self.type isEqual:NoteTypeLike];
+}
+
+- (BOOL)isCommentLike
+{
+    return [self.type isEqual:NoteTypeCommentLike];
 }
 
 - (BOOL)isBadge

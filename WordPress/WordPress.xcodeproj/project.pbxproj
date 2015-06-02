@@ -266,6 +266,10 @@
 		859F761D18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m in Sources */ = {isa = PBXBuildFile; fileRef = 859F761C18F2159800EF8D5D /* WPAnalyticsTrackerMixpanelInstructionsForStat.m */; };
 		85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */; };
 		85AD6AEF173CCFDC002CB896 /* WPNUXSecondaryButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */; };
+		85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */; };
+		85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */; };
+		85B125421B028F62008A3D95 /* PushAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */; };
+		85B125461B0294F6008A3D95 /* UIAlertViewProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B125441B02937E008A3D95 /* UIAlertViewProxy.m */; };
 		85B6F74F1742DA1E00CE7F3A /* WPNUXMainButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */; };
 		85B6F7521742DAE800CE7F3A /* WPNUXBackButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 85B6F7511742DAE800CE7F3A /* WPNUXBackButton.m */; };
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
@@ -292,6 +296,10 @@
 		85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 85E105851731A597001071A3 /* WPWalkthroughOverlayView.m */; };
 		85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */; };
 		85ED988817DFA00000090D0B /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 85ED988717DFA00000090D0B /* Images.xcassets */; };
+		85F8E1981B017A86000859BB /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */; };
+		85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */; };
+		85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */; };
+		85F8E19F1B0186D0000859BB /* MockWordPressComApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */; };
 		931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */; };
 		931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 930FD0A519882742000CC81D /* BlogServiceTest.m */; };
 		931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */; };
@@ -348,6 +356,9 @@
 		B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */; };
 		B532D4EC199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */; };
 		B532D4EE199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */; };
+		B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */; };
+		B535209D1AF7EB9F00B33BA8 /* PushAuthenticationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */; };
+		B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */; };
 		B53FDF6D19B8C336000723B6 /* UIScreen+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */; };
 		B548458219A258890077E7A5 /* UIActionSheet+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B548458119A258890077E7A5 /* UIActionSheet+Helpers.m */; };
 		B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54866C91A0D7042004AC79D /* NSAttributedString+Helpers.swift */; };
@@ -1046,6 +1057,9 @@
 		85AD6AEB173CCF9E002CB896 /* WPNUXPrimaryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXPrimaryButton.m; sourceTree = "<group>"; };
 		85AD6AED173CCFDC002CB896 /* WPNUXSecondaryButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXSecondaryButton.h; sourceTree = "<group>"; };
 		85AD6AEE173CCFDC002CB896 /* WPNUXSecondaryButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXSecondaryButton.m; sourceTree = "<group>"; };
+		85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationManagerTests.swift; sourceTree = "<group>"; };
+		85B125431B02937E008A3D95 /* UIAlertViewProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIAlertViewProxy.h; sourceTree = "<group>"; };
+		85B125441B02937E008A3D95 /* UIAlertViewProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIAlertViewProxy.m; sourceTree = "<group>"; };
 		85B6F74D1742DA1D00CE7F3A /* WPNUXMainButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXMainButton.h; sourceTree = "<group>"; };
 		85B6F74E1742DA1D00CE7F3A /* WPNUXMainButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPNUXMainButton.m; sourceTree = "<group>"; };
 		85B6F7501742DAE800CE7F3A /* WPNUXBackButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPNUXBackButton.h; sourceTree = "<group>"; };
@@ -1094,6 +1108,9 @@
 		85EC44D31739826A00686604 /* CreateAccountAndBlogViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreateAccountAndBlogViewController.m; sourceTree = "<group>"; };
 		85ED988717DFA00000090D0B /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		85ED98AA17DFB17200090D0B /* iTunesArtwork@2x */ = {isa = PBXFileReference; lastKnownFileType = file; path = "iTunesArtwork@2x"; sourceTree = "<group>"; };
+		85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemoteTests.swift; sourceTree = "<group>"; };
+		85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceTests.swift; sourceTree = "<group>"; };
+		85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MockWordPressComApi.swift; sourceTree = "<group>"; };
 		872A78E046E04A05B17EB1A1 /* libPods-WordPressTodayWidget.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WordPressTodayWidget.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9198544476D3B385673B18E9 /* Pods-WordPressTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release.xcconfig"; sourceTree = "<group>"; };
@@ -1203,6 +1220,9 @@
 		B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4E8199D4357006E4DF6 /* NoteBlockTextTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockTextTableViewCell.swift; sourceTree = "<group>"; };
 		B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockImageTableViewCell.swift; sourceTree = "<group>"; };
+		B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationManager.swift; sourceTree = "<group>"; };
+		B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationService.swift; sourceTree = "<group>"; };
+		B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PushAuthenticationServiceRemote.swift; sourceTree = "<group>"; };
 		B53FDF6C19B8C336000723B6 /* UIScreen+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIScreen+Helpers.swift"; sourceTree = "<group>"; };
 		B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 28.xcdatamodel"; sourceTree = "<group>"; };
 		B548458019A258890077E7A5 /* UIActionSheet+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIActionSheet+Helpers.h"; sourceTree = "<group>"; };
@@ -2322,6 +2342,7 @@
 				E149D64B19349E69006A843D /* MediaServiceRemoteREST.m */,
 				E149D64C19349E69006A843D /* MediaServiceRemoteXMLRPC.h */,
 				E149D64D19349E69006A843D /* MediaServiceRemoteXMLRPC.m */,
+				B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */,
 				5D3D559818F88C5E00782892 /* ReaderPostServiceRemote.h */,
 				5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */,
 				5D44EB331986D695008B7175 /* ReaderSiteServiceRemote.h */,
@@ -2427,6 +2448,7 @@
 				5993E7261AC5D62100D31D2B /* Files */,
 				59DD94311AC479DC0032DD6B /* Logging */,
 				E159D1011309AAF200F498E2 /* Migrations */,
+				B53520991AF7BB9600B33BA8 /* Notifications */,
 				852416CC1A12EAF70030700C /* Ratings */,
 				E1523EB216D3B2EE002C5A36 /* Sharing */,
 				C545E0A01811B9880020844C /* ContextManager.h */,
@@ -2440,8 +2462,6 @@
 				313692781A5D6F7900EBE645 /* HelpshiftUtils.m */,
 				5DB4683918A2E718004A89A9 /* LocationService.h */,
 				5DB4683A18A2E718004A89A9 /* LocationService.m */,
-				C57A31A2183D2111007745B9 /* NotificationsManager.h */,
-				C57A31A3183D2111007745B9 /* NotificationsManager.m */,
 				FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */,
 				5D3E334C15EEBB6B005FC6F2 /* ReachabilityUtils.h */,
 				5D3E334D15EEBB6B005FC6F2 /* ReachabilityUtils.m */,
@@ -2489,6 +2509,8 @@
 				5DF6571A1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m */,
 				FF28B3EF1AEB251200E11AAE /* InfoPListTranslator.h */,
 				FF28B3F01AEB251200E11AAE /* InfoPListTranslator.m */,
+				85B125431B02937E008A3D95 /* UIAlertViewProxy.h */,
+				85B125441B02937E008A3D95 /* UIAlertViewProxy.m */,
 				5D0A20D21AF11A7300E5C6BC /* PhotonImageURLHelper.h */,
 				5D0A20D31AF11A7300E5C6BC /* PhotonImageURLHelper.m */,
 			);
@@ -2557,6 +2579,17 @@
 				85D239BF1AE5A7020074768D /* LoginViewModelTests.m */,
 			);
 			name = NUX;
+			sourceTree = "<group>";
+		};
+		85F8E1991B017A8E000859BB /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */,
+				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
+				85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */,
+				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
+			);
+			name = Networking;
 			sourceTree = "<group>";
 		};
 		931D26FB19EDA0D000114F17 /* ALIterativeMigrator */ = {
@@ -2641,6 +2674,7 @@
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
 				93DEB88019E5BF7100F9546D /* TodayExtensionService.h */,
 				93DEB88119E5BF7100F9546D /* TodayExtensionService.m */,
+				B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */,
 				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
 				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 			);
@@ -2716,6 +2750,16 @@
 				8398EE9811ACE63C000FE6E0 /* WebSignupViewController.xib */,
 			);
 			name = Blog;
+			sourceTree = "<group>";
+		};
+		B53520991AF7BB9600B33BA8 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				C57A31A2183D2111007745B9 /* NotificationsManager.h */,
+				C57A31A3183D2111007745B9 /* NotificationsManager.m */,
+				B535209A1AF7BBB800B33BA8 /* PushAuthenticationManager.swift */,
+			);
+			name = Notifications;
 			sourceTree = "<group>";
 		};
 		B545186718E9E08000AC3A54 /* Notifications */ = {
@@ -3031,6 +3075,7 @@
 		E1239B7B176A2E0F00D37220 /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				85F8E1991B017A8E000859BB /* Networking */,
 				5D7A577D1AFBFD7C0097C028 /* Models */,
 				85D239BD1AE5A6EE0074768D /* NUX */,
 				B5AEEC7F1ACAD099008BF2A4 /* Categories */,
@@ -3803,6 +3848,7 @@
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
+				B535209F1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				5D13FA551AF99C0300F06492 /* PageListSectionHeaderView.m in Sources */,
 				B587797D19B799D800E57C5A /* UIDevice+Helpers.swift in Sources */,
@@ -3813,6 +3859,7 @@
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
 				B55853F719630D5400FAF6C3 /* NSAttributedString+Util.m in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
+				B535209B1AF7BBB800B33BA8 /* PushAuthenticationManager.swift in Sources */,
 				319D6E8119E44C680013871C /* SuggestionsTableView.m in Sources */,
 				F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */,
 				ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */,
@@ -4005,9 +4052,11 @@
 				5DAFEAB81AF2CA6E00B3E1D7 /* PostMetaButton.m in Sources */,
 				85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */,
 				B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */,
+				B535209D1AF7EB9F00B33BA8 /* PushAuthenticationService.swift in Sources */,
 				5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
 				85E105861731A597001071A3 /* WPWalkthroughOverlayView.m in Sources */,
+				85B125461B0294F6008A3D95 /* UIAlertViewProxy.m in Sources */,
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
@@ -4142,15 +4191,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
+				85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
 				5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
+				85F8E1981B017A86000859BB /* PushAuthenticationServiceRemote.swift in Sources */,
 				5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */,
 				5D7A57801AFBFD940097C028 /* BasePostTest.m in Sources */,
 				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
+				85B125421B028F62008A3D95 /* PushAuthenticationManager.swift in Sources */,
 				93E9050719E6F3D8005513C9 /* TestContextManager.m in Sources */,
 				5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */,
 				5948AD111AB73D19006E8882 /* WPAppAnalyticsTests.m in Sources */,
@@ -4160,14 +4212,18 @@
 				F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */,
 				93EF094C19ED533500C89770 /* ContextManagerTests.swift in Sources */,
 				B5D689FD1A5EBC900063D9E5 /* NotificationsManager+TestHelper.m in Sources */,
+				85F8E19B1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift in Sources */,
+				85F8E19D1B018698000859BB /* PushAuthenticationServiceTests.swift in Sources */,
 				931D270019EDAE8600114F17 /* CoreDataMigrationTests.m in Sources */,
 				85D239C11AE5A7020074768D /* LoginViewModelTests.m in Sources */,
 				85D790AC1AE5D95E0033AE83 /* MixpanelProxyTests.m in Sources */,
+				85F8E19F1B0186D0000859BB /* MockWordPressComApi.swift in Sources */,
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
 				B5AEEC721ACACF2F008BF2A4 /* NotificationTests.m in Sources */,
 				9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */,
+				85B125411B028E34008A3D95 /* PushAuthenticationManagerTests.swift in Sources */,
 				E19A10CA1B010AA0006192B0 /* WPURLRequestTest.m in Sources */,
 				931D26F819ED7F7800114F17 /* ReaderTopicServiceTest.m in Sources */,
 				E1E4CE0D177439D100430844 /* WPAvatarSourceTest.m in Sources */,
@@ -4314,7 +4370,6 @@
 					"COCOAPODS=1",
 					"NSLOGGER_BUILD_USERNAME=\"${USER}\"",
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					TRACKS_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;
@@ -4532,7 +4587,6 @@
 					INTERNAL_BUILD,
 					LOOKBACK_ENABLED,
 					"WPCOM_SCHEME=\\@\\\"${WPCOM_SCHEME}\\\"",
-					TRACKS_ENABLED,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_THUMB_SUPPORT = NO;

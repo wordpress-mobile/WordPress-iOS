@@ -503,8 +503,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Footer-Level:
     } else if (group.type == NoteBlockGroupTypeFooter) {
         
+        // Note:
+        // By convention, the last range is the one that always contains the targetURL.
+        //
         NotificationBlock *block    = [group blockOfType:NoteBlockTypeText];
-        NotificationRange *range    = [block notificationRangeWithCommentId:self.note.metaReplyID];
+        NotificationRange *range    = block.ranges.lastObject;
         
         [self openURL:range.url];
     }
@@ -1069,6 +1072,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
         
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
     
@@ -1096,6 +1104,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };

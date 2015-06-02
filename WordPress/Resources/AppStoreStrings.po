@@ -41,7 +41,7 @@ msgstr ""
 
 msgctxt "v5.2-whats-new"
 msgid ""
-"• New and modern media picker, with instant access to your phone camera and albums in a dropdown menu."
+"• New and modern media picker, with instant access to your camera and albums in a dropdown menu."
 "• Infinite scroll on comments."
 "• Improved comment notifications so you can keep track of your comment replies."
 "• Unsupported image formats (e.g., TIFF) are accepted and converted to a supported format before upload."
