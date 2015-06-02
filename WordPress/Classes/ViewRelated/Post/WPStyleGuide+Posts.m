@@ -160,4 +160,47 @@
     return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansRegularFontOfSize:fontSize]};
 }
 
+
+#pragma mark - Page Cell Styles
+
++ (void)applyPageTitleStyle:(UILabel *)label
+{
+    CGFloat fontSize = 15.0;
+    label.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
+    label.textColor = [self wordPressBlue];
+}
+
++ (NSDictionary *)pageCellTitleAttributes
+{
+    CGFloat fontSize = 15.0;
+    CGFloat lineHeight = 22.5;
+    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+    paragraphStyle.minimumLineHeight = lineHeight;
+    paragraphStyle.maximumLineHeight = lineHeight;
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:fontSize]};
+}
+
++ (void)applySectionHeaderTitleStyle:(UILabel *)label
+{
+    label.backgroundColor = [self lightGrey];
+    label.font = [WPFontManager openSansRegularFontOfSize:12.0];
+    label.textColor = [self grey];
+}
+
++ (void)applyRestorePageLabelStyle:(UILabel *)label
+{
+    CGFloat fontSize = 14.0;
+    label.font = [WPFontManager openSansRegularFontOfSize:fontSize];
+    label.textColor = [self grey];
+}
+
++ (void)applyRestorePageButtonStyle:(UIButton *)button
+{
+    CGFloat fontSize = 14.0;
+    button.titleLabel.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
+    [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
+    [button setTitleColor:[WPStyleGuide darkBlue] forState:UIControlStateHighlighted];
+    button.imageEdgeInsets = UIEdgeInsetsMake(0.0, 0.0, 0.0, 3.0);
+}
+
 @end

@@ -472,6 +472,17 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.trackedViewDisplay = YES;
 }
 
+- (void)disableInteractionsForNotification:(Notification *)note
+{
+    NSIndexPath *indexPath      = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    UITableViewCell *cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.userInteractionEnabled = false;
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -587,14 +598,18 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
-    Notification *note          = sender;
+    NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
+    NSString *readerSegueID         = NSStringFromClass([ReaderPostDetailViewController class]);
+    Notification *note              = sender;
+    __weak __typeof(self) weakSelf  = self;
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-    
+        detailsViewController.onDestructionCallback = ^{
+            [weakSelf disableInteractionsForNotification:note];
+        };
+        
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
@@ -632,7 +647,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
     cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
-    
+    cell.userInteractionEnabled             = YES;
+
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
@@ -737,8 +753,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+	NSURL *targetURL                        = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
  
     [self.navigationController pushViewController:webViewController animated:YES];
  

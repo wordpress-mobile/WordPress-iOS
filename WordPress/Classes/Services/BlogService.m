@@ -49,20 +49,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID
 {
-    NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"blogID == %@", blogID];
-
-    fetchRequest.predicate = predicate;
-
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-    if (error) {
-        DDLogError(@"Error while fetching Blog by blogID: %@", error);
-        return nil;
-    }
-
-    return [results firstObject];
+    return [self blogWithPredicate:predicate];
 }
 
 - (void)flagBlogAsLastUsed:(Blog *)blog
@@ -75,7 +63,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (Blog *)lastUsedOrFirstBlog
 {
-    Blog *blog = [self lastUsedBlog];
+    Blog *blog = [self lastUsedOrPrimaryBlog];
 
     if (!blog) {
         blog = [self firstBlog];
@@ -84,12 +72,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return blog;
 }
 
-- (Blog *)lastUsedOrFirstWPcomBlog
+- (Blog *)lastUsedOrFirstBlogThatSupports:(BlogFeature)feature
+{
+    Blog *blog = [self lastUsedOrPrimaryBlog];
+
+    if (!blog) {
+        blog = [self firstBlogThatSupports:feature];
+    }
+
+    return blog;
+}
+
+- (Blog *)lastUsedOrPrimaryBlog
 {
     Blog *blog = [self lastUsedBlog];
 
-    if (![blog isWPcom]) {
-        blog = [self firstWPComBlog];
+    if (!blog) {
+        blog = [self primaryBlog];
     }
 
     return blog;
@@ -117,64 +116,42 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         return nil;
     }
 
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES AND url = %@", url];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
+    Blog *blog = [self blogWithPredicate:predicate];
 
-    if ([results count] == 0) {
+    if (!blog) {
         // Blog might have been removed from the app. Clear the key.
         [defaults removeObjectForKey:LastUsedBlogURLDefaultsKey];
         [defaults synchronize];
-        return nil;
     }
 
-    return [results firstObject];
+    return blog;
+}
+
+- (Blog *)primaryBlog
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return defaultAccount.defaultBlog;
+}
+
+- (Blog *)firstBlogThatSupports:(BlogFeature)feature
+{
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
+    NSArray *results = [self blogsWithPredicate:predicate];
+
+    for (Blog *blog in results) {
+        if ([blog supports:feature]) {
+            return blog;
+        }
+    }
+    return nil;
 }
 
 - (Blog *)firstBlog
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                   ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
-
-    return [results firstObject];
-}
-
-- (Blog *)firstWPComBlog
-{
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = YES AND visible = YES"];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setPredicate:predicate];
-    fetchRequest.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                   ascending:YES]];
-    NSError *error = nil;
-    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest
-                                                                error:&error];
-
-    if (error) {
-        DDLogError(@"Couldn't fetch blogs: %@", error);
-        return nil;
-    }
-
-    return [results firstObject];
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
+    return [self blogWithPredicate:predicate];
 }
 
 - (void)syncBlogsForAccount:(WPAccount *)account
@@ -381,44 +358,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return stagger;
 }
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog
-                              success:(void (^)(BOOL enabled))success
-                              failure:(void (^)(NSError *error))failure
-{
-    if (!blog.isWPcom) {
-        if (success) {
-            success(YES);
-        }
-        
-        return;
-    }
-    
-    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
-    WPXMLRPCRequest *request = [blog.api XMLRPCRequestWithMethod:WPComGetFeatures
-                                                      parameters:parameters];
-    WPXMLRPCRequestOperation *operation = [blog.api XMLRPCRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        BOOL videoEnabled = YES;
-        if (([responseObject isKindOfClass:[NSDictionary class]])
-            && ([responseObject objectForKey:VideopressEnabled] != nil))
-        {
-            videoEnabled = [[responseObject objectForKey:VideopressEnabled] boolValue];
-        } else {
-            videoEnabled = YES;
-        }
-
-        if (success) {
-            success(videoEnabled);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        DDLogError(@"Error while checking if VideoPress is enabled: %@", error);
-
-        if (failure) {
-            failure(error);
-        }
-    }];
-    [blog.api enqueueXMLRPCRequestOperation:operation];
-}
-
 - (BOOL)hasVisibleWPComAccounts
 {
     return [self blogCountVisibleForWPComAccounts] > 0;
@@ -438,38 +377,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (NSInteger)blogCountVisibleForWPComAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@ AND visible = %@"
-                                                argumentArray:@[@(YES), @(YES)]];
+    NSArray *subpredicates = @[
+                            [self predicateForVisibleBlogs],
+                            [NSPredicate predicateWithFormat:@"account.isWpcom = YES"],
+                            ];
+    NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSInteger)blogCountVisibleForAllAccounts
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"visible = %@"
-                                                argumentArray:@[@(YES)]];
+    NSPredicate *predicate = [self predicateForVisibleBlogs];
     return [self blogCountWithPredicate:predicate];
 }
 
 - (NSArray *)blogsForAllAccounts
 {
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
-                                                                     ascending:YES];
-
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog"
-                                   inManagedObjectContext:self.managedObjectContext]];
-    [request setSortDescriptors:@[sortDescriptor]];
-
-    NSError *error;
-    NSArray *blogs = [self.managedObjectContext executeFetchRequest:request
-                                                              error:&error];
-
-    if (error) {
-        DDLogError(@"Error while retrieving all blogs");
-        return nil;
-    }
-
-    return blogs;
+    return [self blogsWithPredicate:nil];
 }
 
 ///--------------------
@@ -563,12 +487,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                        forAccount:account];
         }
         if (!blog) {
+            DDLogInfo(@"New blog from account %@: %@", account.username, remoteBlog);
             blog = [self createBlogWithAccount:account];
             blog.xmlrpc = remoteBlog.xmlrpc;
         }
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
+        blog.isJetpack = remoteBlog.jetpack;
         
         // If non-WPcom then always default or if first from remote (assuming .com)
         if (!account.isWpcom || [blogs indexOfObject:remoteBlog] == 0) {
@@ -606,6 +532,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }]] anyObject];
 
     if (jetpackBlog) {
+        DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
         WPAccount *oldAccount = jetpackBlog.account;
         jetpackBlog.account = account;
         jetpackBlog.jetpackAccount = nil;
@@ -645,16 +572,32 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
 }
 
+- (Blog *)blogWithPredicate:(NSPredicate *)predicate
+{
+    return [[self blogsWithPredicate:predicate] firstObject];
+}
+
+- (NSArray *)blogsWithPredicate:(NSPredicate *)predicate
+{
+    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"blogName"
+                                                                     ascending:YES];
+    request.sortDescriptors = @[ sortDescriptor ];
+
+    NSError *error;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request
+                                                                error:&error];
+    if (error) {
+        DDLogError(@"Couldn't fetch blogs with predicate %@: %@", predicate, error);
+        return nil;
+    }
+
+    return results;
+}
+
 - (NSInteger)blogCountWithPredicate:(NSPredicate *)predicate
 {
-    NSFetchRequest *request = [[NSFetchRequest alloc] init];
-    [request setEntity:[NSEntityDescription entityForName:@"Blog"
-                                   inManagedObjectContext:self.managedObjectContext]];
-    [request setIncludesSubentities:NO];
-
-    if (predicate) {
-        [request setPredicate:predicate];
-    }
+    NSFetchRequest *request = [self fetchRequestWithPredicate:predicate];
 
     NSError *err;
     NSUInteger count = [self.managedObjectContext countForFetchRequest:request
@@ -663,6 +606,19 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         count = 0;
     }
     return count;
+}
+
+- (NSFetchRequest *)fetchRequestWithPredicate:(NSPredicate *)predicate
+{
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Blog class])];
+    request.includesSubentities = NO;
+    request.predicate = predicate;
+    return request;
+}
+
+- (NSPredicate *)predicateForVisibleBlogs
+{
+    return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
 - (NSUInteger)countForSyncedPostsWithEntityName:(NSString *)entityName

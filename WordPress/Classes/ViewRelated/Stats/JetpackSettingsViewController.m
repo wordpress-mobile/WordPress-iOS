@@ -648,8 +648,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
 
 - (void)openURL:(NSURL *)url username:(NSString *)username password:(NSString *)password wpLoginURL:(NSURL *)wpLoginURL
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = url;
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
     webViewController.username = username;
     webViewController.password = password;
     webViewController.wpLoginURL = wpLoginURL;

@@ -20,7 +20,6 @@
 
 #import "BlogDetailsViewController.h"
 #import "EditSiteViewController.h"
-#import "PagesViewController.h"
 #import "CommentsViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "StatsViewController.h"
@@ -34,6 +33,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "PostListViewController.h"
+#import "PageListViewController.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowStats = 1;
@@ -222,7 +222,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.blog.isWPcom) {
+    if (![self.blog supports:BlogFeatureRemovable]) {
         // No "Remove Site" for wp.com
         return TableViewSectionCount - 1;
     }
@@ -342,9 +342,8 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                 [self showPostList];
                 return;
             case BlogDetailsRowPages:
-                [WPAnalytics track:WPAnalyticsStatOpenedPages];
-                controllerClass = [PagesViewController class];
-                break;
+                [self showPageList];
+                return;
             case BlogDetailsRowComments:
                 [WPAnalytics track:WPAnalyticsStatOpenedComments];
                 controllerClass = [CommentsViewController class];
@@ -426,24 +425,25 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)showPageList {
+    [WPAnalytics track:WPAnalyticsStatOpenedPages];
+    UIViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)showViewSiteForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
 
     NSString *blogURL = blog.homeURL;
-    if (![blogURL hasPrefix:@"http"]) {
-        blogURL = [NSString stringWithFormat:@"http://%@", blogURL];
-    } else if ([blog isWPcom] && [blog.url rangeOfString:@"wordpress.com"].location == NSNotFound) {
-        blogURL = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-    }
 
     // Check if the same site already loaded
     if ([self.navigationController.visibleViewController isMemberOfClass:[WPWebViewController class]] &&
         [((WPWebViewController*)self.navigationController.visibleViewController).url.absoluteString isEqual:blogURL]) {
         // Do nothing
     } else {
-        WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-        webViewController.url = [NSURL URLWithString:blogURL];
+        NSURL *targetURL = [NSURL URLWithString:blogURL];
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
         if (blog.isPrivate) {
             webViewController.authToken = blog.authToken;
             webViewController.username = blog.username;
