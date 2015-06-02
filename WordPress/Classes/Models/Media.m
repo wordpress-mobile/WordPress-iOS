@@ -143,21 +143,6 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
 #pragma mark -
 
-- (CGFloat)progress
-{
-    [self willAccessValueForKey:@"progress"];
-    NSNumber *result = [self primitiveValueForKey:@"progress"];
-    [self didAccessValueForKey:@"progress"];
-    return [result floatValue];
-}
-
-- (void)setProgress:(CGFloat)progress
-{
-    [self willChangeValueForKey:@"progress"];
-    [self setPrimitiveValue:[NSNumber numberWithFloat:progress] forKey:@"progress"];
-    [self didChangeValueForKey:@"progress"];
-}
-
 - (MediaRemoteStatus)remoteStatus
 {
     return (MediaRemoteStatus)[[self remoteStatusNumber] intValue];
