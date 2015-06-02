@@ -13,6 +13,7 @@
                 <outlet property="optionsButton" destination="51" id="52"/>
                 <outlet property="progressView" destination="KoJ-2F-0M7" id="pbn-M0-taM"/>
                 <outlet property="toolbar" destination="AXg-oh-s2G" id="oAq-hv-8wQ"/>
+                <outlet property="toolbarBottomConstraint" destination="Nlf-af-GR4" id="ogC-wy-f35"/>
                 <outlet property="view" destination="1" id="14"/>
                 <outlet property="webView" destination="5" id="9"/>
             </connections>
@@ -37,8 +38,17 @@
                     <rect key="frame" x="0.0" y="436" width="320" height="44"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <items>
-                        <barButtonItem image="icon-chevron-left" id="MrE-vk-zRt"/>
-                        <barButtonItem image="icon-chevron-right" id="3bZ-k3-0vv"/>
+                        <barButtonItem image="icon-chevron-left" id="MrE-vk-zRt" userLabel="BackBarButtonItem">
+                            <connections>
+                                <action selector="goBack" destination="-1" id="1kD-BD-pVa"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="VJ1-Nd-aYd"/>
+                        <barButtonItem image="icon-chevron-right" id="3bZ-k3-0vv" userLabel="ForwardBarButtonItem">
+                            <connections>
+                                <action selector="goForward" destination="-1" id="Z0l-9l-GUG"/>
+                            </connections>
+                        </barButtonItem>
                     </items>
                     <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                     <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
