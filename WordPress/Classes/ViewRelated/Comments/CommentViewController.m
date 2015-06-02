@@ -444,7 +444,8 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)openWebViewWithURL:(NSURL *)url
 {
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
-    [self.navigationController pushViewController:webViewController animated:YES];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)toggleLikeForComment
