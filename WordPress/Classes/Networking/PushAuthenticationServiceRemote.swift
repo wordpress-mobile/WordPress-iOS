@@ -24,8 +24,8 @@ import Foundation
     /**
     *  @details     Verifies a WordPress.com Login.
     *  @param       token       The token passed on by WordPress.com's 2FA Push Notification.
-    *  @param       success     Closure to be executed on success. CAn be nil.
-    *  @param       failure     Closure to be executed on failure. CAn be nil.
+    *  @param       success     Closure to be executed on success. Can be nil.
+    *  @param       failure     Closure to be executed on failure. Can be nil.
     */
     public func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
         let path        = "me/two-step/push-authentication"
