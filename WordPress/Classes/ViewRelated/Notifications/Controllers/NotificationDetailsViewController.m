@@ -1072,6 +1072,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
         
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
     
@@ -1099,6 +1104,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
