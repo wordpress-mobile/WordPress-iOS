@@ -2,14 +2,13 @@
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
 
-NSInteger const BlavatarDefaultSize = 43;
+NSInteger const BlavatarDefaultSize = 40;
 NSInteger const GravatarDefaultSize = 80;
 
 NSString *const BlavatarBaseUrl = @"http://gravatar.com/blavatar";
 NSString *const GravatarBaseUrl = @"http://gravatar.com/avatar";
 
-NSString *const BlavatarDefaultWporg = @"blavatar-wporg.png";
-NSString *const BlavatarDefaultWpcom = @"blavatar-wpcom.png";
+NSString *const BlavatarDefault = @"blavatar-default";
 NSString *const GravatarDefault = @"gravatar.png";
 
 // More information on gravatar ratings: https://en.gravatar.com/site/implement/images/
@@ -53,29 +52,9 @@ NSString *const GravatarRatingX = @"x";
 
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl
 {
-    BOOL wpcom = ([blavatarUrl rangeOfString:@".wordpress.com"].location != NSNotFound);
-    [self setImageWithBlavatarUrl:blavatarUrl isWPcom:wpcom];
-}
+    UIImage *blavatarDefaultImage = [UIImage imageNamed:BlavatarDefault];
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl isWPcom:(BOOL)wpcom
-{
-    static UIImage *blavatarDefaultImageWPcom;
-    static UIImage *blavatarDefaultImageWPorg;
-    if (blavatarDefaultImageWPcom == nil) {
-        blavatarDefaultImageWPcom = [UIImage imageNamed:BlavatarDefaultWpcom];
-    }
-    if (blavatarDefaultImageWPorg == nil) {
-        blavatarDefaultImageWPorg = [UIImage imageNamed:BlavatarDefaultWporg];
-    }
-
-    UIImage *placeholderImage;
-    if (wpcom) {
-        placeholderImage = blavatarDefaultImageWPcom;
-    } else {
-        placeholderImage = blavatarDefaultImageWPorg;
-    }
-
-    [self setImageWithBlavatarUrl:blavatarUrl placeholderImage:placeholderImage];
+    [self setImageWithBlavatarUrl:blavatarUrl placeholderImage:blavatarDefaultImage];
 }
 
 - (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl placeholderImage:(UIImage *)placeholderImage

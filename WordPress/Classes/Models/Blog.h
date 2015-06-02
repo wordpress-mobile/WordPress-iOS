@@ -8,6 +8,27 @@
 @class WPAccount;
 @class WordPressComApi;
 
+typedef NS_ENUM(NSUInteger, BlogFeature) {
+    /// Can the blog be removed?
+    BlogFeatureRemovable,
+    /// Can the blog be hidden?
+    BlogFeatureVisibility,
+    /// Can the blog use the WordPress.com REST API?
+    BlogFeatureWPComRESTAPI,
+    /// Can we use an OAuth2 token with wp-login.php?
+    BlogFeatureOAuth2Login,
+    /// Does the blog support reblogs?
+    BlogFeatureReblog,
+    /// Does the blog support comment likes?
+    BlogFeatureCommentLikes,
+    /// Can we show stats for the blog?
+    BlogFeatureStats,
+    /// Does the blog support mentions?
+    BlogFeatureMentions,
+    /// Does the blog support push notifications?
+    BlogFeaturePushNotifications,
+};
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite) NSNumber       *blogID;
@@ -39,6 +60,7 @@
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
+@property (nonatomic, assign, readwrite) BOOL           isJetpack;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSString       *blavatarUrl;
@@ -74,7 +96,7 @@
 
 
 #pragma mark - Blog information
-- (BOOL)isWPcom;
+- (BOOL)isHostedAtWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
@@ -85,6 +107,14 @@
 - (NSUInteger)numberOfPendingComments;
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
+- (BOOL)supports:(BlogFeature)feature;
+/**
+ Returns a human readable description for logging
+ 
+ Instead of inspecting the core data object, this returns select information, more
+ useful for support.
+ */
+- (NSString *)logDescription;
 
 /**
  Returns a REST API client if available

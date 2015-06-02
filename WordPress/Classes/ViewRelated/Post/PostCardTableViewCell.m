@@ -359,11 +359,6 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [self resetMetaButton:self.metaButtonRight];
     [self resetMetaButton:self.metaButtonLeft];
 
-    // We don't have comment and like counts for self-hosted sites.
-    if (![self.contentProvider isWPcom]) {
-        return;
-    }
-
     NSMutableArray *mButtons = [NSMutableArray arrayWithObjects:self.metaButtonLeft, self.metaButtonRight, nil];
     if ([self.contentProvider numberOfComments] > 0) {
         UIButton *button = [mButtons lastObject];
@@ -436,7 +431,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     item.imageInsets = ViewButtonImageInsets;;
     [items addObject:item];
 
-    if ([self.contentProvider isWPcom]) {
+    if ([self.contentProvider supportsStats]) {
         item = [PostCardActionBarItem itemWithTitle:NSLocalizedString(@"Stats", @"Label for the view stats button. Tapping displays statistics for a post.")
                                               image:[UIImage imageNamed:@"icon-post-actionbar-stats"]
                                    highlightedImage:nil];

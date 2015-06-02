@@ -13,11 +13,4 @@
  */
 + (void)changeWorkingDirectoryToWordPressSubdirectory;
 
-#pragma mark - Media cleanup
-
-/**
- *  @brief      Removes all unused media files from the tmp directorys.
- */
-+ (void)cleanUnusedMediaFileFromTmpDir;
-
 @end

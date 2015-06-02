@@ -217,7 +217,7 @@ EditImageDetailsViewControllerDelegate
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
         
-        if (post.blog.isWPcom) {
+        if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
         }
     }

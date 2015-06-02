@@ -264,7 +264,8 @@ extension NotificationBlock
             NoteRangeTypePost               : Styles.blockItalicsStyle,
             NoteRangeTypeComment            : Styles.blockItalicsStyle,
             NoteRangeTypeBlockquote         : Styles.blockQuotedStyle,
-            NoteRangeTypeNoticon            : Styles.blockNoticonStyle
+            NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
+            NoteRangeTypeMatch              : Styles.blockMatchStyle
         ]
         
         static let badgeRangeStylesMap = [
