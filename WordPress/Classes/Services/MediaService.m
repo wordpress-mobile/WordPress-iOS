@@ -258,10 +258,13 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 #pragma mark - Media helpers
 
+static NSString * const MediaDirectory = @"Media";
+
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *mediaDirectory = [documentsDirectory stringByAppendingPathComponent:MediaDirectory];
     NSString *filename = asset.defaultRepresentation.filename;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
     NSString *basename = [filename stringByDeletingPathExtension];
@@ -269,13 +272,13 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
         extension = @"png";
         filename = [NSString stringWithFormat:@"%@.%@", basename, extension];
-        path = [documentsDirectory stringByAppendingPathComponent:filename];
+        path = [mediaDirectory stringByAppendingPathComponent:filename];
     }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
     while ([fileManager fileExistsAtPath:path]) {
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
-        path = [documentsDirectory stringByAppendingPathComponent:alternativeFilename];
+        path = [mediaDirectory stringByAppendingPathComponent:alternativeFilename];
         index++;
     }
     return path;
