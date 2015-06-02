@@ -18,6 +18,8 @@
 #import <Mixpanel/Mixpanel.h>
 #import "Blog.h"
 
+#import "WordPress-Swift.h"
+
 
 
 #pragma mark ====================================================================================
@@ -183,7 +185,18 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         return;
     }
     
-
+    // WordPress.com Push Authentication Notification
+    // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+    // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+    // notifications when in BG mode.
+    //
+    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager new];
+    if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
+        [authenticationManager handlePushAuthenticationNotification:userInfo];
+        return;
+    }
+    
+    // Notification-Y Push Notifications
     if (state == UIApplicationStateInactive) {
         NSString *notificationID = [[userInfo numberForKey:@"note_id"] stringValue];
         [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
@@ -195,8 +208,8 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
                     DDLogVerbose(@"Background Fetch Completed with New Data!");
                 } else {
                     DDLogVerbose(@"Background Fetch Completed with No Data..");
-                        }
-                        completionHandler(result);
+                }
+                completionHandler(result);
             }];
         }
     }
