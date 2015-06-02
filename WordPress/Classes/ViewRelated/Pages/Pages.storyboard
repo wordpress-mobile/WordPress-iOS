@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Pages-->
@@ -24,27 +24,8 @@
                                     <constraint firstAttribute="height" id="SxS-hM-haI"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0pv-aL-xfV">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="44"/>
-                                <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="su3-7a-TR9">
-                                        <rect key="frame" x="0.0" y="43" width="600" height="1"/>
-                                        <color key="backgroundColor" red="0.82352941180000006" green="0.87058823529999996" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="1" id="STP-gW-Lx8"/>
-                                        </constraints>
-                                    </view>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="su3-7a-TR9" secondAttribute="trailing" id="0tH-FU-DHy"/>
-                                    <constraint firstItem="su3-7a-TR9" firstAttribute="leading" secondItem="0pv-aL-xfV" secondAttribute="leading" id="NQK-9Q-YFI"/>
-                                    <constraint firstAttribute="height" constant="44" id="TqM-MN-yv5"/>
-                                    <constraint firstAttribute="bottom" secondItem="su3-7a-TR9" secondAttribute="bottom" id="Y0j-tu-kvj"/>
-                                </constraints>
-                            </view>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LM5-dj-tFF">
-                                <rect key="frame" x="0.0" y="44" width="600" height="492"/>
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                                 <connections>
                                     <segue destination="54R-UA-mAH" kind="embed" id="f4C-M8-QGj"/>
                                 </connections>
@@ -53,14 +34,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="LM5-dj-tFF" firstAttribute="leading" secondItem="MiP-YM-poS" secondAttribute="leading" id="5cl-1d-1tg"/>
-                            <constraint firstItem="0pv-aL-xfV" firstAttribute="leading" secondItem="MiP-YM-poS" secondAttribute="leading" id="7YK-hL-jkb"/>
                             <constraint firstAttribute="trailing" secondItem="LM5-dj-tFF" secondAttribute="trailing" id="AVm-wb-6M1"/>
                             <constraint firstItem="njG-x9-YTM" firstAttribute="top" secondItem="LM5-dj-tFF" secondAttribute="bottom" id="K1d-hg-Wec"/>
                             <constraint firstAttribute="trailing" secondItem="MG6-KV-Y1l" secondAttribute="trailing" id="OEe-Al-DwJ"/>
                             <constraint firstItem="MG6-KV-Y1l" firstAttribute="leading" secondItem="MiP-YM-poS" secondAttribute="leading" id="XpB-pe-aV9"/>
-                            <constraint firstAttribute="trailing" secondItem="0pv-aL-xfV" secondAttribute="trailing" id="Y9a-3f-XLj"/>
-                            <constraint firstItem="0pv-aL-xfV" firstAttribute="top" secondItem="MG6-KV-Y1l" secondAttribute="bottom" id="clv-jl-LY0"/>
-                            <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="0pv-aL-xfV" secondAttribute="bottom" id="nGv-VZ-dlF"/>
+                            <constraint firstItem="LM5-dj-tFF" firstAttribute="top" secondItem="MG6-KV-Y1l" secondAttribute="bottom" id="m7R-v6-imc"/>
                             <constraint firstItem="zEU-W1-HEN" firstAttribute="top" secondItem="MG6-KV-Y1l" secondAttribute="top" id="ryn-ae-Kv3"/>
                         </constraints>
                     </view>
@@ -72,8 +50,6 @@
                     <nil key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addButton" destination="AUi-GI-97s" id="D1f-jZ-iVb"/>
-                        <outlet property="authorsFilterView" destination="0pv-aL-xfV" id="aX6-zQ-9Jr"/>
-                        <outlet property="authorsFilterViewHeightConstraint" destination="TqM-MN-yv5" id="IlQ-LB-Qb2"/>
                         <outlet property="filterButton" destination="hOV-1Y-S1G" id="TIn-Cr-wGh"/>
                         <outlet property="rightBarButtonView" destination="eMR-fX-0uB" id="tkm-aq-s67"/>
                         <outlet property="searchButton" destination="css-jC-C1K" id="izI-Wu-ods"/>
@@ -128,7 +104,7 @@
             <objects>
                 <tableViewController id="54R-UA-mAH" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="y3a-Ok-AN1">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="492"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <connections>
