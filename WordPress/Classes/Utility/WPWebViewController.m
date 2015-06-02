@@ -34,6 +34,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *dismissButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIPopoverController               *popover;
@@ -61,6 +62,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
     NSAssert(_webView,       @"Missing Outlet!");
     NSAssert(_progressView,  @"Missing Outlet!");
+    NSAssert(_dismissButton, @"Missing Outlet!");
     NSAssert(_optionsButton, @"Missing Outlet!");
 
     // TitleView
@@ -194,6 +196,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 
 #pragma mark - IBAction Methods
+
+- (IBAction)dismiss
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (IBAction)showLinkOptions
 {
