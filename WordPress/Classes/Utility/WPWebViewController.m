@@ -38,6 +38,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *dismissButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
+
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *backButton;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *forwardButton;
+
+@property (nonatomic, strong) IBOutlet UIToolbar                *toolbar;
 @property (nonatomic, strong) NavigationTitleView               *titleView;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
@@ -66,7 +71,10 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     NSAssert(_progressView,  @"Missing Outlet!");
     NSAssert(_dismissButton, @"Missing Outlet!");
     NSAssert(_optionsButton, @"Missing Outlet!");
-
+    NSAssert(_backButton,    @"Missing Outlet!");
+    NSAssert(_forwardButton, @"Missing Outlet!");
+    NSAssert(_toolbar,       @"Missing Outlet!");
+    
     // TitleView
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
@@ -74,8 +82,15 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     self.navigationItem.titleView           = self.titleView;
     
     // Buttons
-    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share", @"Spoken accessibility label");
+    self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
     self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
+    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
+    self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
+    
+    // Toolbar
+    self.toolbar.barTintColor               = [UIColor whiteColor];
+    self.backButton.tintColor               = [WPStyleGuide greyLighten10];
+    self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
     
     // ProgressView
     self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
