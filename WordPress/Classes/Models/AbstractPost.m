@@ -6,6 +6,7 @@
 
 @dynamic blog, media;
 @dynamic comments;
+@synthesize restorableStatus;
 
 - (void)remove
 {

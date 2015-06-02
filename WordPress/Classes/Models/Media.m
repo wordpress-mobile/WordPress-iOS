@@ -1,22 +1,6 @@
 #import "Media.h"
-#import "UIImage+Resize.h"
-#import "NSString+Helpers.h"
-#import "NSString+Util.h"
-#import "AFHTTPRequestOperation.h"
-#import "ContextManager.h"
-#import <ImageIO/ImageIO.h>
 
-@interface Media (PrivateMethods)
-
-- (void)xmlrpcUploadWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)xmlrpcDeleteWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)xmlrpcUpdateWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-@end
-
-@implementation Media {
-    AFHTTPRequestOperation *_uploadOperation;
-}
+@implementation Media
 
 @dynamic mediaID;
 @dynamic remoteURL;
@@ -39,9 +23,6 @@
 @dynamic mediaTypeString;
 
 @synthesize unattached;
-
-NSUInteger const MediaDefaultThumbnailSize = 75;
-CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 
 + (Media *)newMediaForPost:(AbstractPost *)post
 {
@@ -149,56 +130,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
     return @"image";
 }
 
-+ (void)bulkDeleteMedia:(NSArray *)media withSuccess:(void(^)())success failure:(void (^)(NSError *error, NSArray *failures))failure
-{
-    __block NSMutableArray *failedDeletes = [NSMutableArray array];
-    for (NSUInteger i = 0; i < media.count; i++) {
-        Media *m = media[i];
-        // Delete locally if it was never uploaded
-        if (!m.remoteURL) {
-            [m.managedObjectContext deleteObject:m];
-            if (i == media.count-1) {
-                if (success) {
-                    success();
-                }
-                return;
-            }
-            continue;
-        }
-
-        [m xmlrpcDeleteWithSuccess:^{
-            if (i == media.count-1) {
-                if (success) {
-                    success();
-                }
-            }
-        } failure:^(NSError *error) {
-            [failedDeletes addObject:m];
-            if (i == media.count-1) {
-                if (failure) {
-                    failure(error, failedDeletes);
-                }
-            }
-        }];
-    }
-}
-
 #pragma mark -
-
-- (CGFloat)progress
-{
-    [self willAccessValueForKey:@"progress"];
-    NSNumber *result = [self primitiveValueForKey:@"progress"];
-    [self didAccessValueForKey:@"progress"];
-    return [result floatValue];
-}
-
-- (void)setProgress:(CGFloat)progress
-{
-    [self willChangeValueForKey:@"progress"];
-    [self setPrimitiveValue:[NSNumber numberWithFloat:progress] forKey:@"progress"];
-    [self didChangeValueForKey:@"progress"];
-}
 
 - (MediaRemoteStatus)remoteStatus
 {
@@ -233,6 +165,7 @@ CGFloat const MediaDefaultJPEGCompressionQuality = 0.9;
 {
     NSError *error = nil;
     [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
+    [[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error];
 
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];

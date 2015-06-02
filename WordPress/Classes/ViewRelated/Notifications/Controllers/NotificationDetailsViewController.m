@@ -503,8 +503,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Footer-Level:
     } else if (group.type == NoteBlockGroupTypeFooter) {
         
+        // Note:
+        // By convention, the last range is the one that always contains the targetURL.
+        //
         NotificationBlock *block    = [group blockOfType:NoteBlockTypeText];
-        NotificationRange *range    = [block notificationRangeWithCommentId:self.note.metaReplyID];
+        NotificationRange *range    = block.ranges.lastObject;
         
         [self openURL:range.url];
     }
@@ -661,7 +664,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
     cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
-    cell.isApproved                 = [commentBlock isActionOn:NoteActionApproveKey] || ![commentBlock isActionEnabled:NoteActionApproveKey];
+    cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
     // Setup the Callbacks
@@ -885,7 +888,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
-    BOOL success                    = blog.isWPcom;
+    BOOL success                    = blog.isHostedAtWPcom;
     
     if (success) {
         // TODO: Update StatsViewController to work with initWithCoder!
@@ -907,7 +910,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BlogService *service            = [[BlogService alloc] initWithManagedObjectContext:context];
     Blog *blog                      = [service blogByBlogId:siteID];
 
-    if (!blog || !blog.isWPcom) {
+    if (!blog || !blog.isHostedAtWPcom) {
         return NO;
     }
 
@@ -980,7 +983,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
     [WPAnalytics track:WPAnalyticsStatNotificationLiked];
-    
+
+    // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
+    if (!block.isCommentApproved) {
+        [self approveCommentWithBlock:block];
+    }
+
+    // Proceed toggling the Like field
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
     __typeof(self) __weak weakSelf  = self;
@@ -1063,6 +1072,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
         
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
+        
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
     
@@ -1090,6 +1104,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        
+        // Hi the destruction callback, if any, and pop to the root!
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
@@ -1259,12 +1278,18 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)handleNotificationChange:(NSNotification *)notification
 {
-    NSSet *updated = notification.userInfo[NSUpdatedObjectsKey];
-    NSSet *refreshed = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *updated      = notification.userInfo[NSUpdatedObjectsKey];
+    NSSet *refreshed    = notification.userInfo[NSRefreshedObjectsKey];
+    NSSet *deleted      = notification.userInfo[NSDeletedObjectsKey];
     
     // Reload the table, if *our* notification got updated
     if ([updated containsObject:self.note] || [refreshed containsObject:self.note]) {
         [self reloadData];
+    }
+    
+    // Dismiss this ViewController if *our* notification... just got deleted
+    if ([deleted containsObject:self.note]) {
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
 }
 

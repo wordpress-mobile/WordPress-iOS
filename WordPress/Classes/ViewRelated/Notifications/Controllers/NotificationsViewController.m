@@ -223,6 +223,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)bucket:(SPBucket *)bucket didChangeObjectForKey:(NSString *)key forChangeType:(SPBucketChangeType)changeType memberNames:(NSArray *)memberNames
 {
+    UIApplication *application = [UIApplication sharedApplication];
+    
     // Did the user tap on a push notification?
     if (changeType == SPBucketChangeInsert && [self.pushNotificationID isEqualToString:key]) {
 
@@ -239,8 +241,14 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         self.pushNotificationDate   = nil;
     }
     
-    // Mark as read immediately (if we're onscreen!)
-    if (changeType == SPBucketChangeInsert && self.isViewOnScreen) {
+    // Mark as read immediately if:
+    //  -   We're onscreen
+    //  -   The app is in Foreground
+    //
+    // We need to make sure that the app is in FG, since this method might get called during a Background Fetch OS event,
+    // which would cause the badge to get reset on its own.
+    //
+    if (changeType == SPBucketChangeInsert && self.isViewOnScreen && application.applicationState == UIApplicationStateActive) {
         [self resetApplicationBadge];
         [self updateLastSeenTime];
     }
@@ -464,6 +472,17 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.trackedViewDisplay = YES;
 }
 
+- (void)disableInteractionsForNotification:(Notification *)note
+{
+    NSIndexPath *indexPath      = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    UITableViewCell *cell       = [self.tableView cellForRowAtIndexPath:indexPath];
+    cell.userInteractionEnabled = false;
+}
+
 
 #pragma mark - Segue Helpers
 
@@ -556,13 +575,21 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if (!note) {
-        [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    // Failsafe: Make sure that the Notification (still) exists
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        [tableView deselectSelectedRowWithAnimation:YES];
         return;
     }
-
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
     // At last, push the details
+    Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     [self showDetailsForNotification:note];
 }
 
@@ -571,14 +598,18 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    NSString *detailsSegueID    = NSStringFromClass([NotificationDetailsViewController class]);
-    NSString *readerSegueID     = NSStringFromClass([ReaderPostDetailViewController class]);
-    Notification *note          = sender;
+    NSString *detailsSegueID        = NSStringFromClass([NotificationDetailsViewController class]);
+    NSString *readerSegueID         = NSStringFromClass([ReaderPostDetailViewController class]);
+    Notification *note              = sender;
+    __weak __typeof(self) weakSelf  = self;
     
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-    
+        detailsViewController.onDestructionCallback = ^{
+            [weakSelf disableInteractionsForNotification:note];
+        };
+        
     } else if([segue.identifier isEqualToString:readerSegueID]) {
         ReaderPostDetailViewController *readerViewController = segue.destinationViewController;
         [readerViewController setupWithPostID:note.metaPostID siteID:note.metaSiteID];
@@ -616,7 +647,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.noticon                            = note.noticon;
     cell.unapproved                         = note.isUnapprovedComment;
     cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
-    
+    cell.userInteractionEnabled             = YES;
+
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
@@ -721,8 +753,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
-    WPWebViewController *webViewController  = [[WPWebViewController alloc] init];
-	webViewController.url                   = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+	NSURL *targetURL                        = [NSURL URLWithString:WPNotificationsJetpackInformationURL];
+    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:targetURL];
  
     [self.navigationController pushViewController:webViewController animated:YES];
  

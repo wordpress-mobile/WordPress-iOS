@@ -1,5 +1,5 @@
 #import "StatsWebViewController.h"
-#import "Blog+Jetpack.h"
+#import "Blog.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WPWebViewController.h"
@@ -136,12 +136,12 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     [self showBlogSettings];
     NSString *title;
     NSString *message;
-    if ([blog isWPcom]) {
+    if ([blog.account isWpcom]) {
         title = NSLocalizedString(@"Authentication Error", @"");
-        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials and try again.", @"Prompts the user the username or password they entered was incorrect.");
     } else {
         title = NSLocalizedString(@"Jetpack Sign In", @"");
-        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials and try again.", @"Prompts the user they need to update their jetpack credentals after an error.");
     }
     [WPError showAlertWithTitle:title message:message];
 }
@@ -152,7 +152,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
     UINavigationController *navController = nil;
 
-    if ([blog isWPcom]) {
+    if ([blog.account isWpcom]) {
         EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
@@ -211,7 +211,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    if ([blog isWPcom]) {
+    if ([blog isHostedAtWPcom]) {
         [self loadStats];
         return;
     }
@@ -219,13 +219,13 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Looking for a self-hosted blog with a jetpackClientId and good crednetials.
     BOOL prompt = NO;
 
-    if (![blog jetpackBlogID]) {
+    if (!blog.jetpack.siteID) {
         // needs latest jetpack
         prompt = YES;
 
     } else {
         // Check for credentials.
-        if (![blog.jetpackUsername length] || ![blog.authToken length]) {
+        if (![blog.authToken length]) {
             prompt = YES;
         }
     }
@@ -269,7 +269,8 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSString *username = blog.isWPcom ? blog.username : blog.jetpackUsername;
+    NSString *username = blog.jetpackAccount ? blog.jetpackAccount.username : blog.username
+    ;
     
     // Skip the auth call to reduce loadtime if its the same username as before.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
@@ -349,10 +350,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSNumber *blogID = [blog blogID];
-    if (![blog isWPcom]) {
-        blogID = [blog jetpackBlogID];
-    }
+    NSNumber *blogID = [blog dotComID];
 
     NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/stats/%@", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
@@ -410,8 +408,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            webViewController.url = request.URL;
+            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }

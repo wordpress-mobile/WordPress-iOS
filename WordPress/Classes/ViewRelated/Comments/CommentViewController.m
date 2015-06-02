@@ -278,13 +278,13 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (!self.comment.blog.isWPcom) {
-        [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
-        return;
-    }
-
     if (indexPath.row == self.rowNumberForHeader) {
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
+        if (![self.comment.blog supports:BlogFeatureWPComRESTAPI]) {
+            [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
+            return;
+        }
+
+        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -390,7 +390,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 {
     // Setup the Cell
     cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = self.comment.blog.isWPcom;
+    cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
     cell.isApproveEnabled = YES;
     cell.isTrashEnabled = YES;
     cell.isSpamEnabled = YES;
@@ -443,8 +443,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = url;
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 
