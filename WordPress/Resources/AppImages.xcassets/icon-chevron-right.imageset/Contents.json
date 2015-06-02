@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x"
+      "scale" : "1x",
+      "filename" : "icon-chevron-right.pdf"
     },
     {
       "idiom" : "universal",
-      "scale" : "2x",
-      "filename" : "icon-chevron-right.pdf"
+      "scale" : "2x"
     },
     {
       "idiom" : "universal",
