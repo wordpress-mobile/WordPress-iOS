@@ -473,32 +473,21 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
-    UIViewController *controller;
-
-    if (imageControl.linkURL) {
-        NSString *url = [imageControl.linkURL absoluteString];
-
-        BOOL matched = NO;
-        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-        for (NSString *type in types) {
-            if (NSNotFound != [url rangeOfString:type].location) {
-                matched = YES;
-                break;
-            }
-        }
-
-        if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
-        } else {
-            controller = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
-        }
+    UIViewController *controller = nil;
+    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
+    
+    if (isSupportedNatively) {
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
+    } else if (imageControl.linkURL) {
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
+        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
@@ -507,6 +496,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
     }
+    
     [self presentViewController:controller animated:YES completion:nil];
 }
 
