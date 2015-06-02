@@ -34,6 +34,7 @@ static NSString * const CurrentPostAuthorFilterKey = @"CurrentPostAuthorFilterKe
 static const NSTimeInterval StatsCacheInterval = 300; // 5 minutes
 static const CGFloat PostCardEstimatedRowHeight = 100.0;
 static const CGFloat PostCardRestoreCellRowHeight = 54.0;
+static const CGFloat PostListHeightForFooterView = 34.0;
 
 @interface PostListViewController () <PostCardTableViewCellDelegate, UIViewControllerRestoration>
 
@@ -112,6 +113,11 @@ static const CGFloat PostCardRestoreCellRowHeight = 54.0;
 
 
 #pragma mark - Configuration
+
+- (CGFloat)heightForFooterView
+{
+    return PostListHeightForFooterView;
+}
 
 - (void)configureCellsForLayout
 {
