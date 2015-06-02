@@ -88,15 +88,16 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
 
-    if (self.blog.isWPcom) {
+    // WordPress.com + Jetpack REST
+    if (self.blog.account.isWpcom) {
         self.statsVC.oauth2Token = self.blog.restApi.authToken;
-        self.statsVC.siteID = self.blog.blogID;
+        self.statsVC.siteID = self.blog.dotComID;
         [self addStatsViewControllerToView];
 
         return;
     }
 
-    // Jetpack
+    // Jetpack Legacy (WPJetpackRESTEnabled == NO)
     BOOL needsJetpackLogin = ![self.blog.jetpackAccount.restApi hasCredentials];
     if (!needsJetpackLogin && self.blog.jetpack.siteID && self.blog.jetpackAccount) {
         self.statsVC.siteID = self.blog.jetpack.siteID;

@@ -97,8 +97,9 @@ CGFloat const AboutViewPortraitButtonsY = 90.0f;
         [ReachabilityUtils showAlertNoInternetConnection];
         return;
     }
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:path]];
+    
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     [self.navigationController pushViewController:webViewController animated:YES];
 }
 

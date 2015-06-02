@@ -126,7 +126,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
         if (!self.blog) {
-            self.blog = [blogService lastUsedOrFirstWPcomBlog];
+            self.blog = [blogService lastUsedOrFirstBlogThatSupports:BlogFeatureReblog];
         }
         NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.blog.blogName
