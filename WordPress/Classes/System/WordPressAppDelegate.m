@@ -34,8 +34,10 @@
 
 // Data services
 #import "BlogService.h"
+#import "MediaService.h"
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
+
 
 // Files
 #import "WPAppFilesManager.h"
@@ -159,7 +161,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
         [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
-        [WPAppFilesManager cleanUnusedMediaFileFromTmpDir];
+        [MediaService cleanUnusedMediaFileFromTmpDir];
 
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
@@ -494,7 +496,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)showWelcomeScreenIfNeededAnimated:(BOOL)animated
 {
-    if (self.isWelcomeScreenVisible || !self.noBlogsAndNoWordPressDotComAccount) {
+    if (self.isWelcomeScreenVisible || !([self noSelfHostedBlogs] && [self noWordPressDotComAccount])) {
         return;
     }
     
@@ -512,11 +514,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)showWelcomeScreenAnimated:(BOOL)animated thenEditor:(BOOL)thenEditor
 {
+    BOOL hasWordpressAccountButNoSelfHostedBlogs = [self noSelfHostedBlogs] && ![self noWordPressDotComAccount];
+    
     __weak __typeof(self) weakSelf = self;
     
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
-    loginViewController.cancellable = NO;
+    loginViewController.cancellable = hasWordpressAccountButNoSelfHostedBlogs;
     loginViewController.dismissBlock = ^{
         
         __strong __typeof(weakSelf) strongSelf = self;
@@ -541,16 +545,24 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return [presentedViewController.visibleViewController isKindOfClass:[LoginViewController class]];
 }
 
-- (BOOL)noBlogsAndNoWordPressDotComAccount
+- (BOOL)noWordPressDotComAccount
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    NSInteger blogCount = [blogService blogCountSelfHosted];
-    return blogCount == 0 && !defaultAccount;
+    return !defaultAccount;
 }
+
+- (BOOL)noSelfHostedBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    
+    NSInteger blogCount = [blogService blogCountSelfHosted];
+    return blogCount == 0;
+}
+
 
 - (void)customizeAppearance
 {
@@ -571,6 +583,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageWithColor:[WPStyleGuide wordPressBlue]] forBarMetrics:UIBarMetricsDefault];
     [[UINavigationBar appearance] setShadowImage:[UIImage imageWithColor:[UIColor UIColorFromHex:0x007eb1]]];
+    [[UINavigationBar appearance] setBarStyle:UIBarStyleBlack];
 
     [[UIBarButtonItem appearance] setTintColor:[UIColor whiteColor]];
     [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont], NSForegroundColorAttributeName: [UIColor whiteColor]} forState:UIControlStateNormal];
@@ -579,7 +592,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[UISegmentedControl appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPStyleGuide regularTextFont]} forState:UIControlStateNormal];
     [[UIToolbar appearance] setBarTintColor:[WPStyleGuide wordPressBlue]];
     [[UISwitch appearance] setOnTintColor:[WPStyleGuide wordPressBlue]];
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0], NSForegroundColorAttributeName: [WPStyleGuide allTAllShadeGrey]} forState:UIControlStateNormal];
     [[UITabBarItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName: [WPStyleGuide wordPressBlue]} forState:UIControlStateSelected];
 
@@ -641,7 +653,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
     return;
 #endif
-
+    
     NSString* apiKey = [WordPressComApiCredentials crashlyticsApiKey];
     
     if (apiKey) {
@@ -862,7 +874,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     if (blogs.count > 0) {
         DDLogInfo(@"All blogs on device:");
         for (Blog *blog in blogs) {
-            DDLogInfo(@"Name: %@ URL: %@ XML-RPC: %@ isWpCom: %@ blogId: %@ jetpackAccount: %@", blog.blogName, blog.url, blog.xmlrpc, blog.account.isWpcom ? @"YES" : @"NO", blog.blogID, !!blog.jetpackAccount ? @"PRESENT" : @"NONE");
+            DDLogInfo(@"%@", [blog logDescription]);
         }
     } else {
         DDLogInfo(@"No blogs configured on device.");
@@ -890,7 +902,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (void)toggleExtraDebuggingIfNeeded
 {
-    if ([self noBlogsAndNoWordPressDotComAccount]) {
+    if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
         // When there are no blogs in the app the settings screen is unavailable.
         // In this case, enable extra_debugging by default to help troubleshoot any issues.
         if ([[NSUserDefaults standardUserDefaults] objectForKey:@"orig_extra_debug"] != nil) {
@@ -952,12 +964,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
             }
         }];
     } else {
-        if ([self noBlogsAndNoWordPressDotComAccount]) {
+        if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
         [self logoutSimperiumAndResetNotifications];
-        [self showWelcomeScreenIfNeededAnimated:NO];
         [self removeTodayWidgetConfiguration];
+        [self showWelcomeScreenIfNeededAnimated:NO];
     }
     
     [self toggleExtraDebuggingIfNeeded];
@@ -997,7 +1009,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 - (void)showWhatsNewIfNeeded
 {
     if (!self.wasWhatsNewShown) {
-        BOOL userIsLoggedIn = ![self noBlogsAndNoWordPressDotComAccount];
+        BOOL userIsLoggedIn = !([self noSelfHostedBlogs] && [self noWordPressDotComAccount]);
         
         if (userIsLoggedIn) {
             if ([self mustShowWhatsNewPopup]) {

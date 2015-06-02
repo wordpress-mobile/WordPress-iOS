@@ -37,7 +37,21 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>5.2.0.1</string>
+	<string>5.2</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>FABRIC_API_KEY</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -77,6 +91,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

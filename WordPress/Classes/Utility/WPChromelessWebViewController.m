@@ -119,8 +119,7 @@
         // If the url points off-site we want to handle it differently.
         NSString *host = request.URL.host;
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound) {
-            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            [webViewController setUrl:request.URL];
+            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }

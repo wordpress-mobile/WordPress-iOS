@@ -861,7 +861,7 @@ describe(@"displayRemoteError", ^{
     NSString *sharedExamplesForAButtonThatOpensUpTheFAQ = @"a button that opens up the FAQ";
     sharedExamplesFor(sharedExamplesForAButtonThatOpensUpTheFAQ, ^(NSDictionary *data) {
         it(@"should open the FAQ on the website", ^{
-            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq/#faq_3"] username:nil password:nil];
+            [[mockViewModelPresenter expect] displayWebViewForURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/#faq-ios-3"] username:nil password:nil];
             
             [viewModel displayRemoteError:error];
             
@@ -1103,8 +1103,11 @@ describe(@"displayRemoteError", ^{
         
         context(@"when the url is bad", ^{
             
-            it(@"should display an overlay with the default button text", ^{
+            beforeEach(^{
                 error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedDescriptionKey : errorMessage}];
+            });
+            
+            it(@"should display an overlay with the default button text", ^{
                 [[mockViewModelPresenter expect] displayOverlayViewWithMessage:OCMOCK_ANY firstButtonText:defaultFirstButtonText firstButtonCallback:OCMOCK_ANY secondButtonText:defaultSecondButtonText secondButtonCallback:OCMOCK_ANY accessibilityIdentifier:OCMOCK_ANY];
                 
                 [viewModel displayRemoteError:error];
@@ -1616,8 +1619,8 @@ describe(@"LoginFacadeDelegate methods", ^{
                     [mockViewModelPresenter verify];
                 });
                 
-                it(@"should update the email and default blog for the newly created account", ^{
-                    [[mockAccountServiceFacade expect] updateEmailAndDefaultBlogForWordPressComAccount:OCMOCK_ANY];
+                it(@"should update the user details for the newly created account", ^{
+                    [[mockAccountServiceFacade expect] updateUserDetailsForAccount:OCMOCK_ANY success:OCMOCK_ANY failure:OCMOCK_ANY];
                     
                     [viewModel finishedLoginWithUsername:username authToken:authToken requiredMultifactorCode:requiredMultifactorCode];
                     
@@ -1690,36 +1693,20 @@ describe(@"LoginFacadeDelegate methods", ^{
         });
         
         it(@"should sync the newly added site", ^{
-            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY];
+            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
             [mockBlogSyncFacade verify];
         });
-        
-        it(@"should show jetpack authentication when the blog syncing facade tells it to", ^{
-            [[mockViewModelPresenter expect] showJetpackAuthenticationForBlog:OCMOCK_ANY];
-            
-            // Retrieve jetpack block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
-                void (^ __unsafe_unretained jetpackStub)(NSNumber *);
-                [invocation getArgument:&jetpackStub atIndex:7];
                 
-                jetpackStub(@1);
-            }];
-            
-            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            
-            [mockViewModelPresenter verify];
-        });
-        
         it(@"should dismiss the login view", ^{
             [[mockViewModelPresenter expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options needsJetpack:OCMOCK_ANY finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
-                [invocation getArgument:&finishedSyncStub atIndex:8];
+                [invocation getArgument:&finishedSyncStub atIndex:7];
                 
                 finishedSyncStub();
             }];
@@ -1784,6 +1771,7 @@ describe(@"requestOneTimeCode", ^{
     
     it(@"should pass on the request to the oauth client facade", ^{
         [[mockLoginFacade expect] requestOneTimeCodeWithLoginFields:OCMOCK_ANY];
+        [[mockViewModelPresenter expect] showAlertWithMessage:OCMOCK_ANY];
         
         [viewModel requestOneTimeCode];
         
