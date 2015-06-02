@@ -24,6 +24,9 @@ static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 static CGFloat const WPWebViewProgressInitial               = 0.1;
 static CGFloat const WPWebViewProgressFinal                 = 1.0;
 
+static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
+static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
+
 static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
 static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
 static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
@@ -68,15 +71,15 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 {
     [super viewDidLoad];
 
-    NSAssert(_webView,                  @"Missing Outlet!");
-    NSAssert(_progressView,             @"Missing Outlet!");
-    NSAssert(_dismissButton,            @"Missing Outlet!");
-    NSAssert(_optionsButton,            @"Missing Outlet!");
+    NSAssert(_webView,                 @"Missing Outlet!");
+    NSAssert(_progressView,            @"Missing Outlet!");
+    NSAssert(_dismissButton,           @"Missing Outlet!");
+    NSAssert(_optionsButton,           @"Missing Outlet!");
     
-    NSAssert(_toolbar,                  @"Missing Outlet!");
-    NSAssert(_backButton,               @"Missing Outlet!");
-    NSAssert(_forwardButton,            @"Missing Outlet!");
-    NSAssert(_toolbarBottomConstraint,  @"Missing Outlet!");
+    NSAssert(_toolbar,                 @"Missing Outlet!");
+    NSAssert(_backButton,              @"Missing Outlet!");
+    NSAssert(_forwardButton,           @"Missing Outlet!");
+    NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
     
     // TitleView
     self.titleView                          = [NavigationTitleView new];
@@ -90,10 +93,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
     self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
     
-    // Toolbar
+    // Toolbar: Hidden by default!
     self.toolbar.barTintColor               = [UIColor whiteColor];
     self.backButton.tintColor               = [WPStyleGuide greyLighten10];
     self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
     
     // ProgressView
     self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
@@ -229,6 +233,22 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     __typeof(self) __weak weakSelf = self;
     [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
         [weakSelf loadWebViewRequest];
+    }];
+}
+
+- (void)showBottomToolbarIfNeeded
+{
+    if (!self.webView.canGoBack && !self.webView.canGoForward) {
+        return;
+    }
+    
+    if (self.toolbarBottomConstraint.constant == WPWebViewToolbarShownConstant) {
+        return;
+    }
+
+    [UIView animateWithDuration:WPWebViewAnimationShortDuration animations:^{
+        self.toolbarBottomConstraint.constant = WPWebViewToolbarShownConstant;
+        [self.view layoutIfNeeded];
     }];
 }
 
@@ -378,6 +398,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     
     [self finishProgress];
     [self refreshInterface];
+    [self showBottomToolbarIfNeeded];
     [self scrollToBottomIfNeeded];
 }
 
