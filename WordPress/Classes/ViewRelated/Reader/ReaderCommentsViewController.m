@@ -1102,8 +1102,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:url];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
@@ -1142,8 +1143,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
@@ -1174,10 +1176,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    } else {
-        [self.navigationController pushViewController:controller animated:YES];
     }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
