@@ -234,4 +234,26 @@ static CGFloat const MinimumZoomScale = 0.1;
     return UIStatusBarAnimationFade;
 }
 
+#pragma mark - Static Helpers
+
++ (BOOL)isUrlSupported:(NSURL *)url
+{
+    // Safeguard
+    if (!url) {
+        return NO;
+    }
+    
+    // We only support: PNG + JPG + JPEG + GIF
+    NSString *absoluteURL = url.absoluteString;
+
+    NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+    for (NSString *type in types) {
+        if (NSNotFound != [absoluteURL rangeOfString:type].location) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
 @end
