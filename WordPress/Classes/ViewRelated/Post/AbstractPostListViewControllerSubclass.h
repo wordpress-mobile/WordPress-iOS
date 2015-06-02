@@ -55,6 +55,7 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
 - (PostListFilter *)currentPostListFilter;
+- (CGFloat)heightForFooterView;
 - (void)publishPost:(AbstractPost *)apost;
 - (void)viewPost:(AbstractPost *)apost;
 - (void)deletePost:(AbstractPost *)apost;
