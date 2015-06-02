@@ -278,7 +278,15 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
 
+    NSString *searchText = self.searchController.searchBar.text;
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
+
+    // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
+    // or posts that were recently deleted.
+    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+        filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
+    }
     [predicates addObject:filterPredicate];
 
     if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
@@ -286,21 +294,15 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         [predicates addObject:authorPredicate];
     }
 
-    NSString *searchText = self.searchController.searchBar.text;
     if ([searchText length] > 0) {
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
         [predicates addObject:searchPredicate];
     }
 
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
-        predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, trashedPredicate]];
-    }
 
     return predicate;
 }
-
 
 #pragma mark - Table View Handling
 
