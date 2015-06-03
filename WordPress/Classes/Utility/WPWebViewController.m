@@ -99,9 +99,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
     self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
     
-    // ProgressView
-    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
-    
     // WebView
     self.webView.scalesPageToFit            = YES;
     
@@ -134,6 +131,8 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     
     self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
     self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
+    
+    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
     
     self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
