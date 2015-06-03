@@ -9,7 +9,6 @@
 @dynamic width;
 @dynamic length;
 @dynamic title;
-@dynamic thumbnail;
 @dynamic height;
 @dynamic filename;
 @dynamic filesize;
