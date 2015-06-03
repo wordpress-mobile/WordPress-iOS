@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress 想要在你已啟用地理位置標誌功能的網站上，將你的位置新增網站上的文章。";
+NSLocationWhenInUseUsageDescription = "WordPress 想要在你已啟用地理位置標誌功能的網站上，將你的位置新增網站上的文章。";
+NSCameraUsageDescription = "拍些相片或影片供文章使用。";
+NSPhotoLibraryUsageDescription = "在你的文章中新增相片或影片。";
+NSMicrophoneUsageDescription = "在你的文章中新增相片或影片。";
