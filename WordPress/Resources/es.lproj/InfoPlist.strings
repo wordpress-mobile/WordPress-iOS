@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.";
+NSLocationWhenInUseUsageDescription = "WordPress desea añadir tu ubicación a las entradas en los sitios en los que has activado el geoetiquetado.";
+NSCameraUsageDescription = "Para hacer las fotos o vídeos que deseas usar en tus entradas.";
+NSPhotoLibraryUsageDescription = "Para añadir fotos o vídeos en tus entradas.";
+NSMicrophoneUsageDescription = "Para que tus vídeos tengan sonido.";
