@@ -390,6 +390,8 @@ EditImageDetailsViewControllerDelegate
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
+    [super decodeRestorableStateWithCoder:coder];
+    
     BOOL ownsPost = [[self class] decodeOwnsPostFromCoder:coder];
     
     self.ownsPost = ownsPost;
