@@ -654,15 +654,8 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     webViewController.wpLoginURL = wpLoginURL;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    navController.navigationBar.translucent = NO;
     navController.modalPresentationStyle = UIModalPresentationPageSheet;
-    webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissBrowser)];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)dismissBrowser
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)updateMessage
