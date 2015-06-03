@@ -1003,7 +1003,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                               [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
                               DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
                           }];
-        [progress setUserInfoObject:[UIImage imageWithData:media.thumbnail] forKey:WPProgressImageThumbnailKey];
+        [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.thumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
         progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
         progress.kind = NSProgressKindFile;
         [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
