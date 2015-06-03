@@ -1231,7 +1231,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+    if ([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
         NSParameterAssert([sender isKindOfClass:[Blog class]]);
         
         StatsViewController *statsViewController        = segue.destinationViewController;
