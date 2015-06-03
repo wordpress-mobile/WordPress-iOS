@@ -4,9 +4,7 @@
 #import "BlogService.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#ifdef TRACKS_ENABLED
 #import <TracksService.h>
-#endif
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;
@@ -19,10 +17,8 @@
 
 @interface WPAnalyticsTrackerAutomatticTracks ()
 
-#ifdef TRACKS_ENABLED
 @property (nonatomic, strong) TracksContextManager *contextManager;
 @property (nonatomic, strong) TracksService *tracksService;
-#endif
 @property (nonatomic, strong) NSDictionary *userProperties;
 @property (nonatomic, strong) NSString *anonymousID;
 
@@ -38,10 +34,8 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 {
     self = [super init];
     if (self) {
-#ifdef TRACKS_ENABLED
         _contextManager = [TracksContextManager new];
         _tracksService = [[TracksService alloc] initWithContextManager:_contextManager];
-#endif
     }
     return self;
 }
@@ -59,15 +53,14 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
     [mergedProperties addEntriesFromDictionary:properties];
 
-#ifdef TRACKS_ENABLED
     [self.tracksService trackEventName:eventPair.eventName withCustomProperties:mergedProperties];
-#endif
 }
 
 - (void)beginSession
 {
+#ifdef TRACKS_ENABLED
     [self.tracksService switchToAnonymousUserWithAnonymousID:self.anonymousID];
-
+#endif
     [self refreshMetadata];
 }
 
@@ -118,14 +111,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
     userProperties[@"number_of_blogs"] = @(blogCount);
     userProperties[@"accessibility_voice_over_enabled"] = @(UIAccessibilityIsVoiceOverRunning());
 
-#ifdef TRACKS_ENABLED
     [self.tracksService.userProperties removeAllObjects];
     [self.tracksService.userProperties addEntriesFromDictionary:userProperties];
     
     if (dotcom_user == YES && [username length] > 0) {
         [self.tracksService switchToAuthenticatedUserWithUsername:username userID:@"" skipAliasEventCreation:NO];
     }
-#endif
 }
 
 - (void)beginTimerForStat:(WPAnalyticsStat)stat
@@ -410,6 +401,18 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
+            break;
+        case WPAnalyticsStatPushAuthenticationApproved:
+            eventName = @"push_authentication_approved";
+            break;
+        case WPAnalyticsStatPushAuthenticationExpired:
+            eventName = @"push_authentication_expired";
+            break;
+        case WPAnalyticsStatPushAuthenticationFailed:
+            eventName = @"push_authentication_failed";
+            break;
+        case WPAnalyticsStatPushAuthenticationIgnored:
+            eventName = @"push_authentication_ignored";
             break;
         case WPAnalyticsStatPushNotificationAlertPressed:
             eventName = @"push_notification_alert_tapped";

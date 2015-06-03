@@ -104,7 +104,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             Media *media = [self newMediaForPost:post];
             media.filename = [mediaPath lastPathComponent];
             media.localURL = mediaPath;
-            media.thumbnail = thumbnailData;
             [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
@@ -392,7 +391,7 @@ static NSString * const MediaDirectory = @"Media";
         NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
         
-        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", nil];
+        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
         
         for (NSString *currentPath in contentsOfDir) {
             NSString *extension = currentPath.pathExtension.lowercaseString;
