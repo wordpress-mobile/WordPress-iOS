@@ -115,8 +115,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (void)applyModalStyleIfNeeded
 {
-    // Proceed only if this is Modal
-    if (self.presentingViewController == nil) {
+    // Proceed only if this Modal, and it's the only view in the stack.
+    // We're not changing the NavigationBar style, if we're sharing it with someone else!
+    if (self.presentingViewController == nil || self.navigationController.viewControllers.count > 1) {
         return;
     }
     
