@@ -41,7 +41,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString * shortcode;
 @property (nonatomic, strong) NSNumber * length;
 @property (nonatomic, strong) NSString * title;
-@property (nonatomic, strong) NSData * thumbnail;
 @property (nonatomic, strong) NSString * filename;
 @property (nonatomic, strong) NSNumber * filesize;
 @property (nonatomic, strong) NSNumber * width;
