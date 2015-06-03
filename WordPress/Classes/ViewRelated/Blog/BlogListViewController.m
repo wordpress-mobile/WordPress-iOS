@@ -55,6 +55,12 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
                                                                       target:nil
                                                                       action:nil];
         [self.navigationItem setBackBarButtonItem:backButton];
+        
+        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(search)];
+        [self.navigationItem setRightBarButtonItem:searchButton];
     }
     return self;
 }
