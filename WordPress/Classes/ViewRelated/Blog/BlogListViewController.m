@@ -241,6 +241,13 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
+#pragma mark - Configuration
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark - Notifications
 
 - (void)wordPressComApiDidLogin:(NSNotification *)notification
