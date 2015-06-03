@@ -4,7 +4,7 @@
 #import "ReaderPost.h"
 #import "ReaderPostSimpleContentView.h"
 #import "ReaderPostService.h"
-#import "BlogSelectorViewController.h"
+#import "WPComBlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -391,9 +391,9 @@ CGFloat const ReblogViewTextBottomInset = 30;
         dismissHandler();
     };
 
-    BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+    WPComBlogSelectorViewController *vc = [[WPComBlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.blog.objectID
+                                                                                             selectedCompletion:selectedCompletion
+                                                                                               cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];

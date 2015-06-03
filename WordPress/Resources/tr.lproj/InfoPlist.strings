@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki gönderilere konumunuzu eklemek istiyor.";
+NSLocationWhenInUseUsageDescription = "WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki gönderilere konumunuzu eklemek istiyor.";
+NSCameraUsageDescription = "Gönderilerinizde kullanacağınız fotoğraf veya videoları çekmek için.";
+NSPhotoLibraryUsageDescription = "Gönderilerinize fotoğraf veya video eklemek için.";
+NSMicrophoneUsageDescription = "Videolarınıza ses eklemek için.";
