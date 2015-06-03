@@ -236,12 +236,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
-    self.authorsFilter.hidden = (!self.blog.isMultiAuthor || !self.blog.account.userID);
-
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-    if (![self.blog isMultiAuthor]) {
-        // Collapse the view if single author blog
+
+    if (![self canFilterByAuthor]) {
         self.authorsFilterViewHeightConstraint.constant = 0.0;
+        self.authorsFilter.hidden = YES;
     }
 
     if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
@@ -249,6 +248,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     } else {
         self.authorsFilter.selectedSegmentIndex = 1;
     }
+}
+
+- (BOOL)canFilterByAuthor
+{
+    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog supports:BlogFeatureWPComRESTAPI];
 }
 
 
@@ -507,12 +511,18 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (PostAuthorFilter)currentPostAuthorFilter
 {
+    if (![self canFilterByAuthor]) {
+        // No REST API, so we have to use XMLRPC and can't filter results by author.
+        return PostAuthorFilterEveryone;
+    }
+
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
     if (filter) {
         if (PostAuthorFilterEveryone == [filter integerValue]) {
             return PostAuthorFilterEveryone;
         }
     }
+
     return PostAuthorFilterMine;
 }
 
