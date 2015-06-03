@@ -165,41 +165,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (void)configureAuthorFilter
 {
-    self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-    if (![UIDevice isPad]) {
-        self.authorsFilterViewHeightConstraint.constant = 0.0;
-    }
-}
-
-- (void)configureSearchBarForFilterView
-{
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[WPStyleGuide postListSearchBarTextColor]]];
-    [[UIButton appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];
-    UISearchBar *searchBar = self.searchController.searchBar;
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.barStyle = UIBarStyleDefault;
-    searchBar.barTintColor = [WPStyleGuide lightGrey];
-    searchBar.showsCancelButton = NO;
-
-    [self.authorsFilterView insertSubview:searchBar atIndex:0];
-
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{
-                              @"searchBarWidth":@(PostsSearchBarWidth),
-                              @"searchBariPadWidth":@(PostsSearchBariPadWidth)
-                              };
-
-        [self.authorsFilterView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.authorsFilterView
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                          multiplier:1.0
-                                                                            constant:0.0]];
-        [self.authorsFilterView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchBarWidth)]"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
+    // Noop
 }
 
 

@@ -41,7 +41,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSString * shortcode;
 @property (nonatomic, strong) NSNumber * length;
 @property (nonatomic, strong) NSString * title;
-@property (nonatomic, strong) NSData * thumbnail;
 @property (nonatomic, strong) NSString * filename;
 @property (nonatomic, strong) NSNumber * filesize;
 @property (nonatomic, strong) NSNumber * width;
@@ -51,7 +50,6 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (weak, nonatomic, readonly) NSString * html;
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
-@property (nonatomic, assign) CGFloat progress;
 @property (nonatomic, strong) NSString * caption;
 @property (nonatomic, strong) NSString * desc;
 @property (nonatomic, strong) Blog * blog;

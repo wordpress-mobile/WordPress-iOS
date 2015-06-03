@@ -87,6 +87,8 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) BOOL                   isComment;
 @property (nonatomic, assign,  readonly) BOOL                   isPost;
 @property (nonatomic, assign,  readonly) BOOL                   isFollow;
+@property (nonatomic, assign,  readonly) BOOL                   isLike;
+@property (nonatomic, assign,  readonly) BOOL                   isCommentLike;
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
 @property (nonatomic, assign,  readonly) BOOL                   hasReply;
 
