@@ -14,10 +14,11 @@ const NSInteger HTTPErrorCodeForbidden = 403;
 const NSInteger PostsFetchRequestBatchSize = 10;
 const NSInteger PostsLoadMoreThreshold = 4;
 const CGFloat PostsSearchBarWidth = 280.0;
-const CGFloat PostsSearchBariPadWidth = 210.0;
+const CGFloat PostsSearchBariPadWidth = 600.0;
 const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
 const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
+const CGFloat DefaultHeightForFooterView = 44.0;
 
 @implementation AbstractPostListViewController
 
@@ -94,6 +95,16 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 #pragma mark - Configuration
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (CGFloat)heightForFooterView
+{
+    return DefaultHeightForFooterView;
+}
+
 - (void)configureFilters
 {
     self.postListFilters = [PostListFilter newPostListFilters];
@@ -109,8 +120,6 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
     UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:self.rightBarButtonView];
     [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
-
-    self.searchButton.hidden = [UIDevice isPad];
 
     self.navigationItem.titleView = self.filterButton;
     [self updateFilterTitle];
@@ -130,6 +139,9 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
     [self.postListFooterView showSpinner:NO];
+    CGRect frame = self.postListFooterView.frame;
+    frame.size.height = [self heightForFooterView];
+    self.postListFooterView.frame = frame;
     self.tableView.tableFooterView = self.postListFooterView;
 }
 
@@ -219,7 +231,7 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 {
     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
     self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = ![UIDevice isPad];
+    self.searchController.hidesNavigationBarDuringPresentation = YES;
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
 }
@@ -237,16 +249,8 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     searchBar.translucent = NO;
     [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
-    if ([UIDevice isPad]) {
-        [self configureSearchBarForFilterView];
-    } else {
-        [self configureSearchBarForSearchView];
-    }
-}
 
-- (void)configureSearchBarForFilterView
-{
-    AssertSubclassMethod();
+    [self configureSearchBarForSearchView];
 }
 
 - (void)configureSearchBarForSearchView
@@ -262,20 +266,35 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
     [self.searchWrapperView addSubview:searchBar];
 
     NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchBar]|"
-                                                                                   options:0
-                                                                                   metrics:nil
-                                                                                     views:views]];
+    NSDictionary *metrics = @{@"searchbarWidth":@(PostsSearchBariPadWidth)};
+    if ([UIDevice isPad]) {
+        [self.searchWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
+                                                                           attribute:NSLayoutAttributeCenterX
+                                                                           relatedBy:NSLayoutRelationEqual
+                                                                              toItem:self.searchWrapperView
+                                                                           attribute:NSLayoutAttributeCenterX
+                                                                          multiplier:1.0
+                                                                            constant:0.0]];
+        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchbarWidth)]"
+                                                                                       options:0
+                                                                                       metrics:metrics
+                                                                                         views:views]];
+    } else {
+        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchBar]|"
+                                                                                       options:0
+                                                                                       metrics:metrics
+                                                                                         views:views]];
+    }
     [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[searchBar]|"
                                                                                    options:0
-                                                                                   metrics:nil
+                                                                                   metrics:metrics
                                                                                      views:views]];
 }
 
 - (void)configureSearchBarPlaceholder
 {
     // Adjust color depending on where the search bar is being presented.
-    UIColor *placeholderColor = [UIDevice isPad] ? [WPStyleGuide grey] : [WPStyleGuide wordPressBlue];
+    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
@@ -665,6 +684,9 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (CGFloat)heightForSearchWrapperView
 {
+    if ([UIDevice isPad]) {
+        return SearchWrapperViewPortraitHeight;
+    }
     return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
 }
 
@@ -809,10 +831,6 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)presentSearchController:(WPSearchController *)searchController
 {
-    if ([UIDevice isPad]) {
-        [self.searchController.searchBar setShowsCancelButton:YES animated:YES];
-        return;
-    }
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     [UIView animateWithDuration:PostSearchBarAnimationDuration
@@ -827,11 +845,6 @@ const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
 
 - (void)willDismissSearchController:(WPSearchController *)searchController
 {
-    if ([UIDevice isPad]) {
-        [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
-        return;
-    }
-
     [self.searchController.searchBar resignFirstResponder];
     [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = 0;
