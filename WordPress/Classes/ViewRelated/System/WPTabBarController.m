@@ -143,7 +143,6 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 - (void)decodeRestorableStateWithCoder:(NSCoder *)coder
 {
-    // Set last selected tab bar item
     self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
     [super decodeRestorableStateWithCoder:coder];
 }
