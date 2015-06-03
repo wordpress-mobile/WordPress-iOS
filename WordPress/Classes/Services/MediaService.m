@@ -103,7 +103,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
             Media *media = [self newMediaForPost:post];
             media.filename = [mediaPath lastPathComponent];
-            media.localURL = mediaPath;
+            media.absoluteLocalURL = mediaPath;
             [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
@@ -343,7 +343,7 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.descriptionText = media.desc;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
-    remoteMedia.localURL = media.localURL;
+    remoteMedia.localURL = media.absoluteLocalURL;
     remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
     return remoteMedia;
 }
