@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "对于已启用地理标记的站点，WordPress 会向其中的文章内添加您的位置。";
+NSLocationWhenInUseUsageDescription = "对于已启用地理标记的站点，WordPress 会向其中的文章内添加您的位置。";
+NSCameraUsageDescription = "拍摄要在文章内使用的照片或视频。";
+NSPhotoLibraryUsageDescription = "向您的文章内添加照片或视频。";
+NSMicrophoneUsageDescription = "录制有声视频。";
