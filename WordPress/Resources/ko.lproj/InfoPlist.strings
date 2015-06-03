@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+NSLocationWhenInUseUsageDescription = "위치 태그를 활성화한 사이트의 글에 위치를 추가하려고 합니다.";
+NSCameraUsageDescription = "글에 사용할 사진이나 비디오를 촬영";
+NSPhotoLibraryUsageDescription = "글에 사진이나 비디오를 추가";
+NSMicrophoneUsageDescription = "비디오에서 사운드 재생";

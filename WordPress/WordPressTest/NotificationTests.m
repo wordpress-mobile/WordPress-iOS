@@ -116,22 +116,22 @@
     XCTAssertNotNil(note.metaSiteID, @"Missing siteID");
 }
 
-- (void)testFollowerNotificationContainsUserBlocksInTheBody
+- (void)testFollowerNotificationContainsUserAndFooterBlocksInTheBody
 {
     Notification *note = [self loadFollowerNotification];
     
     // Note: Account for 'View All Followers'
     for (NotificationBlockGroup *group in note.bodyBlockGroups) {
-        XCTAssertTrue(group.type == NoteBlockGroupTypeUser || group.type == NoteBlockGroupTypeText);
+        XCTAssertTrue(group.type == NoteBlockGroupTypeUser || group.type == NoteBlockGroupTypeFooter);
     }
 }
 
-- (void)testFollowerNotificationContainsTextBlockWithFollowRangeAtTheEnd
+- (void)testFollowerNotificationContainsFooterBlockWithFollowRangeAtTheEnd
 {
     Notification *note = [self loadFollowerNotification];
     
     NotificationBlockGroup *lastGroup = note.bodyBlockGroups.lastObject;
-    XCTAssertTrue(lastGroup.type == NoteBlockGroupTypeText);
+    XCTAssertTrue(lastGroup.type == NoteBlockGroupTypeFooter);
     
     NotificationBlock *block = [lastGroup.blocks firstObject];
     XCTAssertNotNil(block.text, @"Missing block text");
