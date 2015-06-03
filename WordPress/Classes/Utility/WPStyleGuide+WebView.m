@@ -13,7 +13,7 @@
 
 + (UIColor *)webViewModalNavigationBarShadow
 {
-    return [UIColor colorWithRed:(CGFloat)46/255.0 green:(CGFloat)68/255.0 blue:(CGFloat)83/255.0 alpha:0.15];
+    return [UIColor colorWithRed:46.0/255.0 green:68.0/255.0 blue:83.0/255.0 alpha:0.15];
 }
 
 @end
