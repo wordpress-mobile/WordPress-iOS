@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress は、ユーザーが有効にしたジオタギングの場所をサイトの投稿に追加したいと考えています。";
+NSLocationWhenInUseUsageDescription = "WordPress は、ユーザーが有効にしたジオタギングの場所をサイトの投稿に追加したいと考えています。";
+NSCameraUsageDescription = "投稿に使用する写真または動画を撮る方法。";
+NSPhotoLibraryUsageDescription = "投稿に写真または動画を追加する方法。";
+NSMicrophoneUsageDescription = "動画に音声を含める方法。";
