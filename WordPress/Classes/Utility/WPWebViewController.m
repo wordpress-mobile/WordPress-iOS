@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "WPError.h"
 #import "UIAlertView+Blocks.h"
+#import "UIImage+Util.h"
+#import "WPStyleGuide+WebView.h"
 #import "WordPress-Swift.h"
 
 
@@ -19,13 +21,16 @@
 static NSInteger const WPWebViewErrorAjaxCancelled          = -999;
 static NSInteger const WPWebViewErrorFrameLoadInterrupted   = 102;
 
-static CGFloat const WPWebViewProgressInitial               = 0.1f;
-static CGFloat const WPWebViewProgressFinal                 = 1.0f;
+static CGFloat const WPWebViewProgressInitial               = 0.1;
+static CGFloat const WPWebViewProgressFinal                 = 1.0;
 
-static CGFloat const WPWebViewAnimationShortDuration        = 0.1f;
-static CGFloat const WPWebViewAnimationLongDuration         = 0.4f;
-static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0f;
-static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
+static CGFloat const WPWebViewToolbarShownConstant          = 0.0;
+static CGFloat const WPWebViewToolbarHiddenConstant         = -44.0;
+
+static CGFloat const WPWebViewAnimationShortDuration        = 0.1;
+static CGFloat const WPWebViewAnimationLongDuration         = 0.4;
+static CGFloat const WPWebViewAnimationAlphaVisible         = 1.0;
+static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 
 #pragma mark - Private Properties
@@ -34,9 +39,15 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 @property (nonatomic,   weak) IBOutlet UIWebView                *webView;
 @property (nonatomic,   weak) IBOutlet UIProgressView           *progressView;
+@property (nonatomic, strong) IBOutlet UIBarButtonItem          *dismissButton;
 @property (nonatomic, strong) IBOutlet UIBarButtonItem          *optionsButton;
+
+@property (nonatomic,   weak) IBOutlet UIToolbar                *toolbar;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *backButton;
+@property (nonatomic,   weak) IBOutlet UIBarButtonItem          *forwardButton;
+@property (nonatomic,   weak) IBOutlet NSLayoutConstraint       *toolbarBottomConstraint;
+
 @property (nonatomic, strong) NavigationTitleView               *titleView;
-@property (nonatomic, strong) UIRefreshControl                  *refreshControl;
 @property (nonatomic, strong) UIPopoverController               *popover;
 @property (nonatomic, assign) BOOL                              loading;
 @property (nonatomic, assign) BOOL                              needsLogin;
@@ -60,10 +71,16 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 {
     [super viewDidLoad];
 
-    NSAssert(_webView,       @"Missing Outlet!");
-    NSAssert(_progressView,  @"Missing Outlet!");
-    NSAssert(_optionsButton, @"Missing Outlet!");
-
+    NSAssert(_webView,                 @"Missing Outlet!");
+    NSAssert(_progressView,            @"Missing Outlet!");
+    NSAssert(_dismissButton,           @"Missing Outlet!");
+    NSAssert(_optionsButton,           @"Missing Outlet!");
+    
+    NSAssert(_toolbar,                 @"Missing Outlet!");
+    NSAssert(_backButton,              @"Missing Outlet!");
+    NSAssert(_forwardButton,           @"Missing Outlet!");
+    NSAssert(_toolbarBottomConstraint, @"Missing Outlet!");
+    
     // TitleView
     self.titleView                          = [NavigationTitleView new];
     self.titleView.titleLabel.text          = NSLocalizedString(@"Loading...", @"Loading. Verb");
@@ -72,20 +89,52 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     // Buttons
     self.optionsButton.accessibilityLabel   = NSLocalizedString(@"Share",   @"Spoken accessibility label");
-
-    // RefreshControl
-    self.refreshControl                     = [UIRefreshControl new];
-    [self.refreshControl addTarget:self action:@selector(reload) forControlEvents:UIControlEventValueChanged];
+    self.dismissButton.accessibilityLabel   = NSLocalizedString(@"Dismiss", @"Dismiss a view. Verb");
+    self.backButton.accessibilityLabel      = NSLocalizedString(@"Back",    @"Previous web page");
+    self.forwardButton.accessibilityLabel   = NSLocalizedString(@"Forward", @"Next web page");
+    
+    // Toolbar: Hidden by default!
+    self.toolbar.barTintColor               = [UIColor whiteColor];
+    self.backButton.tintColor               = [WPStyleGuide greyLighten10];
+    self.forwardButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.toolbarBottomConstraint.constant   = WPWebViewToolbarHiddenConstant;
+    
+    // ProgressView
+    self.progressView.progressTintColor     = [WPStyleGuide lightBlue];
     
     // WebView
     self.webView.scalesPageToFit            = YES;
-    [self.webView.scrollView addSubview:self.refreshControl];
     
     // Share
-    [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:self.optionsButton forNavigationItem:self.navigationItem];
+    self.navigationItem.rightBarButtonItem  = self.optionsButton;
     
     // Fire away!
+    [self applyModalStyleIfNeeded];
     [self loadWebViewRequest];
+}
+
+- (void)applyModalStyleIfNeeded
+{
+    // Proceed only if this is Modal
+    if (self.presentingViewController == nil) {
+        return;
+    }
+    
+    UIImage *navBackgroundImage             = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarBackground]];
+    UIImage *navShadowImage                 = [UIImage imageWithColor:[WPStyleGuide webViewModalNavigationBarShadow]];
+    
+    UINavigationBar *navigationBar          = self.navigationController.navigationBar;
+    navigationBar.shadowImage               = navShadowImage;
+    navigationBar.barStyle                  = UIBarStyleDefault;
+    [navigationBar setBackgroundImage:navBackgroundImage forBarMetrics:UIBarMetricsDefault];
+    
+    self.titleView.titleLabel.textColor     = [WPStyleGuide darkGrey];
+    self.titleView.subtitleLabel.textColor  = [WPStyleGuide grey];
+    
+    self.dismissButton.tintColor            = [WPStyleGuide greyLighten10];
+    self.optionsButton.tintColor            = [WPStyleGuide greyLighten10];
+    
+    self.navigationItem.leftBarButtonItem   = self.dismissButton;
 }
 
 - (BOOL)hidesBottomBarWhenPushed
@@ -154,8 +203,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 - (void)refreshInterface
 {
+    self.backButton.enabled             = self.webView.canGoBack;
+    self.forwardButton.enabled          = self.webView.canGoForward;
     self.optionsButton.enabled          = !self.loading;
-    self.refreshControl.enabled         = !self.loading;
     
     if (self.loading) {
         return;
@@ -163,10 +213,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     self.titleView.titleLabel.text      = [self documentTitle];
     self.titleView.subtitleLabel.text   = self.webView.request.URL.host;
-    
-    if (self.refreshControl.refreshing) {
-        [self.refreshControl endRefreshing];
-    }
 }
 
 - (void)scrollToBottomIfNeeded
@@ -190,19 +236,20 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     }];
 }
 
-- (void)showOpenInSafariAlertView:(NSURL *)url
+- (void)showBottomToolbarIfNeeded
 {
-    [UIAlertView showWithTitle:nil
-                       message:NSLocalizedString(@"This link will be opened in Safari", nil)
-             cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
-             otherButtonTitles:@[ NSLocalizedString(@"Accept", nil) ]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.cancelButtonIndex) {
-                              return;
-                          }
-                          
-                          [[UIApplication sharedApplication] openURL:url];
-                      }];
+    if (!self.webView.canGoBack && !self.webView.canGoForward) {
+        return;
+    }
+    
+    if (self.toolbarBottomConstraint.constant == WPWebViewToolbarShownConstant) {
+        return;
+    }
+
+    [UIView animateWithDuration:WPWebViewAnimationShortDuration animations:^{
+        self.toolbarBottomConstraint.constant = WPWebViewToolbarShownConstant;
+        [self.view layoutIfNeeded];
+    }];
 }
 
 
@@ -221,15 +268,19 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
 
 #pragma mark - IBAction Methods
 
-- (IBAction)reload
+- (IBAction)dismiss
 {
-    if (![ReachabilityUtils isInternetReachable]) {
-        [self.refreshControl endRefreshing];
-        [self showNoInternetAlertView];
-        return;
-    }
-    
-    [self.webView reload];
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)goBack
+{
+    [self.webView goBack];
+}
+
+- (IBAction)goForward
+{
+    [self.webView goForward];
 }
 
 - (IBAction)showLinkOptions
@@ -284,12 +335,6 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
         [self retryWithLogin];
-        return NO;
-    }
-
-    // External Links: Open in Safari
-    if (navigationType == UIWebViewNavigationTypeLinkClicked && ![request.mainDocumentURL isEqual:self.url]) {
-        [self showOpenInSafariAlertView:request.URL];
         return NO;
     }
     
@@ -353,6 +398,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0f;
     
     [self finishProgress];
     [self refreshInterface];
+    [self showBottomToolbarIfNeeded];
     [self scrollToBottomIfNeeded];
 }
 
