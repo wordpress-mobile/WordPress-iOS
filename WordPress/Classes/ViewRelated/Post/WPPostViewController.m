@@ -1692,7 +1692,7 @@ EditImageDetailsViewControllerDelegate
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
                                         remotePoster:media.thumbnailLocalURL
-                                          videoPress:media.shortcode];
+                                          videoPress:media.videopressGUID];
         }
     } failure:^(NSError *error) {
         if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
