@@ -233,7 +233,9 @@
     livePreviewController.username = defaultAccount.username;
     livePreviewController.password = defaultAccount.password;
     livePreviewController.wpLoginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
-    [self.navigationController pushViewController:livePreviewController animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:livePreviewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (IBAction)activatePressed:(id)sender

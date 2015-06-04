@@ -173,7 +173,9 @@
 {
     NSURL *targetURL = [NSURL URLWithString:self.post.blogURL];
     WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:targetURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
