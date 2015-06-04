@@ -78,41 +78,6 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
                                         success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure;
-/*
- * Queries the REST Api for unread notes and determines if the user has
- * seen them using the response's last_seen_time timestamp.
- *
- */
-- (void)fetchNewUnseenNotificationsWithSuccess:(void (^)(NSArray *notes))success
-                                      failure:(void (^)(NSError *error))failure;
-
-- (void)fetchRecentNotificationsWithSuccess:(void (^)(NSArray *notes))success
-                          failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)fetchNotificationsBefore:(NSNumber *)timestamp
-                       success:(void (^)(NSArray *notes))success
-                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)fetchNotificationsSince:(NSNumber *)timestamp
-                      success:(void (^)(NSArray *notes))success
-                      failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)fetchNotificationsWithParameters:(NSDictionary *)parameters
-                               success:(void (^)(NSArray *notes))success
-                               failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)refreshNotifications:(NSArray *)noteIDs
-                      fields:(NSString *)fields
-                     success:(void (^)(NSArray *notes))success
-                     failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)markNoteAsRead:(NSString *)noteID
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)updateNoteLastSeenTime:(NSNumber *)timestamp
-                       success:(WordPressComApiRestSuccessResponseBlock)success
-                       failure:(WordPressComApiRestSuccessFailureBlock)failure;
 
 ///-------------
 /// @name Reader
