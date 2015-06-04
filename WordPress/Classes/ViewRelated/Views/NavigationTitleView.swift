@@ -50,8 +50,8 @@ public class NavigationTitleView : UIView
     private static let defaultViewFrame         = CGRect(x: 0.0, y: 0.0, width: 200.0, height: 35.0)
     
     private static let defaultTitleFontSize     = CGFloat(15)
-    private static let defaultTitleFrame        = CGRect(x: 0.0, y: 1.0,  width: 200.0, height: 19.0)
+    private static let defaultTitleFrame        = CGRect(x: 0.0, y: 0.0,  width: 200.0, height: 19.0)
     
     private static let defaultSubtitleFontSize  = CGFloat(10)
-    private static let defaultSubtitleFrame     = CGRect(x: 0.0, y: 20.0, width: 200.0, height: 16.0)
+    private static let defaultSubtitleFrame     = CGRect(x: 0.0, y: 19.0, width: 200.0, height: 16.0)
 }
