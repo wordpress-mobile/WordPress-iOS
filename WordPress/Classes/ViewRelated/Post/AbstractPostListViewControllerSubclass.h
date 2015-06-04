@@ -15,6 +15,11 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "WordPress-swift.h"
 
+typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
+    PostAuthorFilterMine,
+    PostAuthorFilterEveryone,
+};
+
 extern const NSTimeInterval PostsControllerRefreshInterval;
 extern const NSTimeInterval PostSearchBarAnimationDuration;
 extern const NSInteger HTTPErrorCodeForbidden;
@@ -54,6 +59,10 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 @property (nonatomic, strong) NSArray *postListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
+- (BOOL)canFilterByAuthor;
+- (BOOL)shouldShowOnlyMyPosts;
+- (PostAuthorFilter)currentPostAuthorFilter;
+- (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter;
 - (PostListFilter *)currentPostListFilter;
 - (CGFloat)heightForFooterView;
 - (void)publishPost:(AbstractPost *)apost;

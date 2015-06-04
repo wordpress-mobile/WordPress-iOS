@@ -70,12 +70,14 @@ extern NSString * const PostServiceTypeAny;
 
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
+ @param authorID The user ID of a specific author, or nil if everyone's posts should be synced.
  @param blog The blog that has the posts.
  @param success A success block
  @param failure A failure block
  */
 - (void)syncPostsOfType:(NSString *)postType
            withStatuses:(NSArray *)postStatus
+               byAuthor:(NSNumber *)authorID
                 forBlog:(Blog *)blog
                 success:(void (^)(BOOL hasMore))success
                 failure:(void (^)(NSError *))failure;
@@ -88,6 +90,7 @@ extern NSString * const PostServiceTypeAny;
  
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
+ @param authorID The user ID of a specific author, or nil if everyone's posts should be synced.
  @param blog The blog that has the posts.
  @param success A success block
  @param failure A failure block
@@ -95,6 +98,7 @@ extern NSString * const PostServiceTypeAny;
 
 - (void)loadMorePostsOfType:(NSString *)postType
                withStatuses:(NSArray *)postStatus
+                   byAuthor:(NSNumber *)authorID
                     forBlog:(Blog *)blog
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *))failure;
