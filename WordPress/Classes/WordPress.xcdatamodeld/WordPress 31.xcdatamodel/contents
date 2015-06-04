@@ -248,6 +248,7 @@
         <attribute name="title" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="videopressGUID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="width" optional="YES" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -389,7 +390,7 @@
         <element name="Blog" positionX="0" positionY="0" width="128" height="495"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="330"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>

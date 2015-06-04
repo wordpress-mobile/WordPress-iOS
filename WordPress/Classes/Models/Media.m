@@ -20,6 +20,7 @@
 @dynamic caption;
 @dynamic desc;
 @dynamic mediaTypeString;
+@dynamic videopressGUID;
 
 @synthesize unattached;
 
