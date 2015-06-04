@@ -16,7 +16,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 @interface Blog ()
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
-@property (nonatomic, weak, readwrite) NSString *blavatarUrl;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
 @end
 
@@ -49,8 +48,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic jetpackAccount;
 @dynamic isMultiAuthor;
 @dynamic isJetpack;
+@dynamic blavatarUrl;
 @synthesize api = _api;
-@synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
 @synthesize videoPressEnabled;
@@ -72,7 +71,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [super didTurnIntoFault];
 
     // Clean up instance variables
-    self.blavatarUrl = nil;
     self.api = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -103,16 +101,20 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)blavatarUrl
 {
-    if (_blavatarUrl == nil) {
-        NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
-        if (hostUrl == nil) {
-            hostUrl = self.xmlrpc;
-        }
+    [self willAccessValueForKey:@"blavatarUrl"];
+    NSString *blavatarUrl = [self primitiveValueForKey:@"blavatarUrl"];
+    [self didAccessValueForKey:@"blavatarUrl"];
 
-        _blavatarUrl = hostUrl;
+    if (blavatarUrl) {
+        return blavatarUrl;
     }
 
-    return _blavatarUrl;
+    // if the blavatarUrl is not set we can use the host url to construct it
+    NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
+    if (hostUrl == nil) {
+        hostUrl = self.xmlrpc;
+    }
+    return hostUrl;
 }
 
 // Used as a key to store passwords, if you change the algorithm, logins will break
@@ -276,8 +278,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
-    
-    self.blavatarUrl = nil;
 
     // Reset the api client so next time we use the new XML-RPC URL
     self.api = nil;
