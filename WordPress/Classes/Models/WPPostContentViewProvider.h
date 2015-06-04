@@ -20,6 +20,7 @@
 
 // Meta accessors
 - (NSDate *)dateForDisplay;
+- (NSString *)dateStringForDisplay;
 - (NSString *)status;
 - (NSString *)statusForDisplay;
 - (BOOL)unreadStatusForDisplay;
