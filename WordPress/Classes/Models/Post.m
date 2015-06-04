@@ -261,7 +261,7 @@
 
 - (BOOL)supportsStats
 {
-    return [self.blog supports:BlogFeatureStats];
+    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
 }
 
 - (BOOL)isPrivate
