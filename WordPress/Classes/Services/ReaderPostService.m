@@ -66,7 +66,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 - (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date skippingSave:(BOOL)skippingSave success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *topicObjectID = topic.objectID;
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
@@ -81,7 +81,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
 - (void)fetchPost:(NSUInteger)postID forSite:(NSUInteger)siteID success:(void (^)(ReaderPost *post))success failure:(void (^)(NSError *error))failure
 {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPost:postID fromSite:siteID success:^(RemoteReaderPost *remotePost) {
         if (!success) {
             return;
@@ -182,7 +182,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     };
 
     // Call the remote service
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     if (like) {
         [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
     } else {
@@ -302,7 +302,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
     };
 
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService reblogPost:[readerPost.postID integerValue]
                      fromSite:[readerPost.siteID integerValue]
                        toSite:siteID
@@ -520,7 +520,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         }
     }
 
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
