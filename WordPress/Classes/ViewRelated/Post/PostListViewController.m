@@ -517,8 +517,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
+
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+    [self syncItemsWithUserInteraction:NO];
 }
 
 - (NSString *)keyForCurrentListStatusFilter
