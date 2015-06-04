@@ -261,11 +261,21 @@ static NSString * const MediaDirectory = @"Media";
 
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
+    NSString *filename = asset.defaultRepresentation.filename;
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
     NSString *mediaDirectory = [documentsDirectory stringByAppendingPathComponent:MediaDirectory];
-    NSString *filename = asset.defaultRepresentation.filename;
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+    BOOL isDirectory;
+    NSError *error;
+    if (![fileManager fileExistsAtPath:mediaDirectory isDirectory:&isDirectory] || !isDirectory){
+        if ([fileManager createDirectoryAtPath:mediaDirectory withIntermediateDirectories:YES attributes:nil error:&error]){
+            [[NSURL fileURLWithPath:mediaDirectory] setResourceValue:@(NO) forKey:NSURLIsExcludedFromBackupKey error:nil];
+        } else {
+            DDLogError(@"%@", [error localizedDescription]);
+        }
+    }
+    NSString *path = [mediaDirectory stringByAppendingPathComponent:filename];
     NSString *basename = [filename stringByDeletingPathExtension];
     NSString *extension = [[filename pathExtension] lowercaseString];
     if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
@@ -273,7 +283,6 @@ static NSString * const MediaDirectory = @"Media";
         filename = [NSString stringWithFormat:@"%@.%@", basename, extension];
         path = [mediaDirectory stringByAppendingPathComponent:filename];
     }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
     while ([fileManager fileExistsAtPath:path]) {
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
