@@ -39,7 +39,7 @@ public class NavigationTitleView : UIView
         subtitleLabel.autoresizingMask  = UIViewAutoresizing.FlexibleWidth;
 
         backgroundColor                 = UIColor.clearColor()
-        autoresizingMask                = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleTopMargin
+        autoresizingMask                = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleTopMargin
         clipsToBounds                   = true
         
         addSubview(titleLabel)
