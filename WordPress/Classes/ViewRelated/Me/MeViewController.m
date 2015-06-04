@@ -31,11 +31,12 @@ const typedef enum {
     MeSectionWpCom
 } MeSectionContentType;
 
+static NSString *const WPMeRestorationID = @"WPMeRestorationID";
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
 static CGFloat const MVCTableViewRowHeight = 50.0;
 
-@interface MeViewController () <UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
+@interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) MeHeaderView *headerView;
@@ -43,6 +44,11 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 @end
 
 @implementation MeViewController
+
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[self alloc] init];
+}
 
 #pragma mark - LifeCycle Methods
 
@@ -55,6 +61,10 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 {
     self = [super init];
     if (self) {
+        self.title = NSLocalizedString(@"Me", @"Me page title");
+        self.restorationIdentifier = WPMeRestorationID;
+        self.restorationClass = [self class];
+
         // we want to observe for the account change notification even if the view is not visible
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(defaultAccountDidChange:)
