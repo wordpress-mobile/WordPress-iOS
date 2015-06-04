@@ -4,7 +4,6 @@
 #import "WordPressComApi.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
-#import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "Blog.h"
@@ -23,29 +22,24 @@ const typedef enum {
     EditSiteRowPassword = 2,
     EditSiteRowGeotagging = 0,
     EditSiteRowPushNotifications = 1,
-    EditSiteRowJetpackConfigure = 0
 } EditSiteRow;
 
 const typedef enum {
     TableViewSectionTitle = 0,
     TableViewSectionSettings,
-    TableViewSectionSelfHosted
 } TableSectionContentType;
 
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
-static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 NSInteger const EditSiteSectionCount = 2;
-NSInteger const EditSiteSectionCountSelfHosted = 3;
 
 NSInteger const EditSiteRowCountForSectionTitle = 2;
 NSInteger const EditSiteRowCountForSectionTitleSelfHosted = 3;
 NSInteger const EditSiteRowCountForSectionSettings = 2;
 NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
-NSInteger const EditSiteRowCountForSectionJetpack = 1;
 
 @interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
@@ -151,7 +145,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
     [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:JetpackConnectedCellIdentifier];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -165,9 +158,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.blog && !self.blog.account.isWpcom) {
-        return EditSiteSectionCountSelfHosted;
-    }
     return EditSiteSectionCount;
 }
 
@@ -183,8 +173,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
             return EditSiteRowCountForSectionSettings;
         }
         return EditSiteRowCountForSectionSettingsSelfHosted;
-    } else if (section == TableViewSectionSelfHosted) {
-        return EditSiteRowCountForSectionJetpack;
     }
     return 0;
 }
@@ -220,8 +208,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
         headingTitle = self.blog.blogName;
     } else if (section == TableViewSectionSettings) {
         headingTitle = NSLocalizedString(@"Settings", @"");
-    } else if (section == TableViewSectionSelfHosted) {
-        headingTitle = NSLocalizedString(@"Jetpack Stats", @"");
     }
     return headingTitle;
 }
@@ -315,21 +301,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
-    } else if (indexPath.section == TableViewSectionSelfHosted) {
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
-
-        cell.textLabel.text = NSLocalizedString(@"Configure", @"");
-        if (self.blog.jetpack.connectedUsername) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpack.connectedUsername];
-        } else {
-            cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
-        }
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        [WPStyleGuide configureTableViewCell:cell];
-
-        return cell;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -350,15 +321,6 @@ NSInteger const EditSiteRowCountForSectionJetpack = 1;
         }
     }
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
-    if (indexPath.section == TableViewSectionSelfHosted) {
-        JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
-        controller.showFullScreen = NO;
-        [controller setCompletionBlock:^(BOOL didAuthenticate) {
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-        [self.navigationController pushViewController:controller animated:YES];
-    }
 }
 
 #pragma mark - UITextField methods
