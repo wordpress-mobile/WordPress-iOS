@@ -6,21 +6,7 @@
 #import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
-@interface PostServiceRemoteREST ()
-
-@property (nonatomic, strong) WordPressComApi *api;
-
-@end
-
 @implementation PostServiceRemoteREST
-
-- (id)initWithApi:(WordPressComApi *)api {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog

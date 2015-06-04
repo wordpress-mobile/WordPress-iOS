@@ -71,8 +71,9 @@
 #pragma mark - ReaderPostServiceRemote tests
 
 - (void)testSiteIsPrivate {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
-
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSDictionary *dict = @{@"site_is_private": @"1"};
     BOOL isPrivate = [remoteService siteIsPrivateFromPostDictionary:dict];
@@ -92,7 +93,9 @@
 }
 
 - (void)testSiteURLFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *site = @"http://site.com";
     NSDictionary *dict = @{@"site_URL": site};
@@ -105,7 +108,9 @@
 }
 
 - (void)testSiteNameFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *name = @"foo";
     NSDictionary *dict = @{@"site_name": name};
@@ -129,7 +134,9 @@
 }
 
 - (void)testFeaturedImageFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *path = @"path.to/image.jpg";
     NSString *uri = [NSString stringWithFormat:@"http://%@", path];
@@ -151,7 +158,9 @@
 }
 
 - (void)testSortDateFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *dateStr = @"foo";
     NSMutableDictionary *dict = [NSMutableDictionary dictionary];
@@ -172,7 +181,9 @@
 }
 
 - (void)testIsWPComFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *jsonStrFalse = @"{\"is_external\": false}";
     NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[jsonStrFalse dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
@@ -187,7 +198,9 @@
 }
 
 - (void)testAuthorEmailFromDictionary {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     NSString *emailStr = @"a@a.aa";
     NSDictionary *dict = @{@"email": emailStr};
@@ -201,7 +214,9 @@
 }
 
 - (void)testSanitizeFeaturedImage {
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:api];
 
     // Test mshots. Just strips off the query string
     NSString *imagePath = @"https://s0.wp.com/mshots/v1/http%3A%2F%2Fsitename.wordpress.com%2F2013%2F05%2F13%2Fimage%2F?w=252";
@@ -222,7 +237,6 @@
     str = [remoteService sanitizeFeaturedImageString:imagePath];
     XCTAssertTrue([str isEqualToString:sanitizedStr], @"Image path returned did not match the path expected.");
 }
-
 
 #pragma mark - ReaderPostService tests
 
