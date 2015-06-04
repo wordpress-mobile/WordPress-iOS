@@ -213,16 +213,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
+    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID]];
     Media *media = [mediaSet anyObject];
     if (media) {
         if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
-            success(media.remoteURL, media.thumbnailLocalURL);
+            if (success){
+                success(media.remoteURL, media.thumbnailLocalURL);
+            }
         } else {
-            success(media.remoteURL, @"");
+            if (success){
+                success(media.remoteURL, @"");
+            }
         }
     } else {
-        failure(nil);
+        if (failure){
+            failure(nil);
+        }
     }
 }
 
@@ -325,6 +331,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     media.width = remoteMedia.width;
     //media.exif = remoteMedia.exif;
     media.shortcode = remoteMedia.shortcode;
+    media.videopressGUID = remoteMedia.videopressGUID;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
@@ -341,7 +348,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.localURL;
-    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
+    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
+    remoteMedia.videopressGUID = media.videopressGUID;
     return remoteMedia;
 }
 
