@@ -23,8 +23,12 @@
 
 static NSString * const WPTabBarRestorationID = @"WPTabBarID";
 static NSString * const WPBlogListNavigationRestorationID = @"WPBlogListNavigationID";
-static NSString * const WPReaderNavigationRestorationID= @"WPReaderNavigationID";
+static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
+static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
 static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
+
+// used to restore the last selected tab bar item
+static NSString * const WPTabBarSelectedIndexKey = @"WPTabBarSelectedIndexKey";
 
 static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
 
@@ -41,7 +45,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInPortrait 
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPadInLandscape = 236;
 static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLandscape = 93;
 
-@interface WPTabBarController () <UITabBarControllerDelegate>
+@interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
 @property (nonatomic, strong) BlogListViewController *blogListViewController;
 @property (nonatomic, strong) ReaderViewController *readerViewController;
@@ -60,6 +64,8 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 
 @implementation WPTabBarController
 
+#pragma mark - Class methods
+
 + (instancetype)sharedInstance
 {
     static WPTabBarController *shared = nil;
@@ -70,6 +76,13 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     return shared;
 }
 
++ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
+{
+    return [[self class] sharedInstance];
+}
+
+#pragma mark - Instance methods
+
 - (instancetype)init
 {
     self = [super init];
@@ -77,6 +90,7 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
         [self setDelegate:self];
 
         [self setRestorationIdentifier:WPTabBarRestorationID];
+        [self setRestorationClass:[WPTabBarController class]];
         [[self tabBar] setTranslucent:NO];
         [[self tabBar] setAccessibilityIdentifier:NSLocalizedString(@"Main Navigation", @"")];
         // Create a background
@@ -117,6 +131,20 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
+}
+
+#pragma mark - UIViewControllerRestoration methods
+
+- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    [coder encodeInteger:self.selectedIndex forKey:WPTabBarSelectedIndexKey];
+    [super encodeRestorableStateWithCoder:coder];
+}
+
+- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
+{
+    self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
+    [super decodeRestorableStateWithCoder:coder];
 }
 
 #pragma mark - Tab Bar Items
@@ -201,12 +229,12 @@ static NSInteger const WPNotificationBadgeIconHorizontalOffsetForIPhone6PlusInLa
     }
 
     self.meViewController = [MeViewController new];
-    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
-    self.meViewController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    self.meViewController.tabBarItem.selectedImage = meTabBarImage;
-    self.meViewController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
-    self.meViewController.title = NSLocalizedString(@"Me", @"Me page title");
     _meNavigationController = [[UINavigationController alloc] initWithRootViewController:self.meViewController];
+    UIImage *meTabBarImage = [UIImage imageNamed:@"icon-tab-me"];
+    _meNavigationController.tabBarItem.image = [meTabBarImage imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    _meNavigationController.tabBarItem.selectedImage = meTabBarImage;
+    _meNavigationController.tabBarItem.titlePositionAdjustment = self.tabBarTitleOffset;
+    _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
 
     return _meNavigationController;
 }
