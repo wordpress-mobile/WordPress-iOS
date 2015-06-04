@@ -22,7 +22,6 @@ const typedef enum {
     EditSiteRowPassword = 2,
     EditSiteRowGeotagging = 0,
     EditSiteRowPushNotifications = 1,
-    EditSiteRowJetpackConfigure = 0
 } EditSiteRow;
 
 const typedef enum {
