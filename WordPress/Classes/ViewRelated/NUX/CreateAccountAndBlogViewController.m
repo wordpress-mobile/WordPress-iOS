@@ -568,10 +568,11 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
 - (IBAction)TOSLabelWasTapped
 {
-    NSURL *targetURL = [NSURL URLWithString:@"https://en.wordpress.com/tos/"];
+    NSURL *targetURL = [NSURL URLWithString:WPAutomatticTermsOfServiceURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    [self.navigationController pushViewController:webViewController animated:YES];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
