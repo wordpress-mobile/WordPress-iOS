@@ -13,6 +13,11 @@
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
+    NSAssert(postID,
+             @"Expected postID to be an NSNumber.");
+    NSAssert([blog isKindOfClass:[Blog class]],
+             @"Expected blog to be an instance of class Blog");
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
     NSDictionary *parameters = @{ @"context": @"edit" };
     [self.api GET:path
