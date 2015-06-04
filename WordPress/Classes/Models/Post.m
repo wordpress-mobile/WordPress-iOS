@@ -2,6 +2,7 @@
 #import "Media.h"
 #import "PostCategory.h"
 #import "Coordinate.h"
+#import "NSDate+StringFormatting.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
@@ -218,7 +219,11 @@
 - (NSString *)titleForDisplay
 {
     NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
-    return [title stringByDecodingXMLCharacters];
+    title = [title stringByDecodingXMLCharacters];
+    if ([title length] == 0 && [[self contentPreviewForDisplay] length] == 0 && ![self hasRemote]) {
+        title = NSLocalizedString(@"(no title)", @"Let's a user know that a local draft does not have a title.");
+    }
+    return title;
 }
 
 - (NSString *)authorForDisplay
@@ -259,6 +264,15 @@
     return nil;
 }
 
+- (NSString *)dateStringForDisplay
+{
+    NSDate *date = [self dateCreated];
+    if (!date) {
+        return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
+    }
+    return [date shortString];
+}
+
 - (BOOL)supportsStats
 {
     return [self.blog supports:BlogFeatureStats] && [self hasRemote];
@@ -276,10 +290,19 @@
 
 - (NSString *)statusForDisplay
 {
+    NSString *statusString = [self statusTitle];
     if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
-        return [NSString string];
+        statusString = nil;
     }
-    return [self statusTitle];
+    if (![self hasRemote]) {
+        NSString *localOnly = NSLocalizedString(@"Local", @"A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.");
+        if (statusString) {
+            statusString = [NSString stringWithFormat:@"%@, %@", statusString, localOnly];
+        } else {
+            statusString = localOnly;
+        }
+    }
+    return statusString;
 }
 
 - (BOOL)isUploading

@@ -1,6 +1,5 @@
 #import "PostCardTableViewCell.h"
 #import "BasePost.h"
-#import "NSDate+StringFormatting.h"
 #import "PhotonImageURLHelper.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
@@ -303,7 +302,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureDate
 {
-    self.dateLabel.text = [[self.contentProvider dateForDisplay] shortString];
+    self.dateLabel.text = [self.contentProvider dateStringForDisplay];
 }
 
 - (void)configureStatusView
@@ -318,19 +317,20 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
+    self.statusLabel.text = str;
     // Set the correct icon and text color
     if ([[self.contentProvider status] isEqualToString:PostStatusPending]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
         self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusScheduled]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
         self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusTrash]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
         self.statusLabel.textColor = [WPStyleGuide errorRed];
+    } else if (!self.statusView.hidden) {
+        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
+        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else {
         self.statusLabel.text = nil;
         self.statusImageView.image = nil;
