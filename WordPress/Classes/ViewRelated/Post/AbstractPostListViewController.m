@@ -701,7 +701,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (BOOL)canFilterByAuthor
 {
-    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog supports:BlogFeatureWPComRESTAPI];
+    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog isHostedAtWPcom];
 }
 
 - (BOOL)shouldShowOnlyMyPosts
