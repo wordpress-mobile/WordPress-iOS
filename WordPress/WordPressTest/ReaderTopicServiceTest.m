@@ -119,7 +119,9 @@
                                                @"URL": @"https://public-api.wordpress.com/rest/v1/read/tags/coffee/posts"
                                                };
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:nil];
+    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:api];
     RemoteReaderTopic *remoteTopic = [remoteService normalizeTopicDictionary:topicDictionaryWithID subscribed:YES recommended:YES];
     XCTAssertTrue(remoteTopic.isRecommended, @"Remote topic should be recommended but wasn't.");
     XCTAssertTrue(remoteTopic.isSubscribed, @"Remote topic should be subscribed but wasn't.");
