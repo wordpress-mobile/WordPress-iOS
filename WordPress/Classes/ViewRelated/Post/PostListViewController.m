@@ -13,11 +13,6 @@
 #import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
-typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
-    PostAuthorFilterMine,
-    PostAuthorFilterEveryone,
-};
-
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
 static NSString * const PostCardThumbCellIdentifier = @"PostCardThumbCellIdentifier";
@@ -250,11 +245,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
 }
 
-- (BOOL)canFilterByAuthor
-{
-    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog supports:BlogFeatureWPComRESTAPI];
-}
-
 
 #pragma mark - Actions
 
@@ -293,7 +283,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
     [predicates addObject:filterPredicate];
 
-    if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
+    if ([self shouldShowOnlyMyPosts]) {
         NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
         [predicates addObject:authorPredicate];
     }
@@ -502,12 +492,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 
 #pragma mark - Filter related
-
-- (BOOL)shouldShowPostsForEveryone
-{
-    PostAuthorFilter filter = [self currentPostAuthorFilter];
-    return filter == PostAuthorFilterEveryone;
-}
 
 - (PostAuthorFilter)currentPostAuthorFilter
 {
