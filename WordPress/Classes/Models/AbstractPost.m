@@ -5,7 +5,10 @@
 
 @implementation AbstractPost
 
-@dynamic blog, media;
+@dynamic blog;
+@dynamic media;
+@dynamic metaIsLocal;
+@dynamic metaPublishImmediately;
 @dynamic comments;
 @synthesize restorableStatus;
 
@@ -23,7 +26,28 @@
         // when wrong saving -- the app crashed for instance. So change our remote status to failed.
         [self setPrimitiveValue:@(AbstractPostRemoteStatusFailed) forKey:@"remoteStatusNumber"];
     }
+}
 
+- (void)setRemoteStatusNumber:(NSNumber *)remoteStatusNumber
+{
+NSLog(@"%@", NSStringFromSelector(_cmd));
+    self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
+
+    NSString *key = @"remoteStatusNumber";
+    [self willChangeValueForKey:key];
+    [self setPrimitiveValue:remoteStatusNumber forKey:key];
+    [self didChangeValueForKey:key];
+}
+
+- (void)setDate_created_gmt:(NSDate *)date_created_gmt
+{
+NSLog(@"%@", NSStringFromSelector(_cmd));
+    self.metaPublishImmediately = (date_created_gmt == nil);
+
+    NSString *key = @"date_created_gmt";
+    [self willChangeValueForKey:key];
+    [self setPrimitiveValue:date_created_gmt forKey:key];
+    [self didChangeValueForKey:key];
 }
 
 + (NSString *const)remoteUniqueIdentifier
