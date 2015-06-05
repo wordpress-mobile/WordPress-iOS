@@ -50,19 +50,22 @@ NSString *const GravatarRatingX = @"x";
     }];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl
+- (void)setImageWithSiteIcon:(NSString *)siteIcon
 {
     UIImage *blavatarDefaultImage = [UIImage imageNamed:BlavatarDefault];
 
-    [self setImageWithBlavatarUrl:blavatarUrl placeholderImage:blavatarDefaultImage];
+    [self setImageWithSiteIcon:siteIcon placeholderImage:blavatarDefaultImage];
 }
 
-- (void)setImageWithBlavatarUrl:(NSString *)blavatarUrl placeholderImage:(UIImage *)placeholderImage
+- (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    if ([blavatarUrl rangeOfString:@"gravatar.com/blavatar"].location == NSNotFound) {
-        [self setImageWithURL:[self blavatarURLForHost:blavatarUrl] placeholderImage:placeholderImage];
+    // Check if the site icon is a photon url: https://developer.wordpress.com/docs/photon/
+    if ([siteIcon rangeOfString:@".wp.com"].location != NSNotFound) {
+        [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
+    } else if ([siteIcon rangeOfString:@"gravatar.com/blavatar"].location != NSNotFound) {
+        [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
     } else {
-        [self setImageWithURL:[self blavatarURLForBlavatarURL:blavatarUrl] placeholderImage:placeholderImage];
+        [self setImageWithURL:[self blavatarURLForHost:siteIcon] placeholderImage:placeholderImage];
     }
 }
 
@@ -81,6 +84,13 @@ NSString *const GravatarRatingX = @"x";
     return [NSURL URLWithString:gravatarUrl];
 }
 
+- (NSURL *)siteIconURLForSiteIconUrl:(NSString *)path
+{
+    NSInteger size = [self sizeForBlavatarDownload];
+    NSString *siteIconUrl = [NSString stringWithFormat:@"%@?w=%d&h=%d", path, size, size];
+    return [NSURL URLWithString:siteIconUrl];
+}
+
 - (NSURL *)blavatarURLForHost:(NSString *)host
 {
     return [self blavatarURLForHost:host withSize:[self sizeForBlavatarDownload]];
@@ -94,7 +104,7 @@ NSString *const GravatarRatingX = @"x";
 
 - (NSURL *)blavatarURLForBlavatarURL:(NSString *)path
 {
-    CGFloat size = [self sizeForBlavatarDownload];
+    NSInteger size = [self sizeForBlavatarDownload];
     NSString *blavatarURL = [NSString stringWithFormat:@"%@?d=404&s=%d", path, size];
     return [NSURL URLWithString:blavatarURL];
 }
