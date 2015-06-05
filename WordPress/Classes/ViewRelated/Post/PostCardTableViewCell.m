@@ -43,8 +43,6 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetWrapperViewHeightConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetThumbPaddingWidthConstraint;
 
 @property (nonatomic, weak) id<WPPostContentViewProvider>contentProvider;
 @property (nonatomic, assign) CGFloat headerViewHeight;
@@ -103,7 +101,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         height += self.headerViewLowerMargin;
     }
 
-    if (self.postCardImageView && !self.snippetWrapperViewHeightConstraint) {
+    if (self.postCardImageView) {
         // the image cell xib
         height += CGRectGetHeight(self.postCardImageView.frame);
         height += self.postCardImageViewBottomConstraint.constant;
@@ -112,16 +110,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
 
-    if (self.snippetWrapperViewHeightConstraint) {
-        // the thumbnail cell xib
-        CGFloat imageHeight = CGRectGetHeight(self.postCardImageView.frame);
-        CGSize amendedInnerSize = innerSize;
-        amendedInnerSize.width -= (CGRectGetWidth(self.postCardImageView.frame) + self.snippetThumbPaddingWidthConstraint.constant);
-        CGFloat snippetHeight = [self.snippetLabel sizeThatFits:amendedInnerSize].height;
-        height += MAX(imageHeight, snippetHeight);
-    } else {
-        height += [self.snippetLabel sizeThatFits:innerSize].height;
-    }
+    height += [self.snippetLabel sizeThatFits:innerSize].height;
     height += self.snippetLowerConstraint.constant;
 
     height += CGRectGetHeight(self.dateView.frame);
