@@ -193,7 +193,6 @@
 		5DCC4CD819A50CC0003E548C /* ReaderSite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DCC4CD719A50CC0003E548C /* ReaderSite.m */; };
 		5DDC44671A72BB07007F538E /* ReaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC44661A72BB07007F538E /* ReaderViewController.m */; };
 		5DE293C11AD8009E00825DE5 /* PostListFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE293C01AD8009E00825DE5 /* PostListFilter.m */; };
-		5DE293C31AD82A6800825DE5 /* PostCardThumbCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5DE293C21AD82A6800825DE5 /* PostCardThumbCell.xib */; };
 		5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
@@ -920,7 +919,6 @@
 		5DDC44661A72BB07007F538E /* ReaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderViewController.m; sourceTree = "<group>"; };
 		5DE293BF1AD8009E00825DE5 /* PostListFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostListFilter.h; sourceTree = "<group>"; };
 		5DE293C01AD8009E00825DE5 /* PostListFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostListFilter.m; sourceTree = "<group>"; };
-		5DE293C21AD82A6800825DE5 /* PostCardThumbCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostCardThumbCell.xib; sourceTree = "<group>"; };
 		5DE88FA81A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPostUnattributedTableViewCell.h; sourceTree = "<group>"; };
 		5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostUnattributedTableViewCell.m; sourceTree = "<group>"; };
 		5DE8A0401912D95B00B2FF59 /* ReaderPostServiceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPostServiceTest.m; sourceTree = "<group>"; };
@@ -2195,7 +2193,6 @@
 				5D17530E1A97D2CA0031A082 /* PostCardTableViewCell.m */,
 				5D4C89FD1AB88EF7007464B3 /* PostCardTextCell.xib */,
 				5D4C89FF1AB88F58007464B3 /* PostCardImageCell.xib */,
-				5DE293C21AD82A6800825DE5 /* PostCardThumbCell.xib */,
 				5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */,
 				5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */,
 				5D000DDF1AC0879600A7BAF9 /* PostCardActionBarItem.h */,
@@ -3552,7 +3549,6 @@
 				45C73C25113C36F70024D0D2 /* MainWindow-iPad.xib in Resources */,
 				8398EE9A11ACE63C000FE6E0 /* WebSignupViewController.xib in Resources */,
 				74C1C30E199170EA0077A7DC /* PostDetailViewController~ipad.xib in Resources */,
-				5DE293C31AD82A6800825DE5 /* PostCardThumbCell.xib in Resources */,
 				8370D10C11FA4A1B009D650F /* WPTableViewActivityCell.xib in Resources */,
 				5D13FA571AF99C2100F06492 /* PageListSectionHeaderView.xib in Resources */,
 				8370D1BE11FA6295009D650F /* AddSiteViewController.xib in Resources */,
