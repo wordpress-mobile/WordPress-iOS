@@ -9,7 +9,7 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <SVProgressHUD.h>
-#import <WPMediaPicker/WPMediaPickerViewController.h>
+#import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -804,7 +804,7 @@ EditImageDetailsViewControllerDelegate
 - (void)showMediaBlog
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] init];
+    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.post.blog];
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
     picker.delegate = self;
@@ -1774,7 +1774,19 @@ EditImageDetailsViewControllerDelegate
 
 - (void)addMediaAssets:(NSArray *)assets
 {
+    if (assets.count == 0) {
+        return;
+    }
+    id<WPMediaAsset> firstObject = [assets firstObject];
+    if ([firstObject isKindOfClass:[ALAsset class]]){
+        [self addLocalMediaAssets:assets];
+    } else if ([firstObject isKindOfClass:[Media class]]) {
+        [self addMediaLibraryAssets:assets];
+    }
+}
 
+- (void)addLocalMediaAssets:(NSArray *)assets
+{
     [self prepareMediaProgressForNumberOfAssets:assets.count];
 
     for (ALAsset *asset in assets) {
@@ -1814,6 +1826,18 @@ EditImageDetailsViewControllerDelegate
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
+
+- (void)addMediaLibraryAssets:(NSArray *)assets
+{
+    for (Media *media in assets) {
+        if ([media mediaType] == MediaTypeImage) {
+            [self.editorView insertImage:media.remoteURL alt:media.title];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+        }
+    }
 }
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
@@ -2186,29 +2210,37 @@ EditImageDetailsViewControllerDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
-    NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
-    
-    if (assetType == ALAssetTypeUnknown) {
-        return NO;
+    if ([mediaAsset isKindOfClass:[Media class]]){
+        return YES;
     }
-    
-    // If the media is from a shared photo stream it may not be available locally to be used
-    if (!asset.defaultRepresentation) {
-        if (assetType == ALAssetTypePhoto) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                      withSupportButton:NO];
-        } else {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                      withSupportButton:NO];
+    if ([mediaAsset isKindOfClass:[ALAsset class]]){
+        ALAsset *asset = (ALAsset *)[mediaAsset baseAsset];
+        NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
+        
+        if (assetType == ALAssetTypeUnknown) {
+            return NO;
         }
-        return NO;
+        
+        // If the media is from a shared photo stream it may not be available locally to be used
+        if (!asset.defaultRepresentation) {
+            if (assetType == ALAssetTypePhoto) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                    message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                          withSupportButton:NO];
+            } else {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
+                                    message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                          withSupportButton:NO];
+            }
+            return NO;
+        }
+        
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 #pragma mark - KVO
