@@ -1,25 +1,36 @@
 #import "MediaLibraryPickerDataSource.h"
 #import "Media.h"
 #import "MediaService.h"
+#import "Blog.h"
 
 @interface  MediaLibraryPickerDataSource()
+
 @property (nonatomic, strong) id<WPMediaGroup> mediaGroup;
+@property (nonatomic, strong) Blog *blog;
+
 @end
 
 @implementation MediaLibraryPickerDataSource
 
-- (instancetype)init
+- (instancetype)initWithBlog:(Blog *)blog 
 {
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] init];
+        _blog = blog;
     }
     return self;
 }
 
+- (instancetype)init
+{
+    return [self initWithBlog:nil];
+}
+
+
 -(NSInteger)numberOfAssets
 {
-    return 0;
+    return [self.blog.media count];
 }
 
 -(NSInteger)numberOfGroups
@@ -81,7 +92,7 @@
 
 -(id<WPMediaAsset>)mediaAtIndex:(NSInteger)index
 {
-    return nil;
+    return [self.blog.media allObjects][index];
 }
 
 @end
@@ -117,6 +128,62 @@
 - (NSInteger)numberOfAssets
 {
     return 0;
+}
+
+@end
+
+@implementation Media(WPMediaAsset)
+
+- (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
+{
+    if (self.localURL) {
+        UIImage *image = [UIImage imageWithContentsOfFile:self.localURL];
+        if (completionHandler) {
+            completionHandler(image, nil);
+        }
+        return 0;
+    }
+    // TODO: fetch image from server
+    if (completionHandler) {
+        completionHandler(nil, nil);
+    }
+    return 0;
+}
+
+- (void)cancelImageRequest:(WPMediaRequestID)requestID
+{
+
+}
+
+- (WPMediaType)assetType
+{
+    if (self.mediaType == MediaTypeImage){
+        return WPMediaTypeImage;
+    } else if (self.mediaType == MediaTypeVideo) {
+        return WPMediaTypeVideo;
+    } else {
+        return WPMediaTypeOther;
+    }
+}
+
+- (NSTimeInterval)duration
+{
+    return [self.length doubleValue];
+}
+
+- (NSDate *)date
+{
+    return self.creationDate;
+}
+
+- (id)baseAsset
+{
+    return self;
+}
+
+- (NSString *)identifier
+{
+    return [[self.objectID URIRepresentation] absoluteString];
 }
 
 @end
