@@ -35,6 +35,7 @@
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 #import "WPTooltip.h"
+#import "MediaLibraryPickerDataSource.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -74,7 +75,8 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetCancelUpload = 202,
     WPPostViewControllerActionSheetRetryUpload = 203,
     WPPostViewControllerActionSheetCancelVideoUpload = 204,
-    WPPostViewControllerActionSheetRetryVideoUpload = 205
+    WPPostViewControllerActionSheetRetryVideoUpload = 205,
+    WPPostViewControllerActionSheetMediaOptions = 206
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -99,10 +101,13 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+
+#pragma mark - Media related properties
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
-@property (nonatomic, strong) NSString * selectedMediaID;
+@property (nonatomic, strong) NSString *selectedMediaID;
+@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -774,8 +779,35 @@ EditImageDetailsViewControllerDelegate
 {
     [self.editorView saveSelection];
     
+    NSString *optionsTitle = NSLocalizedString(@"Insert image from:", @"Title of image source options");
+    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Title for picking media from the device library");
+    NSString *optionBlog = NSLocalizedString(@"Media Library", @"Title for picking media from the blog media library");
+    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
+    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
+                                                       delegate:self
+                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:optionLocal, optionBlog, nil];
+    alert.tag = WPPostViewControllerActionSheetMediaOptions;
+    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
+    [alert showInView:self.editorView];
+}
+
+- (void)showMediaLocal
+{
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-	picker.delegate = self;        
+    picker.delegate = self;
+    
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)showMediaBlog
+{
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] init];
+    picker.dataSource = self.mediaLibraryDataSource;
+    picker.showMostRecentFirst = YES;
+    picker.delegate = self;
     
     [self presentViewController:picker animated:YES completion:nil];
 }
@@ -1900,6 +1932,13 @@ EditImageDetailsViewControllerDelegate
                 [self retryUploadOfMediaWithId:self.selectedMediaID];
             }
             self.selectedMediaID = nil;
+        } break;
+        case (WPPostViewControllerActionSheetMediaOptions): {
+            if (buttonIndex == actionSheet.firstOtherButtonIndex){
+                [self showMediaLocal];
+            } else {
+                [self showMediaBlog];
+            }
         } break;
     }
     
