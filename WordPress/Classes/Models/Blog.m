@@ -48,7 +48,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic jetpackAccount;
 @dynamic isMultiAuthor;
 @dynamic isJetpack;
-@dynamic blavatarUrl;
+@dynamic icon;
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -99,17 +99,17 @@ static NSInteger const ImageSizeLargeHeight = 480;
 #pragma mark -
 #pragma mark Custom methods
 
-- (NSString *)blavatarUrl
+- (NSString *)icon
 {
-    [self willAccessValueForKey:@"blavatarUrl"];
-    NSString *blavatarUrl = [self primitiveValueForKey:@"blavatarUrl"];
-    [self didAccessValueForKey:@"blavatarUrl"];
+    [self willAccessValueForKey:@"icon"];
+    NSString *icon = [self primitiveValueForKey:@"icon"];
+    [self didAccessValueForKey:@"icon"];
 
-    if (blavatarUrl) {
-        return blavatarUrl;
+    if (icon) {
+        return icon;
     }
 
-    // if the blavatarUrl is not set we can use the host url to construct it
+    // if the icon is not set we can use the host url to construct it
     NSString *hostUrl = [[NSURL URLWithString:self.xmlrpc] host];
     if (hostUrl == nil) {
         hostUrl = self.xmlrpc;
