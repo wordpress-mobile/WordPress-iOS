@@ -61,7 +61,7 @@ NSString *const GravatarRatingX = @"x";
 {
     if ([self isPhotonURL:siteIcon]) {
         [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
-    } else if ([siteIcon rangeOfString:@"gravatar.com/blavatar"].location != NSNotFound) {
+    } else if ([self isBlavatarURL:siteIcon]) {
         [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
     } else {
         [self setImageWithURL:[self blavatarURLForHost:siteIcon] placeholderImage:placeholderImage];
@@ -136,6 +136,11 @@ NSString *const GravatarRatingX = @"x";
 - (BOOL)isPhotonURL:(NSString *)path
 {
     return [path rangeOfString:@".wp.com"].location != NSNotFound;
+}
+
+- (BOOL)isBlavatarURL:(NSString *)path
+{
+    return [path rangeOfString:@"gravatar.com/blavatar"].location != NSNotFound;
 }
 
 @end
