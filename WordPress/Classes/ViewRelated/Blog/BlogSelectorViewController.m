@@ -161,7 +161,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
         cell.textLabel.text = blog.url;
     }
 
-    [cell.imageView setImageWithBlavatarUrl:blog.icon];
+    [cell.imageView setImageWithSiteIcon:blog.icon];
 
     cell.accessoryType = blog.objectID == self.selectedObjectID ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
