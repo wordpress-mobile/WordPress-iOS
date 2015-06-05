@@ -164,6 +164,11 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [self setNeedsUpdateConstraints];
 }
 
+- (id<WPPostContentViewProvider>)providerOrRevision
+{
+    return [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
+}
+
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
 {
     BOOL previouslyHighlighted = self.highlighted;
@@ -269,13 +274,14 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         return;
     }
 
-    if (![self.contentProvider featuredImageURLForDisplay]) {
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    if (![provider featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
     }
 
-    NSURL *url = [self.contentProvider featuredImageURLForDisplay];
+    NSURL *url = [provider featuredImageURLForDisplay];
     // if not private create photon url
-    if (![self.contentProvider isPrivate]) {
+    if (![provider isPrivate]) {
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
     }
@@ -286,7 +292,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureTitle
 {
-    NSString *str = [self.contentProvider titleForDisplay] ?: [NSString string];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    NSString *str = [provider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
@@ -294,7 +301,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureSnippet
 {
-    NSString *str = [self.contentProvider contentPreviewForDisplay];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    NSString *str = [provider contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
@@ -302,7 +310,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureDate
 {
-    self.dateLabel.text = [self.contentProvider dateStringForDisplay];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    self.dateLabel.text = [provider dateStringForDisplay];
 }
 
 - (void)configureStatusView

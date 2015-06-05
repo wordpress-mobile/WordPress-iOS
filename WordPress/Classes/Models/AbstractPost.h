@@ -1,10 +1,11 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
+#import "WPPostContentViewProvider.h"
 
 @class Media;
 
-@interface AbstractPost : BasePost
+@interface AbstractPost : BasePost<WPPostContentViewProvider>
 
 // Relationships
 @property (nonatomic, strong) Blog *blog;
