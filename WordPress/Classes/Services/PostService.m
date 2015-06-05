@@ -130,7 +130,8 @@ const NSInteger PostServiceNumberToFetch = 40;
                            if (blogInContext) {
                                [self mergePosts:posts
                                          ofType:postType
-                                   withStatuses:nil byAuthor:nil
+                                   withStatuses:nil
+                                       byAuthor:nil
                                         forBlog:blog
                                   purgeExisting:YES
                               completionHandler:success];
@@ -194,6 +195,24 @@ const NSInteger PostServiceNumberToFetch = 40;
             }];
         }
     }];
+}
+
+- (void)syncPostsOfType:(NSString *)postType
+           withStatuses:(NSArray *)postStatus
+                forBlog:(Blog *)blog
+                success:(void (^)(BOOL hasMore))success
+                failure:(void (^)(NSError *))failure
+{
+    [self syncPostsOfType:postType withStatuses:postStatus byAuthor:nil forBlog:blog success:success failure:failure];
+}
+
+- (void)loadMorePostsOfType:(NSString *)postType
+               withStatuses:(NSArray *)postStatus
+                    forBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *))failure
+{
+    [self loadMorePostsOfType:postType withStatuses:postStatus byAuthor:nil forBlog:blog success:success failure:failure];
 }
 
 - (void)syncPostsOfType:(NSString *)postType

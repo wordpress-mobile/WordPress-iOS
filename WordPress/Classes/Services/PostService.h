@@ -70,6 +70,43 @@ extern NSString * const PostServiceTypeAny;
 
  @param postType The type (post or page) of post to sync
  @param postStatus An array of post status strings.
+ @param blog The blog that has the posts.
+ @param success A success block
+ @param failure A failure block
+ */
+- (void)syncPostsOfType:(NSString *)postType
+           withStatuses:(NSArray *)postStatus
+                forBlog:(Blog *)blog
+                success:(void (^)(BOOL hasMore))success
+                failure:(void (^)(NSError *))failure;
+
+/**
+ Sync additional posts of the specific status types from the specified blog
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
+
+ @param postType The type (post or page) of post to sync
+ @param postStatus An array of post status strings.
+ @param blog The blog that has the posts.
+ @param success A success block
+ @param failure A failure block
+ */
+
+- (void)loadMorePostsOfType:(NSString *)postType
+               withStatuses:(NSArray *)postStatus
+                    forBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *))failure;
+
+/**
+ Sync an initial batch of posts of the specific status types from the specified blog
+ Please note that success and/or failure are called in the context of the
+ NSManagedObjectContext supplied when the PostService was initialized, and may not
+ run on the main thread.
+
+ @param postType The type (post or page) of post to sync
+ @param postStatus An array of post status strings.
  @param authorID The user ID of a specific author, or nil if everyone's posts should be synced.
  @param blog The blog that has the posts.
  @param success A success block
