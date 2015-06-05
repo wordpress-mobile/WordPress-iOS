@@ -59,8 +59,7 @@ NSString *const GravatarRatingX = @"x";
 
 - (void)setImageWithSiteIcon:(NSString *)siteIcon placeholderImage:(UIImage *)placeholderImage
 {
-    // Check if the site icon is a photon url: https://developer.wordpress.com/docs/photon/
-    if ([siteIcon rangeOfString:@".wp.com"].location != NSNotFound) {
+    if ([self isPhotonURL:siteIcon]) {
         [self setImageWithURL:[self siteIconURLForSiteIconUrl:siteIcon] placeholderImage:placeholderImage];
     } else if ([siteIcon rangeOfString:@"gravatar.com/blavatar"].location != NSNotFound) {
         [self setImageWithURL:[self blavatarURLForBlavatarURL:siteIcon] placeholderImage:placeholderImage];
@@ -131,6 +130,12 @@ NSString *const GravatarRatingX = @"x";
     size *= [[UIScreen mainScreen] scale];
 
     return size;
+}
+
+// Possible matches are "i0.wp.com", "i1.wp.com" & "i2.wp.com" -> https://developer.wordpress.com/docs/photon/
+- (BOOL)isPhotonURL:(NSString *)path
+{
+    return [path rangeOfString:@".wp.com"].location != NSNotFound;
 }
 
 @end
