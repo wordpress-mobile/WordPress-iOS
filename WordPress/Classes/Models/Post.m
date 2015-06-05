@@ -185,37 +185,6 @@
 
 #pragma mark - WPPostContentViewProvider Methods
 
-- (NSString *)authorNameForDisplay
-{
-    return self.author;
-}
-
-- (NSURL *)blogURL
-{
-    return [NSURL URLWithString:self.blog.url];
-}
-
-- (NSString *)blogURLForDisplay
-{
-    return self.blog.displayURL;
-}
-
-- (NSInteger)numberOfComments
-{
-    if (self.commentCount) {
-        return [self.commentCount integerValue];
-    }
-    return 0;
-}
-
-- (NSInteger)numberOfLikes
-{
-    if (self.likeCount) {
-        return [self.likeCount integerValue];
-    }
-    return 0;
-}
-
 - (NSString *)titleForDisplay
 {
     NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
@@ -226,66 +195,12 @@
     return title;
 }
 
-- (NSString *)authorForDisplay
-{
-    return self.author;
-}
-
-- (NSString *)blogNameForDisplay
-{
-    return self.blog.blogName;
-}
-
-- (NSString *)contentForDisplay
-{
-    return self.content;
-}
-
 - (NSString *)contentPreviewForDisplay
 {
     if (self.storedContentPreviewForDisplay == nil) {
         [self buildContentPreview];
     }
     return self.storedContentPreviewForDisplay;
-}
-
-- (NSString *)gravatarEmailForDisplay
-{
-    return nil;
-}
-
-- (NSString *)blavatarForDisplay
-{
-    return self.blog.blavatarUrl;
-}
-
-- (NSURL *)avatarURLForDisplay
-{
-    return nil;
-}
-
-- (NSString *)dateStringForDisplay
-{
-    NSDate *date = [self dateCreated];
-    if (!date) {
-        return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
-    }
-    return [date shortString];
-}
-
-- (BOOL)supportsStats
-{
-    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
-}
-
-- (BOOL)isPrivate
-{
-    return self.blog.isPrivate;
-}
-
-- (BOOL)isMultiAuthorBlog
-{
-    return self.blog.isMultiAuthor;
 }
 
 - (NSString *)statusForDisplay
@@ -305,15 +220,27 @@
     return statusString;
 }
 
-- (BOOL)isUploading
-{
-    return self.remoteStatus == AbstractPostRemoteStatusPushing;
-}
-
 - (NSURL *)featuredImageURLForDisplay
 {
     NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
     return url;
 }
+
+- (NSInteger)numberOfComments
+{
+    if (self.commentCount) {
+        return [self.commentCount integerValue];
+    }
+    return 0;
+}
+
+- (NSInteger)numberOfLikes
+{
+    if (self.likeCount) {
+        return [self.likeCount integerValue];
+    }
+    return 0;
+}
+
 
 @end

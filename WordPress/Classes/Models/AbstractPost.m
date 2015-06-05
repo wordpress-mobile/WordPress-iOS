@@ -1,6 +1,7 @@
 #import "AbstractPost.h"
 #import "Media.h"
 #import "ContextManager.h"
+#import "NSDate+StringFormatting.h"
 
 @implementation AbstractPost
 
@@ -230,17 +231,73 @@
     return featuredMedia;
 }
 
-#pragma mark - WPContentViewProvider protocol
 
-- (NSString *)blogNameForDisplay
+#pragma mark - WPPostContentViewProvider protocol
+
+- (NSString *)authorNameForDisplay
 {
-    return self.blog.blogName;
+    return self.author;
 }
 
 - (NSURL *)avatarURLForDisplay
 {
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
+
+- (NSString *)blogNameForDisplay
+{
+    return self.blog.blogName;
+}
+
+- (NSURL *)blogURL
+{
+    return [NSURL URLWithString:self.blog.url];
+}
+
+- (NSString *)blogURLForDisplay
+{
+    return self.blog.displayURL;
+}
+
+- (NSString *)blavatarForDisplay
+{
+    return self.blog.blavatarUrl;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    return self.mt_excerpt;
+}
+
+- (NSString *)dateStringForDisplay
+{
+    NSDate *date = [self dateCreated];
+    if (!date) {
+        return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
+    }
+    return [date shortString];
+}
+
+- (BOOL)supportsStats
+{
+    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
+}
+
+- (BOOL)isPrivate
+{
+    return self.blog.isPrivate;
+}
+
+- (BOOL)isMultiAuthorBlog
+{
+    return self.blog.isMultiAuthor;
+}
+
+- (BOOL)isUploading
+{
+    return self.remoteStatus == AbstractPostRemoteStatusPushing;
+}
+
 
 #pragma mark - Post
 
