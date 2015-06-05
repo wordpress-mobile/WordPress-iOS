@@ -506,10 +506,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     return @[sortDescriptorDate];
 }
 
-- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
+- (void)updateAndPerformFetchRequest
 {
     NSAssert([NSThread isMainThread], @"AbstractPostListViewController Error: NSFetchedResultsController accessed in BG");
-
     NSPredicate *predicate = [self predicateForFetchRequest];
     NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
@@ -519,6 +518,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
     }
+}
+
+- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
+{
+    [self updateAndPerformFetchRequest];
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
@@ -593,17 +597,17 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
 - (void)deletePost:(AbstractPost *)apost
 {
     NSNumber *postID = apost.postID;
     [self.recentlyTrashedPostIDs addObject:postID];
+
+    // Update the fetch request *before* making the service call.
+    [self updateAndPerformFetchRequest];
+
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:apost];
     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-    // Update the fetch request *before* making the service call.
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService trashPost:apost
