@@ -226,6 +226,42 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
 }
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryForBlog:blog
+                           options:nil
+                           success:^(NSArray *media) {
+                               [self.managedObjectContext performBlock:^{
+                                   [self mergeMedia:media forBlog:blog completionHandler:success];
+                               }];
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
+- (void)mergeMedia:(NSArray *)media
+           forBlog:(Blog *)blog
+ completionHandler:(void (^)(void))completion
+{
+    NSMutableArray *mediaToKeep = [NSMutableArray array];
+    for (RemoteMedia *remote in media) {
+        Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+        if (!local) {
+            local = [self newMediaForBlog:blog];
+            local.remoteStatus = MediaRemoteStatusSync;
+        }
+        [self updateMedia:local withRemoteMedia:remote];
+        [mediaToKeep addObject:local];
+    }
+}
 
 #pragma mark - Private
 
