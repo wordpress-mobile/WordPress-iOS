@@ -938,10 +938,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (BOOL)displayWebViewWithURL:(NSURL *)url
 {
-    BOOL success = url != nil;
-    if (success) {
-        [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
+    BOOL success = [url isKindOfClass:[NSURL class]];
+    if (!success) {
+        return NO;
     }
+    
+    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:url];
+    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
     return success;
 }
 
@@ -1238,13 +1244,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[NSURL class]]);
-        
-        WPWebViewController *webViewController          = segue.destinationViewController;
-        webViewController.url                           = (NSURL *)sender;
-        
-    } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+    if ([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
         NSParameterAssert([sender isKindOfClass:[Blog class]]);
         
         StatsViewController *statsViewController        = segue.destinationViewController;
