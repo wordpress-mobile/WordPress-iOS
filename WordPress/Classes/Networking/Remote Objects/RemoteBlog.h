@@ -4,5 +4,5 @@
 @property (copy) NSString *url;
 @property (copy) NSString *xmlrpc;
 @property (assign) BOOL jetpack;
-@property (copy) NSString *blavatarUrl;
+@property (copy) NSString *icon;
 @end

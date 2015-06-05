@@ -69,7 +69,6 @@
         <attribute name="apiKey" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="blavatarUrl" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogID" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
@@ -86,6 +85,7 @@
         <attribute name="hasOlderPosts" transient="YES" attributeType="Boolean" defaultValueString="YES">
             <userInfo/>
         </attribute>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isAdmin" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" syncable="YES"/>
