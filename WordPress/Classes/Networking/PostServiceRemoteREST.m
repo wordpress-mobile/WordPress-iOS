@@ -13,10 +13,8 @@
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
-    NSAssert(postID,
-             @"Expected postID to be an NSNumber.");
-    NSAssert([blog isKindOfClass:[Blog class]],
-             @"Expected blog to be an instance of class Blog");
+    NSParameterAssert(postID);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
     NSDictionary *parameters = @{ @"context": @"edit" };
@@ -47,6 +45,8 @@
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
@@ -77,6 +77,9 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
@@ -99,6 +102,9 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
