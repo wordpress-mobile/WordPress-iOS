@@ -944,6 +944,15 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     }
     
     WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:url];
+    if (url.isWordPressDotComUrl) {
+        NSManagedObjectContext *context     = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService      = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account                  = accountService.defaultWordPressComAccount;
+        
+        webViewController.username          = account.username;
+        webViewController.authToken         = account.authToken;
+    }
+    
     UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
     
     [self presentViewController:navController animated:YES completion:nil];
