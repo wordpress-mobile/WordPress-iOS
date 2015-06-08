@@ -232,16 +232,6 @@
 
 #pragma mark - Updating posts
 
-- (void)deleteMe
-{
-    id obj;
-    
-    [obj updatePost:nil
-            forBlog:nil
-            success:nil
-            failure:nil];
-}
-
 - (void)testThatUpdatePostWorks
 {
     Blog *blog = OCMStrictClassMock([Blog class]);
