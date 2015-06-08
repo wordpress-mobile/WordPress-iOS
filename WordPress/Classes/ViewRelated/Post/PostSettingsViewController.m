@@ -23,6 +23,7 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
+#import "MediaLibraryPickerDataSource.h"
 #import <WPMediaPicker/WPMediaPickerViewController.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
@@ -48,7 +49,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
-UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
+UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -62,7 +64,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
-@property (nonatomic, strong) NSProgress * featuredImageProgress;
+@property (nonatomic, strong) NSProgress *featuredImageProgress;
+@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaDataSource;
 
 @end
 
@@ -70,7 +73,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)dealloc
 {
-
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
 }
@@ -881,17 +883,38 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         }
     } else {
         if (!self.isUploadingMedia) {
-            [self showPhotoPicker];
+            [self showOptionsOfMediaSource];
         }
     }
 }
 
-- (void)showPhotoPicker
+- (void)showOptionsOfMediaSource
+{
+    NSString *optionsTitle = NSLocalizedString(@"Select featured image from:", @"Title of image source options for the featured image");
+    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Title for picking media from the device library");
+    NSString *optionBlog = NSLocalizedString(@"Media Library", @"Title for picking media from the blog media library");
+    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
+    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
+                                                       delegate:self
+                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:optionLocal, optionBlog, nil];
+    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
+    if (IS_IPAD) {
+        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        [alert showFromRect:frame inView:self.view animated:YES];
+    } else {
+        [alert showInView:self.view];
+    }
+}
+
+- (void)showMediaLocal
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.filter = WPMediaTypeImage;
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
+    picker.showMostRecentFirst = YES;
 
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
@@ -899,7 +922,26 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         self.popover.delegate = self;
         [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        [self.navigationController presentViewController:picker animated:YES completion:nil];
+        [self presentViewController:picker animated:YES completion:nil];
+    }
+}
+
+- (void)showMediaLibrary
+{
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    self.mediaDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.apost.blog];
+    picker.dataSource = self.mediaDataSource;
+    picker.filter = WPMediaTypeImage;
+    picker.delegate = self;
+    picker.allowMultipleSelection = NO;
+    picker.showMostRecentFirst = YES;
+    if (IS_IPAD) {
+        self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
+        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
+        self.popover.delegate = self;
+        [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
+    } else {
+        [self presentViewController:picker animated:YES completion:nil];
     }
 }
 
@@ -930,7 +972,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                                  indexPath:indexPath
                                  isPrivate:self.apost.blog.isPrivate];
     };
-    if (media){
+    if (media){        
         successBlock(media);
         return;
     }
@@ -1082,25 +1124,35 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if (assets.count == 0 || ![[assets firstObject] isKindOfClass:[ALAsset class]]){
-        return;
-    }
-    ALAsset *asset = [assets firstObject];
-    if (!asset.defaultRepresentation) {
-        [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                            message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+    if (assets.count == 0 ){
         return;
     }
     
-    self.isUploadingMedia = YES;
-    [self uploadFeatureImage:assets[0]];
+    if ([[assets firstObject] isKindOfClass:[ALAsset class]]){
+        ALAsset *asset = [assets firstObject];
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+            return;
+        }
+        
+        self.isUploadingMedia = YES;
+        [self uploadFeatureImage:assets[0]];
+    } else if ([[assets firstObject] isKindOfClass:[Media class]]){
+        Media *media = [assets firstObject];
+        Post *post = (Post *)self.apost;
+        post.featuredImage = media;
+    }
+    
     if (IS_IPAD) {
         [self.popover dismissPopoverAnimated:YES];
     } else {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
     // Reload the featured image row so that way the activity indicator will be displayed.
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
+    NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
+    [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
+                          withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
@@ -1130,6 +1182,17 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 {
     // Do not hide the status bar on iPad
     return self.shouldHideStatusBar && !IS_IPAD;
+}
+
+#pragma mark - ActionSheet Delegate Methods
+
+
+- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == actionSheet.firstOtherButtonIndex){
+        [self showMediaLocal];
+    } else {
+        [self showMediaLibrary];
+    }
 }
 
 @end
