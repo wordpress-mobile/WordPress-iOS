@@ -6,8 +6,12 @@ NSString *const WPMobileReaderDetailURL                             = @"https://
 NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
 
+NSString *const WPJetpackInformationURL                             = @"https://jetpack.me/about/";
+NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
+NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
+NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
+
 NSString *const WPNotificationsBucketName                           = @"note20";
-NSString *const WPNotificationsJetpackInformationURL                = @"https://jetpack.me/about/";
 
 #ifdef INTERNAL_BUILD
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";

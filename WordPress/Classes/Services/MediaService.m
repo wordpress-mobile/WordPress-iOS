@@ -103,7 +103,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
             Media *media = [self newMediaForPost:post];
             media.filename = [mediaPath lastPathComponent];
-            media.localURL = mediaPath;
+            media.absoluteLocalURL = mediaPath;
             [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
@@ -293,24 +293,36 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 #pragma mark - Media helpers
 
+static NSString * const MediaDirectory = @"Media";
+
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = paths[0];
     NSString *filename = asset.defaultRepresentation.filename;
-    NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *mediaDirectory = [documentsDirectory stringByAppendingPathComponent:MediaDirectory];
+    BOOL isDirectory;
+    NSError *error;
+    if (![fileManager fileExistsAtPath:mediaDirectory isDirectory:&isDirectory] || !isDirectory){
+        if ([fileManager createDirectoryAtPath:mediaDirectory withIntermediateDirectories:YES attributes:nil error:&error]){
+            [[NSURL fileURLWithPath:mediaDirectory] setResourceValue:@(NO) forKey:NSURLIsExcludedFromBackupKey error:nil];
+        } else {
+            DDLogError(@"%@", [error localizedDescription]);
+        }
+    }
+    NSString *path = [mediaDirectory stringByAppendingPathComponent:filename];
     NSString *basename = [filename stringByDeletingPathExtension];
     NSString *extension = [[filename pathExtension] lowercaseString];
     if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
         extension = @"png";
         filename = [NSString stringWithFormat:@"%@.%@", basename, extension];
-        path = [documentsDirectory stringByAppendingPathComponent:filename];
+        path = [mediaDirectory stringByAppendingPathComponent:filename];
     }
-    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
     while ([fileManager fileExistsAtPath:path]) {
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
-        path = [documentsDirectory stringByAppendingPathComponent:alternativeFilename];
+        path = [mediaDirectory stringByAppendingPathComponent:alternativeFilename];
         index++;
     }
     return path;
@@ -376,7 +388,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     remoteMedia.descriptionText = media.desc;
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
-    remoteMedia.localURL = media.localURL;
+    remoteMedia.localURL = media.absoluteLocalURL;
     remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
     return remoteMedia;
 }

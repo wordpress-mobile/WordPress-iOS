@@ -653,21 +653,9 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     webViewController.password = password;
     webViewController.wpLoginURL = wpLoginURL;
 
-    if (self.navigationController) {
-        [self.navigationController pushViewController:webViewController animated:YES];
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-    } else {
-        UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-        navController.navigationBar.translucent = NO;
-        navController.modalPresentationStyle = UIModalPresentationPageSheet;
-        webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissBrowser)];
-        [self presentViewController:navController animated:YES completion:nil];
-    }
-}
-
-- (void)dismissBrowser
-{
-    [self dismissViewControllerAnimated:YES completion:nil];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    navController.modalPresentationStyle = UIModalPresentationPageSheet;
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)updateMessage

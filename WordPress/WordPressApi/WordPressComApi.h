@@ -79,27 +79,6 @@ extern NSString *const WordPressComApiPushAppId;
                                         success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure;
 
-///-------------
-/// @name Reader
-///-------------
-
-- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following
-           success:(WordPressComApiRestSuccessResponseBlock)success
-           failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-
-///---------------
-/// @name Comments
-///---------------
-
-- (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus
-                success:(WordPressComApiRestSuccessResponseBlock)success
-                failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
-- (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply
-               success:(WordPressComApiRestSuccessResponseBlock)success
-               failure:(WordPressComApiRestSuccessFailureBlock)failure;
-
 ///------------------
 /// @name Blog Themes
 ///------------------
