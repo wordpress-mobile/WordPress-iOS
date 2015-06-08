@@ -70,7 +70,7 @@
 #import "SupportViewController.h"
 #import "WPPostViewController.h"
 #import "WPTabBarController.h"
-#import <WPMediaPickerViewController.h>
+#import <WPMediaPicker/WPMediaPicker.h>
 
 int ddLogLevel                                                  = DDLogLevelInfo;
 static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhatsNewPopup";
@@ -615,6 +615,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateNormal];
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedIn:[WPMediaPickerViewController class],nil] setBackgroundColor:[WPStyleGuide greyLighten30]];
+    [[WPMediaCollectionViewCell appearanceWhenContainedIn:[WPMediaCollectionViewController class],nil] setBackgroundColor:[WPStyleGuide lightGrey]];
 }
 
 #pragma mark - Analytics
