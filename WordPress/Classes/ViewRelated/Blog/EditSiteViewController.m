@@ -588,7 +588,9 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     webViewController.password = self.password;
     webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
-    [self.navigationController pushViewController:webViewController animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)validateUrl

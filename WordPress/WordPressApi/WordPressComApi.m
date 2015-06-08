@@ -420,35 +420,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
      ];
 }
 
-- (void)followBlog:(NSUInteger)blogID isFollowing:(BOOL)following success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSString *followPath = [NSString stringWithFormat: @"sites/%d/follows/new", blogID];
-    if (following) {
-        followPath = [followPath stringByReplacingOccurrencesOfString:@"new" withString:@"mine/delete"];
-    }
-    [self POST:followPath
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject){
-               if (success != nil) success(operation, responseObject);
-           }
-           failure:failure];
-}
-
-- (void)moderateComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withStatus:(NSString *)commentStatus success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSString *commentPath = [NSString stringWithFormat: @"sites/%d/comments/%d", blogID, commentID];
-    [self POST:commentPath
-        parameters:@{ @"status" : commentStatus }
-           success:success
-           failure:failure];
-}
-
-- (void)replyToComment:(NSUInteger)blogID forCommentID:(NSUInteger)commentID withReply:(NSString *)reply success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure {
-    NSString *replyPath = [NSString stringWithFormat: @"sites/%d/comments/%d/replies/new", blogID, commentID];
-    [self POST:replyPath
-        parameters:@{ @"content" : reply }
-           success:success
-           failure:failure];
-}
-
 #pragma mark - Blog Themes
 
 - (void)fetchThemesForBlogId:(NSString *)blogId
