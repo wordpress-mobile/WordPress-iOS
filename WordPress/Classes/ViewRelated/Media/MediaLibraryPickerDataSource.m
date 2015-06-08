@@ -79,6 +79,10 @@
     self.media = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
     if (self.media == nil && error){
         DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+        if (failureBlock) {
+            failureBlock(error);
+        }
+        return;
     }
     if (successBlock) {
         successBlock();
