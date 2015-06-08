@@ -267,35 +267,12 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
     }];
     
     self.searchController.searchBar.text = nil;
-//    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
 
 - (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
 {
-//    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+    [self updateFetchRequest];
 }
-//
-//- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
-//{
-//    NSAssert([NSThread isMainThread], @"AbstractPostListViewController Error: NSFetchedResultsController accessed in BG");
-//    
-//    NSPredicate *predicate = [self predicateForFetchRequest];
-//    NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
-//    NSError *error = nil;
-//    [self.tableViewHandler.resultsController.fetchRequest setPredicate:predicate];
-//    [self.tableViewHandler.resultsController.fetchRequest setSortDescriptors:sortDescriptors];
-//    [self.tableViewHandler.resultsController performFetch:&error];
-//    if (error) {
-//        DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
-//    }
-//    
-//    CGFloat width = CGRectGetWidth(self.tableView.bounds);
-//    [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-//    
-//    [self.tableView reloadData];
-//    [self configureNoResultsView];
-//}
-
 
 - (void)viewWillAppear:(BOOL)animated
 {
