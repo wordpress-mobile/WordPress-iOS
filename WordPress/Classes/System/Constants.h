@@ -6,8 +6,12 @@ extern NSString *const WPMobileReaderDetailURL;
 extern NSString *const WPComXMLRPCUrl;
 extern NSString *const WPComDefaultAccountUrlKey;
 
+extern NSString *const WPJetpackInformationURL;
+extern NSString *const WPAutomatticMainURL;
+extern NSString *const WPAutomatticTermsOfServiceURL;
+extern NSString *const WPAutomatticPrivacyURL;
+
 extern NSString *const WPNotificationsBucketName;
-extern NSString *const WPNotificationsJetpackInformationURL;
 
 extern NSString *const WPAppGroupName;
 extern NSString *const WPStatsTodayWidgetOAuth2TokenKeychainUsername;
