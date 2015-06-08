@@ -2,11 +2,14 @@
 #import "Media.h"
 #import "MediaService.h"
 #import "Blog.h"
+#import "ContextManager.h"
 
 @interface  MediaLibraryPickerDataSource()
 
 @property (nonatomic, strong) id<WPMediaGroup> mediaGroup;
 @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, assign) WPMediaType filter;
+@property (nonatomic, strong) NSArray *media;
 
 @end
 
@@ -30,7 +33,7 @@
 
 -(NSInteger)numberOfAssets
 {
-    return [self.blog.media count];
+    return [self.media count];
 }
 
 -(NSInteger)numberOfGroups
@@ -55,6 +58,28 @@
 
 -(void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    switch (self.filter){
+        case WPMediaTypeImage:{
+            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image"];
+        }break;
+        case WPMediaTypeVideo:{
+            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video"];
+        }break;
+        case WPMediaTypeAll:{
+            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+        }break;
+        default:
+            break;
+    };
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSError *error;
+    self.media = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
+    if (self.media == nil && error){
+        DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+    }
     if (successBlock) {
         successBlock();
     }
@@ -82,17 +107,17 @@
 
 -(void)setMediaTypeFilter:(WPMediaType)filter
 {
-
+    self.filter = filter;
 }
 
 -(WPMediaType)mediaTypeFilter
 {
-    return WPMediaTypeAll;
+    return self.filter;
 }
 
 -(id<WPMediaAsset>)mediaAtIndex:(NSInteger)index
 {
-    return [self.blog.media allObjects][index];
+    return self.media[index];
 }
 
 @end
@@ -136,8 +161,8 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    if (self.localURL) {
-        UIImage *image = [UIImage imageWithContentsOfFile:self.localURL];
+    if (self.absoluteLocalURL) {
+        UIImage *image = [UIImage imageWithContentsOfFile:self.absoluteLocalURL];
         if (completionHandler) {
             completionHandler(image, nil);
         }
