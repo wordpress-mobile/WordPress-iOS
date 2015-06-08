@@ -20,11 +20,9 @@ typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
-static NSString * const PostCardThumbCellIdentifier = @"PostCardThumbCellIdentifier";
 static NSString * const PostCardRestoreCellIdentifier = @"PostCardRestoreCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
-static NSString * const PostCardThumbCellNibName = @"PostCardThumbCell";
 static NSString * const PostCardRestoreCellNibName = @"RestorePostTableViewCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
@@ -40,7 +38,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
-@property (nonatomic, strong) PostCardTableViewCell *thumbCellForLayout;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
 
 @end
@@ -126,9 +123,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
     [self forceUpdateCellLayout:self.imageCellForLayout];
-
-    self.thumbCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
-    [self forceUpdateCellLayout:self.thumbCellForLayout];
 }
 
 - (void)forceUpdateCellLayout:(PostCardTableViewCell *)cell
@@ -153,9 +147,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardImageCellNib forCellReuseIdentifier:PostCardImageCellIdentifier];
-
-    UINib *postCardThumbCellNib = [UINib nibWithNibName:PostCardThumbCellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:postCardThumbCellNib forCellReuseIdentifier:PostCardThumbCellIdentifier];
 
     UINib *postCardRestoreCellNib = [UINib nibWithNibName:PostCardRestoreCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardRestoreCellNib forCellReuseIdentifier:PostCardRestoreCellIdentifier];
@@ -278,7 +269,15 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
 
+    NSString *searchText = self.searchController.searchBar.text;
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
+
+    // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
+    // or posts that were recently deleted.
+    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+        filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
+    }
     [predicates addObject:filterPredicate];
 
     if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
@@ -286,21 +285,15 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         [predicates addObject:authorPredicate];
     }
 
-    NSString *searchText = self.searchController.searchBar.text;
     if ([searchText length] > 0) {
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
         [predicates addObject:searchPredicate];
     }
 
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
-        predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, trashedPredicate]];
-    }
 
     return predicate;
 }
-
 
 #pragma mark - Table View Handling
 
@@ -331,8 +324,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
-    } else if(post.post_thumbnail) {
-        cell = self.thumbCellForLayout;
     } else {
         cell = self.imageCellForLayout;
     }
@@ -389,8 +380,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         identifier = PostCardRestoreCellIdentifier;
     } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
-    } else if (post.post_thumbnail) {
-        identifier = PostCardThumbCellIdentifier;
     } else {
         identifier = PostCardImageCellIdentifier;
     }
