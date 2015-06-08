@@ -660,9 +660,16 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 {
     if ([self.tableView isEditing]) {
         return [self fetchRequestPredicateForHideableBlogs];
+    } else if ([self.searchController isActive]) {
+        return [self fetchRequestPredicateForSearch];
     }
-
+    
     return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+- (NSPredicate *)fetchRequestPredicateForSearch
+{
+    return [NSPredicate predicateWithFormat:@"blogName contains[cd] %@", self.searchController.searchBar.text];
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
