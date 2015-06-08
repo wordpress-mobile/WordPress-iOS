@@ -331,8 +331,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     DDLogInfo(@"%@ Should Start Loading [%@]", NSStringFromClass([self class]), request.URL.absoluteString);
     
     // WP Login: Send the credentials, if needed
-    NSRange loginRange = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
-    if (loginRange.location != NSNotFound && !self.needsLogin && self.username && self.password) {
+    NSRange loginRange  = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
+    BOOL isLoginURL     = loginRange.location != NSNotFound;
+    BOOL hasCredentials = (self.username && (self.password || self.authToken));
+    
+    if (isLoginURL && !self.needsLogin && hasCredentials) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
         [self retryWithLogin];
         return NO;
