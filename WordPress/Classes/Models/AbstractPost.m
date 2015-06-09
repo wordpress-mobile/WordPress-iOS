@@ -46,7 +46,10 @@
 {
     NSString *key = @"remoteStatusNumber";
     [self willChangeValueForKey:key];
-    self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
+    if ([self respondsToSelector:@selector(setMetaIsLocal:)]) {
+        // For migrations, ensure the property is supported on the current version of the entity.
+        self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
+    }
     [self setPrimitiveValue:remoteStatusNumber forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -55,7 +58,10 @@
 {
     NSString *key = @"date_created_gmt";
     [self willChangeValueForKey:key];
-    self.metaPublishImmediately = (date_created_gmt == nil);
+    if ([self respondsToSelector:@selector(setMetaPublishImmediately:)]) {
+        // For migrations, ensure the property is supported on the current version of the entity.
+        self.metaPublishImmediately = (date_created_gmt == nil);
+    }
     [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
