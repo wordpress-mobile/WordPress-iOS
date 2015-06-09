@@ -3,20 +3,7 @@
 #import "Blog.h"
 #import "RemotePostCategory.h"
 
-@interface PostCategoryServiceRemoteREST ()
-@property (nonatomic, strong) WordPressComApi *api;
-@end
-
 @implementation PostCategoryServiceRemoteREST
-
-- (instancetype)initWithApi:(WordPressComApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)getCategoriesForBlog:(Blog *)blog
                      success:(void (^)(NSArray *))success

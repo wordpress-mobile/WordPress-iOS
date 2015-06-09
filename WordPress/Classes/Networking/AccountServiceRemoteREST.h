@@ -2,5 +2,5 @@
 #import "AccountServiceRemote.h"
 #import "ServiceRemoteREST.h"
 
-@interface AccountServiceRemoteREST : NSObject <AccountServiceRemote, ServiceRemoteREST>
+@interface AccountServiceRemoteREST : ServiceRemoteREST <AccountServiceRemote>
 @end

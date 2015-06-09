@@ -7,24 +7,7 @@
 
 static const NSInteger NumberOfCommentsToSync = 100;
 
-@interface CommentServiceRemoteREST ()
-
-@property (nonatomic, strong) WordPressComApi *api;
-
-@end
-
 @implementation CommentServiceRemoteREST
-
-- (id)initWithApi:(WordPressComApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
-
-
 
 #pragma mark Public methods
 

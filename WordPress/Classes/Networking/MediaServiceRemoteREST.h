@@ -2,5 +2,5 @@
 #import "MediaServiceRemote.h"
 #import "ServiceRemoteREST.h"
 
-@interface MediaServiceRemoteREST : NSObject <MediaServiceRemote, ServiceRemoteREST>
+@interface MediaServiceRemoteREST : ServiceRemoteREST <MediaServiceRemote>
 @end

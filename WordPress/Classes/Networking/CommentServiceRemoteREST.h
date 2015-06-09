@@ -2,7 +2,7 @@
 #import "CommentServiceRemote.h"
 #import "ServiceRemoteREST.h"
 
-@interface CommentServiceRemoteREST : NSObject <CommentServiceRemote, ServiceRemoteREST>
+@interface CommentServiceRemoteREST : ServiceRemoteREST <CommentServiceRemote>
 
 /**
  Fetch a hierarchical list of comments for the specified post on the specified site.
