@@ -669,7 +669,7 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 
 - (NSPredicate *)fetchRequestPredicateForSearch
 {
-    return [NSPredicate predicateWithFormat:@"blogName contains[cd] %@", self.searchController.searchBar.text];
+    return [NSPredicate predicateWithFormat:@"( blogName contains[cd] %@ ) OR ( url contains[cd] %@)", self.searchController.searchBar.text, self.searchController.searchBar.text];
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
