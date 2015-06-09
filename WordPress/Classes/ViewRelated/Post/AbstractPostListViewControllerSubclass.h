@@ -59,6 +59,7 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 @property (nonatomic, strong) NSArray *postListFilters;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
+- (NSString *)postTypeToSync;
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
 - (BOOL)canFilterByAuthor;
 - (BOOL)shouldShowOnlyMyPosts;
