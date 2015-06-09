@@ -103,6 +103,20 @@
 
 }
 
+#pragma mark - Common
+
+/**
+ *  @brief      Common method for instantiating and initializing the service object.
+ *  @details    This is only useful for cases that don't need to mock the API object.
+ *
+ *  @returns    The newly created service object.
+ */
+- (ReaderTopicServiceRemote*)service
+{
+    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:[NSURL URLWithString:@""]];
+    return [[ReaderTopicServiceRemote alloc] initWithApi:api];
+}
+
 #pragma mark - ReaderTopicServiceRemote tests
 
 /**
@@ -119,9 +133,9 @@
                                                @"URL": @"https://public-api.wordpress.com/rest/v1/read/tags/coffee/posts"
                                                };
 
-    NSURL *baseURL = [NSURL URLWithString:@"http://127.0.0.1/testing"];
-    WordPressComApi *api = [[WordPressComApi alloc] initWithBaseURL:baseURL];
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:api];
+    ReaderTopicServiceRemote *remoteService = nil;
+    XCTAssertNoThrow(remoteService = [self service]);
+    
     RemoteReaderTopic *remoteTopic = [remoteService normalizeTopicDictionary:topicDictionaryWithID subscribed:YES recommended:YES];
     XCTAssertTrue(remoteTopic.isRecommended, @"Remote topic should be recommended but wasn't.");
     XCTAssertTrue(remoteTopic.isSubscribed, @"Remote topic should be subscribed but wasn't.");
