@@ -32,7 +32,7 @@
     }
 
     // Beware: Lazy getters below. Let's hit directly the ivar
-    [_restApi.operationQueue cancelAllOperations];
+    [_restApi cancelPendingOperations];
     [_restApi reset];
 
     [_xmlrpcApi.operationQueue cancelAllOperations];
