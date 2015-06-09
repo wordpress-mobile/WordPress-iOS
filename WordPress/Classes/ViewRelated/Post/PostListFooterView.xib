@@ -43,7 +43,7 @@
                     <constraints>
                         <constraint firstAttribute="centerX" secondItem="2lx-TZ-H9w" secondAttribute="centerX" id="BXl-cW-Ywt"/>
                         <constraint firstAttribute="centerY" secondItem="MBZ-lN-HGt" secondAttribute="centerY" constant="-0.5" id="SM7-09-i4J"/>
-                        <constraint firstAttribute="width" constant="612" id="URY-Vf-eVc"/>
+                        <constraint firstAttribute="width" priority="750" constant="612" id="URY-Vf-eVc"/>
                         <constraint firstAttribute="centerY" secondItem="wKm-Mr-TCA" secondAttribute="centerY" constant="-0.5" id="X37-jz-nrb"/>
                         <constraint firstItem="2lx-TZ-H9w" firstAttribute="leading" secondItem="MBZ-lN-HGt" secondAttribute="trailing" constant="8" id="Y0M-I9-BOr"/>
                         <constraint firstAttribute="trailing" secondItem="wKm-Mr-TCA" secondAttribute="trailing" constant="6" id="b0b-rA-YhB"/>
