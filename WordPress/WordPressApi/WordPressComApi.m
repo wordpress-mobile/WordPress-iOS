@@ -47,6 +47,15 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	return self;
 }
 
+- (void)cancel
+{
+    if (self.disallowsCancellation) {
+        return;
+    }
+    
+    [super cancel];
+}
+
 @end
 
 
