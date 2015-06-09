@@ -13,11 +13,6 @@
 #import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
-typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
-    PostAuthorFilterMine,
-    PostAuthorFilterEveryone,
-};
-
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
 static NSString * const PostCardRestoreCellIdentifier = @"PostCardRestoreCellIdentifier";
@@ -227,12 +222,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
-    self.authorsFilter.hidden = (!self.blog.isMultiAuthor || !self.blog.account.userID);
-
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-    if (![self.blog isMultiAuthor]) {
-        // Collapse the view if single author blog
+
+    if (![self canFilterByAuthor]) {
         self.authorsFilterViewHeightConstraint.constant = 0.0;
+        self.authorsFilter.hidden = YES;
     }
 
     if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
@@ -280,7 +274,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
     [predicates addObject:filterPredicate];
 
-    if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
+    if ([self shouldShowOnlyMyPosts]) {
         NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
         [predicates addObject:authorPredicate];
     }
@@ -486,20 +480,20 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 #pragma mark - Filter related
 
-- (BOOL)shouldShowPostsForEveryone
-{
-    PostAuthorFilter filter = [self currentPostAuthorFilter];
-    return filter == PostAuthorFilterEveryone;
-}
-
 - (PostAuthorFilter)currentPostAuthorFilter
 {
+    if (![self canFilterByAuthor]) {
+        // No REST API, so we have to use XMLRPC and can't filter results by author.
+        return PostAuthorFilterEveryone;
+    }
+
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
     if (filter) {
         if (PostAuthorFilterEveryone == [filter integerValue]) {
             return PostAuthorFilterEveryone;
         }
     }
+
     return PostAuthorFilterMine;
 }
 
@@ -510,8 +504,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
+
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+    [self syncItemsWithUserInteraction:NO];
 }
 
 - (NSString *)keyForCurrentListStatusFilter
