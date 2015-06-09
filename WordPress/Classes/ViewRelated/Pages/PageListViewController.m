@@ -173,7 +173,6 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (NSString *)postTypeToSync
 {
-    // Subclasses should override.
     return PostServiceTypePage;
 }
 
