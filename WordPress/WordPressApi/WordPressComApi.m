@@ -117,6 +117,20 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
+- (WPJSONRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                     cancellable:(BOOL)cancellable
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    WPJSONRequestOperation *operation = (WPJSONRequestOperation *) [super POST:URLString parameters:parameters success:success failure:failure];
+    NSParameterAssert([operation isKindOfClass:[WPJSONRequestOperation class]]);
+    
+    operation.disallowsCancellation = !cancellable;
+    
+    return operation;
+}
+
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
     static dispatch_once_t oncePredicate;
@@ -362,21 +376,21 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }
 
     NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
-    [self POST:path
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
-               if (success) {
-                   success();
-               }
-           }
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
-               if (failure) {
-                   failure(error);
-               }
-           }
-     ];
+    WordPressComApiRestSuccessResponseBlock successBlock = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
+        if (success) {
+            success();
+        }
+    };
+    
+    WordPressComApiRestSuccessFailureBlock failureBlock = ^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    [self POST:path parameters:nil cancellable:NO success:successBlock failure:failureBlock];
 }
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
