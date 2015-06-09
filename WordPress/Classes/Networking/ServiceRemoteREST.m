@@ -8,8 +8,7 @@
 
 - (id)initWithApi:(WordPressComApi *)api {
     
-    NSAssert([api isKindOfClass:[WordPressComApi class]],
-             @"Expected api to be a valid WordPressComApi instance.");
+    NSParameterAssert([api isKindOfClass:[WordPressComApi class]]);
     
     self = [super init];
     if (self) {
