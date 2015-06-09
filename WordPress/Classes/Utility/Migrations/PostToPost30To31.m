@@ -36,7 +36,7 @@
     // Sets the new meta is local property value.
     value = [sourceInstance valueForKey:@"remoteStatusNumber"];
     metaValue = [value isEqualToNumber:@2]? @YES : @NO;
-    [destinationInstance setValue:@YES forKey:@"metaIsLocal"];
+    [destinationInstance setValue:metaValue forKey:@"metaIsLocal"];
 
     [manager associateSourceInstance:sourceInstance
              withDestinationInstance:destinationInstance
