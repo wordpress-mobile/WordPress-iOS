@@ -6,20 +6,7 @@
 
 const NSInteger WPRestErrorCodeMediaNew = 10;
 
-@interface MediaServiceRemoteREST ()
-@property (nonatomic) WordPressComApi *api;
-@end
-
 @implementation MediaServiceRemoteREST
-
-- (id)initWithApi:(WordPressComApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)getMediaWithID:(NSNumber *)mediaID
                forBlog:(Blog *)blog

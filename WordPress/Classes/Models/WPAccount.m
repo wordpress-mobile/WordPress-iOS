@@ -84,7 +84,7 @@
 {
     NSError *error = nil;
     NSString *authToken = [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:WordPressComOAuthKeychainServiceName error:&error];
-
+    
     if (error) {
         DDLogError(@"Error while retrieving WordPressComOAuthKeychainServiceName token: %@", error);
     }

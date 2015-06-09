@@ -14,21 +14,7 @@ static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
 
-@interface ReaderTopicServiceRemote ()
-@property (nonatomic, strong) WordPressComApi *api;
-@end
-
 @implementation ReaderTopicServiceRemote
-
-- (id)initWithRemoteApi:(WordPressComApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
@@ -202,7 +188,9 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
  @param recommended Whether the topic is recommended.
  @return A RemoteReaderTopic instance.
  */
-- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict subscribed:(BOOL)subscribed recommended:(BOOL)recommended
+- (RemoteReaderTopic *)normalizeTopicDictionary:(NSDictionary *)topicDict
+                                     subscribed:(BOOL)subscribed
+                                    recommended:(BOOL)recommended
 {
     NSNumber *topicID = [topicDict numberForKey:TopicDictionaryIDKey];
     if (topicID == nil) {
