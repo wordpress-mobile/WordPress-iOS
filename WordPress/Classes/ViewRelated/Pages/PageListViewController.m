@@ -169,6 +169,15 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 }
 
 
+#pragma mark - Sync Methods
+
+- (NSString *)postTypeToSync
+{
+    // Subclasses should override.
+    return PostServiceTypePage;
+}
+
+
 #pragma mark - TableView Handler Delegate Methods
 
 - (NSString *)entityName

@@ -237,6 +237,15 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 }
 
 
+#pragma mark - Sync Methods
+
+- (NSString *)postTypeToSync
+{
+    // Subclasses should override.
+    return PostServiceTypePost;
+}
+
+
 #pragma mark - Actions
 
 - (IBAction)handleAuthorFilterChanged:(id)sender
