@@ -44,14 +44,6 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)reset;
 
 
-/**
- Cancels pending HTTP Request Operations
- 
- @discussion This method will skip any pending OP marked as Non Cancellable.
- */
-- (void)cancelPendingOperations;
-
-
 ///-------------------------
 /// @name Account management
 ///-------------------------
