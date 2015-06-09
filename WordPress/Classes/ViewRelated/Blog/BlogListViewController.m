@@ -409,8 +409,11 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Don't show "Add Site" when editing
-    return (self.tableView.isEditing ? 1 : 2);
+    if (self.tableView.isEditing || [self.searchController isActive]) { // Don't show "Add Site"
+        return 1;
+    } else {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
