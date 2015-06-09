@@ -115,7 +115,7 @@
     [psc removePersistentStore:ps error:&error];
 }
 
-- (void)testMigrate22to31Success {
+- (void)testMigrate19to31Success {
     NSURL *model19Url = [self urlForModelName:@"WordPress 19" inDirectory:nil];
     NSURL *model31Url = [self urlForModelName:@"WordPress 31" inDirectory:nil];
     NSURL *storeUrl = [self urlForStoreWithName:@"WordPress19to31.sqlite"];
