@@ -31,15 +31,16 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 // This will match all public-api.wordpress.com/rest/v1/ URI's and parse them as JSON
 
 @interface WPJSONRequestOperation : AFHTTPRequestOperation
+@property (nonatomic, assign) BOOL disallowsCancellation;
 @end
+
 @implementation WPJSONRequestOperation
 
--(id)initWithRequest:(NSURLRequest *)urlRequest
+- (instancetype)initWithRequest:(NSURLRequest *)urlRequest
 {
 	self = [super initWithRequest:urlRequest];
 	
-	if (self)
-	{
+	if (self) {
 		self.responseSerializer = [[AFJSONResponseSerializer alloc] init];
 	}
 	
@@ -47,6 +48,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 }
 
 @end
+
 
 @interface WordPressComApi ()
 @property (readwrite, nonatomic, strong) NSString *username;
