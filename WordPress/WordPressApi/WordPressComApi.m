@@ -162,6 +162,17 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self clearAuthorizationHeader];
 }
 
+- (void)cancelPendingOperations
+{
+    for (WPJSONRequestOperation *operation in self.operationQueue.operations) {
+        if ([operation isKindOfClass:[WPJSONRequestOperation class]] && operation.disallowsCancellation) {
+            continue;
+        }
+        
+        [operation cancel];
+    }
+}
+
 - (BOOL)hasCredentials {
     return self.authToken.length > 0;
 }
