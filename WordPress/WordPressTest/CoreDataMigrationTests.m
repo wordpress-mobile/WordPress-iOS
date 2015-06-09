@@ -75,15 +75,15 @@
     
     NSError *error = nil;
     NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                                    configuration:nil
-                                              URL:storeUrl
-                                          options:options
-                                            error:&error];
+                                               configuration:nil
+                                                         URL:storeUrl
+                                                     options:options
+                                                       error:&error];
     
     if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
     }
-
+    
     XCTAssertNotNil(ps);
     
     psc = nil;
@@ -101,10 +101,64 @@
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                               configuration:nil
-                                         URL:storeUrl
-                                     options:options
-                                       error:&error];
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+    
+    if (!ps) {
+        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
+    }
+    XCTAssertNotNil(ps);
+    
+    //make sure we remove the persistent store to make sure it releases the file.
+    [psc removePersistentStore:ps error:&error];
+}
+
+- (void)testMigrate22to31Success {
+    NSURL *model19Url = [self urlForModelName:@"WordPress 19" inDirectory:nil];
+    NSURL *model31Url = [self urlForModelName:@"WordPress 31" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress19to31.sqlite"];
+    NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model19Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption            : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+    
+    NSError *error = nil;
+    NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                               configuration:nil
+                                                         URL:storeUrl
+                                                     options:options
+                                                       error:&error];
+    
+    if (!ps) {
+        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
+    }
+    
+    XCTAssertNotNil(ps);
+    
+    psc = nil;
+    
+    model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model31Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model
+                                                orderedModelNames:@[@"WordPress 19", @"WordPress 20", @"WordPress 21", @"WordPress 22", @"WordPress 23", @"WordPress 24", @"WordPress 25", @"WordPress 26", @"WordPress 27", @"WordPress 28", @"WordPress 29", @"WordPress 30", @"WordPress 31"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+    
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
     
     if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
