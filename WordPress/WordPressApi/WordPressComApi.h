@@ -43,6 +43,7 @@ extern NSString *const WordPressComApiPushAppId;
  */
 - (void)reset;
 
+
 ///-------------------------
 /// @name Account management
 ///-------------------------
