@@ -540,6 +540,7 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
