@@ -128,7 +128,7 @@ import UIKit
         let title               = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
         let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
                                                     comment: "WordPress.com Push Authentication Expired message")
-        let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
+        let acceptButtonTitle   = NSLocalizedString("Accept", comment: "Accept. Verb")
         
         self.alertViewProxy.showWithTitle(title,
             message:            message,
@@ -145,9 +145,9 @@ import UIKit
     *                           confirmed or not.
     */
     private func showLoginVerificationAlert(message: String, completion: ((approved: Bool) -> ())) {
-        let title               = NSLocalizedString("Verify Login", comment: "Push Authentication Alert Title")
-        let cancelButtonTitle   = NSLocalizedString("Ignore",       comment: "Ignore action. Verb")
-        let acceptButtonTitle   = NSLocalizedString("Approve",      comment: "Approve action. Verb")
+        let title               = NSLocalizedString("Verify Sign In", comment: "Push Authentication Alert Title")
+        let cancelButtonTitle   = NSLocalizedString("Ignore", comment: "Ignore action. Verb")
+        let acceptButtonTitle   = NSLocalizedString("Approve", comment: "Approve action. Verb")
         
         self.alertViewProxy.showWithTitle(title,
             message:            message,
