@@ -510,8 +510,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     // Ascending only for scheduled posts/pages.
     BOOL ascending = self.currentPostListFilter.filterType == PostListStatusFilterScheduled;
+    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"metaIsLocal" ascending:NO];
+    NSSortDescriptor *sortDescriptorImmediately = [NSSortDescriptor sortDescriptorWithKey:@"metaPublishImmediately" ascending:NO];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:ascending];
-    return @[sortDescriptorDate];
+    return @[sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate];
 }
 
 - (void)updateAndPerformFetchRequest

@@ -5,9 +5,26 @@
 
 @implementation AbstractPost
 
-@dynamic blog, media;
+@dynamic blog;
+@dynamic media;
+@dynamic metaIsLocal;
+@dynamic metaPublishImmediately;
 @dynamic comments;
+
 @synthesize restorableStatus;
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    if ([key isEqualToString:@"metaIsLocal"]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"remoteStatusNumber"]];
+
+    } else if ([key isEqualToString:@"metaPublishImmediately"]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"date_created_gmt"]];
+    }
+
+    return keyPaths;
+}
 
 - (void)remove
 {
@@ -23,7 +40,30 @@
         // when wrong saving -- the app crashed for instance. So change our remote status to failed.
         [self setPrimitiveValue:@(AbstractPostRemoteStatusFailed) forKey:@"remoteStatusNumber"];
     }
+}
 
+- (void)setRemoteStatusNumber:(NSNumber *)remoteStatusNumber
+{
+    NSString *key = @"remoteStatusNumber";
+    [self willChangeValueForKey:key];
+    if ([self respondsToSelector:@selector(setMetaIsLocal:)]) {
+        // For migrations, ensure the property is supported on the current version of the entity.
+        self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
+    }
+    [self setPrimitiveValue:remoteStatusNumber forKey:key];
+    [self didChangeValueForKey:key];
+}
+
+- (void)setDate_created_gmt:(NSDate *)date_created_gmt
+{
+    NSString *key = @"date_created_gmt";
+    [self willChangeValueForKey:key];
+    if ([self respondsToSelector:@selector(setMetaPublishImmediately:)]) {
+        // For migrations, ensure the property is supported on the current version of the entity.
+        self.metaPublishImmediately = (date_created_gmt == nil);
+    }
+    [self setPrimitiveValue:date_created_gmt forKey:key];
+    [self didChangeValueForKey:key];
 }
 
 + (NSString *const)remoteUniqueIdentifier
