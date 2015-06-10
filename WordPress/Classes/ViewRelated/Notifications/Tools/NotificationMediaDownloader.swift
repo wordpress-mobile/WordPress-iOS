@@ -21,18 +21,11 @@ import Foundation
     public typealias SuccessBlock = (()->())
     
     public func downloadMediaWithUrls(urls: NSSet, completion: SuccessBlock) {
-        let allUrls = urls.allObjects as? [NSURL]
-        if allUrls == nil {
-            return
-        }
-        
-        let missingUrls = allUrls!.filter { self.shouldDownloadImageWithURL($0) }
-        if missingUrls.count == 0 {
-            return
-        }
-        
-        for url in missingUrls {
-            downloadImageWithURL(url) { (NSError error, UIImage downloadedImage) -> () in
+        let allUrls     = urls.allObjects as? [NSURL]
+        let missingUrls = allUrls?.filter { self.shouldDownloadImageWithURL($0) }
+
+        missingUrls?.map { (url) in
+            self.downloadImageWithURL(url) { (NSError error, UIImage downloadedImage) -> () in
                 if error != nil || downloadedImage == nil {
                     return
                 }
@@ -119,12 +112,12 @@ import Foundation
         targetSize.height   = round(maxImageWidth * targetSize.height / targetSize.width)
         targetSize.width    = maxImageWidth
         
-        dispatch_async(resizeQueue, { () -> Void in
+        dispatch_async(resizeQueue) {
             let resizedImage = image.imageCroppedToFitSize(targetSize, ignoreAlpha: false)
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            dispatch_async(dispatch_get_main_queue()) {
                 callback(resizedImage)
-            })
-        })
+            }
+        }
     }
     
     // MARK: - Constants
