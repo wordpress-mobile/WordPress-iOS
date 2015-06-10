@@ -702,6 +702,16 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
 }
 
+- (BOOL)isSearching
+{
+    return self.searchController.isActive && [[self currentSearchTerm] length]> 0;
+}
+
+- (NSString *)currentSearchTerm
+{
+    return self.searchController.searchBar.text;
+}
+
 
 #pragma mark - Filter related
 
