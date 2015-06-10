@@ -21,10 +21,17 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WPMediaPicker/WPMediaPickerViewController.h>
 #import "WordPress-Swift.h"
+#import "MediaLibraryPickerDataSource.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
 static void *ProgressObserverContext = &ProgressObserverContext;
+
+NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
+{
+    WPLegacyEditPostViewControllerActionSheetCancelOptions = 201,
+    WPLegacyEditPostViewControllerActionSheetMediaOptions = 202
+};
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
@@ -37,6 +44,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) UIProgressView * mediaProgressView;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
+@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
 
 @end
 
@@ -357,13 +365,48 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaOptions
+- (void)showMediaSourceOptions
+{
+    NSString *optionsTitle = NSLocalizedString(@"Insert media from:", @"Title of media source options for a featured image");
+    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
+    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
+    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
+    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
+                                                       delegate:self
+                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
+                                         destructiveButtonTitle:nil
+                                              otherButtonTitles:optionLocal, optionBlog, nil];
+    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
+    alert.tag = WPLegacyEditPostViewControllerActionSheetMediaOptions;
+    if (IS_IPAD) {
+        [alert showFromToolbar:self.navigationController.toolbar];
+    } else {
+        [alert showInView:self.view];
+    }
+}
+
+- (void)showDeviceMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
 
     picker.filter = WPMediaTypeImage;
 
+    [self presentViewController:picker animated:YES completion:nil];
+}
+
+- (void)showSiteMediaPicker
+{
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    picker.delegate = self;
+    if (!self.mediaLibraryDataSource) {
+        self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.post.blog];
+    }
+    picker.dataSource = self.mediaLibraryDataSource;
+    picker.allowCaptureOfMedia = NO;
+    picker.showMostRecentFirst = YES;
+    picker.filter = WPMediaTypeImage;
+    
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -410,7 +453,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                                          otherButtonTitles:NSLocalizedString(@"Update Draft", @"Button shown if there are unsaved changes and the author is trying to move away from an already published/saved post."), nil];
     }
 
-    actionSheet.tag = 201;
+    actionSheet.tag = WPLegacyEditPostViewControllerActionSheetCancelOptions;
     actionSheet.actionSheetStyle = UIActionSheetStyleAutomatic;
     if (IS_IPAD) {
         [actionSheet showFromBarButtonItem:self.navigationItem.leftBarButtonItem animated:YES];
@@ -924,7 +967,20 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 }
 
-- (void) addMediaAssets:(NSArray *)assets
+- (void)addMediaAssets:(NSArray *)assets
+{
+    if (assets.count == 0) {
+        return;
+    }
+    id<WPMediaAsset> firstObject = [assets firstObject];
+    if ([firstObject isKindOfClass:[ALAsset class]]){
+        [self addDeviceMediaAssets:assets];
+    } else if ([firstObject isKindOfClass:[Media class]]) {
+        [self addSiteMediaAssets:assets];
+    }
+}
+
+- (void)addDeviceMediaAssets:(NSArray *)assets
 {
     [self prepareMediaProgressForNumberOfAssets:assets.count];
 
@@ -976,6 +1032,14 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
+
+- (void)addSiteMediaAssets:(NSArray *)assets
+{
+    for (Media *media in assets) {
+        [self insertMedia:media];
+    }
+}
+
 - (void)insertMediaBelow:(NSNotification *)notification
 {
     Media *media = (Media *)[notification object];
@@ -1085,29 +1149,38 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-    if ([actionSheet tag] == 201) {
-        // Discard
-        if (buttonIndex == 0) {
-            [self discardChanges];
-            [self dismissEditView];
-            [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
-        }
-        
-        if (buttonIndex == 1) {
-            // Cancel / Keep editing
-            if ([actionSheet numberOfButtons] == 2) {
-                [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
-            } else {
-                // Save draft
-                // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
-                    self.post.status = PostStatusDraft;
-                }
-                DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
-                [self savePost:YES];
+    switch ([actionSheet tag]) {
+        case (WPLegacyEditPostViewControllerActionSheetCancelOptions): {
+            // Discard
+            if (buttonIndex == 0) {
+                [self discardChanges];
                 [self dismissEditView];
+                [WPAnalytics track:WPAnalyticsStatEditorDiscardedChanges];
+            }
+            
+            if (buttonIndex == 1) {
+                // Cancel / Keep editing
+                if ([actionSheet numberOfButtons] == 2) {
+                    [actionSheet dismissWithClickedButtonIndex:0 animated:YES];
+                } else {
+                    // Save draft
+                    // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
+                    if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+                        self.post.status = PostStatusDraft;
+                    }
+                    DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
+                    [self savePost:YES];
+                    [self dismissEditView];
+                }
             }
         }
+        case (WPLegacyEditPostViewControllerActionSheetMediaOptions): {
+            if (buttonIndex == actionSheet.firstOtherButtonIndex){
+                [self showDeviceMediaPicker];
+            } else {
+                [self showSiteMediaPicker];
+            }
+        } break;
     }
     _currentActionSheet = nil;
 }
@@ -1142,7 +1215,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)editorDidPressMedia:(WPLegacyEditorViewController *)editorController
 {
-    [self showMediaOptions];
+    [self showMediaSourceOptions];
 }
 
 - (void)editorDidPressPreview:(WPLegacyEditorViewController *)editorController
@@ -1159,18 +1232,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }];
 }
 
-- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
-    if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
-        // If the image is from a shared photo stream it may not be available locally to be used
-        if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
-            return NO;
+    if ([mediaAsset isKindOfClass:[ALAsset class]]) {
+        ALAsset *asset = (ALAsset *)asset;
+        if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
+            // If the image is from a shared photo stream it may not be available locally to be used
+            if (!asset.defaultRepresentation) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                    message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+                return NO;
+            }
+            return YES;
         }
+    } else if ([mediaAsset isKindOfClass:[Media class]]) {
         return YES;
     }
-
     return YES;
 }
 
