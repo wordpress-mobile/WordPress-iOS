@@ -218,14 +218,18 @@
                 token = self.apost.blog.authToken;
             }
 
-            NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
-                                                                      redirectURL:redirectURL
-                                                                         username:self.apost.blog.username
-                                                                         password:self.apost.blog.password
-                                                                      bearerToken:token
-                                                                        userAgent:nil];
-            [self.webView loadRequest:request];
-            DDLogInfo(@"Showing real preview (login) for %@", link);
+            if (self.apost.blog.password.length > 0 && token.length > 0) {
+                NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                                          redirectURL:redirectURL
+                                                                             username:self.apost.blog.username
+                                                                             password:self.apost.blog.password
+                                                                          bearerToken:token
+                                                                            userAgent:nil];
+                [self.webView loadRequest:request];
+                DDLogInfo(@"Showing real preview (login) for %@", link);
+            } else {
+                [self showSimplePreview];
+            }
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
             DDLogInfo(@"Showing real preview for %@", link);
