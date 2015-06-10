@@ -34,7 +34,7 @@ Starting with changeset 3633 version 3.2, WordPress for iOS uses Cocoapods (http
 
 Run `pod install` from the command line to install dependencies for the project.
 
-*Currently Cocoapods version 0.37.2 is required.*
+*The current version of CocoaPods is recommended.*
 
 ### Xcode
 
