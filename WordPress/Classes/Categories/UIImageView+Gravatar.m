@@ -86,8 +86,9 @@ NSString *const GravatarRatingX = @"x";
 - (NSURL *)siteIconURLForSiteIconUrl:(NSString *)path
 {
     NSInteger size = [self sizeForBlavatarDownload];
-    NSString *siteIconUrl = [NSString stringWithFormat:@"%@?w=%d&h=%d", path, size, size];
-    return [NSURL URLWithString:siteIconUrl];
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:path];
+    urlComponents.query = [NSString stringWithFormat:@"w=%d&h=%d", size, size];
+    return urlComponents.URL;
 }
 
 - (NSURL *)blavatarURLForHost:(NSString *)host
@@ -104,8 +105,9 @@ NSString *const GravatarRatingX = @"x";
 - (NSURL *)blavatarURLForBlavatarURL:(NSString *)path
 {
     NSInteger size = [self sizeForBlavatarDownload];
-    NSString *blavatarURL = [NSString stringWithFormat:@"%@?d=404&s=%d", path, size];
-    return [NSURL URLWithString:blavatarURL];
+    NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:path];
+    urlComponents.query = [NSString stringWithFormat:@"d=404&s=%d", path, size];
+    return urlComponents.URL;
 }
 
 - (NSInteger)sizeForGravatarDownload
