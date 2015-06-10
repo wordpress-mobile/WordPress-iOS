@@ -332,7 +332,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
             cell.detailTextLabel.text = @"";
         }
 
-        [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl];
+        [cell.imageView setImageWithSiteIcon:blog.icon];
         if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
             UISwitch *visibilitySwitch = [UISwitch new];
             visibilitySwitch.on = blog.visible;
