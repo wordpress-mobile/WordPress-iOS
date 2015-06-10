@@ -75,15 +75,15 @@
     
     NSError *error = nil;
     NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                                    configuration:nil
-                                              URL:storeUrl
-                                          options:options
-                                            error:&error];
+                                               configuration:nil
+                                                         URL:storeUrl
+                                                     options:options
+                                                       error:&error];
     
     if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
     }
-
+    
     XCTAssertNotNil(ps);
     
     psc = nil;
@@ -101,16 +101,115 @@
     
     psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
     ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
-                               configuration:nil
-                                         URL:storeUrl
-                                     options:options
-                                       error:&error];
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
     
     if (!ps) {
         NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
     }
     XCTAssertNotNil(ps);
     
+    //make sure we remove the persistent store to make sure it releases the file.
+    [psc removePersistentStore:ps error:&error];
+}
+
+- (void)testMigrate19to31Success {
+    NSURL *model19Url = [self urlForModelName:@"WordPress 19" inDirectory:nil];
+    NSURL *model31Url = [self urlForModelName:@"WordPress 31" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress19to31.sqlite"];
+
+
+    // Load Model 19
+    NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model19Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption            : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+    
+    NSError *error = nil;
+    NSPersistentStore * ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                               configuration:nil
+                                                         URL:storeUrl
+                                                     options:options
+                                                       error:&error];
+    XCTAssertNotNil(ps);
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 19");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+
+    // Insert a dummy Post into Model 19.
+    NSManagedObject *account = [self insertDummyAccountInContext:context];
+    XCTAssertNotNil(account, @"Couldn't insert an account");
+
+    NSManagedObject *blog = [self insertDummyBlogInContext:context];
+    XCTAssertNotNil(blog, @"Couldn't insert a blog");
+
+    [blog setValue:account forKey:@"account"];
+
+    NSManagedObject *post = [self insertDummyPostInContext:context];
+    XCTAssertNotNil(post, @"Couldn't insert a post");
+
+    [post setValue:blog forKey:@"blog"];
+    [post setValue:@1 forKey:@"postID"];
+    [post setValue:@2 forKey:@"remoteStatusNumber"];
+
+    [context save:&error];
+
+    XCTAssertNil(error, @"Error while saving post context");
+
+    psc = nil;
+
+
+    // Migrate to Model 31.
+    model = [[NSManagedObjectModel alloc] initWithContentsOfURL:model31Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model
+                                                orderedModelNames:@[@"WordPress 19", @"WordPress 20", @"WordPress 21", @"WordPress 22", @"WordPress 23", @"WordPress 24", @"WordPress 25", @"WordPress 26", @"WordPress 27", @"WordPress 28", @"WordPress 29", @"WordPress 30", @"WordPress 31"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+
+
+    // Load Model 31 after migrating
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+    
+    if (!ps) {
+        NSLog(@"Error while openning Persistent Store: %@", [error localizedDescription]);
+    }
+    XCTAssertNotNil(ps);
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+
+    // Find the post and confirm it was updated properly
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Post"];
+    NSArray *posts = [context executeFetchRequest:request error:&error];
+    NSManagedObject *migratedPost = [posts firstObject];
+
+    XCTAssertNotNil(migratedPost, @"Missing migrated post?");
+    NSNumber *isLocal = [migratedPost valueForKey:@"metaIsLocal"];
+    NSNumber *publishImmedately = [migratedPost valueForKey:@"metaPublishImmediately"];
+
+    XCTAssertTrue([isLocal boolValue], @"Is local flag was not properly updated.");
+    XCTAssertTrue([publishImmedately boolValue], @"Publish immedately flag was not properly updated.");
+
     //make sure we remove the persistent store to make sure it releases the file.
     [psc removePersistentStore:ps error:&error];
 }
@@ -290,6 +389,15 @@
     NSManagedObject *blog = [object valueForKey:@"blog"];
     
     return [@(1234) isEqual:parentID] && [@"name" isEqual:name] && [blog isKindOfClass:[NSManagedObject class]];
+}
+
+- (NSManagedObject *)insertDummyPostInContext:(NSManagedObjectContext *)context
+{
+    NSManagedObject *post = [NSEntityDescription insertNewObjectForEntityForName:@"Post" inManagedObjectContext:context];
+
+
+
+    return post;
 }
 
 @end
