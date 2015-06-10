@@ -251,7 +251,7 @@
 
 - (NSString *)blavatarForDisplay
 {
-    return self.blog.blavatarUrl;
+    return self.blog.icon;
 }
 
 - (NSURL *)avatarURLForDisplay

@@ -239,7 +239,7 @@
 
 - (NSURL *)avatarURLForDisplay
 {
-    return [NSURL URLWithString:self.blog.blavatarUrl];
+    return [NSURL URLWithString:self.blog.icon];
 }
 
 #pragma mark - Post
