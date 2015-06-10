@@ -17,7 +17,7 @@ import Foundation
     
     public func downloadMediaWithUrls(urls: NSSet, completion: SuccessBlock) {
         let allUrls     = urls.allObjects as? [NSURL]
-        let missingUrls = allUrls?.filter { self.shouldDownloadImageWithURL($0) }
+        let missingUrls = allUrls?.filter { self.shouldDownloadImage(url: $0) }
 
         missingUrls?.map { (url) in
             self.downloadImage(url) {
@@ -64,7 +64,7 @@ import Foundation
         retryMap[url] = retryCount(url) + 1
     }
     
-    private func shouldDownloadImageWithURL(url: NSURL) -> Bool {
+    private func shouldDownloadImage(url url: NSURL) -> Bool {
         if mediaMap[url] != nil || retryCount(url) > maximumRetryCount {
             return false
         }
