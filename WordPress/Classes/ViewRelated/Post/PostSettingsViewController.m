@@ -883,12 +883,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
         }
     } else {
         if (!self.isUploadingMedia) {
-            [self showOptionsOfMediaSource];
+            [self showMediaSourceOptions];
         }
     }
 }
 
-- (void)showOptionsOfMediaSource
+- (void)showMediaSourceOptions
 {
     NSString *optionsTitle = NSLocalizedString(@"Select featured image from:", @"Title of media source options for a featured image");
     NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
@@ -908,7 +908,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
     }
 }
 
-- (void)showMediaLocal
+- (void)showDeviceMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.filter = WPMediaTypeImage;
@@ -926,7 +926,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
     }
 }
 
-- (void)showMediaLibrary
+- (void)showSiteMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     self.mediaDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.apost.blog];
@@ -1189,9 +1189,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
 
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (buttonIndex == actionSheet.firstOtherButtonIndex){
-        [self showMediaLocal];
+        [self showDeviceMediaPicker];
     } else {
-        [self showMediaLibrary];
+        [self showSiteMediaPicker];
     }
 }
 

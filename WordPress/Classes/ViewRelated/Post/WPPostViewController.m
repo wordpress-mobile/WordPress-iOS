@@ -775,7 +775,7 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaOptions
+- (void)showMediaSourceOptions
 {
     [self.editorView saveSelection];
     
@@ -793,7 +793,7 @@ EditImageDetailsViewControllerDelegate
     [alert showInView:self.editorView];
 }
 
-- (void)showMediaLocal
+- (void)showDeviceMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
@@ -801,7 +801,7 @@ EditImageDetailsViewControllerDelegate
     [self presentViewController:picker animated:YES completion:nil];
 }
 
-- (void)showMediaBlog
+- (void)showSiteMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.post.blog];
@@ -1959,9 +1959,9 @@ EditImageDetailsViewControllerDelegate
         } break;
         case (WPPostViewControllerActionSheetMediaOptions): {
             if (buttonIndex == actionSheet.firstOtherButtonIndex){
-                [self showMediaLocal];
+                [self showDeviceMediaPicker];
             } else {
-                [self showMediaBlog];
+                [self showSiteMediaPicker];
             }
         } break;
     }
@@ -2040,7 +2040,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaOptions];
+    [self showMediaSourceOptions];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
