@@ -4,23 +4,7 @@
 #import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
 
-@interface ReaderPostServiceRemote ()
-
-@property (nonatomic, strong) WordPressComApi *api;
-
-@end
-
 @implementation ReaderPostServiceRemote
-
-- (id)initWithRemoteApi:(WordPressComApi *)api
-{
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-
-    return self;
-}
 
 - (void)fetchPostsFromEndpoint:(NSURL *)endpoint
                          count:(NSUInteger)count

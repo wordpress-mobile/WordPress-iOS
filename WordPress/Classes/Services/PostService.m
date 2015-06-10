@@ -128,7 +128,13 @@ const NSInteger PostServiceNumberToFetch = 40;
                        [self.managedObjectContext performBlock:^{
                            Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID error:nil];
                            if (blogInContext) {
-                               [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:YES completionHandler:success];
+                               [self mergePosts:posts
+                                         ofType:postType
+                                   withStatuses:nil
+                                       byAuthor:nil
+                                        forBlog:blog
+                                  purgeExisting:YES
+                              completionHandler:success];
                            }
                        }];
                    } failure:^(NSError *error) {
@@ -174,7 +180,13 @@ const NSInteger PostServiceNumberToFetch = 40;
                    options:options
                    success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
-            [self mergePosts:posts ofType:postType withStatuses:nil forBlog:blog purgeExisting:NO completionHandler:success];
+            [self mergePosts:posts
+                      ofType:postType
+                withStatuses:nil
+                    byAuthor:nil
+                     forBlog:blog
+               purgeExisting:NO
+           completionHandler:success];
         }];
     } failure:^(NSError *error) {
         if (failure) {
@@ -191,11 +203,33 @@ const NSInteger PostServiceNumberToFetch = 40;
                 success:(void (^)(BOOL hasMore))success
                 failure:(void (^)(NSError *))failure
 {
+    [self syncPostsOfType:postType withStatuses:postStatus byAuthor:nil forBlog:blog success:success failure:failure];
+}
+
+- (void)loadMorePostsOfType:(NSString *)postType
+               withStatuses:(NSArray *)postStatus
+                    forBlog:(Blog *)blog
+                    success:(void (^)(BOOL hasMore))success
+                    failure:(void (^)(NSError *))failure
+{
+    [self loadMorePostsOfType:postType withStatuses:postStatus byAuthor:nil forBlog:blog success:success failure:failure];
+}
+
+- (void)syncPostsOfType:(NSString *)postType
+           withStatuses:(NSArray *)postStatus
+               byAuthor:(NSNumber *)authorID
+                forBlog:(Blog *)blog
+                success:(void (^)(BOOL hasMore))success
+                failure:(void (^)(NSError *))failure
+{
     NSString *status = [postStatus componentsJoinedByString:@","];
     NSMutableDictionary *options = [NSMutableDictionary dictionary];
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
     if ([remote isKindOfClass:[PostServiceRemoteREST class]]) {
         options[@"status"] = status;
+        if (authorID) {
+            options[@"author"] = authorID;
+        }
     } else {
         options[@"post_status"] = status;
     }
@@ -206,7 +240,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                    success:^(NSArray *posts) {
                        BOOL hasMore = ([posts count] < PostServiceNumberToFetch) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:postStatus forBlog:blog purgeExisting:YES completionHandler:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:YES completionHandler:^{
                                if (success) {
                                    success(hasMore);
                                }
@@ -223,6 +257,7 @@ const NSInteger PostServiceNumberToFetch = 40;
 
 - (void)loadMorePostsOfType:(NSString *)postType
                withStatuses:(NSArray *)postStatus
+                   byAuthor:(NSNumber *)authorID
                     forBlog:(Blog *)blog
                     success:(void (^)(BOOL hasMore))success
                     failure:(void (^)(NSError *))failure
@@ -234,7 +269,7 @@ const NSInteger PostServiceNumberToFetch = 40;
 
     NSString *entityName = [postType isEqualToString:PostServiceTypePage] ? NSStringFromClass([Page class]) : NSStringFromClass([Post class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [self predicateForPostsWithStatuses:postStatus forBlog:blog];
+    request.predicate = [self predicateForPostsWithStatuses:postStatus byAuthor:authorID forBlog:blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
     NSArray *posts = [self.managedObjectContext executeFetchRequest:request error:nil];
@@ -247,7 +282,9 @@ const NSInteger PostServiceNumberToFetch = 40;
         if ([postStatus count] > 0) {
             options[@"status"] = status;
         }
-
+        if (authorID) {
+            options[@"author"] = authorID;
+        }
     } else if ([remote isKindOfClass:[PostServiceRemoteXMLRPC class]]) {
         postCount = [posts count];
         postCount += 40;
@@ -263,7 +300,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                    success:^(NSArray *posts) {
                        BOOL hasMore = ([posts count] < postCount) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:postStatus forBlog:blog purgeExisting:NO completionHandler:^{
+                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^{
                                if (success) {
                                    success(hasMore);
                                }
@@ -457,12 +494,18 @@ const NSInteger PostServiceNumberToFetch = 40;
     post.status = PostStatusPublish;
 }
 
-- (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus forBlog:(Blog *)blog
+- (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
+                                      byAuthor:(NSNumber *)authorID
+                                       forBlog:(Blog *)blog
 {
     NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original == NULL) AND (revision == NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
     if ([postStatus count] > 0) {
         NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", postStatus];
         predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];
+    }
+    if (authorID) {
+        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", authorID];
+        predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, authorPredicate]];
     }
     return predicate;
 }
@@ -470,6 +513,7 @@ const NSInteger PostServiceNumberToFetch = 40;
 - (void)mergePosts:(NSArray *)posts
             ofType:(NSString *)postType
       withStatuses:(NSArray *)postStatus
+          byAuthor:(NSNumber *)authorID
            forBlog:(Blog *)blog
      purgeExisting:(BOOL)purge
  completionHandler:(void (^)(void))completion
@@ -498,7 +542,7 @@ const NSInteger PostServiceNumberToFetch = 40;
         } else {
             request = [NSFetchRequest fetchRequestWithEntityName:NSStringFromClass([Post class])];
         }
-        request.predicate = [self predicateForPostsWithStatuses:postStatus forBlog:blog];
+        request.predicate = [self predicateForPostsWithStatuses:postStatus byAuthor:authorID forBlog:blog];
         NSArray *existingPosts = [self.managedObjectContext executeFetchRequest:request error:nil];
         NSMutableSet *postsToDelete = [NSMutableSet setWithArray:existingPosts];
         [postsToDelete minusSet:postsToKeep];

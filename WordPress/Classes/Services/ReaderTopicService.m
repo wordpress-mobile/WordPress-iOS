@@ -47,7 +47,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     // Keep a reference to the NSManagedObjectID (if it exists).
     // We'll use it to verify that the account did not change while fetching topics.
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:api];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:api];
     [remoteService fetchReaderMenuWithSuccess:^(NSArray *topics) {
 
         WPAccount *reloadedAccount = [accountService defaultWordPressComAccount];
@@ -223,7 +223,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     [self setCurrentTopic:topic];
 
     NSString *topicName = [topic.title lowercaseString];
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
         // noop
     } failure:^(NSError *error) {
@@ -254,7 +254,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         [self currentTopic];
     }
     // Now do it for realz.
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService unfollowTopicWithSlug:slug withSuccess:^(NSNumber *topicID){
         // Sync the menu for good measure.
         [self fetchReaderMenuWithSuccess:success failure:failure];
@@ -280,7 +280,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         return;
     }
 
-    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithRemoteApi:[self apiForRequest]];
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService followTopicNamed:topicName withSuccess:^(NSNumber *topicID){
         __weak __typeof(self) weakSelf = self;
         [self fetchReaderMenuWithSuccess:^{
