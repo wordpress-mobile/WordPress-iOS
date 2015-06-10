@@ -31,6 +31,7 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
+@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
@@ -52,9 +53,9 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (id)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
@@ -71,10 +72,6 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
                                                                         target:self
                                                                         action:@selector(search)];
         [self.navigationItem setRightBarButtonItem:searchButton];
-        
-        self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -20.0, 300.0, 300.0)];
-        self.searchWrapperView.backgroundColor = [UIColor redColor];
-        self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight2];
     }
     return self;
 }
@@ -117,6 +114,18 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 64.0)];
+    self.searchWrapperView.backgroundColor = [UIColor redColor];
+    self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight2];
+    [self.view addSubview:self.searchWrapperView];
+    
+    [self.searchWrapperView addConstraint:self.searchWrapperViewHeightConstraint];
+    
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchWrapperView.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.view addSubview:self.tableView];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
@@ -125,7 +134,6 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
         self.tableView.contentInset = tableInset;
     }
     
-    [self.view addSubview:self.searchWrapperView];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
