@@ -19,7 +19,7 @@
 {
     self = [super init];
     if (self) {
-        _mediaGroup = [[MediaLibraryGroup alloc] init];
+        _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
         _blog = blog;
     }
     return self;
@@ -126,21 +126,55 @@
 
 @end
 
+@interface MediaLibraryGroup()
+    @property (nonatomic, strong) Blog *blog;
+@end
+
 @implementation MediaLibraryGroup
 
-- (id)baseGroup {
+- (instancetype)initWithBlog:(Blog *)blog
+{
+    self = [super init];
+    if (self) {
+        _blog = blog;
+    }
     return self;
 }
 
-- (NSString *)name {
+- (id)baseGroup
+{
+    return self;
+}
+
+- (NSString *)name
+{
     return NSLocalizedString(@"Media Library", @"Name for the WordPress Media Library");
 }
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    if (completionHandler){
-        completionHandler(nil, nil);
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
+    request.sortDescriptors = @[sortDescriptor];
+    NSError *error;
+    NSArray *mediaAssets = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
+    if (mediaAssets.count == 0)
+    {
+        if (completionHandler){
+            completionHandler(nil, nil);
+        }
     }
+    Media *media = [mediaAssets firstObject];
+    if (media.absoluteLocalURL) {
+        UIImage *image = [UIImage imageWithContentsOfFile:media.absoluteLocalURL];
+        if (completionHandler) {
+            completionHandler(image, nil);
+        }
+        return 0;
+    }
+    completionHandler(nil, nil);
     return 0;
 }
 
@@ -156,7 +190,14 @@
 
 - (NSInteger)numberOfAssets
 {
-    return 0;
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+    request.sortDescriptors = @[sortDescriptor];
+    NSError *error;
+    NSArray *mediaAssets = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
+    return mediaAssets.count;
 }
 
 @end
