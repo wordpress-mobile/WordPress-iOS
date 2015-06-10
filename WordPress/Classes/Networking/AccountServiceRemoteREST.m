@@ -27,7 +27,9 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
           }];
 }
 
-- (void)getDetailsForAccount:(WPAccount *)account success:(void (^)(RemoteUser *remoteUser))success failure:(void (^)(NSError *error))failure
+- (void)getDetailsForAccount:(WPAccount *)account
+                     success:(void (^)(RemoteUser *remoteUser))success
+                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"me";
     [self.api GET:path

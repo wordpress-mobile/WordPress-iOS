@@ -8,8 +8,9 @@
                         success:(void(^)(BOOL isMultiAuthor))success
                         failure:(void (^)(NSError *error))failure
 {
-    NSParameterAssert(blog != nil);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
+    
     NSDictionary *parameters = @{@"authors_only":@(YES)};
     NSString *path = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
     [self.api GET:path
@@ -27,10 +28,13 @@
           }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(OptionsHandler)success
+                   failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(blog != nil);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
+    
     NSString *path = [self pathForOptionsWithBlog:blog];
     [self.api GET:path
        parameters:nil
@@ -49,8 +53,9 @@
 
 - (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(blog != nil);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
+    
     NSString *path = [self pathForPostFormatsWithBlog:blog];
     [self.api GET:path
        parameters:nil
