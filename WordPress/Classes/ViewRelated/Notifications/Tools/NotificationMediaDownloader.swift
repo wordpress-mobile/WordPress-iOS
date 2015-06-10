@@ -8,12 +8,7 @@ import Foundation
     }
     
     public init(maximumImageWidth: CGFloat) {
-        downloadQueue       = NSOperationQueue()
-        resizeQueue         = dispatch_queue_create("org.wordpress.notifications.media-downloader", DISPATCH_QUEUE_CONCURRENT)
-        mediaMap            = [NSURL: UIImage]()
-        retryMap            = [NSURL: Int]()
         maxImageWidth       = maximumImageWidth
-        responseSerializer  = AFImageResponseSerializer() as AFImageResponseSerializer
         super.init()
     }
     
@@ -121,13 +116,13 @@ import Foundation
     }
     
     // MARK: - Constants
-    private let maximumRetryCount:  Int = 3
+    private let maximumRetryCount   = 3
     
     // MARK: - Private Properties
-    private let responseSerializer: AFHTTPResponseSerializer
-    private let downloadQueue:      NSOperationQueue
-    private let resizeQueue:        dispatch_queue_t
-    private var mediaMap:           [NSURL: UIImage]
-    private var retryMap:           [NSURL: Int]
+    private let responseSerializer  = AFImageResponseSerializer()
+    private let downloadQueue       = NSOperationQueue()
+    private let resizeQueue         = dispatch_queue_create("notifications.media.resize", DISPATCH_QUEUE_CONCURRENT)
+    private var mediaMap            = [NSURL: UIImage]()
+    private var retryMap            = [NSURL: Int]()
     private let maxImageWidth:      CGFloat
 }
