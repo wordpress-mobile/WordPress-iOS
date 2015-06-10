@@ -203,6 +203,8 @@
 		5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738931965FAB900393584 /* SubscribedTopicsViewController.m */; };
 		5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */; };
 		5DF7389A1965FB3C00393584 /* WPTableViewHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738991965FB3C00393584 /* WPTableViewHandler.m */; };
+		5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5DF7F7731B22337C003A05C8 /* WordPress-30-31.xcmappingmodel */; };
+		5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF7F7771B223916003A05C8 /* PostToPost30To31.m */; };
 		5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */; };
 		5DF94E2B1962B97D00359241 /* NewCommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E261962B97D00359241 /* NewCommentsTableViewCell.m */; };
 		5DF94E2D1962B97D00359241 /* NewPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */; };
@@ -940,6 +942,10 @@
 		5DF738961965FACD00393584 /* RecommendedTopicsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecommendedTopicsViewController.m; sourceTree = "<group>"; };
 		5DF738981965FB3C00393584 /* WPTableViewHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewHandler.h; sourceTree = "<group>"; };
 		5DF738991965FB3C00393584 /* WPTableViewHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewHandler.m; sourceTree = "<group>"; };
+		5DF7F7721B222068003A05C8 /* WordPress 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 31.xcdatamodel"; sourceTree = "<group>"; };
+		5DF7F7731B22337C003A05C8 /* WordPress-30-31.xcmappingmodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcmappingmodel; path = "WordPress-30-31.xcmappingmodel"; sourceTree = "<group>"; };
+		5DF7F7761B223916003A05C8 /* PostToPost30To31.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostToPost30To31.h; sourceTree = "<group>"; };
+		5DF7F7771B223916003A05C8 /* PostToPost30To31.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostToPost30To31.m; sourceTree = "<group>"; };
 		5DF8D25F19E82B1000A2CD95 /* ReaderCommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderCommentsViewController.h; sourceTree = "<group>"; };
 		5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentsViewController.m; sourceTree = "<group>"; };
 		5DF94E211962B90300359241 /* CommentsTableViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewDelegate.h; sourceTree = "<group>"; };
@@ -2229,6 +2235,15 @@
 			name = Style;
 			sourceTree = "<group>";
 		};
+		5DF7F7751B223895003A05C8 /* 30-31 */ = {
+			isa = PBXGroup;
+			children = (
+				5DF7F7761B223916003A05C8 /* PostToPost30To31.h */,
+				5DF7F7771B223916003A05C8 /* PostToPost30To31.m */,
+			);
+			name = "30-31";
+			sourceTree = "<group>";
+		};
 		5DF94E351962BA5F00359241 /* Reader */ = {
 			isa = PBXGroup;
 			children = (
@@ -3198,9 +3213,11 @@
 				E1A03EDF17422DBC0085D192 /* 10-11 */,
 				5D49B03519BE37CC00703A9B /* 20-21 */,
 				937D9A0D19F837ED007B9D5F /* 22-23 */,
+				5DF7F7751B223895003A05C8 /* 30-31 */,
 				E100C6BA1741472F00AE48D8 /* WordPress-11-12.xcmappingmodel */,
 				5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */,
 				937D9A0E19F83812007B9D5F /* WordPress-22-23.xcmappingmodel */,
+				5DF7F7731B22337C003A05C8 /* WordPress-30-31.xcmappingmodel */,
 			);
 			path = Migrations;
 			sourceTree = "<group>";
@@ -4062,6 +4079,7 @@
 				5DFA7EC11AF7CB6B0072023B /* PageListViewController.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
+				5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */,
 				E1D0D82B16D3D19200E33F4C /* PocketAPIOperation.m in Sources */,
 				5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */,
 				5DF94E471962BAA700359241 /* WPSimpleContentAttributionView.m in Sources */,
@@ -4164,6 +4182,7 @@
 				FFAB7CB11A0BD83A00765942 /* WPAssetExporter.m in Sources */,
 				FFAC89101A96A85800CC06AC /* NSProcessInfo+Util.m in Sources */,
 				595B02221A6C4ECD00415A30 /* WPWhatsNewView.m in Sources */,
+				5DF7F7741B22337C003A05C8 /* WordPress-30-31.xcmappingmodel in Sources */,
 				5DF94E511962BAEB00359241 /* ReaderPostContentView.m in Sources */,
 				5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */,
 				FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */,
@@ -5336,7 +5355,7 @@
 			isa = XCVersionGroup;
 			children = (
 				316B99031B205AFB007963EF /* WordPress 32.xcdatamodel */,
-				FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */,
+				5DF7F7721B222068003A05C8 /* WordPress 31.xcdatamodel */,
 				E1939C671B15B4D2001AFEF7 /* WordPress 30.xcdatamodel */,
 				5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */,
 				B54810F61AA656B40081B54D /* WordPress 28.xcdatamodel */,
