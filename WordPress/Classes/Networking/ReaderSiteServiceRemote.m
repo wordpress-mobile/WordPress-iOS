@@ -4,19 +4,7 @@
 
 NSString * const ReaderSiteServiceRemoteErrorDomain = @"ReaderSiteServiceRemoteErrorDomain";
 
-@interface ReaderSiteServiceRemote ()
-@property (nonatomic, strong) WordPressComApi *api;
-@end
-
 @implementation ReaderSiteServiceRemote
-
-- (id)initWithRemoteApi:(WordPressComApi *)api {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)fetchFollowedSitesWithSuccess:(void(^)(NSArray *sites))success failure:(void(^)(NSError *error))failure
 {
