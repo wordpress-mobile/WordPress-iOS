@@ -158,8 +158,8 @@
     XCTAssertNotNil(post, @"Couldn't insert a post");
 
     [post setValue:blog forKey:@"blog"];
-    [post setValue:@1 forKey:@"postID"];
-    [post setValue:@2 forKey:@"remoteStatusNumber"];
+    [post setPrimitiveValue:@1 forKey:@"postID"];
+    [post setPrimitiveValue:@2 forKey:@"remoteStatusNumber"];
 
     [context save:&error];
 
