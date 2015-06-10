@@ -2,6 +2,6 @@
 #import "PostCategoryServiceRemote.h"
 #import "ServiceRemoteREST.h"
 
-@interface PostCategoryServiceRemoteREST : NSObject <PostCategoryServiceRemote, ServiceRemoteREST>
+@interface PostCategoryServiceRemoteREST : ServiceRemoteREST <PostCategoryServiceRemote>
 
 @end
