@@ -106,7 +106,7 @@ NSString *const GravatarRatingX = @"x";
 {
     NSInteger size = [self sizeForBlavatarDownload];
     NSURLComponents *urlComponents = [[NSURLComponents alloc] initWithString:path];
-    urlComponents.query = [NSString stringWithFormat:@"d=404&s=%d", path, size];
+    urlComponents.query = [NSString stringWithFormat:@"d=404&s=%d", size];
     return urlComponents.URL;
 }
 
