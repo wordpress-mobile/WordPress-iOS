@@ -779,9 +779,9 @@ EditImageDetailsViewControllerDelegate
 {
     [self.editorView saveSelection];
     
-    NSString *optionsTitle = NSLocalizedString(@"Insert image from:", @"Title of image source options");
-    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Title for picking media from the device library");
-    NSString *optionBlog = NSLocalizedString(@"Media Library", @"Title for picking media from the blog media library");
+    NSString *optionsTitle = NSLocalizedString(@"Insert media from:", @"Title of media source options");
+    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
+    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
     NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
     UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
                                                        delegate:self
