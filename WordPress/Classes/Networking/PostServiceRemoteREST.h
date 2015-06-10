@@ -2,6 +2,6 @@
 #import "PostServiceRemote.h"
 #import "ServiceRemoteREST.h"
 
-@interface PostServiceRemoteREST : NSObject<PostServiceRemote, ServiceRemoteREST>
+@interface PostServiceRemoteREST : ServiceRemoteREST <PostServiceRemote>
 
 @end
