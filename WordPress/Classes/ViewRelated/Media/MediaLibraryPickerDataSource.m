@@ -196,8 +196,8 @@
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
-    NSArray *mediaAssets = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
-    return mediaAssets.count;
+    NSUInteger count = [[[ContextManager sharedInstance] mainContext] countForFetchRequest:request error:&error];
+    return count;
 }
 
 @end
