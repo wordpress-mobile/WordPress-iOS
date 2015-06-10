@@ -890,9 +890,9 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
 
 - (void)showOptionsOfMediaSource
 {
-    NSString *optionsTitle = NSLocalizedString(@"Select featured image from:", @"Title of image source options for the featured image");
-    NSString *optionLocal = NSLocalizedString(@"Local Media", @"Title for picking media from the device library");
-    NSString *optionBlog = NSLocalizedString(@"Media Library", @"Title for picking media from the blog media library");
+    NSString *optionsTitle = NSLocalizedString(@"Select featured image from:", @"Title of media source options for a featured image");
+    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
+    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
     NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
     UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
                                                        delegate:self
