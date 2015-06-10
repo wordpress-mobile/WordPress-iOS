@@ -8,26 +8,21 @@ import Foundation
     }
     
     public init(maximumImageWidth: CGFloat) {
-        maxImageWidth       = maximumImageWidth
+        maxImageWidth = maximumImageWidth
         super.init()
     }
     
     // MARK: - Public Helpers
-    public typealias SuccessBlock = (()->())
+    public typealias SuccessBlock = (Void -> Void)
     
     public func downloadMediaWithUrls(urls: NSSet, completion: SuccessBlock) {
         let allUrls     = urls.allObjects as? [NSURL]
         let missingUrls = allUrls?.filter { self.shouldDownloadImageWithURL($0) }
 
         missingUrls?.map { (url) in
-            self.downloadImageWithURL(url) { (NSError error, UIImage downloadedImage) -> () in
-                if error != nil || downloadedImage == nil {
-                    return
-                }
-                
-                self.resizeImageIfNeeded(downloadedImage!, maxImageWidth: self.maxImageWidth) {
-                    (UIImage resizedImage) -> () in
-                    self.mediaMap[url] = resizedImage
+            self.downloadImage(url) {
+                self.resizeImageIfNeeded($0, maxImageWidth: self.maxImageWidth) {
+                    self.mediaMap[url] = $0
                     completion()
                 }
             }
@@ -48,7 +43,7 @@ import Foundation
     
     
     // MARK: - Networking Wrappers
-    private func downloadImageWithURL(url: NSURL, callback: ((NSError?, UIImage?) -> ())) {
+    private func downloadImage(url: NSURL, success: (UIImage -> ())) {
         let request                     = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
@@ -60,40 +55,30 @@ import Foundation
             (AFHTTPRequestOperation operation, AnyObject responseObject) -> Void in
             
             if let unwrappedImage = responseObject as? UIImage {
-                callback(nil, unwrappedImage)
+                success(unwrappedImage)
             }
             
-        }, failure: {
-            (AFHTTPRequestOperation operation, NSError error) -> Void in
-            callback(error, nil)
-        })
+        }, failure: nil)
         
         downloadQueue.addOperation(operation)
-        retryMap[url] = retryCountForURL(url) + 1
+        retryMap[url] = retryCount(url) + 1
     }
     
-    private func retryCountForURL(url: NSURL) -> Int {
+    private func shouldDownloadImageWithURL(url: NSURL) -> Bool {
+        if mediaMap[url] != nil || retryCount(url) > maximumRetryCount {
+            return false
+        }
+
+        let operations  = downloadQueue.operations as? [AFHTTPRequestOperation]
+        let filtered    = operations?.filter { $0.request.URL!.isEqual(url) }
+        
+        return filtered?.count == 0
+    }    
+    
+    private func retryCount(url: NSURL) -> Int {
         return retryMap[url] ?? 0
     }
     
-    private func shouldDownloadImageWithURL(url: NSURL!) -> Bool {
-        // Download only if it's not cached, and if it's not being downloaded right now!
-        if url == nil || mediaMap[url] != nil {
-            return false
-        }
-        
-        if retryCountForURL(url) > maximumRetryCount {
-            return false
-        }
-        
-        for operation in downloadQueue.operations as! [AFHTTPRequestOperation] {
-            if operation.request.URL!.isEqual(url) {
-                return false
-            }
-        }
-        
-        return true
-    }    
     
     // MARK: - Async Image Resizing Helpers
     private func resizeImageIfNeeded(image: UIImage, maxImageWidth: CGFloat, callback: ((UIImage) -> ())) {
@@ -101,8 +86,7 @@ import Foundation
             callback(image)
             return
         }
-        
-        // Calculate the target size + Process in BG!
+
         var targetSize      = image.size
         targetSize.height   = round(maxImageWidth * targetSize.height / targetSize.width)
         targetSize.width    = maxImageWidth
