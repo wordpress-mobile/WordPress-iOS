@@ -10,21 +10,7 @@ static NSString * const UserDictionaryDisplaynameKey = @"display_name";
 static NSString * const UserDictionaryPrimaryBlogKey = @"primary_blog";
 static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
-@interface AccountServiceRemoteREST ()
-@property (nonatomic, strong) WordPressComApi *api;
-@end
-
 @implementation AccountServiceRemoteREST
-
-- (instancetype)initWithApi:(WordPressComApi *)api
-{
-        self = [super init];
-        if (self) {
-            _api = api;
-        }
-
-        return self;
-}
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
@@ -95,6 +81,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.url = [jsonBlog stringForKey:@"URL"];
     blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
+    blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
     return blog;
 }
 

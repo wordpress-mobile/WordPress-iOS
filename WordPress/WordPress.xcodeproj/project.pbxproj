@@ -88,9 +88,11 @@
 		595B02271A6C504400415A30 /* WPWhatsNewView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 595B02261A6C504400415A30 /* WPWhatsNewView.xib */; };
 		5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */; };
 		598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */; };
-		5993E7291AC5D65600D31D2B /* WPAppFilesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
+		59E2AAE31B2096BF0051DC06 /* ServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */; };
+		59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */; };
+		59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */; };
 		5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */; };
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
 		5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D0431AD1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m */; };
@@ -478,7 +480,6 @@
 		E183ECB016B2179B00C2EB11 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83043E54126FA31400EC9953 /* MessageUI.framework */; };
 		E183ECB116B2179B00C2EB11 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296890770FE971DC00770264 /* Security.framework */; };
 		E183ECB216B2179B00C2EB11 /* Twitter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC24E5F21577DFF400A6D5B5 /* Twitter.framework */; };
-		E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */; };
 		E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */; };
 		E19A10CA1B010AA0006192B0 /* WPURLRequestTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E19A10C91B010AA0006192B0 /* WPURLRequestTest.m */; };
 		E19DF741141F7BDD000002F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = E19DF740141F7BDD000002F3 /* libz.dylib */; };
@@ -659,6 +660,7 @@
 		313AE49C19E3F20400AAFABE /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		315FC2C31A2CB29300E7CDA2 /* MeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MeHeaderView.h; path = Me/MeHeaderView.h; sourceTree = "<group>"; };
 		315FC2C41A2CB29300E7CDA2 /* MeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MeHeaderView.m; path = Me/MeHeaderView.m; sourceTree = "<group>"; };
+		316B99031B205AFB007963EF /* WordPress 32.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 32.xcdatamodel"; sourceTree = "<group>"; };
 		319D6E7919E447500013871C /* Suggestion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Suggestion.h; sourceTree = "<group>"; };
 		319D6E7A19E447500013871C /* Suggestion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Suggestion.m; sourceTree = "<group>"; };
 		319D6E7C19E447C80013871C /* SuggestionService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SuggestionService.h; sourceTree = "<group>"; };
@@ -719,12 +721,13 @@
 		5981FE041AB8A89A0009E080 /* WPUserAgentTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPUserAgentTests.m; sourceTree = "<group>"; };
 		598351AC1A704E7A00B6DD4F /* WPWhatsNew.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPWhatsNew.h; path = WhatsNew/WPWhatsNew.h; sourceTree = "<group>"; };
 		598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPWhatsNew.m; path = WhatsNew/WPWhatsNew.m; sourceTree = "<group>"; };
-		5993E7271AC5D65600D31D2B /* WPAppFilesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAppFilesManager.h; sourceTree = "<group>"; };
-		5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAppFilesManager.m; sourceTree = "<group>"; };
 		59D328FB1ACC2D0700356827 /* WPLookbackPresenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLookbackPresenter.h; sourceTree = "<group>"; };
 		59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLookbackPresenter.m; sourceTree = "<group>"; };
 		59DD94321AC479ED0032DD6B /* WPLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPLogger.h; sourceTree = "<group>"; };
 		59DD94331AC479ED0032DD6B /* WPLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPLogger.m; sourceTree = "<group>"; };
+		59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteREST.m; sourceTree = "<group>"; };
+		59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
 		5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBar.m; sourceTree = "<group>"; };
 		5D000DDF1AC0879600A7BAF9 /* PostCardActionBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBarItem.h; sourceTree = "<group>"; };
@@ -1416,7 +1419,6 @@
 		E18D8AE41397C54E00000861 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		E18EE94919349EAE00B0A40C /* AccountServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountServiceRemote.h; sourceTree = "<group>"; };
 		E18EE94C19349EBA00B0A40C /* BlogServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogServiceRemote.h; sourceTree = "<group>"; };
-		E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogServiceRemote.m; sourceTree = "<group>"; };
 		E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderTopicServiceRemote.h; sourceTree = "<group>"; };
 		E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderTopicServiceRemote.m; sourceTree = "<group>"; };
 		E1939C671B15B4D2001AFEF7 /* WordPress 30.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 30.xcdatamodel"; sourceTree = "<group>"; };
@@ -1541,7 +1543,6 @@
 		FFAC890F1A96A85800CC06AC /* NSProcessInfo+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSProcessInfo+Util.m"; sourceTree = "<group>"; };
 		FFB7B81C1A0012E80032E723 /* WordPressTestCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressTestCredentials.m; sourceTree = "<group>"; };
 		FFB7B81D1A0012E80032E723 /* WordPressComApiCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComApiCredentials.m; sourceTree = "<group>"; };
-		FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFE69A1E1B1BD4F10073C2EB /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A1F1B1BD6D60073C2EB /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A201B1BD79F0073C2EB /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -1556,6 +1557,7 @@
 		FFE69A291B1BFE050073C2EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2A1B1BFE200073C2EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2B1B1BFE620073C2EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFF96F8219EBE7FB00DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFF96F8519EBE7FB00DFC821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
@@ -1964,8 +1966,6 @@
 		5993E7261AC5D62100D31D2B /* Files */ = {
 			isa = PBXGroup;
 			children = (
-				5993E7271AC5D65600D31D2B /* WPAppFilesManager.h */,
-				5993E7281AC5D65600D31D2B /* WPAppFilesManager.m */,
 			);
 			path = Files;
 			sourceTree = "<group>";
@@ -1977,6 +1977,15 @@
 				59DD94331AC479ED0032DD6B /* WPLogger.m */,
 			);
 			path = Logging;
+			sourceTree = "<group>";
+		};
+		59E2AAE91B20E3FB0051DC06 /* Remote Services */ = {
+			isa = PBXGroup;
+			children = (
+				59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */,
+				59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */,
+			);
+			name = "Remote Services";
 			sourceTree = "<group>";
 		};
 		5D08B8FC19647C0300D5B381 /* Views */ = {
@@ -2336,7 +2345,6 @@
 				E149D64719349E69006A843D /* AccountServiceRemoteXMLRPC.h */,
 				E149D64819349E69006A843D /* AccountServiceRemoteXMLRPC.m */,
 				E18EE94C19349EBA00B0A40C /* BlogServiceRemote.h */,
-				E18EE94D19349EBA00B0A40C /* BlogServiceRemote.m */,
 				E1D04D8219374F2C002FADD7 /* BlogServiceRemoteREST.h */,
 				E1D04D8319374F2C002FADD7 /* BlogServiceRemoteREST.m */,
 				E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */,
@@ -2364,6 +2372,7 @@
 				E18EE94F19349EC300B0A40C /* ReaderTopicServiceRemote.h */,
 				E18EE95019349EC300B0A40C /* ReaderTopicServiceRemote.m */,
 				E1249B481940AE610035E895 /* ServiceRemoteREST.h */,
+				59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */,
 				E1249B471940AE550035E895 /* ServiceRemoteXMLRPC.h */,
 				E1F8E1241B0B422C0073E628 /* JetpackServiceRemote.h */,
 				E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */,
@@ -2601,6 +2610,7 @@
 				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
 				85F8E19E1B0186D0000859BB /* MockWordPressComApi.swift */,
 				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
+				59E2AAE91B20E3FB0051DC06 /* Remote Services */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -4086,7 +4096,6 @@
 				B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */,
 				85D08A7117342ECE00E2BBCA /* AddUsersBlogCell.m in Sources */,
 				85EC44D41739826A00686604 /* CreateAccountAndBlogViewController.m in Sources */,
-				5993E7291AC5D65600D31D2B /* WPAppFilesManager.m in Sources */,
 				85AD6AEC173CCF9E002CB896 /* WPNUXPrimaryButton.m in Sources */,
 				E1A6DBDB19DC7D080071AC1E /* RemotePost.m in Sources */,
 				E1249B4619408D0F0035E895 /* CommentServiceRemoteXMLRPC.m in Sources */,
@@ -4137,7 +4146,6 @@
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
-				E18EE94E19349EBA00B0A40C /* BlogServiceRemote.m in Sources */,
 				85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */,
 				5D42A3FC175E75EE005CFF05 /* ReaderPostsViewController.m in Sources */,
 				5D18FE9F1AFBB17400EFEED0 /* RestorePageTableViewCell.m in Sources */,
@@ -4192,6 +4200,7 @@
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
 				A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */,
 				B532D4EA199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift in Sources */,
+				59E2AAE31B2096BF0051DC06 /* ServiceRemoteREST.m in Sources */,
 				319D6E8519E44F7F0013871C /* SuggestionsTableViewCell.m in Sources */,
 				E1AC282D18282423004D394C /* SFHFKeychainUtils.m in Sources */,
 				740BD8351A0D4C3600F04D18 /* WPUploadStatusButton.m in Sources */,
@@ -4217,6 +4226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
+				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
 				85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
@@ -4225,6 +4235,7 @@
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				85F8E1981B017A86000859BB /* PushAuthenticationServiceRemote.swift in Sources */,
 				5D12FE1F1988243700378BD6 /* RemoteReaderTopic.m in Sources */,
+				59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */,
 				5D7A57801AFBFD940097C028 /* BasePostTest.m in Sources */,
 				8514B8D41AE85B19007E58BA /* WPAnalyticsTrackerMixpanelTests.m in Sources */,
 				931D26F719ED7F7500114F17 /* ReaderPostServiceTest.m in Sources */,
@@ -5324,6 +5335,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				316B99031B205AFB007963EF /* WordPress 32.xcdatamodel */,
 				FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */,
 				E1939C671B15B4D2001AFEF7 /* WordPress 30.xcdatamodel */,
 				5D91D9021AE1AD12000BF163 /* WordPress 29.xcdatamodel */,
@@ -5356,7 +5368,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */;
+			currentVersion = 316B99031B205AFB007963EF /* WordPress 32.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

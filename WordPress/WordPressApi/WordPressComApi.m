@@ -102,6 +102,9 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                 } else if ([errorString isEqualToString:@"authorization_required"]) {
                     errorCode = WordPressComApiErrorAuthorizationRequired;
                 }
+                if (errorString) {
+                    errorMessage = [errorMessage stringByAppendingFormat:@" [%@]", errorString];
+                }
                 newError = [NSError errorWithDomain:WordPressComApiErrorDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey: errorMessage, WordPressComApiErrorCodeKey: errorString}];
             }
         }
