@@ -600,6 +600,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)viewPost:(AbstractPost *)apost
 {
+    apost = ([apost hasRevision]) ? apost.revision : apost;
     PostPreviewViewController *controller = [[PostPreviewViewController alloc] initWithPost:apost shouldHideStatusBar:NO];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
