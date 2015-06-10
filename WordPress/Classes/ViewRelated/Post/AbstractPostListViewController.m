@@ -381,6 +381,12 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 #pragma mark - Sync Helper Delegate Methods
 
+- (NSString *)postTypeToSync
+{
+    // Subclasses should override.
+    return PostServiceTypeAny;
+}
+
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     if ([self.recentlyTrashedPostIDs count]) {
@@ -390,9 +396,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
+    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService syncPostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
+    [postService syncPostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
         if  (success) {
             [weakSelf setHasMore:hasMore forFilter:filter];
             success(hasMore);
@@ -412,9 +419,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.postListFooterView showSpinner:YES];
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
+    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService loadMorePostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
+    [postService loadMorePostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
         if (success) {
             [weakSelf setHasMore:hasMore forFilter:filter];
             success(hasMore);
@@ -696,6 +704,28 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 
 #pragma mark - Filter related
+
+- (BOOL)canFilterByAuthor
+{
+    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog isHostedAtWPcom];
+}
+
+- (BOOL)shouldShowOnlyMyPosts
+{
+    PostAuthorFilter filter = [self currentPostAuthorFilter];
+    return filter == PostAuthorFilterMine;
+}
+
+- (PostAuthorFilter)currentPostAuthorFilter
+{
+    return PostAuthorFilterEveryone;
+}
+
+- (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
+{
+    // Noop. The default implementation is read only.
+    // Subclasses may override the getter and setter for their own filter storage.
+}
 
 - (PostListFilter *)currentPostListFilter
 {

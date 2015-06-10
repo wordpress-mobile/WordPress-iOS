@@ -154,7 +154,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
     cell.detailTextLabel.text = [site pathForDisplay];;
     if (site.icon) {
         cell.imageView.backgroundColor = nil;
-        [cell.imageView setImageWithBlavatarUrl:site.icon placeholderImage:defaultImage];
+        [cell.imageView setImageWithSiteIcon:site.icon placeholderImage:defaultImage];
     }
 
     [WPStyleGuide configureTableViewSmallSubtitleCell:cell];

@@ -1,10 +1,9 @@
 #import <Foundation/Foundation.h>
+#import "ServiceRemoteREST.h"
 
 @class WordPressComApi;
 
-@interface ReaderTopicServiceRemote : NSObject
-
-- (id)initWithRemoteApi:(WordPressComApi *)api;
+@interface ReaderTopicServiceRemote : ServiceRemoteREST
 
 /**
  Fetches the topics for the reader's menu from the remote service.
