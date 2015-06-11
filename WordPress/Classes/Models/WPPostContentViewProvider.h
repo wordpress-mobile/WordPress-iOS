@@ -16,18 +16,23 @@
 - (NSString *)titleForDisplay;
 - (NSString *)contentForDisplay;
 - (NSString *)contentPreviewForDisplay;
-- (NSURL *)featuredImageURLForDisplay;
 
 // Meta accessors
 - (NSDate *)dateForDisplay;
+- (NSString *)dateStringForDisplay;
 - (NSString *)status;
 - (NSString *)statusForDisplay;
 - (BOOL)unreadStatusForDisplay;
-- (NSInteger)numberOfComments;
-- (NSInteger)numberOfLikes;
 - (BOOL)supportsStats;
 - (BOOL)isPrivate;
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isUploading;
+- (BOOL)hasRevision;
+- (id<WPPostContentViewProvider>)revision;
+
+@optional
+- (NSURL *)featuredImageURLForDisplay;
+- (NSInteger)numberOfComments;
+- (NSInteger)numberOfLikes;
 
 @end
