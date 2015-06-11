@@ -65,7 +65,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
                                                                          style:UIBarButtonItemStylePlain
                                                                         target:self
-                                                                        action:@selector(search)];
+                                                                        action:@selector(toggleSearch)];
         [self.navigationItem setRightBarButtonItem:searchButton];
     }
     return self;
@@ -157,11 +157,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self configureSearchController];
     [self configureSearchBar];
     [self configureSearchWrapper];
-}
-
-- (void)search
-{
-    self.searchController.active = !self.searchController.active;
 }
 
 - (void)configureSearchController
@@ -595,6 +590,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     return 54;
 }
 
+# pragma mark - Navigation Bar
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
@@ -627,6 +624,11 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
             snapshot = nil;
         }];
     }
+}
+
+- (void)toggleSearch
+{
+    self.searchController.active = !self.searchController.active;
 }
 
 - (void)visibilitySwitchAction:(id)sender
