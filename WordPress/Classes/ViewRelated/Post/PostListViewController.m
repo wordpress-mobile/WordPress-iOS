@@ -291,7 +291,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [predicates addObject:filterPredicate];
 
     if ([self shouldShowOnlyMyPosts]) {
-        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
+        // Brand new local drafts have an authorID of 0.
+        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@ || authorID = 0", self.blog.account.userID];
         [predicates addObject:authorPredicate];
     }
 
