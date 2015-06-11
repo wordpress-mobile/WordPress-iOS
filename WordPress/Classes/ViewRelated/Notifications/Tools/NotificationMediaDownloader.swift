@@ -30,7 +30,7 @@ import Foundation
             if resizedImagesMap[url]?.size == targetSize {
                 continue
             }
-println("Resizing \(url) original \(originalImage.size) target \(targetSize)")
+
             resizeImageIfNeeded(originalImage, maximumWidth: maximumWidth) {
                 self.resizedImagesMap[url] = $0
                 completion()
