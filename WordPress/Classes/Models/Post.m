@@ -2,6 +2,7 @@
 #import "Media.h"
 #import "PostCategory.h"
 #import "Coordinate.h"
+#import "NSDate+StringFormatting.h"
 #import "NSMutableDictionary+Helpers.h"
 #import "NSString+Helpers.h"
 #import "ContextManager.h"
@@ -184,19 +185,45 @@
 
 #pragma mark - WPPostContentViewProvider Methods
 
-- (NSString *)authorNameForDisplay
+- (NSString *)titleForDisplay
 {
-    return self.author;
+    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
+    title = [title stringByDecodingXMLCharacters];
+    if ([title length] == 0 && [[self contentPreviewForDisplay] length] == 0 && ![self hasRemote]) {
+        title = NSLocalizedString(@"(no title)", @"Let's a user know that a local draft does not have a title.");
+    }
+    return title;
 }
 
-- (NSURL *)blogURL
+- (NSString *)contentPreviewForDisplay
 {
-    return [NSURL URLWithString:self.blog.url];
+    if (self.storedContentPreviewForDisplay == nil) {
+        [self buildContentPreview];
+    }
+    return self.storedContentPreviewForDisplay;
 }
 
-- (NSString *)blogURLForDisplay
+- (NSString *)statusForDisplay
 {
-    return self.blog.displayURL;
+    NSString *statusString = [self statusTitle];
+    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
+        statusString = nil;
+    }
+    if (![self hasRemote]) {
+        NSString *localOnly = NSLocalizedString(@"Local", @"A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.");
+        if (statusString) {
+            statusString = [NSString stringWithFormat:@"%@, %@", statusString, localOnly];
+        } else {
+            statusString = localOnly;
+        }
+    }
+    return statusString;
+}
+
+- (NSURL *)featuredImageURLForDisplay
+{
+    NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
+    return url;
 }
 
 - (NSInteger)numberOfComments
@@ -215,82 +242,5 @@
     return 0;
 }
 
-- (NSString *)titleForDisplay
-{
-    NSString *title = [self.postTitle stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]] ?: @"";
-    return [title stringByDecodingXMLCharacters];
-}
-
-- (NSString *)authorForDisplay
-{
-    return self.author;
-}
-
-- (NSString *)blogNameForDisplay
-{
-    return self.blog.blogName;
-}
-
-- (NSString *)contentForDisplay
-{
-    return self.content;
-}
-
-- (NSString *)contentPreviewForDisplay
-{
-    if (self.storedContentPreviewForDisplay == nil) {
-        [self buildContentPreview];
-    }
-    return self.storedContentPreviewForDisplay;
-}
-
-- (NSString *)gravatarEmailForDisplay
-{
-    return nil;
-}
-
-- (NSString *)blavatarForDisplay
-{
-    return self.blog.icon;
-}
-
-- (NSURL *)avatarURLForDisplay
-{
-    return nil;
-}
-
-- (BOOL)supportsStats
-{
-    return [self.blog supports:BlogFeatureStats];
-}
-
-- (BOOL)isPrivate
-{
-    return self.blog.isPrivate;
-}
-
-- (BOOL)isMultiAuthorBlog
-{
-    return self.blog.isMultiAuthor;
-}
-
-- (NSString *)statusForDisplay
-{
-    if ([self.status isEqualToString:PostStatusPublish] || [self.status isEqualToString:PostStatusDraft]) {
-        return [NSString string];
-    }
-    return [self statusTitle];
-}
-
-- (BOOL)isUploading
-{
-    return self.remoteStatus == AbstractPostRemoteStatusPushing;
-}
-
-- (NSURL *)featuredImageURLForDisplay
-{
-    NSURL *url = [NSURL URLWithString:self.pathForDisplayImage];
-    return url;
-}
 
 @end
