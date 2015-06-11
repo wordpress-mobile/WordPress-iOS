@@ -248,7 +248,14 @@
 
 - (NSTimeInterval)duration
 {
-    return [self.length doubleValue];
+    if (self.mediaType != MediaTypeVideo){
+        return 0;
+    }
+    NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
+    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:sourceMovieURL options:nil];
+    CMTime duration = sourceAsset.duration;
+    
+    return CMTimeGetSeconds(duration);
 }
 
 - (NSDate *)date
