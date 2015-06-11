@@ -153,26 +153,34 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
     PostListFilter *filter = [self currentPostListFilter];
-    NSString *title;
-    switch (filter.filterType) {
-        case PostListStatusFilterDraft:
-            title = NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts");
-            break;
-        case PostListStatusFilterScheduled:
-            title = NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts");
-            break;
-        case PostListStatusFilterTrashed:
-            title = NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts");
-            break;
-        default:
-            title = NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts");
-            break;
-    }
+    NSDictionary *titles = [self noResultsTitles];
+    NSString *title = [titles stringForKey:@(filter.filterType)];
     return title;
 }
 
+- (NSDictionary *)noResultsTitles
+{
+    NSDictionary *titles;
+    if ([self isSearching]) {
+        titles = @{
+                   @(PostListStatusFilterDraft):[NSString stringWithFormat:NSLocalizedString(@"No drafts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterScheduled):[NSString stringWithFormat:NSLocalizedString(@"No scheduled posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterTrashed):[NSString stringWithFormat:NSLocalizedString(@"No trashed posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterPublished):[NSString stringWithFormat:NSLocalizedString(@"No posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   };
+    } else {
+        titles = @{
+                   @(PostListStatusFilterDraft):NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts"),
+                   @(PostListStatusFilterScheduled):NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts"),
+                   @(PostListStatusFilterTrashed):NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts"),
+                   @(PostListStatusFilterPublished):NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts"),
+                   };
+    }
+    return titles;
+}
+
 - (NSString *)noResultsMessageText {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return [NSString string];
     }
     NSString *message;
@@ -196,7 +204,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (NSString *)noResultsButtonText
 {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return nil;
     }
     NSString *title;
@@ -271,7 +279,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
 
-    NSString *searchText = self.searchController.searchBar.text;
+    NSString *searchText = [self currentSearchTerm];
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
 
     // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
@@ -283,7 +291,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [predicates addObject:filterPredicate];
 
     if ([self shouldShowOnlyMyPosts]) {
-        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
+        // Brand new local drafts have an authorID of 0.
+        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@ || authorID = 0", self.blog.account.userID];
         [predicates addObject:authorPredicate];
     }
 
