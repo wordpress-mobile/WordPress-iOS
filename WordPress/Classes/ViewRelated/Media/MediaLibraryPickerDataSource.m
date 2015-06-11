@@ -177,15 +177,7 @@
         }
     }
     Media *media = [mediaAssets firstObject];
-    if (media.absoluteLocalURL) {
-        UIImage *image = [UIImage imageWithContentsOfFile:media.absoluteLocalURL];
-        if (completionHandler) {
-            completionHandler(image, nil);
-        }
-        return 0;
-    }
-    completionHandler(nil, nil);
-    return 0;
+    return [media imageWithSize:size completionHandler:completionHandler];
 }
 
 - (void)cancelImageRequest:(WPMediaRequestID)requestID
@@ -216,18 +208,26 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    if (self.absoluteLocalURL) {
-        UIImage *image = [UIImage imageWithContentsOfFile:self.absoluteLocalURL];
-        if (completionHandler) {
-            completionHandler(image, nil);
-        }
-        return 0;
+    NSString *pathForFile;
+    if (self.mediaType == MediaTypeImage) {
+        pathForFile = self.absoluteLocalURL;
+    } else if (self.mediaType == MediaTypeVideo) {
+        pathForFile = self.thumbnailLocalURL;
     }
-    // TODO: fetch image from server
+    if (pathForFile) {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
+            if (completionHandler) {
+                completionHandler(image, nil);
+            }
+        });
+        return [self.mediaID intValue];
+    }
+    // TODO: fetch image from server, for now just exit with missing image
     if (completionHandler) {
         completionHandler(nil, nil);
     }
-    return 0;
+    return [self.mediaID intValue];
 }
 
 - (void)cancelImageRequest:(WPMediaRequestID)requestID
