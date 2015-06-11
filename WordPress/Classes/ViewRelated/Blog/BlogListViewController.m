@@ -16,7 +16,6 @@
 #import "WPTabBarController.h"
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
-#import "WPSearchController.h"
 #import "WordPress-Swift.h"
 #import "AbstractPostListViewControllerSubclass.h"
 
