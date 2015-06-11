@@ -18,16 +18,12 @@
 #import "UILabel+SuggestSize.h"
 #import "WPSearchController.h"
 #import "WordPress-Swift.h"
+#import "AbstractPostListViewControllerSubclass.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
-
-const CGFloat PostsSearchBariPadWidth2 = 600.0;
-const CGFloat PostSearchBarAnimationDuration2 = 0.2;
-const CGFloat SearchWrapperViewPortraitHeight2 = 64.0;
-const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
@@ -115,12 +111,18 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 {
     [super viewDidLoad];
     
-    self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.bounds.size.width, 64.0)];
+    self.searchWrapperView = [[UIView alloc] init];
     self.searchWrapperView.backgroundColor = [UIColor redColor];
-    self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight2];
+    self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight];
+    UIView *searchWrapperView = self.searchWrapperView;
+    searchWrapperView.clipsToBounds = YES;
     [self.view addSubview:self.searchWrapperView];
-    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchWrapperView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(searchWrapperView)]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchWrapperView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(searchWrapperView)]];
     [self.searchWrapperView addConstraint:self.searchWrapperViewHeightConstraint];
+
+    
+
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchWrapperView.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
     self.tableView.delegate = self;
@@ -204,7 +206,7 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
     [self.searchWrapperView addSubview:searchBar];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{@"searchbarWidth":@(PostsSearchBariPadWidth2)};
+    NSDictionary *metrics = @{@"searchbarWidth":@(PostsSearchBariPadWidth)};
     if ([UIDevice isPad]) {
         [self.searchWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
                                                                            attribute:NSLayoutAttributeCenterX
@@ -246,16 +248,16 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
 - (CGFloat)heightForSearchWrapperView
 {
     if ([UIDevice isPad]) {
-        return SearchWrapperViewPortraitHeight2;
+        return SearchWrapperViewPortraitHeight;
     }
-    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight2 : SearchWrapperViewLandscapeHeight2;
+    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
 }
 
 - (void)presentSearchController:(WPSearchController *)searchController
 {
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:PostSearchBarAnimationDuration2
+    [UIView animateWithDuration:PostSearchBarAnimationDuration
                           delay:0.0
                         options:0
                      animations:^{
@@ -270,7 +272,7 @@ const CGFloat SearchWrapperViewLandscapeHeight2 = 44.0;
     [self.searchController.searchBar resignFirstResponder];
     [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:PostSearchBarAnimationDuration2 animations:^{
+    [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
     
