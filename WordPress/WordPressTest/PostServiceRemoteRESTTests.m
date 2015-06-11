@@ -290,4 +290,169 @@
                                 failure:^(NSError *error) {}]);
 }
 
+#pragma mark - Deleting posts
+
+- (void)testThatDeletePostWorks
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    PostServiceRemoteREST *service = nil;
+    
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    OCMStub([post postID]).andReturn(@1);
+    
+    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    
+    OCMStub([api POST:[OCMArg isEqual:url]
+           parameters:[OCMArg isNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    
+    [service deletePost:post
+                forBlog:blog
+                success:^(RemotePost *posts) {}
+                failure:^(NSError *error) {}];
+}
+
+- (void)testThatDeletePostThrowsExceptionWithoutPost
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service deletePost:nil
+                                forBlog:blog
+                                success:^(RemotePost *posts) {}
+                                failure:^(NSError *error) {}]);
+}
+
+- (void)testThatDeletePostThrowsExceptionWithoutBlog
+{
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service deletePost:post
+                                forBlog:nil
+                                success:^(RemotePost *posts) {}
+                                failure:^(NSError *error) {}]);
+}
+
+#pragma mark - Trashing posts
+
+- (void)testThatTrashPostWorks
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    PostServiceRemoteREST *service = nil;
+    
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    OCMStub([post postID]).andReturn(@1);
+    
+    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    
+    OCMStub([api POST:[OCMArg isEqual:url]
+           parameters:[OCMArg isNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    
+    [service trashPost:post
+               forBlog:blog
+               success:^(RemotePost *posts) {}
+               failure:^(NSError *error) {}];
+}
+
+- (void)testThatTashPostThrowsExceptionWithoutPost
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service trashPost:nil
+                               forBlog:blog
+                               success:^(RemotePost *posts) {}
+                               failure:^(NSError *error) {}]);
+}
+
+- (void)testThatTrashPostThrowsExceptionWithoutBlog
+{
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service trashPost:post
+                               forBlog:nil
+                               success:^(RemotePost *posts) {}
+                               failure:^(NSError *error) {}]);
+}
+
+#pragma mark - Trashing posts
+
+- (void)testThatRestorePostWorks
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    PostServiceRemoteREST *service = nil;
+    
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    OCMStub([post postID]).andReturn(@1);
+    
+    NSString* url = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
+    
+    OCMStub([api POST:[OCMArg isEqual:url]
+           parameters:[OCMArg isNil]
+              success:[OCMArg isNotNil]
+              failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[PostServiceRemoteREST alloc] initWithApi:api]);
+    
+    [service restorePost:post
+                 forBlog:blog
+                 success:^(RemotePost *posts) {}
+                 failure:^(NSError *error) {}];
+}
+
+- (void)testThatRestorePostThrowsExceptionWithoutPost
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service restorePost:nil
+                                 forBlog:blog
+                                 success:^(RemotePost *posts) {}
+                                 failure:^(NSError *error) {}]);
+}
+
+- (void)testThatRestorePostThrowsExceptionWithoutBlog
+{
+    RemotePost *post = OCMClassMock([RemotePost class]);
+    
+    PostServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [self service]);
+    XCTAssertThrows([service restorePost:post
+                                 forBlog:nil
+                                 success:^(RemotePost *posts) {}
+                                 failure:^(NSError *error) {}]);
+}
+
 @end
