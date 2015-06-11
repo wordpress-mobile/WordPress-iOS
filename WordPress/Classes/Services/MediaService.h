@@ -75,16 +75,7 @@ extern NSInteger const MediaMaxImageSizeDimension;
                              inBlog:(Blog *)blog
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure;
-/**
- * Sync all Media objects from the server to local database
- 
- * @param blog
- * @param success a block that will be invoked when the sync succeeds
- * @param failure a block that will be invoked when the sync fails
- */
-- (void)syncMediaLibraryForBlog:(Blog *)blog
-                        success:(void (^)())success
-                        failure:(void (^)(NSError *error))failure;
+
 
 #pragma mark - Media cleanup
 
