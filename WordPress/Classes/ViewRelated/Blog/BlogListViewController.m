@@ -124,7 +124,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     
 
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, self.searchWrapperView.bounds.size.height, self.view.bounds.size.width, self.view.bounds.size.height) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     [self.view addSubview:self.tableView];
