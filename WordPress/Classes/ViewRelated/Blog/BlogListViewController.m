@@ -111,24 +111,21 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [super viewDidLoad];
     
-    self.searchWrapperView = [[UIView alloc] init];
+    self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 100.0)];
     self.searchWrapperView.backgroundColor = [UIColor redColor];
     self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight];
     UIView *searchWrapperView = self.searchWrapperView;
     searchWrapperView.clipsToBounds = YES;
-    [self.view addSubview:self.searchWrapperView];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchWrapperView]|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(searchWrapperView)]];
-    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[searchWrapperView]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(searchWrapperView)]];
-    [self.searchWrapperView addConstraint:self.searchWrapperViewHeightConstraint];
-
     
-
-    
-    self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 100.0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    [self.view addSubview:self.searchWrapperView];
     [self.view addSubview:self.tableView];
+    
+    [self.searchWrapperView addConstraint:_searchWrapperViewHeightConstraint];
 
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
