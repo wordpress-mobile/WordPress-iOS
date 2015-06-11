@@ -62,13 +62,13 @@
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     switch (self.filter){
         case WPMediaTypeImage:{
-            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image"];
+            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"image"];
         }break;
         case WPMediaTypeVideo:{
-            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video"];
+            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"video"];
         }break;
         case WPMediaTypeAll:{
-            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+            request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && mediaID != 0", @"image", @"video"];
         }break;
         default:
             break;
@@ -155,7 +155,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+    request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) && mediaID != 0", @"image", @"video"];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -192,7 +192,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@ || mediaTypeString = %@", @"image", @"video"];
+    request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) && mediaID != 0", @"image", @"video"];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
