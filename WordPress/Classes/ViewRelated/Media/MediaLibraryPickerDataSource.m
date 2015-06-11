@@ -6,7 +6,7 @@
 
 @interface  MediaLibraryPickerDataSource()
 
-@property (nonatomic, strong) id<WPMediaGroup> mediaGroup;
+@property (nonatomic, strong) MediaLibraryGroup *mediaGroup;
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, strong) NSArray *media;
@@ -52,7 +52,8 @@
    return self.mediaGroup;
 }
 
-- (id<WPMediaGroup>)groupAtIndex:(NSInteger)index {
+- (id<WPMediaGroup>)groupAtIndex:(NSInteger)index
+{
     return self.mediaGroup;
 }
 
@@ -60,19 +61,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    switch (self.filter){
-        case WPMediaTypeImage:{
-            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"image"];
-        }break;
-        case WPMediaTypeVideo:{
-            request.predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"video"];
-        }break;
-        case WPMediaTypeAll:{
-            request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && mediaID != 0", @"image", @"video"];
-        }break;
-        default:
-            break;
-    };
+    request.predicate = [[self class] predicateForFilter:self.filter];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -112,6 +101,7 @@
 -(void)setMediaTypeFilter:(WPMediaType)filter
 {
     self.filter = filter;
+    self.mediaGroup.filter = filter;
 }
 
 -(WPMediaType)mediaTypeFilter
@@ -122,6 +112,25 @@
 -(id<WPMediaAsset>)mediaAtIndex:(NSInteger)index
 {
     return self.media[index];
+}
+
++ (NSPredicate *)predicateForFilter:(WPMediaType)filter
+{
+    NSPredicate *predicate;
+    switch (filter){
+        case WPMediaTypeImage:{
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"image"];
+        }break;
+        case WPMediaTypeVideo:{
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"video"];
+        }break;
+        case WPMediaTypeAll:{
+            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && mediaID != 0", @"image", @"video"];
+        }break;
+        default:
+            break;
+    };
+    return predicate;
 }
 
 @end
@@ -137,6 +146,7 @@
     self = [super init];
     if (self) {
         _blog = blog;
+        _filter = WPMediaTypeAll;
     }
     return self;
 }
@@ -155,7 +165,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) && mediaID != 0", @"image", @"video"];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -192,8 +202,8 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) && mediaID != 0", @"image", @"video"];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
+    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
     NSUInteger count = [[[ContextManager sharedInstance] mainContext] countForFetchRequest:request error:&error];

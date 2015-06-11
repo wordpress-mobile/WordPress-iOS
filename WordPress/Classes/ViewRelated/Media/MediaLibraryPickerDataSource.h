@@ -12,6 +12,8 @@
 
 - (instancetype)initWithBlog:(Blog *)blog NS_DESIGNATED_INITIALIZER;
 
+@property (nonatomic, assign) WPMediaType filter;
+
 @end
 
 @interface MediaLibraryPickerDataSource : NSObject <WPMediaCollectionDataSource>
