@@ -40,7 +40,7 @@ import Foundation
     }
     
     public var labelPadding: UIEdgeInsets {
-        return privateLabelPadding
+        return self.dynamicType.defaultLabelPadding
     }
     
     public var isTextViewSelectable: Bool {
@@ -83,7 +83,7 @@ import Foundation
     
     public override func layoutSubviews() {
         // Calculate the TextView's width, before hitting layoutSubviews!
-        textView.preferredMaxLayoutWidth = min(bounds.width, maxWidth) - labelPadding.left - labelPadding.right
+        textView.preferredMaxLayoutWidth = min(bounds.width, self.dynamicType.maxWidth) - labelPadding.left - labelPadding.right
         super.layoutSubviews()
     }
         
@@ -103,8 +103,8 @@ import Foundation
     }
     
     // MARK: - Constants
-    private let maxWidth            = WPTableViewFixedWidth
-    private let privateLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    public static let maxWidth            = WPTableViewFixedWidth
+    public static let defaultLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
     
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
