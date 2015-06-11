@@ -45,6 +45,7 @@
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([postType isKindOfClass:[NSString class]]);
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
@@ -129,6 +130,7 @@
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     [self.api POST:path
@@ -145,9 +147,9 @@
 }
 
 - (void)trashPost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+          forBlog:(Blog *)blog
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
@@ -169,9 +171,9 @@
 }
 
 - (void)restorePost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+            forBlog:(Blog *)blog
+            success:(void (^)(RemotePost *))success
+            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([post isKindOfClass:[RemotePost class]]);
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
