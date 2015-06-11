@@ -146,7 +146,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     self.tableView.backgroundColor          = [WPStyleGuide itsEverywhereGrey];
     
     // Media
-    self.mediaDownloader                    = [[NotificationMediaDownloader alloc] initWithMaximumImageWidth:self.maxMediaEmbedWidth];
+    self.mediaDownloader                    = [NotificationMediaDownloader new];
     
     NSManagedObjectContext *context = self.note.managedObjectContext;
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -465,10 +465,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NotificationBlockGroup *blockGroup      = [self blockGroupForIndexPath:indexPath];
     NoteBlockTableViewCell *tableViewCell   = self.layoutCellMap[@(blockGroup.type)] ?: self.layoutCellMap[@(NoteBlockGroupTypeText)];
 
+    [self downloadAndResizeMedia:indexPath blockGroup:blockGroup];
     [self setupCell:tableViewCell blockGroup:blockGroup];
-
-    CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
     
+    CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+
     return height;
 }
 
@@ -478,7 +479,6 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSString *reuseIdentifier               = self.reuseIdentifierMap[@(blockGroup.type)] ?: self.reuseIdentifierMap[@(NoteBlockGroupTypeText)];
     NoteBlockTableViewCell *cell            = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier forIndexPath:indexPath];
  
-    [self enqueueMediaDownloads:blockGroup indexPath:indexPath];
     [self setupSeparators:cell indexPath:indexPath];
     [self setupCell:cell blockGroup:blockGroup];
     
@@ -518,28 +518,26 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 #pragma mark - Media Download Helper
 
-- (void)enqueueMediaDownloads:(NotificationBlockGroup *)group indexPath:(NSIndexPath *)indexPath
+- (void)downloadAndResizeMedia:(NSIndexPath *)indexPath blockGroup:(NotificationBlockGroup *)blockGroup
 {
     // Download Media: Only embeds for Text and Comment notifications
     NSSet *richBlockTypes           = [NSSet setWithObjects:@(NoteBlockTypeText), @(NoteBlockTypeComment), nil];
-    NSSet *imageUrls                = [group imageUrlsForBlocksOfTypes:richBlockTypes];
+    NSSet *imageUrls                = [blockGroup imageUrlsForBlocksOfTypes:richBlockTypes];
     __weak __typeof(self) weakSelf  = self;
     
-    [self.mediaDownloader downloadMediaWithUrls:imageUrls completion:^{
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    }];
+    void (^completion)(void)        = ^{
+        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+    };
+
+    [self.mediaDownloader downloadMediaWithUrls:imageUrls maximumWidth:self.maxMediaEmbedWidth completion:completion];
+    [self.mediaDownloader resizeMediaWithIncorrectSize:self.maxMediaEmbedWidth completion:completion];
 }
 
 - (CGFloat)maxMediaEmbedWidth
 {
-    // Maximum Media Embed Width should match with the RichTextView's width in portrait mode
-    NoteBlockTextTableViewCell *textCell = self.layoutCellMap[@(NoteBlockGroupTypeText)];
-    NSAssert(textCell, @"Missing TextCell?");
-    
-    // Note: First iteration doesn't support embed resize on rotation. Let's take the portrait width
-    CGRect bounds           = self.view.bounds;
-    CGFloat portraitWidth   = [UIDevice isPad] ? WPTableViewFixedWidth : MIN(CGRectGetWidth(bounds), CGRectGetHeight(bounds));
-    CGFloat maxWidth        = portraitWidth - textCell.labelPadding.left - textCell.labelPadding.right;
+    UIEdgeInsets textPadding        = NoteBlockTextTableViewCell.defaultLabelPadding;
+    CGFloat portraitWidth           = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
+    CGFloat maxWidth                = portraitWidth - textPadding.left - textPadding.right;
     
     return maxWidth;
 }
