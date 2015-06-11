@@ -51,7 +51,9 @@
           }];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(PostFormatsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
