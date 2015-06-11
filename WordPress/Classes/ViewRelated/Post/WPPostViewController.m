@@ -1779,13 +1779,13 @@ EditImageDetailsViewControllerDelegate
     }
     id<WPMediaAsset> firstObject = [assets firstObject];
     if ([firstObject isKindOfClass:[ALAsset class]]){
-        [self addLocalMediaAssets:assets];
+        [self addDeviceMediaAssets:assets];
     } else if ([firstObject isKindOfClass:[Media class]]) {
-        [self addMediaLibraryAssets:assets];
+        [self addSiteMediaAssets:assets];
     }
 }
 
-- (void)addLocalMediaAssets:(NSArray *)assets
+- (void)addDeviceMediaAssets:(NSArray *)assets
 {
     [self prepareMediaProgressForNumberOfAssets:assets.count];
 
@@ -1828,7 +1828,7 @@ EditImageDetailsViewControllerDelegate
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-- (void)addMediaLibraryAssets:(NSArray *)assets
+- (void)addSiteMediaAssets:(NSArray *)assets
 {
     for (Media *media in assets) {
         if ([media mediaType] == MediaTypeImage) {
