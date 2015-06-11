@@ -526,7 +526,14 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     __weak __typeof(self) weakSelf  = self;
     
     void (^completion)(void)        = ^{
-        [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+        // Workaround:
+        // Performing the reload call, multiple times, without the UIViewAnimationOptionBeginFromCurrentState might lead
+        // to a state in which the cell remains not visible.
+        //
+        [UIView animateWithDuration:0.25 delay:0.0 options:UIViewAnimationOptionOverrideInheritedDuration | UIViewAnimationOptionBeginFromCurrentState animations:^{
+            [weakSelf.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+        } completion:nil];
     };
 
     [self.mediaDownloader downloadMediaWithUrls:imageUrls maximumWidth:self.maxMediaEmbedWidth completion:completion];
