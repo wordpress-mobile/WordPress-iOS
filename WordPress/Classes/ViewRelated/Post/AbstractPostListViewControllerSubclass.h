@@ -72,5 +72,7 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 - (void)deletePost:(AbstractPost *)apost;
 - (void)restorePost:(AbstractPost *)apost;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
+- (BOOL)isSearching;
+- (NSString *)currentSearchTerm;
 
 @end
