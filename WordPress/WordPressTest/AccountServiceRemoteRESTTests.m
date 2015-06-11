@@ -2,6 +2,7 @@
 #import <XCTest/XCTest.h>
 #import "AccountServiceRemoteREST.h"
 #import "WordPressComApi.h"
+#import "WPAccount.h"
 
 @interface AccountServiceRemoteRESTTests : XCTestCase
 @end
@@ -32,6 +33,8 @@
 
 - (void)testThatGetDetailsForAccountWorks
 {
+    WPAccount* account = OCMStrictClassMock([WPAccount class]);
+    
     WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
     AccountServiceRemoteREST *service = nil;
     
@@ -44,7 +47,7 @@
     
     XCTAssertNoThrow(service = [[AccountServiceRemoteREST alloc] initWithApi:api]);
     
-    [service getDetailsForAccount:nil
+    [service getDetailsForAccount:account
                           success:^(RemoteUser *remoteUser) {}
                           failure:^(NSError *error) {}];
 }
