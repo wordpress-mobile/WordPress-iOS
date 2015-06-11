@@ -103,7 +103,7 @@ import Foundation
         }
         
         dispatch_async(resizeQueue) {
-            let resizedImage = image.imageScaledToFitSize(targetSize, ignoreAlpha: false)
+            let resizedImage = image.resizedImage(targetSize, interpolationQuality: kCGInterpolationHigh)
             dispatch_async(dispatch_get_main_queue()) {
                 callback(resizedImage)
             }
