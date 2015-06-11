@@ -2,6 +2,7 @@
 #import "WordPressComApi.h"
 #import "RemoteBlog.h"
 #import "Constants.h"
+#import "WPAccount.h"
 
 static NSString * const UserDictionaryIDKey = @"ID";
 static NSString * const UserDictionaryUsernameKey = @"username";
@@ -27,8 +28,16 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
           }];
 }
 
-- (void)getDetailsForAccount:(WPAccount *)account success:(void (^)(RemoteUser *remoteUser))success failure:(void (^)(NSError *error))failure
+- (void)getDetailsForAccount:(WPAccount *)account
+                     success:(void (^)(RemoteUser *remoteUser))success
+                     failure:(void (^)(NSError *error))failure
 {
+    // IMPORTANT: We're adding this assertion even though the account is not used here to let the
+    // caller know this parameter needs to be set (following the documentation of the protocol).
+    // This parameter is used and required by the XMLRPC variant of this method.
+    //
+    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
+    
     NSString *path = @"me";
     [self.api GET:path
        parameters:nil
