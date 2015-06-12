@@ -47,25 +47,37 @@ import Foundation
     *  @brief       Resizes the downloaded media to fit a "new" maximumWidth ***if needed**.
     *  @details     This method will check the cache of "resized images", and will verify if the original image
     *               *could* be resized again, so that it better fits the *maximumWidth* received.
-    *               If an image *could* be resized, we proceed, and hit the completion block, once per asset.
-    *               Otherwise, we just don't do anything else.
+    *               Once all of the images get resized, we'll hit the completion block
     *
     *               Useful to handle rotation events: the downloaded images may need to be resized, again, to 
     *               fit onscreen.
     *
     *  @param       maximumWidth    Represents the maximum width that a returned image should have
-    *  @param       completion      Is a closure that will get executed each time a new asset is effectively resized
+    *  @param       completion      Is a closure that will get executed just one time, after all of the assets get resized
     */
     public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
+        let group               = dispatch_group_create()
+        var resizedCount        = 0
+        
         for (url, originalImage) in originalImagesMap {
-            let targetSize = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
-
-            if resizedImagesMap[url]?.size == targetSize {
+            let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
+            let resizedImage    = resizedImagesMap[url]
+            
+            if resizedImage == nil || resizedImage?.size == targetSize {
                 continue
             }
-
+            
+            dispatch_group_enter(group)
+            ++resizedCount
+            
             resizeImageIfNeeded(originalImage, maximumWidth: maximumWidth) {
                 self.resizedImagesMap[url] = $0
+                dispatch_group_leave(group)
+            }
+        }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            if resizedCount != 0 {
                 completion()
             }
         }
@@ -117,9 +129,15 @@ import Foundation
                 success(unwrappedImage)
             }
             
-        }, failure: nil)
+            self.beingDownloaded.remove(url)
+        }, failure: {
+            (AFHTTPRequestOperation operation, NSError error) -> Void in
+            
+            self.beingDownloaded.remove(url)
+        })
         
         downloadQueue.addOperation(operation)
+        beingDownloaded.insert(url)
         increaseRetryCount(url)
     }
     
@@ -135,10 +153,7 @@ import Foundation
     *  @returns     A dictionary with URL as Key, and Image as Value.
     */
     private func shouldDownloadImage(#url: NSURL) -> Bool {
-        let operations  = downloadQueue.operations as? [AFHTTPRequestOperation]
-        let filtered    = operations?.filter { $0.request.URL!.isEqual(url) } ?? [AFHTTPRequestOperation]()
-        
-        return originalImagesMap[url] == nil && checkRetryCount(url) < maximumRetryCount && filtered.isEmpty
+        return originalImagesMap[url] == nil && checkRetryCount(url) < maximumRetryCount && !beingDownloaded.contains(url)
     }
     
     /**
@@ -214,5 +229,6 @@ import Foundation
     private let resizeQueue         = dispatch_queue_create("notifications.media.resize", DISPATCH_QUEUE_CONCURRENT)
     private var originalImagesMap   = [NSURL: UIImage]()
     private var resizedImagesMap    = [NSURL: UIImage]()
+    private var beingDownloaded     = Set<NSURL>()
     private var retryMap            = [NSURL: Int]()
 }
