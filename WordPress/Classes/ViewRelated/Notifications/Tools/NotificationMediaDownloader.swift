@@ -123,9 +123,10 @@ import Foundation
     *  @brief       Downloads an asset, given its URL
     *
     *  @param       url             The URL of the media we should download
+    *  @param       retryCount      Number of times the download has been attempted
     *  @param       success         A closure to be executed, on success.
     */
-    private func downloadImage(url: NSURL, success: (UIImage -> ())) {
+    private func downloadImage(url: NSURL, retryCount: Int = 0, success: (UIImage -> ())) {
         let request                     = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
@@ -143,12 +144,18 @@ import Foundation
         }, failure: {
             (AFHTTPRequestOperation operation, NSError error) -> Void in
             
-            self.beingDownloaded.remove(url)
+            // If possible, retry
+            if retryCount < self.maximumRetryCount {
+                self.downloadImage(url, retryCount: retryCount + 1, success: success)
+                
+            // Otherwise, we just failed!
+            } else {
+                self.beingDownloaded.remove(url)
+            }
         })
         
         downloadQueue.addOperation(operation)
         beingDownloaded.insert(url)
-        increaseRetryCount(url)
     }
     
     /**
@@ -163,28 +170,8 @@ import Foundation
     *  @returns     A dictionary with URL as Key, and Image as Value.
     */
     private func shouldDownloadImage(#url: NSURL) -> Bool {
-        return originalImagesMap[url] == nil && getRetryCount(url) < maximumRetryCount && !beingDownloaded.contains(url)
+        return originalImagesMap[url] == nil && !beingDownloaded.contains(url)
     }
-    
-    /**
-    *  @brief       Increases the retry count for a given URL
-    *
-    *  @param       urls            The URL we're tracking
-    */
-    private func increaseRetryCount(url: NSURL) {
-        retryMap[url] = getRetryCount(url) + 1
-    }
-
-    /**
-    *  @brief       Returns the current retry count for a given URL
-    *
-    *  @param       urls            The URL we're tracking
-    *  @return      The current retry count
-    */
-    private func getRetryCount(url: NSURL) -> Int {
-        return retryMap[url] ?? 0
-    }
-    
     
     /**
     *  @brief       Resizes -in background- a given image, if needed, to fit a maximum width
@@ -240,5 +227,4 @@ import Foundation
     private var originalImagesMap   = [NSURL: UIImage]()
     private var resizedImagesMap    = [NSURL: UIImage]()
     private var beingDownloaded     = Set<NSURL>()
-    private var retryMap            = [NSURL: Int]()
 }
