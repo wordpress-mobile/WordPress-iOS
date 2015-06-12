@@ -804,9 +804,10 @@ EditImageDetailsViewControllerDelegate
 - (void)showSiteMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.post.blog];
+    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:self.post];
     picker.dataSource = self.mediaLibraryDataSource;
     picker.showMostRecentFirst = YES;
+    picker.allowCaptureOfMedia = YES;
     picker.delegate = self;
     
     [self presentViewController:picker animated:YES completion:nil];
@@ -1831,11 +1832,22 @@ EditImageDetailsViewControllerDelegate
 - (void)addSiteMediaAssets:(NSArray *)assets
 {
     for (Media *media in assets) {
-        if ([media mediaType] == MediaTypeImage) {
-            [self.editorView insertImage:media.remoteURL alt:media.title];
-        } else if ([media mediaType] == MediaTypeVideo) {
-            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
-            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+        if ([media.mediaID intValue] != 0){
+            if ([media mediaType] == MediaTypeImage) {
+                [self.editorView insertImage:media.remoteURL alt:media.title];
+            } else if ([media mediaType] == MediaTypeVideo) {
+                [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
+                [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+            }
+        } else {
+            NSString *mediaUniqueID = [self uniqueIdForMedia];
+            [self prepareMediaProgressForNumberOfAssets:1];
+            if ([media mediaType] == MediaTypeImage) {
+                [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
+            } else if ([media mediaType] == MediaTypeVideo) {
+                [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media thumbnailLocalURL]];
+            }
+            [self uploadMedia:media trackingId:mediaUniqueID];
         }
     }
 }
