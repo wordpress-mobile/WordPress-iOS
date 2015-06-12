@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -30,7 +30,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="600" id="FtB-JF-glz"/>
+                        <constraint firstAttribute="width" priority="750" constant="600" id="FtB-JF-glz"/>
                         <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="Ai0-Ac-pOc" secondAttribute="trailing" constant="6" id="Wsa-tE-gWT"/>
                         <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailing" constant="8" id="Xsw-Up-pnb"/>
                         <constraint firstItem="Ai0-Ac-pOc" firstAttribute="leading" secondItem="efX-hG-Sds" secondAttribute="leading" constant="10" id="dri-xh-fhD"/>

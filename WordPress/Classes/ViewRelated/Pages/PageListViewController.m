@@ -103,27 +103,35 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
         return NSLocalizedString(@"Fetching pages...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new pages.");
     }
     PostListFilter *filter = [self currentPostListFilter];
-    NSString *title;
-    switch (filter.filterType) {
-        case PostListStatusFilterDraft:
-            title = NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the pages list and there are no posts");
-            break;
-        case PostListStatusFilterScheduled:
-            title = NSLocalizedString(@"You don't have any scheduled pages.", @"Displayed when the user views scheduled pages in the pages list and there are no pages");
-            break;
-        case PostListStatusFilterTrashed:
-            title = NSLocalizedString(@"You don't have any pages in your trash folder.", @"Displayed when the user views trashed in the pages list and there are no pages");
-            break;
-        default:
-            title = NSLocalizedString(@"You haven't published any pages yet.", @"Displayed when the user views published pages in the pages list and there are no pages");
-            break;
-    }
+    NSDictionary *titles = [self noResultsTitles];
+    NSString *title = [titles stringForKey:@(filter.filterType)];
     return title;
+}
+
+- (NSDictionary *)noResultsTitles
+{
+    NSDictionary *titles;
+    if ([self isSearching]) {
+        titles = @{
+                   @(PostListStatusFilterDraft):[NSString stringWithFormat:NSLocalizedString(@"No drafts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterScheduled):[NSString stringWithFormat:NSLocalizedString(@"No scheduled pages match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterTrashed):[NSString stringWithFormat:NSLocalizedString(@"No trashed pages match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterPublished):[NSString stringWithFormat:NSLocalizedString(@"No pages match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   };
+    } else {
+        titles = @{
+                   @(PostListStatusFilterDraft):NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the pages list and there are no pages"),
+                   @(PostListStatusFilterScheduled):NSLocalizedString(@"You don't have any scheduled pages.", @"Displayed when the user views scheduled pages in the pages list and there are no pages"),
+                   @(PostListStatusFilterTrashed):NSLocalizedString(@"You don't have any pages in your trash folder.", @"Displayed when the user views trashed in the pages list and there are no pages"),
+                   @(PostListStatusFilterPublished):NSLocalizedString(@"You haven't published any pages yet.", @"Displayed when the user views published pages in the pages list and there are no pages"),
+                   };
+    }
+    return titles;
 }
 
 - (NSString *)noResultsMessageText
 {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return [NSString string];
     }
     NSString *message;
@@ -147,7 +155,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (NSString *)noResultsButtonText
 {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return nil;
     }
     NSString *title;
