@@ -3,27 +3,41 @@
 #import "MediaService.h"
 #import "Blog.h"
 #import "ContextManager.h"
+#import "Post.h"
 
 @interface  MediaLibraryPickerDataSource()
 
 @property (nonatomic, strong) MediaLibraryGroup *mediaGroup;
 @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) AbstractPost *post;
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, strong) NSArray *media;
+@property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 
 @end
 
 @implementation MediaLibraryPickerDataSource
 
-- (instancetype)initWithBlog:(Blog *)blog 
+- (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
         _blog = blog;
+        _assetsLibrary = [[ALAssetsLibrary alloc] init];
     }
     return self;
 }
+
+- (instancetype)initWithPost:(AbstractPost *)post
+{
+    self = [self initWithBlog:post.blog];
+    if (self) {
+        _post = post;
+    }
+    return self;
+}
+
 
 - (instancetype)init
 {
@@ -90,12 +104,52 @@
 
 -(void)addImage:(UIImage *)image metadata:(NSDictionary *)metadata completionBlock:(WPMediaAddedBlock)completionBlock
 {
-
+    [self.assetsLibrary writeImageToSavedPhotosAlbum:[image CGImage]
+                                            metadata:metadata
+                                     completionBlock:^(NSURL *assetURL, NSError *error)
+     {
+         [self addMediaFromAssetURL:assetURL error:error completionBlock:completionBlock];
+     }];
 }
 
 -(void)addVideoFromURL:(NSURL *)url completionBlock:(WPMediaAddedBlock)completionBlock
 {
+    [self.assetsLibrary writeVideoAtPathToSavedPhotosAlbum:url
+                                           completionBlock:^(NSURL *assetURL, NSError *error)
+     {
+         [self addMediaFromAssetURL:assetURL error:error completionBlock:completionBlock];
+     }];
+}
 
+-(void)addMediaFromAssetURL:(NSURL *)assetURL
+                      error:(NSError *)error
+            completionBlock:(WPMediaAddedBlock)completionBlock
+{
+    if (error) {
+        if (completionBlock) {
+            completionBlock(nil, error);
+        }
+        return;
+    }
+    NSManagedObjectID *objectID = [self.post objectID];
+    [self.assetsLibrary assetForURL:assetURL resultBlock:^(ALAsset *asset) {
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+        [mediaService createMediaWithAsset:asset forPostObjectID:objectID completion:^(Media *media, NSError *error) {
+            [self loadDataWithSuccess:^{
+                completionBlock(media, error);
+            } failure:^(NSError *error) {
+                if (completionBlock) {
+                    completionBlock(nil, error);
+                }
+            }];
+        }];
+    } failureBlock:^(NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (completionBlock) {
+                completionBlock(nil, error);
+            }
+        });
+    }];
 }
 
 -(void)setMediaTypeFilter:(WPMediaType)filter
@@ -119,13 +173,13 @@
     NSPredicate *predicate;
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"image"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image"];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video"];
         } break;
         case WPMediaTypeAll: {
-            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && mediaID != 0", @"image", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) ", @"image", @"video"];
         } break;
         default:
             break;
