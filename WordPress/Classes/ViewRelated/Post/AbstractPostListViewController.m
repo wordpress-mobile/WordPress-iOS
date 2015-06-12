@@ -305,12 +305,20 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
 }
 
+- (NSDictionary *)propertiesForAnalytics
+{
+    return @{
+             @"type":[self postTypeToSync],
+             @"filter":self.currentPostListFilter.title,
+             };
+}
 
 #pragma mark - Actions
 
 - (IBAction)refresh:(id)sender
 {
     [self syncItemsWithUserInteraction:YES];
+    [WPAnalytics track:WPAnalyticsStatPostListPullToRefresh withProperties:[self propertiesForAnalytics]];
 }
 
 - (IBAction)handleAddButtonTapped:(id)sender
@@ -325,6 +333,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)didTapNoResultsView:(WPNoResultsView *)noResultsView
 {
+    [WPAnalytics track:WPAnalyticsStatPostListNoResultsButtonPressed withProperties:[self propertiesForAnalytics]];
     if ([self currentPostListFilter].filterType == PostListStatusFilterScheduled) {
         NSInteger index = [self indexForFilterWithType:PostListStatusFilterDraft];
         [self setCurrentFilterIndex:index];
@@ -416,6 +425,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
+    [WPAnalytics track:WPAnalyticsStatPostListLoadedMore withProperties:[self propertiesForAnalytics]];
     [self.postListFooterView showSpinner:YES];
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
@@ -585,6 +595,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)publishPost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListPublishAction withProperties:[self propertiesForAnalytics]];
     apost.status = PostStatusPublish;
     apost.dateCreated = [NSDate date];
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -602,6 +613,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)viewPost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListViewAction withProperties:[self propertiesForAnalytics]];
     apost = ([apost hasRevision]) ? apost.revision : apost;
     PostPreviewViewController *controller = [[PostPreviewViewController alloc] initWithPost:apost shouldHideStatusBar:NO];
     controller.hidesBottomBarWhenPushed = YES;
@@ -610,6 +622,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)deletePost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListTrashAction withProperties:[self propertiesForAnalytics]];
     NSNumber *postID = apost.postID;
     [self.recentlyTrashedPostIDs addObject:postID];
 
@@ -638,6 +651,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)restorePost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListRestoreAction withProperties:[self propertiesForAnalytics]];
     // if the post was recently deleted, update the status helper and reload the cell to display a spinner
     NSNumber *postID = apost.postID;
     NSManagedObjectID *postObjectID = apost.objectID;
@@ -786,6 +800,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if (newIndex == index) {
         return;
     }
+    [WPAnalytics track:WPAnalyticsStatPostListStatusFilterChanged withProperties:[self propertiesForAnalytics]];
     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:[self keyForCurrentListStatusFilter]];
     [NSUserDefaults resetStandardUserDefaults];
 
@@ -878,6 +893,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)presentSearchController:(WPSearchController *)searchController
 {
+    [WPAnalytics track:WPAnalyticsStatPostListSearchOpened withProperties:[self propertiesForAnalytics]];
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
     [UIView animateWithDuration:PostSearchBarAnimationDuration
