@@ -158,6 +158,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [self.searchController setActive:NO];
     [super viewWillDisappear:animated];
     self.resultsController.delegate = nil;
 }
@@ -498,7 +499,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self.searchController setActive:NO];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
