@@ -213,8 +213,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID]];
-    Media *media = [mediaSet anyObject];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID];
+    NSError *error = nil;
+    Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
         if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
             if (success) {
@@ -227,7 +230,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         }
     } else {
         if (failure) {
-            failure(nil);
+            failure(error);
         }
     }
 }
