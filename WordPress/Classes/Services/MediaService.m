@@ -217,16 +217,16 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     Media *media = [mediaSet anyObject];
     if (media) {
         if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
-            if (success){
+            if (success) {
                 success(media.remoteURL, media.thumbnailLocalURL);
             }
         } else {
-            if (success){
+            if (success) {
                 success(media.remoteURL, @"");
             }
         }
     } else {
-        if (failure){
+        if (failure) {
             failure(nil);
         }
     }
@@ -341,7 +341,6 @@ static NSString * const MediaDirectory = @"Media";
     media.desc = remoteMedia.descriptionText;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
-    //media.exif = remoteMedia.exif;
     media.shortcode = remoteMedia.shortcode;
     media.videopressGUID = remoteMedia.videopressGUID;
 }
