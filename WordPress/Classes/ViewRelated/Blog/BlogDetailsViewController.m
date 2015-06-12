@@ -435,24 +435,17 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
 
-    NSString *blogURL = blog.homeURL;
-
-    // Check if the same site already loaded
-    if ([self.navigationController.visibleViewController isMemberOfClass:[WPWebViewController class]] &&
-        [((WPWebViewController*)self.navigationController.visibleViewController).url.absoluteString isEqual:blogURL]) {
-        // Do nothing
-    } else {
-        NSURL *targetURL = [NSURL URLWithString:blogURL];
-        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-        if (blog.isPrivate) {
-            webViewController.authToken = blog.authToken;
-            webViewController.username = blog.username;
-            webViewController.password = blog.password;
-            webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
-        }
-        [self.navigationController pushViewController:webViewController animated:YES];
+    NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
+    if (blog.isPrivate) {
+        webViewController.authToken = blog.authToken;
+        webViewController.username = blog.username;
+        webViewController.password = blog.password;
+        webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     }
-    return;
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)showViewAdminForBlog:(Blog *)blog

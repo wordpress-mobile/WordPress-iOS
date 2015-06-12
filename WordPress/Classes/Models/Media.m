@@ -164,7 +164,7 @@
 - (void)remove
 {
     NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:self.localURL error:&error];
+    [[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error];
     [[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error];
 
     [self.managedObjectContext performBlockAndWait:^{
@@ -263,10 +263,32 @@
 
 - (NSString *)thumbnailLocalURL;
 {
-    if ( self.localURL ) {
-        return [NSString stringWithFormat:@"%@-thumbnail",self.localURL];
+    if ( self.absoluteLocalURL ) {
+        return [NSString stringWithFormat:@"%@-thumbnail",self.absoluteLocalURL];
     } else {
         return nil;
     }
 }
+
+- (NSString *)absoluteLocalURL
+{
+    if ( self.localURL ) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localURL]];
+        return absolutePath;
+    } else {
+        return nil;
+    }
+}
+
+- (void)setAbsoluteLocalURL:(NSString *)absoluteLocalURL
+{
+    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
+    self.localURL = localPath;
+}
+
 @end

@@ -1,6 +1,5 @@
 #import "PostCardTableViewCell.h"
 #import "BasePost.h"
-#import "NSDate+StringFormatting.h"
 #import "PhotonImageURLHelper.h"
 #import "PostCardActionBar.h"
 #import "PostCardActionBarItem.h"
@@ -43,8 +42,6 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postContentBottomConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *postCardImageViewBottomConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetWrapperViewHeightConstraint;
-@property (nonatomic, strong) IBOutlet NSLayoutConstraint *snippetThumbPaddingWidthConstraint;
 
 @property (nonatomic, weak) id<WPPostContentViewProvider>contentProvider;
 @property (nonatomic, assign) CGFloat headerViewHeight;
@@ -103,7 +100,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         height += self.headerViewLowerMargin;
     }
 
-    if (self.postCardImageView && !self.snippetWrapperViewHeightConstraint) {
+    if (self.postCardImageView) {
         // the image cell xib
         height += CGRectGetHeight(self.postCardImageView.frame);
         height += self.postCardImageViewBottomConstraint.constant;
@@ -112,16 +109,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += self.titleLowerConstraint.constant;
 
-    if (self.snippetWrapperViewHeightConstraint) {
-        // the thumbnail cell xib
-        CGFloat imageHeight = CGRectGetHeight(self.postCardImageView.frame);
-        CGSize amendedInnerSize = innerSize;
-        amendedInnerSize.width -= (CGRectGetWidth(self.postCardImageView.frame) + self.snippetThumbPaddingWidthConstraint.constant);
-        CGFloat snippetHeight = [self.snippetLabel sizeThatFits:amendedInnerSize].height;
-        height += MAX(imageHeight, snippetHeight);
-    } else {
-        height += [self.snippetLabel sizeThatFits:innerSize].height;
-    }
+    height += [self.snippetLabel sizeThatFits:innerSize].height;
     height += self.snippetLowerConstraint.constant;
 
     height += CGRectGetHeight(self.dateView.frame);
@@ -174,6 +162,11 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [self configureActionBar];
 
     [self setNeedsUpdateConstraints];
+}
+
+- (id<WPPostContentViewProvider>)providerOrRevision
+{
+    return [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
 }
 
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
@@ -281,13 +274,14 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         return;
     }
 
-    if (![self.contentProvider featuredImageURLForDisplay]) {
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    if (![provider featuredImageURLForDisplay]) {
         self.postCardImageView.image = nil;
     }
 
-    NSURL *url = [self.contentProvider featuredImageURLForDisplay];
+    NSURL *url = [provider featuredImageURLForDisplay];
     // if not private create photon url
-    if (![self.contentProvider isPrivate]) {
+    if (![provider isPrivate]) {
         CGSize imageSize = self.postCardImageView.frame.size;
         url = [PhotonImageURLHelper photonURLWithSize:imageSize forImageURL:url];
     }
@@ -298,7 +292,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureTitle
 {
-    NSString *str = [self.contentProvider titleForDisplay] ?: [NSString string];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    NSString *str = [provider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.titleLowerConstraint.constant = ([str length] > 0) ? self.titleViewLowerMargin : 0.0;
@@ -306,7 +301,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureSnippet
 {
-    NSString *str = [self.contentProvider contentPreviewForDisplay];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    NSString *str = [provider contentPreviewForDisplay] ?: [NSString string];
     self.snippetLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide postCardSnippetAttributes]];
     self.snippetLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     self.snippetLowerConstraint.constant = ([str length] > 0) ? self.snippetViewLowerMargin : 0.0;
@@ -314,7 +310,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureDate
 {
-    self.dateLabel.text = [[self.contentProvider dateForDisplay] shortString];
+    id<WPPostContentViewProvider>provider = [self providerOrRevision];
+    self.dateLabel.text = [provider dateStringForDisplay];
 }
 
 - (void)configureStatusView
@@ -329,19 +326,20 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
         self.statusHeightConstraint.constant = self.statusViewHeight;
     }
 
+    self.statusLabel.text = str;
     // Set the correct icon and text color
     if ([[self.contentProvider status] isEqualToString:PostStatusPending]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
         self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusScheduled]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-scheduled"];
         self.statusLabel.textColor = [WPStyleGuide wordPressBlue];
     } else if ([[self.contentProvider status] isEqualToString:PostStatusTrash]) {
-        self.statusLabel.text = str;
         self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-trashed"];
         self.statusLabel.textColor = [WPStyleGuide errorRed];
+    } else if (!self.statusView.hidden) {
+        self.statusImageView.image = [UIImage imageNamed:@"icon-post-status-pending"];
+        self.statusLabel.textColor = [WPStyleGuide jazzyOrange];
     } else {
         self.statusLabel.text = nil;
         self.statusImageView.image = nil;

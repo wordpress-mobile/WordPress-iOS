@@ -98,9 +98,9 @@
 
     NSURL *blogURL = [NSURL URLWithString:self.post.blogURL];
     if (self.post.isWPCom) {
-        [attributionView.avatarImageView setImageWithBlavatarUrl:[blogURL host] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
+        [attributionView.avatarImageView setImageWithSiteIcon:[blogURL host] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
     } else {
-        [attributionView.avatarImageView setImageWithBlavatarUrl:[blogURL host] placeholderImage:[UIImage imageNamed:@"icon-feed"]];
+        [attributionView.avatarImageView setImageWithSiteIcon:[blogURL host] placeholderImage:[UIImage imageNamed:@"icon-feed"]];
     }
 
     [self.view addSubview:self.siteHeaderView];
@@ -173,7 +173,9 @@
 {
     NSURL *targetURL = [NSURL URLWithString:self.post.blogURL];
     WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:targetURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender

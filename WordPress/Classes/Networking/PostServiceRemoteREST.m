@@ -6,27 +6,16 @@
 #import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
-@interface PostServiceRemoteREST ()
-
-@property (nonatomic, strong) WordPressComApi *api;
-
-@end
-
 @implementation PostServiceRemoteREST
-
-- (id)initWithApi:(WordPressComApi *)api {
-    self = [super init];
-    if (self) {
-        _api = api;
-    }
-    return self;
-}
 
 - (void)getPostWithID:(NSNumber *)postID
               forBlog:(Blog *)blog
               success:(void (^)(RemotePost *post))success
               failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert(postID);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
     NSDictionary *parameters = @{ @"context": @"edit" };
     [self.api GET:path
@@ -56,6 +45,9 @@
                success:(void (^)(NSArray *))success
                failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([postType isKindOfClass:[NSString class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
@@ -86,6 +78,9 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
@@ -108,6 +103,9 @@
            success:(void (^)(RemotePost *))success
            failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
@@ -130,6 +128,10 @@
            success:(void (^)())success
            failure:(void (^)(NSError *))failure
 {
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSParameterAssert(blog.dotComID != nil);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil
@@ -145,13 +147,14 @@
 }
 
 - (void)trashPost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+          forBlog:(Blog *)blog
+          success:(void (^)(RemotePost *))success
+          failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(post != nil);
-    NSParameterAssert(blog != nil);
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil
@@ -168,13 +171,14 @@
 }
 
 - (void)restorePost:(RemotePost *)post
-           forBlog:(Blog *)blog
-           success:(void (^)(RemotePost *))success
-           failure:(void (^)(NSError *))failure
+            forBlog:(Blog *)blog
+            success:(void (^)(RemotePost *))success
+            failure:(void (^)(NSError *))failure
 {
-    NSParameterAssert(post != nil);
-    NSParameterAssert(blog != nil);
+    NSParameterAssert([post isKindOfClass:[RemotePost class]]);
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSParameterAssert(blog.dotComID != nil);
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
     [self.api POST:path
         parameters:nil
