@@ -1,8 +1,8 @@
-#import "NewCommentsTableViewCell.h"
+#import "CommentsTableViewCell.h"
 #import "Comment.h"
 #import "NSString+XMLExtensions.h"
 
-@implementation NewCommentsTableViewCell
+@implementation CommentsTableViewCell
 
 + (BOOL)showGravatarImage
 {
