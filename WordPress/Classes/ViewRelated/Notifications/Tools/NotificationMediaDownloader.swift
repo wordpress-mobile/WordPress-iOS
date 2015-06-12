@@ -163,7 +163,7 @@ import Foundation
     *  @returns     A dictionary with URL as Key, and Image as Value.
     */
     private func shouldDownloadImage(#url: NSURL) -> Bool {
-        return originalImagesMap[url] == nil && checkRetryCount(url) < maximumRetryCount && !beingDownloaded.contains(url)
+        return originalImagesMap[url] == nil && getRetryCount(url) < maximumRetryCount && !beingDownloaded.contains(url)
     }
     
     /**
@@ -172,7 +172,7 @@ import Foundation
     *  @param       urls            The URL we're tracking
     */
     private func increaseRetryCount(url: NSURL) {
-        retryMap[url] = checkRetryCount(url) + 1
+        retryMap[url] = getRetryCount(url) + 1
     }
 
     /**
@@ -181,7 +181,7 @@ import Foundation
     *  @param       urls            The URL we're tracking
     *  @return      The current retry count
     */
-    private func checkRetryCount(url: NSURL) -> Int {
+    private func getRetryCount(url: NSURL) -> Int {
         return retryMap[url] ?? 0
     }
     
