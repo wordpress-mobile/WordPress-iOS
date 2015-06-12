@@ -3,7 +3,7 @@
 
 
 
-@interface CommentsViewController : UIViewController
+@interface CommentsViewController : UITableViewController
 
 @property (nonatomic, strong) Blog *blog;
 
