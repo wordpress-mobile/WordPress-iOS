@@ -38,10 +38,6 @@
 #import "ReaderPostService.h"
 #import "ReaderTopicService.h"
 
-
-// Files
-#import "WPAppFilesManager.h"
-
 // Logging
 #import "WPLogger.h"
 
@@ -160,9 +156,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     // Deferred tasks to speed up app launch
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
         [MediaService cleanUnusedMediaFileFromTmpDir];
-
         [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
     });
     

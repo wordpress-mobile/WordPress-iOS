@@ -14,6 +14,8 @@
 #import "ReaderSiteService.h"
 
 #import "WPWebViewController.h"
+#import "WPImageViewController.h"
+
 #import "ReaderPostDetailViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "StatsViewController.h"
@@ -670,17 +672,21 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Setup the Callbacks
     __weak __typeof(self) weakSelf  = self;
     
-    cell.onDetailsClick             = ^(UIButton * sender){
+    cell.onDetailsClick             = ^(UIButton * sender) {
         NSURL *url = [NSURL URLWithString:userBlock.metaLinksHome];
         if (url) {
             [weakSelf openURL:url];
         }
     };
     
-    cell.onUrlClick                 = ^(NSURL *url){
+    cell.onUrlClick                 = ^(NSURL *url) {
         [weakSelf openURL:url];
     };
 
+    cell.onAttachmentClick          = ^(NSTextAttachment *attachment) {
+        [weakSelf displayFullscreenImage:attachment.image];
+    };
+    
     // Download the Gravatar (If Needed!)
     if (cell.isLayoutCell) {
         return;
@@ -938,11 +944,40 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (BOOL)displayWebViewWithURL:(NSURL *)url
 {
-    BOOL success = url != nil;
-    if (success) {
-        [self performSegueWithIdentifier:NSStringFromClass([WPWebViewController class]) sender:url];
+    BOOL success = [url isKindOfClass:[NSURL class]];
+    if (!success) {
+        return NO;
     }
+    
+    WPWebViewController *webViewController  = [WPWebViewController webViewControllerWithURL:url];
+    if (url.isWordPressDotComUrl) {
+        NSManagedObjectContext *context     = [[ContextManager sharedInstance] mainContext];
+        AccountService *accountService      = [[AccountService alloc] initWithManagedObjectContext:context];
+        WPAccount *account                  = accountService.defaultWordPressComAccount;
+        
+        webViewController.username          = account.username;
+        webViewController.authToken         = account.authToken;
+    }
+    
+    UINavigationController *navController   = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    
+    [self presentViewController:navController animated:YES completion:nil];
+    
     return success;
+}
+
+- (BOOL)displayFullscreenImage:(UIImage *)image
+{
+    if (!image) {
+        return NO;
+    }
+    
+    WPImageViewController *imageViewController = [[WPImageViewController alloc] initWithImage:image];
+    imageViewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    imageViewController.modalPresentationStyle = UIModalPresentationFullScreen;
+    [self presentViewController:imageViewController animated:YES completion:nil];
+    
+    return YES;
 }
 
 
@@ -1238,13 +1273,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    if ([segue.identifier isEqualToString:NSStringFromClass([WPWebViewController class])]) {
-        NSParameterAssert([sender isKindOfClass:[NSURL class]]);
-        
-        WPWebViewController *webViewController          = segue.destinationViewController;
-        webViewController.url                           = (NSURL *)sender;
-        
-    } else if([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
+    if ([segue.identifier isEqualToString:NSStringFromClass([StatsViewController class])]) {
         NSParameterAssert([sender isKindOfClass:[Blog class]]);
         
         StatsViewController *statsViewController        = segue.destinationViewController;

@@ -1102,8 +1102,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:url];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
@@ -1142,42 +1143,31 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:linkURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
-    UIViewController *controller;
-
-    if (imageControl.linkURL) {
-        NSString *url = [imageControl.linkURL absoluteString];
-
-        BOOL matched = NO;
-        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-        for (NSString *type in types) {
-            if (NSNotFound != [url rangeOfString:type].location) {
-                matched = YES;
-                break;
-            }
-        }
-
-        if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
-        } else {
-            controller = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
-        }
+    UIViewController *controller = nil;
+    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
+    
+    if (isSupportedNatively) {
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
+    } else if (imageControl.linkURL) {
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
+        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
-
+    
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    } else {
-        [self.navigationController pushViewController:controller animated:YES];
     }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 
