@@ -213,16 +213,25 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                             success:(void (^)(NSString *videoURL, NSString *posterURL))success
                             failure:(void (^)(NSError *error))failure
 {
-    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
-    Media *media = [mediaSet anyObject];
+    NSString *entityName = NSStringFromClass([Media class]);
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+    request.predicate = [NSPredicate predicateWithFormat:@"videopressGUID = %@", videoPressID];
+    NSError *error = nil;
+    Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
         if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
-            success(media.remoteURL, media.thumbnailLocalURL);
+            if (success) {
+                success(media.remoteURL, media.thumbnailLocalURL);
+            }
         } else {
-            success(media.remoteURL, @"");
+            if (success) {
+                success(media.remoteURL, @"");
+            }
         }
     } else {
-        failure(nil);
+        if (failure) {
+            failure(error);
+        }
     }
 }
 
@@ -335,8 +344,8 @@ static NSString * const MediaDirectory = @"Media";
     media.desc = remoteMedia.descriptionText;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
-    //media.exif = remoteMedia.exif;
     media.shortcode = remoteMedia.shortcode;
+    media.videopressGUID = remoteMedia.videopressGUID;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
@@ -353,7 +362,8 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.height = media.height;
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
-    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
+    remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
+	remoteMedia.videopressGUID = media.videopressGUID;    
     return remoteMedia;
 }
 

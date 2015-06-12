@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSNumber * width;
 @property (nonatomic, strong) NSString * shortcode;
 @property (nonatomic, strong) NSDictionary * exif;
+@property (nonatomic, strong) NSString *videopressGUID;
 
 @end
