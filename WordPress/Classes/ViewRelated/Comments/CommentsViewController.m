@@ -7,6 +7,8 @@
 #import "WordPress-Swift.h"
 #import "WPTableViewHandler.h"
 #import "WPGUIConstants.h"
+#import "WPNoResultsView.h"
+#import "UIView+Subviews.h"
 #import "ContextManager.h"
 
 
@@ -17,6 +19,7 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
 @property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper   *syncHelper;
+@property (nonatomic, strong) WPNoResultsView       *noResultsView;
 @end
 
 
@@ -72,6 +75,12 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
     // Register the cells!
     Class cellClass = [CommentsTableViewCell class];
     [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self showNoResultsViewIfNeeded];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -172,6 +181,11 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
     return NSStringFromClass([Comment class]);
 }
 
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self showNoResultsViewIfNeeded];
+}
+
 
 #pragma mark - Actions
 
@@ -224,6 +238,38 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 }
 
 
+#pragma mark - WPNoResultsView Methods
+
+- (void)showNoResultsViewIfNeeded
+{
+    // Remove If Needed
+    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
+        [self.noResultsView removeFromSuperview];
+        return;
+    }
+    
+    // Attach the view
+    WPNoResultsView *noResultsView  = self.noResultsView;
+    if (!noResultsView.superview) {
+        [self.tableView addSubviewWithFadeAnimation:noResultsView];
+    }
+    
+    // Refresh its properties: The user may have signed into WordPress.com
+    noResultsView.titleText = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+}
+
+- (WPNoResultsView *)noResultsView
+{
+    if (!_noResultsView) {
+        _noResultsView = [WPNoResultsView new];
+    }
+    
+    return _noResultsView;
+}
+
+
+
+
 //- (BOOL)isSyncing
 //{
 //    return [CommentService isSyncingCommentsForBlog:self.blog];
@@ -232,11 +278,6 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 //- (NSDate *)lastSyncDate
 //{
 //    return self.blog.lastCommentsSync;
-//}
-//
-//- (NSString *)noResultsTitleText
-//{
-//    return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
 //}
 
 @end
