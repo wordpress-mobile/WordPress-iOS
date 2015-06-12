@@ -520,7 +520,11 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)downloadAndResizeMedia:(NSIndexPath *)indexPath blockGroup:(NotificationBlockGroup *)blockGroup
 {
-    // Download Media: Only embeds for Text and Comment notifications
+    //  Notes:
+    //  -   We'll *only* download Media for Text and Comment Blocks
+    //  -   Plus, we'll also resize the downloaded media cache *if needed*. This is meant to adjust images to
+    //      better fit onscreen, whenever the device orientation changes (and in turn, the maxMediaEmbedWidth changes too).
+    //
     NSSet *richBlockTypes           = [NSSet setWithObjects:@(NoteBlockTypeText), @(NoteBlockTypeComment), nil];
     NSSet *imageUrls                = [blockGroup imageUrlsForBlocksOfTypes:richBlockTypes];
     __weak __typeof(self) weakSelf  = self;
