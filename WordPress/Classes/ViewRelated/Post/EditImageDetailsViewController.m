@@ -6,8 +6,8 @@
 #import "AbstractPost.h"
 #import "PostSettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
-#import "WPTableViewController.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
 static NSString *const TextFieldCell = @"TextFieldCell";
