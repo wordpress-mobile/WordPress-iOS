@@ -9,3 +9,5 @@ extern const CGFloat WPColorZero;
 extern const CGFloat WPAnimationDurationDefault;
 extern const CGFloat WPAnimationDurationFast;
 extern const CGFloat WPAnimationDurationFaster;
+
+extern const CGFloat WPTableViewTopMargin;
