@@ -44,14 +44,17 @@ import Foundation
     }
     
     /**
-    *  @brief       Resizes the downloaded media to fit a "new" maximumWidth, if needed.
+    *  @brief       Resizes the downloaded media to fit a "new" maximumWidth ***if needed**.
     *  @details     This method will check the cache of "resized images", and will verify if the original image
     *               *could* be resized again, so that it better fits the *maximumWidth* received.
+    *               If an image *could* be resized, we proceed, and hit the completion block, once per asset.
+    *               Otherwise, we just don't do anything else.
+    *
     *               Useful to handle rotation events: the downloaded images may need to be resized, again, to 
     *               fit onscreen.
     *
     *  @param       maximumWidth    Represents the maximum width that a returned image should have
-    *  @param       completion      Is a closure that will get executed each time a new asset is available
+    *  @param       completion      Is a closure that will get executed each time a new asset is effectively resized
     */
     public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
         for (url, originalImage) in originalImagesMap {
