@@ -4,7 +4,7 @@
 
 @class Coordinate;
 
-@interface Post : AbstractPost <WPPostContentViewProvider>
+@interface Post : AbstractPost
 
 ///-------------------------------
 /// @name Specific Post properties

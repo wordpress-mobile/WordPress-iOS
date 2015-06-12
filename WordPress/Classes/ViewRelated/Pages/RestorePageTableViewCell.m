@@ -6,7 +6,7 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *restoreLabel;
 @property (nonatomic, strong) IBOutlet UIButton *restoreButton;
-@property (nonatomic, strong) id<WPContentViewProvider>contentProvider;
+@property (nonatomic, strong) id<WPPostContentViewProvider>contentProvider;
 
 @end
 
@@ -49,7 +49,7 @@
     [self.restoreButton setTitle:buttonTitle forState:UIControlStateNormal];
 }
 
-- (void)configureCell:(id<WPContentViewProvider>)contentProvider
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
 {
     self.contentProvider = contentProvider;
 }
