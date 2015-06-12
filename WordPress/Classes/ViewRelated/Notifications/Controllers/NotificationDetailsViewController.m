@@ -548,7 +548,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 {
     UIEdgeInsets textPadding        = NoteBlockTextTableViewCell.defaultLabelPadding;
     CGFloat portraitWidth           = [UIDevice isPad] ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    CGFloat maxWidth                = portraitWidth - textPadding.left - textPadding.right;
+    CGFloat maxWidth                = portraitWidth - (textPadding.left + textPadding.right);
     
     return maxWidth;
 }
