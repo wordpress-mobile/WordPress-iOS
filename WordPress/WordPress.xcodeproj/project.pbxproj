@@ -346,7 +346,6 @@
 		A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A01C542D0E24E88400D411F2 /* SystemConfiguration.framework */; };
 		A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
 		A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A0E293F00E21027E00C6919C /* WPAddPostCategoryViewController.m */; };
-		A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A25EBD86156E330600530E3D /* WPTableViewController.m */; };
 		A2787D0219002AB1000D6CA6 /* HelpshiftConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */; };
 		A2DC5B1A1953451B009584C3 /* WPNUXHelpBadgeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DC5B191953451B009584C3 /* WPNUXHelpBadgeLabel.m */; };
 		ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB5FD0E121C7300F38795 /* PostSettingsViewController.m */; };
@@ -1206,8 +1205,6 @@
 		A20971B719B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		A20971B819B0BC570058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		A20971B919B0BC580058F395 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "pt-BR.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		A25EBD85156E330600530E3D /* WPTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewController.h; sourceTree = "<group>"; };
-		A25EBD86156E330600530E3D /* WPTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewController.m; sourceTree = "<group>"; };
 		A2787D0119002AB1000D6CA6 /* HelpshiftConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = HelpshiftConfig.plist; sourceTree = "<group>"; };
 		A284044518BFE7F300D982B6 /* WordPress 15.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 15.xcdatamodel"; sourceTree = "<group>"; };
 		A28F6FD119B61ACA00AADE55 /* SwiftPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = SwiftPlayground.playground; sourceTree = "<group>"; };
@@ -1446,7 +1443,6 @@
 		E1A0FAE6162F11CE0063B098 /* UIDevice+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = "UIDevice+Helpers.m"; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		E1A386C714DB05C300954CF8 /* AVFoundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		E1A386C914DB05F700954CF8 /* CoreMedia.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WPTableViewControllerSubclass.h; sourceTree = "<group>"; };
 		E1A6DBD619DC7D080071AC1E /* RemotePostCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePostCategory.h; path = "Remote Objects/RemotePostCategory.h"; sourceTree = "<group>"; };
 		E1A6DBD719DC7D080071AC1E /* RemotePostCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePostCategory.m; path = "Remote Objects/RemotePostCategory.m"; sourceTree = "<group>"; };
 		E1A6DBD819DC7D080071AC1E /* RemotePost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePost.h; path = "Remote Objects/RemotePost.h"; sourceTree = "<group>"; };
@@ -1568,7 +1564,6 @@
 		FFE69A291B1BFE050073C2EB /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2A1B1BFE200073C2EB /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		FFE69A2B1B1BFE620073C2EB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		FFE69A2D1B1DF8D60073C2EB /* WordPress 31.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 31.xcdatamodel"; sourceTree = "<group>"; };
 		FFF96F8219EBE7FB00DFC821 /* UITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		FFF96F8519EBE7FB00DFC821 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFF96F8F19EBE81F00DFC821 /* CommentsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTests.m; sourceTree = "<group>"; };
@@ -2566,9 +2561,6 @@
 			children = (
 				310186691A373B01008F7DF6 /* WPTabBarController.h */,
 				3101866A1A373B01008F7DF6 /* WPTabBarController.m */,
-				A25EBD85156E330600530E3D /* WPTableViewController.h */,
-				A25EBD86156E330600530E3D /* WPTableViewController.m */,
-				E1A38C921581879D00439E55 /* WPTableViewControllerSubclass.h */,
 				5DBFC8AA1A9C0EEF00E00DE4 /* WPScrollableViewController.h */,
 			);
 			path = System;
@@ -4036,7 +4028,6 @@
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
 				E114D79A153D85A800984182 /* WPError.m in Sources */,
 				E1D04D8419374F2C002FADD7 /* BlogServiceRemoteREST.m in Sources */,
-				A25EBD87156E330600530E3D /* WPTableViewController.m in Sources */,
 				5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */,
 				5926E1E31AC4468300964783 /* WPCrashlytics.m in Sources */,
 				B55853F31962337500FAF6C3 /* NSScanner+Helpers.m in Sources */,
