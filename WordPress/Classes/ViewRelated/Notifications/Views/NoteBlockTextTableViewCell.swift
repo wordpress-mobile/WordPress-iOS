@@ -104,7 +104,7 @@ import Foundation
     
     // MARK: - Constants
     public static let maxWidth            = WPTableViewFixedWidth
-    public static let defaultLabelPadding = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 12)
+    public static let defaultLabelPadding = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     
     // MARK: - IBOutlets
     @IBOutlet private weak var textView: RichTextView!
