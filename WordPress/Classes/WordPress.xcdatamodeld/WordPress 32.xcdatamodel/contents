@@ -87,6 +87,7 @@
         <attribute name="hasOlderPosts" transient="YES" attributeType="Boolean" defaultValueString="YES">
             <userInfo/>
         </attribute>
+        <attribute name="icon" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="isActivated" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isAdmin" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="isJetpack" optional="YES" attributeType="Boolean" syncable="YES"/>
@@ -247,9 +248,6 @@
         <attribute name="shortcode" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
-        <attribute name="thumbnail" optional="YES" attributeType="Binary">
-            <userInfo/>
-        </attribute>
         <attribute name="title" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -391,10 +389,10 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="223"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="495"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="510"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="343"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="330"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
