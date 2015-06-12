@@ -21,24 +21,34 @@ import Foundation
     
     /**
     *  @brief       Downloads a set of assets, resizes them (if needed), and hits a completion block.
-    *  @details     The completion block will get called multiple times (once every time a new asset is
-    *               ready for usage), so that the interface can get gradually populated.
+    *  @details     The completion block will get called just once all of the assets are downloaded, and properly sized.
     *
     *  @param       urls            Is the collection of unique Image URL's we'd need to download.
     *  @param       maximumWidth    Represents the maximum width that a returned image should have
-    *  @param       completion      Is a closure that will get executed each time a new asset is available
+    *  @param       completion      Is a closure that will get executed once all of the assets are ready
     */
     public func downloadMedia(#urls: Set<NSURL>, maximumWidth: CGFloat, completion: SuccessBlock) {
-        let missingUrls = filter(urls) { self.shouldDownloadImage(url: $0) }
+        let missingUrls         = filter(urls) { self.shouldDownloadImage(url: $0) }
+        let group               = dispatch_group_create()
+        var shouldHitCompletion = !missingUrls.isEmpty
 
         for url in missingUrls {
+            
+            dispatch_group_enter(group)
+            
             downloadImage(url) {
                 self.originalImagesMap[url] = $0
                 
                 self.resizeImageIfNeeded($0, maximumWidth: maximumWidth) {
                     self.resizedImagesMap[url] = $0
-                    completion()
+                    dispatch_group_leave(group)
                 }
+            }
+        }
+        
+        dispatch_group_notify(group, dispatch_get_main_queue()) {
+            if shouldHitCompletion {
+                completion()
             }
         }
     }
@@ -57,7 +67,7 @@ import Foundation
     */
     public func resizeMediaWithIncorrectSize(maximumWidth: CGFloat, completion: SuccessBlock) {
         let group               = dispatch_group_create()
-        var resizedCount        = 0
+        var shouldHitCompletion = false
         
         for (url, originalImage) in originalImagesMap {
             let targetSize      = cappedImageSize(originalImage.size, maximumWidth: maximumWidth)
@@ -68,7 +78,7 @@ import Foundation
             }
             
             dispatch_group_enter(group)
-            ++resizedCount
+            shouldHitCompletion = true
             
             resizeImageIfNeeded(originalImage, maximumWidth: maximumWidth) {
                 self.resizedImagesMap[url] = $0
@@ -77,7 +87,7 @@ import Foundation
         }
         
         dispatch_group_notify(group, dispatch_get_main_queue()) {
-            if resizedCount != 0 {
+            if shouldHitCompletion {
                 completion()
             }
         }
