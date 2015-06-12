@@ -439,7 +439,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
-
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
@@ -669,7 +668,13 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (NSPredicate *)fetchRequestPredicateForSearch
 {
-    return [NSPredicate predicateWithFormat:@"( blogName contains[cd] %@ ) OR ( url contains[cd] %@)", self.searchController.searchBar.text, self.searchController.searchBar.text];
+    NSString *searchText = self.searchController.searchBar.text;
+    
+    if ([searchText isEmpty]) {
+        return [self fetchRequestPredicateForHideableBlogs];
+    } else {
+        return [NSPredicate predicateWithFormat:@"( blogName contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
+    }
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs
