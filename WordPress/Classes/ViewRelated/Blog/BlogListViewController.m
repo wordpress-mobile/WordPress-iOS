@@ -26,13 +26,13 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
-@property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPSearchController *searchController;
-@property (nonatomic, strong) UIView *searchWrapperView;
-@property (nonatomic, strong) NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (weak, nonatomic) IBOutlet UIView *searchWrapperView;
+@property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 
 @end
 
@@ -109,23 +109,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, 100.0)];
-    self.searchWrapperView.backgroundColor = [UIColor redColor];
-    self.searchWrapperViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.searchWrapperView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:nil attribute:nil multiplier:1.0 constant:SearchWrapperViewLandscapeHeight];
-    UIView *searchWrapperView = self.searchWrapperView;
-    searchWrapperView.clipsToBounds = YES;
-    
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 100.0, self.view.frame.size.width, self.view.frame.size.height) style:UITableViewStyleGrouped];
-    self.tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    
-    [self.view addSubview:self.searchWrapperView];
-    [self.view addSubview:self.tableView];
-    
-    [self.searchWrapperView addConstraint:_searchWrapperViewHeightConstraint];
-
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -135,6 +118,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
     [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
     self.tableView.allowsSelectionDuringEditing = YES;
