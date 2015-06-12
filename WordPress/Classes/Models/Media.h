@@ -47,6 +47,7 @@ typedef NS_ENUM(NSUInteger, MediaOrientation) {
 @property (nonatomic, strong) NSNumber * height;
 @property (nonatomic, strong) NSString * orientation DEPRECATED_ATTRIBUTE;
 @property (nonatomic, strong) NSDate * creationDate;
+@property (nonatomic, strong) NSString *videopressGUID;
 @property (weak, nonatomic, readonly) NSString * html;
 @property (nonatomic, strong) NSNumber * remoteStatusNumber;
 @property (nonatomic, assign) MediaRemoteStatus remoteStatus;
