@@ -80,6 +80,11 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+    [self.tableView deselectSelectedRowWithAnimation:YES];
+    
+    // Refresh the UI
     [self showNoResultsViewIfNeeded];
 }
 
@@ -121,27 +126,25 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DDLogMethodParam(indexPath);
-    
-    Comment *comment;
-    if (indexPath) {
-        @try {
-            comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-        }
-        @catch (NSException * e) {
-            comment = nil;
-        }
+    // Failsafe: Make sure that the Notification (still) exists
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
     }
     
-    if (comment) {
-        CommentViewController *vc = [CommentViewController new];
-        vc.comment = comment;
-        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
+    // At last, push the details
+    Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    CommentViewController *vc   = [CommentViewController new];
+    vc.comment                  = comment;
         
-        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        [self.navigationController popToViewController:self animated:YES];
-    }
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 
