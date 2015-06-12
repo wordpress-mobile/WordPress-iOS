@@ -7,7 +7,7 @@
 @property (nonatomic, strong) IBOutlet UIView *pageContentView;
 @property (nonatomic, strong) IBOutlet UILabel *titleLabel;
 @property (nonatomic, strong) IBOutlet UIButton *menuButton;
-@property (nonatomic, strong) id<WPContentViewProvider> contentProvider;
+@property (nonatomic, strong) id<WPPostContentViewProvider> contentProvider;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *maxIPadWidthConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelTopMarginConstraint;
 @property (nonatomic, strong) IBOutlet NSLayoutConstraint *titleLabelBottomMarginConstraint;
@@ -71,7 +71,7 @@
     return width;
 }
 
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
 {
     _contentProvider = contentProvider;
 
@@ -87,14 +87,15 @@
     [WPStyleGuide applyPageTitleStyle:self.titleLabel];
 }
 
-- (void)configureCell:(id<WPContentViewProvider>)contentProvider
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
 {
     self.contentProvider = contentProvider;
 }
 
 - (void)configureTitle
 {
-    NSString *str = [self.contentProvider titleForDisplay] ?: [NSString string];
+    id<WPPostContentViewProvider>provider = [self.contentProvider hasRevision] ? [self.contentProvider revision] : self.contentProvider;
+    NSString *str = [provider titleForDisplay] ?: [NSString string];
     self.titleLabel.attributedText = [[NSAttributedString alloc] initWithString:str attributes:[WPStyleGuide pageCellTitleAttributes]];
     self.titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 }
