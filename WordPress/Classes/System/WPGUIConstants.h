@@ -11,3 +11,5 @@ extern const CGFloat WPAnimationDurationFast;
 extern const CGFloat WPAnimationDurationFaster;
 
 extern const CGFloat WPTableViewTopMargin;
+extern const CGRect WPTableHeaderPadFrame;
+extern const CGRect WPTableFooterPadFrame;
