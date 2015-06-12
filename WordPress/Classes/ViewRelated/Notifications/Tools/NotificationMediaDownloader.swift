@@ -36,20 +36,31 @@ import Foundation
             
             dispatch_group_enter(group)
             
-            downloadImage(url) {
-                self.originalImagesMap[url] = $0
+            downloadImage(url) { (error: NSError?, image: UIImage?) in
                 
-                self.resizeImageIfNeeded($0, maximumWidth: maximumWidth) {
+                // On error: Don't proceed any further
+                if error != nil || image == nil {
+                    dispatch_group_leave(group)
+                    return
+                }
+                
+                // On success: Cache the original image, and resize (if needed)
+                self.originalImagesMap[url] = image!
+                
+                self.resizeImageIfNeeded(image!, maximumWidth: maximumWidth) {
                     self.resizedImagesMap[url] = $0
                     dispatch_group_leave(group)
                 }
             }
         }
         
+        // When all of the workers are ready, hit the completion callback, *if needed*
+        if !shouldHitCompletion {
+            return
+        }
+        
         dispatch_group_notify(group, dispatch_get_main_queue()) {
-            if shouldHitCompletion {
-                completion()
-            }
+            completion()
         }
     }
     
@@ -121,12 +132,14 @@ import Foundation
     
     /**
     *  @brief       Downloads an asset, given its URL
+    *  @details     On failure, this method will attempt the download *maximumRetryCount* times.
+    *               If the URL cannot be downloaded, it'll be marked to be skipped.
     *
     *  @param       url             The URL of the media we should download
     *  @param       retryCount      Number of times the download has been attempted
     *  @param       success         A closure to be executed, on success.
     */
-    private func downloadImage(url: NSURL, retryCount: Int = 0, success: (UIImage -> ())) {
+    private func downloadImage(url: NSURL, retryCount: Int = 0, completion: ((NSError?, UIImage?) -> ())) {
         let request                     = NSMutableURLRequest(URL: url)
         request.HTTPShouldHandleCookies = false
         request.addValue("image/*", forHTTPHeaderField: "Accept")
@@ -137,25 +150,27 @@ import Foundation
             (AFHTTPRequestOperation operation, AnyObject responseObject) -> Void in
             
             if let unwrappedImage = responseObject as? UIImage {
-                success(unwrappedImage)
+                completion(nil, unwrappedImage)
             }
             
-            self.beingDownloaded.remove(url)
+            self.urlsBeingDownloaded.remove(url)
         }, failure: {
             (AFHTTPRequestOperation operation, NSError error) -> Void in
             
             // If possible, retry
             if retryCount < self.maximumRetryCount {
-                self.downloadImage(url, retryCount: retryCount + 1, success: success)
+                self.downloadImage(url, retryCount: retryCount + 1, completion: completion)
                 
             // Otherwise, we just failed!
             } else {
-                self.beingDownloaded.remove(url)
+                completion(error, nil)
+                self.urlsBeingDownloaded.remove(url)
+                self.urlsFailed.insert(url)
             }
         })
         
         downloadQueue.addOperation(operation)
-        beingDownloaded.insert(url)
+        urlsBeingDownloaded.insert(url)
     }
     
     /**
@@ -170,7 +185,7 @@ import Foundation
     *  @returns     A dictionary with URL as Key, and Image as Value.
     */
     private func shouldDownloadImage(#url: NSURL) -> Bool {
-        return originalImagesMap[url] == nil && !beingDownloaded.contains(url)
+        return originalImagesMap[url] == nil && !urlsBeingDownloaded.contains(url) && !urlsFailed.contains(url)
     }
     
     /**
@@ -226,5 +241,6 @@ import Foundation
     private let resizeQueue         = dispatch_queue_create("notifications.media.resize", DISPATCH_QUEUE_CONCURRENT)
     private var originalImagesMap   = [NSURL: UIImage]()
     private var resizedImagesMap    = [NSURL: UIImage]()
-    private var beingDownloaded     = Set<NSURL>()
+    private var urlsBeingDownloaded = Set<NSURL>()
+    private var urlsFailed          = Set<NSURL>()
 }
