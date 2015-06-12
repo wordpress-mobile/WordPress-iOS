@@ -66,7 +66,7 @@
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
     self.media = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
-    if (self.media == nil && error){
+    if (self.media == nil && error) {
         DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
         if (failureBlock) {
             failureBlock(error);
@@ -117,16 +117,16 @@
 + (NSPredicate *)predicateForFilter:(WPMediaType)filter
 {
     NSPredicate *predicate;
-    switch (filter){
-        case WPMediaTypeImage:{
+    switch (filter) {
+        case WPMediaTypeImage: {
             predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"image"];
-        }break;
-        case WPMediaTypeVideo:{
+        } break;
+        case WPMediaTypeVideo: {
             predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@  && mediaID != 0", @"video"];
-        }break;
-        case WPMediaTypeAll:{
+        } break;
+        case WPMediaTypeAll: {
             predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && mediaID != 0", @"image", @"video"];
-        }break;
+        } break;
         default:
             break;
     };
