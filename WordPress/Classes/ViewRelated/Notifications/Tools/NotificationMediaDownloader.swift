@@ -151,6 +151,9 @@ import Foundation
             
             if let unwrappedImage = responseObject as? UIImage {
                 completion(nil, unwrappedImage)
+            } else {
+                let error = NSError(domain: self.downloaderDomain, code: self.emptyMediaErrorCode, userInfo: nil)
+                completion(error, nil)
             }
             
             self.urlsBeingDownloaded.remove(url)
@@ -234,6 +237,8 @@ import Foundation
     
     // MARK: - Private Constants
     private let maximumRetryCount   = 3
+    private let emptyMediaErrorCode = -1
+    private let downloaderDomain    = "notifications.media.downloader"
     
     // MARK: - Private Properties
     private let responseSerializer  = AFImageResponseSerializer()
