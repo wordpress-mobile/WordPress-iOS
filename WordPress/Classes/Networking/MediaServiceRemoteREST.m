@@ -118,7 +118,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     remoteMedia.width = jsonMedia[@"width"];
     remoteMedia.exif = jsonMedia[@"exif"];
     if (jsonMedia[@"videopress_guid"]) {
-        remoteMedia.shortcode = jsonMedia[@"videopress_guid"];
+        remoteMedia.videopressGUID = jsonMedia[@"videopress_guid"];
     }
     return remoteMedia;
 }
