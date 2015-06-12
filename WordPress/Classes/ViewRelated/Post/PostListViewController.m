@@ -13,18 +13,11 @@
 #import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
-typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
-    PostAuthorFilterMine,
-    PostAuthorFilterEveryone,
-};
-
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
 static NSString * const PostCardImageCellIdentifier = @"PostCardImageCellIdentifier";
-static NSString * const PostCardThumbCellIdentifier = @"PostCardThumbCellIdentifier";
 static NSString * const PostCardRestoreCellIdentifier = @"PostCardRestoreCellIdentifier";
 static NSString * const PostCardTextCellNibName = @"PostCardTextCell";
 static NSString * const PostCardImageCellNibName = @"PostCardImageCell";
-static NSString * const PostCardThumbCellNibName = @"PostCardThumbCell";
 static NSString * const PostCardRestoreCellNibName = @"RestorePostTableViewCell";
 static NSString * const PostsViewControllerRestorationKey = @"PostsViewControllerRestorationKey";
 static NSString * const StatsStoryboardName = @"SiteStats";
@@ -40,7 +33,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 @property (nonatomic, strong) PostCardTableViewCell *textCellForLayout;
 @property (nonatomic, strong) PostCardTableViewCell *imageCellForLayout;
-@property (nonatomic, strong) PostCardTableViewCell *thumbCellForLayout;
 @property (nonatomic, weak) IBOutlet UISegmentedControl *authorsFilter;
 
 @end
@@ -126,9 +118,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     self.imageCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardImageCellNibName owner:nil options:nil] firstObject];
     [self forceUpdateCellLayout:self.imageCellForLayout];
-
-    self.thumbCellForLayout = (PostCardTableViewCell *)[[[NSBundle mainBundle] loadNibNamed:PostCardThumbCellNibName owner:nil options:nil] firstObject];
-    [self forceUpdateCellLayout:self.thumbCellForLayout];
 }
 
 - (void)forceUpdateCellLayout:(PostCardTableViewCell *)cell
@@ -154,9 +143,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     UINib *postCardImageCellNib = [UINib nibWithNibName:PostCardImageCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardImageCellNib forCellReuseIdentifier:PostCardImageCellIdentifier];
 
-    UINib *postCardThumbCellNib = [UINib nibWithNibName:PostCardThumbCellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:postCardThumbCellNib forCellReuseIdentifier:PostCardThumbCellIdentifier];
-
     UINib *postCardRestoreCellNib = [UINib nibWithNibName:PostCardRestoreCellNibName bundle:[NSBundle mainBundle]];
     [self.tableView registerNib:postCardRestoreCellNib forCellReuseIdentifier:PostCardRestoreCellIdentifier];
 }
@@ -167,26 +153,34 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return NSLocalizedString(@"Fetching posts...", @"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.");
     }
     PostListFilter *filter = [self currentPostListFilter];
-    NSString *title;
-    switch (filter.filterType) {
-        case PostListStatusFilterDraft:
-            title = NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts");
-            break;
-        case PostListStatusFilterScheduled:
-            title = NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts");
-            break;
-        case PostListStatusFilterTrashed:
-            title = NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts");
-            break;
-        default:
-            title = NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts");
-            break;
-    }
+    NSDictionary *titles = [self noResultsTitles];
+    NSString *title = [titles stringForKey:@(filter.filterType)];
     return title;
 }
 
+- (NSDictionary *)noResultsTitles
+{
+    NSDictionary *titles;
+    if ([self isSearching]) {
+        titles = @{
+                   @(PostListStatusFilterDraft):[NSString stringWithFormat:NSLocalizedString(@"No drafts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterScheduled):[NSString stringWithFormat:NSLocalizedString(@"No scheduled posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterTrashed):[NSString stringWithFormat:NSLocalizedString(@"No trashed posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   @(PostListStatusFilterPublished):[NSString stringWithFormat:NSLocalizedString(@"No posts match your search for %@", @"The '%@' is a placeholder for the search term."), [self currentSearchTerm]],
+                   };
+    } else {
+        titles = @{
+                   @(PostListStatusFilterDraft):NSLocalizedString(@"You don't have any drafts.", @"Displayed when the user views drafts in the posts list and there are no posts"),
+                   @(PostListStatusFilterScheduled):NSLocalizedString(@"You don't have any scheduled posts.", @"Displayed when the user views scheduled posts in the posts list and there are no posts"),
+                   @(PostListStatusFilterTrashed):NSLocalizedString(@"You don't have any posts in your trash folder.", @"Displayed when the user views trashed in the posts list and there are no posts"),
+                   @(PostListStatusFilterPublished):NSLocalizedString(@"You haven't published any posts yet.", @"Displayed when the user views published posts in the posts list and there are no posts"),
+                   };
+    }
+    return titles;
+}
+
 - (NSString *)noResultsMessageText {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return [NSString string];
     }
     NSString *message;
@@ -210,7 +204,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (NSString *)noResultsButtonText
 {
-    if (self.syncHelper.isSyncing) {
+    if (self.syncHelper.isSyncing || [self isSearching]) {
         return nil;
     }
     NSString *title;
@@ -236,12 +230,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPStyleGuide applyPostAuthorFilterStyle:self.authorsFilter];
     [self.authorsFilter setTitle:onlyMe forSegmentAtIndex:0];
     [self.authorsFilter setTitle:everyone forSegmentAtIndex:1];
-    self.authorsFilter.hidden = (!self.blog.isMultiAuthor || !self.blog.account.userID);
-
     self.authorsFilterView.backgroundColor = [WPStyleGuide lightGrey];
-    if (![self.blog isMultiAuthor]) {
-        // Collapse the view if single author blog
+
+    if (![self canFilterByAuthor]) {
         self.authorsFilterViewHeightConstraint.constant = 0.0;
+        self.authorsFilter.hidden = YES;
     }
 
     if ([self currentPostAuthorFilter] == PostAuthorFilterMine) {
@@ -249,6 +242,14 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     } else {
         self.authorsFilter.selectedSegmentIndex = 1;
     }
+}
+
+
+#pragma mark - Sync Methods
+
+- (NSString *)postTypeToSync
+{
+    return PostServiceTypePost;
 }
 
 
@@ -278,29 +279,32 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     NSPredicate *basePredicate = [NSPredicate predicateWithFormat:@"blog = %@ && original = nil", self.blog];
     [predicates addObject:basePredicate];
 
+    NSString *searchText = [self currentSearchTerm];
     NSPredicate *filterPredicate = [self currentPostListFilter].predicateForFetchRequest;
+
+    // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
+    // or posts that were recently deleted.
+    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+        filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
+    }
     [predicates addObject:filterPredicate];
 
-    if (self.blog.isMultiAuthor && ![self shouldShowPostsForEveryone] && [self.blog.account.userID integerValue] > 0) {
-        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@", self.blog.account.userID];
+    if ([self shouldShowOnlyMyPosts]) {
+        // Brand new local drafts have an authorID of 0.
+        NSPredicate *authorPredicate = [NSPredicate predicateWithFormat:@"authorID = %@ || authorID = 0", self.blog.account.userID];
         [predicates addObject:authorPredicate];
     }
 
-    NSString *searchText = self.searchController.searchBar.text;
     if ([searchText length] > 0) {
         NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"postTitle CONTAINS[cd] %@", searchText];
         [predicates addObject:searchPredicate];
     }
 
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
-        predicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[predicate, trashedPredicate]];
-    }
 
     return predicate;
 }
-
 
 #pragma mark - Table View Handling
 
@@ -331,8 +335,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
-    } else if(post.post_thumbnail) {
-        cell = self.thumbCellForLayout;
     } else {
         cell = self.imageCellForLayout;
     }
@@ -389,8 +391,6 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         identifier = PostCardRestoreCellIdentifier;
     } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
-    } else if (post.post_thumbnail) {
-        identifier = PostCardThumbCellIdentifier;
     } else {
         identifier = PostCardImageCellIdentifier;
     }
@@ -497,20 +497,20 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 #pragma mark - Filter related
 
-- (BOOL)shouldShowPostsForEveryone
-{
-    PostAuthorFilter filter = [self currentPostAuthorFilter];
-    return filter == PostAuthorFilterEveryone;
-}
-
 - (PostAuthorFilter)currentPostAuthorFilter
 {
+    if (![self canFilterByAuthor]) {
+        // No REST API, so we have to use XMLRPC and can't filter results by author.
+        return PostAuthorFilterEveryone;
+    }
+
     NSNumber *filter = [[NSUserDefaults standardUserDefaults] objectForKey:CurrentPostAuthorFilterKey];
     if (filter) {
         if (PostAuthorFilterEveryone == [filter integerValue]) {
             return PostAuthorFilterEveryone;
         }
     }
+
     return PostAuthorFilterMine;
 }
 
@@ -521,8 +521,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     }
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
+
     [self.recentlyTrashedPostIDs removeAllObjects];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
+    [self syncItemsWithUserInteraction:NO];
 }
 
 - (NSString *)keyForCurrentListStatusFilter

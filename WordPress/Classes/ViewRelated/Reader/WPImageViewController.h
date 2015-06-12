@@ -12,4 +12,6 @@
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated;
 - (void)centerImage;
 
++ (BOOL)isUrlSupported:(NSURL *)url;
+
 @end

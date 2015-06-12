@@ -226,7 +226,7 @@
                                     </constraint>
                                     <constraint firstItem="U6E-MB-03K" firstAttribute="centerY" secondItem="zle-VU-ygo" secondAttribute="centerY" id="NCb-6E-SND"/>
                                     <constraint firstItem="Y9d-Yk-F4X" firstAttribute="top" secondItem="rIp-IY-Ng4" secondAttribute="bottom" constant="16" id="QbH-qP-NR7"/>
-                                    <constraint firstAttribute="width" constant="600" id="Qi6-dA-tg8"/>
+                                    <constraint firstAttribute="width" priority="750" constant="600" id="Qi6-dA-tg8"/>
                                     <constraint firstItem="rIp-IY-Ng4" firstAttribute="leading" secondItem="b5E-yQ-veP" secondAttribute="leading" constant="14" id="SmN-xb-mWD">
                                         <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                                     </constraint>

@@ -381,6 +381,12 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 #pragma mark - Sync Helper Delegate Methods
 
+- (NSString *)postTypeToSync
+{
+    // Subclasses should override.
+    return PostServiceTypeAny;
+}
+
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     if ([self.recentlyTrashedPostIDs count]) {
@@ -390,9 +396,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
+    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService syncPostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
+    [postService syncPostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
         if  (success) {
             [weakSelf setHasMore:hasMore forFilter:filter];
             success(hasMore);
@@ -412,9 +419,10 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.postListFooterView showSpinner:YES];
     PostListFilter *filter = [self currentPostListFilter];
     NSArray *postStatus = filter.statuses;
+    NSNumber *author = [self shouldShowOnlyMyPosts] ? self.blog.account.userID : nil;
     __weak __typeof(self) weakSelf = self;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[self managedObjectContext]];
-    [postService loadMorePostsOfType:PostServiceTypePost withStatuses:postStatus forBlog:self.blog success:^(BOOL hasMore){
+    [postService loadMorePostsOfType:[self postTypeToSync] withStatuses:postStatus byAuthor:author forBlog:self.blog success:^(BOOL hasMore){
         if (success) {
             [weakSelf setHasMore:hasMore forFilter:filter];
             success(hasMore);
@@ -502,14 +510,15 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     // Ascending only for scheduled posts/pages.
     BOOL ascending = self.currentPostListFilter.filterType == PostListStatusFilterScheduled;
+    NSSortDescriptor *sortDescriptorLocal = [NSSortDescriptor sortDescriptorWithKey:@"metaIsLocal" ascending:NO];
+    NSSortDescriptor *sortDescriptorImmediately = [NSSortDescriptor sortDescriptorWithKey:@"metaPublishImmediately" ascending:NO];
     NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"date_created_gmt" ascending:ascending];
-    return @[sortDescriptorDate];
+    return @[sortDescriptorLocal, sortDescriptorImmediately, sortDescriptorDate];
 }
 
-- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
+- (void)updateAndPerformFetchRequest
 {
     NSAssert([NSThread isMainThread], @"AbstractPostListViewController Error: NSFetchedResultsController accessed in BG");
-
     NSPredicate *predicate = [self predicateForFetchRequest];
     NSArray *sortDescriptors = [self sortDescriptorsForFetchRequest];
     NSError *error = nil;
@@ -519,6 +528,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     if (error) {
         DDLogError(@"Error fetching posts after updating the fetch request predicate: %@", error);
     }
+}
+
+- (void)updateAndPerformFetchRequestRefreshingCachedRowHeights
+{
+    [self updateAndPerformFetchRequest];
 
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
@@ -588,22 +602,23 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)viewPost:(AbstractPost *)apost
 {
+    apost = ([apost hasRevision]) ? apost.revision : apost;
     PostPreviewViewController *controller = [[PostPreviewViewController alloc] initWithPost:apost shouldHideStatusBar:NO];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-
 - (void)deletePost:(AbstractPost *)apost
 {
     NSNumber *postID = apost.postID;
     [self.recentlyTrashedPostIDs addObject:postID];
+
+    // Update the fetch request *before* making the service call.
+    [self updateAndPerformFetchRequest];
+
     NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:apost];
     [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-
-    // Update the fetch request *before* making the service call.
-    [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService trashPost:apost
@@ -690,8 +705,40 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
 }
 
+- (BOOL)isSearching
+{
+    return self.searchController.isActive && [[self currentSearchTerm] length]> 0;
+}
+
+- (NSString *)currentSearchTerm
+{
+    return self.searchController.searchBar.text;
+}
+
 
 #pragma mark - Filter related
+
+- (BOOL)canFilterByAuthor
+{
+    return [self.blog isMultiAuthor] && self.blog.account.userID && [self.blog isHostedAtWPcom];
+}
+
+- (BOOL)shouldShowOnlyMyPosts
+{
+    PostAuthorFilter filter = [self currentPostAuthorFilter];
+    return filter == PostAuthorFilterMine;
+}
+
+- (PostAuthorFilter)currentPostAuthorFilter
+{
+    return PostAuthorFilterEveryone;
+}
+
+- (void)setCurrentPostAuthorFilter:(PostAuthorFilter)filter
+{
+    // Noop. The default implementation is read only.
+    // Subclasses may override the getter and setter for their own filter storage.
+}
 
 - (PostListFilter *)currentPostListFilter
 {
