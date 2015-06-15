@@ -38,7 +38,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 }
 
 - (void)viewDidLoad
-{    
+{
     [super viewDidLoad];
     
     [self configureNavBar];
@@ -69,7 +69,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 
 - (void)configureNavBar
 {
-    self.title = NSLocalizedString(@"Comments", @"");
+    self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
 }
 
 - (void)configureLoadMoreSpinner
