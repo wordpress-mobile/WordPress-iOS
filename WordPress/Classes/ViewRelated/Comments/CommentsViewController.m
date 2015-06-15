@@ -14,8 +14,8 @@
 
 CGFloat const CommentsStandardOffset        = 16.0;
 CGFloat const CommentsSectionHeaderHeight   = 24.0;
-CGRect const CommentsActivityFooterFrame    = {0.0f, 0.0f, 30.0f, 30.0f};
-CGFloat const CommentsActivityFooterHeight  = 50.0f;
+CGRect const CommentsActivityFooterFrame    = {0.0, 0.0, 30.0, 30.0};
+CGFloat const CommentsActivityFooterHeight  = 50.0;
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
@@ -78,7 +78,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
 {
     // ContainerView
     CGFloat width                           = CGRectGetWidth(self.tableView.bounds);
-    CGRect footerViewFrame                  = CGRectMake(0.0f, 0.0f, width, CommentsActivityFooterHeight);
+    CGRect footerViewFrame                  = CGRectMake(0.0, 0.0, width, CommentsActivityFooterHeight);
     UIView *footerView                      = [[UIView alloc] initWithFrame:footerViewFrame];
     
     // Spinner
