@@ -402,6 +402,48 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
             break;
+        case WPAnalyticsStatPostListAuthorFilterChanged:
+            eventName = @"post_list_author_filter_changed";
+            break;
+        case WPAnalyticsStatPostListDraftAction:
+            eventName = @"post_list_draft_action";
+            break;
+        case WPAnalyticsStatPostListEditAction:
+            eventName = @"post_list_edit_action";
+            break;
+        case WPAnalyticsStatPostListLoadedMore:
+            eventName = @"post_list_loaded_more";
+            break;
+        case WPAnalyticsStatPostListNoResultsButtonPressed:
+            eventName = @"post_list_no_results_button_pressed";
+            break;
+        case WPAnalyticsStatPostListOpenedCellMenu:
+            eventName = @"post_list_opened_cell_menu";
+            break;
+        case WPAnalyticsStatPostListPublishAction:
+            eventName = @"post_list_publish_action";
+            break;
+        case WPAnalyticsStatPostListPullToRefresh:
+            eventName = @"post_list_pulled_to_refresh";
+            break;
+        case WPAnalyticsStatPostListRestoreAction:
+            eventName = @"post_list_restore_action";
+            break;
+        case WPAnalyticsStatPostListSearchOpened:
+            eventName = @"post_list_search_opened";
+            break;
+        case WPAnalyticsStatPostListStatsAction:
+            eventName = @"post_list_stats_action";
+            break;
+        case WPAnalyticsStatPostListStatusFilterChanged:
+            eventName = @"post_list_status_filter_changed";
+            break;
+        case WPAnalyticsStatPostListTrashAction:
+            eventName = @"post_list_trash_action";
+            break;
+        case WPAnalyticsStatPostListViewAction:
+            eventName = @"post_list_view_action";
+            break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
             break;
