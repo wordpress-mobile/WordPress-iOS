@@ -525,6 +525,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+        blog.visible = YES;
         [blogService flagBlogAsLastUsed:blog];
 
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
