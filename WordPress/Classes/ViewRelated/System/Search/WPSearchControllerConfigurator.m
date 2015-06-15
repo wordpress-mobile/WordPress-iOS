@@ -5,6 +5,7 @@ const CGFloat SearchBarWidth = 280.0;
 const CGFloat SearchBariPadWidth = 600.0;
 const CGFloat SearchWrapperViewPortraitHeight = 64.0;
 const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
+const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 
 @interface WPSearchControllerConfigurator ()
 
