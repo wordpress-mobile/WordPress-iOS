@@ -117,16 +117,13 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     }
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
-    self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
-
-    [self setupHeaderView];
+    
+    [self configureTableView];
+    [self configureSearchController];
+    [self configureSearchBar];
+    [self configureSearchWrapper];
+    [self configureHeaderView];
     
     // Trigger the blog sync when loading the view, which should more or less be once when the app launches
     // We could do this on the app delegate, but the blogs list feels like a better place for it.
@@ -139,9 +136,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
     }];
     
-    [self configureSearchController];
-    [self configureSearchBar];
-    [self configureSearchWrapper];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -211,7 +206,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 #pragma mark - Header methods
 
-- (void)setupHeaderView
+- (void)configureHeaderView
 {
     self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
     self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -257,6 +252,16 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
     return UIStatusBarStyleLightContent;
+}
+
+- (void)configureTableView
+{
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
 }
 
 - (void)configureSearchController
