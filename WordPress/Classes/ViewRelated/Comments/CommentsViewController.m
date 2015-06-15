@@ -14,12 +14,15 @@
 
 CGFloat const CommentsStandardOffset        = 16.0;
 CGFloat const CommentsSectionHeaderHeight   = 24.0;
+CGRect const CommentsActivityFooterFrame    = {0.0f, 0.0f, 30.0f, 30.0f};
+CGFloat const CommentsActivityFooterHeight  = 50.0f;
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
-@property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
-@property (nonatomic, strong) WPContentSyncHelper   *syncHelper;
-@property (nonatomic, strong) WPNoResultsView       *noResultsView;
+@property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
+@property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
+@property (nonatomic, strong) WPNoResultsView           *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @end
 
 
@@ -39,21 +42,72 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
     NSParameterAssert(self.view);
     NSParameterAssert(self.tableView);
     
-    // UIViewController
-    self.title                              = NSLocalizedString(@"Comments", @"");
+    [self configureNavBar];
+    [self configureActivityFooter];
+    [self configureSyncHelper];
+    [self configureTableView];
+    [self configureTableViewHandler];
+    [self configureRefreshControl];
     
-    // WPContentSyncHelper
+    [self refreshAndSync];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+    [self.tableView deselectSelectedRowWithAnimation:YES];
+    
+    // Refresh the UI
+    [self refreshNoResultsView];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    // Returning to the comments list while the reply-to keyboard is visible
+    // messes with the bottom contentInset. Let's reset it just in case.
+    UIEdgeInsets contentInset   = self.tableView.contentInset;
+    contentInset.bottom         = 0;
+    self.tableView.contentInset = contentInset;
+}
+
+
+#pragma mark - Configuration
+
+- (void)configureActivityFooter
+{
+    UIActivityIndicatorView *indicator  = [[UIActivityIndicatorView alloc] initWithFrame:CommentsActivityFooterFrame];
+    indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
+    indicator.hidesWhenStopped          = YES;
+    indicator.autoresizingMask          = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    [indicator stopAnimating];
+    self.footerActivityIndicator        = indicator;
+}
+
+- (void)configureNavBar
+{
+    self.title = NSLocalizedString(@"Comments", @"");
+}
+
+- (void)configureRefreshControl
+{
+    UIRefreshControl *refreshControl        = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+}
+
+- (void)configureSyncHelper
+{
     WPContentSyncHelper *syncHelper         = [WPContentSyncHelper new];
     syncHelper.delegate                     = self;
     self.syncHelper                         = syncHelper;
-    
-    // WPTableViewHandler
-    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
-    tableViewHandler.cacheRowHeights        = YES;
-    tableViewHandler.delegate               = self;
-    self.tableViewHandler                   = tableViewHandler;
-    
-    // UITableView
+}
+
+- (void)configureTableView
+{
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -67,36 +121,24 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
         self.tableView.tableFooterView      = [UIView new];
     }
     
-    // UIRefreshControl
-    UIRefreshControl *refreshControl        = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-    
     // Register the cells!
     Class cellClass = [CommentsTableViewCell class];
     [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)configureTableViewHandler
 {
-    [super viewWillAppear:animated];
-    
-    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
-    [self.tableView deselectSelectedRowWithAnimation:YES];
-    
-    // Refresh the UI
-    [self showNoResultsViewIfNeeded];
+    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights        = YES;
+    tableViewHandler.delegate               = self;
+    self.tableViewHandler                   = tableViewHandler;
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)configureNoResultsView
 {
-    [super viewDidAppear:animated];
-    
-    // Returning to the comments list while the reply-to keyboard is visible
-    // messes with the bottom contentInset. Let's reset it just in case.
-    UIEdgeInsets contentInset   = self.tableView.contentInset;
-    contentInset.bottom         = 0;
-    self.tableView.contentInset = contentInset;
+    WPNoResultsView *noResultsView          = [WPNoResultsView new];
+    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    self.noResultsView                      = noResultsView;
 }
 
 
