@@ -13,6 +13,7 @@
 @property (nonatomic, assign) WPMediaType filter;
 @property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
+@property (nonatomic, strong) NSMutableDictionary *observers;
 
 @end
 
@@ -94,12 +95,15 @@
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
 {
-    return nil;
+    NSUUID *blockKey = [NSUUID UUID];
+    [self.observers setObject:[callback copy] forKey:blockKey];
+    return blockKey;
+
 }
 
 -(void)unregisterChangeObserver:(id<NSObject>)blockKey
 {
-
+    [self.observers removeObjectForKey:blockKey];
 }
 
 -(void)addImage:(UIImage *)image metadata:(NSDictionary *)metadata completionBlock:(WPMediaAddedBlock)completionBlock
