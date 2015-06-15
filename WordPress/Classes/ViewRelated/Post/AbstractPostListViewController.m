@@ -10,7 +10,6 @@
 #import "WPSearchControllerConfigurator.h"
 
 const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
-const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 const NSInteger HTTPErrorCodeForbidden = 403;
 const NSInteger PostsFetchRequestBatchSize = 10;
 const NSInteger PostsLoadMoreThreshold = 4;
@@ -805,7 +804,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:PostSearchBarAnimationDuration
+    [UIView animateWithDuration:SearchBarAnimationDuration
                           delay:0.0
                         options:0
                      animations:^{
@@ -820,7 +819,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.searchController.searchBar resignFirstResponder];
     [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
+    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
 

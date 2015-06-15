@@ -17,7 +17,6 @@
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
-#import "AbstractPostListViewControllerSubclass.h"
 #import "WPSearchControllerConfigurator.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
@@ -482,7 +481,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:PostSearchBarAnimationDuration
+    [UIView animateWithDuration:SearchBarAnimationDuration
                           delay:0.0
                         options:0
                      animations:^{

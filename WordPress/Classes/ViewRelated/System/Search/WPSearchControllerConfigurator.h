@@ -5,6 +5,7 @@ extern const CGFloat SearchBarWidth;
 extern const CGFloat SearchBariPadWidth;
 extern const CGFloat SearchWrapperViewPortraitHeight;
 extern const CGFloat SearchWrapperViewLandscapeHeight;
+extern const NSTimeInterval SearchBarAnimationDuration;
 
 @interface WPSearchControllerConfigurator : NSObject
 
@@ -13,4 +14,5 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
                    withSearchWrapperView:(UIView *)searchWrapperView
                             withDelegate:(id<WPSearchControllerDelegate, WPSearchResultsUpdating>)delegate;
 - (void)configureSearchControllerBarAndWrapperView;
+
 @end
