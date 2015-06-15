@@ -14,6 +14,7 @@
 #import "WPTableViewHandler.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import "WordPress-swift.h"
+#import "WPSearchControllerConfigurator.h"
 
 typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
     PostAuthorFilterMine,
@@ -25,11 +26,7 @@ extern const NSTimeInterval PostSearchBarAnimationDuration;
 extern const NSInteger HTTPErrorCodeForbidden;
 extern const NSInteger PostsFetchRequestBatchSize;
 extern const NSInteger PostsLoadMoreThreshold;
-extern const CGFloat PostsSearchBarWidth;
-extern const CGFloat PostsSearchBariPadWidth;
 extern const CGSize PreferredFiltersPopoverContentSize;
-extern const CGFloat SearchWrapperViewPortraitHeight;
-extern const CGFloat SearchWrapperViewLandscapeHeight;
 
 @interface AbstractPostListViewController () <UIPopoverControllerDelegate,
                                                         WPContentSyncHelperDelegate,
