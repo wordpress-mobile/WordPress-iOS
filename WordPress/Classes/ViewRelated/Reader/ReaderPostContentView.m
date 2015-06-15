@@ -8,7 +8,6 @@
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
-@property (nonatomic, strong) UIButton *reblogButton;
 @property (nonatomic) BOOL shouldShowActionButtons;
 
 @end
@@ -71,11 +70,6 @@
     self.shouldShowAttributionButton = YES;
 
     // Action buttons
-    self.reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
-    [self.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-    self.reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"Accessibility  Label for the Reblog Button in the Reader. Tapping shows a screen that allows the user to reblog a post.");
-    self.reblogButton.accessibilityIdentifier = @"Reblog";
-
     self.commentButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
     [self.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
     self.commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"Accessibility  Label for the Comment Button in the Reader. Tapping shows a screen that allows the user to comment a post.");
@@ -87,7 +81,7 @@
     self.likeButton.accessibilityIdentifier = @"Like";
 
     // Optimistically set action buttons and prime constraints for scrolling performance.
-    self.actionButtons = @[self.likeButton, self.commentButton, self.reblogButton];
+    self.actionButtons = @[self.likeButton, self.commentButton];
 }
 
 - (void)configureActionButtons
@@ -105,11 +99,6 @@
 
     if (!self.shouldHideComments && (self.post.commentsOpen || [self.post.commentCount integerValue] > 0)) {
         [actionButtons addObject:self.commentButton];
-    }
-
-    // Reblogging just for non private blogs
-    if (![self privateContent] && self.shouldEnableLoggedinFeatures) {
-        [actionButtons addObject:self.reblogButton];
     }
 
     self.actionButtons = actionButtons;
@@ -148,12 +137,6 @@
 
     // Show highlights
     [self.likeButton setSelected:self.post.isLiked];
-    [self.reblogButton setSelected:self.post.isReblogged];
-    [self.reblogButton setNeedsLayout];
-    [self.reblogButton setHidden:self.shouldHideReblogButton];
-
-    // You can only reblog once.
-    self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
 
     // Enable/Disable like button. Set userInteractionEnabled to avoid the default disabled tint. 
     self.likeButton.userInteractionEnabled = self.shouldEnableLoggedinFeatures;
@@ -183,13 +166,6 @@
 
 
 #pragma mark - Action Methods
-
-- (void)reblogAction:(id)sender
-{
-    if ([self.delegate respondsToSelector:@selector(postView:didReceiveReblogAction:)]) {
-        [self.delegate postView:self didReceiveReblogAction:sender];
-    }
-}
 
 - (void)commentAction:(id)sender
 {
