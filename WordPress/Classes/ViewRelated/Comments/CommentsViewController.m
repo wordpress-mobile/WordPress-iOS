@@ -23,6 +23,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) WPNoResultsView           *noResultsView;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
+@property (nonatomic, strong) UIView                    *footerView;
 @end
 
 
@@ -37,17 +38,19 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
 
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
-    
     NSParameterAssert(self.view);
     NSParameterAssert(self.tableView);
     
+    [super viewDidLoad];
+    
     [self configureNavBar];
-    [self configureActivityFooter];
+    [self configureLoadMoreSpinner];
+    [self configureNoResultsView];
+    [self configureRefreshControl];
     [self configureSyncHelper];
     [self configureTableView];
+    [self configureTableViewFooter];
     [self configureTableViewHandler];
-    [self configureRefreshControl];
     
     [self refreshAndSync];
 }
@@ -63,39 +66,49 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     [self refreshNoResultsView];
 }
 
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
-    
-    // Returning to the comments list while the reply-to keyboard is visible
-    // messes with the bottom contentInset. Let's reset it just in case.
-    UIEdgeInsets contentInset   = self.tableView.contentInset;
-    contentInset.bottom         = 0;
-    self.tableView.contentInset = contentInset;
-}
-
 
 #pragma mark - Configuration
-
-- (void)configureActivityFooter
-{
-    UIActivityIndicatorView *indicator  = [[UIActivityIndicatorView alloc] initWithFrame:CommentsActivityFooterFrame];
-    indicator.activityIndicatorViewStyle = UIActivityIndicatorViewStyleGray;
-    indicator.hidesWhenStopped          = YES;
-    indicator.autoresizingMask          = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    [indicator stopAnimating];
-    self.footerActivityIndicator        = indicator;
-}
 
 - (void)configureNavBar
 {
     self.title = NSLocalizedString(@"Comments", @"");
 }
 
+- (void)configureLoadMoreSpinner
+{
+    // ContainerView
+    CGFloat width                           = CGRectGetWidth(self.tableView.bounds);
+    CGRect footerViewFrame                  = CGRectMake(0.0f, 0.0f, width, CommentsActivityFooterHeight);
+    UIView *footerView                      = [[UIView alloc] initWithFrame:footerViewFrame];
+    
+    // Spinner
+    UIActivityIndicatorView *indicator      = [[UIActivityIndicatorView alloc] initWithFrame:CommentsActivityFooterFrame];
+    indicator.activityIndicatorViewStyle    = UIActivityIndicatorViewStyleGray;
+    indicator.hidesWhenStopped              = YES;
+    indicator.autoresizingMask              = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    indicator.center                        = footerView.center;
+    [indicator stopAnimating];
+
+    [footerView addSubview:indicator];
+
+    // Keep References!
+    self.footerActivityIndicator            = indicator;
+    self.footerView                         = footerView;
+}
+
+- (void)configureNoResultsView
+{
+    WPNoResultsView *noResultsView          = [WPNoResultsView new];
+    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    self.noResultsView                      = noResultsView;
+    
+    [self.view addSubview:noResultsView];
+}
+
 - (void)configureRefreshControl
 {
     UIRefreshControl *refreshControl        = [UIRefreshControl new];
-    [refreshControl addTarget:self action:@selector(refresh) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(refreshAndSyncWithInteraction) forControlEvents:UIControlEventValueChanged];
     self.refreshControl = refreshControl;
 }
 
@@ -111,6 +124,13 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
+    // Register the cells!
+    Class cellClass = [CommentsTableViewCell class];
+    [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
+}
+
+- (void)configureTableViewFooter
+{
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
         self.tableView.tableHeaderView      = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
@@ -120,10 +140,6 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     } else {
         self.tableView.tableFooterView      = [UIView new];
     }
-    
-    // Register the cells!
-    Class cellClass = [CommentsTableViewCell class];
-    [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
 }
 
 - (void)configureTableViewHandler
@@ -132,13 +148,6 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     tableViewHandler.cacheRowHeights        = YES;
     tableViewHandler.delegate               = self;
     self.tableViewHandler                   = tableViewHandler;
-}
-
-- (void)configureNoResultsView
-{
-    WPNoResultsView *noResultsView          = [WPNoResultsView new];
-    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
-    self.noResultsView                      = noResultsView;
 }
 
 
@@ -166,9 +175,23 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     return cell;
 }
 
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Refresh only when we reach the last 3 rows in the last section!
+    NSInteger const refreshRowPadding   = 4;
+    NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
+    NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
+    
+    if ((indexPath.section == lastSection) && (indexPath.row + refreshRowPadding >= numberOfRowsInSection)) {
+        if (self.syncHelper.hasMoreContent) {
+            [self.syncHelper syncMoreContent];
+        }
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Failsafe: Make sure that the Notification (still) exists
+    // Failsafe: Make sure that the Comment (still) exists
     NSArray *sections = self.tableViewHandler.resultsController.sections;
     if (indexPath.section >= sections.count) {
         [tableView deselectSelectedRowWithAnimation:YES];
@@ -228,15 +251,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
 
 - (void)tableViewDidChangeContent:(UITableView *)tableView
 {
-    [self showNoResultsViewIfNeeded];
-}
-
-
-#pragma mark - Actions
-
-- (void)refresh
-{
-    [self.syncHelper syncContentWithUserInteraction];
+    [self refreshNoResultsView];
 }
 
 
@@ -249,21 +264,25 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
     NSManagedObjectID *blogObjectID = self.blog.objectID;
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-        if (blogInContext) {
-            [commentService syncCommentsForBlog:blogInContext success:^{
-                if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        success(true);
-                    });
-                }
-            } failure:^(NSError *error) {
-                if (failure) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        failure(error);
-                    });
-                }
-            }];
+        if (!blogInContext) {
+            return;
         }
+        
+        [commentService syncCommentsForBlog:blogInContext
+                                    success:^{
+                                                if (success) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        success(true);
+                                                    });
+                                                }
+                                    }
+                                    failure:^(NSError *error) {
+                                                if (failure) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        failure(error);
+                                                    });
+                                                }
+                                    }];
     }];
 }
 
@@ -280,58 +299,80 @@ CGFloat const CommentsActivityFooterHeight  = 50.0f;
         [commentService loadMoreCommentsForBlog:blogInContext
                                         success:^(BOOL hasMore) {
                                                     if (success) {
-                                                        success(hasMore);
+                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                            success(hasMore);
+                                                        });
                                                     }
                                         }
                                         failure:^(NSError *error) {
-                                                    if (failure) {
+                                                if (failure) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
                                                         failure(error);
-                                                    }
+                                                    });
+                                                }
                                         }];
     }];
+    
+    [self refreshInfiniteScroll];
+}
+
+- (void)syncContentEnded
+{
+    [self refreshInfiniteScroll];
+    [self refreshNoResultsView];
+    [self refreshPullToRefresh];
 }
 
 
-#pragma mark - WPNoResultsView Methods
+#pragma mark - View Refresh Helpers
 
-- (void)showNoResultsViewIfNeeded
+- (void)refreshAndSyncWithInteraction
 {
-    // Remove If Needed
-    if (self.tableViewHandler.resultsController.fetchedObjects.count) {
-        [self.noResultsView removeFromSuperview];
+    [self.syncHelper syncContentWithUserInteraction];
+}
+
+- (void)refreshAndSync
+{
+    [self.syncHelper syncContent];
+}
+
+- (void)refreshInfiniteScroll
+{
+    NSParameterAssert(self.footerView);
+    NSParameterAssert(self.footerActivityIndicator);
+    
+    if (self.syncHelper.isSyncing) {
+        self.tableView.tableFooterView = self.footerView;
+        [self.footerActivityIndicator startAnimating];
+    } else if (!self.syncHelper.hasMoreContent) {
+        [self configureTableViewFooter];
+    }
+}
+
+- (void)refreshPullToRefresh
+{
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
+}
+
+- (void)refreshNoResultsView
+{
+    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL shouldPerformAnimation = self.noResultsView.hidden;
+    
+    self.noResultsView.hidden = !isTableViewEmpty;
+    
+    if (!isTableViewEmpty) {
         return;
     }
     
-    // Attach the view
-    WPNoResultsView *noResultsView  = self.noResultsView;
-    if (!noResultsView.superview) {
-        [self.tableView addSubviewWithFadeAnimation:noResultsView];
-    }
+    // Display NoResultsView
+    [self.noResultsView centerInSuperview];
     
-    // Refresh its properties: The user may have signed into WordPress.com
-    noResultsView.titleText = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
-}
-
-- (WPNoResultsView *)noResultsView
-{
-    if (!_noResultsView) {
-        _noResultsView = [WPNoResultsView new];
+    if (shouldPerformAnimation) {
+        [self.noResultsView fadeInWithAnimation];
     }
-    
-    return _noResultsView;
 }
-
-
-
-
-//- (BOOL)isSyncing
-//{
-//    return [CommentService isSyncingCommentsForBlog:self.blog];
-//}
-//
-//- (NSDate *)lastSyncDate
-//{
-//    return self.blog.lastCommentsSync;
-//}
 
 @end
