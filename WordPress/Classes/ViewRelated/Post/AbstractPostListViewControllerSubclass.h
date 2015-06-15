@@ -22,7 +22,6 @@ typedef NS_ENUM(NSUInteger, PostAuthorFilter) {
 };
 
 extern const NSTimeInterval PostsControllerRefreshInterval;
-extern const NSTimeInterval PostSearchBarAnimationDuration;
 extern const NSInteger HTTPErrorCodeForbidden;
 extern const NSInteger PostsFetchRequestBatchSize;
 extern const NSInteger PostsLoadMoreThreshold;
