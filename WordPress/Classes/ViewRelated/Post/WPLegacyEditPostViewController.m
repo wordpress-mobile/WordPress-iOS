@@ -19,9 +19,9 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
-#import <WPMediaPicker/WPMediaPickerViewController.h>
+#import <WPMediaPicker/WPMediaPicker.h>
 #import "WordPress-Swift.h"
-#import "MediaLibraryPickerDataSource.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
@@ -30,7 +30,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 {
     WPLegacyEditPostViewControllerActionSheetCancelOptions = 201,
-    WPLegacyEditPostViewControllerActionSheetMediaOptions = 202
 };
 
 @interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
@@ -44,7 +43,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) UIProgressView * mediaProgressView;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
-@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
 
 @end
 
@@ -365,42 +364,12 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaSourceOptions
-{
-    NSString *optionsTitle = NSLocalizedString(@"Insert media from:", @"Title of media source options for a featured image");
-    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
-    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
-    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
-    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
-                                                       delegate:self
-                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:optionLocal, optionBlog, nil];
-    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
-    alert.tag = WPLegacyEditPostViewControllerActionSheetMediaOptions;
-    if (IS_IPAD) {
-        [alert showFromToolbar:self.navigationController.toolbar];
-    } else {
-        [alert showInView:self.view];
-    }
-}
-
-- (void)showDeviceMediaPicker
-{
-    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    picker.delegate = self;
-
-    picker.filter = WPMediaTypeImage;
-
-    [self presentViewController:picker animated:YES completion:nil];
-}
-
-- (void)showSiteMediaPicker
+- (void)showMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
     if (!self.mediaLibraryDataSource) {
-        self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.post.blog];
+        self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     }
     picker.dataSource = self.mediaLibraryDataSource;
     picker.allowCaptureOfMedia = NO;
@@ -972,60 +941,12 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     if (assets.count == 0) {
         return;
     }
-    id<WPMediaAsset> firstObject = [assets firstObject];
-    if ([firstObject isKindOfClass:[ALAsset class]]){
-        [self addDeviceMediaAssets:assets];
-    } else if ([firstObject isKindOfClass:[Media class]]) {
-        [self addSiteMediaAssets:assets];
-    }
-}
-
-- (void)addDeviceMediaAssets:(NSArray *)assets
-{
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-
-    for (ALAsset *asset in assets) {
-        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-            MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            __weak __typeof__(self) weakSelf = self;
-            NSString* imageUniqueId = [self uniqueIdForMedia];
-            NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-            createMediaProgress.totalUnitCount = 2;
-            [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
-            
-            [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
-                if (error){
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
-                    return;
-                }
-                __typeof__(self) strongSelf = weakSelf;
-                if (!strongSelf) {
-                    return;
-                }
-                createMediaProgress.completedUnitCount++;
-                
-                [strongSelf.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
-                NSProgress *uploadProgress = nil;
-                [mediaService uploadMedia:media progress:&uploadProgress success:^{
-                    [strongSelf insertMedia:media];
-                    [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
-                } failure:^(NSError *error) {
-                    // the progress was completed event if it was an error state
-                    strongSelf.mediaGlobalProgress.completedUnitCount++;
-                    [strongSelf stopTrackingProgressOfMediaWithId:imageUniqueId];
-                    if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                        DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
-                        return;
-                    }
-                    [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
-                }];
-                UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
-                [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
-                uploadProgress.kind = NSProgressKindFile;
-                [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-                [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
-                [strongSelf.mediaGlobalProgress resignCurrent];
-            }];
+    for (id<WPMediaAsset> asset in assets) {
+        if ([asset isKindOfClass:[ALAsset class]]){
+            [self addDeviceMediaAsset:(ALAsset *)asset];
+        } else if ([asset isKindOfClass:[Media class]]) {
+            [self addSiteMediaAsset:(Media *)asset];
         }
     }
     // Need to refresh the post object. If we didn't, self.post.media would appear
@@ -1033,10 +954,66 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-- (void)addSiteMediaAssets:(NSArray *)assets
+- (void)addDeviceMediaAsset:(ALAsset *)asset
 {
-    for (Media *media in assets) {
+    if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+        __weak __typeof__(self) weakSelf = self;
+        NSString* imageUniqueId = [self uniqueIdForMedia];
+        NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+        createMediaProgress.totalUnitCount = 2;
+        [self trackMediaWithId:imageUniqueId usingProgress:createMediaProgress];
+        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError * error) {
+            if (error){
+                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media", @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.") message:error.localizedDescription];
+                [self stopTrackingProgressOfMediaWithId:imageUniqueId];
+                return;
+            }
+            __typeof__(self) strongSelf = weakSelf;
+            if (!strongSelf) {
+                return;
+            }
+            createMediaProgress.completedUnitCount++;
+            [self uploadMedia:media trackingId:imageUniqueId];
+        }];
+    }
+}
+
+- (void)uploadMedia:(Media *)media trackingId:(NSString *)mediaUniqueId
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [self.mediaGlobalProgress becomeCurrentWithPendingUnitCount:1];
+    NSProgress *uploadProgress = nil;
+    [mediaService uploadMedia:media progress:&uploadProgress success:^{
         [self insertMedia:media];
+        [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
+    } failure:^(NSError *error) {
+        // the progress was completed event if it was an error state
+        self.mediaGlobalProgress.completedUnitCount++;
+        [self stopTrackingProgressOfMediaWithId:mediaUniqueId];
+        if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+            DDLogWarn(@"Media uploader failed with cancelled upload: %@", error.localizedDescription);
+            return;
+        }
+        [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
+    }];
+    UIImage * image = [UIImage imageWithContentsOfFile:media.thumbnailLocalURL];
+    [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+    uploadProgress.kind = NSProgressKindFile;
+    [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
+    [self trackMediaWithId:mediaUniqueId usingProgress:uploadProgress];
+    [self.mediaGlobalProgress resignCurrent];
+}
+
+- (void)addSiteMediaAsset:(Media *)media
+{
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    if ([media.mediaID intValue] != 0) {
+        [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
+        [self insertMedia:media];
+        [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
+    } else {
+        [self uploadMedia:media trackingId:mediaUniqueID];
     }
 }
 
@@ -1174,13 +1151,6 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
                 }
             }
         }
-        case (WPLegacyEditPostViewControllerActionSheetMediaOptions): {
-            if (buttonIndex == actionSheet.firstOtherButtonIndex){
-                [self showDeviceMediaPicker];
-            } else {
-                [self showSiteMediaPicker];
-            }
-        } break;
     }
     _currentActionSheet = nil;
 }
@@ -1215,7 +1185,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
 
 - (void)editorDidPressMedia:(WPLegacyEditorViewController *)editorController
 {
-    [self showMediaSourceOptions];
+    [self showMediaPicker];
 }
 
 - (void)editorDidPressPreview:(WPLegacyEditorViewController *)editorController

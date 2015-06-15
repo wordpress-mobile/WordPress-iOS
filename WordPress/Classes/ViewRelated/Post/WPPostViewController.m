@@ -36,6 +36,7 @@
 #import "WordPress-Swift.h"
 #import "WPTooltip.h"
 #import "MediaLibraryPickerDataSource.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -76,7 +77,6 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetRetryUpload = 203,
     WPPostViewControllerActionSheetCancelVideoUpload = 204,
     WPPostViewControllerActionSheetRetryVideoUpload = 205,
-    WPPostViewControllerActionSheetMediaOptions = 206
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -107,7 +107,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
 @property (nonatomic, strong) NSString *selectedMediaID;
-@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaLibraryDataSource;
+@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -775,41 +775,13 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaSourceOptions
+- (void)showMediaPicker
 {
     [self.editorView saveSelection];
-    
-    NSString *optionsTitle = NSLocalizedString(@"Insert media from:", @"Title of media source options");
-    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
-    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
-    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
-    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
-                                                       delegate:self
-                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:optionLocal, optionBlog, nil];
-    alert.tag = WPPostViewControllerActionSheetMediaOptions;
-    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
-    [alert showInView:self.editorView];
-}
-
-- (void)showDeviceMediaPicker
-{
+    self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    picker.delegate = self;
-    
-    [self presentViewController:picker animated:YES completion:nil];
-}
-
-- (void)showSiteMediaPicker
-{
-    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    self.mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:self.post];
     picker.dataSource = self.mediaLibraryDataSource;
-    picker.showMostRecentFirst = YES;
-    picker.allowCaptureOfMedia = YES;
     picker.delegate = self;
-    
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -1778,77 +1750,75 @@ EditImageDetailsViewControllerDelegate
     if (assets.count == 0) {
         return;
     }
-    id<WPMediaAsset> firstObject = [assets firstObject];
-    if ([firstObject isKindOfClass:[ALAsset class]]){
-        [self addDeviceMediaAssets:assets];
-    } else if ([firstObject isKindOfClass:[Media class]]) {
-        [self addSiteMediaAssets:assets];
-    }
-}
-
-- (void)addDeviceMediaAssets:(NSArray *)assets
-{
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-
-    for (ALAsset *asset in assets) {
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        __weak __typeof__(self) weakSelf = self;
-        NSString *mediaUniqueID = [self uniqueIdForMedia];
-        NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-        createMediaProgress.totalUnitCount = 2;
-        [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
-            __typeof__(self) strongSelf = weakSelf;
-            if (!strongSelf) {
-                return;
-            }
-            createMediaProgress.completedUnitCount++;
-            if (error || !media || !media.absoluteLocalURL) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                              @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                    message:error.localizedDescription];
-                return;
-            }
-            NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
-            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
-            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-                UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
-                NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
-                NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
-                [data writeToFile:posterImagePath atomically:YES];
-                NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
-                [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
-            }
-            
-            [self uploadMedia:media trackingId:mediaUniqueID];
-        }];
+    for (id<WPMediaAsset> asset in assets) {
+        if ([asset isKindOfClass:[ALAsset class]]){
+            [self addDeviceMediaAsset:(ALAsset *)asset];
+        } else if ([asset isKindOfClass:[Media class]]) {
+            [self addSiteMediaAsset:(Media *)asset];
+        }
     }
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
 }
 
-- (void)addSiteMediaAssets:(NSArray *)assets
+- (void)addDeviceMediaAsset:(ALAsset *)asset
 {
-    for (Media *media in assets) {
-        if ([media.mediaID intValue] != 0){
-            if ([media mediaType] == MediaTypeImage) {
-                [self.editorView insertImage:media.remoteURL alt:media.title];
-            } else if ([media mediaType] == MediaTypeVideo) {
-                [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
-                [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
-            }
-        } else {
-            NSString *mediaUniqueID = [self uniqueIdForMedia];
-            [self prepareMediaProgressForNumberOfAssets:1];
-            if ([media mediaType] == MediaTypeImage) {
-                [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
-            } else if ([media mediaType] == MediaTypeVideo) {
-                [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media thumbnailLocalURL]];
-            }
-            [self uploadMedia:media trackingId:mediaUniqueID];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+    createMediaProgress.totalUnitCount = 2;
+    [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
+    [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
         }
+        createMediaProgress.completedUnitCount++;
+        if (error || !media || !media.absoluteLocalURL) {
+            [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                          @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                message:error.localizedDescription];
+            return;
+        }
+        NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
+        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+            NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
+            NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
+            [data writeToFile:posterImagePath atomically:YES];
+            NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
+            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
+        }
+        
+        [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+    }];
+}
+
+- (void)addSiteMediaAsset:(Media *)media
+{
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    if ([media.mediaID intValue] != 0) {
+        [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
+        if ([media mediaType] == MediaTypeImage) {
+            [self.editorView insertImage:media.remoteURL alt:media.title];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+        }
+        [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
+    } else {
+        if ([media mediaType] == MediaTypeImage) {
+            [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media thumbnailLocalURL]];
+        }
+        [self uploadMedia:media trackingId:mediaUniqueID];
     }
 }
 
@@ -1969,13 +1939,6 @@ EditImageDetailsViewControllerDelegate
             }
             self.selectedMediaID = nil;
         } break;
-        case (WPPostViewControllerActionSheetMediaOptions): {
-            if (buttonIndex == actionSheet.firstOtherButtonIndex){
-                [self showDeviceMediaPicker];
-            } else {
-                [self showSiteMediaPicker];
-            }
-        } break;
     }
     
     _currentActionSheet = nil;
@@ -2052,7 +2015,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaSourceOptions];
+    [self showMediaPicker];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController

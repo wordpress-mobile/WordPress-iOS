@@ -23,8 +23,8 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
-#import "MediaLibraryPickerDataSource.h"
-#import <WPMediaPicker/WPMediaPickerViewController.h>
+#import "WPAndDeviceMediaLibraryDataSource.h"
+#import <WPMediaPicker/WPMediaPicker.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
@@ -50,7 +50,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetDelegate>
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -65,7 +65,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
 @property (nonatomic, strong) NSProgress *featuredImageProgress;
-@property (nonatomic, strong) MediaLibraryPickerDataSource *mediaDataSource;
+@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 
 @end
 
@@ -883,53 +883,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
         }
     } else {
         if (!self.isUploadingMedia) {
-            [self showMediaSourceOptions];
+            [self showMediaPicker];
         }
     }
 }
 
-- (void)showMediaSourceOptions
-{
-    NSString *optionsTitle = NSLocalizedString(@"Select featured image from:", @"Title of media source options for a featured image");
-    NSString *optionLocal = NSLocalizedString(@"Device Media", @"Title for picking media from the device library");
-    NSString *optionBlog = NSLocalizedString(@"Site Media", @"Title for picking media from the blog media library");
-    NSString *cancel = NSLocalizedString(@"Cancel", @"Cancel");
-    UIActionSheet *alert = [[UIActionSheet alloc] initWithTitle:optionsTitle
-                                                       delegate:self
-                                              cancelButtonTitle:!IS_IPAD ? cancel : nil
-                                         destructiveButtonTitle:nil
-                                              otherButtonTitles:optionLocal, optionBlog, nil];
-    alert.actionSheetStyle = UIActionSheetStyleAutomatic;
-    if (IS_IPAD) {
-        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-        [alert showFromRect:frame inView:self.view animated:YES];
-    } else {
-        [alert showInView:self.view];
-    }
-}
-
-- (void)showDeviceMediaPicker
+- (void)showMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    picker.filter = WPMediaTypeImage;
-    picker.delegate = self;
-    picker.allowMultipleSelection = NO;
-    picker.showMostRecentFirst = YES;
-
-    if (IS_IPAD) {
-        self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
-        CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
-        self.popover.delegate = self;
-        [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
-    } else {
-        [self presentViewController:picker animated:YES completion:nil];
-    }
-}
-
-- (void)showSiteMediaPicker
-{
-    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    self.mediaDataSource = [[MediaLibraryPickerDataSource alloc] initWithBlog:self.apost.blog];
+    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithBlog:self.apost.blog];
     picker.dataSource = self.mediaDataSource;
     picker.filter = WPMediaTypeImage;
     picker.delegate = self;
@@ -1182,17 +1144,6 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, UIActionSheetD
 {
     // Do not hide the status bar on iPad
     return self.shouldHideStatusBar && !IS_IPAD;
-}
-
-#pragma mark - ActionSheet Delegate Methods
-
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == actionSheet.firstOtherButtonIndex){
-        [self showDeviceMediaPicker];
-    } else {
-        [self showSiteMediaPicker];
-    }
 }
 
 @end
