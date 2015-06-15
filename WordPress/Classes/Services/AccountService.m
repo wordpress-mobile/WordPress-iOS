@@ -7,7 +7,6 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "AccountServiceRemoteREST.h"
-#import "AccountServiceRemoteXMLRPC.h"
 
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
@@ -84,7 +83,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 - (void)setDefaultWordPressComAccount:(WPAccount *)account
 {
     NSParameterAssert(account != nil);
-    NSAssert(account.isWpcom, @"account should be a wordpress.com account");
     NSAssert(account.authToken.length > 0, @"Account should have an authToken for WP.com");
 
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
@@ -150,12 +148,17 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  @return a WordPress.com `WPAccount` object for the given `username`
  @see createOrUpdateWordPressComAccountWithUsername:password:authToken:
  */
-- (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
+- (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
                                                    authToken:(NSString *)authToken
 {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:nil];
+    WPAccount *account = [self findAccountWithUsername:username];
+
+    if (!account) {
+        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
+        account.uuid = [[NSUUID new] UUIDString];
+        account.username = username;
+    }
     account.authToken = authToken;
-    account.isWpcom = YES;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
 
     if (![self defaultWordPressComAccount]) {
@@ -163,37 +166,6 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     }
 
     return account;
-}
-
-/**
- Creates a new self hosted account or updates the password if there is a matching account
-
- There can only be one account per XML-RPC endpoint and username, so if one already exists its password is updated
-
- @param xmlrpc the account XML-RPC endpoint
- @param username the account's username
- @param password the account's password
- @param context the NSManagedObjectContext used to create or update the account
- @return a `WPAccount` object for the given `xmlrpc` endpoint and `username`
- */
-- (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
-                                                username:(NSString *)username
-                                             andPassword:(NSString *)password
-{
-    WPAccount *account = [self findAccountWithUsername:username andXmlrpc:xmlrpc];
-
-    if (!account) {
-        account = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:self.managedObjectContext];
-        account.uuid = [[NSUUID new] UUIDString];
-        account.xmlrpc = xmlrpc;
-        account.username = username;
-    }
-    account.password = password;
-
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-
-    return account;
-
 }
 
 - (NSUInteger)numberOfAccounts
@@ -210,48 +182,26 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return count;
 }
 
-- (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username
-{
-    return [self findAccountWithUsername:username andXmlrpc:WordPressDotcomXMLRPCKey];
-}
-
-- (WPAccount *)findAccountWithUsername:(NSString *)username andXmlrpc:(NSString *)xmlrpc
+- (WPAccount *)findAccountWithUsername:(NSString *)username
 {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
-    [request setPredicate:[NSPredicate predicateWithFormat:@"xmlrpc like %@ AND username like %@", xmlrpc, username]];
+    [request setPredicate:[NSPredicate predicateWithFormat:@"username like %@", username]];
     [request setIncludesPendingChanges:YES];
 
     NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
     return [results firstObject];
 }
 
-- (void)removeWordPressComAccountPasswordIfNeeded
-{
-    // Let's do this just once!
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults boolForKey:DefaultDotcomAccountPasswordRemovedKey]) {
-        return;
-    }
-    
-    WPAccount *account = [self defaultWordPressComAccount];
-    account.password = nil;
-    
-    [defaults setBool:YES forKey:DefaultDotcomAccountPasswordRemovedKey];
-    [defaults synchronize];
-}
-
 - (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     NSAssert(account, @"Account can not be nil");
     NSAssert(account.username, @"account.username can not be nil");
-    NSAssert(account.xmlrpc, @"account.xmlrpc can not be nil");
 
     NSString *username = account.username;
-    NSString *xmlrpc = account.xmlrpc;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getDetailsForAccount:account success:^(RemoteUser *remoteUser) {
         // account.objectID can be temporary, so fetch via username/xmlrpc instead.
-        WPAccount *fetchedAccount = [self findAccountWithUsername:username andXmlrpc:xmlrpc];
+        WPAccount *fetchedAccount = [self findAccountWithUsername:username];
         [self updateAccount:fetchedAccount withUserDetails:remoteUser];
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPAnalytics refreshMetadata];
@@ -269,10 +219,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
-    if (account.restApi) {
-        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    }
-    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
+    return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 
 - (void)updateAccount:(WPAccount *)account withUserDetails:(RemoteUser *)userDetails
@@ -292,16 +239,10 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     NSParameterAssert(account);
 
     BOOL purge = NO;
-    if (account.isWpcom) {
-        WPAccount *defaultAccount = [self defaultWordPressComAccount];
-        if ([account.jetpackBlogs count] == 0
-            && ![defaultAccount isEqual:account]) {
-            purge = YES;
-        }
-    } else {
-        if ([account.blogs count] == 0) {
-            purge = YES;
-        }
+    WPAccount *defaultAccount = [self defaultWordPressComAccount];
+    if ([account.jetpackBlogs count] == 0
+        && ![defaultAccount isEqual:account]) {
+        purge = YES;
     }
 
     if (purge) {

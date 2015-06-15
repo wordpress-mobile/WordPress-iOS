@@ -1684,16 +1684,8 @@ describe(@"LoginFacadeDelegate methods", ^{
             [mockViewModelPresenter verify];
         });
         
-        it(@"should create a WPAccount for a self hosted site", ^{
-            [[mockAccountServiceFacade expect] createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
-            
-            [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
-            
-            [mockAccountServiceFacade verify];
-        });
-        
         it(@"should sync the newly added site", ^{
-            [[mockBlogSyncFacade expect] syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
+            [[mockBlogSyncFacade expect] syncBlogWithUsername:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY];
             
             [viewModel finishedLoginWithUsername:username password:password xmlrpc:xmlrpc options:options];
             
@@ -1704,9 +1696,9 @@ describe(@"LoginFacadeDelegate methods", ^{
             [[mockViewModelPresenter expect] dismissLoginView];
             
             // Retrieve finishedSync block and execute it when appropriate
-            [OCMStub([mockBlogSyncFacade syncBlogForAccount:OCMOCK_ANY username:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
+            [OCMStub([mockBlogSyncFacade syncBlogWithUsername:username password:password xmlrpc:xmlrpc options:options finishedSync:OCMOCK_ANY]) andDo:^(NSInvocation *invocation) {
                 void (^ __unsafe_unretained finishedSyncStub)(void);
-                [invocation getArgument:&finishedSyncStub atIndex:7];
+                [invocation getArgument:&finishedSyncStub atIndex:6];
                 
                 finishedSyncStub();
             }];

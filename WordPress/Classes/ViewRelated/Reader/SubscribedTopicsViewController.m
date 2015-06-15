@@ -77,7 +77,7 @@
 {
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    return [defaultAccount isWpcom];
+    return defaultAccount != nil;
 }
 
 - (ReaderTopic *)currentTopic

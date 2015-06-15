@@ -135,7 +135,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     [blogService syncBlog:_blog success:nil failure:nil];
 
-    if (!self.blog.account.userID) {
+    if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];

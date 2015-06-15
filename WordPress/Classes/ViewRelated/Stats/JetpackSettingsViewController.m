@@ -687,7 +687,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
             self.usernameTextField.text = defaultAccount.username;
-            self.passwordTextField.text = defaultAccount.password;
         }
         [self updateSaveButton];
     }
