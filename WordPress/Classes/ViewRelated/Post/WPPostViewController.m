@@ -781,6 +781,7 @@ EditImageDetailsViewControllerDelegate
     self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.dataSource = self.mediaLibraryDataSource;
+    picker.showMostRecentFirst = YES;
     picker.delegate = self;
     [self presentViewController:picker animated:YES completion:nil];
 }
