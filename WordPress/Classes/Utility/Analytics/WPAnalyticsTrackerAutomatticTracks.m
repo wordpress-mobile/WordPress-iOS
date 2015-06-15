@@ -403,46 +403,46 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"stats_screen_signed_into_jetpack";
             break;
         case WPAnalyticsStatPostListAuthorFilterChanged:
-            eventName = @"post_list_author_filter_changed";
+            eventName = @"wpios_post_list_author_filter_changed";
             break;
         case WPAnalyticsStatPostListDraftAction:
-            eventName = @"post_list_draft_action";
+            eventName = @"wpios_post_list_draft_action_pressed";
             break;
         case WPAnalyticsStatPostListEditAction:
-            eventName = @"post_list_edit_action";
+            eventName = @"wpios_post_list_edit_action_pressed";
             break;
         case WPAnalyticsStatPostListLoadedMore:
-            eventName = @"post_list_loaded_more";
+            eventName = @"wpios_post_list_load_more_triggered";
             break;
         case WPAnalyticsStatPostListNoResultsButtonPressed:
-            eventName = @"post_list_no_results_button_pressed";
+            eventName = @"wpios_post_list_no_results_button_pressed";
             break;
         case WPAnalyticsStatPostListOpenedCellMenu:
-            eventName = @"post_list_opened_cell_menu";
+            eventName = @"wpios_post_list_cell_menu_opened";
             break;
         case WPAnalyticsStatPostListPublishAction:
-            eventName = @"post_list_publish_action";
+            eventName = @"wpios_post_list_publish_action_pressed";
             break;
         case WPAnalyticsStatPostListPullToRefresh:
-            eventName = @"post_list_pulled_to_refresh";
+            eventName = @"wpios_post_list_pull_to_refresh_triggered";
             break;
         case WPAnalyticsStatPostListRestoreAction:
-            eventName = @"post_list_restore_action";
+            eventName = @"wpios_post_list_restore_action_pressed";
             break;
         case WPAnalyticsStatPostListSearchOpened:
-            eventName = @"post_list_search_opened";
+            eventName = @"wpios_post_list_search_opened";
             break;
         case WPAnalyticsStatPostListStatsAction:
-            eventName = @"post_list_stats_action";
+            eventName = @"wpios_post_list_stats_action_pressed";
             break;
         case WPAnalyticsStatPostListStatusFilterChanged:
-            eventName = @"post_list_status_filter_changed";
+            eventName = @"wpios_post_list_status_filter_changed";
             break;
         case WPAnalyticsStatPostListTrashAction:
-            eventName = @"post_list_trash_action";
+            eventName = @"wpios_post_list_trash_action_pressed";
             break;
         case WPAnalyticsStatPostListViewAction:
-            eventName = @"post_list_view_action";
+            eventName = @"wpios_post_list_view_action_pressed";
             break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
