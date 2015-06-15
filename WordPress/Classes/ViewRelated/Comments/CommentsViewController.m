@@ -38,10 +38,7 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 }
 
 - (void)viewDidLoad
-{
-    NSParameterAssert(self.view);
-    NSParameterAssert(self.tableView);
-    
+{    
     [super viewDidLoad];
     
     [self configureNavBar];
