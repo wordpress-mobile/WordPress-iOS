@@ -1,7 +1,7 @@
 #import <Foundation/Foundation.h>
-#import "Blog.h"
 
 
+@class Blog;
 
 @interface CommentsViewController : UITableViewController
 
