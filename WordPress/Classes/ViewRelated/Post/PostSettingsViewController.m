@@ -16,13 +16,13 @@
 #import "UITableViewTextFieldCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
-#import "WPTableViewController.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
+#import "WPGUIConstants.h"
 #import <WPMediaPicker/WPMediaPickerViewController.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
