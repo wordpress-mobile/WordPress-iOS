@@ -32,8 +32,8 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    self.syncHelper.delegate = nil;
-    self.tableViewHandler.delegate = nil;
+    _syncHelper.delegate = nil;
+    _tableViewHandler.delegate = nil;
 }
 
 - (void)viewDidLoad
