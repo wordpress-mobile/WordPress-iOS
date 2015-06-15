@@ -13,12 +13,14 @@
 #import "ContextManager.h"
 
 
-CGFloat const CommentsStandardOffset        = 16.0;
-CGFloat const CommentsSectionHeaderHeight   = 24.0;
-CGRect const CommentsActivityFooterFrame    = {0.0, 0.0, 30.0, 30.0};
-CGFloat const CommentsActivityFooterHeight  = 50.0;
-NSInteger const CommentsRefreshRowPadding   = 4;
-NSInteger const CommentsFetchBatchSize      = 10;
+CGFloat const CommentsStandardOffset                    = 16.0;
+CGFloat const CommentsSectionHeaderHeight               = 24.0;
+CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
+CGFloat const CommentsActivityFooterHeight              = 50.0;
+NSInteger const CommentsRefreshRowPadding               = 4;
+NSInteger const CommentsFetchBatchSize                  = 10;
+NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
+
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
@@ -52,7 +54,7 @@ NSInteger const CommentsFetchBatchSize      = 10;
     [self configureTableViewFooter];
     [self configureTableViewHandler];
     
-    [self refreshAndSync];
+    [self refreshAndSyncIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -330,9 +332,12 @@ NSInteger const CommentsFetchBatchSize      = 10;
     [self.syncHelper syncContentWithUserInteraction];
 }
 
-- (void)refreshAndSync
+- (void)refreshAndSyncIfNeeded
 {
-    [self.syncHelper syncContent];
+    NSDate *lastSynced = self.blog.lastCommentsSync;
+    if (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds) {
+        [self.syncHelper syncContent];
+    }
 }
 
 - (void)refreshInfiniteScroll
