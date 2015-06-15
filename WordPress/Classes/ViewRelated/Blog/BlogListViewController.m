@@ -30,9 +30,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
 @property (nonatomic, strong) WPSearchController *searchController;
-@property (weak, nonatomic) IBOutlet UIView *searchWrapperView;
-@property (weak, nonatomic) IBOutlet UITableView *tableView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
+@property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 
 @end
 
