@@ -229,14 +229,23 @@ CGFloat const CommentsSectionHeaderHeight   = 24.0;
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
     CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
-        if (success) {
-            success(hasMore);
+    [context performBlock:^{
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:self.blog.objectID error:nil];
+        if (!blogInContext) {
+            return;
         }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
+        
+        [commentService loadMoreCommentsForBlog:blogInContext
+                                        success:^(BOOL hasMore) {
+                                                    if (success) {
+                                                        success(hasMore);
+                                                    }
+                                        }
+                                        failure:^(NSError *error) {
+                                                    if (failure) {
+                                                        failure(error);
+                                                    }
+                                        }];
     }];
 }
 
