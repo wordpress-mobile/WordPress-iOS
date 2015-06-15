@@ -209,11 +209,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     }
 }
 
-- (void)setupSearchWrapperView
-{
-    self.searchWrapperView = [[UIView alloc] initWithFrame:CGRectZero];
-}
-
 #pragma mark - Header methods
 
 - (void)setupHeaderView
