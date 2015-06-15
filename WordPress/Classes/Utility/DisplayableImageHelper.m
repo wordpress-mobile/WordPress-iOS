@@ -1,6 +1,6 @@
 #import "DisplayableImageHelper.h"
 
-static const NSInteger FeaturedImageMinimumWidth = 640;
+static const NSInteger FeaturedImageMinimumWidth = 150;
 
 static NSString * const AttachmentsDictionaryKeyWidth = @"width";
 static NSString * const AttachmentsDictionaryKeyURL = @"URL";
@@ -74,6 +74,7 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
     // Find all the image tags in the content passed.
     NSArray *matches = [regex matchesInString:content options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [content length])];
 
+    NSString *firstImageWithNoSize;
     NSInteger currentMaxWidth = FeaturedImageMinimumWidth;
     for (NSTextCheckingResult *match in matches) {
         NSString *tag = [content substringWithRange:match.range];
@@ -84,7 +85,13 @@ static NSString * const AttachmentsDictionaryKeyMimeType = @"mime_type";
         if (width > currentMaxWidth) {
             imageSrc = src;
             currentMaxWidth = width;
+        } else if (!firstImageWithNoSize && width == 0) {
+            firstImageWithNoSize = src;
         }
+    }
+
+    if ([imageSrc length] == 0 && firstImageWithNoSize) {
+        imageSrc = firstImageWithNoSize;
     }
 
     return imageSrc;
