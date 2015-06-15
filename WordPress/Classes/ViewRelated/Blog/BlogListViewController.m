@@ -123,7 +123,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-        [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        if (defaultAccount) {
+            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        }
     }];
 }
 

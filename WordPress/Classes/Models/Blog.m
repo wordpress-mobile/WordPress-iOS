@@ -7,6 +7,8 @@
 #import "ContextManager.h"
 #import "Constants.h"
 
+#import <SFHFKeychainUtils.h>
+
 static NSInteger const ImageSizeSmallWidth = 240;
 static NSInteger const ImageSizeSmallHeight = 180;
 static NSInteger const ImageSizeMediumWidth = 480;
@@ -47,8 +49,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic account;
 @dynamic jetpackAccount;
 @dynamic isMultiAuthor;
-@dynamic isJetpack;
+@dynamic isHostedAtWPcom;
 @dynamic icon;
+@dynamic username;
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -306,20 +309,24 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [self getOptionValue:@"software_version"];
 }
 
-- (NSString *)username
-{
-    [self willAccessValueForKey:@"username"];
-
-    NSString *username = self.account.username ?: @"";
-
-    [self didAccessValueForKey:@"username"];
-
-    return username;
-}
-
 - (NSString *)password
 {
-    return self.account.password ?: @"";
+    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
+}
+
+- (void)setPassword:(NSString *)password
+{
+    if (password) {
+        [SFHFKeychainUtils storeUsername:self.username
+                             andPassword:password
+                          forServiceName:self.xmlrpc
+                          updateExisting:YES
+                                   error:nil];
+    } else {
+        [SFHFKeychainUtils deleteItemForUsername:self.username
+                                  andServiceName:self.xmlrpc
+                                           error:nil];
+    }
 }
 
 - (NSString *)authToken
@@ -368,11 +375,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (BOOL)supportsPushNotifications
 {
-    if (self.jetpackAccount) {
-        return [self jetpackAccountIsDefaultAccount];
-    } else {
-        return [self accountIsDefaultAccount];
-    }
+    return [self accountIsDefaultAccount];
 }
 
 - (BOOL)accountIsDefaultAccount
@@ -389,11 +392,6 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [defaultAccount isEqual:self.jetpackAccount];
 }
 
-- (BOOL)isHostedAtWPcom
-{
-    return self.account.isWpcom && !self.isJetpack;
-}
-
 - (NSNumber *)dotComID
 {
     /*
@@ -406,7 +404,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
      */
     if (self.jetpack.siteID) {
         return self.jetpack.siteID;
-    } else if (self.account.isWpcom) {
+    } else if (self.account) {
         return self.blogID;
     } else {
         return nil;
@@ -440,8 +438,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 - (NSString *)logDescription
 {
     NSString *extra = @"";
-    if (self.account.isWpcom) {
-        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account.isWpcom ? self.account.username : @"NO", self.blogID];
+    if (self.account) {
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account ? self.account.username : @"NO", self.blogID];
     } else if (self.jetpackAccount) {
         extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
     } else {
@@ -467,7 +465,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (WordPressComApi *)restApi
 {
-    if (self.account.isWpcom) {
+    if (self.account) {
         return self.account.restApi;
     } else if ([self jetpackRESTSupported]) {
         return self.jetpackAccount.restApi;
@@ -481,7 +479,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
  */
 - (WordPressComApi *)restApiForStats
 {
-    if (self.account.isWpcom) {
+    if (self.account) {
         return self.account.restApi;
     } else if (self.jetpackAccount && self.dotComID) {
         return self.jetpackAccount.restApi;

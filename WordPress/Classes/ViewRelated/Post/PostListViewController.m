@@ -486,7 +486,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     controller.postID = apost.postID;
     controller.postTitle = [apost titleForDisplay];
-    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.blogID
+    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
                                                         siteTimeZone:[service timeZoneForBlog:blog]
                                                          oauth2Token:blog.authToken
                                           andCacheExpirationInterval:StatsCacheInterval];

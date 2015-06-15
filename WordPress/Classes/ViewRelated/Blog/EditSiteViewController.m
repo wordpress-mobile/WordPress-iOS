@@ -164,7 +164,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == TableViewSectionTitle) {
-        if (self.blog.account.isWpcom) {
+        if (self.blog.account) {
             return EditSiteRowCountForSectionTitle;
         }
         return EditSiteRowCountForSectionTitleSelfHosted;
@@ -530,7 +530,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     [self.savingIndicator stopAnimating];
     [self.savingIndicator setHidden:YES];
     self.blog.geolocationEnabled = self.geolocationEnabled;
-    self.blog.account.password = self.password;
+    self.blog.password = self.password;
 
     [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];

@@ -16,7 +16,6 @@
 #import "BlogServiceRemoteREST.h"
 #import "AccountServiceRemote.h"
 #import "AccountServiceRemoteREST.h"
-#import "AccountServiceRemoteXMLRPC.h"
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
@@ -173,8 +172,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             
             if (WIDGETS_EXIST
                 && !widgetIsConfigured
-                && defaultBlog != nil
-                && account.isWpcom) {
+                && defaultBlog != nil) {
                 NSNumber *siteId = defaultBlog.blogID;
                 NSString *blogName = defaultBlog.blogName;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
@@ -341,7 +339,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 // See: https://github.com/wordpress-mobile/WordPress-iOS/issues/3016
 - (BOOL)shouldStaggerRequestsForBlog:(Blog *)blog
 {
-    if (blog.account.isWpcom || blog.jetpackAccount) {
+    if (blog.account || blog.jetpackAccount) {
         return NO;
     }
 
@@ -370,8 +368,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (NSInteger)blogCountSelfHosted
 {
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account.isWpcom = %@"
-                                                argumentArray:@[@(NO)]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = NULL"];
     return [self blogCountWithPredicate:predicate];
 }
 
@@ -379,7 +376,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     NSArray *subpredicates = @[
                             [self predicateForVisibleBlogs],
-                            [NSPredicate predicateWithFormat:@"account.isWpcom = YES"],
+                            [NSPredicate predicateWithFormat:@"account != NULL"],
                             ];
     NSPredicate *predicate = [NSCompoundPredicate andPredicateWithSubpredicates:subpredicates];
     return [self blogCountWithPredicate:predicate];
@@ -428,6 +425,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         return blogToReturn;
     }
     return nil;
+}
+
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
+                 andUsername:(NSString *)username
+{
+    NSArray *foundBlogs = [self blogsWithPredicate:[NSPredicate predicateWithFormat:@"xmlrpc = %@ AND username = %@", xmlrpc, username]];
+    return [foundBlogs firstObject];
 }
 
 - (Blog *)createBlogWithAccount:(WPAccount *)account
@@ -494,13 +498,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
-        blog.isJetpack = remoteBlog.jetpack;
+        blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
-        
-        // If non-WPcom then always default or if first from remote (assuming .com)
-        if (!account.isWpcom || [blogs indexOfObject:remoteBlog] == 0) {
-            account.defaultBlog = blog;
-        }
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -534,19 +533,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
     if (jetpackBlog) {
         DDLogInfo(@"Migrating %@ to wp.com account %@", [jetpackBlog hostURL], account.username);
-        WPAccount *oldAccount = jetpackBlog.account;
         jetpackBlog.account = account;
         jetpackBlog.jetpackAccount = nil;
-
-        /*
-         Purge the blog's old account if it has no more blogs
-         Generally, there's a 1-1 relationship between accounts and self-hosted
-         blogs, so in most cases the self hosted account would stay invisible
-         unless purged, and credentials would stay in the Keychain.
-         */
-        if (oldAccount.blogs.count == 0) {
-            [self.managedObjectContext deleteObject:oldAccount];
-        }
     }
 
     return jetpackBlog;
@@ -566,11 +554,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 - (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
 {
-    if (account.restApi) {
-        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    }
-
-    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
+    return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
 }
 
 - (Blog *)blogWithPredicate:(NSPredicate *)predicate

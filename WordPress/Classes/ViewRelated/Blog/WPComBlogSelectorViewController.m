@@ -4,7 +4,7 @@
 
 - (NSPredicate *)fetchRequestPredicate
 {
-    NSString *predicateString = @"account.isWpcom = YES AND isJetpack = NO";
+    NSString *predicateString = @"account != NULL AND isHostedAtWPcom = YES";
     if ([self.tableView isEditing]) {
         predicateString = [NSString stringWithFormat:@"%@ AND visible = YES", predicateString];
     }
