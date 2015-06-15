@@ -681,12 +681,6 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     if (self.blog.jetpack.isConnected) {
         if (self.blog.jetpack.connectedUsername) {
             self.usernameTextField.text = self.blog.jetpack.connectedUsername;
-        } else {
-            NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-            WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            self.usernameTextField.text = defaultAccount.username;
         }
         [self updateSaveButton];
     }
