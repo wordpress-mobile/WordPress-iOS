@@ -183,7 +183,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // test.blog + wp.com + jetpack
-    XCTAssertEqual(3, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
     // dotcom1.wordpress.com
@@ -202,7 +202,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(2, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     XCTAssertEqual(0, wpComAccount.jetpackBlogs.count);
