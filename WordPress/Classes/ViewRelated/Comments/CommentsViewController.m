@@ -17,6 +17,8 @@ CGFloat const CommentsStandardOffset        = 16.0;
 CGFloat const CommentsSectionHeaderHeight   = 24.0;
 CGRect const CommentsActivityFooterFrame    = {0.0, 0.0, 30.0, 30.0};
 CGFloat const CommentsActivityFooterHeight  = 50.0;
+NSInteger const CommentsRefreshRowPadding   = 4;
+NSInteger const CommentsFetchBatchSize      = 10;
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
@@ -176,11 +178,10 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Refresh only when we reach the last 3 rows in the last section!
-    NSInteger const refreshRowPadding   = 4;
     NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
     NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
     
-    if ((indexPath.section == lastSection) && (indexPath.row + refreshRowPadding >= numberOfRowsInSection)) {
+    if ((indexPath.section == lastSection) && (indexPath.row + CommentsRefreshRowPadding >= numberOfRowsInSection)) {
         if (self.syncHelper.hasMoreContent) {
             [self.syncHelper syncMoreContent];
         }
@@ -221,12 +222,12 @@ CGFloat const CommentsActivityFooterHeight  = 50.0;
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest            = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
+    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
     
     NSSortDescriptor *sortDescriptorStatus  = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
     NSSortDescriptor *sortDescriptorDate    = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
     fetchRequest.sortDescriptors            = @[sortDescriptorStatus, sortDescriptorDate];
-    fetchRequest.fetchBatchSize             = 10;
+    fetchRequest.fetchBatchSize             = CommentsFetchBatchSize;
     
     return fetchRequest;
 }
