@@ -9,9 +9,7 @@
 
 @implementation WPAccount
 
-@dynamic xmlrpc;
 @dynamic username;
-@dynamic isWpcom;
 @dynamic blogs;
 @dynamic jetpackBlogs;
 @dynamic defaultBlog;
@@ -37,13 +35,9 @@
 
     [_xmlrpcApi.operationQueue cancelAllOperations];
     
-    self.password = nil;
-    
     // Fix: Let's make sure we only nuke the authToken when needed. That is, if the deleted account is dotcom.
     // Otherwise, removing a self hosted account with the same username as a dotcom account might end up nuking the token.
-    if (self.isWpcom) {
-        self.authToken = nil;
-    }
+    self.authToken = nil;
 }
 
 - (void)didTurnIntoFault
@@ -55,30 +49,6 @@
 }
 
 #pragma mark - Custom accessors
-
-- (NSString *)password
-{
-    if (self.isWpcom) {
-        return nil;
-    }
-    
-    return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
-}
-
-- (void)setPassword:(NSString *)password
-{
-    if (password) {
-        [SFHFKeychainUtils storeUsername:self.username
-                             andPassword:password
-                          forServiceName:self.xmlrpc
-                          updateExisting:YES
-                                   error:nil];
-    } else {
-        [SFHFKeychainUtils deleteItemForUsername:self.username
-                                  andServiceName:self.xmlrpc
-                                           error:nil];
-    }
-}
 
 - (NSString *)authToken
 {
@@ -130,22 +100,10 @@
 
 - (WordPressComApi *)restApi
 {
-    if (!self.isWpcom) {
-        return nil;
-    }
-
     if (!_restApi) {
         _restApi = [[WordPressComApi alloc] initWithOAuthToken:self.authToken];
     }
     return _restApi;
-}
-
-- (WordPressXMLRPCApi *)xmlrpcApi
-{
-    if (!_xmlrpcApi) {
-        _xmlrpcApi = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc] username:self.username password:self.password];
-    }
-    return _xmlrpcApi;
 }
 
 @end

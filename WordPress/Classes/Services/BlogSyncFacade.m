@@ -17,12 +17,10 @@
     [blogService syncBlogsForAccount:account success:success failure:failure];
 }
 
-- (void)syncBlogForAccount:(WPAccount *)account
-                  username:(NSString *)username
-                  password:(NSString *)password
-                    xmlrpc:(NSString *)xmlrpc
-                   options:(NSDictionary *)options
-              finishedSync:(void(^)())finishedSync
+- (void)syncBlogWithUsername:(NSString *)username
+                    password:(NSString *)password
+                      xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+                finishedSync:(void(^)())finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
@@ -32,9 +30,9 @@
     if (!url) {
         url = [options stringForKeyPath:@"blog_url.value"];
     }
-    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc inAccount:account];
+    Blog *blog = [blogService findBlogWithXmlrpc:xmlrpc andUsername:username];
     if (!blog) {
-        blog = [blogService createBlogWithAccount:account];
+        blog = [blogService createBlogWithAccount:nil];
         if (url) {
             blog.url = url;
         }
@@ -42,6 +40,7 @@
             blog.blogName = [blogName stringByDecodingXMLCharacters];
         }
     }
+    blog.username = username;
     blog.xmlrpc = xmlrpc;
     blog.options = options;
     [[ContextManager sharedInstance] saveContext:context];
@@ -53,7 +52,7 @@
             if (dotcomUsername) {
                 // Search for a matching .com account
                 AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-                account = [accountService findWordPressComAccountWithUsername:dotcomUsername];
+                WPAccount *account = [accountService findAccountWithUsername:dotcomUsername];
                 if (account) {
                     blog.jetpackAccount = account;
                     [WPAnalytics track:WPAnalyticsStatSignedInToJetpack];
