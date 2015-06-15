@@ -15,6 +15,7 @@
 
 CGFloat const CommentsStandardOffset                    = 16.0;
 CGFloat const CommentsSectionHeaderHeight               = 24.0;
+CGFloat const CommentsDefaultCellHeight                 = 44.0;
 CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
 CGFloat const CommentsActivityFooterHeight              = 50.0;
 NSInteger const CommentsRefreshRowPadding               = 4;
@@ -158,6 +159,13 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Note:
+    // Without an estimated height, UITableView will have an erratic behavior
+    return CommentsDefaultCellHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
