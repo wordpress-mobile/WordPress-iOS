@@ -9,7 +9,7 @@
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <SVProgressHUD.h>
-#import <WPMediaPicker/WPMediaPickerViewController.h>
+#import <WPMediaPicker/WPMediaPicker.h>
 #import "BlogSelectorViewController.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -35,6 +35,8 @@
 #import "WPUploadStatusButton.h"
 #import "WordPress-Swift.h"
 #import "WPTooltip.h"
+#import "MediaLibraryPickerDataSource.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -74,7 +76,7 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetCancelUpload = 202,
     WPPostViewControllerActionSheetRetryUpload = 203,
     WPPostViewControllerActionSheetCancelVideoUpload = 204,
-    WPPostViewControllerActionSheetRetryVideoUpload = 205
+    WPPostViewControllerActionSheetRetryVideoUpload = 205,
 };
 
 static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
@@ -99,10 +101,13 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+
+#pragma mark - Media related properties
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
 @property (nonatomic, strong) NSMutableDictionary *mediaInProgress;
 @property (nonatomic, strong) UIProgressView *mediaProgressView;
-@property (nonatomic, strong) NSString * selectedMediaID;
+@property (nonatomic, strong) NSString *selectedMediaID;
+@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaLibraryDataSource;
 
 #pragma mark - Bar Button Items
 @property (nonatomic, strong) UIBarButtonItem *secondaryLeftUIBarButtonItem;
@@ -770,13 +775,14 @@ EditImageDetailsViewControllerDelegate
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showMediaOptions
+- (void)showMediaPicker
 {
     [self.editorView saveSelection];
-    
+    self.mediaLibraryDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.post];
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-	picker.delegate = self;        
-    
+    picker.dataSource = self.mediaLibraryDataSource;
+    picker.showMostRecentFirst = YES;
+    picker.delegate = self;
     [self presentViewController:picker animated:YES completion:nil];
 }
 
@@ -1742,46 +1748,79 @@ EditImageDetailsViewControllerDelegate
 
 - (void)addMediaAssets:(NSArray *)assets
 {
-
+    if (assets.count == 0) {
+        return;
+    }
     [self prepareMediaProgressForNumberOfAssets:assets.count];
-
-    for (ALAsset *asset in assets) {
-        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-        __weak __typeof__(self) weakSelf = self;
-        NSString *mediaUniqueID = [self uniqueIdForMedia];
-        NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
-        createMediaProgress.totalUnitCount = 2;
-        [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
-        [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
-            __typeof__(self) strongSelf = weakSelf;
-            if (!strongSelf) {
-                return;
-            }
-            createMediaProgress.completedUnitCount++;
-            if (error || !media || !media.absoluteLocalURL) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
-                                                              @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
-                                    message:error.localizedDescription];
-                return;
-            }
-            NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
-            if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
-                [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
-            } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
-                UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
-                NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
-                NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
-                [data writeToFile:posterImagePath atomically:YES];
-                NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
-                [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
-            }
-            
-            [self uploadMedia:media trackingId:mediaUniqueID];
-        }];
+    for (id<WPMediaAsset> asset in assets) {
+        if ([asset isKindOfClass:[ALAsset class]]){
+            [self addDeviceMediaAsset:(ALAsset *)asset];
+        } else if ([asset isKindOfClass:[Media class]]) {
+            [self addSiteMediaAsset:(Media *)asset];
+        }
     }
     // Need to refresh the post object. If we didn't, self.post.media would appear
     // to be unchanged causing the Media State Methods to fail.
     [self.post.managedObjectContext refreshObject:self.post mergeChanges:YES];
+}
+
+- (void)addDeviceMediaAsset:(ALAsset *)asset
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    NSProgress *createMediaProgress = [[NSProgress alloc] initWithParent:nil userInfo:nil];
+    createMediaProgress.totalUnitCount = 2;
+    [self trackMediaWithId:mediaUniqueID usingProgress:createMediaProgress];
+    [mediaService createMediaWithAsset:asset forPostObjectID:self.post.objectID completion:^(Media *media, NSError *error) {
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        createMediaProgress.completedUnitCount++;
+        if (error || !media || !media.absoluteLocalURL) {
+            [strongSelf stopTrackingProgressOfMediaWithId:mediaUniqueID];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Failed to export media",
+                                                          @"The title for an alert that says to the user the media (image or video) he selected couldn't be used on the post.")
+                                message:error.localizedDescription];
+            return;
+        }
+        NSURL* url = [[NSURL alloc] initFileURLWithPath:media.absoluteLocalURL];
+        if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+            [strongSelf.editorView insertLocalImage:[url absoluteString] uniqueId:mediaUniqueID];
+        } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+            UIImage * posterImage = [UIImage imageWithCGImage:asset.defaultRepresentation.fullScreenImage];
+            NSData *data = UIImageJPEGRepresentation(posterImage, 0.7);
+            NSString *posterImagePath = [NSString stringWithFormat:@"%@/%@.jpg", NSTemporaryDirectory(), mediaUniqueID];
+            [data writeToFile:posterImagePath atomically:YES];
+            NSURL * posterURL = [[NSURL alloc] initFileURLWithPath:posterImagePath];
+            [strongSelf.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[posterURL absoluteString]];
+        }
+        
+        [strongSelf uploadMedia:media trackingId:mediaUniqueID];
+    }];
+}
+
+- (void)addSiteMediaAsset:(Media *)media
+{
+    NSString *mediaUniqueID = [self uniqueIdForMedia];
+    if ([media.mediaID intValue] != 0) {
+        [self trackMediaWithId:mediaUniqueID usingProgress:[NSProgress progressWithTotalUnitCount:1]];
+        if ([media mediaType] == MediaTypeImage) {
+            [self.editorView insertImage:media.remoteURL alt:media.title];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+        }
+        [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
+    } else {
+        if ([media mediaType] == MediaTypeImage) {
+            [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
+        } else if ([media mediaType] == MediaTypeVideo) {
+            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media thumbnailLocalURL]];
+        }
+        [self uploadMedia:media trackingId:mediaUniqueID];
+    }
 }
 
 - (void)insertImage:(NSString *)url alt:(NSString *)alt
@@ -1977,7 +2016,7 @@ EditImageDetailsViewControllerDelegate
 
 - (void)editorDidPressMedia:(WPEditorViewController *)editorController
 {
-    [self showMediaOptions];
+    [self showMediaPicker];
 }
 
 - (void)editorDidPressPreview:(WPEditorViewController *)editorController
@@ -2147,29 +2186,37 @@ EditImageDetailsViewControllerDelegate
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(id<WPMediaAsset>)mediaAsset
 {
-    NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
-    
-    if (assetType == ALAssetTypeUnknown) {
-        return NO;
+    if ([mediaAsset isKindOfClass:[Media class]]){
+        return YES;
     }
-    
-    // If the media is from a shared photo stream it may not be available locally to be used
-    if (!asset.defaultRepresentation) {
-        if (assetType == ALAssetTypePhoto) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                      withSupportButton:NO];
-        } else {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
-                                message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
-                      withSupportButton:NO];
+    if ([mediaAsset isKindOfClass:[ALAsset class]]){
+        ALAsset *asset = (ALAsset *)[mediaAsset baseAsset];
+        NSString * assetType = [asset valueForProperty:ALAssetPropertyType];
+        
+        if (assetType == ALAssetTypeUnknown) {
+            return NO;
         }
-        return NO;
+        
+        // If the media is from a shared photo stream it may not be available locally to be used
+        if (!asset.defaultRepresentation) {
+            if (assetType == ALAssetTypePhoto) {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                    message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                          withSupportButton:NO];
+            } else {
+                [WPError showAlertWithTitle:NSLocalizedString(@"Video unavailable", @"The title for an alert that says the video the user selected isn't available.")
+                                    message:NSLocalizedString(@"This Photo Stream video cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the video is not available locally. This is normally related to share photo stream images.")
+                          withSupportButton:NO];
+            }
+            return NO;
+        }
+        
+        return YES;
     }
     
-    return YES;
+    return NO;
 }
 
 #pragma mark - KVO
