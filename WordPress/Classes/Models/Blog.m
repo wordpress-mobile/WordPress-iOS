@@ -292,7 +292,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     NSString *password = self.password ?: [NSString string];
     
     [result addObject:self.blogID];
-    [result addObject:self.username];
+    [result addObject:self.usernameForSite];
     [result addObject:password];
 
     if ([extra isKindOfClass:[NSArray class]]) {
@@ -335,6 +335,18 @@ static NSInteger const ImageSizeLargeHeight = 480;
         return self.jetpackAccount.authToken;
     } else {
         return self.account.authToken;
+    }
+}
+
+- (NSString *)usernameForSite
+{
+    if (self.username) {
+        return self.username;
+    } else if (self.account && self.isHostedAtWPcom) {
+        return self.account.username;
+    } else {
+        // FIXME: Figure out how to get the self hosted username when using Jetpack REST (@koke 2015-06-15)
+        return nil;
     }
 }
 

@@ -97,7 +97,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 
         self.url = self.blog.url;
         self.authToken = self.blog.authToken;
-        self.username = self.blog.username;
+        self.username = self.blog.usernameForSite;
         self.password = self.blog.password;
 
         self.startingUser = self.username;
@@ -246,8 +246,8 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
             self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
             [self.usernameTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
             [self configureTextField:self.usernameTextField asPassword:NO];
-            if (self.blog.username != nil) {
-                self.usernameTextField.text = self.blog.username;
+            if (self.blog.usernameForSite != nil) {
+                self.usernameTextField.text = self.blog.usernameForSite;
             } else {
                 self.usernameTextField.text = @"";
             }
@@ -633,7 +633,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
         self.blog.geolocationEnabled = self.geolocationEnabled;
         [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
     }
-    if (self.blog == nil || self.blog.username == nil) {
+    if (self.blog == nil || self.blog.usernameForSite == nil) {
         [self validateUrl];
     } else {
         if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
