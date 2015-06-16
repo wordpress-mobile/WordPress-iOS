@@ -8,7 +8,6 @@
 #import "ReaderPostRichContentView.h"
 #import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
-#import "RebloggingViewController.h"
 #import "WPActivityDefaults.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
@@ -21,7 +20,6 @@ static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
-                                            RebloggingViewControllerDelegate,
                                             WPRichTextViewDelegate,
                                             WPTableImageSourceDelegate,
                                             UIPopoverControllerDelegate>
@@ -141,8 +139,6 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
     
-    [self setReblogButtonVisibilityOfPostView:self.postView];
-    
     [self.scrollView addSubview:self.postView];
 }
 
@@ -188,12 +184,6 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
                                                                             options:0
                                                                             metrics:metrics
                                                                               views:views]];
-}
-
-- (void)setReblogButtonVisibilityOfPostView:(ReaderPostRichContentView *)postView
-{
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    postView.shouldHideReblogButton = ![blogService hasVisibleWPComAccounts];
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -431,16 +421,6 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
-{
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post];
-    controller.delegate = self;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
     ReaderPost *post = self.post;
@@ -506,14 +486,6 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 - (void)tableImageSource:(WPTableImageSource *)tableImageSource imageReady:(UIImage *)image forIndexPath:(NSIndexPath *)indexPath
 {
     [self.postView setFeaturedImage:image];
-}
-
-
-#pragma mark - RebloggingViewController Delegate Methods
-
-- (void)postWasReblogged:(ReaderPost *)post
-{
-    [self.postView updateActionButtons];
 }
 
 

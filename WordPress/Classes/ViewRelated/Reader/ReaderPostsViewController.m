@@ -20,7 +20,6 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicService.h"
-#import "RebloggingViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
@@ -50,8 +49,7 @@ NSString * const ReaderDetailTypeKey = @"post-detail-type";
 NSString * const ReaderDetailTypeNormal = @"normal";
 NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
-@interface ReaderPostsViewController ()<RebloggingViewControllerDelegate,
-                                        UIActionSheetDelegate,
+@interface ReaderPostsViewController ()<UIActionSheetDelegate,
                                         WPContentSyncHelperDelegate,
                                         WPTableImageSourceDelegate,
                                         WPTableViewHandlerDelegate,
@@ -975,7 +973,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     cell.postView.shouldShowAttributionMenu = self.hasWPComAccount && shouldShowAttributionMenu;
     cell.postView.shouldEnableLoggedinFeatures = self.hasWPComAccount;
     cell.postView.shouldShowAttributionButton = self.hasWPComAccount;
-    cell.postView.shouldHideReblogButton = !self.hasVisibleWPComAccount;
     [cell configureCell:post];
     [self setImageForPost:post forCell:cell indexPath:indexPath];
     [self setAvatarForPost:post forCell:cell indexPath:indexPath];
@@ -1099,21 +1096,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 #pragma mark - ReaderPostContentView delegate methods
 
-- (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
-{
-    // Pass the image forward
-    ReaderPostTableViewCell *cell = [ReaderPostTableViewCell cellForSubview:sender];
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
-    ReaderPost *post = (ReaderPost *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:post];
-    controller.delegate = self;
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
-    navController.modalPresentationStyle = UIModalPresentationFormSheet;
-    navController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender
 {
     ReaderPost *post = [self postFromCellSubview:sender];
@@ -1212,20 +1194,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     ReaderPost *post = [self postFromCellSubview:sender];
     ReaderCommentsViewController *controller = [ReaderCommentsViewController controllerWithPost:post];
     [self.navigationController pushViewController:controller animated:YES];
-}
-
-
-#pragma mark - RebloggingViewController Delegate Methods
-
-- (void)postWasReblogged:(ReaderPost *)post
-{
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:post];
-    if (!indexPath) {
-        return;
-    }
-    ReaderPostTableViewCell *cell = (ReaderPostTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    [cell configureCell:post];
-    [self setAvatarForPost:post forCell:cell indexPath:indexPath];
 }
 
 
