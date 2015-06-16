@@ -30,8 +30,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 @interface AbstractPostListViewController () <UIPopoverControllerDelegate,
                                                         WPContentSyncHelperDelegate,
                                                         WPNoResultsViewDelegate,
-                                                        WPSearchControllerDelegate,
-                                                        WPSearchResultsUpdating,
+                                                        WPSearchControllerWithResultsUpdatingDelegate,
                                                         WPTableViewHandlerDelegate>
 
 @property (nonatomic, strong) UITableViewController *postListViewController;
