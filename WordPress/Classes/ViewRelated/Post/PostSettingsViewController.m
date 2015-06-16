@@ -22,8 +22,9 @@
 #import "ContextManager.h"
 #import "MediaService.h"
 #import "WPProgressTableViewCell.h"
+#import "WPAndDeviceMediaLibraryDataSource.h"
+#import <WPMediaPicker/WPMediaPicker.h>
 #import "WPGUIConstants.h"
-#import <WPMediaPicker/WPMediaPickerViewController.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
 typedef enum {
@@ -48,7 +49,8 @@ static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCell
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
-UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
+UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -62,7 +64,8 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 @property (nonatomic, strong) UIPopoverController *popover;
 @property (nonatomic, assign) BOOL *shouldHideStatusBar;
 @property (nonatomic, assign) BOOL *isUploadingMedia;
-@property (nonatomic, strong) NSProgress * featuredImageProgress;
+@property (nonatomic, strong) NSProgress *featuredImageProgress;
+@property (nonatomic, strong) WPAndDeviceMediaLibraryDataSource *mediaDataSource;
 
 @end
 
@@ -70,7 +73,6 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)dealloc
 {
-
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self removePostPropertiesObserver];
 }
@@ -881,25 +883,27 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
         }
     } else {
         if (!self.isUploadingMedia) {
-            [self showPhotoPicker];
+            [self showMediaPicker];
         }
     }
 }
 
-- (void)showPhotoPicker
+- (void)showMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
+    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost];
+    picker.dataSource = self.mediaDataSource;
     picker.filter = WPMediaTypeImage;
     picker.delegate = self;
     picker.allowMultipleSelection = NO;
-
+    picker.showMostRecentFirst = YES;
     if (IS_IPAD) {
         self.popover = [[UIPopoverController alloc] initWithContentViewController:picker];
         CGRect frame = [self.tableView rectForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:PostSettingsSectionFeaturedImage]];
         self.popover.delegate = self;
         [self.popover presentPopoverFromRect:frame inView:self.view permittedArrowDirections:UIPopoverArrowDirectionAny animated:YES];
     } else {
-        [self.navigationController presentViewController:picker animated:YES completion:nil];
+        [self presentViewController:picker animated:YES completion:nil];
     }
 }
 
@@ -930,7 +934,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
                                  indexPath:indexPath
                                  isPrivate:self.apost.blog.isPrivate];
     };
-    if (media){
+    if (media){        
         successBlock(media);
         return;
     }
@@ -965,7 +969,7 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
     return _imageSource;
 }
 
-- (void) uploadFeatureImage:(ALAsset *)asset
+- (void)uploadFeatureImage:(ALAsset *)asset
 {
     NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
     [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
@@ -986,30 +990,39 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
             return;
         }
         media.mediaType = MediaTypeFeatured;
-        NSProgress * progress = nil;
-        [mediaService uploadMedia:media
-                         progress:&progress
-                          success:^{
-                              strongSelf.isUploadingMedia = NO;
-                              Post *post = (Post *)weakSelf.apost;
-                              post.featuredImage = media;
-                              [strongSelf.tableView reloadData];
-                          } failure:^(NSError *error) {
-                              strongSelf.isUploadingMedia = NO;
-                              [strongSelf.tableView reloadData];
-                              if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                                  return;
-                              }
-                              [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
-                              DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
-                          }];
-        [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.thumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
-        progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
-        progress.kind = NSProgressKindFile;
-        [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-        strongSelf.featuredImageProgress = progress;
-        [strongSelf.tableView reloadData];
+        [self uploadFeaturedMedia:media];
     }];
+}
+
+- (void)uploadFeaturedMedia:(Media *)media
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSProgress * progress = nil;
+    __weak __typeof__(self) weakSelf = self;
+    [mediaService uploadMedia:media
+                     progress:&progress
+                      success:^{
+                          __typeof__(self) strongSelf = weakSelf;
+                          strongSelf.isUploadingMedia = NO;
+                          Post *post = (Post *)strongSelf.apost;
+                          post.featuredImage = media;
+                          [strongSelf.tableView reloadData];
+                      } failure:^(NSError *error) {
+                          __typeof__(self) strongSelf = weakSelf;
+                          strongSelf.isUploadingMedia = NO;
+                          [strongSelf.tableView reloadData];
+                          if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                              return;
+                          }
+                          [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
+                          DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
+                      }];
+    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.thumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
+    progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+    progress.kind = NSProgressKindFile;
+    [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
+    self.featuredImageProgress = progress;
+    [self.tableView reloadData];
 }
 
 #pragma mark - WPTableImageSourceDelegate
@@ -1082,25 +1095,40 @@ UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIPopoverContro
 
 - (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
-    if (assets.count == 0 || ![[assets firstObject] isKindOfClass:[ALAsset class]]){
-        return;
-    }
-    ALAsset *asset = [assets firstObject];
-    if (!asset.defaultRepresentation) {
-        [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
-                            message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+    if (assets.count == 0 ){
         return;
     }
     
-    self.isUploadingMedia = YES;
-    [self uploadFeatureImage:assets[0]];
+    if ([[assets firstObject] isKindOfClass:[ALAsset class]]){
+        ALAsset *asset = [assets firstObject];
+        if (!asset.defaultRepresentation) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
+            return;
+        }
+        
+        self.isUploadingMedia = YES;
+        [self uploadFeatureImage:assets[0]];
+    } else if ([[assets firstObject] isKindOfClass:[Media class]]){
+        Media *media = [assets firstObject];
+        if ([media.mediaID intValue] != 0) {
+            Post *post = (Post *)self.apost;
+            post.featuredImage = media;
+        } else {
+            self.isUploadingMedia = YES;
+            [self uploadFeaturedMedia:media];
+        }
+    }
+    
     if (IS_IPAD) {
         [self.popover dismissPopoverAnimated:YES];
     } else {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
     }
     // Reload the featured image row so that way the activity indicator will be displayed.
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]]] withRowAnimation:UITableViewRowAnimationFade];
+    NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
+    [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
+                          withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
