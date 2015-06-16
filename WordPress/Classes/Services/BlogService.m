@@ -474,7 +474,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogInfo(@"<Blog:%@> remove", blog.hostURL);
     [blog.api cancelAllHTTPOperations];
-    WPAccount *account = blog.account;
     WPAccount *jetpackAccount = blog.jetpackAccount;
 
     [self.managedObjectContext deleteObject:blog];
