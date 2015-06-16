@@ -149,7 +149,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  @see createOrUpdateWordPressComAccountWithUsername:password:authToken:
  */
 - (WPAccount *)createOrUpdateAccountWithUsername:(NSString *)username
-                                                   authToken:(NSString *)authToken
+                                       authToken:(NSString *)authToken
 {
     WPAccount *account = [self findAccountWithUsername:username];
 
