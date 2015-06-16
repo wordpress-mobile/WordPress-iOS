@@ -12,6 +12,7 @@
 #import "WPAccount.h"
 #import "AccountService.h"
 #import "BlogService.h"
+#import "JetpackREST.h"
 #import "Blog.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
@@ -250,7 +251,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     }
 
     if (section == SettingsSectionActivityLog) {
-        return 5;
+        return 6;
     }
 
     if (section == SettingsSectionFeedback) {
@@ -263,7 +264,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = nil;
-    if (indexPath.section == SettingsSectionActivityLog && (indexPath.row == 1 || indexPath.row == 2)) {
+    if (indexPath.section == SettingsSectionActivityLog && (indexPath.row == 1 || indexPath.row == 2 || indexPath.row == 3)) {
         // Settings / Extra Debug
         static NSString *CellIdentifierSwitchAccessory = @"SupportViewSwitchAccessoryCell";
         cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifierSwitchAccessory];
@@ -354,13 +355,18 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kExtraDebugDefaultsKey];
         } else if (indexPath.row == 2) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = NSLocalizedString(@"Jetpack REST", @"");
+            UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
+            aSwitch.on = JetpackREST.enabled;
+        } else if (indexPath.row == 3) {
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
             aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
-        } else if (indexPath.row == 3) {
+        } else if (indexPath.row == 4) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == 4) {
+        } else if (indexPath.row == 5) {
             cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -419,10 +425,10 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             [WPError showAlertWithTitle:NSLocalizedString(@"Feedback", nil) message:NSLocalizedString(@"Your device is not configured to send e-mail.", nil)];
         }
     } else if (indexPath.section == SettingsSectionActivityLog) {
-        if (indexPath.row == 3) {
+        if (indexPath.row == 4) {
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
-        } else if (indexPath.row == 4) {
+        } else if (indexPath.row == 5) {
             AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
         }
@@ -438,6 +444,11 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (aSwitch.tag == 1) {
         [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
         [NSUserDefaults resetStandardUserDefaults];
+    } else if (aSwitch.tag == 2) {
+        aSwitch.enabled = NO;
+        [JetpackREST setEnabled:aSwitch.on withCompletion:^{
+            aSwitch.enabled = YES;
+        }];
     } else {
         [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }
