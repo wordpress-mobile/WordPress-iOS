@@ -317,6 +317,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (void)setPassword:(NSString *)password
 {
+    NSAssert(self.username != nil, @"Can't set password if we don't know the username yet");
+    NSAssert(self.xmlrpc != nil, @"Can't set password if we don't know the XML-RPC endpoint yet");
     if (password) {
         [SFHFKeychainUtils storeUsername:self.username
                              andPassword:password
