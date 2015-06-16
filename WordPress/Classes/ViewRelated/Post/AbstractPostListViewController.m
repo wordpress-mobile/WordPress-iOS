@@ -445,8 +445,6 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.refreshControl endRefreshing];
     [self.postListFooterView showSpinner:NO];
 
-    self.blog.lastPostsSync = [NSDate date];
-
     [self.noResultsView removeFromSuperview];
     if ([[self.tableViewHandler.resultsController fetchedObjects] count] == 0) {
         // This is a special case.  Core data can be a bit slow about notifying
