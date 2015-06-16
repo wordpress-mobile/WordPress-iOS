@@ -226,8 +226,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
     
-    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView withDelegate:self];
-    [searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
+    [searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self class]];
+    self.searchController.delegate = self;
+    self.searchController.searchResultsUpdater = self;
+
 }
 
 #pragma mark - Actions

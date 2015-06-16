@@ -268,9 +268,10 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
     
     WPSearchControllerConfigurator *searchConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController
-                                                                                                    withSearchWrapperView:self.searchWrapperView
-                                                                                                             withDelegate:self];
-    [searchConfigurator configureSearchControllerBarAndWrapperView];
+                                                                                                    withSearchWrapperView:self.searchWrapperView];
+    [searchConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self class]];
+    self.searchController.delegate = self;
+    self.searchController.searchResultsUpdater = self;
 }
 
 - (CGFloat)heightForSearchWrapperView
