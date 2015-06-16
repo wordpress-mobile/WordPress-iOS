@@ -145,10 +145,15 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
                            [self.managedObjectContext performBlock:^{
                                Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                                if (blogInContext) {
-                                   [self mergeComments:comments forBlog:blog
+                                   [self mergeComments:comments
+                                               forBlog:blog
                                          purgeExisting:YES
                                      completionHandler:^{
                                          [[self class] stopSyncingCommentsForBlog:blogID];
+                                         
+                                         blogInContext.lastCommentsSync = [NSDate date];
+                                         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                                         
                                          if (success) {
                                              success();
                                          }
