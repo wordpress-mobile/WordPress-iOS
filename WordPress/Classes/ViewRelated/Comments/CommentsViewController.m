@@ -278,7 +278,7 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
         }
         
         [commentService syncCommentsForBlog:blogInContext
-                                    success:^{                                        
+                                    success:^{
                                                 if (success) {
                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                         success(true);
