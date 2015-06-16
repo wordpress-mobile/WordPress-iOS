@@ -439,7 +439,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     if (blog.isPrivate) {
         webViewController.authToken = blog.authToken;
-        webViewController.username = blog.username;
+        webViewController.username = blog.usernameForSite;
         webViewController.password = blog.password;
         webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     }
