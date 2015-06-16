@@ -42,6 +42,7 @@
     }
     blog.username = username;
     blog.xmlrpc = xmlrpc;
+    blog.password = password;
     blog.options = options;
     [[ContextManager sharedInstance] saveContext:context];
     [blogService syncBlog:blog success:nil failure:nil];
