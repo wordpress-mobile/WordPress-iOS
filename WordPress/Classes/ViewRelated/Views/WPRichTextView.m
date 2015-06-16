@@ -44,9 +44,9 @@ static NSInteger const WPRichTextImageQuality = 65;
     NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 5px 10px 0;}";
     DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
-             DTDefaultFontFamily:@"Open Sans",
-             DTDefaultLineHeightMultiplier:(IS_IPAD ? @1.6 : @1.4),
-             DTDefaultFontSize:(IS_IPAD ? @18 : @16),
+             DTDefaultFontFamily:@"Merriweather Light",
+             DTDefaultLineHeightMultiplier:([UIDevice isPad] ? @1.6 : @1.4),
+             DTDefaultFontSize:([UIDevice isPad] ? @18 : @16),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],

@@ -127,7 +127,7 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansRegularFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
 }
 
 + (NSDictionary *)postCardSnippetAttributes
@@ -137,7 +137,7 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansRegularFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherLightFontOfSize:fontSize]};
 }
 
 + (NSDictionary *)postCardDateAttributes
@@ -166,7 +166,7 @@
 + (void)applyPageTitleStyle:(UILabel *)label
 {
     CGFloat fontSize = 15.0;
-    label.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
+    label.font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
     label.textColor = [self wordPressBlue];
 }
 
@@ -177,7 +177,7 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
 }
 
 + (void)applySectionHeaderTitleStyle:(UILabel *)label

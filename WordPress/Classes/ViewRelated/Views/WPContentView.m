@@ -27,12 +27,14 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 + (UIFont *)titleFont
 {
-    return (IS_IPAD ? [UIFont fontWithName:@"Merriweather-Bold" size:24.0f] : [UIFont fontWithName:@"Merriweather-Bold" size:19.0f]);
+    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 19.0;
+    return [WPFontManager merriweatherRegularFontOfSize:fontSize];
 }
 
 + (UIFont *)contentFont
 {
-    return (IS_IPAD ? [WPFontManager openSansRegularFontOfSize:16.0] : [WPFontManager openSansRegularFontOfSize:14.0]);
+    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    return [WPFontManager merriweatherLightFontOfSize:fontSize];
 }
 
 #pragma mark - Lifecycle
