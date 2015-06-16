@@ -1,192 +1,251 @@
-#import "WPTableViewControllerSubclass.h"
 #import "CommentsViewController.h"
-#import "NewCommentsTableViewCell.h"
+#import "CommentsTableViewCell.h"
 #import "CommentViewController.h"
-#import "WordPressAppDelegate.h"
-#import "ReachabilityUtils.h"
-#import "UIColor+Helpers.h"
-#import "WPTableViewSectionHeaderView.h"
-#import "Comment.h"
-#import "ContextManager.h"
 #import "CommentService.h"
+#import "Comment.h"
+#import "Blog.h"
 
-@interface CommentsViewController ()
+#import "WordPress-Swift.h"
+#import "WPTableViewHandler.h"
+#import "WPGUIConstants.h"
+#import "WPNoResultsView.h"
+#import "UIView+Subviews.h"
+#import "ContextManager.h"
 
-@property (nonatomic,strong) NSIndexPath *currentIndexPath;
-@property (nonatomic,assign) BOOL moreCommentsAvailable;
+
+CGFloat const CommentsStandardOffset                    = 16.0;
+CGFloat const CommentsSectionHeaderHeight               = 24.0;
+CGFloat const CommentsDefaultCellHeight                 = 44.0;
+CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
+CGFloat const CommentsActivityFooterHeight              = 50.0;
+NSInteger const CommentsRefreshRowPadding               = 4;
+NSInteger const CommentsFetchBatchSize                  = 10;
+NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
+
+
+
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
+@property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
+@property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
+@property (nonatomic, strong) WPNoResultsView           *noResultsView;
+@property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
+@property (nonatomic, strong) UIView                    *footerView;
 @end
+
 
 @implementation CommentsViewController
 
-CGFloat const CommentsStandardOffset = 16.0;
-CGFloat const CommentsSectionHeaderHeight = 24.0;
-
 - (void)dealloc
 {
-    DDLogMethod();
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (NSString *)noResultsTitleText
-{
-    return NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    _syncHelper.delegate = nil;
+    _tableViewHandler.delegate = nil;
 }
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
-
     [super viewDidLoad];
-    self.moreCommentsAvailable = YES;
-    self.infiniteScrollEnabled = YES;
-    self.incrementalLoadingSupported = YES;
-    self.title = NSLocalizedString(@"Comments", @"");
-    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    self.tableView.accessibilityLabel = @"Comments Table";       // required for UIAutomation for iOS 4
-    if ([self.tableView respondsToSelector:@selector(setAccessibilityIdentifier:)]){
-        self.tableView.accessibilityIdentifier = @"Comments Table";  // required for UIAutomation for iOS 5
-    }
-
-    self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
+    
+    [self configureNavBar];
+    [self configureLoadMoreSpinner];
+    [self configureNoResultsView];
+    [self configureRefreshControl];
+    [self configureSyncHelper];
+    [self configureTableView];
+    [self configureTableViewFooter];
+    [self configureTableViewHandler];
+    
+    [self refreshAndSyncIfNeeded];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    DDLogMethod();
-
     [super viewWillAppear:animated];
+    
+    // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+    [self.tableView deselectSelectedRowWithAnimation:YES];
+    
+    // Refresh the UI
+    [self refreshNoResultsView];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
-    DDLogMethod();
 
-    [super viewWillDisappear:animated];
+#pragma mark - Configuration
+
+- (void)configureNavBar
+{
+    self.title = NSLocalizedString(@"Comments", @"Title for the Blog's Comments Section View");
 }
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)configureLoadMoreSpinner
 {
-    [super viewDidAppear:animated];
-    // Returning to the comments list while the reply-to keyboard is visible
-    // messes with the bottom contentInset. Let's reset it just in case.
-    UIEdgeInsets contentInset = self.tableView.contentInset;
-    contentInset.bottom = 0;
-    self.tableView.contentInset = contentInset;
+    // ContainerView
+    CGFloat width                           = CGRectGetWidth(self.tableView.bounds);
+    CGRect footerViewFrame                  = CGRectMake(0.0, 0.0, width, CommentsActivityFooterHeight);
+    UIView *footerView                      = [[UIView alloc] initWithFrame:footerViewFrame];
+    
+    // Spinner
+    UIActivityIndicatorView *indicator      = [[UIActivityIndicatorView alloc] initWithFrame:CommentsActivityFooterFrame];
+    indicator.activityIndicatorViewStyle    = UIActivityIndicatorViewStyleGray;
+    indicator.hidesWhenStopped              = YES;
+    indicator.autoresizingMask              = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+    indicator.center                        = footerView.center;
+    [indicator stopAnimating];
+
+    [footerView addSubview:indicator];
+
+    // Keep References!
+    self.footerActivityIndicator            = indicator;
+    self.footerView                         = footerView;
 }
 
-- (void)configureCell:(NewCommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+- (void)configureNoResultsView
 {
-    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    cell.contentProvider = comment;
+    WPNoResultsView *noResultsView          = [WPNoResultsView new];
+    noResultsView.titleText                 = NSLocalizedString(@"No comments yet", @"Displayed when the user pulls up the comments view and they have no comments");
+    self.noResultsView                      = noResultsView;
+    
+    [self.view addSubview:noResultsView];
 }
 
-#pragma mark - DetailViewDelegate
-
-- (void)resetView
+- (void)configureRefreshControl
 {
-    if ([self.tableView indexPathForSelectedRow]) {
-        [self.tableView deselectRowAtIndexPath: [self.tableView indexPathForSelectedRow] animated:NO];
-    }
+    UIRefreshControl *refreshControl        = [UIRefreshControl new];
+    [refreshControl addTarget:self action:@selector(refreshAndSyncWithInteraction) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
 }
 
-#pragma mark -
-#pragma mark Action Methods
-
-- (void)showCommentAtIndexPath:(NSIndexPath *)indexPath
+- (void)configureSyncHelper
 {
-    DDLogMethodParam(indexPath);
-    Comment *comment;
-    if (indexPath) {
-        @try {
-            comment = [self.resultsController objectAtIndexPath:indexPath];
-        }
-        @catch (NSException * e) {
-            DDLogInfo(@"Can't select comment at indexPath: (%i,%i)", indexPath.section, indexPath.row);
-            DDLogInfo(@"sections: %@", self.resultsController.sections);
-            DDLogInfo(@"results: %@", self.resultsController.fetchedObjects);
-            comment = nil;
-        }
-    }
+    WPContentSyncHelper *syncHelper         = [WPContentSyncHelper new];
+    syncHelper.delegate                     = self;
+    self.syncHelper                         = syncHelper;
+}
 
-    if (comment) {
-        self.currentIndexPath = indexPath;
-        self.lastSelectedCommentID = comment.commentID; //store the latest user selection
+- (void)configureTableView
+{
+    self.tableView.accessibilityIdentifier  = @"Comments Table";
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    // Register the cells!
+    Class cellClass = [CommentsTableViewCell class];
+    [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
+}
 
-        CommentViewController *vc = [CommentViewController new];
-        vc.comment = comment;
-        [self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionNone];
-
-        [self.navigationController pushViewController:vc animated:YES];
+- (void)configureTableViewFooter
+{
+    // iPad Fix: contentInset breaks tableSectionViews
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView      = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView      = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
+        
+    // iPhone Fix: Hide the cellSeparators, when the table is empty
     } else {
-        [self.navigationController popToViewController:self animated:YES];
+        self.tableView.tableFooterView      = [UIView new];
     }
 }
 
-- (void)setWantedCommentId:(NSNumber *)wantedCommentId
+- (void)configureTableViewHandler
 {
-    if (![wantedCommentId isEqual:_wantedCommentId]) {
-         _wantedCommentId = nil;
-        if (wantedCommentId) {
-            // First check if we already have the comment
-            Comment *comment = [self commentWithId:wantedCommentId];
-            if (comment) {
-                NSIndexPath *wantedIndexPath = [self.resultsController indexPathForObject:comment];
-                [self.tableView scrollToRowAtIndexPath:wantedIndexPath atScrollPosition:UITableViewScrollPositionNone animated:YES];
-                [self showCommentAtIndexPath:wantedIndexPath];
-            } else {
-                [self willChangeValueForKey:@"wantedCommentId"];
-                _wantedCommentId = wantedCommentId;
-                [self didChangeValueForKey:@"wantedCommentId"];
-                [self syncItems];
-            }
-        }
-    }
+    WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
+    tableViewHandler.cacheRowHeights        = YES;
+    tableViewHandler.delegate               = self;
+    self.tableViewHandler                   = tableViewHandler;
 }
 
-- (Comment *)commentWithId:(NSNumber *)commentId
-{
-    Comment *comment = [[[self.resultsController fetchedObjects] filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID = %@", commentId]] lastObject];
 
-    return comment;
-}
+#pragma mark - UITableViewDelegate Methods
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return nil;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Note:
+    // Without an estimated height, UITableView will have an erratic behavior
+    return CommentsDefaultCellHeight;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.resultsController objectAtIndexPath:indexPath];
-    return [NewCommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    return [CommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *reuseIdentifier = NSStringFromClass([CommentsTableViewCell class]);
+    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    NSAssert([cell isKindOfClass:[CommentsTableViewCell class]], nil);
+    
+    [self configureCell:cell atIndexPath:indexPath];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Refresh only when we reach the last 3 rows in the last section!
+    NSInteger numberOfRowsInSection     = [self.tableViewHandler tableView:tableView numberOfRowsInSection:indexPath.section];
+    NSInteger lastSection               = [self.tableViewHandler numberOfSectionsInTableView:tableView] - 1;
+    
+    if ((indexPath.section == lastSection) && (indexPath.row + CommentsRefreshRowPadding >= numberOfRowsInSection)) {
+        if (self.syncHelper.hasMoreContent) {
+            [self.syncHelper syncMoreContent];
+        }
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [self showCommentAtIndexPath:indexPath];
+    // Failsafe: Make sure that the Comment (still) exists
+    NSArray *sections = self.tableViewHandler.resultsController.sections;
+    if (indexPath.section >= sections.count) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
+    id<NSFetchedResultsSectionInfo> sectionInfo = sections[indexPath.section];
+    if (indexPath.row >= sectionInfo.numberOfObjects) {
+        [tableView deselectSelectedRowWithAnimation:YES];
+        return;
+    }
+    
+    // At last, push the details
+    Comment *comment            = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    CommentViewController *vc   = [CommentViewController new];
+    vc.comment                  = comment;
+        
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)tableView:(UITableView *)tableView didCheckRowAtIndexPath:(NSIndexPath *)indexPath
-{
-}
 
-#pragma mark - Subclass methods
+#pragma mark - WPTableViewHandlerDelegate Methods
 
-- (NSString *)entityName
+- (NSManagedObjectContext *)managedObjectContext
 {
-    return @"Comment";
+    return [[ContextManager sharedInstance] mainContext];
 }
 
 - (NSFetchRequest *)fetchRequest
 {
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, @"spam"];
-    NSSortDescriptor *sortDescriptorStatus = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
-    NSSortDescriptor *sortDescriptorDate = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
-    fetchRequest.sortDescriptors = @[sortDescriptorStatus, sortDescriptorDate];
-    fetchRequest.fetchBatchSize = 10;
+    NSFetchRequest *fetchRequest            = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
+    fetchRequest.predicate                  = [NSPredicate predicateWithFormat:@"(blog == %@ AND status != %@)", self.blog, CommentStatusSpam];
+    
+    NSSortDescriptor *sortDescriptorStatus  = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:NO];
+    NSSortDescriptor *sortDescriptorDate    = [NSSortDescriptor sortDescriptorWithKey:@"dateCreated" ascending:NO];
+    fetchRequest.sortDescriptors            = @[sortDescriptorStatus, sortDescriptorDate];
+    fetchRequest.fetchBatchSize             = CommentsFetchBatchSize;
+    
     return fetchRequest;
+}
+
+- (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    cell.contentProvider = comment;
 }
 
 - (NSString *)sectionNameKeyPath
@@ -194,78 +253,138 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return @"status";
 }
 
-- (Class)cellClass
+- (NSString *)entityName
 {
-    return [NewCommentsTableViewCell class];
+    return NSStringFromClass([Comment class]);
 }
 
-- (void)syncItemsViaUserInteraction:(BOOL)userInteraction
-                            success:(void (^)())success
-                            failure:(void (^)(NSError *))failure
+- (void)tableViewDidChangeContent:(UITableView *)tableView
+{
+    [self refreshNoResultsView];
+}
+
+
+#pragma mark - WPContentSyncHelper Methods
+
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
     NSManagedObjectID *blogObjectID = self.blog.objectID;
     [context performBlock:^{
         Blog *blogInContext = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-        if (blogInContext) {
-            [commentService syncCommentsForBlog:blogInContext success:^{
-                if (success) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        success();
-                    });
-                }
-            } failure:^(NSError *error) {
-                if (failure) {
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        failure(error);
-                    });
-                }
-            }];
+        if (!blogInContext) {
+            return;
         }
+        
+        [commentService syncCommentsForBlog:blogInContext
+                                    success:^{
+                                                if (success) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        success(true);
+                                                    });
+                                                }
+                                    }
+                                    failure:^(NSError *error) {
+                                                if (failure) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        failure(error);
+                                                    });
+                                                }
+                                    }];
     }];
 }
 
-- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    [super controllerDidChangeContent:controller];
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    CommentService *commentService  = [[CommentService alloc] initWithManagedObjectContext:context];
+    [context performBlock:^{
+        Blog *blogInContext = (Blog *)[context existingObjectWithID:self.blog.objectID error:nil];
+        if (!blogInContext) {
+            return;
+        }
+        
+        [commentService loadMoreCommentsForBlog:blogInContext
+                                        success:^(BOOL hasMore) {
+                                                    if (success) {
+                                                        dispatch_async(dispatch_get_main_queue(), ^{
+                                                            success(hasMore);
+                                                        });
+                                                    }
+                                        }
+                                        failure:^(NSError *error) {
+                                                if (failure) {
+                                                    dispatch_async(dispatch_get_main_queue(), ^{
+                                                        failure(error);
+                                                    });
+                                                }
+                                        }];
+    }];
+    
+    [self refreshInfiniteScroll];
+}
 
-    if ([[self.resultsController fetchedObjects] count] > 0) {
-        self.editButtonItem.enabled = YES;
-    } else {
-        self.editButtonItem.enabled = NO;
-        self.currentIndexPath = nil;
+- (void)syncContentEnded
+{
+    [self refreshInfiniteScroll];
+    [self refreshNoResultsView];
+    [self refreshPullToRefresh];
+}
+
+
+#pragma mark - View Refresh Helpers
+
+- (void)refreshAndSyncWithInteraction
+{
+    [self.syncHelper syncContentWithUserInteraction];
+}
+
+- (void)refreshAndSyncIfNeeded
+{
+    NSDate *lastSynced = self.blog.lastCommentsSync;
+    if (lastSynced == nil || ABS(lastSynced.timeIntervalSinceNow) > CommentsRefreshTimeoutInSeconds) {
+        [self.syncHelper syncContent];
     }
 }
 
-#pragma mark - Syncs methods
-
-- (BOOL)isSyncing
+- (void)refreshInfiniteScroll
 {
-    return [CommentService isSyncingCommentsForBlog:self.blog];
+    NSParameterAssert(self.footerView);
+    NSParameterAssert(self.footerActivityIndicator);
+    
+    if (self.syncHelper.isSyncing) {
+        self.tableView.tableFooterView = self.footerView;
+        [self.footerActivityIndicator startAnimating];
+    } else if (!self.syncHelper.hasMoreContent) {
+        [self configureTableViewFooter];
+    }
 }
 
-- (NSDate *)lastSyncDate
+- (void)refreshPullToRefresh
 {
-    return self.blog.lastCommentsSync;
+    if (self.refreshControl.isRefreshing) {
+        [self.refreshControl endRefreshing];
+    }
 }
 
-- (BOOL)hasMoreContent {
-    return self.moreCommentsAvailable;
+- (void)refreshNoResultsView
+{
+    BOOL isTableViewEmpty = (self.tableViewHandler.resultsController.fetchedObjects.count == 0);
+    BOOL shouldPerformAnimation = self.noResultsView.hidden;
+    
+    self.noResultsView.hidden = !isTableViewEmpty;
+    
+    if (!isTableViewEmpty) {
+        return;
+    }
+    
+    // Display NoResultsView
+    [self.noResultsView centerInSuperview];
+    
+    if (shouldPerformAnimation) {
+        [self.noResultsView fadeInWithAnimation];
+    }
 }
 
-- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-    [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
-        self.moreCommentsAvailable = hasMore;
-        if (success) {
-            success();
-        }
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
 @end
