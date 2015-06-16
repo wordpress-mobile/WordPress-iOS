@@ -10,7 +10,7 @@
 @property (nonatomic, strong) WPSearchControllerConfigurator *searchControllerConfigurator;
 @property (nonatomic, strong) WPSearchController *searchController;
 @property (nonatomic, strong) UIView *searchWrapperView;
-@property (nonatomic, strong) id<WPSearchControllerWithResultsUpdatingDelegate> delegate;
+@property (nonatomic, strong) id viewController;
 
 @end
 
@@ -21,10 +21,10 @@
     [super setUp];
     self.searchController = [[WPSearchController alloc] init];
     self.searchWrapperView = [[UIView alloc] init];
+    self.viewController = OCMClassMock([UIViewController class]);
     
     self.searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController
-                                                                                   withSearchWrapperView:self.searchWrapperView
-                                                                                            withDelegate:self.delegate];
+                                                                                   withSearchWrapperView:self.searchWrapperView];
 }
 
 - (void)tearDown
@@ -34,23 +34,26 @@
     self.searchControllerConfigurator = nil;
     self.searchController = nil;
     self.searchWrapperView = nil;
+    self.viewController = nil;
 }
 
 - (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchControllerProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self.viewController class]];
     XCTAssertFalse(self.searchController.dimsBackgroundDuringPresentation);
     XCTAssertTrue(self.searchController.hidesNavigationBarDuringPresentation);
 }
 
 - (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchBarProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self.viewController class]];
     UISearchBar *searchBar = self.searchController.searchBar;
     
     XCTAssertFalse(searchBar.translatesAutoresizingMaskIntoConstraints);
     XCTAssertTrue([searchBar.accessibilityIdentifier isEqualToString:@"Search"]);
     XCTAssertEqual(UITextAutocapitalizationTypeNone, searchBar.autocapitalizationType);
+    XCTAssertEqual(UIBarStyleBlack, searchBar.barStyle);
+    XCTAssertTrue(searchBar.showsCancelButton);
 }
 
 @end
