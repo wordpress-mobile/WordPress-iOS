@@ -279,6 +279,9 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
         
         [commentService syncCommentsForBlog:blogInContext
                                     success:^{
+                                                blogInContext.lastCommentsSync = [NSDate date];
+                                                [[ContextManager sharedInstance] saveContext:context];
+                                        
                                                 if (success) {
                                                     dispatch_async(dispatch_get_main_queue(), ^{
                                                         success(true);
