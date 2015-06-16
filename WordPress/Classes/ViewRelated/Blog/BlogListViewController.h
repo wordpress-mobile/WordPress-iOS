@@ -1,10 +1,10 @@
 #import <UIKit/UIKit.h>
 #import "WPSearchController.h"
-#import "WPSearchControllerConfigurator.h"
 
 @interface BlogListViewController : UIViewController <NSFetchedResultsControllerDelegate,
                                                             UIDataSourceModelAssociation,
-                                                            WPSearchControllerWithResultsUpdatingDelegate,
+                                                            WPSearchResultsUpdating,
+                                                            WPSearchControllerDelegate,
                                                             UITableViewDelegate,
                                                             UITableViewDataSource>
 

@@ -20,7 +20,7 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 
 - (instancetype)initWithSearchController:(WPSearchController *)searchController
                    withSearchWrapperView:(UIView *)searchWrapperView
-                             withDelegate:(id<WPSearchControllerWithResultsUpdatingDelegate>)delegate
+                             withDelegate:(id<WPSearchControllerDelegate, WPSearchResultsUpdating>)delegate
 {
     self = [super init];
     if (self) {
