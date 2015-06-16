@@ -193,7 +193,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
             [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
         }
     }];
-
 }
 
 #pragma mark - Header methods
