@@ -121,7 +121,7 @@ const NSInteger HTTP404ErrorCode = 404;
            failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(post.postID.integerValue > 0);
-    NSParameterAssert(blog.username);
+    NSParameterAssert(blog.usernameForSite);
     NSParameterAssert(blog.password);
     
     if ([post.postID integerValue] <= 0) {
@@ -136,7 +136,7 @@ const NSInteger HTTP404ErrorCode = 404;
     }
 
     NSDictionary *extraParameters = [self parametersWithRemotePost:post];
-    NSArray *parameters = @[post.postID, blog.username, blog.password, extraParameters];
+    NSArray *parameters = @[post.postID, blog.usernameForSite, blog.password, extraParameters];
     
     [self.api callMethod:@"metaWeblog.editPost"
               parameters:parameters

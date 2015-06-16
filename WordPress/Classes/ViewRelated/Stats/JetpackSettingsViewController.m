@@ -637,7 +637,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     [WPAnalytics track:WPAnalyticsStatSelectedInstallJetpack];
 
     NSString *targetURL = [_blog adminUrlWithPath:JetpackInstallRelativePath];
-    [self openURL:[NSURL URLWithString:targetURL] username:_blog.username password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
+    [self openURL:[NSURL URLWithString:targetURL] username:_blog.usernameForSite password:_blog.password wpLoginURL:[NSURL URLWithString:_blog.loginUrl]];
 }
 
 - (void)openMoreInformationURL
