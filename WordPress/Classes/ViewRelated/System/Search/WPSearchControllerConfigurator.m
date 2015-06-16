@@ -53,6 +53,9 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     self.searchBar.backgroundImage = [[UIImage alloc] init];
     self.searchBar.tintColor = [WPStyleGuide grey]; // cursor color
     self.searchBar.translucent = NO;
+    self.searchBar.barStyle = UIBarStyleBlack;
+    self.searchBar.barTintColor = [WPStyleGuide wordPressBlue];
+    self.searchBar.showsCancelButton = YES;
     [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
@@ -73,11 +76,6 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], class, nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
     
     UISearchBar *searchBar = self.searchController.searchBar;
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.barStyle = UIBarStyleBlack;
-    searchBar.barTintColor = [WPStyleGuide wordPressBlue];
-    searchBar.showsCancelButton = YES;
-    
     [self.searchWrapperView addSubview:searchBar];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
