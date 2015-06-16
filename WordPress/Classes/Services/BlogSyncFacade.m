@@ -42,6 +42,10 @@
     }
     blog.username = username;
     blog.xmlrpc = xmlrpc;
+    /*
+     Note: blog.password stores the password in the keychain using username/xmlrpc,
+     so let's set it after we set those
+     */
     blog.password = password;
     blog.options = options;
     [[ContextManager sharedInstance] saveContext:context];
