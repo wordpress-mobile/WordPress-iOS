@@ -10,7 +10,6 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 @interface WPSearchControllerConfigurator ()
 
 @property (nonatomic, weak) WPSearchController *searchController;
-@property (nonatomic, weak) id<WPSearchControllerDelegate, WPSearchResultsUpdating> delegate;
 @property (nonatomic, weak) UIView *searchWrapperView;
 @property (nonatomic, weak) UISearchBar *searchBar;
 
@@ -20,23 +19,21 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 
 - (instancetype)initWithSearchController:(WPSearchController *)searchController
                    withSearchWrapperView:(UIView *)searchWrapperView
-                             withDelegate:(id<WPSearchControllerDelegate, WPSearchResultsUpdating>)delegate
 {
     self = [super init];
     if (self) {
         _searchController = searchController;
         _searchWrapperView = searchWrapperView;
-        _delegate = delegate;
         _searchBar = _searchController.searchBar;
     }
     
     return self;
 }
 
-- (void)configureSearchControllerBarAndWrapperView
+- (void)configureSearchControllerBarAndWrapperViewOfClass:(Class)class
 {
     [self configureSearchController];
-    [self configureSearchBar];
+    [self configureSearchBar:class];
     [self configureSearchWrapper];
 }
 
@@ -44,13 +41,11 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 {
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = YES;
-    self.searchController.delegate = self.delegate;
-    self.searchController.searchResultsUpdater = self.delegate;
 }
 
-- (void)configureSearchBar
+- (void)configureSearchBar:(Class)class
 {
-    [self configureSearchBarPlaceholder];
+    [self configureSearchBarPlaceholder:class];
     
     self.searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.searchBar.accessibilityIdentifier = @"Search";
@@ -61,21 +56,21 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
-    [self configureSearchBarForSearchView];
+    [self configureSearchBarForSearchView:class];
 }
 
-- (void)configureSearchBarPlaceholder
+- (void)configureSearchBarPlaceholder:(Class)class
 {
     // Adjust color depending on where the search bar is being presented.
     UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self.delegate class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], class, nil] setAttributedPlaceholder:attrPlacholderText];
 }
 
-- (void)configureSearchBarForSearchView
+- (void)configureSearchBarForSearchView:(Class)class
 {
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self.delegate class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], class, nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
     
     UISearchBar *searchBar = self.searchController.searchBar;
     searchBar.translatesAutoresizingMaskIntoConstraints = NO;
