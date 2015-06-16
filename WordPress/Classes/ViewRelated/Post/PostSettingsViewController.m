@@ -891,7 +891,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 - (void)showMediaPicker
 {
     WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
-    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithBlog:self.apost.blog];
+    self.mediaDataSource = [[WPAndDeviceMediaLibraryDataSource alloc] initWithPost:self.apost];
     picker.dataSource = self.mediaDataSource;
     picker.filter = WPMediaTypeImage;
     picker.delegate = self;
@@ -969,7 +969,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
     return _imageSource;
 }
 
-- (void) uploadFeatureImage:(ALAsset *)asset
+- (void)uploadFeatureImage:(ALAsset *)asset
 {
     NSProgress * convertingProgress = [NSProgress progressWithTotalUnitCount:1];
     [convertingProgress setUserInfoObject:[UIImage imageWithCGImage:asset.thumbnail] forKey:WPProgressImageThumbnailKey];
@@ -990,30 +990,39 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
             return;
         }
         media.mediaType = MediaTypeFeatured;
-        NSProgress * progress = nil;
-        [mediaService uploadMedia:media
-                         progress:&progress
-                          success:^{
-                              strongSelf.isUploadingMedia = NO;
-                              Post *post = (Post *)weakSelf.apost;
-                              post.featuredImage = media;
-                              [strongSelf.tableView reloadData];
-                          } failure:^(NSError *error) {
-                              strongSelf.isUploadingMedia = NO;
-                              [strongSelf.tableView reloadData];
-                              if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
-                                  return;
-                              }
-                              [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
-                              DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
-                          }];
-        [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.thumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
-        progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
-        progress.kind = NSProgressKindFile;
-        [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
-        strongSelf.featuredImageProgress = progress;
-        [strongSelf.tableView reloadData];
+        [self uploadFeaturedMedia:media];
     }];
+}
+
+- (void)uploadFeaturedMedia:(Media *)media
+{
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    NSProgress * progress = nil;
+    __weak __typeof__(self) weakSelf = self;
+    [mediaService uploadMedia:media
+                     progress:&progress
+                      success:^{
+                          __typeof__(self) strongSelf = weakSelf;
+                          strongSelf.isUploadingMedia = NO;
+                          Post *post = (Post *)strongSelf.apost;
+                          post.featuredImage = media;
+                          [strongSelf.tableView reloadData];
+                      } failure:^(NSError *error) {
+                          __typeof__(self) strongSelf = weakSelf;
+                          strongSelf.isUploadingMedia = NO;
+                          [strongSelf.tableView reloadData];
+                          if (error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled) {
+                              return;
+                          }
+                          [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't upload featured image", @"The title for an alert that says to the user that the featured image he selected couldn't be uploaded.") message:error.localizedDescription];
+                          DDLogError(@"Couldn't upload featured image: %@", [error localizedDescription]);
+                      }];
+    [progress setUserInfoObject:[UIImage imageWithData:[NSData dataWithContentsOfFile:media.thumbnailLocalURL]] forKey:WPProgressImageThumbnailKey];
+    progress.localizedDescription = NSLocalizedString(@"Uploading...",@"Label to show while uploading media to server");
+    progress.kind = NSProgressKindFile;
+    [progress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
+    self.featuredImageProgress = progress;
+    [self.tableView reloadData];
 }
 
 #pragma mark - WPTableImageSourceDelegate
@@ -1102,8 +1111,13 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
         [self uploadFeatureImage:assets[0]];
     } else if ([[assets firstObject] isKindOfClass:[Media class]]){
         Media *media = [assets firstObject];
-        Post *post = (Post *)self.apost;
-        post.featuredImage = media;
+        if ([media.mediaID intValue] != 0) {
+            Post *post = (Post *)self.apost;
+            post.featuredImage = media;
+        } else {
+            self.isUploadingMedia = YES;
+            [self uploadFeaturedMedia:media];
+        }
     }
     
     if (IS_IPAD) {
