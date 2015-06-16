@@ -496,7 +496,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self.searchController.searchBar resignFirstResponder];
     [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
+    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
     
