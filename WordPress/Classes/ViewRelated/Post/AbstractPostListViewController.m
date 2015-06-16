@@ -358,7 +358,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
         return;
     }
 
-    NSDate *lastSynced = self.blog.lastPostsSync;
+    NSDate *lastSynced = self.lastSyncDate;
     if (lastSynced == nil || ABS([lastSynced timeIntervalSinceNow]) > PostsControllerRefreshInterval) {
         // Update in the background
         [self syncItemsWithUserInteraction:NO];
@@ -385,6 +385,11 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     // Subclasses should override.
     return PostServiceTypeAny;
+}
+
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPostsSync;
 }
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
