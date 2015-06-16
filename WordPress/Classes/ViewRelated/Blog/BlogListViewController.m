@@ -115,7 +115,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         tableInset.top = -1;
         self.tableView.contentInset = tableInset;
     }
-    
+
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
     
@@ -597,7 +597,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     } else if ([self.searchController isActive]) {
         return [self fetchRequestPredicateForSearch];
     }
-    
+
     return [NSPredicate predicateWithFormat:@"visible = YES"];
 }
 
