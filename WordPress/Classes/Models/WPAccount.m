@@ -35,8 +35,6 @@
 
     [_xmlrpcApi.operationQueue cancelAllOperations];
     
-    // Fix: Let's make sure we only nuke the authToken when needed. That is, if the deleted account is dotcom.
-    // Otherwise, removing a self hosted account with the same username as a dotcom account might end up nuking the token.
     self.authToken = nil;
 }
 
