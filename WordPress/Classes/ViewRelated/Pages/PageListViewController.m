@@ -184,6 +184,11 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     return PostServiceTypePage;
 }
 
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPagesSync;
+}
+
 
 #pragma mark - TableView Handler Delegate Methods
 
