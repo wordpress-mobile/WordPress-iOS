@@ -114,19 +114,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
 
     [self setupHeaderView];
-    
-    // Trigger the blog sync when loading the view, which should more or less be once when the app launches
-    // We could do this on the app delegate, but the blogs list feels like a better place for it.
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    [context performBlock:^{
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        if (defaultAccount) {
-            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
-        }
-    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -139,6 +126,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self.tableView reloadData];
     [self updateEditButton];
     [self maybeShowNUX];
+    [self syncBlogs];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -191,6 +179,20 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         [WPAnalytics track:WPAnalyticsStatLogout];
         [[WordPressAppDelegate sharedInstance] showWelcomeScreenIfNeededAnimated:YES];
     }
+}
+
+- (void)syncBlogs
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
+        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+
+        if (defaultAccount) {
+            [blogService syncBlogsForAccount:defaultAccount success:nil failure:nil];
+        }
+    }];
 }
 
 #pragma mark - Header methods
