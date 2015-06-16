@@ -19,14 +19,6 @@
 - (void)postView:(ReaderPostContentView *)postView didReceiveLikeAction:(id)sender;
 
 /**
- Tells the delegate that the user has tapped the reblog button.
-
- @param postView The post view informing the delegate of the event.
- @param sender A reference to the receiving `UIControl`.
- */
-- (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender;
-
-/**
  Tells the delegate that the user has tapped the comment button.
 
  @param postView The post view informing the delegate of the event.
@@ -38,7 +30,7 @@
 
 
 /**
- A version of `WPContentView` modified to show like, reblog, and comment 
+ A version of `WPContentView` modified to show like, and comment
  action buttons, and a `ReaderPostAttributionView`.
  */
 @interface ReaderPostContentView : WPContentView
@@ -57,12 +49,6 @@
  A Boolean value specifying whether the view should display the attribution link button. 
  */
 @property (nonatomic) BOOL shouldShowAttributionButton;
-
-/**
- A Boolean value specifying whether the view should hide the reblog button.
- Determined by there being a visible WPCom blog
- */
-@property (nonatomic) BOOL shouldHideReblogButton;
 
 /**
  A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
