@@ -91,6 +91,8 @@ extension WPStyleGuide
         public static let badgeQuotedStyle          = blockQuotedStyle
         
         //  Blocks
+        public static let contentBlockRegularFont   = WPFontManager.merriweatherLightFontOfSize(blockFontSize)
+        public static let contentBlockBoldFont      = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansBoldFontOfSize(blockFontSize)
 
@@ -107,6 +109,15 @@ extension WPStyleGuide
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
         
+        public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            contentBlockRegularFont,
+                                                        NSForegroundColorAttributeName: blockTextColor ]
+
+        public static let contentBlockBoldStyle     = [ NSParagraphStyleAttributeName:  blockParagraph,
+                                                        NSFontAttributeName:            contentBlockBoldFont,
+                                                        NSForegroundColorAttributeName: blockTextColor ]
+
+
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
@@ -172,7 +183,7 @@ extension WPStyleGuide
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
         public static let maximumCellWidth          = CGFloat(600)
 
 
