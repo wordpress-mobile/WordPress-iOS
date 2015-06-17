@@ -204,7 +204,7 @@
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
-    remoteMedia.length = [xmlRPC numberForKey:@"metadata.length"];
+    remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
     return remoteMedia;
 }
 
