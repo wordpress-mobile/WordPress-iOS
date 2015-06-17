@@ -94,12 +94,25 @@
 /**
  Searches for a `Blog` object for this account with the given XML-RPC endpoint
 
+ @warn If more than one blog is found, they'll be considered duplicates and be
+ deleted leaving only one of them.
+
  @param xmlrpc the XML-RPC endpoint URL as a string
  @param account the account the blog belongs to
  @return the blog if one was found, otherwise it returns nil
  */
 - (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
                    inAccount:(WPAccount *)account;
+
+/**
+ Searches for a `Blog` object for this account with the given username
+
+ @param xmlrpc the XML-RPC endpoint URL as a string
+ @param username the blog's username
+ @return the blog if one was found, otherwise it returns nil
+ */
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
+                 andUsername:(NSString *)username;
 
 /**
  Creates a blank `Blog` object for this account

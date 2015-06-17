@@ -185,7 +185,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    NSString *isWPCom = defaultAccount.isWpcom ? @"Yes" : @"No";
+    NSString *isWPCom = (defaultAccount != nil) ? @"Yes" : @"No";
     NSMutableDictionary *metaData = [NSMutableDictionary dictionaryWithDictionary:@{ @"isWPCom" : isWPCom }];
 
     NSArray *allBlogs = [blogService blogsForAllAccounts];
