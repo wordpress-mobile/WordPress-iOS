@@ -433,6 +433,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (void)editPost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
                                                                                          mode:kWPPostViewControllerModePreview];
@@ -481,6 +482,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return;
     }
 
+    [WPAnalytics track:WPAnalyticsStatPostListStatsAction withProperties:[self propertiesForAnalytics]];
+
     // Push the Stats Post Details ViewController
     NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -524,6 +527,9 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     if (filter == [self currentPostAuthorFilter]) {
         return;
     }
+
+    [WPAnalytics track:WPAnalyticsStatPostListAuthorFilterChanged withProperties:[self propertiesForAnalytics]];
+
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
