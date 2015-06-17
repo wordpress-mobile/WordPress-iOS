@@ -75,5 +75,6 @@ extern const CGFloat SearchWrapperViewLandscapeHeight;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
 - (BOOL)isSearching;
 - (NSString *)currentSearchTerm;
+- (NSDictionary *)propertiesForAnalytics;
 
 @end
