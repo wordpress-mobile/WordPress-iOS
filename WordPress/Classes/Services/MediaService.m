@@ -464,6 +464,7 @@ static NSString * const MediaDirectory = @"Media";
     media.width = remoteMedia.width;
     media.shortcode = remoteMedia.shortcode;
     media.videopressGUID = remoteMedia.videopressGUID;
+    media.length = remoteMedia.length;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
