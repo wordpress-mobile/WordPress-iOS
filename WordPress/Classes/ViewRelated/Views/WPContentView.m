@@ -14,7 +14,6 @@ const CGFloat WPContentViewAuthorAvatarSize = 32.0;
 const CGFloat WPContentViewAuthorViewHeight = 32.0;
 const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
-const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 @interface WPContentView()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
@@ -24,18 +23,6 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 @end
 
 @implementation WPContentView
-
-+ (UIFont *)titleFont
-{
-    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 19.0;
-    return [WPFontManager merriweatherRegularFontOfSize:fontSize];
-}
-
-+ (UIFont *)contentFont
-{
-    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
-    return [WPFontManager merriweatherLightFontOfSize:fontSize];
-}
 
 #pragma mark - Lifecycle
 
@@ -436,6 +423,20 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     // Subclasses should override
 }
 
+- (NSDictionary *)attributesForAttributedStringForTitle
+{
+    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 16.0;
+    UIFont *font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
+
+    CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 21.0;
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setMaximumLineHeight:lineHeight];
+    [paragraphStyle setMinimumLineHeight:lineHeight];
+
+    return @{NSParagraphStyleAttributeName : paragraphStyle,
+             NSFontAttributeName : font};
+}
+
 /**
  Returns an attributed string for the specified `title`, formatted for the title view.
 
@@ -449,10 +450,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
         title = @"";
     }
 
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [[self class] titleFont]};
+    NSDictionary *attributes = [self attributesForAttributedStringForTitle];
 
     NSMutableAttributedString *titleString = [[NSMutableAttributedString alloc] initWithString:title
                                                                                     attributes:attributes];
@@ -472,10 +470,17 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
         string = @"";
     }
 
-    NSMutableParagraphStyle *style = [[NSMutableParagraphStyle alloc] init];
-    [style setLineHeightMultiple:WPContentViewLineHeightMultiple];
-    NSDictionary *attributes = @{NSParagraphStyleAttributeName : style,
-                                 NSFontAttributeName : [[self class] contentFont]};
+    CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
+    UIFont *font = [WPFontManager merriweatherLightFontOfSize:fontSize];
+
+    CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 21.0;
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setMaximumLineHeight:lineHeight];
+    [paragraphStyle setMinimumLineHeight:lineHeight];
+
+    NSDictionary *attributes = @{NSParagraphStyleAttributeName : paragraphStyle,
+                                 NSFontAttributeName : font};
+
     NSMutableAttributedString *attributedSummary = [[NSMutableAttributedString alloc] initWithString:string
                                                                                           attributes:attributes];
     return attributedSummary;

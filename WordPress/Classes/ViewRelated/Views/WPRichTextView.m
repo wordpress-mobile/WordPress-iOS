@@ -45,8 +45,8 @@ static NSInteger const WPRichTextImageQuality = 65;
     DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
              DTDefaultFontFamily:@"Merriweather Light",
-             DTDefaultLineHeightMultiplier:([UIDevice isPad] ? @1.6 : @1.4),
-             DTDefaultFontSize:([UIDevice isPad] ? @18 : @16),
+             DTDefaultLineHeightMultiplier:@1.5,
+             DTDefaultFontSize:([UIDevice isPad] ? @16 : @14),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
              DTDefaultLinkColor:[WPStyleGuide baseLighterBlue],
              DTDefaultLinkHighlightColor:[WPStyleGuide midnightBlue],

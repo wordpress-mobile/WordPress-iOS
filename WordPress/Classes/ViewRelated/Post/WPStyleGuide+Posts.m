@@ -122,8 +122,8 @@
 
 + (NSDictionary *)postCardTitleAttributes
 {
-    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 20.0;
-    CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 28.0;
+    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 16.0;
+    CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 21.0;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
@@ -133,7 +133,7 @@
 + (NSDictionary *)postCardSnippetAttributes
 {
     CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
-    CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 20.0;
+    CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 21.0;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
