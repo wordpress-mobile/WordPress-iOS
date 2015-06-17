@@ -109,14 +109,13 @@ extension WPStyleGuide
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
         
-        public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  blockParagraph,
+        public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
                                                         NSFontAttributeName:            contentBlockRegularFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
 
-        public static let contentBlockBoldStyle     = [ NSParagraphStyleAttributeName:  blockParagraph,
+        public static let contentBlockBoldStyle     = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
                                                         NSFontAttributeName:            contentBlockBoldFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
-
 
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
@@ -183,7 +182,8 @@ extension WPStyleGuide
         public static let subjectLineSize           = UIDevice.isPad() ? CGFloat(24) : CGFloat(18)
         public static let snippetLineSize           = subjectLineSize
         public static let blockFontSize             = UIDevice.isPad() ? CGFloat(16) : CGFloat(14)
-        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
+        public static let blockLineSize             = UIDevice.isPad() ? CGFloat(24) : CGFloat(20)
+        public static let contentBlockLineSize      = UIDevice.isPad() ? CGFloat(24) : CGFloat(21)
         public static let maximumCellWidth          = CGFloat(600)
 
 
@@ -205,6 +205,9 @@ extension WPStyleGuide
         )
         private static let blockParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
+        )
+        private static let contentBlockParagraph     = NSMutableParagraphStyle(
+            minLineHeight: contentBlockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
         )
         private static let badgeParagraph           = NSMutableParagraphStyle(
             minLineHeight: blockLineSize, maxLineHeight: blockLineSize, lineBreakMode: .ByWordWrapping, alignment: .Center
