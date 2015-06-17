@@ -235,6 +235,97 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
 }
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogObjectID = [blog objectID];
+    [remote getMediaLibraryForBlog:blog
+                           options:nil
+                           success:^(NSArray *media) {
+                               [self.managedObjectContext performBlock:^{
+                                   Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+                                   [self mergeMedia:media forBlog:blogInContext completionHandler:success];
+                               }];
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
++ (NSOperationQueue *)queueForResizeMediaOperations {
+    static NSOperationQueue * _queueForResizeMediaOperations = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _queueForResizeMediaOperations = [[NSOperationQueue alloc] init];
+    });
+    
+    return _queueForResizeMediaOperations;
+}
+
+- (void)imageForMedia:(Media *)mediaInRandomContext
+                 size:(CGSize)size
+              success:(void (^)(UIImage *image))success
+              failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        Media *media = (Media *)[self.managedObjectContext objectWithID:mediaID];
+        NSString *pathForFile;
+        if (media.mediaType == MediaTypeImage) {
+            pathForFile = media.thumbnailLocalURL;
+        } else if (media.mediaType == MediaTypeVideo) {
+            pathForFile = media.thumbnailLocalURL;
+        }
+        if (pathForFile && [[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
+            [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
+                UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
+                if (success) {
+                    success(image);
+                }
+            }];
+            return;
+        }
+        NSURL *remoteURL = [NSURL URLWithString:media.remoteURL];
+        if (media.mediaType != MediaTypeImage)
+        {
+            remoteURL = nil;
+        }
+        if (!remoteURL) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        WPImageSource *imageSource = [WPImageSource sharedSource];
+        [imageSource downloadImageForURL:remoteURL withSuccess:^(UIImage *image) {
+            [self.managedObjectContext performBlock:^{
+                NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
+                media.absoluteLocalURL = filePath;
+                NSString *thumbnailPath = media.thumbnailLocalURL;
+                [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
+                    NSData *data = UIImagePNGRepresentation(image);
+                    [data writeToFile:filePath atomically:YES];
+                    UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+                    NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
+                    [thumbnailData writeToFile:thumbnailPath atomically:YES];
+                    if (success) {
+                        success(thumbnail);
+                    }
+                }];                                 
+            }];
+        } failure:^(NSError *error) {
+            if (failure) {
+                failure(error);
+            }
+        }];
+    }];
+}
 
 #pragma mark - Private
 
@@ -330,6 +421,26 @@ static NSString * const MediaDirectory = @"Media";
         remote = [[MediaServiceRemoteXMLRPC alloc] initWithApi:client];
     }
     return remote;
+}
+
+- (void)mergeMedia:(NSArray *)media
+           forBlog:(Blog *)blog
+ completionHandler:(void (^)(void))completion
+{
+    for (RemoteMedia *remote in media) {
+        @autoreleasepool {
+            Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+            if (!local) {
+                local = [self newMediaForBlog:blog];
+                local.remoteStatus = MediaRemoteStatusSync;
+            }
+            [self updateMedia:local withRemoteMedia:remote];
+        }
+    }    
+    [self.managedObjectContext save:nil];
+    if (completion) {
+        completion();
+    }
 }
 
 - (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia
