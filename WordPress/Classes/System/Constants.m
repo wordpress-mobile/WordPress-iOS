@@ -29,12 +29,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
-#if defined(INTERNAL_BUILD) || defined(DEBUG)
-BOOL const WPJetpackRESTEnabled                                     = YES;
-#else
-BOOL const WPJetpackRESTEnabled                                     = NO;
-#endif
-
 NSString *const WPiTunesAppId                                       = @"335703880";
 
 NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
