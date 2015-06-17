@@ -2318,11 +2318,6 @@
 		850BD4531922F95C0032F3AD /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				E1A6DBDC19DC7D140071AC1E /* PostServiceRemote.h */,
-				E1A6DBDD19DC7D140071AC1E /* PostServiceRemoteREST.h */,
-				E1A6DBDE19DC7D140071AC1E /* PostServiceRemoteREST.m */,
-				E1A6DBDF19DC7D140071AC1E /* PostServiceRemoteXMLRPC.h */,
-				E1A6DBE019DC7D140071AC1E /* PostServiceRemoteXMLRPC.m */,
 				E1249B4019408C6F0035E895 /* Remote Objects */,
 				E18EE94919349EAE00B0A40C /* AccountServiceRemote.h */,
 				E149D64519349E69006A843D /* AccountServiceRemoteREST.h */,
@@ -2332,21 +2327,28 @@
 				E1D04D8319374F2C002FADD7 /* BlogServiceRemoteREST.m */,
 				E1D04D7C19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.h */,
 				E1D04D7D19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m */,
-				93D6D6461924FDAD00A4F44A /* PostCategoryServiceRemote.h */,
-				E1DF5DF919E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.h */,
-				E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */,
-				E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */,
-				E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */,
 				E1249B3D19408C230035E895 /* CommentServiceRemote.h */,
 				E1249B491940AECC0035E895 /* CommentServiceRemoteREST.h */,
 				E1249B4A1940AECC0035E895 /* CommentServiceRemoteREST.m */,
 				E1249B4419408D0F0035E895 /* CommentServiceRemoteXMLRPC.h */,
 				E1249B4519408D0F0035E895 /* CommentServiceRemoteXMLRPC.m */,
+				E1F8E1241B0B422C0073E628 /* JetpackServiceRemote.h */,
+				E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */,
 				E149D64919349E69006A843D /* MediaServiceRemote.h */,
 				E149D64A19349E69006A843D /* MediaServiceRemoteREST.h */,
 				E149D64B19349E69006A843D /* MediaServiceRemoteREST.m */,
 				E149D64C19349E69006A843D /* MediaServiceRemoteXMLRPC.h */,
 				E149D64D19349E69006A843D /* MediaServiceRemoteXMLRPC.m */,
+				93D6D6461924FDAD00A4F44A /* PostCategoryServiceRemote.h */,
+				E1DF5DF919E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.h */,
+				E1DF5DFA19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m */,
+				E1DF5DFB19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.h */,
+				E1DF5DFC19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m */,
+				E1A6DBDC19DC7D140071AC1E /* PostServiceRemote.h */,
+				E1A6DBDD19DC7D140071AC1E /* PostServiceRemoteREST.h */,
+				E1A6DBDE19DC7D140071AC1E /* PostServiceRemoteREST.m */,
+				E1A6DBDF19DC7D140071AC1E /* PostServiceRemoteXMLRPC.h */,
+				E1A6DBE019DC7D140071AC1E /* PostServiceRemoteXMLRPC.m */,
 				B535209E1AF7EFEC00B33BA8 /* PushAuthenticationServiceRemote.swift */,
 				5D3D559818F88C5E00782892 /* ReaderPostServiceRemote.h */,
 				5D3D559918F88C5E00782892 /* ReaderPostServiceRemote.m */,
@@ -2357,8 +2359,6 @@
 				E1249B481940AE610035E895 /* ServiceRemoteREST.h */,
 				59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */,
 				E1249B471940AE550035E895 /* ServiceRemoteXMLRPC.h */,
-				E1F8E1241B0B422C0073E628 /* JetpackServiceRemote.h */,
-				E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -2640,33 +2640,23 @@
 		93FA59DA18D88BDB001446BC /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
-				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
-				85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */,
-				85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */,
-				85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */,
-				85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */,
-				85D239A51AE5A5FC0074768D /* LoginFacade.h */,
-				85D239A61AE5A5FC0074768D /* LoginFacade.m */,
-				85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */,
-				85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */,
-				85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */,
-				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
-				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
-				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
-				E1A6DBE319DC7D230071AC1E /* PostService.h */,
-				E1A6DBE419DC7D230071AC1E /* PostService.m */,
+				B5EFB1C31B31B99D007608A3 /* Facades */,
+				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
 				93C1148418EDF6E100DAC95C /* BlogService.m */,
-				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
-				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
 				E1556CF0193F6FE900FC52EA /* CommentService.h */,
 				E1556CF1193F6FE900FC52EA /* CommentService.m */,
-				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
+				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
+				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 				5DA3EE141925090A00294E0B /* MediaService.h */,
 				5DA3EE151925090A00294E0B /* MediaService.m */,
+				93FA59DB18D88C1C001446BC /* PostCategoryService.h */,
+				93FA59DC18D88C1C001446BC /* PostCategoryService.m */,
+				E1A6DBE319DC7D230071AC1E /* PostService.h */,
+				E1A6DBE419DC7D230071AC1E /* PostService.m */,
+				B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */,
 				5D3D559518F88C3500782892 /* ReaderPostService.h */,
 				5D3D559618F88C3500782892 /* ReaderPostService.m */,
 				5D44EB361986D8BA008B7175 /* ReaderSiteService.h */,
@@ -2677,9 +2667,6 @@
 				319D6E7D19E447C80013871C /* SuggestionService.m */,
 				93DEB88019E5BF7100F9546D /* TodayExtensionService.h */,
 				93DEB88119E5BF7100F9546D /* TodayExtensionService.m */,
-				B535209C1AF7EB9F00B33BA8 /* PushAuthenticationService.swift */,
-				E1F8E1211B0B411E0073E628 /* JetpackService.h */,
-				E1F8E1221B0B411E0073E628 /* JetpackService.m */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -2888,6 +2875,27 @@
 				B54E1DF31A0A7BBF00807537 /* NotificationMediaDownloader.swift */,
 			);
 			path = Tools;
+			sourceTree = "<group>";
+		};
+		B5EFB1C31B31B99D007608A3 /* Facades */ = {
+			isa = PBXGroup;
+			children = (
+				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
+				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
+				85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */,
+				85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */,
+				85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */,
+				85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */,
+				85D239A51AE5A5FC0074768D /* LoginFacade.h */,
+				85D239A61AE5A5FC0074768D /* LoginFacade.m */,
+				85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */,
+				85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */,
+				85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */,
+				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
+				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
+				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
+			);
+			name = Facades;
 			sourceTree = "<group>";
 		};
 		B5FD4523199D0F1100286FBB /* Views */ = {
