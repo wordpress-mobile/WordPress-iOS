@@ -3,6 +3,7 @@
 #import "Comment.h"
 #import "WPAccount.h"
 #import "AccountService.h"
+#import "JetpackREST.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
@@ -489,7 +490,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 /*
  2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
- It works like restApi, but bypasses WPJetpackRESTEnabled, since we always want to use rest for Stats.
+ It works like restApi, but bypasses Jetpack REST checks, since we always want to use rest for Stats.
  */
 - (WordPressComApi *)restApiForStats
 {
@@ -525,7 +526,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (BOOL)jetpackRESTSupported
 {
-    return WPJetpackRESTEnabled && self.jetpackAccount && self.dotComID;
+    return JetpackREST.enabled && self.jetpackAccount && self.dotComID;
 }
 
 #pragma mark - Private Methods
