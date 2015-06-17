@@ -262,10 +262,10 @@ extension NotificationBlock
         static let richRangeStylesMap = [
             NoteRangeTypeUser               : Styles.blockBoldStyle,
             NoteRangeTypePost               : Styles.blockItalicsStyle,
-            NoteRangeTypeComment            : Styles.blockItalicsStyle,
-            NoteRangeTypeBlockquote         : Styles.blockQuotedStyle,
+            NoteRangeTypeComment            : Styles.contentBlockItalicStyle,
+            NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
             NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
-            NoteRangeTypeMatch              : Styles.blockMatchStyle
+            NoteRangeTypeMatch              : Styles.contentBlockMatchStyle
         ]
         
         static let badgeRangeStylesMap = [

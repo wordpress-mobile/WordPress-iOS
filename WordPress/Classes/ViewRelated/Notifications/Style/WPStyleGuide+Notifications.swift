@@ -93,6 +93,7 @@ extension WPStyleGuide
         //  Blocks
         public static let contentBlockRegularFont   = WPFontManager.merriweatherLightFontOfSize(blockFontSize)
         public static let contentBlockBoldFont      = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
+        public static let contentBlockItalicFont    = WPFontManager.merriweatherLightItalicFontOfSize(blockFontSize)
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansBoldFontOfSize(blockFontSize)
 
@@ -116,6 +117,18 @@ extension WPStyleGuide
         public static let contentBlockBoldStyle     = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
                                                         NSFontAttributeName:            contentBlockBoldFont,
                                                         NSForegroundColorAttributeName: blockTextColor ]
+
+        public static let contentBlockItalicStyle   = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
+                                                        NSFontAttributeName:            contentBlockItalicFont,
+                                                        NSForegroundColorAttributeName: blockTextColor ]
+
+        public static let contentBlockQuotedStyle   = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
+                                                        NSFontAttributeName:            contentBlockItalicFont,
+                                                        NSForegroundColorAttributeName: blockQuotedColor ]
+
+        public static let contentBlockMatchStyle    = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
+                                                        NSFontAttributeName:            contentBlockRegularFont,
+                                                        NSForegroundColorAttributeName: blockLinkColor ]
 
         public static let blockRegularStyle         = [ NSParagraphStyleAttributeName:  blockParagraph,
                                                         NSFontAttributeName:            blockRegularFont,
