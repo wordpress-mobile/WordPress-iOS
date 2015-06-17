@@ -8,6 +8,8 @@
 #import "Blog.h"
 #import "RemoteMedia.h"
 #import "WPAssetExporter.h"
+#import "WPImageSource.h"
+#import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
@@ -362,6 +364,11 @@ static NSString * const MediaDirectory = @"Media";
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSString *filename = asset.defaultRepresentation.filename;
+    return [self pathForFilename:filename supportedFileFormats:supportedFileFormats];
+
+}
+- (NSString *)pathForFilename:(NSString *)filename supportedFileFormats:(NSSet *)supportedFileFormats
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];

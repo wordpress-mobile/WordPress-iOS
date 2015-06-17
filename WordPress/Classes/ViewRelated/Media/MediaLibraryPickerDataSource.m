@@ -102,11 +102,7 @@
         if (failureBlock) {
             failureBlock(error);
         }
-        return;
-    }
-    if (successBlock) {
-        successBlock();
-    }
+    }];
 }
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
@@ -282,25 +278,21 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    NSString *pathForFile;
-    if (self.mediaType == MediaTypeImage) {
-        pathForFile = self.absoluteLocalURL;
-    } else if (self.mediaType == MediaTypeVideo) {
-        pathForFile = self.thumbnailLocalURL;
-    }
-    if (pathForFile) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
-            if (completionHandler) {
-                completionHandler(image, nil);
-            }
-        });
-        return [self.mediaID intValue];
-    }
-    // TODO: fetch image from server, for now just exit with missing image
-    if (completionHandler) {
-        completionHandler(nil, nil);
-    }
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize realSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(scale, scale));
+
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    [mediaService imageForMedia:self size:realSize success:^(UIImage *image) {
+        if (completionHandler) {
+            completionHandler(image, nil);
+        }
+    } failure:^(NSError *error) {
+        if (completionHandler) {
+            completionHandler(nil, error);
+        }
+    }];
+
     return [self.mediaID intValue];
 }
 
@@ -322,7 +314,7 @@
 
 - (NSTimeInterval)duration
 {
-    if (self.mediaType != MediaTypeVideo){
+    if (self.mediaType != MediaTypeVideo || self.absoluteLocalURL == nil){
         return 0;
     }
     NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
