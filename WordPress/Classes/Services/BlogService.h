@@ -56,6 +56,8 @@
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
+- (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
+
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
  *  Used for instances where the entire blog should be refreshed or initially downloaded.
  *
