@@ -20,20 +20,6 @@
                                                    authToken:(NSString *)authToken;
 
 /**
- *  This creates a self hosted account.
- *
- *  @param xmlrpc   xmlrpc url of the self hosted site.
- *  @param username username to access the self hosted site.
- *  @param password password to access the self hosted site.
- *
- *  @return a newly created `WPAccount`.
- */
-- (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
-                                                username:(NSString *)username
-                                             andPassword:(NSString *)password;
-
-
-/**
  *  This retrieves user details (email, username, userID, etc.) for a `WPAccount`.
  *
  *  @param account a valid WordPress.com account.
