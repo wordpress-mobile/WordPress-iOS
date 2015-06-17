@@ -21,10 +21,11 @@ extension WPStyleGuide
     public class func commentDTCoreTextOptions() -> NSDictionary {
         let defaultStyles = "blockquote { width: 100%; display: block; font-style: italic; }"
         let cssStylesheet:DTCSSStylesheet = DTCSSStylesheet(styleBlock: defaultStyles);
+        let fontSize = UIDevice.isPad() ? 16.0 : 14.0;
         return [
-            DTDefaultFontFamily             : "Open Sans",
-            DTDefaultLineHeightMultiplier   : 1.52,
-            DTDefaultFontSize               : 14,
+            DTDefaultFontFamily             : "Merriweather Light",
+            DTDefaultLineHeightMultiplier   : 1.5,
+            DTDefaultFontSize               : fontSize,
             DTDefaultTextColor              : WPStyleGuide.littleEddieGrey(),
             DTDefaultLinkColor              : WPStyleGuide.baseLighterBlue(),
             DTDefaultLinkHighlightColor     : WPStyleGuide.midnightBlue(),
