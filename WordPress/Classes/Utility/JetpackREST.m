@@ -7,6 +7,16 @@ static NSString * const JetpackRESTEnabledKey = @"JetpackRESTEnabled";
 
 @implementation JetpackREST
 
++ (void)initialize
+{
+#if defined(INTERNAL_BUILD) || defined(DEBUG)
+    BOOL enabledByDefault = YES;
+#else
+    BOOL enabledByDefault = NO;
+#endif
+    [[NSUserDefaults standardUserDefaults] registerDefaults:@{JetpackRESTEnabledKey: @(enabledByDefault)}];
+}
+
 + (BOOL)enabled
 {
     return [[NSUserDefaults standardUserDefaults] boolForKey:JetpackRESTEnabledKey];
