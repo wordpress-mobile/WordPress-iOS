@@ -207,6 +207,34 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                        failure:failure];
 }
 
+- (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
+{
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"username != NULL AND account != NULL"];
+    NSArray *blogsToMigrate = [self blogsWithPredicate:predicate];
+    for (Blog *blog in blogsToMigrate) {
+        DDLogInfo(@"Migrating %@ with wp.com account %@ to Jetpack XML-RPC", [blog hostURL], blog.account.username);
+        blog.jetpackAccount = blog.account;
+        blog.account = nil;
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    /*
+     We could remove Jetpack blogs directly when we don't have a username for them,
+     but triggering a sync seems safer.
+     */
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    if (defaultAccount) {
+        /*
+         If this fails, we call success anyway. If the network fails for this request
+         we still want to allow disabling REST. Next time the site list reloads, it'll
+         purge the old Jetpack sites anyway
+         */
+        [self syncBlogsForAccount:accountService.defaultWordPressComAccount success:success failure:success];
+    } else if (success) {
+        success();
+    }
+}
+
 - (void)syncPostFormatsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure
