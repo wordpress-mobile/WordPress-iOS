@@ -23,8 +23,6 @@ extern NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey;
 extern NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey;
 
-extern BOOL const WPJetpackRESTEnabled;
-
 extern NSString *const WPiTunesAppId;
 
 extern NSString *const WPOnePasswordWordPressTitle;
