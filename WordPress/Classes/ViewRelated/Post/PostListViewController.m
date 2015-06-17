@@ -252,6 +252,11 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     return PostServiceTypePost;
 }
 
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPostsSync;
+}
+
 
 #pragma mark - Actions
 
