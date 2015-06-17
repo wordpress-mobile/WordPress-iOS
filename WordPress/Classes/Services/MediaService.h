@@ -86,6 +86,17 @@ extern NSInteger const MediaMaxImageSizeDimension;
                         success:(void (^)())success
                         failure:(void (^)(NSError *error))failure;
 
+/**
+ + Get a image for a Media by downloading its image or using the local cache
+ +
+ + @param media
+ + @success a block that will be invoked when the media is retrieved
+ + @failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ + */
+- (void)imageForMedia:(Media *)media
+                 size:(CGSize)size
+              success:(void (^)(UIImage *image))success
+              failure:(void (^)(NSError *error))failure;
 
 #pragma mark - Media cleanup
 
