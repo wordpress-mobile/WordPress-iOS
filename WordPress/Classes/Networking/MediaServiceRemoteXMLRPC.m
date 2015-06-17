@@ -168,7 +168,8 @@
     remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
     remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"metadata.file"] lastPathComponent];
+    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent];
     remoteMedia.date = xmlRPC[@"date_created_gmt"];
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
