@@ -23,7 +23,7 @@ __block WPAccount *account;
 // Helper Methods
 NSString *username = @"username";
 void (^createDotComAccount)() = ^{
-    account = [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:@"authtoken"];
+    account = [accountService createOrUpdateAccountWithUsername:username authToken:@"authtoken"];
 };
 
 typedef void (^BlockWithDict)(NSDictionary *);
@@ -106,7 +106,7 @@ describe(@"refreshMetadata", ^{
                 interceptSuperProperties(^(NSDictionary *superProperties){
                     expect(superProperties[@"dotcom_user"]).to.equal(NO);
                 });
-                account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"xmlrpc" username:username andPassword:@"password"];
+                account = nil;
                 
                 [mixpanelTracker refreshMetadata];
             });

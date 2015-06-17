@@ -213,16 +213,21 @@
         if (needsLogin) {
             NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
             NSURL *redirectURL = [NSURL URLWithString:link];
-            NSString *token;
+            NSString *username = self.apost.blog.usernameForSite;
+            NSString *token, *password;
             if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
+                password = nil;
                 token = self.apost.blog.authToken;
+            } else {
+                password = self.apost.blog.password;
+                token = nil;
             }
 
-            if (self.apost.blog.password.length > 0 && token.length > 0) {
+            if (username.length > 0 && (password.length > 0 || token.length > 0)) {
                 NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
                                                                           redirectURL:redirectURL
-                                                                             username:self.apost.blog.username
-                                                                             password:self.apost.blog.password
+                                                                             username:username
+                                                                             password:password
                                                                           bearerToken:token
                                                                             userAgent:nil];
                 [self.webView loadRequest:request];

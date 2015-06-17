@@ -73,8 +73,8 @@ class ContextManagerTests: XCTestCase {
         
         // Insert an offsite WordPress account
         let offsiteAccount = newAccountInContext(mainContext)
-        offsiteAccount.isWpcom = false
-        
+        offsiteAccount.setValue(false, forKey: "isWpcom")
+
         mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
         mainContext.save(nil)
         
@@ -116,7 +116,7 @@ class ContextManagerTests: XCTestCase {
         // Insert a WPAccount entity
         let dotcomAccount = newAccountInContext(mainContext)
         let offsiteAccount = newAccountInContext(mainContext)
-        offsiteAccount.isWpcom = false
+        offsiteAccount.setValue(false, forKey: "isWpcom")
         offsiteAccount.username = "OffsiteUsername"
         
         mainContext.obtainPermanentIDsForObjects([dotcomAccount, offsiteAccount], error: nil)
@@ -172,8 +172,8 @@ class ContextManagerTests: XCTestCase {
 
         // Insert an offsite WordPress account
         let offsiteAccount = newAccountInContext(mainContext)
-        offsiteAccount.isWpcom = false
-        
+        offsiteAccount.setValue(false, forKey: "isWpcom")
+
         mainContext.obtainPermanentIDsForObjects([wrongAccount, rightAccount, offsiteAccount], error: nil)
         mainContext.save(nil)
         
@@ -337,9 +337,9 @@ class ContextManagerTests: XCTestCase {
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
         let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: context) as! WPAccount
         account.username = "username"
-        account.isWpcom = true
+        account.setValue(true, forKey: "isWpcom")
         account.authToken = "authtoken"
-        account.xmlrpc = "http://example.com/xmlrpc.php"
+        account.setValue("http://example.com/xmlrpc.php", forKey: "xmlrpc")
         return account
     }
     
