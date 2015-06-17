@@ -314,7 +314,15 @@
 
 - (NSTimeInterval)duration
 {
-    if (self.mediaType != MediaTypeVideo || self.absoluteLocalURL == nil){
+    if (self.mediaType != MediaTypeVideo){
+        return 0;
+    }
+    if (self.length != nil && [self.length doubleValue] > 0){
+        return [self.length doubleValue];
+    }
+    
+    if (self.absoluteLocalURL == nil ||
+        ![[NSFileManager defaultManager] fileExistsAtPath:self.absoluteLocalURL isDirectory:nil]){
         return 0;
     }
     NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
