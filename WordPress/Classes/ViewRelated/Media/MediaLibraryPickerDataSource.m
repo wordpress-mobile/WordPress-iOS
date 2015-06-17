@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableDictionary *observers;
-
+@property (nonatomic, strong) MediaService *mediaService;
 @end
 
 @implementation MediaLibraryPickerDataSource
@@ -26,6 +26,9 @@
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
         _blog = blog;
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
+        NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
+        _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
+
     }
     return self;
 }
@@ -74,15 +77,28 @@
 
 -(void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [[self class] predicateForFilter:self.filter];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
-    request.sortDescriptors = @[sortDescriptor];
-    NSError *error;
-    self.media = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
-    if (self.media == nil && error) {
-        DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+    [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        [mainContext performBlock:^{
+            NSString *entityName = NSStringFromClass([Media class]);
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+            request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+            request.sortDescriptors = @[sortDescriptor];
+            NSError *error;
+            self.media = [mainContext executeFetchRequest:request error:&error];
+            if (self.media == nil && error) {
+                DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+                if (failureBlock) {
+                    failureBlock(error);
+                }
+                return;
+            }
+            if (successBlock) {
+                successBlock();
+            }
+        }];
+    } failure:^(NSError *error) {
         if (failureBlock) {
             failureBlock(error);
         }
@@ -172,18 +188,18 @@
     return self.media[index];
 }
 
-+ (NSPredicate *)predicateForFilter:(WPMediaType)filter
++ (NSPredicate *)predicateForFilter:(WPMediaType)filter blog:(Blog *)blog
 {
     NSPredicate *predicate;
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image && blog = %@", blog];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video && blog = %@", blog];
         } break;
         case WPMediaTypeAll: {
-            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) ", @"image", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];
         } break;
         default:
             break;
@@ -223,7 +239,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -252,7 +268,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;

@@ -28,6 +28,33 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
 }
 
+- (void)getMediaLibraryForBlog:(Blog *)blog
+                       options:(NSDictionary *)options
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"number"] = @100;
+    if (options) {
+        [parameters addEntriesFromDictionary:options];
+    }
+    [self.api GET:path
+       parameters:[NSDictionary dictionaryWithDictionary:parameters]
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSArray *jsonMediaItems = [responseObject arrayForKey:@"media"];
+              NSArray *remoteMediaItems = [self remoteMediaFromJSONArray:jsonMediaItems];
+              if (success) {
+                  success(remoteMediaItems);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)createMedia:(RemoteMedia *)media
             forBlog:(Blog *)blog
            progress:(NSProgress **)progress
@@ -98,6 +125,15 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         *progress = localProgress;
     }
     [self.api.operationQueue addOperation:operation];
+}
+
+- (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
+{
+    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:jsonMedia.count];
+    for (NSDictionary *json in jsonMedia) {
+        [remoteMedia addObject:[self remoteMediaFromJSONDictionary:json]];
+    }
+    return [NSArray arrayWithArray:remoteMedia];
 }
 
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
