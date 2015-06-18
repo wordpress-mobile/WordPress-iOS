@@ -34,7 +34,6 @@
             <constraints>
                 <constraint firstItem="udg-1H-n3i" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="8jO-Sv-NpG"/>
                 <constraint firstAttribute="trailing" secondItem="3Em-be-svJ" secondAttribute="trailing" id="LgA-50-02H"/>
-                <constraint firstItem="3Em-be-svJ" firstAttribute="top" secondItem="udg-1H-n3i" secondAttribute="bottom" id="RXK-HG-blq"/>
                 <constraint firstItem="3Em-be-svJ" firstAttribute="top" secondItem="udg-1H-n3i" secondAttribute="bottom" id="Wt8-We-tSq"/>
                 <constraint firstItem="3Em-be-svJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Yso-Ca-3eW"/>
                 <constraint firstItem="udg-1H-n3i" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="clV-dG-51V"/>
