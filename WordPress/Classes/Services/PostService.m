@@ -515,6 +515,11 @@ const NSInteger PostServiceNumberToFetch = 40;
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = PostStatusPublish;
+
+    // HACK: aerych - 2015-06-18
+    // The date_create_gmt should arleady be nil for a draft but
+    // triggering the setter correctly sets the metaPublishImmediately flag.
+    post.date_created_gmt = nil;
 }
 
 - (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
