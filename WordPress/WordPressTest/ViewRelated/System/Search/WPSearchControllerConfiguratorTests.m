@@ -39,14 +39,14 @@
 
 - (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchControllerProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self.viewController class]];
+    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
     XCTAssertFalse(self.searchController.dimsBackgroundDuringPresentation);
     XCTAssertTrue(self.searchController.hidesNavigationBarDuringPresentation);
 }
 
 - (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchBarProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self.viewController class]];
+    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
     UISearchBar *searchBar = self.searchController.searchBar;
     
     XCTAssertFalse(searchBar.translatesAutoresizingMaskIntoConstraints);
