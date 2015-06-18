@@ -4,23 +4,21 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
-    var remoteApi: WordPressComApi?
-    let timeout = 2.0
+    let remoteApi           = WordPressComApi.anonymousApi()
+    let timeout             = 2.0
+    let contentTypeJson     = "application/json"
+    let settingsEndpoint    = "notifications/settings/"
+    let settingsFilename    = "notifications-settings.json"
     
     override func setUp() {
         super.setUp()
-        remoteApi = WordPressComApi.anonymousApi()
         
-        // Mock Settings request
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
-                let settingsRange = request?.URL?.absoluteString?.rangeOfString("notifications/settings/")
-                return settingsRange != nil
+                return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
             },
             withStubResponse: { (request: NSURLRequest!) -> OHHTTPStubsResponse! in
-                return OHHTTPStubsResponse(file:"notifications-settings.json",
-                                    contentType:"application/json",
-                                   responseTime:OHHTTPStubsDownloadSpeedWifi)
-        })
+                return OHHTTPStubsResponse(file: self.settingsFilename, contentType: self.contentTypeJson, responseTime: OHHTTPStubsDownloadSpeedWifi)
+            })
     }
     
     override func tearDown() {
