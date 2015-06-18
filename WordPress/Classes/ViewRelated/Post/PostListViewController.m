@@ -436,7 +436,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModePreview];
+                                                                                         mode:kWPPostViewControllerModeEdit];
         postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
