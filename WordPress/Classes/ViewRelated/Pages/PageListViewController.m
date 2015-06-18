@@ -184,6 +184,11 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     return PostServiceTypePage;
 }
 
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastPagesSync;
+}
+
 
 #pragma mark - TableView Handler Delegate Methods
 
@@ -354,6 +359,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (void)editPage:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([EditPageViewController isNewEditorEnabled]) {
         EditPageViewController *pageViewController = [[EditPageViewController alloc] initWithPost:apost
                                                                                              mode:kWPPostViewControllerModePreview];
@@ -373,6 +379,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
 - (void)draftPage:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListDraftAction withProperties:[self propertiesForAnalytics]];
     NSString *previousStatus = apost.status;
     apost.status = PostStatusDraft;
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -454,6 +461,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
     CGRect frame = CGRectZero;
     frame.size = button.bounds.size;
     [actionSheet showFromRect:frame inView:button animated:YES];
+    [WPAnalytics track:WPAnalyticsStatPostListOpenedCellMenu withProperties:[self propertiesForAnalytics]];
 }
 
 - (void)cell:(UITableViewCell *)cell receivedRestoreActionForProvider:(id<WPContentViewProvider>)contentProvider

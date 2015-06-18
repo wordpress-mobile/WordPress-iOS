@@ -32,3 +32,4 @@
 #import "WPAnalyticsTrackerWPCom.h"
 
 #import <DTCoreText/DTCoreText.h>
+#import <SFHFKeychainUtils.h>

@@ -25,11 +25,9 @@
     [super setUp];
     self.testContextManager = [[TestContextManager alloc] init];
     
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    _account = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://blog1.com/xmlrpc.php" username:@"admin" andPassword:@"password!"];
-
     _blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:self.testContextManager.mainContext];
     _blog.xmlrpc = @"http://test.blog/xmlrpc.php";
+    _blog.username = @"admin";
     _blog.url = @"http://test.blog/";
     _blog.options = @{@"jetpack_version": @{
                               @"value": @"1.8.2",
@@ -42,7 +40,6 @@
                               @"readonly": @YES,
                               },
                       };
-    _blog.account = _account;
 }
 
 - (void)tearDown {
@@ -132,14 +129,14 @@
     self.testContextManager.testExpectation = saveExpectation;
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[ContextManager sharedInstance].mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
+    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     WPAccount * defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
 
     saveExpectation = [self expectationWithDescription:@"Context save expectation"];
     self.testContextManager.testExpectation = saveExpectation;
-    [accountService createOrUpdateWordPressComAccountWithUsername:@"test1" authToken:@"token1"];
+    [accountService createOrUpdateAccountWithUsername:@"test1" authToken:@"token1"];
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
     defaultAccount = [accountService defaultWordPressComAccount];
     XCTAssertEqualObjects(wpComAccount, defaultAccount);
@@ -157,17 +154,17 @@
 
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.testContextManager.mainContext];
-    WPAccount *wpComAccount = [accountService createOrUpdateWordPressComAccountWithUsername:@"user" authToken:@"token"];
+    WPAccount *wpComAccount = [accountService createOrUpdateAccountWithUsername:@"user" authToken:@"token"];
 
     Blog *dotcomBlog = [blogService createBlogWithAccount:wpComAccount];
     dotcomBlog.xmlrpc = @"http://dotcom1.wordpress.com/xmlrpc.php";
     dotcomBlog.url = @"http://dotcom1.wordpress.com/";
     dotcomBlog.blogID = @1;
 
-    WPAccount *selfHostedAccount = [accountService createOrUpdateSelfHostedAccountWithXmlrpc:@"http://jetpack.example.com/xmlrpc.php" username:@"jetpack" andPassword:@"jetpack"];
-    Blog *jetpackLegacyBlog = [blogService createBlogWithAccount:selfHostedAccount];
+    Blog *jetpackLegacyBlog = [blogService createBlogWithAccount:nil];
     jetpackLegacyBlog.blogID = @0;
-    jetpackLegacyBlog.xmlrpc = selfHostedAccount.xmlrpc;
+    jetpackLegacyBlog.username = @"jetpack";
+    jetpackLegacyBlog.xmlrpc = @"http://jetpack.example.com/xmlrpc.php";
     jetpackLegacyBlog.url = @"http://jetpack.example.com/";
     jetpackLegacyBlog.options = @{@"jetpack_version": @{
                                           @"value": @"1.8.2",
@@ -186,7 +183,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // test.blog + wp.com + jetpack
-    XCTAssertEqual(3, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
     // test.blog + wp.com + jetpack (legacy)
     XCTAssertEqual(3, [blogService blogCountForAllAccounts]);
     // dotcom1.wordpress.com
@@ -205,7 +202,7 @@
     [self waitForExpectationsWithTimeout:2.0 handler:nil];
 
     // test.blog + wp.com
-    XCTAssertEqual(2, [accountService numberOfAccounts]);
+    XCTAssertEqual(1, [accountService numberOfAccounts]);
     // dotcom1.wordpress.com + jetpack.example.com
     XCTAssertEqual(2, wpComAccount.blogs.count);
     XCTAssertEqual(0, wpComAccount.jetpackBlogs.count);

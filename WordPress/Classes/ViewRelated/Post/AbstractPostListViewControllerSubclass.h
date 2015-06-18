@@ -56,6 +56,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 @property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
 - (NSString *)postTypeToSync;
+- (NSDate *)lastSyncDate;
 - (void)syncItemsWithUserInteraction:(BOOL)userInteraction;
 - (BOOL)canFilterByAuthor;
 - (BOOL)shouldShowOnlyMyPosts;
@@ -70,5 +71,6 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 - (void)updateAndPerformFetchRequestRefreshingCachedRowHeights;
 - (BOOL)isSearching;
 - (NSString *)currentSearchTerm;
+- (NSDictionary *)propertiesForAnalytics;
 
 @end
