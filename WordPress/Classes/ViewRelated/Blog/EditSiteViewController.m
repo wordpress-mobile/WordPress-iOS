@@ -97,7 +97,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 
         self.url = self.blog.url;
         self.authToken = self.blog.authToken;
-        self.username = self.blog.username;
+        self.username = self.blog.usernameForSite;
         self.password = self.blog.password;
 
         self.startingUser = self.username;
@@ -164,7 +164,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == TableViewSectionTitle) {
-        if (self.blog.account.isWpcom) {
+        if (self.blog.account) {
             return EditSiteRowCountForSectionTitle;
         }
         return EditSiteRowCountForSectionTitleSelfHosted;
@@ -246,8 +246,8 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
             self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
             [self.usernameTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
             [self configureTextField:self.usernameTextField asPassword:NO];
-            if (self.blog.username != nil) {
-                self.usernameTextField.text = self.blog.username;
+            if (self.blog.usernameForSite != nil) {
+                self.usernameTextField.text = self.blog.usernameForSite;
             } else {
                 self.usernameTextField.text = @"";
             }
@@ -530,7 +530,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     [self.savingIndicator stopAnimating];
     [self.savingIndicator setHidden:YES];
     self.blog.geolocationEnabled = self.geolocationEnabled;
-    self.blog.account.password = self.password;
+    self.blog.password = self.password;
 
     [self cancel:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
@@ -633,7 +633,7 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
         self.blog.geolocationEnabled = self.geolocationEnabled;
         [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
     }
-    if (self.blog == nil || self.blog.username == nil) {
+    if (self.blog == nil || self.blog.usernameForSite == nil) {
         [self validateUrl];
     } else {
         if ([self.startingUser isEqualToString:self.usernameTextField.text] &&

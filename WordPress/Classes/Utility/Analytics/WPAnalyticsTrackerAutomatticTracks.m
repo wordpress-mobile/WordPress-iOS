@@ -402,6 +402,56 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatPerformedJetpackSignInFromStatsScreen:
             eventName = @"stats_screen_signed_into_jetpack";
             break;
+        case WPAnalyticsStatPostListAuthorFilterChanged:
+            eventName = @"post_list_author_filter_changed";
+            break;
+        case WPAnalyticsStatPostListDraftAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"draft" };
+            break;
+        case WPAnalyticsStatPostListEditAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"edit" };
+            break;
+        case WPAnalyticsStatPostListLoadedMore:
+            eventName = @"post_list_load_more_triggered";
+            break;
+        case WPAnalyticsStatPostListNoResultsButtonPressed:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"no_results" };
+            break;
+        case WPAnalyticsStatPostListOpenedCellMenu:
+            eventName = @"post_list_cell_menu_opened";
+            break;
+        case WPAnalyticsStatPostListPublishAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"publish" };
+            break;
+        case WPAnalyticsStatPostListPullToRefresh:
+            eventName = @"post_list_pull_to_refresh_triggered";
+            break;
+        case WPAnalyticsStatPostListRestoreAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"restore" };
+            break;
+        case WPAnalyticsStatPostListSearchOpened:
+            eventName = @"post_list_search_opened";
+            break;
+        case WPAnalyticsStatPostListStatsAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"stats" };
+            break;
+        case WPAnalyticsStatPostListStatusFilterChanged:
+            eventName = @"post_list_status_filter_changed";
+            break;
+        case WPAnalyticsStatPostListTrashAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"trash" };
+            break;
+        case WPAnalyticsStatPostListViewAction:
+            eventName = @"post_list_button_pressed";
+            eventProperties = @{ TracksEventPropertyButtonKey : @"view" };
+            break;
         case WPAnalyticsStatPushAuthenticationApproved:
             eventName = @"push_authentication_approved";
             break;
