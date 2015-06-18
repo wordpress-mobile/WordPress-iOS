@@ -9,6 +9,7 @@
 #import "DDLogSwift.h"
 #import "NSObject+Helpers.h"
 #import "NSAttributedString+Util.h"
+#import "NSDictionary+SafeExpectations.h"
 #import "NSDate+StringFormatting.h"
 #import "NSURL+Util.h"
 #import "UIAlertView+Blocks.h"
