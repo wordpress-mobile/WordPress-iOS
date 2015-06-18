@@ -30,10 +30,9 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     return self;
 }
 
-- (void)configureSearchControllerBarAndWrapperView
+- (void)configureSearchControllerAndWrapperView
 {
     [self configureSearchController];
-    [self configureSearchBar];
     [self configureSearchWrapper];
 }
 
@@ -41,6 +40,7 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
 {
     self.searchController.dimsBackgroundDuringPresentation = NO;
     self.searchController.hidesNavigationBarDuringPresentation = YES;
+    [self configureSearchBar];
 }
 
 - (void)configureSearchBar
