@@ -411,6 +411,7 @@
 		B5EFB1C21B31B98E007608A3 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */; };
 		B5EFB1C51B31BAA2007608A3 /* NotificationsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */; };
 		B5EFB1C71B31F19D007608A3 /* RemoteNotificationsSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C61B31F19D007608A3 /* RemoteNotificationsSettings.swift */; };
+		B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EFB1D01B33630C007608A3 /* notifications-settings.json */; };
 		B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */; };
 		B5FD4543199D0F2800286FBB /* NotificationDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */; };
 		B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4542199D0F2800286FBB /* NotificationsViewController.m */; };
@@ -1289,6 +1290,7 @@
 		B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
 		B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsServiceRemote.swift; sourceTree = "<group>"; };
 		B5EFB1C61B31F19D007608A3 /* RemoteNotificationsSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationsSettings.swift; sourceTree = "<group>"; };
+		B5EFB1D01B33630C007608A3 /* notifications-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-settings.json"; sourceTree = "<group>"; };
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
 		B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -3268,6 +3270,7 @@
 				B5AEEC751ACACFDA008BF2A4 /* notifications-like.json */,
 				B5AEEC771ACACFDA008BF2A4 /* notifications-new-follower.json */,
 				B5AEEC781ACACFDA008BF2A4 /* notifications-replied-comment.json */,
+				B5EFB1D01B33630C007608A3 /* notifications-settings.json */,
 				93CD939219099BE70049096E /* authtoken.json */,
 				E131CB5716CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json */,
 				E131CB5516CACF1E004B0314 /* get-user-blogs_has-blog.json */,
@@ -3672,6 +3675,7 @@
 				E11330511A13BAA300D36D84 /* me-sites-with-jetpack.json in Resources */,
 				855408861A6F105700DDBD79 /* app-review-prompt-all-enabled.json in Resources */,
 				E131CB5616CACF1E004B0314 /* get-user-blogs_has-blog.json in Resources */,
+				B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */,
 				B5AEEC7D1ACACFDA008BF2A4 /* notifications-replied-comment.json in Resources */,
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				E15618FF16DBA983006532C4 /* xmlrpc-response-newpost.xml in Resources */,
