@@ -48,7 +48,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
