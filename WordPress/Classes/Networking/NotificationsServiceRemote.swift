@@ -15,16 +15,20 @@ public class NotificationsServiceRemote
         remoteApi = api
     }
 
-    public func getAllSettings(success: (() -> Void)?, failure: (NSError -> Void)?) {
+    public func getAllSettings(success: (RemoteNotificationsSettings -> Void)?, failure: (NSError -> Void)?) {
         let path = "/me/notifications/settings/"
         
-        remoteApi.POST(path,
+        remoteApi.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-            
+                if let rawSettingsDict = response as? NSDictionary {
+                    let settings = RemoteNotificationsSettings(rawSettings: rawSettingsDict)
+                    success?(settings)
+                }
+// TODO: Handle failure
             },
             failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
-            
+                failure?(error)
             })
     }
     
