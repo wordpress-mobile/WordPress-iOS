@@ -227,10 +227,20 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
     
     WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
-    [searchControllerConfigurator configureSearchControllerBarAndWrapperViewOfClass:[self class]];
+    [searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    [self configureSearchBarPlaceholder];
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
+}
 
+- (void)configureSearchBarPlaceholder
+{
+    // Adjust color depending on where the search bar is being presented.
+    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
+    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 #pragma mark - Actions
