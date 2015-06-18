@@ -21,6 +21,6 @@ extern const NSTimeInterval SearchBarAnimationDuration;
                    withSearchWrapperView:(UIView *)searchWrapperView;
 
 // Sets properties of the searchController, searchBar, and searchWrapperView
-- (void)configureSearchControllerBarAndWrapperView;
+- (void)configureSearchControllerAndWrapperView;
 
 @end
