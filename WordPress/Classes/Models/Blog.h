@@ -60,17 +60,24 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
 @property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
-@property (nonatomic, assign, readwrite) BOOL           isJetpack;
+@property (nonatomic, assign, readwrite) BOOL           isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString       *icon;
+/**
+ Stores the username for self hosted sites
+ 
+ @warn For WordPress.com or Jetpack Managed sites this will be nil. Use usernameForSite instead
+ */
+@property (nonatomic, strong,  readwrite) NSString       *username;
+@property (nonatomic, strong, readwrite) NSString       *password;
 
 // Readonly Properties
 @property (nonatomic,   weak,  readonly) NSArray        *sortedPostFormatNames;
 @property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
 @property (nonatomic,   weak,  readonly) NSString       *version;
-@property (nonatomic, strong,  readonly) NSString       *username;
-@property (nonatomic, strong,  readonly) NSString       *password;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
 @property (nonatomic, strong,  readonly) NSSet *allowedFileTypes;
+@property (nonatomic, copy, readonly) NSString *usernameForSite;
+
 /**
  Contains the Jetpack state. Returns nil if the blog options haven't been downloaded yet
  */
@@ -96,7 +103,6 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 
 #pragma mark - Blog information
-- (BOOL)isHostedAtWPcom;
 - (BOOL)isPrivate;
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;

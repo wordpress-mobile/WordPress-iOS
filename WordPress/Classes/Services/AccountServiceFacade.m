@@ -11,18 +11,7 @@
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-    return [accountService createOrUpdateWordPressComAccountWithUsername:username authToken:authToken];
-}
-
-- (WPAccount *)createOrUpdateSelfHostedAccountWithXmlrpc:(NSString *)xmlrpc
-                                                username:(NSString *)username
-                                             andPassword:(NSString *)password
-{
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-
-    return [accountService createOrUpdateSelfHostedAccountWithXmlrpc:xmlrpc username:username andPassword:password];
+    return [accountService createOrUpdateAccountWithUsername:username authToken:authToken];
 }
 
 - (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *))failure
