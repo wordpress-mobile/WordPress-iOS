@@ -30,10 +30,10 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     return self;
 }
 
-- (void)configureSearchControllerBarAndWrapperViewOfClass:(Class)class
+- (void)configureSearchControllerBarAndWrapperView
 {
     [self configureSearchController];
-    [self configureSearchBar:class];
+    [self configureSearchBar];
     [self configureSearchWrapper];
 }
 
@@ -43,10 +43,8 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     self.searchController.hidesNavigationBarDuringPresentation = YES;
 }
 
-- (void)configureSearchBar:(Class)class
+- (void)configureSearchBar
 {
-    [self configureSearchBarPlaceholder:class];
-    
     self.searchBar.translatesAutoresizingMaskIntoConstraints = NO;
     self.searchBar.accessibilityIdentifier = @"Search";
     self.searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -59,22 +57,11 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
-    [self configureSearchBarForSearchView:class];
+    [self configureSearchBarForSearchView];
 }
 
-- (void)configureSearchBarPlaceholder:(Class)class
+- (void)configureSearchBarForSearchView
 {
-    // Adjust color depending on where the search bar is being presented.
-    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
-    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
-    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], class, nil] setAttributedPlaceholder:attrPlacholderText];
-}
-
-- (void)configureSearchBarForSearchView:(Class)class
-{
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], class, nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
-    
     UISearchBar *searchBar = self.searchController.searchBar;
     [self.searchWrapperView addSubview:searchBar];
     
