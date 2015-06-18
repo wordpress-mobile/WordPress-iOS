@@ -37,16 +37,16 @@
     self.viewController = nil;
 }
 
-- (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchControllerProperties
+- (void)testConfigureSearchControllerAndWrapperViewConfiguresSearchControllerProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    [self.searchControllerConfigurator configureSearchControllerAndWrapperView];
     XCTAssertFalse(self.searchController.dimsBackgroundDuringPresentation);
     XCTAssertTrue(self.searchController.hidesNavigationBarDuringPresentation);
 }
 
-- (void)testConfigureSearchControllerBarAndWrapperViewConfiguresSearchBarProperties
+- (void)testConfigureSearchControllerAndWrapperViewConfiguresSearchBarProperties
 {
-    [self.searchControllerConfigurator configureSearchControllerBarAndWrapperView];
+    [self.searchControllerConfigurator configureSearchControllerAndWrapperView];
     UISearchBar *searchBar = self.searchController.searchBar;
     
     XCTAssertFalse(searchBar.translatesAutoresizingMaskIntoConstraints);
