@@ -7,10 +7,14 @@ public class RemoteNotificationsSettings
     let other               : [Other]
     let wpcom               : WordPressCom?
     
-    init(rawSettings : NSDictionary) {
-        sites               = Site.parseSites(rawSettings.arrayForKey("sites") as? [NSDictionary])
-        other               = Other.parseOther(rawSettings.dictionaryForKey("other"))
-        wpcom               = WordPressCom(rawWordPressCom: rawSettings.dictionaryForKey("wpcom"))
+    init?(rawSettings : NSDictionary?) {
+        sites               = Site.parseSites(rawSettings?.arrayForKey("sites") as? [NSDictionary])
+        other               = Other.parseOther(rawSettings?.dictionaryForKey("other"))
+        wpcom               = WordPressCom(rawWordPressCom: rawSettings?.dictionaryForKey("wpcom"))
+        
+        if rawSettings == nil {
+            return nil
+        }
     }
     
 

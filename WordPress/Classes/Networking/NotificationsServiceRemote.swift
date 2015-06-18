@@ -21,8 +21,7 @@ public class NotificationsServiceRemote
         remoteApi.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-                if let rawSettingsDict = response as? NSDictionary {
-                    let settings = RemoteNotificationsSettings(rawSettings: rawSettingsDict)
+                if let settings = RemoteNotificationsSettings(rawSettings: response as? NSDictionary) {
                     success?(settings)
                 }
 // TODO: Handle failure
