@@ -29,18 +29,31 @@ class NotificationsServiceRemoteTests : XCTestCase
     func testGetAllSettingsReturnsValidNotificationSettings() {
         let remote      = NotificationsServiceRemote(api: remoteApi)
         let expectation = expectationWithDescription(nil)
+        var settings : RemoteNotificationsSettings?
         
-        remote?.getAllSettings({
-                (settings: RemoteNotificationsSettings) in
+        // Simulate a Backend Call
+        remote?.getAllSettings({ (theSettings: RemoteNotificationsSettings) in
+                settings = theSettings
                 expectation.fulfill()
-// TODO: Validate settings object
             },
-            failure: {
-                (error: NSError!) in
-                XCTAssert(true, "Error while getting all settings")
+            failure: { (error: NSError!) in
                 expectation.fulfill()
             })
         
+        // Wait till ready
         waitForExpectationsWithTimeout(timeout, handler: nil)
+        
+        // Validate that the parser works fine
+        XCTAssertNotNil(settings, "Error while parsing settings")
+        XCTAssert(settings?.sites.count == 6, "Error while parsing Site Settings")
+        XCTAssert(settings?.other.count == 3, "Error while parsing Other Settings")
+        XCTAssertNotNil(settings?.wpcom, "Error while parsing WordPress.com Settings")
+        
+        // Validate WordPress.com Settings
+        let wordPressComSettings = settings!.wpcom!
+        XCTAssert(wordPressComSettings.news == false, "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.recommendations == false, "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.promotion == true, "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.digest == true, "Error while parsing WordPress.com Settings")
     }
 }
