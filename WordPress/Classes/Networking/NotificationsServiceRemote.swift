@@ -34,7 +34,7 @@ public class NotificationsServiceRemote
         remoteApi.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-                if let settings = RemoteNotificationsSettings(rawSettings: response as? NSDictionary) {
+                if let settings = RemoteNotificationsSettings(dictionary: response as? NSDictionary) {
                     success?(settings)
                 } else {
                     let error = NSError(domain: NotificationsServiceRemote.domain,
