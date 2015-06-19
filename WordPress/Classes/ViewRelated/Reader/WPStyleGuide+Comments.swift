@@ -23,7 +23,8 @@ extension WPStyleGuide
         let cssStylesheet:DTCSSStylesheet = DTCSSStylesheet(styleBlock: defaultStyles);
         let fontSize = UIDevice.isPad() ? 16.0 : 14.0;
         return [
-            DTDefaultFontFamily             : "Merriweather Light",
+            DTDefaultFontFamily             : WPRichTextDefaultFontFamily,
+            DTDefaultFontName               : WPRichTextDefaultFontName,
             DTDefaultLineHeightMultiplier   : 1.5,
             DTDefaultFontSize               : fontSize,
             DTDefaultTextColor              : WPStyleGuide.littleEddieGrey(),
