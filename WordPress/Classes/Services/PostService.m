@@ -240,11 +240,34 @@ const NSInteger PostServiceNumberToFetch = 40;
                    success:^(NSArray *posts) {
                        BOOL hasMore = ([posts count] < PostServiceNumberToFetch) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
-                           [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:YES completionHandler:^{
-                               if (success) {
-                                   success(hasMore);
-                               }
-                           }];
+                           [self mergePosts:posts
+                                     ofType:postType
+                               withStatuses:postStatus
+                                   byAuthor:authorID
+                                    forBlog:blog
+                              purgeExisting:YES
+                          completionHandler:^{
+                              // Update the Last Sync Date, accordingly
+                              Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blog.objectID error:nil];
+                              
+                              BOOL syncedAll = [postType isEqual:PostServiceTypeAny];
+                              BOOL syncedPosts = [postType isEqual:PostServiceTypePost] || syncedAll;
+                              BOOL syncedPages = [postType isEqual:PostServiceTypePage] || syncedAll;
+                              
+                              if (syncedPages) {
+                                  blogInContext.lastPagesSync = [NSDate date];
+                              }
+                              
+                              if (syncedPosts) {
+                                  blogInContext.lastPostsSync = [NSDate date];
+                              }
+                              
+                              [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+                               
+                              if (success) {
+                                  success(hasMore);
+                              }
+                          }];
                        }];
                    } failure:^(NSError *error) {
                        if (failure) {
@@ -492,6 +515,11 @@ const NSInteger PostServiceNumberToFetch = 40;
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
     post.status = PostStatusPublish;
+
+    // HACK: aerych - 2015-06-18
+    // The date_create_gmt should arleady be nil for a draft but
+    // triggering the setter correctly sets the metaPublishImmediately flag.
+    post.date_created_gmt = nil;
 }
 
 - (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
