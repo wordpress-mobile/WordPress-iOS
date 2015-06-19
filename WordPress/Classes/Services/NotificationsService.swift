@@ -1,6 +1,11 @@
 import Foundation
 
 
+/**
+*  @class           NotificationsService
+*  @brief           This service encapsulates the Restful API related to WordPress Notifications.
+*/
+
 public class NotificationsService : NSObject, LocalCoreDataService
 {
     /**
@@ -8,11 +13,12 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with
     *                                       the Core Data Persistent Store.
     */
-    public required init(managedObjectContext: NSManagedObjectContext) {
+    public required init(managedObjectContext context: NSManagedObjectContext) {
         super.init()
-        self.managedObjectContext       = managedObjectContext
-        self.notificationsServiceRemote = NotificationsServiceRemote(api: apiForRequest())
+        managedObjectContext       = context
+        notificationsServiceRemote = NotificationsServiceRemote(api: apiForRequest())
     }
+    
     
     /**
     *  @details     Helper method to get the WordPress.com REST Api, if any
@@ -30,6 +36,6 @@ public class NotificationsService : NSObject, LocalCoreDataService
     }
     
     // MARK: - Private Internal Properties
-    private var managedObjectContext :      NSManagedObjectContext!
-    private var notificationsServiceRemote: NotificationsServiceRemote?
+    private var managedObjectContext        : NSManagedObjectContext!
+    private var notificationsServiceRemote  : NotificationsServiceRemote?
 }
