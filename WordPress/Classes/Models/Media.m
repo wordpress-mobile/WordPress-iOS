@@ -162,12 +162,19 @@
     return [Media titleForRemoteStatus:self.remoteStatusNumber];
 }
 
+- (void)prepareForDeletion {
+    NSError *error = nil;
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error]) {
+        DDLogError(@"Error removing media files:%@", error);
+    }
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error]) {
+        DDLogError(@"Error removing media files:%@", error);
+    }
+    [super prepareForDeletion];
+}
+
 - (void)remove
 {
-    NSError *error = nil;
-    [[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error];
-    [[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error];
-
     [self.managedObjectContext performBlockAndWait:^{
         [self.managedObjectContext deleteObject:self];
         [self.managedObjectContext save:nil];
