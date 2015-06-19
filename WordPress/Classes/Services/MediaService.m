@@ -245,7 +245,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
     NSManagedObjectID *blogObjectID = [blog objectID];
     [remote getMediaLibraryForBlog:blog
-                           options:nil
                            success:^(NSArray *media) {
                                [self.managedObjectContext performBlock:^{
                                    Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
