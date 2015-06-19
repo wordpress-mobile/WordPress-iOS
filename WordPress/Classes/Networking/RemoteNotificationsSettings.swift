@@ -14,9 +14,14 @@ public class RemoteNotificationsSettings
     let wpcom               : WordPressCom?
     
     init?(dictionary : NSDictionary?) {
-        sites               = Site.parseSites(dictionary?.arrayForKey("sites") as? [NSDictionary])
-        other               = Other.parseOther(dictionary?.dictionaryForKey("other"))
-        wpcom               = WordPressCom(dictionary: dictionary?.dictionaryForKey("wpcom"))
+        
+        let siteSettings    = dictionary?.arrayForKey("sites")      as? [NSDictionary]
+        let otherSettings   = dictionary?.dictionaryForKey("other")
+        let wpcomSettings   = dictionary?.dictionaryForKey("wpcom") as? [String: Bool]
+        
+        sites               = Site.parseSites(siteSettings)
+        other               = Other.parseOther(otherSettings)
+        wpcom               = WordPressCom(settings: wpcomSettings)
         
         if dictionary == nil {
             return nil
@@ -50,40 +55,47 @@ public class RemoteNotificationsSettings
     {
         let siteId          : Int
         let streamKind      : StreamKind
-        let newComment      : Bool
-        let commentLike     : Bool
-        let postLike        : Bool
-        let follow          : Bool
-        let achievement     : Bool
-        let mentions        : Bool
+        let newComment      : Bool!
+        let commentLike     : Bool!
+        let postLike        : Bool!
+        let follow          : Bool!
+        let achievement     : Bool!
+        let mentions        : Bool!
         
-        init?(siteId theSiteId: Int?, streamKind theStreamKind: StreamKind, dict rawSite: NSDictionary?) {
-            siteId          = theSiteId                                         ?? Int.max
-            streamKind      = theStreamKind
-            newComment      = rawSite?.numberForKey("new-comment")?.boolValue   ?? false
-            commentLike     = rawSite?.numberForKey("comment-like")?.boolValue  ?? false
-            postLike        = rawSite?.numberForKey("post-like")?.boolValue     ?? false
-            follow          = rawSite?.numberForKey("follow")?.boolValue        ?? false
-            achievement     = rawSite?.numberForKey("achievement")?.boolValue   ?? false
-            mentions        = rawSite?.numberForKey("mentions")?.boolValue      ?? false
-            
-            if theSiteId == nil || rawSite == nil {
-                return nil
-            }
+        init(siteId _siteId: Int, streamKind _streamKind: StreamKind, settings _settings: [String : Bool]) {
+            siteId          = _siteId
+            streamKind      = _streamKind
+            newComment      = _settings["new-comment"]
+            commentLike     = _settings["comment-like"]
+            postLike        = _settings["post-like"]
+            follow          = _settings["follow"]
+            achievement     = _settings["achievement"]
+            mentions        = _settings["mentions"]
         }
         
-        public static func parseSites(rawSites: [NSDictionary]?) -> [Site] {
+        
+        /**
+        *  @brief   Parses "Site" settings dictionary, into a flat collection of "Site" object instances.
+        *
+        *  @param   otherSettings   The raw dictionary retrieved from the backend.
+        *  @returns                 An array of Site objects. Each Site will get three instances, one per strem
+        *                           settings (we flatten out the collection).
+        */
+        private static func parseSites(allSiteSettings: [NSDictionary]?) -> [Site] {
             var parsed = [Site]()
-            if rawSites == nil {
+            if allSiteSettings == nil {
                 return parsed
             }
             
-            for rawSite in rawSites! {
-                let siteId = rawSite.numberForKey("site_id") as? Int
+            for siteSettings in allSiteSettings! {
+                let siteId = siteSettings.numberForKey("site_id") as? Int
+                if siteId == nil {
+                    continue
+                }
                 
                 for streamKind in StreamKind.allValues {
-                    if let site = Site(siteId: siteId, streamKind: streamKind, dict: rawSite.dictionaryForKey(streamKind.rawValue)) {
-                        parsed.append(site)
+                    if let streamSettings = siteSettings.dictionaryForKey(streamKind.rawValue) as? [String : Bool] {
+                        parsed.append(Site(siteId: siteId!, streamKind: streamKind, settings: streamSettings))
                     }
                 }
             }
@@ -101,28 +113,27 @@ public class RemoteNotificationsSettings
     public class Other
     {
         let streamKind      : StreamKind
-        let commentLike     : Bool
-        let commentReply    : Bool
+        let commentLike     : Bool!
+        let commentReply    : Bool!
         
-        init?(streamKind theStreamKind: StreamKind, rawOther : NSDictionary?) {
-            streamKind      = theStreamKind
-            commentLike     = rawOther?.numberForKey("comment-like")?.boolValue  ?? false
-            commentReply    = rawOther?.numberForKey("comment-reply")?.boolValue ?? false
-            
-            if rawOther == nil {
-                return nil
-            }
+        init(streamKind stream: StreamKind, settings: [String : Bool]) {
+            streamKind      = stream
+            commentLike     = settings["comment-like"]
+            commentReply    = settings["comment-reply"]
         }
         
-        public static func parseOther(rawOther: NSDictionary?) -> [Other] {
+        /**
+        *  @brief   Parses "Other Sites" settings dictionary, into a flat collection of "Other" object instances.
+        *
+        *  @param   otherSettings   The raw dictionary retrieved from the backend.
+        *  @returns                 An array of `Other` object instances, one per stream
+        */
+        private static func parseOther(otherSettings: NSDictionary?) -> [Other] {
             var parsed = [Other]()
-            if rawOther == nil {
-                return parsed
-            }
-            
+
             for streamKind in StreamKind.allValues {
-                if let other = Other(streamKind: streamKind, rawOther: rawOther?.dictionaryForKey(streamKind.rawValue)) {
-                    parsed.append(other)
+                if let streamSettings = otherSettings?.dictionaryForKey(streamKind.rawValue) as? [String : Bool] {
+                    parsed.append(Other(streamKind: streamKind, settings: streamSettings))
                 }
             }
             
@@ -138,18 +149,18 @@ public class RemoteNotificationsSettings
     */
     public class WordPressCom
     {
-        let news            : Bool
-        let recommendations : Bool
-        let promotion       : Bool
-        let digest          : Bool
+        let news            : Bool!
+        let recommendations : Bool!
+        let promotion       : Bool!
+        let digest          : Bool!
         
-        init?(dictionary : NSDictionary?) {
-            news            = dictionary?.numberForKey("news")?.boolValue              ?? false
-            recommendations = dictionary?.numberForKey("recommendation")?.boolValue    ?? false
-            promotion       = dictionary?.numberForKey("promotion")?.boolValue         ?? false
-            digest          = dictionary?.numberForKey("digest")?.boolValue            ?? false
+        init?(settings : [String: Bool]?) {
+            news            = settings?["news"]
+            recommendations = settings?["recommendation"]
+            promotion       = settings?["promotion"]
+            digest          = settings?["digest"]
             
-            if dictionary == nil {
+            if settings == nil {
                 return nil
             }
         }
