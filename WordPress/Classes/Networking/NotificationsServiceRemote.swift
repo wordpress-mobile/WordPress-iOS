@@ -16,11 +16,11 @@ public class NotificationsServiceRemote
     *  @param       remoteApi   A Reference to the WordPressComApi that should be used to interact with WordPress.com
     */
     init?(api: WordPressComApi!) {
+        remoteApi = api
+        
         if api == nil {
             return nil
         }
-
-        remoteApi = api
     }
 
     
@@ -59,5 +59,5 @@ public class NotificationsServiceRemote
     public static let domain = "com.wordpress.notifications.service-remote"
     
     // MARK: - Private Internal Constants
-    private var remoteApi: WordPressComApi!
+    private let remoteApi: WordPressComApi!
 }
