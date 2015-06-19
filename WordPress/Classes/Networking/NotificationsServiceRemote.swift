@@ -1,7 +1,6 @@
 import Foundation
 
 
-
 /**
 *  @class           NotificationsServiceRemote
 *  @brief           The purpose of this class is to encapsulate all of the interaction with the Notifications
