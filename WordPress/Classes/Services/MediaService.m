@@ -1,4 +1,5 @@
 #import "MediaService.h"
+#import "AccountService.h"
 #import "Media.h"
 #import "WPAccount.h"
 #import "WPImageOptimizer.h"
@@ -265,6 +266,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     static dispatch_once_t _onceToken;
     dispatch_once(&_onceToken, ^{
         _queueForResizeMediaOperations = [[NSOperationQueue alloc] init];
+        _queueForResizeMediaOperations.name = @"MediaService-ResizeMediaOperation";
     });
     
     return _queueForResizeMediaOperations;
@@ -278,6 +280,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
     [self.managedObjectContext performBlock:^{
         Media *media = (Media *)[self.managedObjectContext objectWithID:mediaID];
+        BOOL isPrivate = media.blog.isPrivate;
         NSString *pathForFile;
         if (media.mediaType == MediaTypeImage) {
             pathForFile = media.thumbnailLocalURL;
@@ -305,7 +308,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             return;
         }
         WPImageSource *imageSource = [WPImageSource sharedSource];
-        [imageSource downloadImageForURL:remoteURL withSuccess:^(UIImage *image) {
+        void (^successBlock)(UIImage *) = ^(UIImage *image) {
             [self.managedObjectContext performBlock:^{
                 NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
                 media.absoluteLocalURL = filePath;
@@ -319,13 +322,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                     if (success) {
                         success(thumbnail);
                     }
-                }];                                 
+                }];
             }];
-        } failure:^(NSError *error) {
-            if (failure) {
-                failure(error);
-            }
-        }];
+        };
+        
+        if (isPrivate) {
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            NSString *authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+            [imageSource downloadImageForURL:remoteURL
+                                   authToken:authToken
+                                 withSuccess:successBlock
+                                     failure:failure];
+        } else {
+            [imageSource downloadImageForURL:remoteURL
+                                 withSuccess:successBlock
+                                     failure:failure];
+        }
     }];
 }
 
