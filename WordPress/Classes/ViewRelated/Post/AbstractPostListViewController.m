@@ -248,6 +248,14 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     self.searchWrapperView.backgroundColor = [WPStyleGuide wordPressBlue];
 }
 
+- (NSDictionary *)propertiesForAnalytics
+{
+    return @{
+             @"type":[self postTypeToSync],
+             @"filter":self.currentPostListFilter.title,
+             };
+}
+
 #pragma mark - Actions
 
 - (IBAction)refresh:(id)sender
