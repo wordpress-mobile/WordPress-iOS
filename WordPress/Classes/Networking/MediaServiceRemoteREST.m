@@ -177,6 +177,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     remoteMedia.height = jsonMedia[@"height"];
     remoteMedia.width = jsonMedia[@"width"];
     remoteMedia.exif = jsonMedia[@"exif"];
+    remoteMedia.remoteThumbnailURL = [jsonMedia stringForKeyPath:@"thumbnails.fmt_std"];
     if (jsonMedia[@"videopress_guid"]) {
         remoteMedia.videopressGUID = jsonMedia[@"videopress_guid"];
     }

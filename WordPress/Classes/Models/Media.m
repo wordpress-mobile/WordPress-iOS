@@ -21,6 +21,7 @@
 @dynamic desc;
 @dynamic mediaTypeString;
 @dynamic videopressGUID;
+@dynamic remoteThumbnailURL;
 
 @synthesize unattached;
 

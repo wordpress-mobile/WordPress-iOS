@@ -295,10 +295,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             }];
             return;
         }
-        NSURL *remoteURL = [NSURL URLWithString:media.remoteURL];
-        if (media.mediaType != MediaTypeImage)
-        {
-            remoteURL = nil;
+        NSURL *remoteURL = nil;
+        if (media.mediaType == MediaTypeVideo) {
+            remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
+        } else if (media.mediaType == MediaTypeImage) {
+            remoteURL = [NSURL URLWithString:media.remoteURL];
         }
         if (!remoteURL) {
             if (failure) {
@@ -476,6 +477,7 @@ static NSString * const MediaDirectory = @"Media";
     media.shortcode = remoteMedia.shortcode;
     media.videopressGUID = remoteMedia.videopressGUID;
     media.length = remoteMedia.length;
+    media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
@@ -493,7 +495,8 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
     remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
-	remoteMedia.videopressGUID = media.videopressGUID;    
+	remoteMedia.videopressGUID = media.videopressGUID;
+    remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
     return remoteMedia;
 }
 
