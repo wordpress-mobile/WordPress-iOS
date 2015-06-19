@@ -313,7 +313,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
                 media.absoluteLocalURL = filePath;
                 NSString *thumbnailPath = media.thumbnailLocalURL;
-                [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
+                [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
                     NSData *data = UIImagePNGRepresentation(image);
                     [data writeToFile:filePath atomically:YES];
                     UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
@@ -446,6 +446,7 @@ static NSString * const MediaDirectory = @"Media";
            forBlog:(Blog *)blog
  completionHandler:(void (^)(void))completion
 {
+    NSMutableSet *mediaToKeep = [NSMutableSet set];
     for (RemoteMedia *remote in media) {
         @autoreleasepool {
             Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
@@ -454,8 +455,18 @@ static NSString * const MediaDirectory = @"Media";
                 local.remoteStatus = MediaRemoteStatusSync;
             }
             [self updateMedia:local withRemoteMedia:remote];
+            [mediaToKeep addObject:local];
         }
-    }    
+    }
+    NSMutableSet *mediaToDelete = [NSMutableSet setWithSet:blog.media];
+    [mediaToDelete minusSet:mediaToKeep];
+    for (Media *deleteMedia in mediaToDelete) {
+        // only delete media that is server based
+        if ([deleteMedia.mediaID intValue] > 0) {
+            [self.managedObjectContext deleteObject:deleteMedia];
+        }
+    }
+
     [self.managedObjectContext save:nil];
     if (completion) {
         completion();
