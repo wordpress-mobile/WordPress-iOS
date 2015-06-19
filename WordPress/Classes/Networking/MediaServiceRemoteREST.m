@@ -29,23 +29,47 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 }
 
 - (void)getMediaLibraryForBlog:(Blog *)blog
-                       options:(NSDictionary *)options
                        success:(void (^)(NSArray *))success
                        failure:(void (^)(NSError *))failure
 {
+    NSMutableArray *media = [NSMutableArray array];
     NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    [self getMediaLibraryPage:nil
+                        media:media
+                         path:path
+                      success:success
+                      failure:failure];
+}
+
+- (void)getMediaLibraryPage:(NSString *)pageHandle
+                      media:(NSMutableArray *)media
+                       path:(NSString *)path
+                    success:(void (^)(NSArray *))success
+                    failure:(void (^)(NSError *))failure
+{
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"number"] = @100;
-    if (options) {
-        [parameters addEntriesFromDictionary:options];
+    if ([pageHandle length]) {
+        parameters[@"page_handle"] = pageHandle;
     }
     [self.api GET:path
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSArray *jsonMediaItems = [responseObject arrayForKey:@"media"];
-              NSArray *remoteMediaItems = [self remoteMediaFromJSONArray:jsonMediaItems];
-              if (success) {
-                  success(remoteMediaItems);
+              NSArray *mediaItems = responseObject[@"media"];
+              NSArray *pageItems = [self remoteMediaFromJSONArray:mediaItems];
+              if (pageItems.count) {
+                  [media addObjectsFromArray:pageItems];
+              }
+              NSDictionary *meta = responseObject[@"meta"];
+              NSString *nextPage = meta[@"next_page"];
+              if (nextPage.length) {
+                  [self getMediaLibraryPage:nextPage
+                                      media:media
+                                       path:path
+                                    success:success
+                                    failure:failure];
+              } else if (success) {
+                  success([NSArray arrayWithArray:media]);
               }
           }
           failure:^(AFHTTPRequestOperation *operation, NSError *error) {

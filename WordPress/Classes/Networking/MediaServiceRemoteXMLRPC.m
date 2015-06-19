@@ -41,7 +41,6 @@
 }
 
 - (void)getMediaLibraryForBlog:(Blog *)blog
-                       options:(NSDictionary *)options 
                        success:(void (^)(NSArray *))success
                        failure:(void (^)(NSError *))failure
 {
