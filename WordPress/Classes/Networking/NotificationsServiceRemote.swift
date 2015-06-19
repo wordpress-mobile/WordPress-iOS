@@ -55,7 +55,7 @@ public class NotificationsServiceRemote
         case invalidResponse = -1
     }
     
-    // MARK: - Public Static COnstants
+    // MARK: - Public Static Constants
     public static let domain = "com.wordpress.notifications.service-remote"
     
     // MARK: - Private Internal Constants
