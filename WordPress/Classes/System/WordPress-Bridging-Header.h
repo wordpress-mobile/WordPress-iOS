@@ -23,7 +23,7 @@
 
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
-
+#import "WPRichTextView.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "UIImageView+Gravatar.h"
