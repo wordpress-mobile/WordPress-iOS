@@ -1,11 +1,19 @@
 import Foundation
 
 
+
+/**
+*  @class           NotificationsServiceRemote
+*  @brief           The purpose of this class is to encapsulate all of the interaction with the Notifications
+*                   REST endpoints. Note that Notification Sync'ing itself is handled via Simperium, and
+*                   here we'll deal mostly with the Settings / Push Notifications API.
+*/
+
 public class NotificationsServiceRemote
 {
     /**
     *  @details     Designated Initializer. Fails if the remoteApi is nil.
-    *  @param       remoteApi A Reference to the WordPressComApi that should be used to interact with WordPress.com
+    *  @param       remoteApi   A Reference to the WordPressComApi that should be used to interact with WordPress.com
     */
     init?(api: WordPressComApi!) {
         if api == nil {
@@ -15,9 +23,15 @@ public class NotificationsServiceRemote
         remoteApi = api
     }
 
+    
+    /**
+    *  @details     Retrieves all of the Notification Settings
+    *  @param       success     A closure to be called on success, which will receive the parsed settings entity
+    *  @param       failure     Optional closure to be called on failure. Will receive the error that was encountered.
+    */
     public func getAllSettings(success: (RemoteNotificationsSettings -> Void)?, failure: (NSError -> Void)?) {
         let path = "/me/notifications/settings/"
-        
+
         remoteApi.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
