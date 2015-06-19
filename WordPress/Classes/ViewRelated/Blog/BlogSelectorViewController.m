@@ -226,7 +226,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
     NSManagedObjectContext *moc = [[ContextManager sharedInstance] mainContext];
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
-    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"account.isWpcom" ascending:NO], [NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
+    [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"blogName" ascending:YES selector:@selector(localizedCaseInsensitiveCompare:)]]];
     [fetchRequest setPredicate:[self fetchRequestPredicate]];
 
     _resultsController = [[NSFetchedResultsController alloc]

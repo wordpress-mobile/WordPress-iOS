@@ -144,7 +144,7 @@ PODS:
   - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.0.32)
+  - WordPressCom-Analytics-iOS (0.0.33)
   - WordPressCom-Stats-iOS (0.3.5):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (~> 2.0)
@@ -192,10 +192,10 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `303b8068530389ea87afde38b77466d685fe3210`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
-    commit `60b01f7c7bbf6b6e950c82c754055b68f2b0ff7a`)
+    commit `b56ea686b980719c0d737ecf5f658da20befff8e`)
   - WordPress-iOS-Shared (= 0.3.2)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (= 0.0.32)
+  - WordPressCom-Analytics-iOS (= 0.0.33)
   - WordPressCom-Stats-iOS (= 0.3.5)
   - WPMediaPicker (~> 0.4.3)
   - wpxmlrpc (~> 0.8)
@@ -219,7 +219,7 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 60b01f7c7bbf6b6e950c82c754055b68f2b0ff7a
+    :commit: b56ea686b980719c0d737ecf5f658da20befff8e
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -239,7 +239,7 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 60b01f7c7bbf6b6e950c82c754055b68f2b0ff7a
+    :commit: b56ea686b980719c0d737ecf5f658da20befff8e
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 SPEC CHECKSUMS:
@@ -281,7 +281,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 28eb6e7763e2f277fbdfda6a78cad42d43b25791
   WordPress-iOS-Shared: bd0506db9b824611246f35e774832ecbc18fc45e
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
-  WordPressCom-Analytics-iOS: cfa514e1c2ded6256bf2864d871e0866e38cc668
+  WordPressCom-Analytics-iOS: 69b875d5bc1b053be13c6a33c7233bf6f50949b1
   WordPressCom-Stats-iOS: 41767306edc05ee41c8b9438481c32884569530f
   WPMediaPicker: 700d689e6ee4fce99077738c360474d8f82ad223
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7

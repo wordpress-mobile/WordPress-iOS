@@ -136,7 +136,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     [self showBlogSettings];
     NSString *title;
     NSString *message;
-    if ([blog.account isWpcom]) {
+    if (blog.account) {
         title = NSLocalizedString(@"Authentication Error", @"");
         message = NSLocalizedString(@"Invalid username/password. Please update your credentials and try again.", @"Prompts the user the username or password they entered was incorrect.");
     } else {
@@ -152,7 +152,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
     UINavigationController *navController = nil;
 
-    if ([blog.account isWpcom]) {
+    if (blog.account) {
         EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
