@@ -10,6 +10,8 @@ static NSTimeInterval const WPRichTextMinimumIntervalBetweenMediaRefreshes = 2;
 static CGSize const WPRichTextMinimumSize = {1, 1};
 static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 static NSInteger const WPRichTextImageQuality = 65;
+NSString * const WPRichTextDefaultFontFamily = @"Merriweather";
+NSString * const WPRichTextDefaultFontName = @"Merriweather Light";
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
@@ -37,6 +39,16 @@ static NSInteger const WPRichTextImageQuality = 65;
     // (at least for the first time). We'll have DTCoreText prime its font cache here so things are ready
     // for the detail view, and avoid a perceived lag.
     [DTCoreTextFontDescriptor fontDescriptorWithFontAttributes:nil];
+
+    // Configure overrides for italic and bold fonts.
+    // Get the font from WPFontManager to ensure it is loaded in memory.
+    // Size is arbitrary.
+    UIFont *font = [WPFontManager merriweatherBoldFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:YES italic:NO];
+    font = [WPFontManager merriweatherItalicFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:NO italic:YES];
+    font = [WPFontManager merriweatherBoldItalicFontOfSize:24.0];
+    [DTCoreTextFontDescriptor setOverrideFontName:font.fontName forFontFamily:WPRichTextDefaultFontFamily bold:YES italic:YES];
 }
 
 + (NSDictionary *)defaultDTCoreTextOptions
@@ -44,7 +56,8 @@ static NSInteger const WPRichTextImageQuality = 65;
     NSString *defaultStyles = @"blockquote {background-color: #EEEEEE; width: 100%; display: block; padding: 8px 5px 10px 0;}";
     DTCSSStylesheet *cssStylesheet = [[DTCSSStylesheet alloc] initWithStyleBlock:defaultStyles];
     return @{
-             DTDefaultFontFamily:@"Merriweather Light",
+             DTDefaultFontFamily:WPRichTextDefaultFontFamily,
+             DTDefaultFontName: WPRichTextDefaultFontName,
              DTDefaultLineHeightMultiplier:@1.5,
              DTDefaultFontSize:([UIDevice isPad] ? @16 : @14),
              DTDefaultTextColor:[WPStyleGuide littleEddieGrey],
