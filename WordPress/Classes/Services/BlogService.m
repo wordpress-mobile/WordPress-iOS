@@ -159,9 +159,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogMethod();
 
+    NSManagedObjectID *accountID = account.objectID;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
+            WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountID error:nil];
+            if (!account) {
+                return;
+            }
             [self mergeBlogs:blogs
                  withAccount:account
                   completion:success];
@@ -305,40 +310,74 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 - (void)staggerSyncPostsForBlog:(Blog *)blog
 {
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSManagedObjectID *blogID = blog.objectID;
+    void(^next)() = ^ {
+        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        if (!blog) {
+            return;
+        }
+        [self staggerSyncPagesForBlog:blog];
+    };
     [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
-        [self staggerSyncPagesForBlog:blog];
+        next();
     } failure:^(NSError *error) {
-        [self staggerSyncPagesForBlog:blog];
+        next();
     }];
 }
 
 - (void)staggerSyncPagesForBlog:(Blog *)blog
 {
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSManagedObjectID *blogID = blog.objectID;
+    void(^next)() = ^ {
+        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        if (!blog) {
+            return;
+        }
+        [self staggerSyncCommentsForBlog:blog];
+    };
     [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:^{
-        [self staggerSyncCommentsForBlog:blog];
+        next();
     } failure:^(NSError *error) {
-        [self staggerSyncCommentsForBlog:blog];
+        next();
     }];
 }
 
 - (void)staggerSyncCommentsForBlog:(Blog *)blog
 {
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSManagedObjectID *blogID = blog.objectID;
+    void(^next)() = ^ {
+        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        if (!blog) {
+            return;
+        }
+        [self staggerSyncCategoriesForBlog:blog];
+    };
+
     [commentService syncCommentsForBlog:blog success:^{
-        [self staggerSyncCategoriesForBlog:blog];
+        next();
     } failure:^(NSError *error) {
-        [self staggerSyncCategoriesForBlog:blog];
+        next();
     }];
 }
 
 - (void)staggerSyncCategoriesForBlog:(Blog *)blog
 {
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    NSManagedObjectID *blogID = blog.objectID;
+    void(^next)() = ^ {
+        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+        if (!blog) {
+            return;
+        }
+        [self staggerSyncBlogMetaForBlog:blog];
+    };
+
     [categoryService syncCategoriesForBlog:blog success:^{
-        [self staggerSyncBlogMetaForBlog:blog];
+        next();
     } failure:^(NSError *error) {
-        [self staggerSyncBlogMetaForBlog:blog];
+        next();
     }];
 }
 
