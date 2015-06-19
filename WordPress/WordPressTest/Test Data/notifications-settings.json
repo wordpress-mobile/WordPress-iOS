@@ -104,7 +104,7 @@
     "wpcom":{
         "news":false,
         "recommendation":false,
-        "promotion":false,
-        "digest":false
+        "promotion":true,
+        "digest":true
     }
 }
