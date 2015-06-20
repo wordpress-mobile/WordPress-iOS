@@ -240,6 +240,7 @@
         <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="remoteThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="remoteURL" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -391,7 +392,7 @@
         <element name="Blog" positionX="0" positionY="0" width="128" height="510"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="345"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="360"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
