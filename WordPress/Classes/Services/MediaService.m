@@ -224,7 +224,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     if (media) {
         if (success) {
             success(media.remoteURL, media.remoteThumbnailURL);
-        }        
+        }
     } else {
         if (failure) {
             failure(error);
@@ -440,6 +440,8 @@ static NSString * const MediaDirectory = @"Media";
            forBlog:(Blog *)blog
  completionHandler:(void (^)(void))completion
 {
+    NSParameterAssert(blog);
+    NSParameterAssert(media);
     NSMutableSet *mediaToKeep = [NSMutableSet set];
     for (RemoteMedia *remote in media) {
         @autoreleasepool {
