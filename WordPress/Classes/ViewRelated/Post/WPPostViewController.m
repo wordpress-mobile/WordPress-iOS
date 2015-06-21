@@ -1810,7 +1810,7 @@ EditImageDetailsViewControllerDelegate
             [self.editorView insertImage:media.remoteURL alt:media.title];
         } else if ([media mediaType] == MediaTypeVideo) {
             [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
-            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:@"" videoPress:media.shortcode];
+            [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.remoteThumbnailURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
     } else {
