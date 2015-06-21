@@ -222,15 +222,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSError *error = nil;
     Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
-        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
-            if (success) {
-                success(media.remoteURL, media.thumbnailLocalURL);
-            }
-        } else {
-            if (success) {
-                success(media.remoteURL, @"");
-            }
-        }
+        if (success) {
+            success(media.remoteURL, media.remoteThumbnailURL);
+        }        
     } else {
         if (failure) {
             failure(error);
