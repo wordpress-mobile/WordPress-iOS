@@ -9,19 +9,14 @@ import Foundation
 
 public class RemoteNotificationsSettings
 {
-    let sites               : [Site]
-    let other               : [Other]
-    let wpcom               : WordPressCom?
+    let sites : [Site]
+    let other : [Other]
+    let wpcom : WordPressCom
     
     init(dictionary : NSDictionary?) {
-        
-        let siteSettings    = dictionary?.arrayForKey("sites")      as? [NSDictionary]
-        let otherSettings   = dictionary?.dictionaryForKey("other")
-        let wpcomSettings   = dictionary?.dictionaryForKey("wpcom") as? [String: Bool]
-        
-        sites               = Site.parseSites(siteSettings)
-        other               = Other.parseOther(otherSettings)
-        wpcom               = WordPressCom(settings: wpcomSettings)
+        sites = Site.parseSites(dictionary?.arrayForKey("sites") as? [NSDictionary])
+        other = Other.parseOther(dictionary?.dictionaryForKey("other"))
+        wpcom = WordPressCom(settings: dictionary?.dictionaryForKey("wpcom") as? [String: Bool])
     }
     
 
@@ -35,11 +30,11 @@ public class RemoteNotificationsSettings
     *
     */
     public enum StreamKind : String {
-        case Timeline           = "timeline"
-        case Email              = "email"
-        case Device             = "device"
+        case Timeline   = "timeline"
+        case Email      = "email"
+        case Device     = "devices"
         
-        static let allValues    = [ Timeline, Email, Device ]
+        static let allValues = [ Timeline, Email, Device ]
     }
     
     
@@ -49,24 +44,24 @@ public class RemoteNotificationsSettings
     */
     public class Site
     {
-        let siteId          : Int
-        let streamKind      : StreamKind
-        let newComment      : Bool!
-        let commentLike     : Bool!
-        let postLike        : Bool!
-        let follow          : Bool!
-        let achievement     : Bool!
-        let mentions        : Bool!
+        let siteId      : Int
+        let streamKind  : StreamKind
+        let newComment  : Bool
+        let commentLike : Bool
+        let postLike    : Bool
+        let follow      : Bool
+        let achievement : Bool
+        let mentions    : Bool
         
-        init(siteId _siteId: Int, streamKind _streamKind: StreamKind, settings _settings: [String : Bool]) {
-            siteId          = _siteId
-            streamKind      = _streamKind
-            newComment      = _settings["new-comment"]
-            commentLike     = _settings["comment-like"]
-            postLike        = _settings["post-like"]
-            follow          = _settings["follow"]
-            achievement     = _settings["achievement"]
-            mentions        = _settings["mentions"]
+        init(siteId _siteId: Int, streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
+            siteId      = _siteId
+            streamKind  = _streamKind
+            newComment  = _settings.numberForKey("new-comment")?.boolValue  ?? false
+            commentLike = _settings.numberForKey("comment-like")?.boolValue ?? false
+            postLike    = _settings.numberForKey("post-like")?.boolValue    ?? false
+            follow      = _settings.numberForKey("follow")?.boolValue       ?? false
+            achievement = _settings.numberForKey("achievement")?.boolValue  ?? false
+            mentions    = _settings.numberForKey("mentions")?.boolValue     ?? false
         }
         
         
@@ -89,10 +84,16 @@ public class RemoteNotificationsSettings
                     continue
                 }
                 
-                for streamKind in StreamKind.allValues {
-                    if let streamSettings = siteSettings.dictionaryForKey(streamKind.rawValue) as? [String : Bool] {
+                // Timeline + Email: A single dictionary
+                for streamKind in [StreamKind.Timeline, .Email] {
+                    if let streamSettings = siteSettings.dictionaryForKey(streamKind.rawValue) {
                         parsed.append(Site(siteId: siteId!, streamKind: streamKind, settings: streamSettings))
                     }
+                }
+                
+                // Device: An array of dictionaries
+                if let deviceSettings = siteSettings.arrayForKey(StreamKind.Device.rawValue)?.first as? NSDictionary {
+                    parsed.append(Site(siteId: siteId!, streamKind: StreamKind.Device, settings: deviceSettings))
                 }
             }
             
@@ -109,13 +110,13 @@ public class RemoteNotificationsSettings
     public class Other
     {
         let streamKind      : StreamKind
-        let commentLike     : Bool!
-        let commentReply    : Bool!
+        let commentLike     : Bool
+        let commentReply    : Bool
         
-        init(streamKind stream: StreamKind, settings: [String : Bool]) {
-            streamKind      = stream
-            commentLike     = settings["comment-like"]
-            commentReply    = settings["comment-reply"]
+        init(streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
+            streamKind      = _streamKind
+            commentLike     = _settings.numberForKey("comment-like")?.boolValue   ?? false
+            commentReply    = _settings.numberForKey("comment-reply")?.boolValue  ?? false
         }
         
         /**
@@ -127,12 +128,18 @@ public class RemoteNotificationsSettings
         private static func parseOther(otherSettings: NSDictionary?) -> [Other] {
             var parsed = [Other]()
 
-            for streamKind in StreamKind.allValues {
-                if let streamSettings = otherSettings?.dictionaryForKey(streamKind.rawValue) as? [String : Bool] {
+            // Timeline + Email: A single dictionary
+            for streamKind in [StreamKind.Timeline, .Email] {
+                if let streamSettings = otherSettings?.dictionaryForKey(streamKind.rawValue) {
                     parsed.append(Other(streamKind: streamKind, settings: streamSettings))
                 }
             }
             
+            // Device: An array of dictionaries
+            if let deviceSettings = otherSettings?.arrayForKey(StreamKind.Device.rawValue)?.first as? NSDictionary {
+                parsed.append(Other(streamKind: .Device, settings: deviceSettings))
+            }
+        
             return parsed
         }
     }
@@ -145,20 +152,16 @@ public class RemoteNotificationsSettings
     */
     public class WordPressCom
     {
-        let news            : Bool!
-        let recommendations : Bool!
-        let promotion       : Bool!
-        let digest          : Bool!
+        let news            : Bool
+        let recommendations : Bool
+        let promotion       : Bool
+        let digest          : Bool
         
-        init?(settings : [String: Bool]?) {
-            news            = settings?["news"]
-            recommendations = settings?["recommendation"]
-            promotion       = settings?["promotion"]
-            digest          = settings?["digest"]
-            
-            if settings == nil {
-                return nil
-            }
+        init(settings _settings: [String: Bool]?) {
+            news            = _settings?["news"]             ?? false
+            recommendations = _settings?["recommendation"]   ?? false
+            promotion       = _settings?["promotion"]        ?? false
+            digest          = _settings?["digest"]           ?? false
         }
     }
 }
