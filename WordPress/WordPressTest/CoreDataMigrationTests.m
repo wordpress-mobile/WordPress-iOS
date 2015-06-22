@@ -302,6 +302,130 @@
     [psc removePersistentStore:ps error:&error];
 }
 
+- (void)testMigrate32to33
+{
+    // Properties
+    NSURL *model32Url = [self urlForModelName:@"WordPress 32" inDirectory:nil];
+    NSURL *model33Url = [self urlForModelName:@"WordPress 33" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress32.sqlite"];
+
+    // Load a Model 32 Stack
+    NSManagedObjectModel *model32 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model32Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model32];
+
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption          : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 32");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+
+    NSManagedObject *account1 = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    [account1 setValue:@"https://wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [account1 setValue:@"dotcomuser1" forKey:@"username"];
+    [account1 setValue:@YES forKey:@"isWpcom"];
+
+    NSManagedObject *account2 = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    [account2 setValue:@"https://wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [account2 setValue:@"dotcomuser2" forKey:@"username"];
+    [account2 setValue:@YES forKey:@"isWpcom"];
+
+    NSManagedObject *account3 = [NSEntityDescription insertNewObjectForEntityForName:@"Account" inManagedObjectContext:context];
+    [account3 setValue:@"http://example.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [account3 setValue:@"selfhosteduser1" forKey:@"username"];
+    [account3 setValue:@NO forKey:@"isWpcom"];
+
+    NSManagedObject *blog1 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog1 setValue:@(1001) forKey:@"blogID"];
+    [blog1 setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog1 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [blog1 setValue:account1 forKey:@"account"];
+
+    NSManagedObject *blog2 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog2 setValue:@(1) forKey:@"blogID"];
+    [blog2 setValue:@"http://example.com" forKey:@"url"];
+    [blog2 setValue:@"https://example.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [blog2 setValue:account3 forKey:@"account"];
+    [blog2 setValue:account2 forKey:@"jetpackAccount"];
+
+    NSManagedObject *blog3 = [NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog3 setValue:@(1002) forKey:@"blogID"];
+    [blog3 setValue:@"http://jpm.example.com" forKey:@"url"];
+    [blog3 setValue:@"https://jpm.example.com/xmlrpc.php" forKey:@"xmlrpc"];
+    [blog3 setValue:account1 forKey:@"account"];
+    [blog3 setValue:@YES forKey:@"isJetpack"];
+
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+
+    // Migrate to Model 33
+    NSManagedObjectModel *model33 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model33Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model33
+                                                orderedModelNames:@[@"WordPress 32", @"WordPress 33"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+
+    // Load a Model 33 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model33];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+
+    XCTAssertNil(error, @"Error while loading the PSC for Model 33");
+    XCTAssertNotNil(ps);
+
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Account"];
+    NSUInteger accountCount = [context countForFetchRequest:request error:&error];
+    XCTAssertEqual(2, accountCount);
+
+    request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    request.predicate = [NSPredicate predicateWithFormat:@"blogID == 1001"];
+    NSArray *blogs = [context executeFetchRequest:request error:&error];
+    NSManagedObject *newBlog1 = blogs.firstObject;
+    XCTAssertEqualObjects(@"dotcomuser1", [newBlog1 valueForKey:@"username"]);
+    XCTAssertTrue([[newBlog1 valueForKey:@"isHostedAtWPcom"] boolValue]);
+
+    request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    request.predicate = [NSPredicate predicateWithFormat:@"blogID == 1"];
+    blogs = [context executeFetchRequest:request error:&error];
+    NSManagedObject *newBlog2 = blogs.firstObject;
+    XCTAssertEqualObjects(@"selfhosteduser1", [newBlog2 valueForKey:@"username"]);
+    XCTAssertEqualObjects(@"dotcomuser2", [newBlog2 valueForKeyPath:@"jetpackAccount.username"]);
+    XCTAssertFalse([[newBlog2 valueForKey:@"isHostedAtWPcom"] boolValue]);
+
+    request = [NSFetchRequest fetchRequestWithEntityName:@"Blog"];
+    request.predicate = [NSPredicate predicateWithFormat:@"blogID == 1002"];
+    blogs = [context executeFetchRequest:request error:&error];
+    NSManagedObject *newBlog3 = blogs.firstObject;
+    XCTAssertNil([newBlog3 valueForKey:@"username"]);
+    XCTAssertEqualObjects(@"dotcomuser1", [newBlog3 valueForKeyPath:@"account.username"]);
+    XCTAssertFalse([[newBlog3 valueForKey:@"isHostedAtWPcom"] boolValue]);
+}
 
 #pragma mark - Private Helpers
 

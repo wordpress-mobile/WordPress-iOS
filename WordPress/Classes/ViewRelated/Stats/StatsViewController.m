@@ -89,7 +89,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     self.statsVC.siteTimeZone = [blogService timeZoneForBlog:self.blog];
 
     // WordPress.com + Jetpack REST
-    if (self.blog.account.isWpcom) {
+    if (self.blog.account) {
         self.statsVC.oauth2Token = self.blog.restApi.authToken;
         self.statsVC.siteID = self.blog.dotComID;
         [self addStatsViewControllerToView];

@@ -231,7 +231,6 @@
     WPWebViewController *livePreviewController = [WPWebViewController webViewControllerWithURL:targetURL];
     livePreviewController.authToken = defaultAccount.authToken;
     livePreviewController.username = defaultAccount.username;
-    livePreviewController.password = defaultAccount.password;
     livePreviewController.wpLoginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:livePreviewController];
