@@ -77,7 +77,7 @@ class TodayViewController: UIViewController, NCWidgetProviding {
         
         let timeZone = NSTimeZone(name: timeZoneName!)
         var statsService: WPStatsService = WPStatsService(siteId: siteId, siteTimeZone: timeZone, oauth2Token: oauth2Token, andCacheExpirationInterval:0)
-        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!) -> Void in
+        statsService.retrieveTodayStatsWithCompletionHandler({ (wpStatsSummary: StatsSummary!, error: NSError!) -> Void in
             WPDDLogWrapper.logInfo("Downloaded data in the Today widget")
             
             self.visitorCount = wpStatsSummary.visitors
