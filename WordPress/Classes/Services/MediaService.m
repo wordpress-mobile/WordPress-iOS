@@ -1,4 +1,5 @@
 #import "MediaService.h"
+#import "AccountService.h"
 #import "Media.h"
 #import "WPAccount.h"
 #import "WPImageOptimizer.h"
@@ -8,6 +9,8 @@
 #import "Blog.h"
 #import "RemoteMedia.h"
 #import "WPAssetExporter.h"
+#import "WPImageSource.h"
+#import "UIImage+Resize.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 
 NSString * const SavedMaxImageSizeSetting = @"SavedMaxImageSizeSetting";
@@ -219,14 +222,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSError *error = nil;
     Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
-        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
-            if (success) {
-                success(media.remoteURL, media.thumbnailLocalURL);
-            }
-        } else {
-            if (success) {
-                success(media.remoteURL, @"");
-            }
+        if (success) {
+            success(media.remoteURL, media.remoteThumbnailURL);
         }
     } else {
         if (failure) {
@@ -235,6 +232,108 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }
 }
 
+- (void)syncMediaLibraryForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogObjectID = [blog objectID];
+    [remote getMediaLibraryForBlog:blog
+                           success:^(NSArray *media) {
+                               [self.managedObjectContext performBlock:^{
+                                   Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogObjectID];
+                                   [self mergeMedia:media forBlog:blogInContext completionHandler:success];
+                               }];
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
++ (NSOperationQueue *)queueForResizeMediaOperations {
+    static NSOperationQueue * _queueForResizeMediaOperations = nil;
+    static dispatch_once_t _onceToken;
+    dispatch_once(&_onceToken, ^{
+        _queueForResizeMediaOperations = [[NSOperationQueue alloc] init];
+        _queueForResizeMediaOperations.name = @"MediaService-ResizeMediaOperation";
+    });
+    
+    return _queueForResizeMediaOperations;
+}
+
+- (void)imageForMedia:(Media *)mediaInRandomContext
+                 size:(CGSize)size
+              success:(void (^)(UIImage *image))success
+              failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *mediaID = [mediaInRandomContext objectID];
+    [self.managedObjectContext performBlock:^{
+        Media *media = (Media *)[self.managedObjectContext objectWithID:mediaID];
+        BOOL isPrivate = media.blog.isPrivate;
+        NSString *pathForFile;
+        if (media.mediaType == MediaTypeImage) {
+            pathForFile = media.thumbnailLocalURL;
+        } else if (media.mediaType == MediaTypeVideo) {
+            pathForFile = media.thumbnailLocalURL;
+        }
+        if (pathForFile && [[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
+            [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
+                UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
+                if (success) {
+                    success(image);
+                }
+            }];
+            return;
+        }
+        NSURL *remoteURL = nil;
+        if (media.mediaType == MediaTypeVideo) {
+            remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
+        } else if (media.mediaType == MediaTypeImage) {
+            remoteURL = [NSURL URLWithString:media.remoteURL];
+        }
+        if (!remoteURL) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        WPImageSource *imageSource = [WPImageSource sharedSource];
+        void (^successBlock)(UIImage *) = ^(UIImage *image) {
+            [self.managedObjectContext performBlock:^{
+                NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
+                media.absoluteLocalURL = filePath;
+                NSString *thumbnailPath = media.thumbnailLocalURL;
+                [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
+                    NSData *data = UIImagePNGRepresentation(image);
+                    [data writeToFile:filePath atomically:YES];
+                    UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+                    NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
+                    [thumbnailData writeToFile:thumbnailPath atomically:YES];
+                    if (success) {
+                        success(thumbnail);
+                    }
+                }];
+            }];
+        };
+        
+        if (isPrivate) {
+            AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+            NSString *authToken = [[[accountService defaultWordPressComAccount] restApi] authToken];
+            [imageSource downloadImageForURL:remoteURL
+                                   authToken:authToken
+                                 withSuccess:successBlock
+                                     failure:failure];
+        } else {
+            [imageSource downloadImageForURL:remoteURL
+                                 withSuccess:successBlock
+                                     failure:failure];
+        }
+    }];
+}
 
 #pragma mark - Private
 
@@ -271,6 +370,11 @@ static NSString * const MediaDirectory = @"Media";
 - (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSString *filename = asset.defaultRepresentation.filename;
+    return [self pathForFilename:filename supportedFileFormats:supportedFileFormats];
+
+}
+- (NSString *)pathForFilename:(NSString *)filename supportedFileFormats:(NSSet *)supportedFileFormats
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [paths firstObject];
@@ -332,6 +436,39 @@ static NSString * const MediaDirectory = @"Media";
     return remote;
 }
 
+- (void)mergeMedia:(NSArray *)media
+           forBlog:(Blog *)blog
+ completionHandler:(void (^)(void))completion
+{
+    NSParameterAssert(blog);
+    NSParameterAssert(media);
+    NSMutableSet *mediaToKeep = [NSMutableSet set];
+    for (RemoteMedia *remote in media) {
+        @autoreleasepool {
+            Media *local = [self findMediaWithID:remote.mediaID inBlog:blog];
+            if (!local) {
+                local = [self newMediaForBlog:blog];
+                local.remoteStatus = MediaRemoteStatusSync;
+            }
+            [self updateMedia:local withRemoteMedia:remote];
+            [mediaToKeep addObject:local];
+        }
+    }
+    NSMutableSet *mediaToDelete = [NSMutableSet setWithSet:blog.media];
+    [mediaToDelete minusSet:mediaToKeep];
+    for (Media *deleteMedia in mediaToDelete) {
+        // only delete media that is server based
+        if ([deleteMedia.mediaID intValue] > 0) {
+            [self.managedObjectContext deleteObject:deleteMedia];
+        }
+    }
+
+    [self.managedObjectContext save:nil];
+    if (completion) {
+        completion();
+    }
+}
+
 - (void)updateMedia:(Media *)media withRemoteMedia:(RemoteMedia *)remoteMedia
 {
     media.mediaID =  remoteMedia.mediaID;
@@ -346,6 +483,8 @@ static NSString * const MediaDirectory = @"Media";
     media.width = remoteMedia.width;
     media.shortcode = remoteMedia.shortcode;
     media.videopressGUID = remoteMedia.videopressGUID;
+    media.length = remoteMedia.length;
+    media.remoteThumbnailURL = remoteMedia.remoteThumbnailURL;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
@@ -363,7 +502,8 @@ static NSString * const MediaDirectory = @"Media";
     remoteMedia.width = media.width;
     remoteMedia.localURL = media.absoluteLocalURL;
     remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];
-	remoteMedia.videopressGUID = media.videopressGUID;    
+	remoteMedia.videopressGUID = media.videopressGUID;
+    remoteMedia.remoteThumbnailURL = media.remoteThumbnailURL;
     return remoteMedia;
 }
 
