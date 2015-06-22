@@ -40,6 +40,26 @@
                  }];
 }
 
+- (void)getMediaLibraryForBlog:(Blog *)blog
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getMediaLibrary"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([self remoteMediaFromXMLRPCArray:responseObject]);
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 - (NSURLCredential *)findCredentialForHost:(NSString *)host port:(NSInteger)port
 {
     __block NSURLCredential *foundCredential = nil;
@@ -160,6 +180,15 @@
 
 #pragma mark - Private methods
 
+- (NSArray *)remoteMediaFromXMLRPCArray:(NSArray *)xmlrpcArray
+{
+    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:xmlrpcArray.count];
+    for (NSDictionary *xmlrpcMedia in xmlrpcArray) {
+        [remoteMedia addObject:[self remoteMediaFromXMLRPCDictionary:xmlrpcMedia]];
+    }
+    return [NSArray arrayWithArray:remoteMedia];
+}
+
 - (RemoteMedia *)remoteMediaFromXMLRPCDictionary:(NSDictionary*)xmlRPC
 {
     RemoteMedia * remoteMedia = [[RemoteMedia alloc] init];
@@ -168,12 +197,13 @@
     remoteMedia.width = [xmlRPC numberForKeyPath:@"metadata.width"];
     remoteMedia.height = [xmlRPC numberForKeyPath:@"metadata.height"];
     remoteMedia.mediaID = [xmlRPC numberForKey:@"attachment_id"];
-    remoteMedia.file = [[xmlRPC objectForKeyPath:@"metadata.file"] lastPathComponent];
+    remoteMedia.mimeType = [xmlRPC stringForKeyPath:@"metadata.mime_type"];
+    remoteMedia.file = [[xmlRPC objectForKeyPath:@"link"] lastPathComponent];
     remoteMedia.date = xmlRPC[@"date_created_gmt"];
     remoteMedia.caption = [xmlRPC stringForKey:@"caption"];
     remoteMedia.descriptionText = [xmlRPC stringForKey:@"description"];
     remoteMedia.extension = [remoteMedia.file pathExtension];
-    
+    remoteMedia.length = [xmlRPC numberForKeyPath:@"metadata.length"];
     return remoteMedia;
 }
 

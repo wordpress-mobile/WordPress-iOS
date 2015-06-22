@@ -787,7 +787,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
 
-            _account = [accountService createOrUpdateWordPressComAccountWithUsername:_usernameField.text authToken:authToken];
+            _account = [accountService createOrUpdateAccountWithUsername:_usernameField.text authToken:authToken];
             _account.email = _emailField.text;
             if (![accountService defaultWordPressComAccount]) {
                 [accountService setDefaultWordPressComAccount:_account];
