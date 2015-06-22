@@ -13,7 +13,7 @@ public class RemoteNotificationsSettings
     let other               : [Other]
     let wpcom               : WordPressCom?
     
-    init?(dictionary : NSDictionary?) {
+    init(dictionary : NSDictionary?) {
         
         let siteSettings    = dictionary?.arrayForKey("sites")      as? [NSDictionary]
         let otherSettings   = dictionary?.dictionaryForKey("other")
@@ -22,10 +22,6 @@ public class RemoteNotificationsSettings
         sites               = Site.parseSites(siteSettings)
         other               = Other.parseOther(otherSettings)
         wpcom               = WordPressCom(settings: wpcomSettings)
-        
-        if dictionary == nil {
-            return nil
-        }
     }
     
 
@@ -39,11 +35,11 @@ public class RemoteNotificationsSettings
     *
     */
     public enum StreamKind : String {
-        case Timeline       = "timeline"
-        case Email          = "email"
-        case Device         = "device"
+        case Timeline           = "timeline"
+        case Email              = "email"
+        case Device             = "device"
         
-        static let allValues = [ Timeline, Email, Device ]
+        static let allValues    = [ Timeline, Email, Device ]
     }
     
     
