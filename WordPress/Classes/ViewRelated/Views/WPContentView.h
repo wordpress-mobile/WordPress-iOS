@@ -17,6 +17,7 @@ extern const CGFloat WPContentViewBorderHeight;
 extern const CGFloat WPContentViewLineHeightMultiple;
 
 @class WPContentView;
+@class OriginalAttributionView;
 
 /**
  The delegate of the`WPContentView` should adopt the `WPContentViewDelegate` protocol.
@@ -119,6 +120,7 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) WPContentActionView *actionView;
+@property (nonatomic, strong) OriginalAttributionView *originalAttributionView;
 
 /* Factory methos for subviews */
 - (void)buildAttributionView;
@@ -127,6 +129,7 @@ The object specifying the content (text, images, etc.) to display.
 - (void)buildTitleLabel;
 - (void)buildContentView;
 - (void)buildActionView;
+- (void)buildOriginalAttributionView;
 
 /**
  Configures the appearance of the attribution view based on the content provider.

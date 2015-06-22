@@ -2,6 +2,7 @@
 #import "ContentActionButton.h"
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
+#import "OriginalAttributionView.h"
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
@@ -39,8 +40,8 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 
 - (void)dealloc
 {
-    self.contentProvider = nil;
-    self.delegate = nil;
+    _contentProvider = nil;
+    _delegate = nil;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -154,10 +155,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     UIView *featuredImageView = self.featuredImageView;
     UIView *titleLabel = self.titleLabel;
     UIView *contentView = self.contentView;
+    UIView *originalAttributionView = self.originalAttributionView;
     UIView *actionView = self.actionView;
 
     CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
-    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView, actionView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView, originalAttributionView, actionView);
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
                               @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
@@ -197,8 +199,12 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
                                                                  metrics:metrics
                                                                    views:views]];
 
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin@priority)-[originalAttributionView]-(outerMargin@priority)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[originalAttributionView]-(verticalPadding@priority)-[actionView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -263,6 +269,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self buildTitleLabel];
     [self buildContentView];
     [self buildActionView];
+    [self buildOriginalAttributionView];
 }
 
 #pragma mark - Subview factories
@@ -342,6 +349,15 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self addSubview:self.actionView];
 }
 
+- (void)buildOriginalAttributionView
+{
+    OriginalAttributionView *originalAttributionView = (OriginalAttributionView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([OriginalAttributionView class]) owner:nil options:nil] firstObject];
+    originalAttributionView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    self.originalAttributionView = originalAttributionView;
+    [self addSubview:self.originalAttributionView];
+}
+
 #pragma mark - Configuration
 
 - (void)configureView
@@ -354,6 +370,7 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
     [self configureActionButtons];
     [self setAvatarImage:nil];
     [self setFeaturedImage:nil];
+    [self configureOriginalAttributionView];
 
     [self setNeedsUpdateConstraints];
 }
@@ -392,6 +409,11 @@ const CGFloat WPContentViewLineHeightMultiple = 1.03;
 - (void)configureActionView
 {
     self.actionView.contentProvider = self.contentProvider;
+}
+
+- (void)configureOriginalAttributionView
+{
+
 }
 
 - (void)configureActionButtons
