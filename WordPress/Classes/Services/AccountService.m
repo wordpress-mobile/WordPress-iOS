@@ -162,7 +162,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         account.username = username;
     }
     account.authToken = authToken;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     if (![self defaultWordPressComAccount]) {
         [self setDefaultWordPressComAccount:account];
