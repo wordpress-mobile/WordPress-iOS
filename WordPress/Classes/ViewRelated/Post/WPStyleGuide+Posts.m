@@ -122,22 +122,22 @@
 
 + (NSDictionary *)postCardTitleAttributes
 {
-    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 20.0;
-    CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 28.0;
+    CGFloat fontSize = [UIDevice isPad] ? 24.0 : 16.0;
+    CGFloat lineHeight = [UIDevice isPad] ? 32.0 : 21.0;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansRegularFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
 }
 
 + (NSDictionary *)postCardSnippetAttributes
 {
     CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
-    CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 20.0;
+    CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 21.0;
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansRegularFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherLightFontOfSize:fontSize]};
 }
 
 + (NSDictionary *)postCardDateAttributes
@@ -166,7 +166,7 @@
 + (void)applyPageTitleStyle:(UILabel *)label
 {
     CGFloat fontSize = 15.0;
-    label.font = [WPFontManager openSansSemiBoldFontOfSize:fontSize];
+    label.font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
     label.textColor = [self wordPressBlue];
 }
 
@@ -177,7 +177,7 @@
     NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
     paragraphStyle.minimumLineHeight = lineHeight;
     paragraphStyle.maximumLineHeight = lineHeight;
-    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:fontSize]};
+    return @{NSParagraphStyleAttributeName: paragraphStyle, NSFontAttributeName : [WPFontManager merriweatherRegularFontOfSize:fontSize]};
 }
 
 + (void)applySectionHeaderTitleStyle:(UILabel *)label
