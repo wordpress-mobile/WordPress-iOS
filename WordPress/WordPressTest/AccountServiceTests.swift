@@ -20,17 +20,12 @@ class AccountServiceTests: XCTestCase {
     }
 
     func testCreateWordPressComAccountUUID() {
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
-        XCTAssertNotNil(account.uuid, "UUID should be set")
-    }
-    
-    func testCreateSelfHostedAccountUUID() {
-        let account = accountService.createOrUpdateSelfHostedAccountWithXmlrpc("http://example.com/xmlrpc.php", username: "username", andPassword: "password")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         XCTAssertNotNil(account.uuid, "UUID should be set")
     }
     
     func testSetDefaultWordPressComAccountCheckUUID() {
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         
         accountService.setDefaultWordPressComAccount(account)
         
@@ -44,7 +39,7 @@ class AccountServiceTests: XCTestCase {
     }
     
     func testGetDefaultWordPressComAccount() {
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         
         accountService.setDefaultWordPressComAccount(account)
         
@@ -58,14 +53,14 @@ class AccountServiceTests: XCTestCase {
     }
     
     func testNumberOfAccountsOneAccount() {
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         
         XCTAssertTrue(1 == accountService.numberOfAccounts(), "There should be one account")
     }
     
     func testNumberOfAccountsTwoAccounts() {
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
-        let account2 = accountService.createOrUpdateWordPressComAccountWithUsername("username2", authToken: "authtoken2")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
+        let account2 = accountService.createOrUpdateAccountWithUsername("username2", authToken: "authtoken2")
         
         XCTAssertTrue(2 == accountService.numberOfAccounts(), "There should be two accounts")
     }
@@ -79,7 +74,7 @@ class AccountServiceTests: XCTestCase {
     func testRemoveDefaultWordPressComAccountAccountSet() {
         accountService.removeDefaultWordPressComAccount()
         
-        let account = accountService.createOrUpdateWordPressComAccountWithUsername("username", authToken: "authtoken")
+        let account = accountService.createOrUpdateAccountWithUsername("username", authToken: "authtoken")
         
         accountService.setDefaultWordPressComAccount(account)
         

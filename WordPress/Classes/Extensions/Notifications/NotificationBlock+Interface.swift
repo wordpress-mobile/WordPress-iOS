@@ -260,9 +260,6 @@ extension NotificationBlock
         ]
         
         static let richRangeStylesMap = [
-            NoteRangeTypeUser               : Styles.blockBoldStyle,
-            NoteRangeTypePost               : Styles.blockItalicsStyle,
-            NoteRangeTypeComment            : Styles.contentBlockItalicStyle,
             NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
             NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
             NoteRangeTypeMatch              : Styles.contentBlockMatchStyle

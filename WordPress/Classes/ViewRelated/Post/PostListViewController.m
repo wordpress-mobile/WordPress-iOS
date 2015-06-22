@@ -433,9 +433,10 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (void)editPost:(AbstractPost *)apost
 {
+    [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
         WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModePreview];
+                                                                                         mode:kWPPostViewControllerModeEdit];
         postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
@@ -481,6 +482,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return;
     }
 
+    [WPAnalytics track:WPAnalyticsStatPostListStatsAction withProperties:[self propertiesForAnalytics]];
+
     // Push the Stats Post Details ViewController
     NSString *identifier = NSStringFromClass([StatsPostDetailsTableViewController class]);
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -491,7 +494,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     controller.postID = apost.postID;
     controller.postTitle = [apost titleForDisplay];
-    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.blogID
+    controller.statsService = [[WPStatsService alloc] initWithSiteId:blog.dotComID
                                                         siteTimeZone:[service timeZoneForBlog:blog]
                                                          oauth2Token:blog.authToken
                                           andCacheExpirationInterval:StatsCacheInterval];
@@ -524,6 +527,9 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     if (filter == [self currentPostAuthorFilter]) {
         return;
     }
+
+    [WPAnalytics track:WPAnalyticsStatPostListAuthorFilterChanged withProperties:[self propertiesForAnalytics]];
+
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
