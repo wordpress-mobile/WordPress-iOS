@@ -91,12 +91,12 @@ extension NotificationBlock
         //  Operations such as editing a comment cause a lag between the REST and Simperium update.
         //  TextOverride is a transient property meant to store, temporarily, the edited text
         if textOverride != nil {
-            return NSAttributedString(string: textOverride, attributes: Styles.blockRegularStyle)
+            return NSAttributedString(string: textOverride, attributes: Styles.contentBlockRegularStyle)
         }
         
         let attributedText = memoize { () -> NSAttributedString in
-            return self.textWithStyles(Styles.blockRegularStyle,
-                quoteStyles:    Styles.blockBoldStyle,
+            return self.textWithStyles(Styles.contentBlockRegularStyle,
+                quoteStyles:    Styles.contentBlockBoldStyle,
                 rangeStylesMap: Constants.richRangeStylesMap,
                 linksColor:     Styles.blockLinkColor)
         }
@@ -260,9 +260,9 @@ extension NotificationBlock
         ]
         
         static let richRangeStylesMap = [
-            NoteRangeTypeBlockquote         : Styles.blockQuotedStyle,
+            NoteRangeTypeBlockquote         : Styles.contentBlockQuotedStyle,
             NoteRangeTypeNoticon            : Styles.blockNoticonStyle,
-            NoteRangeTypeMatch              : Styles.blockMatchStyle
+            NoteRangeTypeMatch              : Styles.contentBlockMatchStyle
         ]
         
         static let badgeRangeStylesMap = [
