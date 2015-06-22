@@ -9,6 +9,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     let contentTypeJson     = "application/json"
     let settingsEndpoint    = "notifications/settings/"
     let settingsFilename    = "notifications-settings.json"
+    let dummyDeviceId       = "1234"
     
     override func setUp() {
         super.setUp()
@@ -32,7 +33,7 @@ class NotificationsServiceRemoteTests : XCTestCase
         var settings : RemoteNotificationsSettings?
         
         // Simulate a Backend Call
-        remote?.getAllSettings({ (theSettings: RemoteNotificationsSettings) in
+        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: RemoteNotificationsSettings) in
                 settings = theSettings
                 expectation.fulfill()
             },
