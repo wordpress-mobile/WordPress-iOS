@@ -28,6 +28,57 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     }];
 }
 
+- (void)getMediaLibraryForBlog:(Blog *)blog
+                       success:(void (^)(NSArray *))success
+                       failure:(void (^)(NSError *))failure
+{
+    NSMutableArray *media = [NSMutableArray array];
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    [self getMediaLibraryPage:nil
+                        media:media
+                         path:path
+                      success:success
+                      failure:failure];
+}
+
+- (void)getMediaLibraryPage:(NSString *)pageHandle
+                      media:(NSMutableArray *)media
+                       path:(NSString *)path
+                    success:(void (^)(NSArray *))success
+                    failure:(void (^)(NSError *))failure
+{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
+    parameters[@"number"] = @100;
+    if ([pageHandle length]) {
+        parameters[@"page_handle"] = pageHandle;
+    }
+    [self.api GET:path
+       parameters:[NSDictionary dictionaryWithDictionary:parameters]
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSArray *mediaItems = responseObject[@"media"];
+              NSArray *pageItems = [self remoteMediaFromJSONArray:mediaItems];
+              if (pageItems.count) {
+                  [media addObjectsFromArray:pageItems];
+              }
+              NSDictionary *meta = responseObject[@"meta"];
+              NSString *nextPage = meta[@"next_page"];
+              if (nextPage.length) {
+                  [self getMediaLibraryPage:nextPage
+                                      media:media
+                                       path:path
+                                    success:success
+                                    failure:failure];
+              } else if (success) {
+                  success([NSArray arrayWithArray:media]);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)createMedia:(RemoteMedia *)media
             forBlog:(Blog *)blog
            progress:(NSProgress **)progress
@@ -100,26 +151,35 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     [self.api.operationQueue addOperation:operation];
 }
 
+- (NSArray *)remoteMediaFromJSONArray:(NSArray *)jsonMedia
+{
+    NSMutableArray *remoteMedia = [NSMutableArray arrayWithCapacity:jsonMedia.count];
+    for (NSDictionary *json in jsonMedia) {
+        [remoteMedia addObject:[self remoteMediaFromJSONDictionary:json]];
+    }
+    return [NSArray arrayWithArray:remoteMedia];
+}
+
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
 {
     RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
-    remoteMedia.mediaID =  jsonMedia[@"ID"];
+    remoteMedia.mediaID =  [jsonMedia numberForKey:@"ID"];
     remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
     remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
     remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
-    remoteMedia.postID = jsonMedia[@"post_ID"];
-    remoteMedia.file = jsonMedia[@"file"];
-    remoteMedia.mimeType = jsonMedia[@"mime_type"];
-    remoteMedia.extension = jsonMedia[@"extension"];
-    remoteMedia.title = jsonMedia[@"title"];
-    remoteMedia.caption = jsonMedia[@"caption"];
-    remoteMedia.descriptionText = jsonMedia[@"description"];
-    remoteMedia.height = jsonMedia[@"height"];
-    remoteMedia.width = jsonMedia[@"width"];
-    remoteMedia.exif = jsonMedia[@"exif"];
-    if (jsonMedia[@"videopress_guid"]) {
-        remoteMedia.videopressGUID = jsonMedia[@"videopress_guid"];
-    }
+    remoteMedia.postID = [jsonMedia numberForKey:@"post_ID"];
+    remoteMedia.file = [jsonMedia stringForKey:@"file"];
+    remoteMedia.mimeType = [jsonMedia stringForKey:@"mime_type"];
+    remoteMedia.extension = [jsonMedia stringForKey:@"extension"];
+    remoteMedia.title = [jsonMedia stringForKey:@"title"];
+    remoteMedia.caption = [jsonMedia stringForKey:@"caption"];
+    remoteMedia.descriptionText = [jsonMedia stringForKey:@"description"];
+    remoteMedia.height = [jsonMedia numberForKey:@"height"];
+    remoteMedia.width = [jsonMedia numberForKey:@"width"];
+    remoteMedia.exif = [jsonMedia dictionaryForKey:@"exif"];
+    remoteMedia.remoteThumbnailURL = [jsonMedia stringForKeyPath:@"thumbnails.fmt_std"];
+    remoteMedia.videopressGUID = [jsonMedia stringForKey:@"videopress_guid"];
+    remoteMedia.length = [jsonMedia numberForKey:@"length"];
     return remoteMedia;
 }
 
