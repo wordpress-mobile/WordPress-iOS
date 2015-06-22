@@ -13,6 +13,7 @@
 #import "NSDate+StringFormatting.h"
 #import "NSURL+Util.h"
 #import "UIAlertView+Blocks.h"
+#import "UIDevice+Helpers.h"
 #import "UIAlertViewProxy.h"
 
 #import "ContextManager.h"
