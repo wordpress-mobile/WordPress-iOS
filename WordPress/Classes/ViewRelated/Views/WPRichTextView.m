@@ -11,7 +11,7 @@ static CGSize const WPRichTextMinimumSize = {1, 1};
 static CGFloat WPRichTextDefaultEmbedRatio = 1.778;
 static NSInteger const WPRichTextImageQuality = 65;
 NSString * const WPRichTextDefaultFontFamily = @"Merriweather";
-NSString * const WPRichTextDefaultFontName = @"Merriweather Light";
+NSString * const WPRichTextDefaultFontName = @"MerriweatherLight";
 
 @interface WPRichTextView()<DTAttributedTextContentViewDelegate, WPTableImageSourceDelegate>
 
