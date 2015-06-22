@@ -35,28 +35,13 @@ public class NotificationsServiceRemote
         remoteApi.POST(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
-                if let settings = RemoteNotificationsSettings(dictionary: response as? NSDictionary) {
-                    success?(settings)
-                } else {
-                    let error = NSError(domain: NotificationsServiceRemote.domain,
-                                          code: Errors.invalidResponse.rawValue,
-                                      userInfo: nil)
-                    failure?(error)
-                }
+                let settings = RemoteNotificationsSettings(dictionary: response as? NSDictionary)
+                success?(settings)
             },
             failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
                 failure?(error)
             })
     }
-
-    
-    // MARK: - Errors
-    public enum Errors : Int {
-        case invalidResponse = -1
-    }
-    
-    // MARK: - Public Static Constants
-    public static let domain = "com.wordpress.notifications.service-remote"
     
     // MARK: - Private Internal Constants
     private let remoteApi: WordPressComApi!
