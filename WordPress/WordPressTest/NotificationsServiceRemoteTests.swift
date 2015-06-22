@@ -51,7 +51,7 @@ class NotificationsServiceRemoteTests : XCTestCase
         XCTAssertNotNil(settings?.wpcom, "Error while parsing WordPress.com Settings")
         
         // Validate WordPress.com Settings
-        let wordPressComSettings = settings!.wpcom!
+        let wordPressComSettings = settings!.wpcom
         XCTAssert(wordPressComSettings.news == false, "Error while parsing WordPress.com Settings")
         XCTAssert(wordPressComSettings.recommendations == false, "Error while parsing WordPress.com Settings")
         XCTAssert(wordPressComSettings.promotion == true, "Error while parsing WordPress.com Settings")
