@@ -9,14 +9,18 @@ import Foundation
 
 public class RemoteNotificationsSettings
 {
-    let sites : [Site]
-    let other : [Other]
-    let wpcom : WordPressCom
+    let sites           : [Site]
+    let other           : [Other]
+    let wpcom           : WordPressCom
     
     init(dictionary : NSDictionary?) {
-        sites = Site.parseSites(dictionary?.arrayForKey("sites") as? [NSDictionary])
-        other = Other.parseOther(dictionary?.dictionaryForKey("other"))
-        wpcom = WordPressCom(settings: dictionary?.dictionaryForKey("wpcom") as? [String: Bool])
+        let settingsDic = dictionary?["sites"] as? [NSDictionary]
+        let otherDict   = dictionary?["other"] as? NSDictionary
+        let wpcomDict   = dictionary?["wpcom"] as? NSDictionary
+        
+        sites           = Site.parseSites(settingsDic)
+        other           = Other.parseOther(otherDict)
+        wpcom           = WordPressCom(settings: wpcomDict)
     }
     
 
@@ -32,7 +36,7 @@ public class RemoteNotificationsSettings
     public enum StreamKind : String {
         case Timeline   = "timeline"
         case Email      = "email"
-        case Device     = "devices"
+        case Device     = "device"
         
         static let allValues = [ Timeline, Email, Device ]
     }
@@ -56,12 +60,12 @@ public class RemoteNotificationsSettings
         init(siteId _siteId: Int, streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
             siteId      = _siteId
             streamKind  = _streamKind
-            newComment  = _settings.numberForKey("new-comment")?.boolValue  ?? false
-            commentLike = _settings.numberForKey("comment-like")?.boolValue ?? false
-            postLike    = _settings.numberForKey("post-like")?.boolValue    ?? false
-            follow      = _settings.numberForKey("follow")?.boolValue       ?? false
-            achievement = _settings.numberForKey("achievement")?.boolValue  ?? false
-            mentions    = _settings.numberForKey("mentions")?.boolValue     ?? false
+            newComment  = _settings["new-comment"]  as? Bool ?? false
+            commentLike = _settings["comment-like"] as? Bool ?? false
+            postLike    = _settings["post-like"]    as? Bool ?? false
+            follow      = _settings["follow"]       as? Bool ?? false
+            achievement = _settings["achievement"]  as? Bool ?? false
+            mentions    = _settings["mentions"]     as? Bool ?? false
         }
         
         
@@ -79,21 +83,15 @@ public class RemoteNotificationsSettings
             }
             
             for siteSettings in allSiteSettings! {
-                let siteId = siteSettings.numberForKey("site_id") as? Int
+                let siteId = siteSettings["site_id"] as? Int
                 if siteId == nil {
                     continue
                 }
-                
-                // Timeline + Email: A single dictionary
-                for streamKind in [StreamKind.Timeline, .Email] {
-                    if let streamSettings = siteSettings.dictionaryForKey(streamKind.rawValue) {
+
+                for streamKind in StreamKind.allValues {
+                    if let streamSettings = siteSettings[streamKind.rawValue] as? NSDictionary {
                         parsed.append(Site(siteId: siteId!, streamKind: streamKind, settings: streamSettings))
                     }
-                }
-                
-                // Device: An array of dictionaries
-                if let deviceSettings = siteSettings.arrayForKey(StreamKind.Device.rawValue)?.first as? NSDictionary {
-                    parsed.append(Site(siteId: siteId!, streamKind: StreamKind.Device, settings: deviceSettings))
                 }
             }
             
@@ -115,8 +113,8 @@ public class RemoteNotificationsSettings
         
         init(streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
             streamKind      = _streamKind
-            commentLike     = _settings.numberForKey("comment-like")?.boolValue   ?? false
-            commentReply    = _settings.numberForKey("comment-reply")?.boolValue  ?? false
+            commentLike     = _settings["comment-like"]  as? Bool ?? false
+            commentReply    = _settings["comment-reply"] as? Bool ?? false
         }
         
         /**
@@ -128,16 +126,10 @@ public class RemoteNotificationsSettings
         private static func parseOther(otherSettings: NSDictionary?) -> [Other] {
             var parsed = [Other]()
 
-            // Timeline + Email: A single dictionary
-            for streamKind in [StreamKind.Timeline, .Email] {
-                if let streamSettings = otherSettings?.dictionaryForKey(streamKind.rawValue) {
+            for streamKind in StreamKind.allValues {
+                if let streamSettings = otherSettings?[streamKind.rawValue] as? NSDictionary {
                     parsed.append(Other(streamKind: streamKind, settings: streamSettings))
                 }
-            }
-            
-            // Device: An array of dictionaries
-            if let deviceSettings = otherSettings?.arrayForKey(StreamKind.Device.rawValue)?.first as? NSDictionary {
-                parsed.append(Other(streamKind: .Device, settings: deviceSettings))
             }
         
             return parsed
@@ -157,11 +149,11 @@ public class RemoteNotificationsSettings
         let promotion       : Bool
         let digest          : Bool
         
-        init(settings _settings: [String: Bool]?) {
-            news            = _settings?["news"]             ?? false
-            recommendations = _settings?["recommendation"]   ?? false
-            promotion       = _settings?["promotion"]        ?? false
-            digest          = _settings?["digest"]           ?? false
+        init(settings _settings: NSDictionary?) {
+            news            = _settings?["news"]            as? Bool ?? false
+            recommendations = _settings?["recommendation"]  as? Bool ?? false
+            promotion       = _settings?["promotion"]       as? Bool ?? false
+            digest          = _settings?["digest"]          as? Bool ?? false
         }
     }
 }
