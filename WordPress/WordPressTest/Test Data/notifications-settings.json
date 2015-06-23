@@ -4,35 +4,35 @@
                   "site_id": 1,
                   "timeline": {
                       "new-comment": false,
-                      "comment-like": false,
+                      "comment-like": true,
                       "post-like": false,
-                      "follow": false,
+                      "follow": true,
                       "achievement": false,
-                      "mentions": false
+                      "mentions": true
                   },
                   "email": {
-                      "new-comment": false,
+                      "new-comment": true,
                       "comment-like": false,
-                      "post-like": false,
+                      "post-like": true,
                       "follow": false,
-                      "achievement": false,
+                      "achievement": true,
                       "mentions": false
                   },
                   "device": {
                       "device_id": 2,
                       "new-comment": false,
-                      "comment-like": false,
+                      "comment-like": true,
                       "post-like": false,
-                      "follow": false,
+                      "follow": true,
                       "achievement": false,
-                      "mentions": false
+                      "mentions": true
                   }
               }
               ],
     "other": {
         "timeline": {
             "comment-like": false,
-            "comment-reply": false
+            "comment-reply": true
         },
         "email": {
             "comment-like": false,
@@ -40,8 +40,8 @@
         },
         "device": {
             "device_id": 123,
-            "comment-like": false,
-            "comment-reply": false
+            "comment-like": true,
+            "comment-reply": true
         }
     },
     "wpcom": {
