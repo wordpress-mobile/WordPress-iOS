@@ -14,7 +14,6 @@ extern const CGFloat WPContentViewAuthorAvatarSize;
 extern const CGFloat WPContentViewAuthorViewHeight;
 extern const CGFloat WPContentViewActionViewHeight;
 extern const CGFloat WPContentViewBorderHeight;
-extern const CGFloat WPContentViewLineHeightMultiple;
 
 @class WPContentView;
 
@@ -172,5 +171,11 @@ The object specifying the content (text, images, etc.) to display.
  Sets up the autolayout constraints for subviews.
  */
 - (void)configureConstraints;
+
+/**
+ Returns the attributes for the title's attributed string. 
+ Subclasses may override to change the title's characteristics.
+ */
+- (NSDictionary *)attributesForAttributedStringForTitle;
 
 @end
