@@ -1,9 +1,12 @@
 #import <Foundation/Foundation.h>
+
 /**
- WPSearchController is a stand-in for the iOS 8 UISearchController class.
- Not all features of UISearchController are implemented.
- Switch to UISearchController when support for < iOS 8 is ended.
+ * @class WPSearchController
+ * @brief WPSearchController is a stand-in for the iOS 8 UISearchController class.
+ * Not all features of UISearchController are implemented.
+ * @details Switch to UISearchController when support for < iOS 8 is ended.
  */
+
 @class WPSearchController;
 
 @protocol WPSearchControllerDelegate <NSObject>
