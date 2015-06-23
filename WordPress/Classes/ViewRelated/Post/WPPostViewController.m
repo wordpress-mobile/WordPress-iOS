@@ -37,6 +37,7 @@
 #import "WPTooltip.h"
 #import "MediaLibraryPickerDataSource.h"
 #import "WPAndDeviceMediaLibraryDataSource.h"
+#import "WPDeviceIdentification.h"
 
 typedef NS_ENUM(NSInteger, EditPostViewControllerAlertTag) {
     EditPostViewControllerAlertTagNone,
@@ -79,7 +80,7 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
     WPPostViewControllerActionSheetRetryVideoUpload = 205,
 };
 
-static CGFloat const SpacingBetweeenNavbarButtons = 20.0f;
+static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
@@ -1282,7 +1283,14 @@ EditImageDetailsViewControllerDelegate
 - (UIButton *)blogPickerButton
 {
     if (!_blogPickerButton) {
-        CGFloat titleButtonWidth = (IS_IPAD) ? 300.0f : 170.0f;
+        CGFloat titleButtonWidth = 140.0f;
+        
+        if ([WPDeviceIdentification isiPhoneSixPlus] || [WPDeviceIdentification isiPhoneSix]) {
+            titleButtonWidth = 190.0f;
+        } else if (IS_IPAD) {
+            titleButtonWidth = 300.0f;
+        }
+        
         UIButton *button = [WPBlogSelectorButton buttonWithFrame:CGRectMake(0.0f, 0.0f, titleButtonWidth , 30.0f) buttonStyle:WPBlogSelectorButtonTypeSingleLine];
         [button addTarget:self action:@selector(showBlogSelectorPrompt:) forControlEvents:UIControlEventTouchUpInside];
         _blogPickerButton = button;
