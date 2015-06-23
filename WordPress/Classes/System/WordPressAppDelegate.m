@@ -48,6 +48,7 @@
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
 #import "WPWhatsNew.h"
+#import "WPThemeSettings.h"
 
 // Networking
 #import "WPUserAgent.h"
@@ -289,7 +290,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     navController.navigationBar.translucent = NO;
                     [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
                 }
-                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -308,7 +308,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     }
                 }
             }
-		}
+        } else if ([WPThemeSettings shouldHandleURL:url]) {
+            returnValue = [WPThemeSettings handleURL:url];
+            
+            if (returnValue) {
+                if ([WPThemeSettings isEnabled]) {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes enabled."];
+                } else {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes disabled."];
+                }
+            }
+        }
     }
 
     return returnValue;
