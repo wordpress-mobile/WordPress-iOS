@@ -262,7 +262,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     }
     
     _url = theURL;
-    [self loadWebViewRequest];
+    
+    // Prevent double load in viewDidLoad Method
+    if (self.isViewLoaded) {
+        [self loadWebViewRequest];
+    }
 }
 
 
