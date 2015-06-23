@@ -72,7 +72,6 @@
 	<string>To add photos or videos to your posts.</string>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Merriweather-Bold.ttf</string>
 		<string>Noticons-Regular.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>

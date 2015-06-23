@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSArray *media;
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableDictionary *observers;
-
+@property (nonatomic, strong) MediaService *mediaService;
 @end
 
 @implementation MediaLibraryPickerDataSource
@@ -26,6 +26,9 @@
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
         _blog = blog;
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
+        NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
+        _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
+
     }
     return self;
 }
@@ -74,23 +77,32 @@
 
 -(void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [[self class] predicateForFilter:self.filter];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
-    request.sortDescriptors = @[sortDescriptor];
-    NSError *error;
-    self.media = [[[ContextManager sharedInstance] mainContext] executeFetchRequest:request error:&error];
-    if (self.media == nil && error) {
-        DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+    [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        [mainContext performBlock:^{
+            NSString *entityName = NSStringFromClass([Media class]);
+            NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+            request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+            NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+            request.sortDescriptors = @[sortDescriptor];
+            NSError *error;
+            self.media = [mainContext executeFetchRequest:request error:&error];
+            if (self.media == nil && error) {
+                DDLogVerbose(@"Error fecthing media: %@", [error localizedDescription]);
+                if (failureBlock) {
+                    failureBlock(error);
+                }
+                return;
+            }
+            if (successBlock) {
+                successBlock();
+            }
+        }];
+    } failure:^(NSError *error) {
         if (failureBlock) {
             failureBlock(error);
         }
-        return;
-    }
-    if (successBlock) {
-        successBlock();
-    }
+    }];
 }
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
@@ -172,18 +184,18 @@
     return self.media[index];
 }
 
-+ (NSPredicate *)predicateForFilter:(WPMediaType)filter
++ (NSPredicate *)predicateForFilter:(WPMediaType)filter blog:(Blog *)blog
 {
     NSPredicate *predicate;
     switch (filter) {
         case WPMediaTypeImage: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"image && blog = %@", blog];
         } break;
         case WPMediaTypeVideo: {
-            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"mediaTypeString = %@", @"video && blog = %@", blog];
         } break;
         case WPMediaTypeAll: {
-            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@) ", @"image", @"video"];
+            predicate = [NSPredicate predicateWithFormat:@"(mediaTypeString = %@ || mediaTypeString = %@)  && blog = %@", @"image", @"video", blog];
         } break;
         default:
             break;
@@ -223,7 +235,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -252,7 +264,7 @@
 {
     NSString *entityName = NSStringFromClass([Media class]);
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter];
+    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
     NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
     request.sortDescriptors = @[sortDescriptor];
     NSError *error;
@@ -266,25 +278,21 @@
 
 - (WPMediaRequestID)imageWithSize:(CGSize)size completionHandler:(WPMediaImageBlock)completionHandler
 {
-    NSString *pathForFile;
-    if (self.mediaType == MediaTypeImage) {
-        pathForFile = self.absoluteLocalURL;
-    } else if (self.mediaType == MediaTypeVideo) {
-        pathForFile = self.thumbnailLocalURL;
-    }
-    if (pathForFile) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            UIImage *image = [UIImage imageWithContentsOfFile:pathForFile];
-            if (completionHandler) {
-                completionHandler(image, nil);
-            }
-        });
-        return [self.mediaID intValue];
-    }
-    // TODO: fetch image from server, for now just exit with missing image
-    if (completionHandler) {
-        completionHandler(nil, nil);
-    }
+    CGFloat scale = [[UIScreen mainScreen] scale];
+    CGSize realSize = CGSizeApplyAffineTransform(size, CGAffineTransformMakeScale(scale, scale));
+
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+    [mediaService imageForMedia:self size:realSize success:^(UIImage *image) {
+        if (completionHandler) {
+            completionHandler(image, nil);
+        }
+    } failure:^(NSError *error) {
+        if (completionHandler) {
+            completionHandler(nil, error);
+        }
+    }];
+
     return [self.mediaID intValue];
 }
 
@@ -295,7 +303,7 @@
 
 - (WPMediaType)assetType
 {
-    if (self.mediaType == MediaTypeImage){
+    if (self.mediaType == MediaTypeImage) {
         return WPMediaTypeImage;
     } else if (self.mediaType == MediaTypeVideo) {
         return WPMediaTypeVideo;
@@ -306,7 +314,15 @@
 
 - (NSTimeInterval)duration
 {
-    if (self.mediaType != MediaTypeVideo){
+    if (self.mediaType != MediaTypeVideo) {
+        return 0;
+    }
+    if (self.length != nil && [self.length doubleValue] > 0) {
+        return [self.length doubleValue];
+    }
+    
+    if (self.absoluteLocalURL == nil ||
+        ![[NSFileManager defaultManager] fileExistsAtPath:self.absoluteLocalURL isDirectory:nil]) {
         return 0;
     }
     NSURL *sourceMovieURL = [NSURL fileURLWithPath:self.absoluteLocalURL];
