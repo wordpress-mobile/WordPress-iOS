@@ -30,7 +30,7 @@ public class NotificationsServiceRemote
     *  @param       failure     Optional closure to be called on failure. Will receive the error that was encountered.
     */
     public func getAllSettings(deviceId: String, success: (RemoteNotificationsSettings -> Void)?, failure: (NSError -> Void)?) {
-        let path = String(format: "me/notifications/settings/?devices=[%@]", deviceId)
+        let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
 
         remoteApi.POST(path,
             parameters: nil,

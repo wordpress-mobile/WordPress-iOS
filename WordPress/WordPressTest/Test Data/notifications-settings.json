@@ -1,110 +1,53 @@
 {
-    "sites":[
-             {
-                 "site_id":78227665,
-                 "timeline":{
-                             "new-comment":false,
-                             "comment-like":false,
-                             "post-like":true,
-                             "follow":false,
-                             "achievement":false,
-                             "mentions":false
-                 },
-                 "email":{
-                             "new-comment":false,
-                             "comment-like":false,
-                             "post-like":false,
-                             "follow":false,
-                             "achievement":false,
-                             "mentions":true
-                 },
-                 "devices":[
-                            {
-                                "device_id":10050224,
-                                "new-comment":false,
-                                "comment-like":false,
-                                "post-like":true,
-                                "follow":false,
-                                "achievement":false,
-                                "mentions":false
-                            },
-                            {
-                                "device_id":10533725,
-                                "new-comment":false,
-                                "comment-like":false,
-                                "post-like":false,
-                                "follow":false,
-                                "achievement":false,
-                                "mentions":false
-                            }
-                            ]
-             },
-             {
-                 "site_id":9288856,
-                 "timeline":{
-                             "new-comment":true,
-                             "comment-like":false,
-                             "post-like":false,
-                             "follow":false,
-                             "achievement":false,
-                             "mentions":false
-                             },
-                 "email":{
-                             "new-comment":false,
-                             "comment-like":false,
-                             "post-like":false,
-                             "follow":false,
-                             "achievement":true,
-                             "mentions":false
-                             },
-                 "devices":[
-                            {
-                                "device_id":10050224,
-                                "new-comment":false,
-                                "comment-like":true,
-                                "post-like":false,
-                                "follow":true,
-                                "achievement":false,
-                                "mentions":true
-                            },
-                            {
-                                "device_id":10533725,
-                                "new-comment":false,
-                                "comment-like":false,
-                                "post-like":false,
-                                "follow":false,
-                                "achievement":false,
-                                "mentions":false
-                            }
-                            ]
-             }
-             ],
-    "other":{
-        "timeline":{
-            "comment-like":true,
-            "comment-reply":false
+    "sites": [
+              {
+                  "site_id": 1,
+                  "timeline": {
+                      "new-comment": false,
+                      "comment-like": false,
+                      "post-like": false,
+                      "follow": false,
+                      "achievement": false,
+                      "mentions": false
+                  },
+                  "email": {
+                      "new-comment": false,
+                      "comment-like": false,
+                      "post-like": false,
+                      "follow": false,
+                      "achievement": false,
+                      "mentions": false
+                  },
+                  "device": {
+                      "device_id": 2,
+                      "new-comment": false,
+                      "comment-like": false,
+                      "post-like": false,
+                      "follow": false,
+                      "achievement": false,
+                      "mentions": false
+                  }
+              }
+              ],
+    "other": {
+        "timeline": {
+            "comment-like": false,
+            "comment-reply": false
         },
-        "email":{
-            "comment-like":true,
-            "comment-reply":false
+        "email": {
+            "comment-like": false,
+            "comment-reply": false
         },
-        "devices":[
-                   {
-                       "device_id":10050224,
-                       "comment-like":false,
-                       "comment-reply":false
-                   },
-                   {
-                       "device_id":10533725,
-                       "comment-like":false,
-                       "comment-reply":false
-                   }
-                   ]
+        "device": {
+            "device_id": 123,
+            "comment-like": false,
+            "comment-reply": false
+        }
     },
-    "wpcom":{
-        "news":false,
-        "recommendation":false,
-        "promotion":true,
-        "digest":true
+    "wpcom": {
+        "news": false,
+        "recommendation": false,
+        "promotion": true,
+        "digest": true
     }
 }
