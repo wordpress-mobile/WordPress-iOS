@@ -4,6 +4,7 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
+    typealias Kind          = RemoteNotificationsSettings.StreamKind
     let remoteApi           = WordPressComApi.anonymousApi()
     let timeout             = 2.0
     let contentTypeJson     = "application/json"
@@ -27,34 +28,88 @@ class NotificationsServiceRemoteTests : XCTestCase
         OHHTTPStubs.removeAllRequestHandlers()
     }
     
-    func testGetAllSettingsReturnsValidNotificationSettings() {
+    
+    func testRemoteNotificationSettingsCorretlyParsesThreeSiteEntities() {
+        
+        let settings                = loadRemoteNotificationSettings()
+        let sites                   = settings.sites
+        let siteDeviceSettings      = sites.filter { $0.streamKind == Kind.Device }.first
+        let siteEmailSettings       = sites.filter { $0.streamKind == Kind.Email }.first
+        let siteTimelineSettings    = sites.filter { $0.streamKind == Kind.Timeline }.first
+
+        XCTAssert(sites.count == 3,                                 "Error while parsing Site Settings")
+        
+        XCTAssert(siteDeviceSettings?.newComment == false,          "Error while parsing Site Device Settings")
+        XCTAssert(siteDeviceSettings?.commentLike == true,          "Error while parsing Site Device Settings")
+        XCTAssert(siteDeviceSettings?.postLike == false,            "Error while parsing Site Device Settings")
+        XCTAssert(siteDeviceSettings?.follow == true,               "Error while parsing Site Device Settings")
+        XCTAssert(siteDeviceSettings?.achievement == false,         "Error while parsing Site Device Settings")
+        XCTAssert(siteDeviceSettings?.mentions == true,             "Error while parsing Site Device Settings")
+
+        XCTAssert(siteEmailSettings?.newComment == true,            "Error while parsing Site Email Settings")
+        XCTAssert(siteEmailSettings?.commentLike == false,          "Error while parsing Site Email Settings")
+        XCTAssert(siteEmailSettings?.postLike == true,              "Error while parsing Site Email Settings")
+        XCTAssert(siteEmailSettings?.follow == false,               "Error while parsing Site Email Settings")
+        XCTAssert(siteEmailSettings?.achievement == true,           "Error while parsing Site Email Settings")
+        XCTAssert(siteEmailSettings?.mentions == false,             "Error while parsing Site Email Settings")
+        
+        XCTAssert(siteTimelineSettings?.newComment == false,        "Error while parsing Site Timeline Settings")
+        XCTAssert(siteTimelineSettings?.commentLike == true,        "Error while parsing Site Timeline Settings")
+        XCTAssert(siteTimelineSettings?.postLike == false,          "Error while parsing Site Timeline Settings")
+        XCTAssert(siteTimelineSettings?.follow == true,             "Error while parsing Site Timeline Settings")
+        XCTAssert(siteTimelineSettings?.achievement == false,       "Error while parsing Site Timeline Settings")
+        XCTAssert(siteTimelineSettings?.mentions == true,           "Error while parsing Site Timeline Settings")
+    }
+    
+    func testRemoteNotificationSettingsCorretlyParsesThreeOtherEntities() {
+        
+        let settings                = loadRemoteNotificationSettings()
+        let other                   = settings.other
+        let otherDeviceSettings     = other.filter { $0.streamKind == Kind.Device }.first
+        let otherEmailSettings      = other.filter { $0.streamKind == Kind.Email }.first
+        let otherTimelineSettings   = other.filter { $0.streamKind == Kind.Timeline }.first
+        
+        XCTAssert(otherDeviceSettings?.commentLike == true,         "Error while parsing Other Device Settings")
+        XCTAssert(otherDeviceSettings?.commentReply == true,        "Error while parsing Other Device Settings")
+
+        XCTAssert(otherEmailSettings?.commentLike == false,         "Error while parsing Other Email Settings")
+        XCTAssert(otherEmailSettings?.commentReply == false,        "Error while parsing Other Email Settings")
+
+        XCTAssert(otherTimelineSettings?.commentLike == false,      "Error while parsing Other Timeline Settings")
+        XCTAssert(otherTimelineSettings?.commentReply == true,      "Error while parsing Other Timeline Settings")
+    }
+    
+    func testRemoteNotificationSettingsCorretlyParsesDotcomSettings() {
+        
+        let settings                = loadRemoteNotificationSettings()
+        let wordPressComSettings    = settings.wpcom
+        
+        XCTAssert(wordPressComSettings.news == false,               "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.recommendations == false,    "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.promotion == true,           "Error while parsing WordPress.com Settings")
+        XCTAssert(wordPressComSettings.digest == true,              "Error while parsing WordPress.com Settings")
+    }
+    
+    
+    // MARK: - Private Helpers
+    private func loadRemoteNotificationSettings() -> RemoteNotificationsSettings {
         let remote      = NotificationsServiceRemote(api: remoteApi)
-        let expectation = expectationWithDescription(nil)
         var settings : RemoteNotificationsSettings?
         
-        // Simulate a Backend Call
+        let expectation = expectationWithDescription(nil)
+        
         remote?.getAllSettings(dummyDeviceId, success: { (theSettings: RemoteNotificationsSettings) in
-                settings = theSettings
-                expectation.fulfill()
+            settings = theSettings
+            expectation.fulfill()
             },
             failure: { (error: NSError!) in
                 expectation.fulfill()
-            })
+        })
         
-        // Wait till ready
         waitForExpectationsWithTimeout(timeout, handler: nil)
         
-        // Validate that the parser works fine
-        XCTAssertNotNil(settings, "Error while parsing settings")
-        XCTAssert(settings?.sites.count == 6, "Error while parsing Site Settings")
-        XCTAssert(settings?.other.count == 3, "Error while parsing Other Settings")
-        XCTAssertNotNil(settings?.wpcom, "Error while parsing WordPress.com Settings")
+        XCTAssert(settings != nil, "Error while parsing settings")
         
-        // Validate WordPress.com Settings
-        let wordPressComSettings = settings!.wpcom
-        XCTAssert(wordPressComSettings.news == false, "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.recommendations == false, "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.promotion == true, "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.digest == true, "Error while parsing WordPress.com Settings")
+        return settings!
     }
 }
