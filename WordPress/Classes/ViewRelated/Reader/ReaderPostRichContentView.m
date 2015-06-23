@@ -75,6 +75,20 @@
     return 0;
 }
 
+- (NSDictionary *)attributesForAttributedStringForTitle
+{
+    CGFloat fontSize = [UIDevice isPad] ? 32.0 : 18.0;
+    UIFont *font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
+
+    CGFloat lineHeight = [UIDevice isPad] ? 40.0 : 24.0;
+    NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
+    [paragraphStyle setMaximumLineHeight:lineHeight];
+    [paragraphStyle setMinimumLineHeight:lineHeight];
+
+    return @{NSParagraphStyleAttributeName : paragraphStyle,
+             NSFontAttributeName : font};
+}
+
 #pragma mark - Action Methods
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveLinkAction:(NSURL *)linkURL
