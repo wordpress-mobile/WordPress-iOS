@@ -25,12 +25,13 @@ public class NotificationsServiceRemote
     
     /**
     *  @details     Retrieves all of the Notification Settings
-    *  @param       deviceId    The ID of the current device
+    *  @param       deviceId    The ID of the current device. Can be nil.
     *  @param       success     A closure to be called on success, which will receive the parsed settings entity
     *  @param       failure     Optional closure to be called on failure. Will receive the error that was encountered.
     */
-    public func getAllSettings(deviceId: String, success: (RemoteNotificationsSettings -> Void)?, failure: (NSError -> Void)?) {
-        let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
+    public func getAllSettings(deviceId: String?, success: (RemoteNotificationsSettings -> Void)?, failure: (NSError -> Void)?) {
+        let unwrappedDeviceId = deviceId ?? String()
+        let path = String(format: "me/notifications/settings/?device_id=%@", unwrappedDeviceId)
 
         remoteApi.POST(path,
             parameters: nil,
