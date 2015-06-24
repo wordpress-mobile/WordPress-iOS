@@ -16,24 +16,38 @@ public class NotificationsService : NSObject, LocalCoreDataService
     public required init(managedObjectContext context: NSManagedObjectContext) {
         super.init()
         managedObjectContext       = context
-        notificationsServiceRemote = NotificationsServiceRemote(api: apiForRequest())
+        notificationsServiceRemote = NotificationsServiceRemote(api: remoteApi())
     }
+    
+
+    /**
+    *  @details     Helper method to get the WordPress.com REST Api, if any
+    *  @returns     WordPressComApi instance, if applicable, or nil.
+    */
+    public func syncSettings(success: (Void -> Void)?, failure: (NSError -> Void)?) {
+        let deviceId = NotificationsManager.registeredPushNotificationsDeviceId()
+        
+        notificationsServiceRemote?.getAllSettings(deviceId, success: {(settings: RemoteNotificationsSettings?) in
+                println("Success: \(settings)")
+            
+            }, failure: { (error: NSError?) in
+                println("error: \(error)")
+            })
+    }
+    
     
     
     /**
     *  @details     Helper method to get the WordPress.com REST Api, if any
     *  @returns     WordPressComApi instance, if applicable, or nil.
     */
-    private func apiForRequest() -> WordPressComApi? {
+    private func remoteApi() -> WordPressComApi? {
         let accountService = AccountService(managedObjectContext: managedObjectContext)
         let unwrappedRestApi = accountService.defaultWordPressComAccount()?.restApi
         
-        if unwrappedRestApi != nil && unwrappedRestApi?.hasCredentials() == true {
-            return unwrappedRestApi!
-        }
-
-        return nil
+        return unwrappedRestApi?.hasCredentials() == true ? unwrappedRestApi! : nil
     }
+
     
     // MARK: - Private Internal Properties
     private var managedObjectContext        : NSManagedObjectContext!

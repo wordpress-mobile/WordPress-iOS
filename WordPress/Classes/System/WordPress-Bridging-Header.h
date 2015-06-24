@@ -3,6 +3,7 @@
 
 #import "UIImage+Resize.h"
 
+#import "NotificationsManager.h"
 #import "Notification.h"
 #import "Notification+Internals.h"
 
