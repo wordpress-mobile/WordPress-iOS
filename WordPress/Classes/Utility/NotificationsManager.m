@@ -154,6 +154,12 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
 }
 
++ (NSString *)registeredPushNotificationsDeviceId
+{
+    // TODO: Refactor this entire class please!. JLP. Jun.24.2015
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
+}
+
 
 #pragma mark - Notification handling
 
