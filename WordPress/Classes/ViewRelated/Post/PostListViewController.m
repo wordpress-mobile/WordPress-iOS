@@ -325,19 +325,18 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-        return PostCardRestoreCellRowHeight;
-    }
-
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
+        return PostCardRestoreCellRowHeight;
+    }
+
+    PostCardTableViewCell *cell;
     if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
     } else {
