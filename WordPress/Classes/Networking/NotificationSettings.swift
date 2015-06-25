@@ -2,25 +2,21 @@ import Foundation
 
 
 /**
-*  @class           NotificationsSettings
+*  @class           NotificationSettings
 *  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure
 *                   it into a flat hierarchy, for easy access / mapping.
 */
 
-public class NotificationsSettings
+public class NotificationSettings
 {
     let sites           : [Site]
     let other           : [Other]
     let wpcom           : WordPressCom
     
     init(dictionary : NSDictionary?) {
-        let settingsDic = dictionary?["sites"] as? [NSDictionary]
-        let otherDict   = dictionary?["other"] as? NSDictionary
-        let wpcomDict   = dictionary?["wpcom"] as? NSDictionary
-        
-        sites           = Site.parseSites(settingsDic)
-        other           = Other.parseOther(otherDict)
-        wpcom           = WordPressCom(settings: wpcomDict)
+        sites           = Site.fromArray(dictionary?["sites"] as? [NSDictionary])
+        other           = Other.fromDictionary(dictionary?["other"] as? NSDictionary)
+        wpcom           = WordPressCom.fromDictionary(dictionary?["wpcom"] as? NSDictionary)
     }
     
 
@@ -70,27 +66,37 @@ public class NotificationsSettings
         
         
         /**
-        *  @brief   Parses "Site" settings dictionary, into a flat collection of "Site" object instances.
+        *  @brief   Parses a collection of "Site" dictionaries, into a flat collection of "Site" object instances.
         *
-        *  @param   otherSettings   The raw dictionary retrieved from the backend.
+        *  @param   sitesArray      The raw array of dictionaries, retrieved from the backend.
         *  @returns                 An array of Site objects. Each Site will get three instances, one per strem
         *                           settings (we flatten out the collection).
         */
-        private static func parseSites(allSiteSettings: [NSDictionary]?) -> [Site] {
+        private static func fromArray(sitesArray: [NSDictionary]?) -> [Site] {
             var parsed = [Site]()
-            if allSiteSettings == nil {
-                return parsed
+            
+            if let unwrappedSitesSettings = sitesArray {
+                for siteSettings in unwrappedSitesSettings {
+                    parsed += fromDictionary(siteSettings)
+                }
             }
             
-            for siteSettings in allSiteSettings! {
-                let siteId = siteSettings["site_id"] as? Int
-                if siteId == nil {
-                    continue
-                }
-
+            return parsed
+        }
+        
+        /**
+        *  @brief   Parses "Site" settings dictionary, into a flat collection of "Site" object instances.
+        *
+        *  @param   siteDictionary  The raw "Site Settings" dictionary retrieved from the backend.
+        *  @returns                 An array of Site objects. Each Site will get three instances, one per stream.
+        */
+        public static func fromDictionary(siteDictionary: NSDictionary?) -> [Site] {
+            var parsed = [Site]()
+            
+            if let siteId = siteDictionary?["site_id"] as? Int {
                 for streamKind in StreamKind.allValues {
-                    if let streamSettings = siteSettings[streamKind.rawValue] as? NSDictionary {
-                        parsed.append(Site(siteId: siteId!, streamKind: streamKind, settings: streamSettings))
+                    if let streamSettings = siteDictionary?[streamKind.rawValue] as? NSDictionary {
+                        parsed.append(Site(siteId: siteId, streamKind: streamKind, settings: streamSettings))
                     }
                 }
             }
@@ -118,16 +124,17 @@ public class NotificationsSettings
         }
         
         /**
-        *  @brief   Parses "Other Sites" settings dictionary, into a flat collection of "Other" object instances.
+        *  @brief   Parses "Other Sites" settings dictionary into a flat collection of "Other" object instances,
+        *           one per stream.
         *
-        *  @param   otherSettings   The raw dictionary retrieved from the backend.
-        *  @returns                 An array of `Other` object instances, one per stream
+        *  @param   otherDictionary The raw "Other Settings" dictionary, retrieved from the backend.
+        *  @returns                 An array of "Other" object instances, one per stream.
         */
-        private static func parseOther(otherSettings: NSDictionary?) -> [Other] {
+        public static func fromDictionary(otherDictionary: NSDictionary?) -> [Other] {
             var parsed = [Other]()
 
             for streamKind in StreamKind.allValues {
-                if let streamSettings = otherSettings?[streamKind.rawValue] as? NSDictionary {
+                if let streamSettings = otherDictionary?[streamKind.rawValue] as? NSDictionary {
                     parsed.append(Other(streamKind: streamKind, settings: streamSettings))
                 }
             }
@@ -154,6 +161,17 @@ public class NotificationsSettings
             recommendations = _settings?["recommendation"]  as? Bool ?? false
             promotion       = _settings?["promotion"]       as? Bool ?? false
             digest          = _settings?["digest"]          as? Bool ?? false
+        }
+        
+        
+        /**
+        *  @brief   Parses "WordPress.com" settings dictionary, and returns a WordPressCom instance.
+        *
+        *  @param   wordPressComDictionary  The raw "WordPress.com" dictionary, retrieved from the backend.
+        *  @returns                         An instance of WordPress.com with the parsed settings.
+        */
+        public static func fromDictionary(wordPressComDictionary: NSDictionary?) -> WordPressCom {
+            return WordPressCom(settings: wordPressComDictionary)
         }
     }
 }
