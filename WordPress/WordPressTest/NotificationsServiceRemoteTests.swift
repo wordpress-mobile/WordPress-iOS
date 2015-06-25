@@ -5,15 +5,25 @@ import XCTest
 class NotificationsServiceRemoteTests : XCTestCase
 {
     typealias Kind          = NotificationSettings.StreamKind
-    let remoteApi           = WordPressComApi.anonymousApi()
+    
+    // MARK: - Properties
+    var contextManager      : TestContextManager!
+    var remoteApi           : WordPressComApi!
+    
+    // MARK: - Constants
     let timeout             = 2.0
     let contentTypeJson     = "application/json"
     let settingsEndpoint    = "notifications/settings/"
     let settingsFilename    = "notifications-settings.json"
     let dummyDeviceId       = "1234"
+
     
+    // MARK: - Overriden Methods
     override func setUp() {
         super.setUp()
+        
+        contextManager  = TestContextManager()
+        remoteApi       = WordPressComApi.anonymousApi()
         
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
                 return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
@@ -29,6 +39,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     }
     
     
+    // MARK: - Unit Tests!
     func testNotificationSettingsCorretlyParsesThreeSiteEntities() {
         
         let settings                = loadNotificationSettings()
@@ -98,13 +109,14 @@ class NotificationsServiceRemoteTests : XCTestCase
         
         let expectation = expectationWithDescription(nil)
         
-        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: NotificationSettings) in
-            settings = theSettings
-            expectation.fulfill()
+        remote?.getAllSettings(dummyDeviceId,
+            success: { (theSettings: NotificationSettings) in
+                settings = theSettings
+                expectation.fulfill()
             },
             failure: { (error: NSError!) in
                 expectation.fulfill()
-        })
+            })
         
         waitForExpectationsWithTimeout(timeout, handler: nil)
         
