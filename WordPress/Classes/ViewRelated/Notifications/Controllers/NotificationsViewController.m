@@ -81,9 +81,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
         // Listen to Logout Notifications
         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:)   name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        [nc addObserver:self selector:@selector(handleRegisteredDeviceTokenNote:)   name:NotificationsManagerDidRegisterDeviceToken object:nil];
-        [nc addObserver:self selector:@selector(handleUnregisteredDeviceTokenNote:) name:NotificationsManagerDidUnregisterDeviceToken object:nil];
+        [nc addObserver:self selector:@selector(handleDefaultAccountChangedNote:) name:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
@@ -136,8 +134,14 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
 
+    // Manage Button
+    UIBarButtonItem *manageButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
+                                                                     style:UIBarButtonItemStylePlain
+                                                                    target:self
+                                                                    action:@selector(showNotificationSettings)];
+    self.navigationItem.rightBarButtonItem = manageButton;
+    
     [self showNoResultsViewIfNeeded];
-    [self showManageButtonIfNeeded];
     [self showBucketNameIfNeeded];
 }
 
@@ -293,16 +297,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [self resetApplicationBadge];
 }
 
-- (void)handleRegisteredDeviceTokenNote:(NSNotification *)note
-{
-    [self showManageButtonIfNeeded];
-}
-
-- (void)handleUnregisteredDeviceTokenNote:(NSNotification *)note
-{
-    [self removeManageButton];
-}
-
 
 #pragma mark - Public Methods
 
@@ -391,18 +385,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [simperium save];
 }
 
-- (void)showManageButtonIfNeeded
-{
-    if (![NotificationsManager deviceRegisteredForPushNotifications]) {
-        return;
-    }
-
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
-                                                                              style:UIBarButtonItemStylePlain
-                                                                             target:self
-                                                                             action:@selector(showNotificationSettings)];
-}
-
 - (void)showBucketNameIfNeeded
 {
     // This is only required for debugging:
@@ -414,11 +396,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     }
 
     self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
-}
-
-- (void)removeManageButton
-{
-    self.navigationItem.rightBarButtonItem = nil;
 }
 
 - (void)showNotificationSettings
