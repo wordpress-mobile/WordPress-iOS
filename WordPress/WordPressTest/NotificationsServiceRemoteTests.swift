@@ -4,7 +4,7 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
-    typealias Kind          = RemoteNotificationsSettings.StreamKind
+    typealias Kind          = NotificationsSettings.StreamKind
     let remoteApi           = WordPressComApi.anonymousApi()
     let timeout             = 2.0
     let contentTypeJson     = "application/json"
@@ -31,7 +31,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     func testRemoteNotificationSettingsCorretlyParsesThreeSiteEntities() {
         
-        let settings                = loadRemoteNotificationSettings()
+        let settings                = loadNotificationSettings()
         let sites                   = settings.sites
         let siteDeviceSettings      = sites.filter { $0.streamKind == Kind.Device }.first
         let siteEmailSettings       = sites.filter { $0.streamKind == Kind.Email }.first
@@ -63,7 +63,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     func testRemoteNotificationSettingsCorretlyParsesThreeOtherEntities() {
         
-        let settings                = loadRemoteNotificationSettings()
+        let settings                = loadNotificationSettings()
         let other                   = settings.other
         let otherDeviceSettings     = other.filter { $0.streamKind == Kind.Device }.first
         let otherEmailSettings      = other.filter { $0.streamKind == Kind.Email }.first
@@ -81,7 +81,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     func testRemoteNotificationSettingsCorretlyParsesDotcomSettings() {
         
-        let settings                = loadRemoteNotificationSettings()
+        let settings                = loadNotificationSettings()
         let wordPressComSettings    = settings.wpcom
         
         XCTAssert(wordPressComSettings.news == false,               "Error while parsing WordPress.com Settings")
@@ -92,13 +92,13 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     
     // MARK: - Private Helpers
-    private func loadRemoteNotificationSettings() -> RemoteNotificationsSettings {
+    private func loadNotificationSettings() -> NotificationsSettings {
         let remote      = NotificationsServiceRemote(api: remoteApi)
-        var settings : RemoteNotificationsSettings?
+        var settings : NotificationsSettings?
         
         let expectation = expectationWithDescription(nil)
         
-        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: RemoteNotificationsSettings) in
+        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: NotificationsSettings) in
             settings = theSettings
             expectation.fulfill()
             },
