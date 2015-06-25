@@ -21,20 +21,20 @@ public class NotificationsService : NSObject, LocalCoreDataService
     
 
     /**
-    *  @details     Helper method to get the WordPress.com REST Api, if any
-    *  @returns     WordPressComApi instance, if applicable, or nil.
+    *  @details     This method will retrieve all of the Notification Settings for the default WordPress.com account
+    *  @param       success Closure to be called on success.
+    *  @param       failure Closure to be called on failure, with the associated error.
     */
-    public func syncSettings(success: (Void -> Void)?, failure: (NSError -> Void)?) {
+    public func syncSettings(success: (NotificationsSettings -> Void)?, failure: (NSError! -> Void)?) {
         let deviceId = NotificationsManager.registeredPushNotificationsDeviceId()
         
-        notificationsServiceRemote?.getAllSettings(deviceId, success: {(settings: RemoteNotificationsSettings?) in
-                println("Success: \(settings)")
+        notificationsServiceRemote?.getAllSettings(deviceId, success: {(settings: NotificationsSettings) in
+                success?(settings)
             
-            }, failure: { (error: NSError?) in
-                println("error: \(error)")
+            }, failure: { (error: NSError!) in
+                failure?(error)
             })
     }
-    
     
     
     /**
