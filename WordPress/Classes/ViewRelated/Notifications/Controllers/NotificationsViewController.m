@@ -15,7 +15,6 @@
 
 #import "NotificationsManager.h"
 #import "NotificationDetailsViewController.h"
-#import "NotificationSettingsViewController.h"
 
 #import "WPAccount.h"
 
@@ -424,8 +423,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showNotificationSettings
 {
-    NotificationSettingsViewController *vc          = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    vc.showCloseButton                              = YES;
+    NotificationSettingsViewController *vc          = [NotificationSettingsViewController new];
     
     UINavigationController *navigationController    = [[UINavigationController alloc] initWithRootViewController:vc];
     navigationController.navigationBar.translucent  = NO;
