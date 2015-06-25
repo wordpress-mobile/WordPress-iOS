@@ -4,7 +4,7 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
-    typealias Kind          = NotificationsSettings.StreamKind
+    typealias Kind          = NotificationSettings.StreamKind
     let remoteApi           = WordPressComApi.anonymousApi()
     let timeout             = 2.0
     let contentTypeJson     = "application/json"
@@ -29,7 +29,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     }
     
     
-    func testRemoteNotificationSettingsCorretlyParsesThreeSiteEntities() {
+    func testNotificationSettingsCorretlyParsesThreeSiteEntities() {
         
         let settings                = loadNotificationSettings()
         let sites                   = settings.sites
@@ -61,7 +61,7 @@ class NotificationsServiceRemoteTests : XCTestCase
         XCTAssert(siteTimelineSettings?.mentions == true,           "Error while parsing Site Timeline Settings")
     }
     
-    func testRemoteNotificationSettingsCorretlyParsesThreeOtherEntities() {
+    func testNotificationSettingsCorretlyParsesThreeOtherEntities() {
         
         let settings                = loadNotificationSettings()
         let other                   = settings.other
@@ -79,7 +79,7 @@ class NotificationsServiceRemoteTests : XCTestCase
         XCTAssert(otherTimelineSettings?.commentReply == true,      "Error while parsing Other Timeline Settings")
     }
     
-    func testRemoteNotificationSettingsCorretlyParsesDotcomSettings() {
+    func testNotificationSettingsCorretlyParsesDotcomSettings() {
         
         let settings                = loadNotificationSettings()
         let wordPressComSettings    = settings.wpcom
@@ -92,13 +92,13 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> NotificationsSettings {
+    private func loadNotificationSettings() -> NotificationSettings {
         let remote      = NotificationsServiceRemote(api: remoteApi)
-        var settings : NotificationsSettings?
+        var settings : NotificationSettings?
         
         let expectation = expectationWithDescription(nil)
         
-        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: NotificationsSettings) in
+        remote?.getAllSettings(dummyDeviceId, success: { (theSettings: NotificationSettings) in
             settings = theSettings
             expectation.fulfill()
             },
