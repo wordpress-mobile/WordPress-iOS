@@ -400,13 +400,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showNotificationSettings
 {
-    NotificationSettingsViewController *vc          = [[NotificationSettingsViewController alloc] initWithNibName:@"NotificationSettingsViewController" bundle:nil];
-    
-    UINavigationController *navigationController    = [[UINavigationController alloc] initWithRootViewController:vc];
-    navigationController.navigationBar.translucent  = NO;
-    navigationController.modalPresentationStyle     = UIModalPresentationFormSheet;
-
-    [self presentViewController:navigationController animated:YES completion:nil];
+    [self performSegueWithIdentifier:[NotificationSettingsViewController classNameWithoutNamespaces] sender:self];
 }
 
 - (void)reloadResultsControllerIfNeeded
