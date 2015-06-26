@@ -210,7 +210,7 @@
                                     <constraint firstAttribute="trailing" secondItem="POV-pe-wu8" secondAttribute="trailing" constant="14" id="SjY-e4-XWL">
                                         <variation key="heightClass=regular-widthClass=regular" constant="24"/>
                                     </constraint>
-                                    <constraint firstAttribute="width" priority="750" constant="600" id="UEv-b1-gAx"/>
+                                    <constraint firstAttribute="width" priority="900" constant="600" id="UEv-b1-gAx"/>
                                     <constraint firstItem="Z3W-ou-g2J" firstAttribute="top" secondItem="POV-pe-wu8" secondAttribute="bottom" constant="8" id="cgz-3E-MrQ">
                                         <variation key="heightClass=regular-widthClass=regular" constant="12"/>
                                     </constraint>
