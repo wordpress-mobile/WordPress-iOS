@@ -22,6 +22,9 @@
 #import "AccountService.h"
 #import "WPAccount.h"
 
+#import "Blog.h"
+#import "BlogService.h"
+
 #import "WordPressComApi.h"
 
 #import "WPStyleGuide.h"
