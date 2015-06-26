@@ -400,7 +400,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showNotificationSettings
 {
-    NotificationSettingsViewController *vc          = [NotificationSettingsViewController new];
+    NotificationSettingsViewController *vc          = [[NotificationSettingsViewController alloc] initWithNibName:@"NotificationSettingsViewController" bundle:nil];
     
     UINavigationController *navigationController    = [[UINavigationController alloc] initWithRootViewController:vc];
     navigationController.navigationBar.translucent  = NO;
