@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="MbC-cA-c9S">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <scenes>
         <!--Notification List Controller-->
@@ -23,11 +23,12 @@
                     <connections>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
                         <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
+                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingsViewController" modalPresentationStyle="pageSheet" id="QrZ-up-rBR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="236" y="-556"/>
+            <point key="canvasLocation" x="120" y="-941"/>
         </scene>
         <!--Reader Comments View Controller-->
         <scene sceneID="RLS-eH-qVH">
@@ -38,6 +39,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573" y="-1877"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="8B8-SX-meJ">
+            <objects>
+                <navigationController id="iBf-zV-28l" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Olg-sf-tkb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="o4M-cF-u8L" kind="relationship" relationship="rootViewController" id="Xsm-h1-9hr"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Kke-8Z-ISh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="899" y="-2596"/>
+        </scene>
+        <!--Notification Settings View Controller-->
+        <scene sceneID="JGF-kk-ftb">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jet-cb-DLo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <tableViewController id="o4M-cF-u8L" customClass="NotificationSettingsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dyI-oR-VLC">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <outlet property="dataSource" destination="o4M-cF-u8L" id="IfE-r6-kq9"/>
+                            <outlet property="delegate" destination="o4M-cF-u8L" id="p8p-MQ-FJ2"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="QBz-QD-L12"/>
+                </tableViewController>
+            </objects>
+            <point key="canvasLocation" x="1532" y="-2596"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -73,7 +109,7 @@
                         <subviews>
                             <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="Dcn-Il-AtN">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
                                 <gestureRecognizers/>
                                 <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 <connections>
@@ -128,6 +164,6 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="ODX-zz-S1G"/>
+        <segue reference="4ec-Ni-5a5"/>
     </inferredMetricsTieBreakers>
 </document>
