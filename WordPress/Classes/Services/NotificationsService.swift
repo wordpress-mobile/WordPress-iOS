@@ -25,7 +25,7 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @param       success Closure to be called on success.
     *  @param       failure Closure to be called on failure, with the associated error.
     */
-    public func syncSettings(success: (NotificationSettings -> Void)?, failure: (NSError! -> Void)?) {
+    public func getAllSettings(success: (NotificationSettings -> Void)?, failure: (NSError! -> Void)?) {
         let deviceId = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
         
         notificationsServiceRemote?.getAllSettings(deviceId,
