@@ -23,7 +23,7 @@
                     <connections>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
                         <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
-                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingsViewController" modalPresentationStyle="pageSheet" id="QrZ-up-rBR"/>
+                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingsViewController" modalPresentationStyle="formSheet" id="QrZ-up-rBR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -65,6 +65,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="calibratedRGB"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NotificationSettingsTableViewCell" id="Oh5-Kv-1jl">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Oh5-Kv-1jl" id="xcg-yC-pX9">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="o4M-cF-u8L" id="IfE-r6-kq9"/>
                             <outlet property="delegate" destination="o4M-cF-u8L" id="p8p-MQ-FJ2"/>
