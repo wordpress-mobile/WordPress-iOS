@@ -165,7 +165,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     }
     
     self.window.rootViewController = [WPTabBarController sharedInstance];
-    [self.window makeKeyAndVisible];
     return YES;
 }
 
