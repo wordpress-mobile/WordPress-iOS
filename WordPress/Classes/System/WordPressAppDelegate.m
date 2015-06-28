@@ -164,11 +164,8 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [self setMustShowWhatsNewPopup:YES];
     }
     
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
     self.window.rootViewController = [WPTabBarController sharedInstance];
-
+    [self.window makeKeyAndVisible];
     return YES;
 }
 
