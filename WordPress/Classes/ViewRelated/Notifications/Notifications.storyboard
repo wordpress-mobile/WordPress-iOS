@@ -23,7 +23,7 @@
                     <connections>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
                         <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
-                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingsViewController" modalPresentationStyle="formSheet" id="QrZ-up-rBR"/>
+                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingSectionsViewController" modalPresentationStyle="formSheet" id="QrZ-up-rBR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -56,11 +56,10 @@
             </objects>
             <point key="canvasLocation" x="899" y="-2596"/>
         </scene>
-        <!--Notification Settings View Controller-->
+        <!--Notification Setting Sections View Controller-->
         <scene sceneID="JGF-kk-ftb">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jet-cb-DLo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <tableViewController id="o4M-cF-u8L" customClass="NotificationSettingsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="o4M-cF-u8L" customClass="NotificationSettingSectionsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="dyI-oR-VLC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -79,9 +78,32 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="QBz-QD-L12"/>
+                    <connections>
+                        <segue destination="ZLr-7M-8pd" kind="push" identifier="NotificationSettingDetailsViewController" id="hEB-up-Nhf"/>
+                    </connections>
                 </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jet-cb-DLo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1532" y="-2596"/>
+        </scene>
+        <!--Notification Setting Details View Controller-->
+        <scene sceneID="wIl-Y4-rpy">
+            <objects>
+                <tableViewController id="ZLr-7M-8pd" customClass="NotificationSettingDetailsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="iNb-OS-QRh">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <connections>
+                            <outlet property="dataSource" destination="ZLr-7M-8pd" id="aFh-jd-ORM"/>
+                            <outlet property="delegate" destination="ZLr-7M-8pd" id="mkZ-dM-aka"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="mgR-vv-fGv"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qqq-Ir-7eo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1950" y="-2596"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
