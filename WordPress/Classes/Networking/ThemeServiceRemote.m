@@ -5,7 +5,6 @@
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 @interface ThemeServiceRemote ()
-@property (nonatomic, strong, readwrite) NSManagedObjectContext *context;
 @end
 
 @implementation ThemeServiceRemote
@@ -124,93 +123,5 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                }
            }];
 }
-
-#pragma mark - Old services...
-
-/*
-- (void)fetchAndInsertThemesForBlogId:(NSNumber *)blogId
-                            success:(ThemeServiceSuccessBlock)success
-                            failure:(ThemeServiceFailureBlock)failure
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    [[defaultAccount restApi] fetchThemesForBlogId:blogId.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSManagedObjectContext *backgroundMOC = [[ContextManager sharedInstance] newDerivedContext];
-        [backgroundMOC performBlock:^{
-            NSMutableArray *themesToKeep = [NSMutableArray array];
-            for (NSDictionary *t in responseObject[@"themes"]) {
-                Theme *theme = [Theme createOrUpdateThemeFromDictionary:t withBlog:blog withContext:backgroundMOC];
-                [themesToKeep addObject:theme];
-            }
-            
-            NSSet *existingThemes = ((Blog *)[backgroundMOC objectWithID:blog.objectID]).themes;
-            for (Theme *theme in existingThemes) {
-                if (![themesToKeep containsObject:theme]) {
-                    [backgroundMOC deleteObject:theme];
-                }
-            }
-            
-            [[ContextManager sharedInstance] saveDerivedContext:backgroundMOC];
-            
-            dateFormatter = nil;
-            
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-            
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)fetchCurrentThemeForBlog:(Blog *)blog
-                         success:(ThemeServiceSuccessBlock)success
-                         failure:(ThemeServiceFailureBlock)failure
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    [[defaultAccount restApi] fetchCurrentThemeForBlogId:blog.blogID.stringValue success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [blog.managedObjectContext performBlock:^{
-            blog.currentThemeId = responseObject[@"id"];
-            [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
-- (void)activateThemeWithSuccess:(ThemeServiceSuccessBlock)success
-                         failure:(ThemeServiceFailureBlock)failure
-{
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-    
-    [[defaultAccount restApi] activateThemeForBlogId:self.blog.blogID.stringValue themeId:self.themeId success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        [self.blog.managedObjectContext performBlock:^{
-            self.blog.currentThemeId = self.themeId;
-            [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
-            if (success) {
-                dispatch_async(dispatch_get_main_queue(), success);
-            }
-        }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
- */
 
 @end
