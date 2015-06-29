@@ -75,17 +75,4 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                 success:(ThemeServiceSuccessBlock)success
                 failure:(ThemeServiceFailureBlock)failure;
 
-#pragma mark - Old services...
-
-/*
-- (void)fetchAndInsertThemesForBlog:(Blog *)blog
-                            success:(ThemeServiceSuccessBlock)success
-                            failure:(ThemeServiceFailureBlock)failure;
-- (void)fetchCurrentThemeForBlog:(Blog *)blog
-                         success:(ThemeServiceSuccessBlock)success
-                         failure:(ThemeServiceFailureBlock)failure;
-- (void)activateThemeWithSuccess:(ThemeServiceSuccessBlock)success
-                         failure:(ThemeServiceFailureBlock)failure;
- */
-
 @end
