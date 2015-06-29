@@ -335,6 +335,26 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     }];
 }
 
+- (void)getMediaLibraryCountForBlog:(Blog *)blog
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryCountForBlog:blog
+                           success:^(NSInteger count) {
+                               if (success) {
+                                   success(count);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
+}
+
 #pragma mark - Private
 
 #pragma mark - Media Creation
