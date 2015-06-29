@@ -7,11 +7,9 @@ public class NotificationSettingSectionsViewController : UITableViewController
     public override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = NSLocalizedString("Settings", comment: "Title displayed in the Notification settings")
-        
-        setupServices()
-        setupDismissButton()
-        reloadBlogsList()
+        setupNavigationItem()
+        setupTableView()
+        setupBlogsList()
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -21,113 +19,102 @@ public class NotificationSettingSectionsViewController : UITableViewController
         tableView.deselectSelectedRowWithAnimation(true)
     }
 
-    
+
+
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return Section.Count
     }
 
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == Section.Blog.rawValue {
-            return blogs?.count ?? emptyRowCount
-        }
-
-        return defaultRowCount
+        return (section == Section.Blog.rawValue) ? (blogs?.count ?? emptyRowCount) : (defaultRowCount)
     }
 
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        let cell                = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        cell.textLabel?.text    = descriptionForRow(indexPath)
         
-        switch Section(rawValue: indexPath.section)! {
-        case .Blog:
-            cell.textLabel?.text = blogs?[indexPath.row].blogName ?? String()
-        case .Other:
-            cell.textLabel?.text = NSLocalizedString("Comments on Other Sites", comment: "Displayed in the Notification Settings Interface")
-        case .WordPress:
-            cell.textLabel?.text = NSLocalizedString("Updates from WordPress.com", comment: "Displayed in the Notification Settings Interface")
-        }
+        WPStyleGuide.configureTableViewCell(cell)
         
         return cell
     }
-    
+
+
+
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        switch Section(rawValue: indexPath.section)! {
-        case .Blog:
-            blogWasPressed(blogs?[indexPath.row])
-        case .Other:
-            otherWasPressed()
-        case .WordPress:
-            wordPressWasPressed()
-        }
-    }
-    
-    
-    // MARK: - Private Helpers
-    private func setupServices() {
-        let mainContext         = ContextManager.sharedInstance().mainContext
-        blogService             = BlogService(managedObjectContext: mainContext)
-        notificationsService    = NotificationsService(managedObjectContext: mainContext)
-    }
-    
-    private func setupDismissButton() {
-        let title  = NSLocalizedString("Close", comment: "Close the currrent screen. Action")
-        let action = Selector("dismissWasPressed:")
-
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: action)
-    }
-
-    private func reloadBlogsList() {
-// TODO: Filter only dotcom and jetpack maybe?
-        if let unwrappedBlogs = blogService.blogsForAllAccounts() as? [Blog] {
-            blogs = unwrappedBlogs
-        }
+        let identifier = NotificationSettingDetailsViewController.classNameWithoutNamespaces()
+        performSegueWithIdentifier(identifier, sender: indexPath)
     }
 
 
-    // MARK: - Button Handlers
-    private func blogWasPressed(blog: Blog?) {
-        let blogId = blog!.blogID as? Int
-        if blogId == nil {
+
+    // MARK: - Segue Helpers
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let selectedIndexPath       = sender as? NSIndexPath
+        let detailsViewController   = segue.destinationViewController as? NotificationSettingDetailsViewController
+        if selectedIndexPath == nil || detailsViewController == nil {
             return
         }
         
-        notificationsService.getSiteSettings(blogId!,
-            success: {
-                (settings: [NotificationSettings.Site]) in
-            },
-            failure: {
-                (error: NSError!) in
-            })
-    }
-    
-    private func otherWasPressed() {
-        notificationsService.getOtherSettings({
-                (settings: [NotificationSettings.Other]) in
-            
-            },
-            failure: {
-                (error: NSError!) in
-            })
-    }
-    
-    private func wordPressWasPressed() {
-        notificationsService.getWordPressComSettings({
-                (wpcom: NotificationSettings.WordPressCom) in
-
-            },
-            failure: {
-                (error: NSError!) in
-            })
+        switch Section(rawValue: selectedIndexPath!.section)! {
+        case .Blog:
+            let blogId = blogs?[selectedIndexPath!.row].blogID?.integerValue
+            detailsViewController?.loadBlogSettings(blogId)
+        case .Other:
+            detailsViewController?.loadOtherSettings()
+        case .WordPress:
+            detailsViewController?.loadWordPressSettings()
+        }
     }
 
+
+
+    // MARK: - Setup Helpers
+    private func setupNavigationItem() {
+        let closeTitle  = NSLocalizedString("Close", comment: "Close the currrent screen. Action")
+        let closeAction = Selector("dismissWasPressed:")
+        
+        title = NSLocalizedString("Settings", comment: "Title displayed in the Notification settings")
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: closeTitle, style: .Plain, target: self, action: closeAction)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+    }
+
+    private func setupTableView() {
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+    
+    private func setupBlogsList() {
+// TODO: Filter only dotcom and jetpack maybe?
+        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        if let unwrappedBlogs = service.blogsForAllAccounts() as? [Blog] {
+            blogs = unwrappedBlogs
+        }
+    }
+    
+    
+
+    // MARK: - Private Helpers
+    private func descriptionForRow(indexPath: NSIndexPath) -> String {
+        switch Section(rawValue: indexPath.section)! {
+        case .Blog:
+            return blogs?[indexPath.row].blogName ?? String()
+        case .Other:
+            return NSLocalizedString("Comments on Other Sites", comment: "Displayed in the Notification Settings")
+        case .WordPress:
+            return NSLocalizedString("Updates from WordPress.com", comment: "Displayed in the Notification Settings")
+        }
+    }
+
+    
+    
+    // MARK: - Button Handlers
     public func dismissWasPressed(sender: AnyObject) {
         dismissViewControllerAnimated(true, completion: nil)
     }
 
 
-    
+
     // MARK: - Table Sections
     private enum Section : Int {
         case Blog                       = 0
@@ -143,6 +130,4 @@ public class NotificationSettingSectionsViewController : UITableViewController
     
     // MARK: - Private Properties
     private var blogs                   : [Blog]?
-    private var blogService             : BlogService!
-    private var notificationsService    : NotificationsService!
 }
