@@ -325,19 +325,18 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
-        return PostCardRestoreCellRowHeight;
-    }
-
     CGFloat width = CGRectGetWidth(self.tableView.bounds);
     return [self tableView:tableView heightForRowAtIndexPath:indexPath forWidth:width];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath forWidth:(CGFloat)width
 {
-    PostCardTableViewCell *cell;
     Post *post = (Post *)[self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([[self cellIdentifierForPost:post] isEqualToString:PostCardRestoreCellIdentifier]) {
+        return PostCardRestoreCellRowHeight;
+    }
+
+    PostCardTableViewCell *cell;
     if (![post.pathForDisplayImage length]) {
         cell = self.textCellForLayout;
     } else {
@@ -363,7 +362,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
         return;
     }
 
-    [self editPost:post];
+    [self previewEditPost:post];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -431,12 +430,21 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [WPAnalytics track:WPAnalyticsStatEditorCreatedPost withProperties:@{ @"tap_source": @"posts_view" }];
 }
 
+- (void)previewEditPost:(AbstractPost *)apost
+{
+    [self editPost:apost withEditMode:kWPPostViewControllerModePreview];
+}
+
 - (void)editPost:(AbstractPost *)apost
+{
+    [self editPost:apost withEditMode:kWPPostViewControllerModeEdit];
+}
+
+- (void)editPost:(AbstractPost *)apost withEditMode:(WPPostViewControllerMode)mode
 {
     [WPAnalytics track:WPAnalyticsStatPostListEditAction withProperties:[self propertiesForAnalytics]];
     if ([WPPostViewController isNewEditorEnabled]) {
-        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost
-                                                                                         mode:kWPPostViewControllerModeEdit];
+        WPPostViewController *postViewController = [[WPPostViewController alloc] initWithPost:apost mode:mode];
         postViewController.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:postViewController animated:YES];
     } else {
