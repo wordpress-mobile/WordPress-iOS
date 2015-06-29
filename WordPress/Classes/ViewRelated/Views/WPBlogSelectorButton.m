@@ -67,7 +67,10 @@
 {
     _buttonMode = value;
     if (self.buttonMode == WPBlogSelectorButtonSingleSite) {
-        [self setImage:nil forState:UIControlStateNormal];
+        UIGraphicsBeginImageContextWithOptions(CGSizeMake(15, 15), NO, 0.0);
+        UIImage *blankFillerImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        [self setImage:blankFillerImage forState:UIControlStateNormal];
     } else {
         [self setImage:[UIImage imageNamed:@"icon-navbar-dropdown.png"] forState:UIControlStateNormal];
     }
