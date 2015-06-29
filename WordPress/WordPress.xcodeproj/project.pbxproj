@@ -341,7 +341,7 @@
 		ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
-		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
+		B522C4F81B3DA79B00E47B59 /* NotificationSettingSectionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingSectionsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
 		B52C4C7D199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */; };
 		B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52C4C7E199D74AE009FD823 /* NoteTableViewCell.swift */; };
@@ -381,6 +381,7 @@
 		B587798219B799D800E57C5A /* UIView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587797719B799D800E57C5A /* UIView+Helpers.swift */; };
 		B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587798419B799EB00E57C5A /* Notification+Interface.swift */; };
 		B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587798519B799EB00E57C5A /* NotificationBlock+Interface.swift */; };
+		B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */; };
 		B5A6CEA619FA800E009F07DE /* AccountToAccount20to21.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */; };
 		B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5AA54D41A8E7510003BDD12 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */ = {isa = PBXBuildFile; fileRef = B5AB733C19901F85005F5044 /* WPNoResultsView+AnimatedBox.m */; };
@@ -1205,7 +1206,7 @@
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
 		AEFB66560B716519236CEE67 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
-		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
+		B522C4F71B3DA79B00E47B59 /* NotificationSettingSectionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingSectionsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
 		B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+WebView.m"; sourceTree = "<group>"; };
 		B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockUserTableViewCell.swift; sourceTree = "<group>"; };
@@ -1254,6 +1255,7 @@
 		B587797719B799D800E57C5A /* UIView+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+Helpers.swift"; sourceTree = "<group>"; };
 		B587798419B799EB00E57C5A /* Notification+Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Notification+Interface.swift"; sourceTree = "<group>"; };
 		B587798519B799EB00E57C5A /* NotificationBlock+Interface.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NotificationBlock+Interface.swift"; sourceTree = "<group>"; };
+		B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingDetailsViewController.swift; sourceTree = "<group>"; };
 		B5A6CEA519FA800E009F07DE /* AccountToAccount20to21.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AccountToAccount20to21.swift; path = "20-21/AccountToAccount20to21.swift"; sourceTree = "<group>"; };
 		B5AA54D41A8E7510003BDD12 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		B5AB733B19901F85005F5044 /* WPNoResultsView+AnimatedBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPNoResultsView+AnimatedBox.h"; sourceTree = "<group>"; };
@@ -2939,7 +2941,8 @@
 				B5FD4542199D0F2800286FBB /* NotificationsViewController.m */,
 				B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */,
 				B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */,
-				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
+				B522C4F71B3DA79B00E47B59 /* NotificationSettingSectionsViewController.swift */,
+				B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3989,6 +3992,7 @@
 				591A428C1A6DC1B0003807A6 /* WPBackgroundDimmerView.m in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */,
+				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */,
 				83418AAA11C9FA6E00ACF00C /* Comment.m in Sources */,
 				E125443C12BF5A7200D87A0A /* WordPress.xcdatamodeld in Sources */,
@@ -4223,7 +4227,7 @@
 				E1A03F48174283E10085D192 /* BlogToJetpackAccount.m in Sources */,
 				31F4F6671A1385BE00196A98 /* MeViewController.m in Sources */,
 				5DA3EE13192508F700294E0B /* WPImageOptimizer+Private.m in Sources */,
-				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
+				B522C4F81B3DA79B00E47B59 /* NotificationSettingSectionsViewController.swift in Sources */,
 				B587797C19B799D800E57C5A /* NSParagraphStyle+Helpers.swift in Sources */,
 				5D119DA3176FBE040073D83A /* UIImageView+AFNetworkingExtra.m in Sources */,
 				5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */,
