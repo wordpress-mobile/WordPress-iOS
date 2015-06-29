@@ -36,7 +36,7 @@ static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 NSInteger const EditSiteSectionCount = 2;
 
-NSInteger const EditSiteRowCountForSectionTitle = 2;
+NSInteger const EditSiteRowCountForSectionTitle = 1;
 NSInteger const EditSiteRowCountForSectionTitleSelfHosted = 3;
 NSInteger const EditSiteRowCountForSectionSettings = 2;
 NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;

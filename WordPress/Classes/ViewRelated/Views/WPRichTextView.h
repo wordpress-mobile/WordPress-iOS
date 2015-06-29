@@ -1,5 +1,8 @@
 #import <UIKit/UIKit.h>
 
+extern NSString * const WPRichTextDefaultFontFamily;
+extern NSString * const WPRichTextDefaultFontName;
+
 @class WPRichTextImage;
 @class WPRichTextView;
 
