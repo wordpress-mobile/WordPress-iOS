@@ -9,8 +9,9 @@ public class NotificationSettingsViewController : UITableViewController
         
         title = NSLocalizedString("Settings", comment: "Title displayed in the Notification settings")
         
+        setupServices()
         setupDismissButton()
-        setupBlogsCollection()
+        reloadBlogsList()
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -27,12 +28,11 @@ public class NotificationSettingsViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch Section(rawValue: section)! {
-        case .Blog:
+        if section == Section.Blog.rawValue {
             return blogs?.count ?? emptyRowCount
-        default:
-            return defaultRowCount
         }
+
+        return defaultRowCount
     }
 
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -65,12 +65,10 @@ public class NotificationSettingsViewController : UITableViewController
     
     
     // MARK: - Private Helpers
-    private func setupBlogsCollection() {
-// TODO: Filter only dotcom and jetpack maybe?
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let unwrappedBlogs = service.blogsForAllAccounts() as? [Blog] {
-            blogs = unwrappedBlogs
-        }
+    private func setupServices() {
+        let mainContext         = ContextManager.sharedInstance().mainContext
+        blogService             = BlogService(managedObjectContext: mainContext)
+        notificationsService    = NotificationsService(managedObjectContext: mainContext)
     }
     
     private func setupDismissButton() {
@@ -80,7 +78,14 @@ public class NotificationSettingsViewController : UITableViewController
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: .Plain, target: self, action: action)
     }
 
-    
+    private func reloadBlogsList() {
+// TODO: Filter only dotcom and jetpack maybe?
+        if let unwrappedBlogs = blogService.blogsForAllAccounts() as? [Blog] {
+            blogs = unwrappedBlogs
+        }
+    }
+
+
     // MARK: - Button Handlers
     private func blogWasPressed(blog: Blog?) {
         let blogId = blog!.blogID as? Int
@@ -88,8 +93,7 @@ public class NotificationSettingsViewController : UITableViewController
             return
         }
         
-        let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.getSiteSettings(blogId!,
+        notificationsService.getSiteSettings(blogId!,
             success: {
                 (settings: [NotificationSettings.Site]) in
             },
@@ -99,11 +103,23 @@ public class NotificationSettingsViewController : UITableViewController
     }
     
     private func otherWasPressed() {
-        
+        notificationsService.getOtherSettings({
+                (settings: [NotificationSettings.Other]) in
+            
+            },
+            failure: {
+                (error: NSError!) in
+            })
     }
     
     private func wordPressWasPressed() {
-        
+        notificationsService.getWordPressComSettings({
+                (wpcom: NotificationSettings.WordPressCom) in
+
+            },
+            failure: {
+                (error: NSError!) in
+            })
     }
 
     public func dismissWasPressed(sender: AnyObject) {
@@ -114,17 +130,19 @@ public class NotificationSettingsViewController : UITableViewController
     
     // MARK: - Table Sections
     private enum Section : Int {
-        case Blog               = 0
-        case Other              = 1
-        case WordPress          = 2
-        static let Count        = 3
+        case Blog                       = 0
+        case Other                      = 1
+        case WordPress                  = 2
+        static let Count                = 3
     }
 
     // MARK: - Private Constants
-    private let emptyRowCount   = 0
-    private let defaultRowCount = 1
-    private let reuseIdentifier = "NotificationSettingsTableViewCell"
+    private let emptyRowCount           = 0
+    private let defaultRowCount         = 1
+    private let reuseIdentifier         = "NotificationSettingsTableViewCell"
     
     // MARK: - Private Properties
-    private var blogs : [Blog]?
+    private var blogs                   : [Blog]?
+    private var blogService             : BlogService!
+    private var notificationsService    : NotificationsService!
 }
