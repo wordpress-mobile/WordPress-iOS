@@ -313,6 +313,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatEditorUploadMediaRetried:
             eventName = @"editor_upload_media_retried";
             break;
+        case WPAnalyticsStatLogSpecialCondition:
+            eventName = @"log_special_condition";
+            break;
         case WPAnalyticsStatLoginFailed:
             eventName = @"login_failed_to_login";
             break;
@@ -547,6 +550,25 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatStatsAccessed:
             eventName = @"stats_accessed";
+            break;
+        case WPAnalyticsStatStatsInsightsAccessed:
+            eventName = @"stats_insights_accessed";
+            break;
+        case WPAnalyticsStatStatsPeriodDaysAccessed:
+            eventName = @"stats_period_accessed";
+            eventProperties = @{ @"period" : @"days" };
+            break;
+        case WPAnalyticsStatStatsPeriodMonthsAccessed:
+            eventName = @"stats_period_accessed";
+            eventProperties = @{ @"period" : @"months" };
+            break;
+        case WPAnalyticsStatStatsPeriodWeeksAccessed:
+            eventName = @"stats_period_accessed";
+            eventProperties = @{ @"period" : @"weeks" };
+            break;
+        case WPAnalyticsStatStatsPeriodYearsAccessed:
+            eventName = @"stats_period_accessed";
+            eventProperties = @{ @"period" : @"years" };
             break;
         case WPAnalyticsStatStatsOpenedWebVersion:
             eventName = @"stats_opened_web_version_accessed";
