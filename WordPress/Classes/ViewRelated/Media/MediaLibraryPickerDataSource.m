@@ -287,6 +287,11 @@
         }
     }
     Media *media = [mediaAssets firstObject];
+    if (!media) {
+        UIImage *placeholderImage = [UIImage imageNamed:@"WordPress-share"];
+        completionHandler(placeholderImage, nil);
+        return 0;
+    }
     return [media imageWithSize:size completionHandler:completionHandler];
 }
 
