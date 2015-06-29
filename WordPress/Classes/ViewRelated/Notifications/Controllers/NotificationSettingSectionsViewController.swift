@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NotificationSettingsViewController : UITableViewController
+public class NotificationSettingSectionsViewController : UITableViewController
 {
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
