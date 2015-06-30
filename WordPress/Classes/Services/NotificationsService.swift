@@ -88,10 +88,10 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @param       success Closure to be called on success, with the parsed settings.
     *  @param       failure Closure to be called on failure, with the associated error.
     */
-    public func getWordPressComSettings(success: (NotificationSettings.WordPressCom -> Void)?, failure: (NSError! -> Void)?) {
+    public func getWordPressComSettings(success: ([NotificationSettings.WordPressCom] -> Void)?, failure: (NSError! -> Void)?) {
         notificationsServiceRemote?.getWordPressComSettings({
-                (remote: RemoteNotificationSettings.WordPressCom) in
-                let parsed = NotificationSettings.WordPressCom(remote: remote)
+                (remote: [RemoteNotificationSettings.WordPressCom]) in
+                let parsed = NotificationSettings.WordPressCom.fromArray(remote)
                 success?(parsed)
             },
             failure: { (error: NSError!) in

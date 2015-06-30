@@ -10,12 +10,12 @@ public class NotificationSettings
 {
     let sites           : [Site]
     let other           : [Other]
-    let wpcom           : WordPressCom
+    let wpcom           : [WordPressCom]
     
     init(remote : RemoteNotificationSettings) {
         sites           = Site.fromArray(remote.sites)
         other           = Other.fromArray(remote.other)
-        wpcom           = WordPressCom(remote: remote.wpcom)
+        wpcom           = WordPressCom.fromArray(remote.wpcom)
     }
     
     
@@ -146,6 +146,19 @@ public class NotificationSettings
             recommendations = remote.recommendations
             promotion       = remote.promotion
             digest          = remote.digest
+        }
+        
+        
+        /**
+        *  @brief   Parses a collection of "Remote WordPressCom" entities, into a collection of "WordPressCom" instances.
+        *
+        *  @param   remote          An array of RemoteNotificationSettings.WordPressCom entities.
+        *  @returns                 An array of NotificationSettings.WordPressCom objects.
+        */
+        public static func fromArray(remote: [RemoteNotificationSettings.WordPressCom]) -> [WordPressCom] {
+            return remote.map {
+                return WordPressCom(remote: $0)
+            }
         }
     }
 }
