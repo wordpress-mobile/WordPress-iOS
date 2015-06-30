@@ -7,6 +7,7 @@
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
 @property (nonatomic, strong) NSString *authorURL;
+@property (nonatomic, strong) NSNumber *authorID;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSString *title;
 @property (nonatomic, strong) NSURL *URL;
@@ -18,11 +19,16 @@
 @property (nonatomic, strong) NSString *password;
 @property (nonatomic, strong) NSNumber *parentID;
 @property (nonatomic, strong) NSNumber *postThumbnailID;
+@property (nonatomic, strong) NSString *postThumbnailPath;
 @property (nonatomic, strong) NSString *type;
 @property (nonatomic, strong) NSString *format;
 
+@property (nonatomic, strong) NSNumber *commentCount;
+@property (nonatomic, strong) NSNumber *likeCount;
+
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, strong) NSString *pathForDisplayImage;
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 /**

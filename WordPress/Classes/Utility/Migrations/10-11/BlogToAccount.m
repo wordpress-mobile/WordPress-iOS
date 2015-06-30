@@ -18,6 +18,7 @@
 {
     DDLogInfo(@"%@ %@ (%@ -> %@)", self, NSStringFromSelector(_cmd), [mapping sourceEntityName], [mapping destinationEntityName]);
 
+    NSString *const WPComDefaultAccountUsernameKey = @"wpcom_username_preference";
     NSString *username = [[NSUserDefaults standardUserDefaults] objectForKey:WPComDefaultAccountUsernameKey];
     if (!username) {
         // There is no default WordPress.com account, nothing to do here

@@ -3,10 +3,17 @@
 #import <AFNetworking/UIKit+AFNetworking.h>
 #import "WordPressAppDelegate.h"
 
+
+static CGFloat const MaximumZoomScale = 4.0;
+static CGFloat const MinimumZoomScale = 0.1;
+
 @interface WPImageViewController ()<UIScrollViewDelegate>
 
-- (void)handleImageTapped:(UITapGestureRecognizer *)tgr;
-- (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr;
+@property (nonatomic, assign) BOOL isLoadingImage;
+@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, assign) BOOL shouldHideStatusBar;
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicatorView;
 
 @end
 
@@ -14,32 +21,22 @@
 
 #pragma mark - LifeCycle Methods
 
-- (id)initWithImage:(UIImage *)image
+- (instancetype)initWithImage:(UIImage *)image
 {
-    self = [self init];
-    if (self) {
-        self.image = [image copy];
-    }
-
-    return self;
+    return [self initWithImage:image andURL:nil];
 }
 
-- (id)initWithURL:(NSURL *)url
+- (instancetype)initWithURL:(NSURL *)url
 {
-    self = [self init];
-    if (self) {
-        self.url = url;
-    }
-
-    return self;
+    return [self initWithImage:nil andURL: url];
 }
 
-- (id)initWithImage:(UIImage *)image andURL:(NSURL *)url
+- (instancetype)initWithImage:(UIImage *)image andURL:(NSURL *)url
 {
-    self = [self init];
+    self = [super init];
     if (self) {
-        self.image = [image copy];
-        self.url = url;
+        _image = [image copy];
+        _url = url;
     }
     return self;
 }
@@ -53,25 +50,32 @@
     CGRect frame = self.view.frame;
     frame = CGRectMake(0.0f, 0.0f, frame.size.width, frame.size.height);
     self.scrollView = [[UIScrollView alloc] initWithFrame:frame];
-    _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    _scrollView.maximumZoomScale = 4.0f;
-    _scrollView.minimumZoomScale = 0.1f;
-    _scrollView.scrollsToTop = NO;
-    _scrollView.delegate = self;
-    [self.view addSubview:_scrollView];
+    self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.scrollView.maximumZoomScale = MaximumZoomScale;
+    self.scrollView.minimumZoomScale = MinimumZoomScale;
+    self.scrollView.scrollsToTop = NO;
+    self.scrollView.delegate = self;
+    [self.view addSubview:self.scrollView];
 
     self.imageView = [[UIImageView alloc] initWithFrame:frame];
-    _imageView.userInteractionEnabled = YES;
-    [_scrollView addSubview:_imageView];
+    self.imageView.userInteractionEnabled = YES;
+    [self.scrollView addSubview:self.imageView];
 
     UITapGestureRecognizer *tgr2 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageDoubleTapped:)];
     [tgr2 setNumberOfTapsRequired:2];
-    [_imageView addGestureRecognizer:tgr2];
+    [self.imageView addGestureRecognizer:tgr2];
 
     UITapGestureRecognizer *tgr1 = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
     [tgr1 setNumberOfTapsRequired:1];
     [tgr1 requireGestureRecognizerToFail:tgr2];
-    [_scrollView addGestureRecognizer:tgr1];
+    [self.scrollView addGestureRecognizer:tgr1];
+    
+    self.activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
+    self.activityIndicatorView.color = [WPStyleGuide greyDarken30];
+    self.activityIndicatorView.hidesWhenStopped = YES;
+    self.activityIndicatorView.center = self.view.center;
+    self.activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
+    [self.view addSubview:self.activityIndicatorView];
 
     [self loadImage];
 }
@@ -83,28 +87,33 @@
     }
 
     if (self.image != nil) {
-        _imageView.image = self.image;
-        [_imageView sizeToFit];
-        _scrollView.contentSize = _imageView.image.size;
+        self.imageView.image = self.image;
+        [self.imageView sizeToFit];
+        self.scrollView.contentSize = self.imageView.image.size;
         [self centerImage];
 
     } else if (self.url) {
         self.isLoadingImage = YES;
-
-        __weak UIImageView *imageViewRef = _imageView;
-        __weak UIScrollView *scrollViewRef = _scrollView;
-        __weak WPImageViewController *selfRef = self;
+        [self.activityIndicatorView startAnimating];
+        __weak __typeof__(self) weakSelf = self;
         [_imageView setImageWithURLRequest:[NSURLRequest requestWithURL:self.url]
                          placeholderImage:self.image
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                                      imageViewRef.image = image;
-                                      [imageViewRef sizeToFit];
-                                      scrollViewRef.contentSize = imageViewRef.image.size;
-                                      [selfRef centerImage];
-                                      selfRef.isLoadingImage = NO;
+                                      __typeof__(self) strongSelf = weakSelf;
+                                      if (!strongSelf) {
+                                          return;
+                                      }
+                                      [strongSelf.activityIndicatorView stopAnimating];
+                                      strongSelf.imageView.image = image;
+                                      [strongSelf.imageView sizeToFit];
+                                      strongSelf.scrollView.contentSize = strongSelf.imageView.image.size;
+                                      [strongSelf centerImage];
+                                      strongSelf.isLoadingImage = NO;
                                   } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
                                       DDLogError(@"Error loading image: %@", error);
-                                      selfRef.isLoadingImage = NO;
+                                      __typeof__(self) strongSelf = weakSelf;
+                                      [strongSelf.activityIndicatorView stopAnimating];
+                                      strongSelf.isLoadingImage = NO;
                                   }];
     }
 }
@@ -129,29 +138,32 @@
     [self centerImage];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
 #pragma mark - Instance Methods
 
 - (void)hideBars:(BOOL)hide animated:(BOOL)animated
 {
-
-    [[UIApplication sharedApplication] setStatusBarHidden:hide withAnimation:(animated ? UIStatusBarAnimationFade : UIStatusBarAnimationNone)];
-
+    self.shouldHideStatusBar = hide;
+    
+    // Force an update of the status bar appearance and visiblity
+    if (animated) {
+        [UIView animateWithDuration:0.3
+                         animations:^{
+                             [self setNeedsStatusBarAppearanceUpdate];
+                         }];
+    } else {
+        [self setNeedsStatusBarAppearanceUpdate];
+    }
 }
 
 - (void)centerImage
 {
-    CGFloat scaleWidth = _scrollView.frame.size.width / _imageView.image.size.width;
-    CGFloat scaleHeight = _scrollView.frame.size.height / _imageView.image.size.height;
+    CGFloat scaleWidth = CGRectGetWidth(self.scrollView.frame) / self.imageView.image.size.width;
+    CGFloat scaleHeight = CGRectGetHeight(self.scrollView.frame) / self.imageView.image.size.height;
 
-    _scrollView.minimumZoomScale = MIN(scaleWidth, scaleHeight);
-    _scrollView.zoomScale = _scrollView.minimumZoomScale;
+    self.scrollView.minimumZoomScale = MIN(scaleWidth, scaleHeight);
+    self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
 
-    [self scrollViewDidZoom:_scrollView];
+    [self scrollViewDidZoom:self.scrollView];
 }
 
 - (void)handleImageTapped:(UITapGestureRecognizer *)tgr
@@ -161,34 +173,34 @@
 
 - (void)handleImageDoubleTapped:(UITapGestureRecognizer *)tgr
 {
-    if (_scrollView.zoomScale > _scrollView.minimumZoomScale) {
-        [_scrollView setZoomScale:_scrollView.minimumZoomScale animated:YES];
+    if (self.scrollView.zoomScale > self.scrollView.minimumZoomScale) {
+        [self.scrollView setZoomScale:self.scrollView.minimumZoomScale animated:YES];
         return;
     }
 
-    CGPoint point = [tgr locationInView:_imageView];
-    CGSize size = _scrollView.frame.size;
+    CGPoint point = [tgr locationInView:self.imageView];
+    CGSize size = self.scrollView.frame.size;
 
-    CGFloat w = size.width / _scrollView.maximumZoomScale;
-    CGFloat h = size.height / _scrollView.maximumZoomScale;
+    CGFloat w = size.width / self.scrollView.maximumZoomScale;
+    CGFloat h = size.height / self.scrollView.maximumZoomScale;
     CGFloat x = point.x - (w / 2.0f);
     CGFloat y = point.y - (h / 2.0f);
 
     CGRect rect = CGRectMake(x, y, w, h);
-    [_scrollView zoomToRect:rect animated:YES];
+    [self.scrollView zoomToRect:rect animated:YES];
 }
 
 #pragma mark - UIScrollView Delegate
 
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-    return _imageView;
+    return self.imageView;
 }
 
 - (void)scrollViewDidZoom:(UIScrollView *)scrollView
 {
     CGSize size = scrollView.frame.size;
-    CGRect frame = _imageView.frame;
+    CGRect frame = self.imageView.frame;
 
     if (frame.size.width < size.width) {
         frame.origin.x = (size.width - frame.size.width) / 2;
@@ -202,7 +214,46 @@
         frame.origin.y = 0;
     }
 
-    _imageView.frame = frame;
+    self.imageView.frame = frame;
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    return self.shouldHideStatusBar;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (UIStatusBarAnimation)preferredStatusBarUpdateAnimation
+{
+    return UIStatusBarAnimationFade;
+}
+
+#pragma mark - Static Helpers
+
++ (BOOL)isUrlSupported:(NSURL *)url
+{
+    // Safeguard
+    if (!url) {
+        return NO;
+    }
+    
+    // We only support: PNG + JPG + JPEG + GIF
+    NSString *absoluteURL = url.absoluteString;
+
+    NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
+    for (NSString *type in types) {
+        if (NSNotFound != [absoluteURL rangeOfString:type].location) {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 @end

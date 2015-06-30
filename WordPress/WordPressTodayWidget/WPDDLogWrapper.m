@@ -2,14 +2,14 @@
 #import "WPDDLogWrapper.h"
 
 // Logging Framework Lumberjack
-#import "DDLog.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #if DEBUG
 #import "DDTTYLogger.h"
 #import "DDASLLogger.h"
 #endif
 
-int ddLogLevel                                                  = LOG_LEVEL_INFO;
+int ddLogLevel                                                  = DDLogLevelInfo;
 
 @implementation WPDDLogWrapper
 

@@ -2,19 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14C109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <mutableArray key="OpenSans-Bold.ttf">
-            <string>OpenSans-Bold</string>
-        </mutableArray>
-        <mutableArray key="OpenSans-Light.ttf">
-            <string>OpenSans-Light</string>
-        </mutableArray>
-        <mutableArray key="OpenSans-Regular.ttf">
-            <string>OpenSans</string>
-        </mutableArray>
-    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -28,7 +17,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="34" id="sug-n5-6nx"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="OpenSans-Bold" family="Open Sans" pointSize="18"/>
+                    <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vcP-jy-MXs" userLabel="Separator Line View">
@@ -40,10 +29,11 @@
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JiN-6m-R2d">
                     <rect key="frame" x="0.0" y="232" width="260" height="60"/>
+                    <accessibility key="accessibilityConfiguration" label="new-editor-modal-dismiss-button"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="q6a-Ez-UNQ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="OpenSans-Light" family="Open Sans" pointSize="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="Great, thanks!">
                         <color key="titleColor" red="0.054901960784313725" green="0.45098039215686275" blue="0.69803921568627447" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -72,7 +62,7 @@
                         <constraint firstAttribute="height" constant="100" id="d06-w8-7sQ"/>
                         <constraint firstAttribute="width" constant="200" id="qKj-0j-rfx"/>
                     </constraints>
-                    <fontDescription key="fontDescription" name="OpenSans" family="Open Sans" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                     <connections>
                         <outlet property="delegate" destination="iN0-l3-epB" id="vib-OP-dB5"/>
@@ -121,6 +111,7 @@
                 </mask>
             </variation>
             <connections>
+                <outlet property="acceptButton" destination="JiN-6m-R2d" id="2CR-1f-n6a"/>
                 <outlet property="details" destination="7Yo-lx-1UL" id="eEq-ir-BGX"/>
                 <outlet property="detailsHeightConstraint" destination="d06-w8-7sQ" id="buX-Kv-Rll"/>
                 <outlet property="imageView" destination="rZt-IM-vJ7" id="JGZ-vj-KV2"/>

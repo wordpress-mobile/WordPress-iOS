@@ -2,6 +2,7 @@
 #import "Post.h"
 #import "Comment.h"
 #import "WPAccount.h"
+#import "AccountService.h"
 #import "NSURL+IDN.h"
 #import "ContextManager.h"
 #import "Constants.h"
@@ -13,10 +14,13 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
-@implementation Blog {
-    WPXMLRPCClient *_api;
-    NSString *_blavatarUrl;
-}
+@interface Blog ()
+@property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
+@property (nonatomic, weak, readwrite) NSString *blavatarUrl;
+@property (nonatomic, strong, readwrite) JetpackState *jetpack;
+@end
+
+@implementation Blog
 
 @dynamic blogID;
 @dynamic blogName;
@@ -43,11 +47,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@dynamic isMultiAuthor;
+@dynamic isJetpack;
+@synthesize api = _api;
+@synthesize blavatarUrl = _blavatarUrl;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
-@synthesize isSyncingComments;
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
+@synthesize jetpack = _jetpack;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -64,8 +72,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
     [super didTurnIntoFault];
 
     // Clean up instance variables
-    _blavatarUrl = nil;
-    _api = nil;
+    self.blavatarUrl = nil;
+    self.api = nil;
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
@@ -238,15 +246,10 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSArray arrayWithArray:sortedNames];
 }
 
-- (BOOL)isWPcom
-{
-    return self.account.isWpcom;
-}
-
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
+    return (self.isHostedAtWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
 }
 
 - (NSDictionary *)getImageResizeDimensions
@@ -268,49 +271,23 @@ static NSInteger const ImageSizeLargeHeight = 480;
              @"largeSize": [NSValue valueWithCGSize:largeSize]};
 }
 
-- (void)dataSave
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-- (void)remove
-{
-    DDLogInfo(@"<Blog:%@> remove", self.hostURL);
-    [self.api cancelAllHTTPOperations];
-    [self.managedObjectContext performBlock:^{
-        WPAccount *account = self.account;
-
-        NSManagedObjectContext *context = [self managedObjectContext];
-        [context deleteObject:self];
-        // For self hosted blogs, remove account unless there are other associated blogs
-        if (account && !account.isWpcom) {
-            if ([account.blogs count] == 1 && [[account.blogs anyObject] isEqual:self]) {
-                [context deleteObject:account];
-            }
-        }
-        [self dataSave];
-        [WPAnalytics refreshMetadata];
-    }];
-}
-
 - (void)setXmlrpc:(NSString *)xmlrpc
 {
     [self willChangeValueForKey:@"xmlrpc"];
     [self setPrimitiveValue:xmlrpc forKey:@"xmlrpc"];
     [self didChangeValueForKey:@"xmlrpc"];
-     _blavatarUrl = nil;
+    
+    self.blavatarUrl = nil;
 
     // Reset the api client so next time we use the new XML-RPC URL
-     _api = nil;
+    self.api = nil;
 }
 
 - (NSArray *)getXMLRPCArgsWithExtra:(id)extra
 {
     NSMutableArray *result = [NSMutableArray array];
-    NSString *password = self.password;
-    if (!password) {
-        password = @"";
-    }
+    NSString *password = self.password ?: [NSString string];
+    
     [result addObject:self.blogID];
     [result addObject:self.username];
     [result addObject:password];
@@ -342,10 +319,16 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)password
 {
-    WPAccount *account = self.account;
-    NSString *password = account.password ?: @"";
+    return self.account.password ?: @"";
+}
 
-    return password;
+- (NSString *)authToken
+{
+    if (self.jetpackAccount) {
+        return self.jetpackAccount.authToken;
+    } else {
+        return self.account.authToken;
+    }
 }
 
 - (BOOL)supportsFeaturedImages
@@ -358,9 +341,113 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return NO;
 }
 
+- (BOOL)supports:(BlogFeature)feature
+{
+    switch (feature) {
+        case BlogFeatureRemovable:
+            return ![self accountIsDefaultAccount];
+        case BlogFeatureVisibility:
+            /*
+             See -[BlogListViewController fetchRequestPredicateForHideableBlogs]
+             If the logic for this changes that needs to be updated as well
+             */
+            return [self accountIsDefaultAccount];
+        case BlogFeatureWPComRESTAPI:
+            return [self restApi] != nil;
+        case BlogFeatureStats:
+            return [self restApiForStats] != nil;
+        case BlogFeatureCommentLikes:
+        case BlogFeatureReblog:
+        case BlogFeatureMentions:
+        case BlogFeatureOAuth2Login:
+            return [self isHostedAtWPcom];
+        case BlogFeaturePushNotifications:
+            return [self supportsPushNotifications];
+    }
+}
+
+- (BOOL)supportsPushNotifications
+{
+    if (self.jetpackAccount) {
+        return [self jetpackAccountIsDefaultAccount];
+    } else {
+        return [self accountIsDefaultAccount];
+    }
+}
+
+- (BOOL)accountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.account];
+}
+
+- (BOOL)jetpackAccountIsDefaultAccount
+{
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    return [defaultAccount isEqual:self.jetpackAccount];
+}
+
+- (BOOL)isHostedAtWPcom
+{
+    return self.account.isWpcom && !self.isJetpack;
+}
+
 - (NSNumber *)dotComID
 {
-    return self.blogID;
+    /*
+     mergeBlogs isn't atomic so there might be a small window for Jetpack sites
+     where self.account is the WordPress.com account, but self.blogID still has
+     the self hosted ID.
+     
+     Even if the blog is using Jetpack REST, self.jetpack.siteID should still
+     have the correct wp.com blog ID, so let's try that one first
+     */
+    if (self.jetpack.siteID) {
+        return self.jetpack.siteID;
+    } else if (self.account.isWpcom) {
+        return self.blogID;
+    } else {
+        return nil;
+    }
+}
+
+- (NSSet *)allowedFileTypes
+{
+    NSArray * allowedFileTypes = self.options[@"allowed_file_types"][@"value"];
+    if (!allowedFileTypes || allowedFileTypes.count == 0) {
+        return nil;
+    }
+    
+    return [NSSet setWithArray:allowedFileTypes];
+}
+
+- (void)setOptions:(NSDictionary *)options
+{
+    [self willChangeValueForKey:@"options"];
+    [self setPrimitiveValue:options forKey:@"options"];
+    // Invalidate the Jetpack state since it's constructed from options
+    self.jetpack = nil;
+    [self didChangeValueForKey:@"options"];
+}
+
++ (NSSet *)keyPathsForValuesAffectingJetpack
+{
+    return [NSSet setWithObject:@"options"];
+}
+
+- (NSString *)logDescription
+{
+    NSString *extra = @"";
+    if (self.account.isWpcom) {
+        extra = [NSString stringWithFormat:@" wp.com account: %@ blogId: %@", self.account.isWpcom ? self.account.username : @"NO", self.blogID];
+    } else if (self.jetpackAccount) {
+        extra = [NSString stringWithFormat:@" jetpack: 🚀🚀 Jetpack %@ fully connected as %@ with site ID %@", self.jetpack.version, self.jetpackAccount.username, self.jetpack.siteID];
+    } else {
+        extra = [NSString stringWithFormat:@" jetpack: %@", [self.jetpack description]];
+    }
+    return [NSString stringWithFormat:@"<Blog Name: %@ URL: %@ XML-RPC: %@%@>", self.blogName, self.url, self.xmlrpc, extra];
 }
 
 #pragma mark - api accessor
@@ -370,7 +457,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
     if (_api == nil) {
         _api = [[WPXMLRPCClient alloc] initWithXMLRPCEndpoint:[NSURL URLWithString:self.xmlrpc]];
         // Enable compression for wp.com only, as some self hosted have connection issues
-        if (self.isWPcom) {
+        if ([self isHostedAtWPcom]) {
             [_api setDefaultHeader:@"Accept-Encoding" value:@"gzip, deflate"];
             [_api setAuthorizationHeaderWithToken:self.account.authToken];
         }
@@ -380,12 +467,48 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (WordPressComApi *)restApi
 {
-    if (self.isWPcom) {
+    if (self.account.isWpcom) {
         return self.account.restApi;
     } else if ([self jetpackRESTSupported]) {
         return self.jetpackAccount.restApi;
     }
     return nil;
+}
+
+/*
+ 2015-05-26 koke: this is a temporary method to check if a blog supports BlogFeatureStats.
+ It works like restApi, but bypasses WPJetpackRESTEnabled, since we always want to use rest for Stats.
+ */
+- (WordPressComApi *)restApiForStats
+{
+    if (self.account.isWpcom) {
+        return self.account.restApi;
+    } else if (self.jetpackAccount && self.dotComID) {
+        return self.jetpackAccount.restApi;
+    }
+    return nil;
+}
+
+#pragma mark - Jetpack
+
+- (JetpackState *)jetpack
+{
+    if (_jetpack) {
+        return _jetpack;
+    }
+    if ([self.options count] == 0) {
+        return nil;
+    }
+    _jetpack = [JetpackState new];
+    _jetpack.siteID = [[self getOptionValue:@"jetpack_client_id"] numericValue];
+    _jetpack.version = [self getOptionValue:@"jetpack_version"];
+    if (self.jetpackAccount.username) {
+        _jetpack.connectedUsername = self.jetpackAccount.username;
+    } else {
+        _jetpack.connectedUsername = [self getOptionValue:@"jetpack_user_login"];
+    }
+    _jetpack.connectedEmail = [self getOptionValue:@"jetpack_user_email"];
+    return _jetpack;
 }
 
 - (BOOL)jetpackRESTSupported

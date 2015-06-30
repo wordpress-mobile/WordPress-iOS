@@ -1,8 +1,9 @@
 #import "PostServiceRemoteREST.h"
 #import "WordPressComApi.h"
 #import "Blog.h"
+#import "DisplayableImageHelper.h"
 #import "RemotePost.h"
-#import "RemoteCategory.h"
+#import "RemotePostCategory.h"
 #import "NSDate+WordPressJSON.h"
 
 @interface PostServiceRemoteREST ()
@@ -57,7 +58,7 @@
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
     NSDictionary *parameters = @{
-                                 @"status": @"any",
+                                 @"status": @"any,trash",
                                  @"context": @"edit",
                                  @"number": @40,
                                  @"type": postType,
@@ -143,6 +144,53 @@
            }];
 }
 
+- (void)trashPost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(post != nil);
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
+               if (success) {
+                   success(post);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+- (void)restorePost:(RemotePost *)post
+           forBlog:(Blog *)blog
+           success:(void (^)(RemotePost *))success
+           failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert(post != nil);
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
+               if (success) {
+                   success(post);
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
+
 #pragma mark - Private methods
 
 - (NSArray *)remotePostsFromJSONArray:(NSArray *)jsonPosts {
@@ -156,11 +204,12 @@
 - (RemotePost *)remotePostFromJSONDictionary:(NSDictionary *)jsonPost {
     RemotePost *post = [RemotePost new];
     post.postID = jsonPost[@"ID"];
-    post.siteID = jsonPost[@"siteID"];
+    post.siteID = jsonPost[@"site_ID"];
     post.authorAvatarURL = jsonPost[@"author"][@"avatar_URL"];
     post.authorDisplayName = jsonPost[@"author"][@"name"];
     post.authorEmail = [jsonPost[@"author"] stringForKey:@"email"];
     post.authorURL = jsonPost[@"author"][@"URL"];
+    post.authorID = [jsonPost numberForKeyPath:@"author.ID"];
     post.date = [NSDate dateWithWordPressComJSONString:jsonPost[@"date"]];
     post.title = jsonPost[@"title"];
     post.URL = [NSURL URLWithString:jsonPost[@"URL"]];
@@ -168,7 +217,7 @@
     post.content = jsonPost[@"content"];
     post.excerpt = jsonPost[@"excerpt"];
     post.slug = jsonPost[@"slug"];
-    post.status = [self statusWithRemoteStatus:jsonPost[@"status"]];
+    post.status = jsonPost[@"status"];
     post.password = jsonPost[@"password"];
     if ([post.password isEmpty]) {
         post.password = nil;
@@ -177,8 +226,12 @@
     // post_thumbnail can be null, which will transform to NSNull, so we need to add the extra check
     NSDictionary *postThumbnail = [jsonPost dictionaryForKey:@"post_thumbnail"];
     post.postThumbnailID = [postThumbnail numberForKey:@"ID"];
+    post.postThumbnailPath = [postThumbnail stringForKeyPath:@"URL"];
     post.type = jsonPost[@"type"];
     post.format = jsonPost[@"format"];
+
+    post.commentCount = [jsonPost numberForKeyPath:@"discussion.comment_count"] ?: @0;
+    post.likeCount = [jsonPost numberForKeyPath:@"like_count"] ?: @0;
 
     // FIXME: remove conversion once API is fixed #38-io
     // metadata should always be an array but it's returning false when there are no custom fields
@@ -195,6 +248,19 @@
     }
     post.tags = [self tagNamesFromJSONDictionary:jsonPost[@"tags"]];
 
+    // Pick an image to use for display
+    if (post.postThumbnailPath) {
+        post.pathForDisplayImage = post.postThumbnailPath;
+    } else {
+        // check attachments for a suitable image
+        post.pathForDisplayImage = [DisplayableImageHelper searchPostAttachmentsForImageToDisplay:[jsonPost dictionaryForKey:@"attachments"]];
+
+        // parse contents for a suitable image
+        if (!post.pathForDisplayImage) {
+            post.pathForDisplayImage = [DisplayableImageHelper searchPostContentForImageToDisplay:post.content];
+        }
+    }
+
     return post;
 }
 
@@ -202,6 +268,7 @@
 {
     NSParameterAssert(post.title != nil);
     NSParameterAssert(post.content != nil);
+    BOOL existingPost = ([post.postID longLongValue] > 0);
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     
     if (post.title) {
@@ -217,6 +284,8 @@
 
     if (post.date) {
         parameters[@"date"] = [post.date WordPressComJSONString];
+    } else if (existingPost) {
+        parameters[@"date"] = [[NSDate date] WordPressComJSONString];
     }
     if (post.excerpt) {
         parameters[@"excerpt"] = post.excerpt;
@@ -262,14 +331,6 @@
     return [NSArray arrayWithArray:metadata];
 }
 
-- (NSString *)statusWithRemoteStatus:(NSString *)remoteStatus {
-    NSString *status = remoteStatus;
-    if ([status isEqualToString:@"future"]) {
-        status = @"publish";
-    }
-    return status;
-}
-
 - (NSArray *)remoteCategoriesFromJSONArray:(NSArray *)jsonCategories {
     NSMutableArray *categories = [NSMutableArray arrayWithCapacity:jsonCategories.count];
     for (NSDictionary *jsonCategory in jsonCategories) {
@@ -278,8 +339,8 @@
     return [NSArray arrayWithArray:categories];
 }
 
-- (RemoteCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {
-    RemoteCategory *category = [RemoteCategory new];
+- (RemotePostCategory *)remoteCategoryFromJSONDictionary:(NSDictionary *)jsonCategory {
+    RemotePostCategory *category = [RemotePostCategory new];
     category.categoryID = jsonCategory[@"ID"];
     category.name = jsonCategory[@"name"];
     category.parentID = jsonCategory[@"parent"];

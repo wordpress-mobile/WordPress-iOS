@@ -51,9 +51,12 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *path = media.localURL;
     NSString *type = media.mimeType;
     NSString *filename = media.file;
-    
+
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
-    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+    NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
+                                                                                    URLString:[[NSURL URLWithString:apiPath relativeToURL:self.api.baseURL] absoluteString]
+                                                                                   parameters:nil
+                                                                    constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
         NSURL *url = [[NSURL alloc] initFileURLWithPath:path];
         [formData appendPartWithFileURL:url name:@"media[]" fileName:filename mimeType:type error:nil];
     } error:nil];
@@ -83,6 +86,7 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         }
         
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogDebug(@"Error uploading file: %@", [error localizedDescription]);
         localProgress.totalUnitCount=0;
         localProgress.completedUnitCount=0;
         if (failure) {
@@ -111,38 +115,23 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
 
 - (RemoteMedia *)remoteMediaFromJSONDictionary:(NSDictionary *)jsonMedia
 {
-    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];    
-    if (jsonMedia[@"id"]) {
-        remoteMedia.mediaID =  @([jsonMedia[@"id"] intValue]);
-        remoteMedia.url = [NSURL URLWithString:jsonMedia[@"link"]];
-        //remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
-        remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
-        remoteMedia.postID = jsonMedia[@"parent"];
-        remoteMedia.file = jsonMedia[@"metadata"][@"file"];
-        //remoteMedia.mimeType = jsonMedia[@"mime_type"];
-        remoteMedia.extension = [jsonMedia[@"metadata"][@"file"] pathExtension];
-        remoteMedia.title = jsonMedia[@"title"];
-        remoteMedia.caption = jsonMedia[@"caption"];
-        //remoteMedia.descriptionText = jsonMedia[@"description"];
-        remoteMedia.height = jsonMedia[@"metadata"][@"height"];
-        remoteMedia.width = jsonMedia[@"metadata"][@"width"];
-        remoteMedia.exif = jsonMedia[@"metadata"][@"image_meta"];
-    } else {
-        // v1.1
-        remoteMedia.mediaID =  jsonMedia[@"ID"];
-        remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
-        remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
-        remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
-        remoteMedia.postID = jsonMedia[@"post_ID"];
-        remoteMedia.file = jsonMedia[@"file"];
-        remoteMedia.mimeType = jsonMedia[@"mime_type"];
-        remoteMedia.extension = jsonMedia[@"extension"];
-        remoteMedia.title = jsonMedia[@"title"];
-        remoteMedia.caption = jsonMedia[@"caption"];
-        remoteMedia.descriptionText = jsonMedia[@"description"];
-        remoteMedia.height = jsonMedia[@"height"];
-        remoteMedia.width = jsonMedia[@"width"];
-        remoteMedia.exif = jsonMedia[@"exif"];
+    RemoteMedia * remoteMedia=[[RemoteMedia alloc] init];
+    remoteMedia.mediaID =  jsonMedia[@"ID"];
+    remoteMedia.url = [NSURL URLWithString:jsonMedia[@"URL"]];
+    remoteMedia.guid = [NSURL URLWithString:jsonMedia[@"guid"]];
+    remoteMedia.date = [NSDate dateWithWordPressComJSONString:jsonMedia[@"date"]];
+    remoteMedia.postID = jsonMedia[@"post_ID"];
+    remoteMedia.file = jsonMedia[@"file"];
+    remoteMedia.mimeType = jsonMedia[@"mime_type"];
+    remoteMedia.extension = jsonMedia[@"extension"];
+    remoteMedia.title = jsonMedia[@"title"];
+    remoteMedia.caption = jsonMedia[@"caption"];
+    remoteMedia.descriptionText = jsonMedia[@"description"];
+    remoteMedia.height = jsonMedia[@"height"];
+    remoteMedia.width = jsonMedia[@"width"];
+    remoteMedia.exif = jsonMedia[@"exif"];
+    if (jsonMedia[@"videopress_guid"]) {
+        remoteMedia.shortcode = jsonMedia[@"videopress_guid"];
     }
     return remoteMedia;
 }

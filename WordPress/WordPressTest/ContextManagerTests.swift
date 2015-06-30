@@ -25,7 +25,7 @@ class ContextManagerTests: XCTestCase {
         let psc = contextManager.persistentStoreCoordinator
         
         // Insert a Theme Entity
-        let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal) as NSManagedObject
+        let objectOriginal = NSEntityDescription.insertNewObjectForEntityForName("Theme", inManagedObjectContext: mocOriginal) as! NSManagedObject
         mocOriginal.obtainPermanentIDsForObjects([objectOriginal], error: nil)
         var error: NSError?
         mocOriginal.save(&error)
@@ -220,11 +220,11 @@ class ContextManagerTests: XCTestCase {
 
         let authorAvatarURL = "http://lorempixum.com/"
 
-        let post = NSEntityDescription.insertNewObjectForEntityForName("Post", inManagedObjectContext: mainContext) as Post
+        let post = NSEntityDescription.insertNewObjectForEntityForName("Post", inManagedObjectContext: mainContext) as! Post
         post.blog = blog
         post.authorAvatarURL = authorAvatarURL
 
-        let readerPost = NSEntityDescription.insertNewObjectForEntityForName("ReaderPost", inManagedObjectContext: mainContext) as ReaderPost
+        let readerPost = NSEntityDescription.insertNewObjectForEntityForName("ReaderPost", inManagedObjectContext: mainContext) as! ReaderPost
         readerPost.authorAvatarURL = authorAvatarURL
 
         mainContext.save(nil)
@@ -239,7 +239,7 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(1, postsResults!.count, "We should get one Post")
 
         // Test authorAvatarURL integrity after migration
-        let existingPost = postsResults!.first! as Post
+        let existingPost = postsResults!.first! as! Post
         XCTAssertEqual(existingPost.authorAvatarURL, authorAvatarURL)
 
         // Test the existence of ReaderPost object after migration
@@ -248,13 +248,13 @@ class ContextManagerTests: XCTestCase {
         XCTAssertEqual(1, readerPostsResults!.count, "We should get one ReaderPost")
 
         // Test authorAvatarURL integrity after migration
-        let existingReaderPost = readerPostsResults!.first! as ReaderPost
+        let existingReaderPost = readerPostsResults!.first! as! ReaderPost
         XCTAssertEqual(existingReaderPost.authorAvatarURL, authorAvatarURL)
 
         // Test for existence of authorAvatarURL in the model
         let secondAccount = newAccountInContext(secondContext)
         let secondBlog = newBlogInAccount(secondAccount)
-        let page = NSEntityDescription.insertNewObjectForEntityForName("Page", inManagedObjectContext: secondContext) as Page
+        let page = NSEntityDescription.insertNewObjectForEntityForName("Page", inManagedObjectContext: secondContext) as! Page
         page.blog = secondBlog
         page.authorAvatarURL = authorAvatarURL
 
@@ -271,7 +271,7 @@ class ContextManagerTests: XCTestCase {
         let model = NSManagedObjectModel(contentsOfURL: modelURL!)
         let persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: model!)
         
-        let storeUrl = contextManager.storeURL()
+        let storeUrl = contextManager.storeURL
         removeStoresBasedOnStoreURL(storeUrl)
         
         let persistentStore = persistentStoreCoordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: storeUrl, options: nil, error: nil)
@@ -306,12 +306,12 @@ class ContextManagerTests: XCTestCase {
     
     private func urlForModelName(name: NSString!) -> NSURL? {
         var bundle = NSBundle.mainBundle()
-        var url = bundle.URLForResource(name, withExtension: "mom")
+        var url = bundle.URLForResource(name as String, withExtension: "mom")
         
         if url == nil {
             var momdPaths = bundle.pathsForResourcesOfType("momd", inDirectory: nil);
             for momdPath in momdPaths {
-                url = bundle.URLForResource(name, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
+                url = bundle.URLForResource(name as String, withExtension: "mom", subdirectory: momdPath.lastPathComponent)
             }
         }
         
@@ -325,7 +325,7 @@ class ContextManagerTests: XCTestCase {
         
         let fileManager = NSFileManager.defaultManager()
         let directoryUrl = storeURL.URLByDeletingLastPathComponent
-        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as Array<NSURL>
+        let files = fileManager.contentsOfDirectoryAtURL(directoryUrl!, includingPropertiesForKeys: nil, options: NSDirectoryEnumerationOptions.SkipsSubdirectoryDescendants, error: nil) as! Array<NSURL>
         for file in files {
             let range = file.lastPathComponent?.rangeOfString(storeURL.lastPathComponent!, options: nil, range: nil, locale: nil)
             if range?.startIndex != range?.endIndex {
@@ -335,7 +335,7 @@ class ContextManagerTests: XCTestCase {
     }
     
     private func newAccountInContext(context: NSManagedObjectContext) -> WPAccount {
-        let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: context) as WPAccount
+        let account = NSEntityDescription.insertNewObjectForEntityForName("Account", inManagedObjectContext: context) as! WPAccount
         account.username = "username"
         account.isWpcom = true
         account.authToken = "authtoken"
@@ -344,7 +344,7 @@ class ContextManagerTests: XCTestCase {
     }
     
     private func newBlogInAccount(account: WPAccount) -> Blog {
-        let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: account.managedObjectContext!) as Blog
+        let blog = NSEntityDescription.insertNewObjectForEntityForName("Blog", inManagedObjectContext: account.managedObjectContext!) as! Blog
         blog.xmlrpc = "http://test.blog/xmlrpc.php";
         blog.url = "http://test.blog/";
         blog.account = account

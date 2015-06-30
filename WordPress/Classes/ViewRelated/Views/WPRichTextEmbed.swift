@@ -112,7 +112,7 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
     }
 
     func loadHTMLString(html: NSString) {
-        var htmlString = NSString(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
+        var htmlString = String(format: "<html><head><meta name=\"viewport\" content=\"width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no\" /></head><body>%@</body></html>", html)
         webView.loadHTMLString(htmlString, baseURL: nil)
     }
 
@@ -123,10 +123,14 @@ class WPRichTextEmbed : UIView, UIWebViewDelegate, WPRichTextMediaAttachment
         // Add the webView as a subview if it hasn't been already.
         if webView.superview == nil {
             // Make sure that any viewport meta tag does not have a min scale incase we're display smaller than the device width.
-            var viewport = "viewport = document.querySelector('meta[name=viewport]'); " +
-                            "if (viewport) {" +
-                                "viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
-                            "}"
+            var viewport =  "var tid = setInterval( function () {" +
+                "if ( document.readyState !== 'complete' ) return;" +
+                "   clearInterval( tid );" +
+                "   viewport = document.querySelector('meta[name=viewport]'); " +
+                "   if (viewport) {" +
+                "       viewport.setAttribute('content', 'width=available-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');" +
+                "   }" +
+                "}, 100 );"
             webView.stringByEvaluatingJavaScriptFromString(viewport);
 
             webView.frame = bounds

@@ -3,7 +3,6 @@
 #import "WPTabBarController.h"
 
 #import "WordPressAppDelegate.h"
-#import "UIDevice+WordPressIdentifier.h"
 
 #import "WordPressComApi.h"
 #import <WPXMLRPCClient.h>
@@ -18,6 +17,8 @@
 #import <Simperium/Simperium.h>
 #import <Mixpanel/Mixpanel.h>
 #import "Blog.h"
+
+#import "WordPress-Swift.h"
 
 
 
@@ -184,20 +185,31 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         return;
     }
     
-
+    // WordPress.com Push Authentication Notification
+    // Due to the Background Notifications entitlement, any given Push Notification's userInfo might be received
+    // while the app is in BG, and when it's about to become active. In order to prevent UI glitches, let's skip
+    // notifications when in BG mode.
+    //
+    PushAuthenticationManager *authenticationManager = [PushAuthenticationManager new];
+    if ([authenticationManager isPushAuthenticationNotification:userInfo] && state != UIApplicationStateBackground) {
+        [authenticationManager handlePushAuthenticationNotification:userInfo];
+        return;
+    }
+    
+    // Notification-Y Push Notifications
     if (state == UIApplicationStateInactive) {
         NSString *notificationID = [[userInfo numberForKey:@"note_id"] stringValue];
         [[WPTabBarController sharedInstance] showNotificationsTabForNoteWithID:notificationID];
     } else if (state == UIApplicationStateBackground) {
         if (completionHandler) {
-            Simperium *simperium = [[WordPressAppDelegate sharedWordPressApplicationDelegate] simperium];
+            Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
             [simperium backgroundFetchWithCompletion:^(UIBackgroundFetchResult result) {
                 if (result == UIBackgroundFetchResultNewData) {
                     DDLogVerbose(@"Background Fetch Completed with New Data!");
                 } else {
                     DDLogVerbose(@"Background Fetch Completed with No Data..");
-                        }
-                        completionHandler(result);
+                }
+                completionHandler(result);
             }];
         }
     }
@@ -449,8 +461,8 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    Blog *blog = [blogService lastUsedOrFirstWPcomBlog];
-    if (blog != nil && [blog isWPcom]) {
+    Blog *blog = [blogService lastUsedOrFirstBlogThatSupports:BlogFeatureStats];
+    if (blog != nil) {
         [[WPTabBarController sharedInstance] switchMySitesTabToStatsViewForBlog:blog];
     }
 }

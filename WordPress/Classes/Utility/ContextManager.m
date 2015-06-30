@@ -76,7 +76,7 @@ static ContextManager *instance;
         if (![context save:&error]) {
             @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
                                            reason:@"Unresolved Core Data save error - derived context"
-                                         userInfo:[error userInfo]];
+                                         userInfo:error.userInfo];
         }
 
         if (completionBlock) {
@@ -87,6 +87,13 @@ static ContextManager *instance;
         // breaks concurrency rules for Core Data.  Provide a mechanism to destroy a derived context that
         // unregisters it from the save notification instead and rely upon that for merging.
         [self saveContext:self.mainContext];
+    }];
+}
+
+- (void)saveContextAndWait:(NSManagedObjectContext *)context
+{
+    [context performBlockAndWait:^{
+        [self internalSaveContext:context];
     }];
 }
 
@@ -106,18 +113,8 @@ static ContextManager *instance;
     }
 
     [context performBlock:^{
-        NSError *error;
-        if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
-            DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
-        }
-
-        if (![context save:&error]) {
-            DDLogError(@"Unresolved core data error\n%@:", error);
-            @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
-                                           reason:@"Unresolved Core Data save error"
-                                         userInfo:[error userInfo]];
-        }
-
+        [self internalSaveContext:context];
+        
         if (completionBlock) {
             dispatch_async(dispatch_get_main_queue(), completionBlock);
         }
@@ -210,9 +207,31 @@ static ContextManager *instance;
             DDLogError(@"Unresolved error %@, %@", error, [error userInfo]);
             abort();
         }
+        
+        [WPAnalytics track:WPAnalyticsStatLogout];
     }
 
     return _persistentStoreCoordinator;
+}
+
+
+#pragma mark - Private Helpers
+
+- (void)internalSaveContext:(NSManagedObjectContext *)context
+{
+    NSParameterAssert(context);
+    
+    NSError *error;
+    if (![context obtainPermanentIDsForObjects:context.insertedObjects.allObjects error:&error]) {
+        DDLogError(@"Error obtaining permanent object IDs for %@, %@", context.insertedObjects.allObjects, error);
+    }
+    
+    if (![context save:&error]) {
+        DDLogError(@"Unresolved core data error\n%@:", error);
+        @throw [NSException exceptionWithName:@"Unresolved Core Data save error"
+                                       reason:@"Unresolved Core Data save error"
+                                     userInfo:error.userInfo];
+    }
 }
 
 - (void)migrateDataModelsIfNecessary

@@ -4,10 +4,12 @@
 
 static const CGFloat CommentContentViewAvatarSize = 32.0;
 static const CGFloat CommentContentViewContentViewOffsetTop = 36.0;
-static const CGFloat CommentContentViewContentViewOffsetBottom = 19.0;
 static const CGFloat CommentContentViewContentOffsetLeft = 40.0;
+static const CGFloat CommentContentViewMetaHeight = 20.0;
 static const CGFloat CommentContentViewButtonHeight = 16.0;
-static const CGFloat CommentContnetViewButtonSpacingTop = 4.0;
+static const CGFloat CommentContentViewMetaStandardSpacing = 8.0;
+static const CGFloat CommentContentViewMetaReplyButtonRightMargin = 20.0;
+static const CGFloat CommentContentViewButtonSpacingTop = 2.0;
 static const UIEdgeInsets AuthorButtonEdgeInsets = {-5.0f, 0.0f, 0.0f, 0.0f};
 static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0f};
 
@@ -20,6 +22,10 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 @property (nonatomic, strong) UIButton *replyButton;
 @property (nonatomic, strong) UIButton *likeButton;
 @property (nonatomic, strong) UILabel *numberOfLikesLabel;
+@property (nonatomic, strong) UIView *commentMeta;
+@property (nonatomic, strong) NSLayoutConstraint *commentMetaHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *likeButtonLeftMarginConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *numberOfLikesLabelLeftMarginConstraint;
 
 @end
 
@@ -57,7 +63,10 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
 - (CGSize)sizeThatFits:(CGSize)size
 {
     CGFloat height = [self.textContentView sizeThatFits:size].height;
-    height = height + CommentContentViewContentViewOffsetTop + CommentContentViewContentViewOffsetBottom;
+    height += CommentContentViewContentViewOffsetTop;
+    height += CommentContentViewButtonSpacingTop;
+    height += self.commentMetaHeightConstraint.constant;
+
     return CGSizeMake(size.width, ceil(height));
 }
 
@@ -71,16 +80,16 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self.textContentView preventPendingMediaLayout:prevent];
 }
 
+
 #pragma mark - Private Methods
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorButton, _timeButton, _textContentView, _replyButton, _likeButton, _numberOfLikesLabel);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_avatarImageView, _authorButton, _timeButton, _textContentView, _commentMeta, _replyButton, _likeButton, _numberOfLikesLabel);
     NSDictionary *metrics = @{@"avatarSize": @(CommentContentViewAvatarSize),
                               @"offsetTop" : @(CommentContentViewContentViewOffsetTop),
-                              @"offsetBottom" : @(CommentContentViewContentViewOffsetBottom),
                               @"offsetLeft" : @(CommentContentViewContentOffsetLeft),
-                              @"buttonMarginTop" : @(CommentContnetViewButtonSpacingTop),
+                              @"buttonMarginTop" : @(CommentContentViewButtonSpacingTop),
                               @"buttonHeight" : @(CommentContentViewButtonHeight)
                               };
 
@@ -95,11 +104,11 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                    views:views]];
 
     // Author and date
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-(>=1@200)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_authorButton]-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-(>=1@200)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-offsetLeft-[_timeButton]-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -118,22 +127,71 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_replyButton]-20-[_likeButton]-[_numberOfLikesLabel]"
+    // Meta
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_commentMeta]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_replyButton(buttonHeight)]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_commentMeta]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_likeButton(buttonHeight)]|"
+
+    // Meta Content
+    [self.commentMeta addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_replyButton]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[_textContentView]-(buttonMarginTop@200)-[_numberOfLikesLabel(buttonHeight)]|"
-                                                                 options:0
-                                                                 metrics:metrics
-                                                                   views:views]];
+
+    [self.commentMeta addConstraint:[NSLayoutConstraint constraintWithItem:self.replyButton
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.commentMeta
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+
+
+    self.likeButtonLeftMarginConstraint = [NSLayoutConstraint constraintWithItem:self.likeButton
+                                                                       attribute:NSLayoutAttributeLeading
+                                                                       relatedBy:NSLayoutRelationEqual
+                                                                          toItem:self.commentMeta
+                                                                       attribute:NSLayoutAttributeLeftMargin
+                                                                      multiplier:1.0
+                                                                        constant:0];
+    [self.commentMeta addConstraint:self.likeButtonLeftMarginConstraint];
+    [self.commentMeta addConstraint:[NSLayoutConstraint constraintWithItem:self.likeButton
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.commentMeta
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+
+    self.numberOfLikesLabelLeftMarginConstraint = [NSLayoutConstraint constraintWithItem:self.numberOfLikesLabel
+                                                                               attribute:NSLayoutAttributeLeading
+                                                                               relatedBy:NSLayoutRelationEqual
+                                                                                  toItem:self.commentMeta
+                                                                               attribute:NSLayoutAttributeLeftMargin
+                                                                              multiplier:1.0
+                                                                                constant:0];
+    [self.commentMeta addConstraint:self.numberOfLikesLabelLeftMarginConstraint];
+    [self.commentMeta addConstraint:[NSLayoutConstraint constraintWithItem:self.numberOfLikesLabel
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                 relatedBy:NSLayoutRelationEqual
+                                                                    toItem:self.commentMeta
+                                                                 attribute:NSLayoutAttributeCenterY
+                                                                multiplier:1.0
+                                                                  constant:0.0]];
+
+    self.commentMetaHeightConstraint = [NSLayoutConstraint constraintWithItem:self.commentMeta
+                                                                    attribute:NSLayoutAttributeHeight
+                                                                    relatedBy:NSLayoutRelationEqual
+                                                                       toItem:nil
+                                                                    attribute:nil
+                                                                   multiplier:1.0
+                                                                     constant:CommentContentViewMetaHeight];
+    [self addConstraint:self.commentMetaHeightConstraint];
 }
 
 - (void)constructSubviews
@@ -151,14 +209,17 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     self.textContentView = [self viewForContent];
     [self addSubview:self.textContentView];
 
+    self.commentMeta = [self viewForCommentMeta];
+    [self addSubview:self.commentMeta];
+
     self.replyButton = [self buttonForReplyButton];
-    [self addSubview:self.replyButton];
+    [self.commentMeta addSubview:self.replyButton];
 
     self.likeButton = [self buttonForLikeButton];
-    [self addSubview:self.likeButton];
+    [self.commentMeta addSubview:self.likeButton];
 
     self.numberOfLikesLabel = [self labelForNumberOfLikes];
-    [self addSubview:self.numberOfLikesLabel];
+    [self.commentMeta addSubview:self.numberOfLikesLabel];
 
     [self sendSubviewToBack:self.textContentView];
 }
@@ -217,6 +278,17 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     textContentView.textOptions = [WPStyleGuide commentDTCoreTextOptions];
 
     return textContentView;
+}
+
+- (UIView *)viewForCommentMeta
+{
+    // The initial frame width is arbitrary. Constraints will size as appropriate.
+    // The height is the same as the constraint for context.
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 100.0, CommentContentViewMetaHeight)];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+    view.clipsToBounds = YES;
+    return view;
 }
 
 - (UIButton *)buttonForReplyButton
@@ -288,6 +360,7 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     [self configureContentView];
     [self configureLikeButton];
     [self configureNumberOfLikes];
+    [self configureMetaView];
 }
 
 - (void)configureAuthorButton
@@ -333,10 +406,44 @@ static const UIEdgeInsets ReplyAndLikeButtonEdgeInsets = {0.0f, 4.0f, 0.0f, -4.0
     NSInteger likeCount = [[self.contentProvider numberOfLikes] integerValue];
     if (likeCount == 0) {
         self.numberOfLikesLabel.text = @"";
-    } else if (likeCount == 1) {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 1 %@", NSLocalizedString(@"Like", nil)];
+        return;
+    }
+
+    NSString *likesString = @"";
+    if (likeCount == 1) {
+        likesString = [NSString stringWithFormat:@"1 %@", NSLocalizedString(@"Like", nil)];
     } else {
-        self.numberOfLikesLabel.text = [NSString stringWithFormat:@"\u00B7 %d %@", likeCount, NSLocalizedString(@"Likes", nil)];
+        likesString = [NSString stringWithFormat:@"%d %@", likeCount, NSLocalizedString(@"Likes", nil)];
+    }
+
+    // Add the dot character if we're showing the like button.
+    if (self.shouldEnableLoggedinFeatures) {
+        likesString = [NSString stringWithFormat:@"\u00B7 %@", likesString];
+    }
+    self.numberOfLikesLabel.text = likesString;
+}
+
+// Position the Y offset of the various views.
+- (void)configureMetaView
+{
+    CGFloat yPosition = 0;
+    self.replyButton.hidden = !(self.shouldEnableLoggedinFeatures && self.shouldShowReply);
+
+    if (!self.replyButton.hidden) {
+        yPosition += (self.replyButton.intrinsicContentSize.width + CommentContentViewMetaReplyButtonRightMargin);
+    }
+    self.likeButtonLeftMarginConstraint.constant = yPosition;
+
+    self.likeButton.hidden = !self.shouldEnableLoggedinFeatures;
+    if (!self.likeButton.hidden) {
+        yPosition += (self.likeButton.intrinsicContentSize.width + CommentContentViewMetaStandardSpacing);
+    }
+    self.numberOfLikesLabelLeftMarginConstraint.constant = yPosition;
+
+    if (self.shouldEnableLoggedinFeatures || [self.numberOfLikesLabel.text length] > 0) {
+        self.commentMetaHeightConstraint.constant = CommentContentViewMetaHeight;
+    } else {
+        self.commentMetaHeightConstraint.constant = 0;
     }
 }
 

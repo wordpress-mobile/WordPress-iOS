@@ -3,31 +3,31 @@
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-small-1.png",
+      "filename" : "app-icon-29pt.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-small@2x-1.png",
+      "filename" : "app-icon-29pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "29x29",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-small@3x.png",
+      "filename" : "app-icon-29pt@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-small-40@2x.png",
+      "filename" : "app-icon-40pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "40x40",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-small-40@3x.png",
+      "filename" : "app-icon-40pt@3x.png",
       "scale" : "3x"
     },
     {
@@ -43,25 +43,25 @@
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-60@2x.png",
+      "filename" : "app-icon-60pt@2x.png",
       "scale" : "2x"
     },
     {
       "size" : "60x60",
       "idiom" : "iphone",
-      "filename" : "app-icon-internal-60@3x.png",
+      "filename" : "app-icon-60pt@3x.png",
       "scale" : "3x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "app-icon-internal-small.png",
+      "filename" : "ipad-app-icon-29pt.png",
       "scale" : "1x"
     },
     {
       "size" : "29x29",
       "idiom" : "ipad",
-      "filename" : "app-icon-internal-small@2x.png",
+      "filename" : "ipad-app-icon-29pt@2x.png",
       "scale" : "2x"
     },
     {
@@ -97,13 +97,13 @@
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "app-icon-internal-76.png",
+      "filename" : "app-icon-76pt.png",
       "scale" : "1x"
     },
     {
       "size" : "76x76",
       "idiom" : "ipad",
-      "filename" : "app-icon-internal-76@2x.png",
+      "filename" : "app-icon-76pt@2x.png",
       "scale" : "2x"
     }
   ],

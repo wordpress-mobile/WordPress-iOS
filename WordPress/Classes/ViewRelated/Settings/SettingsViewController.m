@@ -17,7 +17,6 @@
 #import "WordPressComApi.h"
 #import "SettingsPageViewController.h"
 #import "NotificationSettingsViewController.h"
-#import "Blog+Jetpack.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"
@@ -30,6 +29,7 @@
 #import "WPImageOptimizer.h"
 #import "Constants.h"
 #import "Mediaservice.h"
+#import "WPLookbackPresenter.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
 
 #ifdef LOOKBACK_ENABLED
@@ -187,7 +187,7 @@ static CGFloat const SettingsRowHeight = 44.0;
 #ifdef LOOKBACK_ENABLED
     UISwitch *aSwitch = (UISwitch *)sender;
     BOOL shakeForFeedback = aSwitch.on;
-    [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPInternalBetaShakeToPullUpFeedbackKey];
+    [[NSUserDefaults standardUserDefaults] setBool:shakeForFeedback forKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
     [Lookback lookback].shakeToRecord = shakeForFeedback;
 #endif
 }
@@ -301,10 +301,14 @@ static CGFloat const SettingsRowHeight = 44.0;
         aSwitch.on = [WPPostViewController isNewEditorEnabled];
         
     } else if (indexPath.section == SettingsSectionInternalBeta) {
+#ifndef LOOKBACK_ENABLED
+        NSAssert(NO, @"Should never execute this when Lookback is disabled.");
+#else
         cell.textLabel.text = NSLocalizedString(@"Shake for Feedback", @"Option to allow the user to shake the device to pull up the feedback mechanism");
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPInternalBetaShakeToPullUpFeedbackKey];
+        aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:WPLookbackPresenterShakeToPullUpFeedbackKey];
+#endif
     }
 }
 

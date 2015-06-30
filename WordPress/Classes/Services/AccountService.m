@@ -7,10 +7,13 @@
 #import "BlogService.h"
 #import "TodayExtensionService.h"
 #import "AccountServiceRemoteREST.h"
+#import "AccountServiceRemoteXMLRPC.h"
 
+#import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
+static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
 @interface AccountService ()
 
@@ -102,6 +105,8 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  */
 - (void)removeDefaultWordPressComAccount
 {
+    NSAssert([NSThread isMainThread], @"This method should only be called from the main thread");
+    
     [NotificationsManager unregisterDeviceToken];
 
     WPAccount *account = [self defaultWordPressComAccount];
@@ -109,33 +114,24 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         [self.managedObjectContext deleteObject:account];
     }
 
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
-        [WPAnalytics refreshMetadata];
-        
-        // Make sure this notification gets posted on the main thread: the managedObjectContext might be running
-        // a private GCD queue, and we shouldn't really execute our own non-coredata code there.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
-        });
-    }];
-
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
+    
     // Clear WordPress.com cookies
     NSArray *wpcomCookies = [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies];
     for (NSHTTPCookie *cookie in wpcomCookies) {
-        if ([cookie.domain hasSuffix:@"wordpress.com"]) {
+        if (cookie.domain.isWordPressComPath) {
             [[NSHTTPCookieStorage sharedHTTPCookieStorage] deleteCookie:cookie];
         }
     }
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
 
-    [WPAnalyticsTrackerMixpanel resetEmailRetrievalCheck];
-
     // Remove defaults
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:DefaultDotcomAccountUUIDDefaultsKey];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_username_preference"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_blogs"];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"wpcom_users_prefered_blog_id"];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    [WPAnalytics refreshMetadata];
+    [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:nil];
+
 }
 
 ///-----------------------
@@ -150,16 +146,14 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
  Uses a background managed object context.
 
  @param username the WordPress.com account's username
- @param password the WordPress.com account's password
- @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
  @return a WordPress.com `WPAccount` object for the given `username`
- @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
+ @see createOrUpdateWordPressComAccountWithUsername:password:authToken:
  */
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                    password:(NSString *)password
                                                    authToken:(NSString *)authToken
 {
-    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:password];
+    WPAccount *account = [self createOrUpdateSelfHostedAccountWithXmlrpc:WordPressDotcomXMLRPCKey username:username andPassword:nil];
     account.authToken = authToken;
     account.isWpcom = YES;
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -231,24 +225,89 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     return [results firstObject];
 }
 
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account
+- (void)removeWordPressComAccountPasswordIfNeeded
 {
-    if (!account) {
+    // Let's do this just once!
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults boolForKey:DefaultDotcomAccountPasswordRemovedKey]) {
         return;
     }
-    AccountServiceRemoteREST *remote = [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
-    [remote getDetailsWithSuccess:^(NSDictionary *userDetails) {
-        account.email = userDetails[@"email"];
-        NSNumber *primaryBlogId = userDetails[@"primary_blog"];
-        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", primaryBlogId]] anyObject];
-        [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    
+    WPAccount *account = [self defaultWordPressComAccount];
+    account.password = nil;
+    
+    [defaults setBool:YES forKey:DefaultDotcomAccountPasswordRemovedKey];
+    [defaults synchronize];
+}
 
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure
+{
+    NSAssert(account, @"Account can not be nil");
+    NSAssert(account.username, @"account.username can not be nil");
+    NSAssert(account.xmlrpc, @"account.xmlrpc can not be nil");
+
+    NSString *username = account.username;
+    NSString *xmlrpc = account.xmlrpc;
+    id<AccountServiceRemote> remote = [self remoteForAccount:account];
+    [remote getDetailsForAccount:account success:^(RemoteUser *remoteUser) {
+        // account.objectID can be temporary, so fetch via username/xmlrpc instead.
+        WPAccount *fetchedAccount = [self findAccountWithUsername:username andXmlrpc:xmlrpc];
+        [self updateAccount:fetchedAccount withUserDetails:remoteUser];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountEmailAndDefaultBlogUpdatedNotification object:account];
+            [WPAnalytics refreshMetadata];
         });
+        if (success) {
+            success();
+        }
     } failure:^(NSError *error) {
-        DDLogError(@"Failed to retrieve /me endpoint while updating email and default blog");
+        DDLogError(@"Failed to fetch user details for account %@.  %@", account, error);
+        if (failure) {
+            failure(error);
+        }
     }];
+}
+
+- (id<AccountServiceRemote>)remoteForAccount:(WPAccount *)account
+{
+    if (account.restApi) {
+        return [[AccountServiceRemoteREST alloc] initWithApi:account.restApi];
+    }
+    return [[AccountServiceRemoteXMLRPC alloc] initWithApi:account.xmlrpcApi];
+}
+
+- (void)updateAccount:(WPAccount *)account withUserDetails:(RemoteUser *)userDetails
+{
+    account.userID = userDetails.userID;
+    account.username = userDetails.username;
+    account.email = userDetails.email;
+    account.avatarURL = userDetails.avatarURL;
+    if (userDetails.primaryBlogID) {
+        account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
+    }
+    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+}
+
+- (void)purgeAccount:(WPAccount *)account
+{
+    NSParameterAssert(account);
+
+    BOOL purge = NO;
+    if (account.isWpcom) {
+        WPAccount *defaultAccount = [self defaultWordPressComAccount];
+        if ([account.jetpackBlogs count] == 0
+            && ![defaultAccount isEqual:account]) {
+            purge = YES;
+        }
+    } else {
+        if ([account.blogs count] == 0) {
+            purge = YES;
+        }
+    }
+
+    if (purge) {
+        DDLogWarn(@"Removing account since it has no blogs associated and it's not the default account: %@", account);
+        [self.managedObjectContext deleteObject:account];
+    }
 }
 
 @end

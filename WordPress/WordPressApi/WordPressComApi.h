@@ -34,7 +34,7 @@ extern NSString *const WordPressComApiPushAppId;
  Use this only for things that don't require an account, like signup or logged out reader
  */
 + (WordPressComApi *)anonymousApi;
-- (id)initWithOAuthToken:(NSString *)authToken;
+- (instancetype)initWithOAuthToken:(NSString *)authToken;
 
 /**
  Reset the API instance
@@ -42,6 +42,7 @@ extern NSString *const WordPressComApiPushAppId;
  @discussion Clears cookies, and sets `authToken`, `username`, and `password` to nil.
  */
 - (void)reset;
+
 
 ///-------------------------
 /// @name Account management

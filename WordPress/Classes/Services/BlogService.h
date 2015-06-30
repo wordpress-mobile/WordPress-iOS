@@ -1,11 +1,10 @@
 #import <Foundation/Foundation.h>
 #import "LocalCoreDataService.h"
+#import "Blog.h"
 
-@class Blog;
 @class WPAccount;
 
-@interface BlogService : NSObject <LocalCoreDataService>
-
+@interface BlogService : NSObject<LocalCoreDataService>
 
 /**
  Returns the blog that matches with a given blogID
@@ -18,17 +17,17 @@
 - (void)flagBlogAsLastUsed:(Blog *)blog;
 
 /**
- Returns the blog currently flagged as the one last used, or the first blog in
- an alphanumerically sorted list, if no blog is currently flagged as last used.
+ Returns the blog currently flagged as the one last used, or the primary blog,
+ or the first blog in an alphanumerically sorted list, whichever is found first.
  */
 - (Blog *)lastUsedOrFirstBlog;
 
 /**
- Returns the wpcom blog currently flagged as the one last used, or the first wpcom
- blog in an alphanumerically sorted list, if no wpcom blog is currently flagged as 
- last used.
+ Returns the blog currently flagged as the one last used, or the primary blog,
+ or the first blog in an alphanumerically sorted list that supports the given
+ feature, whichever is found first.
  */
-- (Blog *)lastUsedOrFirstWPcomBlog;
+- (Blog *)lastUsedOrFirstBlogThatSupports:(BlogFeature)feature;
 
 /**
  Returns the blog currently flaged as the one last used.
@@ -41,15 +40,21 @@
 - (Blog *)firstBlog;
 
 /**
- Returns the first WPCom blog in an alphanumerically sorted list.
+ Returns the default WPCom blog.
  */
-- (Blog *)firstWPComBlog;
+- (Blog *)primaryBlog;
 
+- (void)syncBlogsForAccount:(WPAccount *)account
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure;
 
-- (void)syncBlogsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure;
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(void (^)())success
+                       failure:(void (^)(NSError *error))failure;
 
 /*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
  *  Used for instances where the entire blog should be refreshed or initially downloaded.
@@ -57,13 +62,17 @@
  *  \param success Completion block called if the operation was a success
  *  \param failure Completion block called if the operation was a failure
  */
-- (void)syncBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
+- (void)syncBlog:(Blog *)blog
+         success:(void (^)())success
+         failure:(void (^)(NSError *error))failure;
 
-- (void)checkVideoPressEnabledForBlog:(Blog *)blog success:(void (^)(BOOL enabled))success failure:(void (^)(NSError *error))failure;
+- (BOOL)hasVisibleWPComAccounts;
 
 - (NSInteger)blogCountForAllAccounts;
 
 - (NSInteger)blogCountSelfHosted;
+
+- (NSInteger)blogCountVisibleForWPComAccounts;
 
 - (NSInteger)blogCountVisibleForAllAccounts;
 
@@ -76,6 +85,8 @@
  */
 - (NSTimeZone *)timeZoneForBlog:(Blog *)blog;
 
+- (void)removeBlog:(Blog *)blog;
+
 ///--------------------
 /// @name Blog creation
 ///--------------------
@@ -87,7 +98,8 @@
  @param account the account the blog belongs to
  @return the blog if one was found, otherwise it returns nil
  */
-- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc inAccount:(WPAccount *)account;
+- (Blog *)findBlogWithXmlrpc:(NSString *)xmlrpc
+                   inAccount:(WPAccount *)account;
 
 /**
  Creates a blank `Blog` object for this account

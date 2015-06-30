@@ -181,7 +181,7 @@ if rawpath.nil?
 end
 
 path = File.expand_path(rawpath)
-unless File.exists?(path)
+unless File.exist?(path)
   $stderr.puts "error: file #{path} not found"
   exit 1
 end
@@ -221,9 +221,9 @@ File.open(path) do |f|
       hockeyapp = v.chomp
     elsif k == "GOOGLE_PLUS_CLIENT_ID"
       googleplus = v.chomp
-	elsif k == "SIMPERIUM_API_KEY"
+    elsif k == "SIMPERIUM_API_KEY"
       simperium_api_key = v.chomp
-	elsif k == "SIMPERIUM_APP_ID"
+    elsif k == "SIMPERIUM_APP_ID"
       simperium_app_id = v.chomp
     elsif k == "HELPSHIFT_API_KEY"
       helpshift_api_key = v.chomp
@@ -249,6 +249,48 @@ end
 if secret.nil?
   $stderr.puts "warning: Secret not found"
   exit 3
+end
+
+configuration = ENV["CONFIGURATION"]
+if !configuration.nil? && ["Release", "Release-Internal"].include?(configuration)
+
+  if mixpanel_dev.nil? || mixpanel_prod.nil?
+    $stderr.puts "warning: Mixpanel keys not found"
+  end
+
+  if crashlytics.nil?
+    $stderr.puts "warning: Crashlytics API key not found"
+  end
+
+  if pocket.nil?
+    $stderr.puts "warning: Pocket API key not found"
+  end
+
+  if googleplus.nil?
+    $stderr.puts "warning: Google Plus API key not found"
+  end
+
+  if simperium_api_key.nil? || simperium_app_id.nil?
+    $stderr.puts "warning: Simperium keys not found"
+  end
+
+  if helpshift_api_key.nil? || helpshift_domain_name.nil? || helpshift_app_id.nil?
+    $stderr.puts "warning: Helpshift keys not found"
+  end
+
+  if lookback_token.nil?
+    $stderr.puts "warning: Lookback token not found"
+  end
+
+  if appbotx_api_key.nil?
+    $stderr.puts "warning: AppbotX API key not found"
+  end
+
+  if configuration == "Release-Internal"
+    if hockeyapp.nil?
+      $stderr.puts "warning: HockeyApp App Id not found"
+    end 
+  end
 end
 
 print_class(client, secret, pocket, mixpanel_dev, mixpanel_prod, crashlytics, hockeyapp, googleplus, helpshift_api_key, helpshift_domain_name, helpshift_app_id, simperium_api_key, simperium_app_id, debugging_key, lookback_token, appbotx_api_key)

@@ -11,7 +11,6 @@
 #import "BlogService.h"
 #import "PostService.h"
 #import "MediaService.h"
-#import "WPMediaUploader.h"
 #import "WPUploadStatusButton.h"
 #import "WPTabBarController.h"
 #import "WPMediaProgressTableViewController.h"
@@ -20,14 +19,14 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
+#import <WPMediaPicker/WPMediaPickerViewController.h>
 #import "WordPress-Swift.h"
 
 NSString *const WPLegacyEditorNavigationRestorationID = @"WPLegacyEditorNavigationRestorationID";
 NSString *const WPLegacyAbstractPostRestorationKey = @"WPLegacyAbstractPostRestorationKey";
-static NSInteger const MaximumNumberOfPictures = 10;
 static void *ProgressObserverContext = &ProgressObserverContext;
 
-@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate>
+@interface WPLegacyEditPostViewController ()<UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 @property (nonatomic, strong) UIButton *titleBarButton;
 @property (nonatomic, strong) UIButton *uploadStatusButton;
@@ -149,8 +148,6 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self removeIncompletelyUploadedMediaFilesAsAResultOfACrash];
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(insertMediaBelow:) name:MediaShouldInsertBelowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeMedia:) name:@"ShouldRemoveMedia" object:nil];
 
     [self geotagNewPost];
     self.mediaInProgress = [NSMutableDictionary dictionary];
@@ -362,15 +359,12 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (void)showMediaOptions
 {
-    CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
+    WPMediaPickerViewController *picker = [[WPMediaPickerViewController alloc] init];
     picker.delegate = self;
 
-    // Only show photos for now (not videos)
-    picker.assetsFilter = [ALAssetsFilter allPhotos];
+    picker.filter = WPMediaTypeImage;
 
     [self presentViewController:picker animated:YES completion:nil];
-    
-    picker.childNavigationController.navigationBar.translucent = NO;
 }
 
 - (void)cancelEditing
@@ -393,7 +387,7 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     }
 
     UIActionSheet *actionSheet;
-    if (![self.post.original.status isEqualToString:@"draft"] && self.editMode != EditPostViewControllerModeNewPost) {
+    if (![self.post.original.status isEqualToString:PostStatusDraft] && self.editMode != EditPostViewControllerModeNewPost) {
         // The post is already published in the server or it was intended to be and failed: Discard changes or keep editing
         actionSheet = [[UIActionSheet alloc] initWithTitle:NSLocalizedString(@"You have unsaved changes.", @"Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
                                                   delegate:self
@@ -499,10 +493,10 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     // Right nav button: Publish Button
     NSString *buttonTitle;
     if (![self.post hasRemote] || ![self.post.status isEqualToString:self.post.original.status]) {
-        if ([self.post.status isEqualToString:@"publish"] && ([self.post.dateCreated compare:[NSDate date]] == NSOrderedDescending)) {
+        if ([self.post isScheduled]) {
             buttonTitle = NSLocalizedString(@"Schedule", @"Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later.");
 
-        } else if ([self.post.status isEqualToString:@"publish"]) {
+        } else if ([self.post.status isEqualToString:PostStatusPublish]) {
             buttonTitle = NSLocalizedString(@"Publish", @"Publish button label.");
 
         } else {
@@ -830,18 +824,22 @@ static void *ProgressObserverContext = &ProgressObserverContext;
 
 - (BOOL)hasFailedMedia
 {
-    __block BOOL hasFailedMedia = NO;
-    [self.mediaInProgress enumerateKeysAndObjectsUsingBlock:^(NSString * key, NSProgress * progress, BOOL *stop) {
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
         if (progress.totalUnitCount == 0){
-            hasFailedMedia = YES;
+            return YES;
         }
-    }];
-    return hasFailedMedia;
+    }
+    return NO;
 }
 
 - (BOOL)isMediaUploading
 {
-    return (self.mediaGlobalProgress.totalUnitCount > self.mediaGlobalProgress.completedUnitCount) && !self.mediaGlobalProgress.cancelled;
+    for(NSProgress * progress in self.mediaInProgress.allValues) {
+        if (progress.totalUnitCount != 0){
+            return YES;
+        }
+    }
+    return NO;
 }
 
 - (void)cancelMediaUploads
@@ -967,6 +965,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
                 }];
                 UIImage * image = [UIImage imageWithCGImage:asset.thumbnail];
                 [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
+                uploadProgress.kind = NSProgressKindFile;
+                [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
                 [strongSelf trackMediaWithId:imageUniqueId usingProgress:uploadProgress];
                 [strongSelf.mediaGlobalProgress resignCurrent];
             }];
@@ -1100,8 +1100,8 @@ static void *ProgressObserverContext = &ProgressObserverContext;
             } else {
                 // Save draft
                 // If you tapped on a button labeled "Save Draft", you probably expect the post to be saved as a draft
-                if (![self.post hasRemote] && [self.post.status isEqualToString:@"publish"]) {
-                    self.post.status = @"draft";
+                if (![self.post hasRemote] && [self.post.status isEqualToString:PostStatusPublish]) {
+                    self.post.status = PostStatusDraft;
                 }
                 DDLogInfo(@"Saving post as a draft after user initially attempted to cancel");
                 [self savePost:YES];
@@ -1150,33 +1150,32 @@ static void *ProgressObserverContext = &ProgressObserverContext;
     [self showPreview];
 }
 
-#pragma mark - CTAssetsPickerController delegate
+#pragma mark - WPMediaPickerViewController delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)mediaPickerController:(WPMediaPickerViewController *)picker didFinishPickingAssets:(NSArray *)assets
 {
     [self dismissViewControllerAnimated:YES completion:^{
         [self addMediaAssets:assets];
     }];
 }
 
-- (BOOL)assetsPickerController:(CTAssetsPickerController *)picker shouldSelectAsset:(ALAsset *)asset
+- (BOOL)mediaPickerController:(WPMediaPickerViewController *)picker shouldSelectAsset:(ALAsset *)asset
 {
     if ([asset valueForProperty:ALAssetPropertyType] == ALAssetTypePhoto) {
         // If the image is from a shared photo stream it may not be available locally to be used
         if (!asset.defaultRepresentation) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Cannot select this image", @"The title for an alert that says the image the user selected isn't available.")
-                                message:NSLocalizedString(@"This image belongs to a Photo Stream and is not available at the moment to be added to your site. Try opening it full screen in the Photos app before trying to using it again.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.") withSupportButton:NO];
-            return NO;
-        }
-        if (picker.selectedAssets.count >= MaximumNumberOfPictures) {
-            [WPError showAlertWithTitle:nil
-                                message:[NSString stringWithFormat:NSLocalizedString(@"You can only add %i photos at a time.", @"User information explaining that you can only select an x number of images."), MaximumNumberOfPictures]  withSupportButton:NO];
+            [WPError showAlertWithTitle:NSLocalizedString(@"Image unavailable", @"The title for an alert that says the image the user selected isn't available.")
+                                message:NSLocalizedString(@"This Photo Stream image cannot be added to your WordPress. Try saving it to your Camera Roll before uploading.", @"User information explaining that the image is not available locally. This is normally related to share photo stream images.")  withSupportButton:NO];
             return NO;
         }
         return YES;
     }
 
     return YES;
+}
+
+- (void)mediaPickerControllerDidCancel:(WPMediaPickerViewController *)picker {
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - KVO

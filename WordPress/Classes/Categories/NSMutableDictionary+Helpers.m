@@ -4,7 +4,7 @@
 - (void)setValueIfNotNil:(id)value forKey:(NSString *)key
 {
     if (value != nil) {
-        [self setValue:value forKey:key];
+        self[key] = value;
     }
 }
 @end

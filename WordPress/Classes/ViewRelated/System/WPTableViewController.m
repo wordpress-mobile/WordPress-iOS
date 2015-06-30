@@ -190,7 +190,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 
     self.resultsController = nil;
     [self.tableView reloadData];
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (!(appDelegate.connectionAvailable == YES && [self.resultsController.fetchedObjects count] == 0 && ![self isSyncing])) {
         [self configureNoResultsView];
     }
@@ -462,26 +462,20 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     NSRange rng = [regex rangeOfFirstMatchInString:msg options:0 range:NSMakeRange(0, [msg length])];
 
     if (rng.location == NSNotFound) {
-        path = self.blog.url;
-        if (![path hasPrefix:@"http"]) {
-            path = [NSString stringWithFormat:@"http://%@", path];
-        } else if ([self.blog isWPcom] && [path rangeOfString:@"wordpress.com"].location == NSNotFound) {
-            path = [self.blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-        }
-        path = [path stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@""];
-        path = [path stringByAppendingFormat:@"/wp-admin/options-writing.php"];
-
+        path = [self.blog adminUrlWithPath:@"/wp-admin/options-writing.php"];
     } else {
         path = [msg substringWithRange:rng];
     }
 
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
     webViewController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil) style:UIBarButtonItemStylePlain target:self action:@selector(dismissModal:)];
-    [webViewController setUrl:[NSURL URLWithString:path]];
-    [webViewController setUsername:self.blog.username];
-    [webViewController setPassword:self.blog.password];
-    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    webViewController.authToken = self.blog.authToken;
+    webViewController.username = self.blog.username;
+    webViewController.password = self.blog.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
+    
     // Probably should be modal.
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     navController.navigationBar.translucent = NO;
@@ -513,7 +507,7 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
     }
 
     // Do not start auto-sync if connection is down
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if (appDelegate.connectionAvailable == NO) {
         return;
     }
@@ -615,6 +609,9 @@ NSString *const DefaultCellIdentifier = @"DefaultCellIdentifier";
 - (void)syncItemsViaUserInteraction:(BOOL)userInteraction
 {
     if ([self isSyncing]) {
+        if (self.didTriggerRefresh) {
+            [self hideRefreshHeader];
+        }
         return;
     }
 

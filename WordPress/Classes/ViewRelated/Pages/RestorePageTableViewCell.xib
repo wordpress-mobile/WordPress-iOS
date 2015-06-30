@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="AgI-Sn-JeL" customClass="RestorePageTableViewCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" tableViewCell="AgI-Sn-JeL" id="QqJ-JC-nik">
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qtC-jW-wnY">
+                        <rect key="frame" x="6" y="0.0" width="308" height="42"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Page moved to trash." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="au3-8f-nAh">
+                                <rect key="frame" x="13" y="0.0" width="139" height="42"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" reversesTitleShadowWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPd-xc-GkE">
+                                <rect key="frame" x="228" y="0.0" width="66" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="66" id="E4N-1W-JWu"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <inset key="contentEdgeInsets" minX="3" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="3" maxY="0.0"/>
+                                <state key="normal" title="Undo" image="icon-post-undo">
+                                    <color key="titleColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="restoreAction:" destination="AgI-Sn-JeL" eventType="touchUpInside" id="JQ0-fa-Yer"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="dPd-xc-GkE" firstAttribute="top" secondItem="qtC-jW-wnY" secondAttribute="top" id="3BZ-ED-4O8"/>
+                            <constraint firstAttribute="bottom" secondItem="au3-8f-nAh" secondAttribute="bottom" id="BAj-O1-1jz"/>
+                            <constraint firstAttribute="trailing" secondItem="dPd-xc-GkE" secondAttribute="trailing" constant="14" id="TF1-Iy-WTJ">
+                                <variation key="heightClass=regular-widthClass=regular" constant="24"/>
+                            </constraint>
+                            <constraint firstAttribute="width" constant="600" id="UOv-L4-TfA"/>
+                            <constraint firstAttribute="bottom" secondItem="dPd-xc-GkE" secondAttribute="bottom" id="VuC-Uj-kS2"/>
+                            <constraint firstItem="au3-8f-nAh" firstAttribute="top" secondItem="qtC-jW-wnY" secondAttribute="top" id="aEF-bJ-dLs"/>
+                            <constraint firstItem="au3-8f-nAh" firstAttribute="leading" secondItem="qtC-jW-wnY" secondAttribute="leading" constant="13" id="ly1-3i-mjX">
+                                <variation key="heightClass=regular-widthClass=regular" constant="22"/>
+                            </constraint>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="UOv-L4-TfA"/>
+                            </mask>
+                        </variation>
+                        <variation key="heightClass=regular-widthClass=regular">
+                            <mask key="constraints">
+                                <include reference="UOv-L4-TfA"/>
+                            </mask>
+                        </variation>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="qtC-jW-wnY" firstAttribute="top" secondItem="QqJ-JC-nik" secondAttribute="top" id="Bt5-qm-4ab"/>
+                    <constraint firstItem="qtC-jW-wnY" firstAttribute="leading" secondItem="QqJ-JC-nik" secondAttribute="leading" constant="6" id="Ldq-L9-1TE"/>
+                    <constraint firstAttribute="centerX" secondItem="qtC-jW-wnY" secondAttribute="centerX" id="c5X-JV-HuI"/>
+                    <constraint firstAttribute="trailing" secondItem="qtC-jW-wnY" secondAttribute="trailing" constant="6" id="ejN-GF-xfr"/>
+                    <constraint firstAttribute="bottom" secondItem="qtC-jW-wnY" secondAttribute="bottom" constant="1" id="tKa-MQ-ESY"/>
+                </constraints>
+                <variation key="default">
+                    <mask key="constraints">
+                        <exclude reference="c5X-JV-HuI"/>
+                    </mask>
+                </variation>
+                <variation key="heightClass=regular-widthClass=regular">
+                    <mask key="constraints">
+                        <exclude reference="Ldq-L9-1TE"/>
+                        <include reference="c5X-JV-HuI"/>
+                        <exclude reference="ejN-GF-xfr"/>
+                    </mask>
+                </variation>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="pageContentView" destination="qtC-jW-wnY" id="Bqm-qT-TJI"/>
+                <outlet property="restoreButton" destination="dPd-xc-GkE" id="DzB-1H-s5r"/>
+                <outlet property="restoreLabel" destination="au3-8f-nAh" id="e4g-Ll-eEo"/>
+            </connections>
+            <point key="canvasLocation" x="568" y="210"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon-post-undo" width="16" height="16"/>
+    </resources>
+</document>

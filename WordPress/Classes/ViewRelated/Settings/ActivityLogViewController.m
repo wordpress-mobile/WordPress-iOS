@@ -5,6 +5,7 @@
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewSectionFooterView.h"
 #import "WordPress-Swift.h"
+#import "WPLogger.h"
 
 static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 static CGFloat const ActivityLogRowHeight = 44.0f;
@@ -25,7 +26,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
     if (self) {
         // TODO - Replace this call with an injected value, depending on design conventions already in place
         WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-        _fileLogger = delegate.fileLogger;
+        _fileLogger = delegate.logger.fileLogger;
 
         self.title = NSLocalizedString(@"Activity Logs", @"");
 

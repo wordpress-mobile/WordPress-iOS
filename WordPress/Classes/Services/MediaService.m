@@ -58,44 +58,61 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (void)createMediaWithAsset:(ALAsset *)asset
              forPostObjectID:(NSManagedObjectID *)postObjectID
-                  completion:(void (^)(Media *media, NSError * error))completion
+                  completion:(void (^)(Media *media, NSError *error))completion
 {
     BOOL geoLocationEnabled = NO;
     NSError *error = nil;
     AbstractPost *post = (AbstractPost *)[self.managedObjectContext existingObjectWithID:postObjectID error:&error];
-	if (!post) {
-		if (completion) {
-			completion(nil, error);
-		}
-		return;
-	}
+    if (!post) {
+        if (completion) {
+            completion(nil, error);
+        }
+        return;
+    }
+    MediaType mediaType = MediaTypeDocument;
+    NSSet *allowedFileTypes = nil;
+    if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypePhoto]) {
+        mediaType = MediaTypeImage;
+        allowedFileTypes = post.blog.allowedFileTypes;
+    } else if ([[asset valueForProperty:ALAssetPropertyType] isEqualToString:ALAssetTypeVideo]) {
+        // We ignore allowsFileTypes for videos because if videopress is not enabled we still can upload
+        // files even if the allowed file types says no.
+        allowedFileTypes = nil;
+        mediaType = MediaTypeVideo;
+    }
 
     geoLocationEnabled = post.blog.geolocationEnabled;
-    
+
     CGSize maxImageSize = [MediaService maxImageSizeSetting];
-    NSString *imagePath = [self pathForAsset:asset];
     
+    NSString *mediaPath = [self pathForAsset:asset supportedFileFormats:allowedFileTypes];
+
     [[WPAssetExporter sharedInstance] exportAsset:asset
-                                           toFile:imagePath
+                                           toFile:mediaPath
                                          resizing:maxImageSize
                                  stripGeoLocation:!geoLocationEnabled
-                                completionHandler:^(BOOL success, CGSize resultingSize, NSData * thumbnailData, NSError *error) {
+                                completionHandler:^(BOOL success, CGSize resultingSize, NSData *thumbnailData, NSError *error) {
         if (!success) {
-            completion(nil, error);
+            if (completion){
+                completion(nil, error);
+            }
+            return;
         }
         [self.managedObjectContext performBlock:^{
             
             AbstractPost *post = (AbstractPost *)[self.managedObjectContext objectWithID:postObjectID];
             Media *media = [self newMediaForPost:post];
-            media.filename = [imagePath lastPathComponent];
-            media.localURL = imagePath;
+            media.filename = [mediaPath lastPathComponent];
+            media.localURL = mediaPath;
             media.thumbnail = thumbnailData;
-            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:imagePath error:nil];
+            [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
+            NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
             media.filesize = @([fileAttributes fileSize] / 1024);
             media.width = @(resultingSize.width);
             media.height = @(resultingSize.height);
+            media.mediaType = mediaType;
             //make sure that we only return when object is properly created and saved
             [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
                 if (completion) {
@@ -103,7 +120,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 }
             }];
         }];
-    }];
+                                }];
 }
 
 - (void)uploadMedia:(Media *)media
@@ -126,6 +143,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 if (failure){
                     failure(error);
                 }
+                return;
             }
             
             [self updateMedia:mediaInContext withRemoteMedia:media];
@@ -191,6 +209,24 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return [media anyObject];
 }
 
+- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+                             inBlog:(Blog *)blog
+                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            failure:(void (^)(NSError *error))failure
+{
+    NSSet *mediaSet = [blog.media filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"shortcode = %@", videoPressID]];
+    Media *media = [mediaSet anyObject];
+    if (media) {
+        if([[NSFileManager defaultManager] fileExistsAtPath:media.thumbnailLocalURL isDirectory:nil]) {
+            success(media.remoteURL, media.thumbnailLocalURL);
+        } else {
+            success(media.remoteURL, @"");
+        }
+    } else {
+        failure(nil);
+    }
+}
+
 
 #pragma mark - Private
 
@@ -222,18 +258,22 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 #pragma mark - Media helpers
 
-- (NSString *)pathForAsset:(ALAsset *)asset
+- (NSString *)pathForAsset:(ALAsset *)asset supportedFileFormats:(NSSet *)supportedFileFormats
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = paths[0];
     NSString *filename = asset.defaultRepresentation.filename;
     NSString *path = [documentsDirectory stringByAppendingPathComponent:filename];
-
+    NSString *basename = [filename stringByDeletingPathExtension];
+    NSString *extension = [[filename pathExtension] lowercaseString];
+    if (supportedFileFormats && ![supportedFileFormats containsObject:extension]){
+        extension = @"png";
+        filename = [NSString stringWithFormat:@"%@.%@", basename, extension];
+        path = [documentsDirectory stringByAppendingPathComponent:filename];
+    }
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSUInteger index = 0;
     while ([fileManager fileExistsAtPath:path]) {
-        NSString *basename = [filename stringByDeletingPathExtension];
-        NSString *extension = [filename pathExtension];
         NSString *alternativeFilename = [NSString stringWithFormat:@"%@-%d.%@", basename, index, extension];
         path = [documentsDirectory stringByAppendingPathComponent:alternativeFilename];
         index++;
@@ -243,6 +283,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
 
 - (NSString *)mimeTypeForFilename:(NSString *)filename
 {
+    if (!filename || ![filename pathExtension]) {
+        return @"application/octet-stream";
+    }
     // Get the UTI from the file's extension:
     CFStringRef pathExtension = (__bridge_retained CFStringRef)[filename pathExtension];
     CFStringRef type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
@@ -282,6 +325,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     media.height = remoteMedia.height;
     media.width = remoteMedia.width;
     //media.exif = remoteMedia.exif;
+    media.shortcode = remoteMedia.shortcode;
 }
 
 - (RemoteMedia *) remoteMediaFromMedia:(Media *)media
@@ -300,6 +344,70 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     remoteMedia.localURL = media.localURL;
     remoteMedia.mimeType = [self mimeTypeForFilename:media.filename];    
     return remoteMedia;
+}
+
+#pragma mark - Media cleanup
+
++ (void)cleanUnusedMediaFileFromTmpDir
+{
+    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    [context performBlock:^{
+        
+        // Fetch Media URL's and return them as Dictionary Results:
+        // This way we'll avoid any CoreData Faulting Exception due to deletions performed on another context
+        NSString *localUrlProperty      = NSStringFromSelector(@selector(localURL));
+        
+        NSFetchRequest *fetchRequest    = [[NSFetchRequest alloc] init];
+        fetchRequest.entity             = [NSEntityDescription entityForName:NSStringFromClass([Media class]) inManagedObjectContext:context];
+        fetchRequest.predicate          = [NSPredicate predicateWithFormat:@"ANY posts.blog != NULL AND remoteStatusNumber <> %@", @(MediaRemoteStatusSync)];
+        
+        fetchRequest.propertiesToFetch  = @[ localUrlProperty ];
+        fetchRequest.resultType         = NSDictionaryResultType;
+        
+        NSError *error = nil;
+        NSArray *mediaObjectsToKeep     = [context executeFetchRequest:fetchRequest error:&error];
+        
+        if (error) {
+            DDLogError(@"Error cleaning up tmp files: %@", error.localizedDescription);
+            return;
+        }
+        
+        // Get a references to media files linked in a post
+        DDLogInfo(@"%i media items to check for cleanup", mediaObjectsToKeep.count);
+        
+        NSMutableSet *pathsToKeep       = [NSMutableSet set];
+        for (NSDictionary *mediaDict in mediaObjectsToKeep) {
+            NSString *path = mediaDict[localUrlProperty];
+            if (path) {
+                [pathsToKeep addObject:path];
+            }
+        }
+        
+        // Search for [JPG || JPEG || PNG || GIF] files within the Documents Folder
+        NSString *documentsDirectory    = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
+        NSArray *contentsOfDir          = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:documentsDirectory error:nil];
+        
+        NSSet *mediaExtensions          = [NSSet setWithObjects:@"jpg", @"jpeg", @"png", @"gif", @"mov", @"avi", @"mp4", nil];
+        
+        for (NSString *currentPath in contentsOfDir) {
+            NSString *extension = currentPath.pathExtension.lowercaseString;
+            if (![mediaExtensions containsObject:extension]) {
+                continue;
+            }
+            
+            // If the file is not referenced in any post we can delete it
+            NSString *filepath = [documentsDirectory stringByAppendingPathComponent:currentPath];
+            
+            if (![pathsToKeep containsObject:filepath]) {
+                NSError *nukeError = nil;
+                if ([[NSFileManager defaultManager] removeItemAtPath:filepath error:&nukeError] == NO) {
+                    DDLogError(@"Error [%@] while nuking unused Media at path [%@]", nukeError.localizedDescription, filepath);
+                }
+            }
+        }
+    }];
 }
 
 @end

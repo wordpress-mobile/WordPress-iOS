@@ -30,13 +30,13 @@
     
     // This is important for automatic version migration. Leave it here!
     NSDictionary *options = @{
-                              NSInferMappingModelAutomaticallyOption            : @(YES),
-                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
-                              };
+        NSInferMappingModelAutomaticallyOption          : @(YES),
+        NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+    };
     
     NSError *error = nil;
     _persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc]
-                                   initWithManagedObjectModel:[self managedObjectModel]];
+                                   initWithManagedObjectModel:self.managedObjectModel];
     
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSInMemoryStoreType
                                                    configuration:nil
@@ -86,6 +86,34 @@
                                                                         YES) lastObject];
     
     return [NSURL fileURLWithPath:[documentsDirectory stringByAppendingPathComponent:@"WordPressTest.sqlite"]];
+}
+
+- (NSManagedObject *)loadEntityNamed:(NSString *)entityName withContentsOfFile:(NSString *)filename
+{
+    NSParameterAssert(entityName);
+    NSParameterAssert(filename);
+    
+    // Load the Raw JSON
+    NSString *name      = filename.stringByDeletingPathExtension;
+    NSString *extension = filename.pathExtension;
+    NSString *path      = [[NSBundle bundleForClass:[self class]] pathForResource:name ofType:extension];
+    NSData *contents    = [NSData dataWithContentsOfFile:path];
+    NSAssert(contents, @"Mockup data could not be loaded");
+    
+    // Parse
+    NSDictionary *dict  = [NSJSONSerialization JSONObjectWithData:contents
+                                                          options:NSJSONReadingMutableContainers | NSJSONReadingMutableLeaves
+                                                            error:nil];
+    NSAssert(dict, @"Mockup data could not be parsed");
+
+    // Insert + Set Values
+    NSManagedObject *object= [NSEntityDescription insertNewObjectForEntityForName:entityName inManagedObjectContext:self.mainContext];
+    
+    for (NSString *key in dict.allKeys) {
+        [object setValue:dict[key] forKey:key];
+    }
+    
+    return object;
 }
 
 @end

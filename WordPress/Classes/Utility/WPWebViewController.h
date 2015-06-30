@@ -1,35 +1,47 @@
-#import <MessageUI/MFMailComposeViewController.h>
+#import <UIKit/UIKit.h>
 
-@interface WPWebViewController : UIViewController <MFMailComposeViewControllerDelegate>
 
-@property (nonatomic, strong) NSURL *url;
-@property (nonatomic, strong) NSURL *wpLoginURL;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *password;
-@property (nonatomic, weak) IBOutlet UIWebView *webView;
-@property (nonatomic, strong) IBOutlet UIToolbar *toolbar;
-@property (nonatomic, strong) IBOutlet UIView *loadingView;
-@property (nonatomic, strong) IBOutlet UIActivityIndicatorView *activityIndicator;
-@property (nonatomic, strong) IBOutlet UILabel *loadingLabel;
-@property (nonatomic, strong) IBOutlet UINavigationBar *iPadNavBar;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *backButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *forwardButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *refreshButton;
-@property (nonatomic, strong) IBOutlet UIBarButtonItem *optionsButton;
-@property (nonatomic, strong) UIBarButtonItem *spinnerButton;
-@property (strong, nonatomic) NSTimer *statusTimer;
-@property (nonatomic) BOOL hidesLinkOptions;
 
-//reader variables
-@property (nonatomic,strong) NSString *detailContent;
-@property (nonatomic,strong) NSString *detailHTML;
-@property (nonatomic,strong) NSString *readerAllItems;
-@property (nonatomic) BOOL shouldScrollToBottom;
+#pragma mark - WPWebViewController
 
-- (void) showCloseButton;
-- (IBAction) showLinkOptions;
-- (IBAction) dismiss;
-- (IBAction) goForward;
-- (IBAction) goBack;
-- (IBAction) reload;
+@interface WPWebViewController : UIViewController
+
+/**
+ *	@brief		Represents the Endpoint URL to render
+ */
+@property (nonatomic, strong) NSURL     *url;
+
+/**
+ *	@brief		Login URL that should be used to authenticate the user.
+ */
+@property (nonatomic, strong) NSURL     *wpLoginURL;
+
+/**
+ *	@brief		Username. Optional, will be used in case the endpoint requires authentication.
+ */
+@property (nonatomic, strong) NSString  *username;
+
+/**
+ *	@brief		Password. Optional, will be used in case the endpoint requires authentication.
+ */
+@property (nonatomic, strong) NSString  *password;
+
+/**
+ *	@brief		Bearer Token. Optional, will be used in case the endpoint requires authentication.
+ */
+@property (nonatomic, strong) NSString  *authToken;
+
+/**
+ *	@brief		Optionally scrolls the endpoint to the bottom of the screen, automatically.
+ */
+@property (nonatomic, assign) BOOL      shouldScrollToBottom;
+
+/**
+ *	@brief      Helper method to initialize a WebViewController Instance
+ *
+ *	@param		url         The URL that needs to be rendered
+ *  @returns                A WPWebViewController instance ready to be pushed.
+ */
++ (instancetype)webViewControllerWithURL:(NSURL *)url;
+
 @end

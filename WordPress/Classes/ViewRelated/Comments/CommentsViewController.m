@@ -13,7 +13,7 @@
 @interface CommentsViewController ()
 
 @property (nonatomic,strong) NSIndexPath *currentIndexPath;
-
+@property (nonatomic,assign) BOOL moreCommentsAvailable;
 @end
 
 @implementation CommentsViewController
@@ -37,7 +37,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     DDLogMethod();
 
     [super viewDidLoad];
-
+    self.moreCommentsAvailable = YES;
+    self.infiniteScrollEnabled = YES;
+    self.incrementalLoadingSupported = YES;
     self.title = NSLocalizedString(@"Comments", @"");
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
@@ -47,9 +49,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     }
 
     self.editButtonItem.enabled = [[self.resultsController fetchedObjects] count] > 0;
-
-    // Do not show row dividers for empty cells.
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -179,11 +178,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     return @"Comment";
 }
 
-- (NSDate *)lastSyncDate
-{
-    return self.blog.lastCommentsSync;
-}
-
 - (NSFetchRequest *)fetchRequest
 {
     NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[self entityName]];
@@ -217,7 +211,9 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         if (blogInContext) {
             [commentService syncCommentsForBlog:blogInContext success:^{
                 if (success) {
-                    dispatch_async(dispatch_get_main_queue(), success);
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        success();
+                    });
                 }
             } failure:^(NSError *error) {
                 if (failure) {
@@ -230,11 +226,6 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
     }];
 }
 
-- (BOOL)isSyncing
-{
-    return self.blog.isSyncingComments;
-}
-
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller
 {
     [super controllerDidChangeContent:controller];
@@ -245,5 +236,36 @@ CGFloat const CommentsSectionHeaderHeight = 24.0;
         self.editButtonItem.enabled = NO;
         self.currentIndexPath = nil;
     }
+}
+
+#pragma mark - Syncs methods
+
+- (BOOL)isSyncing
+{
+    return [CommentService isSyncingCommentsForBlog:self.blog];
+}
+
+- (NSDate *)lastSyncDate
+{
+    return self.blog.lastCommentsSync;
+}
+
+- (BOOL)hasMoreContent {
+    return self.moreCommentsAvailable;
+}
+
+- (void)loadMoreWithSuccess:(void (^)())success failure:(void (^)(NSError *))failure {
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
+    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
+    [commentService loadMoreCommentsForBlog:self.blog success:^(BOOL hasMore) {
+        self.moreCommentsAvailable = hasMore;
+        if (success) {
+            success();
+        }
+    } failure:^(NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
 }
 @end

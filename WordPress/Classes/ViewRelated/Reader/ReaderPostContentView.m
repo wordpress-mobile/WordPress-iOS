@@ -15,33 +15,15 @@
 
 @implementation ReaderPostContentView
 
+@dynamic delegate;
+
 #pragma mark - LifeCycle Methods
 
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _canShowActionButtons = YES;
-        _shouldShowAttributionButton = YES;
-
-        // Action buttons
-        _reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
-        [_reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
-        _reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"Accessibility  Label for the Reblog Button in the Reader. Tapping shows a screen that allows the user to reblog a post.");
-        _reblogButton.accessibilityIdentifier = @"Reblog";
-        
-        _commentButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
-        [_commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
-        _commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"Accessibility  Label for the Comment Button in the Reader. Tapping shows a screen that allows the user to comment a post.");
-        _commentButton.accessibilityIdentifier = @"Comment";
-        
-        _likeButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
-        [_likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
-        _likeButton.accessibilityLabel = NSLocalizedString(@"Like", @"Accessibility  Label for the Like Button in the Reader. Tapping this button makes the user like the related post.");
-        _likeButton.accessibilityIdentifier = @"Like";
-
-        // Optimistically set action buttons and prime constraints for scrolling performance.
-        self.actionButtons = @[_likeButton, _commentButton, _reblogButton];
+        [self buildActionButtons];
     }
     return self;
 }
@@ -51,7 +33,7 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
-    self.shouldShowActionButtons = (post.isWPCom && self.canShowActionButtons);
+    self.shouldShowActionButtons = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -84,6 +66,30 @@
 
 #pragma mark - Private Methods
 
+- (void)buildActionButtons
+{
+    self.shouldShowAttributionButton = YES;
+
+    // Action buttons
+    self.reblogButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-reblog-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-reblog-done"]];
+    [self.reblogButton addTarget:self action:@selector(reblogAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.reblogButton.accessibilityLabel = NSLocalizedString(@"Reblog", @"Accessibility  Label for the Reblog Button in the Reader. Tapping shows a screen that allows the user to reblog a post.");
+    self.reblogButton.accessibilityIdentifier = @"Reblog";
+
+    self.commentButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-comment-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-comment-active"]];
+    [self.commentButton addTarget:self action:@selector(commentAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.commentButton.accessibilityLabel = NSLocalizedString(@"Comment", @"Accessibility  Label for the Comment Button in the Reader. Tapping shows a screen that allows the user to comment a post.");
+    self.commentButton.accessibilityIdentifier = @"Comment";
+
+    self.likeButton = [super createActionButtonWithImage:[UIImage imageNamed:@"reader-postaction-like-blue"] selectedImage:[UIImage imageNamed:@"reader-postaction-like-active"]];
+    [self.likeButton addTarget:self action:@selector(likeAction:) forControlEvents:UIControlEventTouchUpInside];
+    self.likeButton.accessibilityLabel = NSLocalizedString(@"Like", @"Accessibility  Label for the Like Button in the Reader. Tapping this button makes the user like the related post.");
+    self.likeButton.accessibilityIdentifier = @"Like";
+
+    // Optimistically set action buttons and prime constraints for scrolling performance.
+    self.actionButtons = @[self.likeButton, self.commentButton, self.reblogButton];
+}
+
 - (void)configureActionButtons
 {
     if (!self.shouldShowActionButtons) {
@@ -97,12 +103,12 @@
         [actionButtons addObject:self.likeButton];
     }
 
-    if (self.post.commentsOpen && !self.shouldHideComments) {
+    if (!self.shouldHideComments && (self.post.commentsOpen || [self.post.commentCount integerValue] > 0)) {
         [actionButtons addObject:self.commentButton];
     }
 
     // Reblogging just for non private blogs
-    if (![self privateContent]) {
+    if (![self privateContent] && self.shouldEnableLoggedinFeatures) {
         [actionButtons addObject:self.reblogButton];
     }
 
@@ -144,9 +150,13 @@
     [self.likeButton setSelected:self.post.isLiked];
     [self.reblogButton setSelected:self.post.isReblogged];
     [self.reblogButton setNeedsLayout];
+    [self.reblogButton setHidden:self.shouldHideReblogButton];
 
     // You can only reblog once.
     self.reblogButton.userInteractionEnabled = !self.post.isReblogged;
+
+    // Enable/Disable like button. Set userInteractionEnabled to avoid the default disabled tint. 
+    self.likeButton.userInteractionEnabled = self.shouldEnableLoggedinFeatures;
 }
 
 - (void)configureAttributionView
@@ -160,14 +170,17 @@
     [self.attributionView hideAttributionMenu:hide];
 }
 
-- (WPContentAttributionView *)viewForAttributionView
+- (void)buildAttributionView
 {
     ReaderPostAttributionView *attrView = [[ReaderPostAttributionView alloc] init];
     attrView.translatesAutoresizingMaskIntoConstraints = NO;
     [attrView setContentCompressionResistancePriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
     attrView.delegate = self;
-    return attrView;
+
+    self.attributionView = attrView;
+    [self addSubview:self.attributionView];
 }
+
 
 #pragma mark - Action Methods
 

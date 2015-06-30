@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress akan menambahkan lokasi Anda pada setiap tulisan di dalam situs dengan fitur geotagging yang Anda aktifkan.";
+NSLocationWhenInUseUsageDescription = "WordPress akan menambahkan lokasi Anda pada setiap tulisan di dalam situs dengan fitur geotagging yang Anda aktifkan.";
+NSCameraUsageDescription = "Untuk mengambil foto atau video agar dapat digunakan di pos Anda.";
+NSPhotoLibraryUsageDescription = "Untuk menambahkan foto atau video ke pos Anda.";
+NSMicrophoneUsageDescription = "Agar video Anda dapat bersuara.";

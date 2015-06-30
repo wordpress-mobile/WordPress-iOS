@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="200" id="ksP-zj-xJe" userLabel="Image" customClass="NoteBlockImageTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ksP-zj-xJe" id="VFE-5W-RpG">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="199"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="AhG-3g-brM">
+                        <rect key="frame" x="70" y="10" width="180" height="180"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="180" id="Iwx-yF-VHD"/>
+                            <constraint firstAttribute="height" constant="180" id="zb7-mc-OZC"/>
+                        </constraints>
+                    </imageView>
+                </subviews>
+                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                <constraints>
+                    <constraint firstAttribute="centerX" secondItem="AhG-3g-brM" secondAttribute="centerX" id="Hn8-95-qjW"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="AhG-3g-brM" secondAttribute="bottom" constant="9" id="ftv-hQ-A4p"/>
+                    <constraint firstItem="AhG-3g-brM" firstAttribute="top" secondItem="VFE-5W-RpG" secondAttribute="top" constant="10" id="lrO-SH-x5P"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="blockImageView" destination="AhG-3g-brM" id="3yg-Cg-uLk"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

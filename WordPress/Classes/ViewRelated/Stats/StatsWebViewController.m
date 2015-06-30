@@ -1,15 +1,16 @@
 #import "StatsWebViewController.h"
-#import "Blog+Jetpack.h"
+#import "Blog.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 #import "WPWebViewController.h"
 #import "JetpackSettingsViewController.h"
 #import "EditSiteViewController.h"
 #import "ReachabilityUtils.h"
-#import "NSString+Helpers.h"
+#import "WPURLRequest.h"
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "WPCookie.h"
+#import "UIDevice+Helpers.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -91,7 +92,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Bypass AFNetworking for ajax stats.
     webView.useWebViewLoading = YES;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( appDelegate.connectionAvailable == YES ) {
         [self.webView showRefreshingState];
     }
@@ -135,12 +136,12 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     [self showBlogSettings];
     NSString *title;
     NSString *message;
-    if ([blog isWPcom]) {
+    if ([blog.account isWpcom]) {
         title = NSLocalizedString(@"Authentication Error", @"");
-        message = NSLocalizedString(@"Invalid username/password. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Invalid username/password. Please update your credentials and try again.", @"Prompts the user the username or password they entered was incorrect.");
     } else {
         title = NSLocalizedString(@"Jetpack Sign In", @"");
-        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials try again.", @"");
+        message = NSLocalizedString(@"Unable to sign in to Jetpack. Please update your credentials and try again.", @"Prompts the user they need to update their jetpack credentals after an error.");
     }
     [WPError showAlertWithTitle:title message:message];
 }
@@ -151,7 +152,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
     UINavigationController *navController = nil;
 
-    if ([blog isWPcom]) {
+    if ([blog.account isWpcom]) {
         EditSiteViewController *controller = [[EditSiteViewController alloc] initWithBlog:self.blog];
         controller.delegate = self;
         controller.isCancellable = YES;
@@ -189,7 +190,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     if (blog) {
         DDLogInfo(@"Loading Stats for the following blog: %@", [blog url]);
 
-        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+        WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
         if ( !appDelegate.connectionAvailable ) {
             [webView hideRefreshingState];
             __weak StatsWebViewController *weakSelf = self;
@@ -210,7 +211,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 {
     DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
 
-    if ([blog isWPcom]) {
+    if ([blog isHostedAtWPcom]) {
         [self loadStats];
         return;
     }
@@ -218,13 +219,13 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
     // Looking for a self-hosted blog with a jetpackClientId and good crednetials.
     BOOL prompt = NO;
 
-    if (![blog jetpackBlogID]) {
+    if (!blog.jetpack.siteID) {
         // needs latest jetpack
         prompt = YES;
 
     } else {
         // Check for credentials.
-        if (![blog.jetpackUsername length] || ![blog.jetpackPassword length]) {
+        if (![blog.authToken length]) {
             prompt = YES;
         }
     }
@@ -262,24 +263,15 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
 - (void)authStats
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     if (authed) {
         [self loadStats];
         return;
     }
 
-    NSString *username = @"";
-    NSString *password = @"";
-    if ([blog isWPcom]) {
-        //use set username/pw for wpcom blogs
-        username = blog.username;
-        password = blog.password;
-
-    } else {
-        username = blog.jetpackUsername;
-        password = blog.jetpackPassword;
-    }
-
+    NSString *username = blog.jetpackAccount ? blog.jetpackAccount.username : blog.username
+    ;
+    
     // Skip the auth call to reduce loadtime if its the same username as before.
     if ([WPCookie hasCookieForURL:[NSURL URLWithString:@"https://wordpress.com/"] andUsername:username]) {
         authed = YES;
@@ -287,23 +279,21 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
-    NSString *requestBody = [NSString stringWithFormat:@"log=%@&pwd=%@&redirect_to=https://wordpress.com",
-                             [username stringByUrlEncoding],
-                             [password stringByUrlEncoding]];
-
-    [mRequest setURL:[NSURL URLWithString:@"https://wordpress.com/wp-login.php"]];
-    [mRequest setHTTPBody:[requestBody dataUsingEncoding:NSUTF8StringEncoding]];
-    [mRequest setValue:[NSString stringWithFormat:@"%d", [requestBody length]] forHTTPHeaderField:@"Content-Length"];
-    [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@", [webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
-    [mRequest setHTTPMethod:@"POST"];
+    NSURL *loginURL = [NSURL URLWithString:@"https://wordpress.com/wp-login.php"];
+    NSURL *redirectURL = [NSURL URLWithString:@"https://wordpress.com"];
+    
+    NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                              redirectURL:redirectURL
+                                                                 username:username
+                                                                 password:[NSString string]
+                                                              bearerToken:blog.authToken
+                                                                userAgent:nil];
+    
 
     // Clear cookies prior to auth so we don't get a false positive on the login cookie being correctly set in some cases.
     [self clearCookies];
 
-    self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:mRequest];
+    self.authRequest = [[AFHTTPRequestOperation alloc] initWithRequest:request];
 
     __weak StatsWebViewController *statsWebViewController = self;
     [authRequest setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -346,7 +336,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
     if ( !appDelegate.connectionAvailable ) {
         __weak StatsWebViewController *weakSelf = self;
         [ReachabilityUtils showAlertNoInternetConnectionWithRetryBlock:^{
@@ -360,17 +350,12 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
         return;
     }
 
-    NSNumber *blogID = [blog blogID];
-    if (![blog isWPcom]) {
-        blogID = [blog jetpackBlogID];
-    }
+    NSNumber *blogID = [blog dotComID];
 
-    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/my-stats/?no-chrome&blog=%@&unit=1", blogID];
+    NSString *pathStr = [NSString stringWithFormat:@"https://wordpress.com/stats/%@", blogID];
     NSMutableURLRequest *mRequest = [[NSMutableURLRequest alloc] init];
     [mRequest setURL:[NSURL URLWithString:pathStr]];
     [mRequest addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-    NSString *userAgent = [NSString stringWithFormat:@"%@",[webView stringByEvaluatingJavaScriptFromString:@"navigator.userAgent"]];
-    [mRequest addValue:userAgent forHTTPHeaderField:@"User-Agent"];
 
     [webView loadRequest:mRequest];
 }
@@ -423,8 +408,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-            [webViewController setUrl:request.URL];
+            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }

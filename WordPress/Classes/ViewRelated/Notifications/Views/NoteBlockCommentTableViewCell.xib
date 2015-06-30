@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" rowHeight="90" id="zZv-EA-ZPR" userLabel="Comment" customClass="NoteBlockCommentTableViewCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="90"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="zZv-EA-ZPR" id="GbU-dc-vAM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="12" y="12" width="32" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="32" id="Sje-MT-U6A"/>
+                            <constraint firstAttribute="width" constant="32" id="irJ-0r-By6"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Y-Yo-5I1">
+                        <rect key="frame" x="54" y="8" width="24" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="188" id="nPH-Us-pyd"/>
+                            <constraint firstAttribute="height" constant="18" id="uUO-Vw-CUK"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="nPH-Us-pyd"/>
+                            </mask>
+                        </variation>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-U0-dRc">
+                        <rect key="frame" x="54" y="26" width="38" height="18"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="18" id="q8Z-Ct-DNF"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-sb-b7a" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
+                        <rect key="frame" x="12" y="49" width="296" height="32"/>
+                        <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="HVC-nW-KvN"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="B30-uC-0a3" firstAttribute="top" secondItem="GbU-dc-vAM" secondAttribute="top" constant="12" id="6rX-YL-d5i"/>
+                    <constraint firstItem="B30-uC-0a3" firstAttribute="top" secondItem="J2Y-Yo-5I1" secondAttribute="top" constant="4" id="CRF-rD-URk"/>
+                    <constraint firstItem="J2Y-Yo-5I1" firstAttribute="leading" secondItem="B30-uC-0a3" secondAttribute="trailing" constant="10" id="DMf-4z-29E"/>
+                    <constraint firstItem="0nV-U0-dRc" firstAttribute="leading" secondItem="J2Y-Yo-5I1" secondAttribute="leading" id="DX8-OQ-u2f"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J2Y-Yo-5I1" secondAttribute="trailing" constant="12" id="LXd-FQ-8Ae"/>
+                    <constraint firstItem="rgQ-sb-b7a" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leading" constant="12" id="QTB-tP-wi2"/>
+                    <constraint firstItem="0nV-U0-dRc" firstAttribute="top" secondItem="J2Y-Yo-5I1" secondAttribute="bottom" id="Uin-gr-pfZ"/>
+                    <constraint firstAttribute="bottom" secondItem="rgQ-sb-b7a" secondAttribute="bottom" constant="8" id="VBO-oK-bJU"/>
+                    <constraint firstAttribute="trailing" secondItem="rgQ-sb-b7a" secondAttribute="trailing" constant="12" id="daK-C6-Tws"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0nV-U0-dRc" secondAttribute="trailing" constant="12" id="m06-h3-RyG"/>
+                    <constraint firstItem="B30-uC-0a3" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leading" constant="12" id="pGd-sN-jcQ"/>
+                    <constraint firstItem="rgQ-sb-b7a" firstAttribute="top" secondItem="B30-uC-0a3" secondAttribute="bottom" constant="5" id="uhm-AF-MNq"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="detailsLabel" destination="0nV-U0-dRc" id="AeM-CL-P0M"/>
+                <outlet property="gravatarImageView" destination="B30-uC-0a3" id="R98-FM-XmL"/>
+                <outlet property="textView" destination="rgQ-sb-b7a" id="kg8-w4-JH9"/>
+                <outlet property="titleLabel" destination="J2Y-Yo-5I1" id="ZAu-qL-HWO"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
