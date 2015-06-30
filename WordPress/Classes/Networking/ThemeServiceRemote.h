@@ -23,6 +23,17 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                         failure:(ThemeServiceFailureBlock)failure;
 
 /**
+ *  @brief      Gets the list of purchased themes for a blog.
+ *
+ *  @param      blogId      The ID of the blog to get the themes for.  Cannot be nil.
+ *  @param      success     The success handler.  Can be nil.
+ *  @param      failure     The failure handler.  Can be nil.
+ */
+- (void)getPurchasedThemesForBlogId:(NSNumber *)blogId
+                            success:(ThemeServiceThemesRequestSuccessBlock)success
+                            failure:(ThemeServiceFailureBlock)failure;
+
+/**
  *  @brief      Gets information for a specific theme.
  *
  *  @param      themeId     The identifier of the theme to request info for.  Cannot be nil.

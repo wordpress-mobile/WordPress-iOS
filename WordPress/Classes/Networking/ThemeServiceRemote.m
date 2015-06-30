@@ -32,6 +32,29 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
           }];
 }
 
+- (void)getPurchasedThemesForBlogId:(NSNumber *)blogId
+                            success:(ThemeServiceThemesRequestSuccessBlock)success
+                            failure:(ThemeServiceFailureBlock)failure
+{
+    NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
+    
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
+    
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+              if (success) {
+                  NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
+                  
+                  success(themes);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)getThemeId:(NSString*)themeId
            success:(ThemeServiceThemeRequestSuccessBlock)success
            failure:(ThemeServiceFailureBlock)failure
@@ -79,7 +102,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
-    static NSString* const path = @"themes";
+    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     
     [self.api GET:path
        parameters:nil
