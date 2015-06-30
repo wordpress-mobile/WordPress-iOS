@@ -277,7 +277,12 @@
     return post;
 }
 
+/**
+ Composes discover attribution if needed.
 
+ @param dict A dictionary representing a discover_metadata object from the REST API
+ @return A `RemoteDiscoverAttribution` object
+ */
 - (RemoteDiscoverAttribution *)discoverAttributionFromDictionary:(NSDictionary *)dict
 {
     if (!dict) {
