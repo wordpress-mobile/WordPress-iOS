@@ -4,7 +4,7 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
-    typealias Kind          = NotificationSettings.StreamKind
+    typealias Kind          = RemoteNotificationSettings.StreamKind
     
     // MARK: - Properties
     var contextManager      : TestContextManager!
@@ -103,14 +103,14 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> NotificationSettings {
+    private func loadNotificationSettings() -> RemoteNotificationSettings {
         let remote      = NotificationsServiceRemote(api: remoteApi)
-        var settings : NotificationSettings?
+        var settings : RemoteNotificationSettings?
         
         let expectation = expectationWithDescription(nil)
         
         remote?.getAllSettings(dummyDeviceId,
-            success: { (theSettings: NotificationSettings) in
+            success: { (theSettings: RemoteNotificationSettings) in
                 settings = theSettings
                 expectation.fulfill()
             },
