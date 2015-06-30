@@ -3,6 +3,8 @@
 #import "DateUtils.h"
 #import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
+#import "ReaderTopicServiceRemote.h"
+#import "RemoteDiscoverAttribution.h"
 
 @implementation ReaderPostServiceRemote
 
@@ -53,7 +55,7 @@
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"%@sites/%d/posts/%d/?meta=site", WordPressComReaderEndpointURL, siteID, postID];
     [self.api GET:path
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -270,9 +272,33 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
+    post.discoverAttribution = [self discoverAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
 
     return post;
 }
+
+
+- (RemoteDiscoverAttribution *)discoverAttributionFromDictionary:(NSDictionary *)dict
+{
+    if (!dict) {
+        return nil;
+    }
+
+    RemoteDiscoverAttribution *disc = [RemoteDiscoverAttribution new];
+    disc.permalink = [dict stringForKey:@"permalink"];
+    disc.authorName = [dict stringForKeyPath:@"attribution.author_name"];
+    disc.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
+    disc.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
+    disc.blogName = [dict stringForKey:@"attribution.blog_name"];
+    disc.blogURL = [dict stringForKey:@"attribution.blog_url"];
+    disc.blogID = [dict numberForKeyPath:@"featured_post_wpcom_data.blog_id"];
+    disc.postID = [dict numberForKeyPath:@"featured_post_wpcom_data.post_id"];
+    disc.commentCount = [dict numberForKeyPath:@"featured_post_wpcom_data.comment_count"];
+    disc.likeCount = [dict numberForKeyPath:@"featured_post_wpcom_data.like_count"];
+
+    return disc;
+}
+
 
 #pragma mark - Utils
 
