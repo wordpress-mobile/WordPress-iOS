@@ -3,8 +3,8 @@
 
 const CGFloat PostHeaderViewAvatarSize = 32.0;
 const CGFloat PostHeaderViewLabelHeight = 18.0;
-const CGFloat PostHeaderDisclosureButtonWidth = 8.0f;
-const CGFloat PostHeaderDisclosureButtonHeight = 13.0f;
+const CGFloat PostHeaderDisclosureButtonWidth = 8.0;
+const CGFloat PostHeaderDisclosureButtonHeight = 13.0;
 
 @interface ReaderPostHeaderView()
 
@@ -33,10 +33,10 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0f;
 
         _tapsRegoznier = [self newTapGestureRecognizer];
         [self addGestureRecognizer:_tapsRegoznier];
-        
+
         _disclosureButton = [self newDisclosureButton];
         [self addSubview:_disclosureButton];
-        
+
         [self configureConstraints];
     }
     return self;
@@ -101,12 +101,12 @@ const CGFloat PostHeaderDisclosureButtonHeight = 13.0f;
 {
     NSDictionary *views   = NSDictionaryOfVariableBindings(_avatarImageView, _titleLabel, _subtitleLabel, _disclosureButton);
     NSDictionary *metrics = @{
-        @"avatarSize"       : @(PostHeaderViewAvatarSize),
-        @"labelHeight"      : @(PostHeaderViewLabelHeight),
-        @"disclosureWidth"  : @(PostHeaderDisclosureButtonWidth),
-        @"disclosureHeight" : @(PostHeaderDisclosureButtonHeight)
-    };
-    
+                              @"avatarSize"       : @(PostHeaderViewAvatarSize),
+                              @"labelHeight"      : @(PostHeaderViewLabelHeight),
+                              @"disclosureWidth"  : @(PostHeaderDisclosureButtonWidth),
+                              @"disclosureHeight" : @(PostHeaderDisclosureButtonHeight)
+                              };
+
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[_avatarImageView(avatarSize)]"
                                                                  options:0
                                                                  metrics:metrics

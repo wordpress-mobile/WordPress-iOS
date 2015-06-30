@@ -33,7 +33,7 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (void)setDefaultWordPressComAccount:(WPAccount *)account;
 
 /**
- Removes the default WordPress.com account
+ Removes the default WordPress.com account. Should only be called from the Main Thread
  
  @see defaultWordPressComAccount
  @see setDefaultWordPressComAccount:
@@ -52,13 +52,11 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  Uses a background managed object context.
  
  @param username the WordPress.com account's username
- @param password the WordPress.com account's password
- @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:password:success:failure:
+ @param authToken the OAuth2 token returned by signIntoWordPressDotComWithUsername:authToken:
  @return a WordPress.com `WPAccount` object for the given `username`
- @see createOrUpdateWordPressComAccountWithUsername:password:authToken:context:
+ @see createOrUpdateWordPressComAccountWithUsername:authToken:
  */
 - (WPAccount *)createOrUpdateWordPressComAccountWithUsername:(NSString *)username
-                                                    password:(NSString *)password
                                                    authToken:(NSString *)authToken;
 
 /**
@@ -88,10 +86,23 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 - (WPAccount *)findWordPressComAccountWithUsername:(NSString *)username;
 
 /**
- Updates email and defaultBlog fields for a WordPress.com WPAccount using /me endpoint
+ Updates user details including username, email, userID, avatarURL, and default blog.
 
- @param account WordPress.com WPAccount desired to be updated
+ @param account WPAccount to be updated
  */
-- (void)updateEmailAndDefaultBlogForWordPressComAccount:(WPAccount *)account;
+- (void)updateUserDetailsForAccount:(WPAccount *)account success:(void (^)())success failure:(void (^)(NSError *error))failure;
+
+/**
+ Removes your default WordPress.com password from the keychain, if needed.
+ */
+- (void)removeWordPressComAccountPasswordIfNeeded;
+
+/**
+ Removes an account if it won't be used anymore.
+ 
+ For self hosted accounts, the account will be removed if there are no associated blogs
+ For WordPress.com accounts, the account will be removed if it's not the default account and there are no associated blogs
+ */
+- (void)purgeAccount:(WPAccount *)account;
 
 @end

@@ -6,8 +6,12 @@
 #import "NSString+XMLExtensions.h"
 #import "DateUtils.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionFooterView.h"
 #import "WPAccount.h"
 #import "NotificationsManager.h"
+#import "NSDate+StringFormatting.h"
+
+#import <Simperium/Simperium.h>
 
 
 
@@ -20,6 +24,7 @@ static NSString* NotificationSettingValueKey        = @"value";
 static NSString* NotificationSettingMutedBlogsKey   = @"muted_blogs";
 static NSString* NotificationSettingMutedUntilKey   = @"mute_until";
 static NSString* NotificationSettingForever         = @"forever";
+static CGFloat NotificationFooterExtraPadding       = 10.0f;
 
 
 #pragma mark ==========================================================================================
@@ -66,16 +71,16 @@ static NSString* NotificationSettingForever         = @"forever";
     
     self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
     
-    if (_notificationPreferences) {
-        [self reloadNotificationSettings];
-    } else {
-        // Trigger a refresh to download the notification settings
+    // Empty Settings: Display the spinner
+    if (!_notificationPreferences) {
         CGFloat refreshControlHeight = CGRectGetHeight(self.refreshControl.frame);
         [self.tableView setContentOffset:CGPointMake(0.0f, -refreshControlHeight) animated:YES];
         [self.refreshControl beginRefreshing];
-        
-        [self refreshNotificationSettings];
     }
+    
+    // Always download the latest settings
+    [self reloadNotificationSettings];
+    [self refreshNotificationSettings];
 }
 
 - (void)refreshNotificationSettings
@@ -90,24 +95,26 @@ static NSString* NotificationSettingForever         = @"forever";
 - (void)reloadNotificationSettings
 {
     _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:NotificationSettingPreferencesKey] mutableCopy];
-    if (_notificationPreferences) {
-        _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
-        if ([_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey] != NSNotFound) {
-            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey]];
-            _mutedBlogsArray = [[[_notificationPreferences objectForKey:NotificationSettingMutedBlogsKey] objectForKey:NotificationSettingValueKey] mutableCopy];
-        }
-        
-        if ([_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey] != NSNotFound) {
-            [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey]];
-            _notificationMutePreferences = [[_notificationPreferences objectForKey:NotificationSettingMutedUntilKey] mutableCopy];
-            
-        } else {
-            _notificationMutePreferences = [NSMutableDictionary dictionary];
-        }
-        
-        [self resetMuteIfNeeded];
-        [self.tableView reloadData];
+    if (!_notificationPreferences) {
+        return;
     }
+    
+    _notificationPrefArray = [[_notificationPreferences allKeys] mutableCopy];
+    if ([_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey] != NSNotFound) {
+        [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedBlogsKey]];
+        _mutedBlogsArray = [[[_notificationPreferences objectForKey:NotificationSettingMutedBlogsKey] objectForKey:NotificationSettingValueKey] mutableCopy];
+    }
+    
+    if ([_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey] != NSNotFound) {
+        [_notificationPrefArray removeObjectAtIndex:[_notificationPrefArray indexOfObject:NotificationSettingMutedUntilKey]];
+        _notificationMutePreferences = [[_notificationPreferences objectForKey:NotificationSettingMutedUntilKey] mutableCopy];
+        
+    } else {
+        _notificationMutePreferences = [NSMutableDictionary dictionary];
+    }
+    
+    [self resetMuteIfNeeded];
+    [self.tableView reloadData];
 }
 
 - (void)notificationSettingChanged:(UISwitch *)sender
@@ -223,7 +230,6 @@ static NSString* NotificationSettingForever         = @"forever";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
     if (indexPath.section == 0) {
         static NSString *CellIdentifier = @"NotficationSettingsCellOnOff";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -298,9 +304,23 @@ static NSString* NotificationSettingForever         = @"forever";
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
+    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
     header.title = [self titleForHeaderInSection:section];
     return header;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
+    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
+    WPTableViewSectionFooterView *footer = [[WPTableViewSectionFooterView alloc] initWithFrame:frame];
+    footer.title = title;
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -308,6 +328,22 @@ static NSString* NotificationSettingForever         = @"forever";
     NSString *title = [self titleForHeaderInSection:section];
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return CGFLOAT_MIN;
+    }
+
+    CGFloat calculatedHeight = [WPTableViewSectionFooterView heightForTitle:title
+                                                                   andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    return calculatedHeight + NotificationFooterExtraPadding;
+}
+
+
+#pragma mark - Helpers
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
@@ -318,6 +354,19 @@ static NSString* NotificationSettingForever         = @"forever";
     }
 
     return NSLocalizedString(@"Sites", @"");
+}
+
+- (NSString *)titleForFooterInSection:(NSInteger)section
+{
+    NSInteger lastSection = self.tableView.numberOfSections - 1;
+    if (section != lastSection) {
+        return nil;
+    }
+    
+    Simperium *simperium = [[WordPressAppDelegate sharedInstance] simperium];
+    NSString *lastSeen = [simperium.networkLastSeenTime shortString] ?: [NSString string];
+    NSString *status = [NSString stringWithFormat:@"Network Last Seen: %@ [%@]", lastSeen, simperium.networkStatus];
+    return status;
 }
 
 

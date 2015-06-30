@@ -2,9 +2,11 @@
 
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
+#import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
 #import "RebloggingViewController.h"
 #import "WPActivityDefaults.h"
@@ -13,6 +15,7 @@
 #import "WPTableImageSource.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
+#import "BlogService.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
@@ -100,6 +103,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 #pragma mark - Configuration
 
+- (Class)classForPostView
+{
+    if (self.readerViewStyle == ReaderViewStyleSitePreview) {
+        return [ReaderPostRichUnattributedContentView class];
+    }
+    return [ReaderPostRichContentView class];
+}
+
 - (void)configureNavbar
 {
     // Don't show 'Reader' in the next-view back button
@@ -119,7 +130,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 - (void)configurePostView
 {
     CGFloat width = IS_IPAD ? WPTableViewFixedWidth : CGRectGetWidth(self.view.bounds);
-    self.postView = [[ReaderPostRichContentView alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
+    self.postView = [[[self classForPostView] alloc] initWithFrame:CGRectMake(0.0, 0.0, width, 1.0)]; // minimal frame so rich text will have initial layout.
     self.postView.translatesAutoresizingMaskIntoConstraints = NO;
     self.postView.delegate = self;
     self.postView.backgroundColor = [UIColor whiteColor];
@@ -127,8 +138,10 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BOOL isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
-    self.postView.canShowActionButtons = isLoggedIn;
+    self.postView.shouldEnableLoggedinFeatures = isLoggedIn;
     self.postView.shouldShowAttributionButton = isLoggedIn;
+    
+    [self setReblogButtonVisibilityOfPostView:self.postView];
     
     [self.scrollView addSubview:self.postView];
 }
@@ -175,6 +188,12 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
                                                                             options:0
                                                                             metrics:metrics
                                                                               views:views]];
+}
+
+- (void)setReblogButtonVisibilityOfPostView:(ReaderPostRichContentView *)postView
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    postView.shouldHideReblogButton = ![blogService hasVisibleWPComAccounts];
 }
 
 - (UIActivityViewController *)activityViewControllerForSharing
@@ -284,7 +303,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 
 - (void)refresh
 {
-    self.title = self.post.postTitle ?: NSLocalizedString(@"Reader", @"Placeholder title for ReaderPostDetails.");
+    self.title = self.post.postTitle ?: NSLocalizedString(@"Post", @"Placeholder title for ReaderPostDetails.");
 
     [self refreshPostView];
 
@@ -406,6 +425,12 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     }];
 }
 
+- (void)contentViewDidReceiveAvatarAction:(UIView *)contentView
+{
+    ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:self.post];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)postView:(ReaderPostContentView *)postView didReceiveReblogAction:(id)sender
 {
     RebloggingViewController *controller = [[RebloggingViewController alloc] initWithPost:self.post];
@@ -448,33 +473,21 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:linkURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
-    UIViewController *controller;
-
-    if (imageControl.linkURL) {
-        NSString *url = [imageControl.linkURL absoluteString];
-
-        BOOL matched = NO;
-        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-        for (NSString *type in types) {
-            if (NSNotFound != [url rangeOfString:type].location) {
-                matched = YES;
-                break;
-            }
-        }
-
-        if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
-        } else {
-            controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
-        }
+    UIViewController *controller = nil;
+    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
+    
+    if (isSupportedNatively) {
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
+    } else if (imageControl.linkURL) {
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
+        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
@@ -482,10 +495,9 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    } else {
-        [self.navigationController pushViewController:controller animated:YES];
     }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 

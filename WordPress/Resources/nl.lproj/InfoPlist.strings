@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "WordPress wil je huidige locatie toevoegen aan berichten op sites waar je geotagging geactiveerd hebt.";
+NSLocationWhenInUseUsageDescription = "WordPress wil je huidige locatie toevoegen aan berichten op sites waar je geotagging geactiveerd hebt.";
+NSCameraUsageDescription = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
+NSPhotoLibraryUsageDescription = "Voor het toevoegen van foto's of video's aan je berichten.";
+NSMicrophoneUsageDescription = "Om je video's te voorzien van geluid.";

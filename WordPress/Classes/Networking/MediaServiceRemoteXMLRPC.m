@@ -40,6 +40,47 @@
                  }];
 }
 
+- (NSURLCredential *)findCredentialForHost:(NSString *)host port:(NSInteger)port
+{
+    __block NSURLCredential *foundCredential = nil;
+    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
+        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
+            if ([[ps host] isEqualToString:host] && [ps port] == port)
+            
+            {
+                foundCredential = credential;
+                *stop = YES;
+            }
+        }];
+        if (foundCredential) {
+            *stop = YES;
+        }
+    }];
+    return foundCredential;
+}
+
+/** 
+ Adds a basic auth header to a request if a credential is stored for that specific host.
+ 
+ The credentials will only be added if a set of credentials for the request host are stored on the shared credential storage
+ @param request, the request to where the authentication information will be added.
+ */
+- (void)addBasicAuthCredentialsIfAvailableToRequest:(NSMutableURLRequest *)request
+{
+    NSInteger port = [[request.URL port] integerValue];
+    if (port == 0) {
+        port = 80;
+    }
+
+    NSURLCredential *credential = [self findCredentialForHost:request.URL.host port:port];
+    if (credential) {
+        NSString *authStr = [NSString stringWithFormat:@"%@:%@", [credential user], [credential password]];
+        NSData *authData = [authStr dataUsingEncoding:NSUTF8StringEncoding];
+        NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength]];
+        [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+    }
+}
+
 - (void)createMedia:(RemoteMedia *)media
             forBlog:(Blog *)blog
            progress:(NSProgress **)progress
@@ -64,9 +105,12 @@
     NSString *guid = [[NSProcessInfo processInfo] globallyUniqueString];
     NSString *streamingCacheFilePath = [directory stringByAppendingPathComponent:guid];
     
-    NSURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
-    [localProgress resignCurrent];
+    NSMutableURLRequest *request = [self.api streamingRequestWithMethod:@"wp.uploadFile" parameters:parameters usingFilePathForCache:streamingCacheFilePath];
     
+    [self addBasicAuthCredentialsIfAvailableToRequest:request];
+    
+    [localProgress resignCurrent];
+
     AFHTTPRequestOperation *operation = [self.api HTTPRequestOperationWithRequest:request
       success:^(AFHTTPRequestOperation *operation, id responseObject) {
           NSDictionary *response = (NSDictionary *)responseObject;

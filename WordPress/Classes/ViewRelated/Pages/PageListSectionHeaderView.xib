@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PageListSectionHeaderView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="efX-hG-Sds">
+                    <rect key="frame" x="6" y="0.0" width="308" height="23"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="Ai0-Ac-pOc">
+                            <rect key="frame" x="10" y="4" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="R0e-Oi-bFn"/>
+                                <constraint firstAttribute="width" constant="16" id="drN-3K-RBH"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T0w-kY-8uW">
+                            <rect key="frame" x="32" y="3" width="268" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" priority="750" constant="600" id="FtB-JF-glz"/>
+                        <constraint firstItem="T0w-kY-8uW" firstAttribute="leading" secondItem="Ai0-Ac-pOc" secondAttribute="trailing" constant="6" id="Wsa-tE-gWT"/>
+                        <constraint firstAttribute="trailing" secondItem="T0w-kY-8uW" secondAttribute="trailing" constant="8" id="Xsw-Up-pnb"/>
+                        <constraint firstItem="Ai0-Ac-pOc" firstAttribute="leading" secondItem="efX-hG-Sds" secondAttribute="leading" constant="10" id="dri-xh-fhD"/>
+                        <constraint firstAttribute="centerY" secondItem="Ai0-Ac-pOc" secondAttribute="centerY" id="oQk-Ec-Dja"/>
+                        <constraint firstAttribute="centerY" secondItem="T0w-kY-8uW" secondAttribute="centerY" id="wtN-Mq-k8V"/>
+                    </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="FtB-JF-glz"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular">
+                        <mask key="constraints">
+                            <include reference="FtB-JF-glz"/>
+                        </mask>
+                    </variation>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="efX-hG-Sds" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="6" id="Aef-iO-3Oa"/>
+                <constraint firstAttribute="centerX" secondItem="efX-hG-Sds" secondAttribute="centerX" id="NNx-Uw-e0a"/>
+                <constraint firstAttribute="trailing" secondItem="efX-hG-Sds" secondAttribute="trailing" constant="6" id="cLT-oe-KgI"/>
+                <constraint firstAttribute="bottom" secondItem="efX-hG-Sds" secondAttribute="bottom" constant="1" id="of4-Ii-10A"/>
+                <constraint firstItem="efX-hG-Sds" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="upM-9B-YNK"/>
+            </constraints>
+            <nil key="simulatedStatusBarMetrics"/>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="default">
+                <mask key="constraints">
+                    <exclude reference="NNx-Uw-e0a"/>
+                </mask>
+            </variation>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="Aef-iO-3Oa"/>
+                    <include reference="NNx-Uw-e0a"/>
+                    <exclude reference="cLT-oe-KgI"/>
+                </mask>
+            </variation>
+            <connections>
+                <outlet property="contentView" destination="efX-hG-Sds" id="IZX-YI-2he"/>
+                <outlet property="titleLabel" destination="T0w-kY-8uW" id="YvO-AP-LKa"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="reader-postaction-time" width="16" height="16"/>
+    </resources>
+</document>

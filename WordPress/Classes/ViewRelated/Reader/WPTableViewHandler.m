@@ -30,6 +30,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)dealloc
 {
+    _resultsController.delegate = nil;
     _tableView.delegate = nil;
     _tableView.dataSource = nil;
 }
@@ -360,6 +361,13 @@ static CGFloat const DefaultCellHeight = 44.0;
     return nil;
 }
 
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([self.delegate respondsToSelector:@selector(tableView:didEndDisplayingCell:forRowAtIndexPath:)]) {
+        [self.delegate tableView:tableView didEndDisplayingCell:cell forRowAtIndexPath:indexPath];
+    }
+}
+
 
 #pragma mark - TableView Datasource Methods
 
@@ -370,8 +378,12 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSArray *sections = [self.resultsController sections];
+    if ([sections count] == 0) {
+        return 0;
+    }
     id <NSFetchedResultsSectionInfo> sectionInfo = nil;
-    sectionInfo = [[self.resultsController sections] objectAtIndex:section];
+    sectionInfo = [sections objectAtIndex:section];
     return [sectionInfo numberOfObjects];
 }
 
@@ -469,12 +481,15 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     [self.tableView endUpdates];
+    
     if (self.indexPathSelectedAfterUpdates) {
         [self.tableView selectRowAtIndexPath:self.indexPathSelectedAfterUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
-
-        self.indexPathSelectedBeforeUpdates = nil;
-        self.indexPathSelectedAfterUpdates = nil;
+    } else if (self.indexPathSelectedBeforeUpdates) {
+        [self.tableView selectRowAtIndexPath:self.indexPathSelectedBeforeUpdates animated:NO scrollPosition:UITableViewScrollPositionNone];
     }
+    
+    self.indexPathSelectedBeforeUpdates = nil;
+    self.indexPathSelectedAfterUpdates = nil;
 
     if ([self.delegate respondsToSelector:@selector(tableViewDidChangeContent:)]) {
         [self.delegate tableViewDidChangeContent:self.tableView];
@@ -501,7 +516,7 @@ static CGFloat const DefaultCellHeight = 44.0;
         // It seems in some cases newIndexPath can be nil for updates
         newIndexPath = indexPath;
     }
-
+    
     switch(type) {
         case NSFetchedResultsChangeInsert:
         {
@@ -690,6 +705,9 @@ static CGFloat const DefaultCellHeight = 44.0;
 - (NSIndexPath *)indexPathForFirstObjectPrecedingPreservedVisibleIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger index = [self.fetchedResultsIndexPathsBeforeChange indexOfObject:indexPath];
+    if (NSNotFound == index) {
+        return nil;
+    }
     NSArray *arr = [self.fetchedResultsIndexPathsBeforeChange subarrayWithRange:NSMakeRange(0, index)];
     for (NSInteger  i = [arr count] -1; i > 0; i-- ) {
         NSManagedObject *obj = self.fetchedResultsBeforeChange[i];

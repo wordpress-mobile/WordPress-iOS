@@ -15,7 +15,7 @@ import Foundation
         }
     }
     
-    public var isBadge: Bool = false {
+    public override var isBadge: Bool {
         didSet {
             backgroundColor = WPStyleGuide.Notifications.blockBackgroundColorForRichText(isBadge)
         }
@@ -29,7 +29,7 @@ import Foundation
         }
     }
     
-    public var dataDetectors: UIDataDetectorTypes? {
+    public var dataDetectors: UIDataDetectorTypes {
         set {
             textView.dataDetectorTypes = newValue ?? .None
         }
@@ -50,7 +50,15 @@ import Foundation
             return textView.selectable
         }
     }
-    
+
+    public var isTextViewClickable: Bool {
+        set {
+            textView.userInteractionEnabled = newValue
+        }
+        get {
+            return textView.userInteractionEnabled
+        }
+    }
     
     // MARK: - View Methods
     public override func awakeFromNib() {
@@ -79,6 +87,11 @@ import Foundation
     }
         
     // MARK: - RichTextView Data Source
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        onUrlClick?(URL)
+        return false
+    }
+    
     public func textView(textView: UITextView, didPressLink link: NSURL) {
         onUrlClick?(link)
     }

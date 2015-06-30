@@ -19,6 +19,29 @@
     return self;
 }
 
+- (void)checkMultiAuthorForBlog:(Blog *)blog
+                        success:(void(^)(BOOL isMultiAuthor))success
+                        failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(blog != nil);
+    NSParameterAssert(blog.dotComID != nil);
+    NSDictionary *parameters = @{@"authors_only":@(YES)};
+    NSString *path = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
+    [self.api GET:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              if (success) {
+                  NSDictionary *response = (NSDictionary *)responseObject;
+                  BOOL isMultiAuthor = [[response arrayForKey:@"users"] count] > 1;
+                  success(isMultiAuthor);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     NSParameterAssert(blog != nil);
@@ -90,7 +113,8 @@
                                     @"software_version",
                                     @"videopress_enabled",
                                     @"timezone",
-                                    @"gmt_offset"
+                                    @"gmt_offset",
+                                    @"allowed_file_types",
                                     ];
 
         for (NSString *key in optionsDirectMapKeys) {

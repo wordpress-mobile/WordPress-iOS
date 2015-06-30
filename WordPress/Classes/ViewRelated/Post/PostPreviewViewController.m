@@ -1,8 +1,9 @@
 #import "PostPreviewViewController.h"
 #import "WordPressAppDelegate.h"
-#import "NSString+Helpers.h"
+#import "WPURLRequest.h"
 #import "Post.h"
-#import "Category.h"
+#import "PostCategory.h"
+#import "WPUserAgent.h"
 
 @interface PostPreviewViewController ()
 
@@ -21,7 +22,7 @@
 
 - (void)dealloc
 {
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
     self.webView.delegate = nil;
 }
@@ -39,14 +40,15 @@
 
 - (void)didReceiveMemoryWarning
 {
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super didReceiveMemoryWarning];
 }
 
 - (void)viewDidLoad
 {
+    DDLogMethod();
+    
     [super viewDidLoad];
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
     [self setupWebView];
     [self setupLoadingView];
 }
@@ -54,18 +56,14 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useDefaultUserAgent];
-    if (self.shouldHideStatusBar && !IS_IPAD) {
-        [[UIApplication sharedApplication] setStatusBarHidden:YES
-                                                withAnimation:nil];
-    }
+    [[WordPressAppDelegate sharedInstance].userAgent useDefaultUserAgent];
     [self refreshWebView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    [[WordPressAppDelegate sharedWordPressApplicationDelegate] useAppUserAgent];
+    [[WordPressAppDelegate sharedInstance].userAgent useWordPressUserAgent];
     [self.webView stopLoading];
 }
 
@@ -155,7 +153,7 @@
         NSString *catStr = @"";
         NSUInteger i = 0, count = [categories count];
         for (i = 0; i < count; i++) {
-            Category *category = [categories objectAtIndex:i];
+            PostCategory *category = [categories objectAtIndex:i];
             catStr = [catStr stringByAppendingString:category.categoryName];
             if (i < count-1) {
                 catStr = [catStr stringByAppendingString:@", "];
@@ -190,24 +188,22 @@
 {
     BOOL needsLogin = NO;
     NSString *status = self.apost.status;
-    NSDate *postGMTDate = self.apost.date_created_gmt;
-    NSDate *laterDate = [self.apost.date_created_gmt laterDate:[NSDate date]];
 
-    if ([status isEqualToString:@"draft"]) {
+    if ([status isEqualToString:PostStatusDraft]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"private"]) {
+    } else if ([status isEqualToString:PostStatusPrivate]) {
         needsLogin = YES;
-    } else if ([status isEqualToString:@"pending"]) {
+    } else if ([status isEqualToString:PostStatusPending]) {
         needsLogin = YES;
     } else if ([self.apost.blog isPrivate]) {
         needsLogin = YES; // Private blog
-    } else if ([laterDate isEqualToDate:postGMTDate]) {
+    } else if ([self.apost isScheduled]) {
         needsLogin = YES; // Scheduled post
     }
 
     NSString *link = self.apost.permaLink;
 
-    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedWordPressApplicationDelegate];
+    WordPressAppDelegate *appDelegate = [WordPressAppDelegate sharedInstance];
 
     if (appDelegate.connectionAvailable == NO) {
         [self showSimplePreviewWithMessage:[NSString stringWithFormat:@"<div class=\"page\"><p>%@ %@</p>", NSLocalizedString(@"The internet connection appears to be offline.", @""), NSLocalizedString(@"A simple preview is shown below.", @"")]];
@@ -215,21 +211,20 @@
         [self showSimplePreview];
     } else {
         if (needsLogin) {
-            NSString *wpLoginURL = [self.apost.blog loginUrl];
-            NSURL *url = [NSURL URLWithString:wpLoginURL];
-            NSMutableURLRequest *req = [NSMutableURLRequest requestWithURL:url];
-            [req setHTTPMethod:@"POST"];
-            [req addValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            NSString *paramDataString = [NSString stringWithFormat:@"%@=%@&%@=%@&%@=%@",
-                                         @"log", [self.apost.blog.username stringByUrlEncoding],
-                                         @"pwd", [self.apost.blog.password stringByUrlEncoding],
-                                         @"redirect_to", [link stringByUrlEncoding]];
+            NSURL *loginURL = [NSURL URLWithString:self.apost.blog.loginUrl];
+            NSURL *redirectURL = [NSURL URLWithString:link];
+            NSString *token;
+            if ([self.apost.blog supports:BlogFeatureOAuth2Login]) {
+                token = self.apost.blog.authToken;
+            }
 
-            NSData *paramData = [paramDataString dataUsingEncoding:NSUTF8StringEncoding];
-            [req setHTTPBody: paramData];
-            [req setValue:[NSString stringWithFormat:@"%d", [paramData length]] forHTTPHeaderField:@"Content-Length"];
-            [req addValue:@"*/*" forHTTPHeaderField:@"Accept"];
-            [self.webView loadRequest:req];
+            NSURLRequest *request = [WPURLRequest requestForAuthenticationWithURL:loginURL
+                                                                      redirectURL:redirectURL
+                                                                         username:self.apost.blog.username
+                                                                         password:self.apost.blog.password
+                                                                      bearerToken:token
+                                                                        userAgent:nil];
+            [self.webView loadRequest:request];
             DDLogInfo(@"Showing real preview (login) for %@", link);
         } else {
             [self.webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:link]]];
@@ -311,6 +306,14 @@
 {
     NSArray *comps = [surString componentsSeparatedByString:@"\n"];
     return [comps componentsJoinedByString:@"<br>"];
+}
+
+#pragma mark - Status bar management
+
+- (BOOL)prefersStatusBarHidden
+{
+    // Do not hide status bar on iPad
+    return (self.shouldHideStatusBar && !IS_IPAD);
 }
 
 @end

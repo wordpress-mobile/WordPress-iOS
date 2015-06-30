@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "O WordPress gostaria de adicionar a sua localização a artigos dos seus sites que tenham a geo-localização activada.";
+NSLocationWhenInUseUsageDescription = "O WordPress gostaria de adicionar a sua localização a artigos dos seus sites que tenham a geo-localização activada.";
+NSCameraUsageDescription = "To take photos or videos to use in your posts.";
+NSPhotoLibraryUsageDescription = "To add photos or videos to your posts.";
+NSMicrophoneUsageDescription = "For your videos to have sound on them.";

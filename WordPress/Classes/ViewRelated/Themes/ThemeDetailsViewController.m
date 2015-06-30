@@ -227,12 +227,15 @@
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    WPWebViewController *livePreviewController = [[WPWebViewController alloc] init];
+    NSURL *targetURL = [NSURL URLWithString:self.theme.previewUrl];
+    WPWebViewController *livePreviewController = [WPWebViewController webViewControllerWithURL:targetURL];
+    livePreviewController.authToken = defaultAccount.authToken;
     livePreviewController.username = defaultAccount.username;
     livePreviewController.password = defaultAccount.password;
-    [livePreviewController setWpLoginURL:[NSURL URLWithString:self.theme.blog.loginUrl]];
-    livePreviewController.url = [NSURL URLWithString:self.theme.previewUrl];
-    [self.navigationController pushViewController:livePreviewController animated:YES];
+    livePreviewController.wpLoginURL = [NSURL URLWithString:self.theme.blog.loginUrl];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:livePreviewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (IBAction)activatePressed:(id)sender

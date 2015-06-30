@@ -17,16 +17,17 @@
 #import "WordPress-Swift.h"
 #import "AboutViewController.h"
 #import "WPTabBarController.h"
+#import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
+#import "WPLogger.h"
 
 static NSString *const UserDefaultsFeedbackEnabled = @"wp_feedback_enabled";
-static NSString * const kUsageTrackingDefaultsKey = @"usage_tracking_enabled";
 static NSString * const kExtraDebugDefaultsKey = @"extra_debug";
 int const kActivitySpinnerTag = 101;
 int const kHelpshiftWindowTypeFAQs = 1;
 int const kHelpshiftWindowTypeConversation = 2;
 
-static NSString *const FeedbackCheckUrl = @"http://api.wordpress.org/iphoneapp/feedback-check/1.0/";
+static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
 static CGFloat const SupportRowHeight = 44.0f;
 
@@ -139,6 +140,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
                                                object:nil];
 
     [HelpshiftUtils refreshUnreadNotificationCount];
+    [WPAnalytics track:WPAnalyticsStatOpenedSupport];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -180,9 +182,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     for (int i = 0; i < allBlogs.count; i++) {
         Blog *blog = allBlogs[i];
 
-        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i-Name", i+1]: blog.blogName,
-                                   [NSString stringWithFormat:@"blog-%i-ID", i+1]: blog.blogID,
-                                   [NSString stringWithFormat:@"blog-%i-URL", i+1]: blog.url};
+        NSDictionary *blogData = @{[NSString stringWithFormat:@"blog-%i", i+1]: [blog logDescription]};
 
         [metaData addEntriesFromDictionary:blogData];
     }
@@ -346,7 +346,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = NSLocalizedString(@"Anonymous Usage Tracking", @"Setting for enabling anonymous usage tracking");
             UISwitch *aSwitch = (UISwitch *)cell.accessoryView;
-            aSwitch.on = [[NSUserDefaults standardUserDefaults] boolForKey:kUsageTrackingDefaultsKey];
+            aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
         } else if (indexPath.row == 3) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -375,7 +375,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     if (section == SettingsSectionFAQForums) {
         return NSLocalizedString(@"Visit the Help Center to get answers to common questions, or visit the Forums to ask new ones.", @"");
     } else if (section == SettingsSectionActivityLog) {
-        return NSLocalizedString(@"Turning on Extra Debug will log additional items to assist with us helping you with resolving a problem.", @"");
+        return NSLocalizedString(@"The Extra Debug feature includes additional information in activity logs, and can help us troubleshoot issues with the app.", @"");
     }
     return nil;
 }
@@ -391,14 +391,14 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeFAQs];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.wordpress.org/faq"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://apps.wordpress.org/support/"]];
             }
         } else if (indexPath.row == 1) {
             if ([HelpshiftUtils isHelpshiftEnabled]) {
                 [WPAnalytics track:WPAnalyticsStatSupportOpenedHelpshiftScreen];
                 [self prepareAndDisplayHelpshiftWindowOfType:kHelpshiftWindowTypeConversation];
             } else {
-                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://ios.forums.wordpress.org"]];
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"https://ios.forums.wordpress.org"]];
             }
         }
     } else if (indexPath.section == SettingsSectionFeedback) {
@@ -424,19 +424,12 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
 - (void)handleCellSwitchChanged:(id)sender
 {
     UISwitch *aSwitch = (UISwitch *)sender;
-    NSString *key = (aSwitch.tag == 1) ? kExtraDebugDefaultsKey : kUsageTrackingDefaultsKey;
 
-    [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:key];
-    [NSUserDefaults resetStandardUserDefaults];
-
-    if ([key isEqualToString:kUsageTrackingDefaultsKey] && aSwitch.on) {
-        DDLogInfo(@"WPAnalytics session started");
-
-        [WPAnalytics beginSession];
-    } else if ([key isEqualToString:kUsageTrackingDefaultsKey] && !aSwitch.on) {
-        DDLogInfo(@"WPAnalytics session stopped");
-
-        [WPAnalytics endSession];
+    if (aSwitch.tag == 1) {
+        [[NSUserDefaults standardUserDefaults] setBool:aSwitch.on forKey:kExtraDebugDefaultsKey];
+        [NSUserDefaults resetStandardUserDefaults];
+    } else {
+        [[WordPressAppDelegate sharedInstance].analytics setTrackingUsage:aSwitch.on];
     }
 }
 
@@ -455,7 +448,7 @@ typedef NS_ENUM(NSInteger, SettingsViewControllerSections)
     [messageBody appendFormat:@"OS Version: %@\n", iosVersion];
 
     WordPressAppDelegate *delegate = (WordPressAppDelegate *)[[UIApplication sharedApplication] delegate];
-    DDFileLogger *fileLogger = delegate.fileLogger;
+    DDFileLogger *fileLogger = delegate.logger.fileLogger;
     NSArray *logFiles = fileLogger.logFileManager.sortedLogFileInfos;
 
     MFMailComposeViewController *mailComposeViewController = [[MFMailComposeViewController alloc] init];

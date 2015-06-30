@@ -63,9 +63,16 @@
 - (void)saveDerivedContext:(NSManagedObjectContext *)context withCompletionBlock:(void (^)())completionBlock;
 
 /**
- Save a given context.
+ Save a given context synchronously.
  
- Convenience for error handling.
+ @param a NSManagedObject context instance
+ */
+- (void)saveContextAndWait:(NSManagedObjectContext *)context;
+
+/**
+ Save a given context. Convenience for error handling.
+ 
+ @param a NSManagedObject context instance
  */
 - (void)saveContext:(NSManagedObjectContext *)context;
 

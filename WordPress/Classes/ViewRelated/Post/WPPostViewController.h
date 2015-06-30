@@ -1,6 +1,5 @@
 #import <UIKit/UIKit.h>
 #import <WordPress-iOS-Editor/WPEditorViewController.h>
-#import "CTAssetsPickerController.h"
 
 @class AbstractPost;
 @class Blog;
@@ -12,6 +11,8 @@ typedef enum
 	kWPPostViewControllerModeEdit = kWPEditorViewControllerModeEdit,
 }
 WPPostViewControllerMode;
+
+extern const CGRect NavigationBarButtonRect;
 
 extern NSString* const WPEditorNavigationRestorationID;
 extern NSString* const kUserDefaultsNewEditorEnabled;

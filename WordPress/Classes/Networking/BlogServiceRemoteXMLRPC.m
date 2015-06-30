@@ -20,6 +20,28 @@
     return self;
 }
 
+- (void)checkMultiAuthorForBlog:(Blog *)blog
+                        success:(void(^)(BOOL isMultiAuthor))success
+                        failure:(void (^)(NSError *error))failure
+{
+    NSParameterAssert(blog != nil);
+    NSDictionary *filter = @{@"who":@"authors"};
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:filter];
+    [self.api callMethod:@"wp.getUsers"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     if (success) {
+                         NSArray *response = (NSArray *)responseObject;
+                         BOOL isMultiAuthor = [response count] > 1;
+                         success(isMultiAuthor);
+                     }
+                 } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
 - (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
@@ -68,8 +90,14 @@
 
         NSDictionary *postFormats = responseObject;
         NSDictionary *respDict = responseObject;
-        if ([postFormats objectForKey:@"supported"] && [[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
-            NSMutableArray *supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+        if ([postFormats objectForKey:@"supported"]) {
+            NSMutableArray *supportedKeys;
+            if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSArray class]]) {
+                supportedKeys = [NSMutableArray arrayWithArray:[postFormats objectForKey:@"supported"]];
+            } else if ([[postFormats objectForKey:@"supported"] isKindOfClass:[NSDictionary class]]) {
+                supportedKeys = [NSMutableArray arrayWithArray:[[postFormats objectForKey:@"supported"] allValues]];
+            }
+            
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
             if (![supportedKeys containsObject:@"standard"]) {
                 [supportedKeys addObject:@"standard"];

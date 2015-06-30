@@ -1,0 +1,96 @@
+{
+    "id": 999998888,
+    "type": "follow",
+    "read": 1,
+    "noticon": "\uf801",
+    "timestamp": "2015-03-30T17:02:36+00:00",
+    "icon": "https:\/\/2.gravatar.com\/avatar\/1010101010",
+    "url": "http:\/\/something.that.might.not.exist",
+    "subject": [
+        {
+            "text": "YYYY and 12 others followed your blog Testing Blog",
+            "ranges": [
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        4
+                    ],
+                    "url": "http:\/\/yyy.wordpress.com",
+                    "email": "yyy@yyy.com",
+                    "id": 29292929
+                },
+                {
+                    "type": "site",
+                    "indices": [
+                        38,
+                        50
+                    ],
+                    "url": "http:\/\/yyy.wordpress.com",
+                    "id": 1919191919
+                }
+            ]
+        }
+    ],
+    "body": [
+        {
+            "text": "YYY",
+            "ranges": [
+                {
+                    "email": "yyy@yyy.com",
+                    "url": "http:\/\/yyy.wordpress.com",
+                    "id": 3939393939,
+                    "type": "user",
+                    "indices": [
+                        0,
+                        4
+                    ]
+                }
+            ],
+            "media": [
+                {
+                    "type": "image",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "height": "256",
+                    "width": "256",
+                    "url": "https:\/\/2.gravatar.com\/avatar\/191919191919"
+                }
+            ],
+            "meta": {
+                "links": {
+                    "email": "yyy@yyy.com",
+                    "home": "http:\/\/yyy.wordpress.com"
+                },
+                "ids": {
+                    "user": 1919191919
+                }
+            },
+            "type": "user"
+        },
+        {
+            "text": "See all of your followers",
+            "ranges": [
+                {
+                    "url": "https:\/\/wordpress.com\/stats\/follows\/wpcom\/yyy.wordpress.com",
+                    "indices": [
+                        0,
+                        25
+                    ],
+                    "type": "follow"
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "ids": {
+            "site": 1919191919
+        },
+        "links": {
+            "site": "https:\/\/public-api.wordpress.com\/rest\/v1\/sites\/1919191919"
+        }
+    },
+    "title": "Recent Followers"
+}

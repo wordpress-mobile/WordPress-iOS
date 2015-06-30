@@ -283,7 +283,7 @@
     } failure:^{
         [NSException raise:@"Error" format:@"Shouldn't get here..."];
     }];
-    [self waitForExpectationsWithTimeout:2.0 handler:nil];
+    [self waitForExpectationsWithTimeout:5.0 handler:nil];
     
     // We should disable the check when the remote check indicates notifications is disabled
     XCTAssertFalse([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]);

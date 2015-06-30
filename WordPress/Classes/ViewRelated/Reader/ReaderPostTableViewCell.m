@@ -12,47 +12,55 @@ const CGFloat RPTVCVerticalOuterPadding = 16.0f;
 
 @implementation ReaderPostTableViewCell
 
-+ (ReaderPostTableViewCell *)cellForSubview:(UIView *)subview
++ (instancetype)cellForSubview:(UIView *)subview
 {
-    UIView *view = subview;
-    while (![view isKindOfClass:self]) {
-        view = (UIView *)view.superview;
+    id view = subview;
+    while (![view isKindOfClass:[self class]]) {
+        view = [((UIView *)view) superview];
     }
 
     if (view == subview) {
         return nil;
     }
 
-    return (ReaderPostTableViewCell *)view;
+    return view;
 }
 
 #pragma mark - Lifecycle Methods
-
-- (void)dealloc
-{
-    self.post = nil;
-}
 
 - (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
-        _sideBorderView = [[UIView alloc] init];
-        _sideBorderView.translatesAutoresizingMaskIntoConstraints = NO;
-        _sideBorderView.backgroundColor = [UIColor colorWithRed:210.0/255.0 green:222.0/255.0 blue:238.0/255.0 alpha:1.0];
-        _sideBorderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+
+        _sideBorderView = [self newSideBorderView];
         [self.contentView addSubview:_sideBorderView];
 
-        _postView = [[ReaderPostContentView alloc] init];
-        _postView.translatesAutoresizingMaskIntoConstraints = NO;
-        _postView.backgroundColor = [UIColor whiteColor];
-        self.backgroundColor = [WPStyleGuide itsEverywhereGrey];
+        _postView = [self newReaderPostContentView];
         [self.contentView addSubview:_postView];
 
         [self configureConstraints];
     }
 
     return self;
+}
+
+- (UIView *)newSideBorderView
+{
+    UIView *view = [[UIView alloc] init];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    view.backgroundColor = [WPStyleGuide readGrey];
+    view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    return view;
+}
+
+- (ReaderPostContentView *)newReaderPostContentView
+{
+    ReaderPostContentView *view = [[ReaderPostContentView alloc] init];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    view.backgroundColor = [UIColor whiteColor];
+    return view;
 }
 
 - (CGSize)sizeThatFits:(CGSize)size

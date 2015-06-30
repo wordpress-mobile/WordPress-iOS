@@ -3,7 +3,7 @@
 
 @class Blog;
 
-@interface StatsViewController : WPStatsViewController
+@interface StatsViewController : UIViewController
 
 @property (nonatomic, weak) Blog *blog;
 @property (nonatomic, copy) void (^dismissBlock)();

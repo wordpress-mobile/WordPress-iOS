@@ -19,7 +19,8 @@
  Loads all of the comments associated with a blog
  */
 - (void)getCommentsForBlog:(Blog *)blog
-                   success:(void (^)(NSArray *comments))success
+                   options:(NSDictionary *)options
+                   success:(void (^)(NSArray *posts))success
                    failure:(void (^)(NSError *error))failure;
 
 /**

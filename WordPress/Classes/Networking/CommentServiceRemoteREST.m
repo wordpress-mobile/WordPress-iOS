@@ -5,6 +5,8 @@
 #import "NSDate+WordPressJSON.h"
 #import <NSObject+SafeExpectations.h>
 
+static const NSInteger NumberOfCommentsToSync = 100;
+
 @interface CommentServiceRemoteREST ()
 
 @property (nonatomic, strong) WordPressComApi *api;
@@ -26,17 +28,29 @@
 
 #pragma mark Public methods
 
-#pragma mark Blog-centric methods
+#pragma mark - Blog-centric methods
 
 - (void)getCommentsForBlog:(Blog *)blog
                    success:(void (^)(NSArray *))success
                    failure:(void (^)(NSError *))failure
 {
+    [self getCommentsForBlog:blog options:nil success:success failure:failure];
+}
+
+- (void)getCommentsForBlog:(Blog *)blog
+                   options:(NSDictionary *)options
+                   success:(void (^)(NSArray *posts))success
+                   failure:(void (^)(NSError *error))failure
+{
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments", blog.dotComID];
-    NSDictionary *parameters = @{
+    NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
-                                 };
+                                 @"number": @(NumberOfCommentsToSync)
+                                 }];
+    if (options) {
+        [parameters addEntriesFromDictionary:options];
+    }
     [self.api GET:path
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -48,7 +62,10 @@
                   failure(error);
               }
           }];
+
 }
+
+
 
 - (void)createComment:(RemoteComment *)comment
               forBlog:(Blog *)blog

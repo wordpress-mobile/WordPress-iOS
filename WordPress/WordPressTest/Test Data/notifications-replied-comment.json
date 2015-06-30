@@ -1,0 +1,214 @@
+{
+    "id": 9999999,
+    "type": "comment",
+    "read": 1,
+    "noticon": "\uf300",
+    "timestamp": "2015-03-10T18:57:37+00:00",
+    "icon": "https:\/\/1.gravatar.com\/avatar\/1919191919",
+    "url": "https:\/\/some.thing.here",
+    "subject": [
+        {
+            "text": "XXX replied to your comment yyyy",
+            "ranges": [
+                {
+                    "type": "noticon",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "value": "\uf467"
+                },
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        4
+                    ],
+                    "url": "http:\/\/some.one.com",
+                    "site_id": 4,
+                    "email": "some@one.com",
+                    "id": 5
+                },
+                {
+                    "type": "comment",
+                    "indices": [
+                        29,
+                        127
+                    ],
+                    "url": "https:\/\/some.thing.here/comment-url",
+                    "site_id": 2929292929,
+                    "post_id": 2929292929,
+                    "id": 192
+                }
+            ]
+        },
+        {
+            "text": "Some text here please",
+            "ranges": [
+                {
+                    "type": "comment",
+                    "indices": [
+                        0,
+                        156
+                    ],
+                    "url": "https:\/\/some.thing.here\/something#comment-990",
+                    "site_id": 2929292929,
+                    "post_id": 2929292929,
+                    "id": 990
+                }
+            ]
+        }
+    ],
+    "body": [
+        {
+            "text": "Some.one",
+            "ranges": [
+                {
+                    "email": "some@one.com",
+                    "url": "http:\/\/some.one.wordpress.com",
+                    "id": 5,
+                    "site_id": 33333,
+                    "type": "user",
+                    "indices": [
+                        0,
+                        4
+                    ]
+                }
+            ],
+            "media": [
+                {
+                    "type": "image",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "height": "256",
+                    "width": "256",
+                    "url": "https:\/\/1.gravatar.com\/avatar\/2919292192"
+                }
+            ],
+            "actions": {
+                "follow": false
+            },
+            "meta": {
+                "links": {
+                    "email": "some@one.com",
+                    "home": "http:\/\/some.thing.here.please"
+                },
+                "ids": {
+                    "user": 5,
+                    "site": 4
+                },
+                "titles": {
+                    "home": "WordPress",
+                    "tagline": "Stuff"
+                }
+            },
+            "type": "user"
+        },
+        {
+            "text": "Some text here please",
+            "actions": {
+                "spam-comment": false,
+                "trash-comment": false,
+                "approve-comment": true,
+                "replyto-comment": true,
+                "like-comment": false
+            },
+            "meta": {
+                "ids": {
+                    "comment": 990,
+                    "user": 5,
+                    "post": 970,
+                    "site": 43790319
+                },
+                "links": {
+                    "comment": "https:\/\/public-api.wordpress.com\/rest\/v1\/comments",
+                    "user": "https:\/\/public-api.wordpress.com\/rest\/v1\/users",
+                    "post": "https:\/\/public-api.wordpress.com\/rest\/v1\/posts",
+                    "site": "https:\/\/public-api.wordpress.com\/rest\/v1\/sites"
+                }
+            },
+            "type": "comment",
+            "nest_level": 1
+        },
+        {
+             "text": "You replied to this comment.",
+             "ranges": [
+                {
+                    "indices": [0, 0],
+                    "type": "noticon",
+                    "value": "\uf300"
+                },
+                {
+                    "indices": [4, 11],
+                    "type": "comment",
+                    "url": "https://mobilerequests.wordpress.com/2015/04/28/android-field-for-verification-code#comment-2893",
+                    "id": 991,
+                    "post_id": 3252,
+                    "site_id": 61509427
+                }
+            ]
+        }
+    ],
+    "meta": {
+        "ids": {
+            "user": 5,
+            "comment": 990,
+            "post": 970,
+            "site": 1919191919,
+            "parent_comment": 989,
+            "reply_comment": 991
+        },
+        "links": {
+            "user": "https:\/\/public-api.wordpress.com\/rest\/v1\/users",
+            "comment": "https:\/\/public-api.wordpress.com\/rest\/v1\/comments",
+            "post": "https:\/\/public-api.wordpress.com\/rest\/v1\/posts",
+            "site": "https:\/\/public-api.wordpress.com\/rest\/v1\/sites",
+            "parent_comment": "https:\/\/public-api.wordpress.com\/rest\/v1\/comments",
+            "reply_comment": "https:\/\/public-api.wordpress.com\/rest\/v1\/comments"
+        }
+    },
+    "header": [
+        {
+            "text": "Something for the header",
+            "ranges": [
+                {
+                    "type": "user",
+                    "indices": [
+                        0,
+                        19
+                    ],
+                    "email": "user@something.com",
+                    "id": 45413599
+                },
+                {
+                    "type": "post",
+                    "indices": [
+                        23,
+                        39
+                    ],
+                    "url": "https:\/\/something.here/would-be-okay",
+                    "site_id": 43790319,
+                    "id": 970
+                }
+            ],
+            "media": [
+                {
+                    "type": "image",
+                    "indices": [
+                        0,
+                        0
+                    ],
+                    "height": "256",
+                    "width": "256",
+                    "url": "https:\/\/2.gravatar.com\/avatar\/29192932193219"
+                }
+            ]
+        },
+        {
+            "text": "Something here as well"
+        }
+    ],
+    "title": "Reply"
+}

@@ -1,6 +1,6 @@
 #import "DDLogSwift.h"
 
-#import "DDLog.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "DDASLLogger.h"
 #import "DDTTYLogger.h"
 

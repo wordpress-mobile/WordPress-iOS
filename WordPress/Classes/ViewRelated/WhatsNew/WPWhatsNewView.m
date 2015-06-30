@@ -16,6 +16,7 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
 @property (nonatomic, weak, readwrite) IBOutlet NSLayoutConstraint *detailsHeightConstraint;
 @property (nonatomic, weak, readwrite) IBOutlet UIImageView* imageView;
 @property (nonatomic, weak, readwrite) IBOutlet UITextView* title;
+@property (nonatomic, weak, readwrite) IBOutlet UIButton* acceptButton;
 @end
 
 @implementation WPWhatsNewView
@@ -44,15 +45,22 @@ static const CGFloat WPWhatsNewShowAnimationMagnificationScale = 1.1;
              @"ImageView outlet not wired.");
     NSAssert([_title isKindOfClass:[UITextView class]],
              @"Title outlet not wired.");
+    NSAssert([_acceptButton isKindOfClass:[UIButton class]],
+             @"Button outlet not wired.");
     
     self.details.scrollEnabled = NO;
     [self setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     UIFont *titleFont = [WPFontManager openSansBoldFontOfSize:18.0f];
     UIFont *detailsFont = [WPFontManager openSansLightFontOfSize:15.0f];
+    UIFont *buttonFont = [WPFontManager openSansLightFontOfSize:16.0f];
     
     self.title.font = titleFont;
     self.details.font = detailsFont;
+    self.acceptButton.titleLabel.font = buttonFont;
+
+    NSString *acceptButtonTitle = NSLocalizedString(@"Great, thanks!", @"Displayed as the 'close' button label on the What's New dialog. A short acknowledgement that the user is aware of the new features. Tapping dismisses the dialog.");
+    [self.acceptButton setTitle:acceptButtonTitle forState:UIControlStateNormal];
 }
 
 #pragma mark - Showing & hiding

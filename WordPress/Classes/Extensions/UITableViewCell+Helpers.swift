@@ -18,12 +18,4 @@ extension UITableViewCell
         
         return ceil(layoutSize.height) + PaddingY;
     }
-    
-    public class func reuseIdentifier() -> String {
-        return classNameWithoutNamespaces()
-    }
-    
-    public class func layoutIdentifier() -> String {
-        return classNameWithoutNamespaces() + "-Layout"
-    }
 }
