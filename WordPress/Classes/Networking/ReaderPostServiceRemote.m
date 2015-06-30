@@ -294,8 +294,8 @@
     disc.authorName = [dict stringForKeyPath:@"attribution.author_name"];
     disc.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
     disc.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
-    disc.blogName = [dict stringForKey:@"attribution.blog_name"];
-    disc.blogURL = [dict stringForKey:@"attribution.blog_url"];
+    disc.blogName = [dict stringForKeyPath:@"attribution.blog_name"];
+    disc.blogURL = [dict stringForKeyPath:@"attribution.blog_url"];
     disc.blogID = [dict numberForKeyPath:@"featured_post_wpcom_data.blog_id"];
     disc.postID = [dict numberForKeyPath:@"featured_post_wpcom_data.post_id"];
     disc.commentCount = [dict numberForKeyPath:@"featured_post_wpcom_data.comment_count"];
