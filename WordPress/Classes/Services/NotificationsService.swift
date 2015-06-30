@@ -30,9 +30,9 @@ public class NotificationsService : NSObject, LocalCoreDataService
         
         notificationsServiceRemote?.getAllSettings(deviceId,
             success: {
-                (settings: NotificationSettings) in
-                success?(settings)
-            
+                (remote: RemoteNotificationSettings) in
+                let parsed = NotificationSettings(remote: remote)
+                success?(parsed)
             },
             failure: { (error: NSError!) in
                 failure?(error)
@@ -51,11 +51,13 @@ public class NotificationsService : NSObject, LocalCoreDataService
         notificationsServiceRemote?.getSiteSettings(deviceId,
             siteId: siteId,
             success: {
-                (settings: [NotificationSettings.Site]) in
-                success?(settings)
+                (remote: [RemoteNotificationSettings.Site]) in
+                let parsed = NotificationSettings.Site.fromArray(remote)
+                success?(parsed)
             },
             failure: {
                 (error: NSError!) in
+                failure?(error)
             })
     }
     
@@ -70,8 +72,9 @@ public class NotificationsService : NSObject, LocalCoreDataService
         
         notificationsServiceRemote?.getOtherSettings(deviceId,
             success: {
-                (settings: [NotificationSettings.Other]) in
-                success?(settings)
+                (remote: [RemoteNotificationSettings.Other]) in
+                let parsed = NotificationSettings.Other.fromArray(remote)
+                success?(parsed)
             },
             failure: {
                 (error: NSError!) in
@@ -82,17 +85,16 @@ public class NotificationsService : NSObject, LocalCoreDataService
     
     /**
     *  @details     This method will retrieve all of the Notification Settings for the default WordPress.com account
-    *  @param       success Closure to be called on success.
+    *  @param       success Closure to be called on success, with the parsed settings.
     *  @param       failure Closure to be called on failure, with the associated error.
     */
     public func getWordPressComSettings(success: (NotificationSettings.WordPressCom -> Void)?, failure: (NSError! -> Void)?) {
-        
         notificationsServiceRemote?.getWordPressComSettings({
-                (settings: NotificationSettings.WordPressCom) in
-                success?(settings)
+                (remote: RemoteNotificationSettings.WordPressCom) in
+                let parsed = NotificationSettings.WordPressCom(remote: remote)
+                success?(parsed)
             },
-            failure: {
-                (error: NSError!) in
+            failure: { (error: NSError!) in
                 failure?(error)
             })
     }
