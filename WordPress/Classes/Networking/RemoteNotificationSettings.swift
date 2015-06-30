@@ -11,7 +11,7 @@ public class RemoteNotificationSettings
 {
     let sites           : [Site]
     let other           : [Other]
-    let wpcom           : WordPressCom
+    let wpcom           : [WordPressCom]
     
     init(dictionary : NSDictionary?) {
         sites           = Site.fromArray(dictionary?["sites"] as? [NSDictionary])
@@ -168,10 +168,10 @@ public class RemoteNotificationSettings
         *  @brief   Parses "WordPress.com" settings dictionary, and returns a WordPressCom instance.
         *
         *  @param   wordPressComDictionary  The raw "WordPress.com" dictionary, retrieved from the backend.
-        *  @returns                         An instance of WordPress.com with the parsed settings.
+        *  @returns                         An array of the WordPress.com parsed settings.
         */
-        public static func fromDictionary(wordPressComDictionary: NSDictionary?) -> WordPressCom {
-            return WordPressCom(settings: wordPressComDictionary)
+        public static func fromDictionary(wordPressComDictionary: NSDictionary?) -> [WordPressCom] {
+            return [WordPressCom(settings: wordPressComDictionary)]
         }
     }
 }
