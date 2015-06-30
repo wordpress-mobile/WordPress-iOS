@@ -1,6 +1,8 @@
 #import <Foundation/Foundation.h>
 #import "ServiceRemoteREST.h"
 
+extern NSString * const WordPressComReaderEndpointURL;
+
 @class WordPressComApi;
 
 @interface ReaderTopicServiceRemote : ServiceRemoteREST
