@@ -2,12 +2,12 @@ import Foundation
 
 
 /**
-*  @class           NotificationSettings
+*  @class           RemoteNotificationSettings
 *  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure
 *                   it into a flat hierarchy, for easy access / mapping.
 */
 
-public class NotificationSettings
+public class RemoteNotificationSettings
 {
     let sites           : [Site]
     let other           : [Other]
