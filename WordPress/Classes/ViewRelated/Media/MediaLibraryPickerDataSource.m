@@ -15,21 +15,29 @@
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableDictionary *observers;
 @property (nonatomic, strong) MediaService *mediaService;
-
+@property (nonatomic, strong) id groupObserverHandler;
 @end
 
 @implementation MediaLibraryPickerDataSource
+
+- (void)dealloc
+{
+    [_mediaGroup unregisterChangeObserver:_groupObserverHandler];
+}
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super init];
     if (self) {
         _mediaGroup = [[MediaLibraryGroup alloc] initWithBlog:blog];
+        _groupObserverHandler = [_mediaGroup registerChangeObserverBlock:^{
+            [self notifyObservers];
+        }];
         _blog = blog;
         _assetsLibrary = [[ALAssetsLibrary alloc] init];
         NSManagedObjectContext *backgroundContext = [[ContextManager sharedInstance] newDerivedContext];
         _mediaService = [[MediaService alloc] initWithManagedObjectContext:backgroundContext];
-
+        _observers = [NSMutableDictionary dictionary];
     }
     return self;
 }
@@ -114,6 +122,13 @@
             failureBlock(error);
         }
     }];
+}
+
+- (void)notifyObservers
+{
+    for ( WPMediaChangesBlock callback in [self.observers allValues]) {
+        callback();
+    }
 }
 
 -(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
@@ -218,6 +233,8 @@
 
 @interface MediaLibraryGroup()
     @property (nonatomic, strong) Blog *blog;
+    @property (nonatomic, assign) NSInteger itemsCount;
+    @property (nonatomic, strong) NSMutableDictionary *observers;
 @end
 
 @implementation MediaLibraryGroup
@@ -228,8 +245,30 @@
     if (self) {
         _blog = blog;
         _filter = WPMediaTypeAll;
+        _itemsCount = NSNotFound;
+        _observers = [NSMutableDictionary dictionary];
     }
     return self;
+}
+
+- (void)notifyObservers
+{
+    for ( WPMediaChangesBlock callback in [self.observers allValues]) {
+        callback();
+    }
+}
+
+-(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
+{
+    NSUUID *blockKey = [NSUUID UUID];
+    [self.observers setObject:[callback copy] forKey:blockKey];
+    return blockKey;
+    
+}
+
+-(void)unregisterChangeObserver:(id<NSObject>)blockKey
+{
+    [self.observers removeObjectForKey:blockKey];
 }
 
 - (id)baseGroup
@@ -258,6 +297,11 @@
         }
     }
     Media *media = [mediaAssets firstObject];
+    if (!media) {
+        UIImage *placeholderImage = [UIImage imageNamed:@"WordPress-share"];
+        completionHandler(placeholderImage, nil);
+        return 0;
+    }
     return [media imageWithSize:size completionHandler:completionHandler];
 }
 
@@ -273,14 +317,19 @@
 
 - (NSInteger)numberOfAssets
 {
-    NSString *entityName = NSStringFromClass([Media class]);
-    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
-    request.predicate = [MediaLibraryPickerDataSource predicateForFilter:self.filter blog:self.blog];
-    NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO];
-    request.sortDescriptors = @[sortDescriptor];
-    NSError *error;
-    NSUInteger count = [[[ContextManager sharedInstance] mainContext] countForFetchRequest:request error:&error];
-    return count;
+    if (self.itemsCount == NSNotFound) {
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        MediaService *mediaService = [[MediaService alloc] initWithManagedObjectContext:mainContext];
+        __weak __typeof__(self) weakSelf = self;
+        [mediaService getMediaLibraryCountForBlog:self.blog
+                                          success:^(NSInteger count) {
+                                              weakSelf.itemsCount = count;
+                                              [weakSelf notifyObservers];
+                                          } failure:^(NSError *error) {
+                                              DDLogError(@"%@", [error localizedDescription]);
+                                          }];
+    }
+    return self.itemsCount;
 }
 
 @end
