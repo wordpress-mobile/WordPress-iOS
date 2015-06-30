@@ -15,6 +15,7 @@
 @property (nonatomic, strong) ALAssetsLibrary *assetsLibrary;
 @property (nonatomic, strong) NSMutableDictionary *observers;
 @property (nonatomic, strong) MediaService *mediaService;
+
 @end
 
 @implementation MediaLibraryPickerDataSource
@@ -77,6 +78,16 @@
 
 -(void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock failure:(WPMediaFailureBlock)failureBlock
 {
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    [mainContext performBlock:^{
+        NSString *entityName = NSStringFromClass([Media class]);
+        NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
+        request.predicate = [[self class] predicateForFilter:self.filter blog:self.blog];
+        NSSortDescriptor *sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES];
+        request.sortDescriptors = @[sortDescriptor];
+        NSError *error;
+        self.media = [mainContext executeFetchRequest:request error:&error];
+    }];
     [self.mediaService syncMediaLibraryForBlog:self.blog success:^{
         NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
         [mainContext performBlock:^{
