@@ -197,6 +197,7 @@
 		5DE88FAA1A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DE88FA91A859DD9000E2CA6 /* ReaderPostUnattributedTableViewCell.m */; };
 		5DEB61B4156FCD3400242C35 /* WPWebView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B3156FCD3400242C35 /* WPWebView.m */; };
 		5DEB61B8156FCD5200242C35 /* WPChromelessWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */; };
+		5DED0E141B42E3E400431FCD /* RemoteDiscoverAttribution.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DED0E131B42E3E400431FCD /* RemoteDiscoverAttribution.m */; };
 		5DF59C0B1770AE3A00171208 /* UILabel+SuggestSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */; };
 		5DF6571B1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF6571A1AE6ACAC00AAA8D7 /* DisplayableImageHelper.m */; };
 		5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF738931965FAB900393584 /* SubscribedTopicsViewController.m */; };
@@ -927,6 +928,8 @@
 		5DEB61B3156FCD3400242C35 /* WPWebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPWebView.m; sourceTree = "<group>"; };
 		5DEB61B6156FCD5200242C35 /* WPChromelessWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPChromelessWebViewController.h; sourceTree = "<group>"; };
 		5DEB61B7156FCD5200242C35 /* WPChromelessWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPChromelessWebViewController.m; sourceTree = "<group>"; };
+		5DED0E121B42E3E400431FCD /* RemoteDiscoverAttribution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteDiscoverAttribution.h; sourceTree = "<group>"; };
+		5DED0E131B42E3E400431FCD /* RemoteDiscoverAttribution.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteDiscoverAttribution.m; sourceTree = "<group>"; };
 		5DF59C091770AE3A00171208 /* UILabel+SuggestSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+SuggestSize.h"; sourceTree = "<group>"; };
 		5DF59C0A1770AE3A00171208 /* UILabel+SuggestSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+SuggestSize.m"; sourceTree = "<group>"; };
 		5DF657191AE6ACAC00AAA8D7 /* DisplayableImageHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayableImageHelper.h; sourceTree = "<group>"; };
@@ -3163,6 +3166,8 @@
 				E1B289DA19F7AF7000DB0707 /* RemoteBlog.m */,
 				FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */,
 				FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */,
+				5DED0E121B42E3E400431FCD /* RemoteDiscoverAttribution.h */,
+				5DED0E131B42E3E400431FCD /* RemoteDiscoverAttribution.m */,
 			);
 			name = "Remote Objects";
 			sourceTree = "<group>";
@@ -3951,6 +3956,7 @@
 				B52C4C7F199D74AE009FD823 /* NoteTableViewCell.swift in Sources */,
 				315FC2C51A2CB29300E7CDA2 /* MeHeaderView.m in Sources */,
 				C57A31A4183D2111007745B9 /* NotificationsManager.m in Sources */,
+				5DED0E141B42E3E400431FCD /* RemoteDiscoverAttribution.m in Sources */,
 				5DFA7EC71AF814E40072023B /* PageListTableViewCell.m in Sources */,
 				5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */,
 				5D0C2CB819AB932C002DF1E5 /* WPContentSyncHelper.swift in Sources */,
