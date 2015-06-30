@@ -13,6 +13,10 @@
 
 - (instancetype)initWithBlog:(Blog *)blog NS_DESIGNATED_INITIALIZER;
 
+-(id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback;
+
+-(void)unregisterChangeObserver:(id<NSObject>)blockKey;
+
 @property (nonatomic, assign) WPMediaType filter;
 
 @end
