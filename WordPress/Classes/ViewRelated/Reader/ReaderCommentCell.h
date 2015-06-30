@@ -9,6 +9,8 @@
 @property (nonatomic) BOOL needsExtraPadding;
 @property (nonatomic) BOOL isFirstNestedComment;
 @property (nonatomic) BOOL hidesBorder;
+@property (nonatomic) BOOL shouldEnableLoggedinFeatures;
+@property (nonatomic) BOOL shouldShowReply;
 
 - (void)configureCell:(Comment *)comment;
 - (void)setAvatarImage:(UIImage *)avatarImage;

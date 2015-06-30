@@ -3,13 +3,20 @@
 
 @implementation WPImageOptimizer
 
-- (NSData *)rawDataFromAsset:(ALAsset *)asset stripGeoLocation:(BOOL) stripGeoLocation
+- (NSData *)rawDataFromAsset:(ALAsset *)asset
+            stripGeoLocation:(BOOL) stripGeoLocation
+               convertToType:(NSString *)type
 {
     ALAssetRepresentation *representation = asset.defaultRepresentation;
-    return [self rawDataFromAssetRepresentation:representation stripGeoLocation:stripGeoLocation];
+    return [self rawDataFromAssetRepresentation:representation
+                               stripGeoLocation:stripGeoLocation
+                                  convertToType:type];
 }
 
-- (NSData *)optimizedDataFromAsset:(ALAsset *)asset fittingSize:(CGSize)targetSize stripGeoLocation:(BOOL) stripGeoLocation
+- (NSData *)optimizedDataFromAsset:(ALAsset *)asset
+                       fittingSize:(CGSize)targetSize
+                  stripGeoLocation:(BOOL) stripGeoLocation
+                     convertToType:(NSString *)type
 {
     ALAssetRepresentation *representation = asset.defaultRepresentation;
     // If it's an asset from a shared photo stream it's image may not be available
@@ -20,9 +27,12 @@
     // We can't resize an image to 0 height 0 width (there would be nothing to draw) so treat this as requesting the original image size by convention. 
     BOOL isImage = [[asset valueForProperty:ALAssetPropertyType] isEqual:ALAssetTypePhoto];
     if (CGSizeEqualToSize(targetSize, CGSizeZero) || !isImage) {
-        return [self rawDataFromAssetRepresentation:representation stripGeoLocation:stripGeoLocation];
+        return [self rawDataFromAssetRepresentation:representation stripGeoLocation:stripGeoLocation convertToType:type];
     }
-    return [self resizedDataFromAssetRepresentation:representation fittingSize:targetSize stripGeoLocation:stripGeoLocation];
+    return [self resizedDataFromAssetRepresentation:representation
+                                        fittingSize:targetSize
+                                   stripGeoLocation:stripGeoLocation
+                                      convertToType:type];
 }
 
 - (CGSize)sizeForOriginalSize:(CGSize)originalSize fittingSize:(CGSize)targetSize

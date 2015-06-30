@@ -4,7 +4,7 @@
 #import "ReaderPost.h"
 #import "ReaderPostSimpleContentView.h"
 #import "ReaderPostService.h"
-#import "BlogSelectorViewController.h"
+#import "WPComBlogSelectorViewController.h"
 #import "WPBlogSelectorButton.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -126,7 +126,7 @@ CGFloat const ReblogViewTextBottomInset = 30;
                                                                                       attributes:@{ NSFontAttributeName : [WPFontManager openSansBoldFontOfSize:14.0] }];
 
         if (!self.blog) {
-            self.blog = [blogService lastUsedOrFirstWPcomBlog];
+            self.blog = [blogService lastUsedOrFirstBlogThatSupports:BlogFeatureReblog];
         }
         NSDictionary *subtextAttributes = @{ NSFontAttributeName: [WPFontManager openSansRegularFontOfSize:10.0] };
         NSMutableAttributedString *titleSubtext = [[NSMutableAttributedString alloc] initWithString:self.blog.blogName
@@ -391,9 +391,9 @@ CGFloat const ReblogViewTextBottomInset = 30;
         dismissHandler();
     };
 
-    BlogSelectorViewController *vc = [[BlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.blog.objectID
-                                                                                   selectedCompletion:selectedCompletion
-                                                                                     cancelCompletion:dismissHandler];
+    WPComBlogSelectorViewController *vc = [[WPComBlogSelectorViewController alloc] initWithSelectedBlogObjectID:self.blog.objectID
+                                                                                             selectedCompletion:selectedCompletion
+                                                                                               cancelCompletion:dismissHandler];
     vc.title = NSLocalizedString(@"Select Site", @"");
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:vc];

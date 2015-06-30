@@ -26,7 +26,7 @@ NSString *const AppRatingLikedCurrentVersion = @"AppRatingLikedCurrentVersion";
 NSString *const AppRatingUserLikeCount = @"AppRatingUserLikeCount";
 NSString *const AppRatingUserDislikeCount = @"AppRatingUserDislikeCount";
 
-NSString *const AppReviewPromptDisabledUrl = @"http://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
+NSString *const AppReviewPromptDisabledUrl = @"https://api.wordpress.org/iphoneapp/app-review-prompt-check/1.0/";
 
 - (instancetype)init
 {

@@ -2,7 +2,7 @@
 
 @implementation WPCategoryTree
 
-- (id)initWithParent:(Category *)parent
+- (id)initWithParent:(PostCategory *)parent
 {
     if (self = [super init]) {
         self.parent = parent;
@@ -17,7 +17,7 @@
     NSUInteger count = [collection count];
 
     for (NSUInteger i = 0; i < count; i++) {
-        Category *category = [collection objectAtIndex:i];
+        PostCategory *category = [collection objectAtIndex:i];
 
         // self.parent can be nil, so compare int values to avoid badness
         if ([category.parentID intValue] == [self.parent.categoryID intValue]) {

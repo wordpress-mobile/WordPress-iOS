@@ -49,11 +49,6 @@
 @property (nonatomic, weak) id<ReaderPostContentViewDelegate> delegate;
 
 /**
- A Boolean value specifying whether the view should display any action buttons.
- */
-@property (nonatomic) BOOL canShowActionButtons;
-
-/**
  A Boolean value specifying whether the view should display the attribution menu.
  */
 @property (nonatomic) BOOL shouldShowAttributionMenu;
@@ -64,9 +59,20 @@
 @property (nonatomic) BOOL shouldShowAttributionButton;
 
 /**
+ A Boolean value specifying whether the view should hide the reblog button.
+ Determined by there being a visible WPCom blog
+ */
+@property (nonatomic) BOOL shouldHideReblogButton;
+
+/**
  A Boolean value specifying whether the comments button must be hidden, no matter what the post properties are.
  */
 @property (nonatomic) BOOL shouldHideComments;
+
+/**
+ A Boolean value whether the like button should be enabled or disabled.
+ */
+@property (nonatomic) BOOL shouldEnableLoggedinFeatures;
 
 /**
  Configures the view to display the contents of the specified `ReaderPost`.
@@ -79,5 +85,9 @@
  */
 - (BOOL)privateContent;
 
+
+#pragma mark - Private Subclass Methods
+
+- (void)buildActionButtons;
 
 @end

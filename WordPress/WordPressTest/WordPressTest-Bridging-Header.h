@@ -10,3 +10,6 @@
 #import "Post.h"
 #import "Page.h"
 #import "ReaderPost.h"
+#import "UIAlertView+Blocks.h"
+#import "UIAlertViewProxy.h"
+#import <WordPressCom-Analytics-iOS/WPAnalytics.h>

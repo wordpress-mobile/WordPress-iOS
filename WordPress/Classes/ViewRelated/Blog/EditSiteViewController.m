@@ -7,6 +7,7 @@
 #import "JetpackSettingsViewController.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
+#import "Blog.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "NotificationsManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
@@ -16,24 +17,67 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 
+const typedef enum {
+    EditSiteRowURL = 0,
+    EditSiteRowUsername = 1,
+    EditSiteRowPassword = 2,
+    EditSiteRowGeotagging = 0,
+    EditSiteRowPushNotifications = 1,
+    EditSiteRowJetpackConfigure = 0
+} EditSiteRow;
+
+const typedef enum {
+    TableViewSectionTitle = 0,
+    TableViewSectionSettings,
+    TableViewSectionSelfHosted
+} TableSectionContentType;
+
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellIdentifier";
+static CGFloat const EditSiteRowHeight = 48.0;
+NSInteger const EditSiteURLMinimumLabelWidth = 30;
+NSInteger const EditSiteSectionCount = 2;
+NSInteger const EditSiteSectionCountSelfHosted = 3;
 
-@interface EditSiteViewController ()
+NSInteger const EditSiteRowCountForSectionTitle = 2;
+NSInteger const EditSiteRowCountForSectionTitleSelfHosted = 3;
+NSInteger const EditSiteRowCountForSectionSettings = 2;
+NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
+NSInteger const EditSiteRowCountForSectionJetpack = 1;
 
-@property (nonatomic, copy) NSString *startingPwd, *startingUser, *startingUrl;
-@property (nonatomic, weak) UITextField *lastTextField, *usernameTextField, *passwordTextField, *urlTextField;
+@interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+
+@property (nonatomic,   weak) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
+@property (nonatomic,   weak) UITextField *lastTextField;
+@property (nonatomic,   weak) UITextField *usernameTextField;
+@property (nonatomic,   weak) UITextField *passwordTextField;
+@property (nonatomic,   weak) UITextField *urlTextField;
+
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
-@property (nonatomic) BOOL isKeyboardVisible;
+
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSString *authToken;
+@property (nonatomic, strong) NSString *username;
+@property (nonatomic, strong) NSString *password;
+@property (nonatomic, strong) NSString *url;
+
+@property (nonatomic,   copy) NSString *startingPwd;
+@property (nonatomic,   copy) NSString *startingUser;
+@property (nonatomic,   copy) NSString *startingUrl;
+
+@property (nonatomic, assign) BOOL geolocationEnabled;
+@property (nonatomic, assign) BOOL isSiteDotCom;
+@property (nonatomic, assign) BOOL isKeyboardVisible;
 
 @end
 
 @implementation EditSiteViewController
 
-- (id)initWithBlog:(Blog *)blog
+- (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super init];
     if (self) {
@@ -49,15 +93,16 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)viewDidLoad
 {
-    DDLogInfo(@"%@ %@", self, NSStringFromSelector(_cmd));
+    DDLogMethod();
     [super viewDidLoad];
 
     if (self.blog) {
-        self.navigationItem.title = NSLocalizedString(@"Edit Site", @"");
+        self.navigationItem.title = NSLocalizedString(@"Settings", @"");
 
         [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
         self.url = self.blog.url;
+        self.authToken = self.blog.authToken;
         self.username = self.blog.username;
         self.password = self.blog.password;
 
@@ -118,46 +163,46 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - UITableView
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tv
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.blog && ![self.blog isWPcom]) {
-        return 3;
+    if (self.blog && !self.blog.account.isWpcom) {
+        return EditSiteSectionCountSelfHosted;
     }
-    return 2;
+    return EditSiteSectionCount;
 }
 
-- (NSInteger)tableView:(UITableView *)tv numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            // URL, username, [password]
-            if ([self.blog isWPcom]) {
-                return 2;
-            }
-
-            return 3;
-        case 1:
-            // Settings: Geolocation, [ Push Notifications ]
-            if ([self canTogglePushNotifications]) {
-                return 2;
-            }
-
-            return 1;
-        case 2:
-            return 1;
-        default:
-            break;
+    if (section == TableViewSectionTitle) {
+        if (self.blog.account.isWpcom) {
+            return EditSiteRowCountForSectionTitle;
+        }
+        return EditSiteRowCountForSectionTitleSelfHosted;
+    } else if (section == TableViewSectionSettings) {
+        if ([self canTogglePushNotifications]) {
+            return EditSiteRowCountForSectionSettings;
+        }
+        return EditSiteRowCountForSectionSettingsSelfHosted;
+    } else if (section == TableViewSectionSelfHosted) {
+        return EditSiteRowCountForSectionJetpack;
     }
-
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForHeaderInSection:section];
+    NSString *title = [self titleForHeaderInSection:section];
+    if (title.length > 0) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = title;
+        return header;
+    }
+    return nil;
+}
 
-    return header;
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return EditSiteRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -170,23 +215,21 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
-    switch (section) {
-        case 0:
-            return self.blog.blogName;
-        case 1:
-            return NSLocalizedString(@"Settings", @"");
-        case 2:
-            return NSLocalizedString(@"Jetpack Stats", @"");
-        default:
-            break;
+    NSString *headingTitle = nil;
+    if (section == TableViewSectionTitle) {
+        headingTitle = self.blog.blogName;
+    } else if (section == TableViewSectionSettings) {
+        headingTitle = NSLocalizedString(@"Settings", @"");
+    } else if (section == TableViewSectionSelfHosted) {
+        headingTitle = NSLocalizedString(@"Jetpack Stats", @"");
     }
-    return nil;
+    return headingTitle;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([indexPath section] == 0) {
-        if (indexPath.row == 0) {
+    if ([indexPath section] == TableViewSectionTitle) {
+        if (indexPath.row == EditSiteRowURL) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             self.urlTextField = cell.textField;
             cell.textLabel.text = NSLocalizedString(@"URL", @"");
@@ -200,7 +243,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
                 self.urlTextField.text = self.blog.url;
 
                 // Make a margin exception for URLs since they're so long
-                cell.minimumLabelWidth = 30;
+                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
             } else {
                 self.urlTextField.text = @"";
             }
@@ -209,7 +252,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewTextCell:cell];
 
             return cell;
-        } else if (indexPath.row == 1) {
+        } else if (indexPath.row == EditSiteRowUsername) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
 
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
@@ -227,7 +270,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewTextCell:cell];
 
             return cell;
-        } else if (indexPath.row == 2) {
+        } else if (indexPath.row == EditSiteRowPassword) {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
 
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
@@ -249,8 +292,8 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
             return cell;
         }
-    } else if (indexPath.section == 1) {
-        if (indexPath.row == 0) {
+    } else if (indexPath.section == TableViewSectionSettings) {
+        if (indexPath.row == EditSiteRowGeotagging) {
             UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
             UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
             geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
@@ -261,7 +304,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewCell:geotaggingCell];
             return geotaggingCell;
 
-        } else if (indexPath.row == 1) {
+        } else if (indexPath.row == EditSiteRowPushNotifications) {
             UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
             UISwitch *pushSwitch = [[UISwitch alloc] init];
             pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
@@ -272,12 +315,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             [WPStyleGuide configureTableViewCell:pushCell];
             return pushCell;
         }
-    } else if (indexPath.section == 2) {
+    } else if (indexPath.section == TableViewSectionSelfHosted) {
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:JetpackConnectedCellIdentifier];
 
         cell.textLabel.text = NSLocalizedString(@"Configure", @"");
-        if (self.blog.jetpackUsername) {
-            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpackUsername];
+        if (self.blog.jetpack.connectedUsername) {
+            cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"Connected as %@", @"Connected to jetpack as the specified usernaem"), self.blog.jetpack.connectedUsername];
         } else {
             cell.detailTextLabel.text = NSLocalizedString(@"Not connected", @"Jetpack is not connected yet.");
         }
@@ -295,10 +338,10 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tv didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [tv cellForRowAtIndexPath:indexPath];
-    if (indexPath.section == 0) {
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    if (indexPath.section == TableViewSectionTitle) {
         for (UIView *subview in cell.subviews) {
             if (subview.class == [UITextField class]) {
                 [subview becomeFirstResponder];
@@ -306,9 +349,9 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
             }
         }
     }
-    [tv deselectRowAtIndexPath:indexPath animated:YES];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == 2) {
+    if (indexPath.section == TableViewSectionSelfHosted) {
         JetpackSettingsViewController *controller = [[JetpackSettingsViewController alloc] initWithBlog:self.blog];
         controller.showFullScreen = NO;
         [controller setCompletionBlock:^(BOOL didAuthenticate) {
@@ -396,7 +439,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
     return self.blog &&
-        ([self.blog isWPcom] || [self.blog hasJetpack]) &&
+        [self.blog supports:BlogFeaturePushNotifications] &&
         [[defaultAccount restApi] hasCredentials] &&
         [NotificationsManager deviceRegisteredForPushNotifications];
 }
@@ -408,7 +451,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     // Save the change
     self.blog.geolocationEnabled = self.geolocationEnabled;
-    [self.blog dataSave];
+    [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
 - (void)togglePushNotifications:(id)sender
@@ -420,7 +463,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
         NSMutableDictionary *updatedPreference;
 
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSUInteger i = 0; i < [mutedBlogsArray count]; i++) {
             updatedPreference = [mutedBlogsArray[i] mutableCopy];
             NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
@@ -467,7 +510,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
             self.isSiteDotCom = YES;
-            self.blogId = [options stringForKeyPath:@"blog_id.value"];
             [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
         } else {
             self.isSiteDotCom = NO;
@@ -484,7 +526,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
-        self.subsites = blogs;
         [self validationSuccess:[xmlRpcURL absoluteString]];
     } failure:^(NSError *error) {
         [SVProgressHUD dismiss];
@@ -546,12 +587,12 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     if (error) {
         NSString *message;
-        if ([error code] == 403) {
+        if (error.code == 403) {
             message = NSLocalizedString(@"Please try entering your login details again.", @"");
         } else {
             message = [error localizedDescription];
         }
-        if ([error.userInfo[AFNetworkingOperationFailingURLResponseErrorKey] statusCode] == 405) {
+        if (error.code == 405) {
             [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
@@ -578,13 +619,16 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
         path = [msg substringWithRange:rng];
     }
 
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    [webViewController setUrl:[NSURL URLWithString:path]];
-    [webViewController setUsername:self.username];
-    [webViewController setPassword:self.password];
-    [webViewController setWpLoginURL:[NSURL URLWithString:self.blog.loginUrl]];
+    NSURL *targetURL = [NSURL URLWithString:path];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
+    webViewController.authToken = self.authToken;
+    webViewController.username = self.username;
+    webViewController.password = self.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:self.blog.loginUrl];
     webViewController.shouldScrollToBottom = YES;
-    [self.navigationController pushViewController:webViewController animated:YES];
+    
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)validateUrl
@@ -625,7 +669,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
     if (self.blog) {
         self.blog.geolocationEnabled = self.geolocationEnabled;
-        [self.blog dataSave];
+        [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
     }
     if (self.blog == nil || self.blog.username == nil) {
         [self validateUrl];
@@ -684,7 +728,7 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
     if (self.notificationPreferences) {
         NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
         NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-        NSNumber *blogID = [self.blog isWPcom] ? self.blog.blogID : [self.blog jetpackBlogID];
+        NSNumber *blogID = [self.blog dotComID];
         for (NSDictionary *currentBlog in mutedBlogsArray ){
             NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
             if ([blogID intValue] == [currentBlogID intValue]) {
@@ -704,7 +748,6 @@ static NSString *const JetpackConnectedCellIdentifier = @"JetpackConnectedCellId
 
 - (void)handleKeyboardDidShow:(NSNotification *)notification
 {
-
     if (_isKeyboardVisible) {
         return;
     }

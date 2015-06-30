@@ -63,4 +63,25 @@ extern NSInteger const MediaMaxImageSizeDimension;
  */
 - (Media *)findMediaWithID:(NSNumber *)mediaID inBlog:(Blog *)blog;
 
+/**
+ *  Obtains the  video url and poster image url for the video with the videoPressID
+ *
+ *  @param videoPressID ID of video in VideoPress
+ *  @param blog         blog to use to access video references
+ *  @param success      return block if videopress info is found
+ *  @param failure      return block if not information found.
+ */
+- (void)getMediaURLFromVideoPressID:(NSString *)videoPressID
+                             inBlog:(Blog *)blog
+                            success:(void (^)(NSString *videoURL, NSString *posterURL))success
+                            failure:(void (^)(NSError *error))failure;
+
+
+#pragma mark - Media cleanup
+
+/**
+ *  @brief      Removes all unused media files from the tmp directorys.
+ */
++ (void)cleanUnusedMediaFileFromTmpDir;
+
 @end

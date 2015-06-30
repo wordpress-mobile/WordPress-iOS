@@ -15,9 +15,6 @@
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:100 preserveWords:NO] isEqualToString:sampleText], @"Incorrect Result.");
     XCTAssertTrue([[sampleText stringByEllipsizingWithMaxLength:0 preserveWords:NO] isEqualToString:@""], @"Incorrect Result.");
     
-    NSString *foreignLanguage = @"わたしはいぬがすきです";
-    XCTAssertTrue([[foreignLanguage stringByEllipsizingWithMaxLength:4 preserveWords:YES] isEqualToString:@"わたし…"], @"Incorrect Result.");
-    
     NSString *url = @"http://www.wordpress.com";
     XCTAssertTrue([[url stringByEllipsizingWithMaxLength:8 preserveWords:YES] isEqualToString:@"http://…"], @"Incorrect Result.");
     
@@ -40,6 +37,83 @@
     NSString *samplePlainCapsURL = @"http://www.WordPress.com";
     NSString *sampleStrippedCapsURL = @"www.WordPress.com";
     XCTAssertEqualObjects(samplePlainCapsURL.hostname, sampleStrippedCapsURL, @"Invalid Stripped String");
+}
+
+- (void)testIsWordPressComPathWithValidDotcomRootPaths
+{
+    NSArray *validDotcomUrls = @[
+        @"http://wordpress.com",
+        @"http://www.wordpress.com",
+        @"http://www.WordPress.com",
+        @"http://www.WordPress.com/",
+        @"https://wordpress.com",
+        @"https://www.wordpress.com",
+        @"https://www.WordPress.com",
+        @"https://www.WordPress.com/"
+    ];
+    
+    for (NSString *validDotcomPath in validDotcomUrls) {
+        XCTAssertTrue(validDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
+}
+
+- (void)testIsWordPressComPathWithInvalidDotcomRootPaths
+{
+    NSArray *invalidDotcomUrls = @[
+        @"http://Zwordpress.com",
+        @"http://www.Zwordpress.com",
+        @"http://www.ZWordPress.com",
+        @"https://Zwordpress.com"
+    ];
+    
+    for (NSString *invalidDotcomPath in invalidDotcomUrls) {
+        XCTAssertFalse(invalidDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
+}
+
+- (void)testIsWordPressComPathWithMissingProtocol
+{
+    NSArray *validDotcomUrls = @[
+        @"wordpress.com",
+        @"wordpress.com/something",
+        @"www.wordpress.com",
+        @"www.WordPress.com",
+        @"www.WordPress.com/something",
+    ];
+    
+    for (NSString *validDotcomPath in validDotcomUrls) {
+        XCTAssertTrue(validDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
+}
+
+- (void)testIsWordPressComPathWithValidPathsWithSubdomains
+{
+    NSArray *validDotcomUrls = @[
+        @"http://blog.wordpress.com",
+        @"http://blog.WordPress.com",
+        @"https://blog.wordpress.com",
+        @"https://blog.WordPress.com",
+        @"http://blog.WordPress.com/some",
+        @"http://blog.WordPress.com/some/thing/else"
+    ];
+    
+    for (NSString *validDotcomPath in validDotcomUrls) {
+        XCTAssertTrue(validDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
+}
+
+- (void)testIsWordPressComPathWithInvalidProtocols
+{
+    NSArray *invalidDotcomUrls = @[
+        @"hppt://wordpress.com",
+        @"httpz://www.wordpress.com",
+        @"httpsz://www.WordPress.com",
+        @"zzzzzz://wordpress.com"
+    ];
+    
+    for (NSString *invalidDotcomPath in invalidDotcomUrls) {
+        XCTAssertFalse(invalidDotcomPath.isWordPressComPath, @"Something went wrong. Better call Saul");
+    }
 }
 
 @end

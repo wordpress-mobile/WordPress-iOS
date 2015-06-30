@@ -13,7 +13,6 @@
 #import "NSString+XMLExtensions.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 20;
-NSUInteger const ReaderPostServiceSummaryLength = 150;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
@@ -798,7 +797,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     ReaderPost *post;
     NSString *globalID = remotePost.globalID;
     NSFetchRequest *fetchRequest = [[NSFetchRequest alloc] initWithEntityName:@"ReaderPost"];
-    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@", globalID];
+    fetchRequest.predicate = [NSPredicate predicateWithFormat:@"globalID = %@ AND topic = %@", globalID, topic];
     NSArray *arr = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
 
     if (error) {
@@ -816,6 +815,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.authorEmail = remotePost.authorEmail;
     post.authorURL = remotePost.authorURL;
     post.blogName = [self makePlainText:remotePost.blogName];
+    post.blogDescription = [self makePlainText:remotePost.blogDescription];
     post.blogURL = remotePost.blogURL;
     post.commentCount = remotePost.commentCount;
     post.commentsOpen = remotePost.commentsOpen;
@@ -909,9 +909,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)createSummaryFromContent:(NSString *)string
 {
-    string = [self makePlainText:string];
-    string = [string stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\n"]];
-    return [string stringByEllipsizingWithMaxLength:ReaderPostServiceSummaryLength preserveWords:YES];
+    return [BasePost summaryFromContent:string];
 }
 
 /**
@@ -922,7 +920,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
  */
 - (NSString *)makePlainText:(NSString *)string
 {
-    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] trim];
+    return [NSString makePlainText:string];
 }
 
 /**
@@ -1049,12 +1047,12 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         NSRange posterMatch = [regexPoster rangeOfFirstMatchInString:string options:NSRegularExpressionCaseInsensitive range:NSMakeRange(0, [string length])];
         if (posterMatch.location != NSNotFound) {
             NSString *poster = [string substringWithRange:posterMatch];
-            NSString *value = [self parseValueForAttriuteNamed:@"height" inElement:poster];
+            NSString *value = [self parseValueForAttributeNamed:@"height" inElement:poster];
             if (value) {
                 height = value;
             }
 
-            value = [self parseValueForAttriuteNamed:@"src" inElement:poster];
+            value = [self parseValueForAttributeNamed:@"src" inElement:poster];
             if (value) {
                 placeholder = value;
             }
@@ -1070,7 +1068,7 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return mstr;
 }
 
-- (NSString *)parseValueForAttriuteNamed:(NSString *)attribute inElement:(NSString *)element
+- (NSString *)parseValueForAttributeNamed:(NSString *)attribute inElement:(NSString *)element
 {
     NSString *value = @"";
     NSString *attrStr = [NSString stringWithFormat:@"%@=\"", attribute];

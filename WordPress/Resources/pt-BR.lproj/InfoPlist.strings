@@ -1,0 +1,5 @@
+NSLocationUsageDescription = "O WordPress gostaria de adicionar sua localização aos posts em sites aonde você ativou o geotagging.";
+NSLocationWhenInUseUsageDescription = "O WordPress gostaria de adicionar sua localização aos posts em sites aonde você ativou o geotagging.";
+NSCameraUsageDescription = "Tirar fotos ou vídeos para usar nos seus posts.";
+NSPhotoLibraryUsageDescription = "Adicionar fotos ou vídeos aos seus posts.";
+NSMicrophoneUsageDescription = "Para que seus vídeos possuam som.";

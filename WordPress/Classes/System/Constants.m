@@ -2,14 +2,16 @@
 
 NSString *const WPMobileReaderURL                                   = @"https://en.wordpress.com/reader/mobile/v2/?chrome=no";
 NSString *const WPMobileReaderDetailURL                             = @"https://en.wordpress.com/reader/mobile/v2/?template=details";
-NSString *const WPMobileReaderFFURL                                 = @"https://en.wordpress.com/reader/mobile/v2/?template=friendfinder";
 
 NSString *const WPComXMLRPCUrl                                      = @"https://wordpress.com/xmlrpc.php";
 NSString *const WPComDefaultAccountUrlKey                           = @"AccountDefaultDotcom";
-NSString *const WPComDefaultAccountUsernameKey                      = @"wpcom_username_preference";
+
+NSString *const WPJetpackInformationURL                             = @"https://jetpack.me/about/";
+NSString *const WPAutomatticMainURL                                 = @"https://automattic.com/";
+NSString *const WPAutomatticTermsOfServiceURL                       = @"https://wordpress.com/tos/";
+NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
-NSString *const WPNotificationsJetpackInformationURL                = @"http://jetpack.me/about/";
 
 #ifdef INTERNAL_BUILD
 NSString *const WPAppGroupName                                      = @"group.org.wordpress.internal";
@@ -27,8 +29,6 @@ NSString *const WPStatsTodayWidgetUserDefaultsSiteTimeZoneKey       = @"WordPres
 NSString *const WPStatsTodayWidgetUserDefaultsViewCountKey          = @"TodayViewCount";
 NSString *const WPStatsTodayWidgetUserDefaultsVisitorCountKey       = @"TodayVisitorCount";
 
-NSString *const WPInternalBetaShakeToPullUpFeedbackKey              = @"InternalBetaShakeToPullUpFeedback";
-
 #if defined(INTERNAL_BUILD) || defined(DEBUG)
 BOOL const WPJetpackRESTEnabled                                     = YES;
 #else
@@ -36,3 +36,8 @@ BOOL const WPJetpackRESTEnabled                                     = NO;
 #endif
 
 NSString *const WPiTunesAppId                                       = @"335703880";
+
+NSString *const WPOnePasswordWordPressTitle                         = @"WordPress";
+NSString *const WPOnePasswordWordPressComURL                        = @"wordpress.com";
+NSInteger const WPOnePasswordGeneratedMinLength                     = 7;
+NSInteger const WPOnePasswordGeneratedMaxLength                     = 50;

@@ -30,10 +30,6 @@
 {
     [tester tapViewWithAccessibilityLabel:@"Me"];
     [tester waitForTimeInterval:1];
-    [tester tapViewWithAccessibilityLabel:@"Me"];
-    [tester waitForTimeInterval:1];
-    [tester tapViewWithAccessibilityLabel:@"Settings"];
-    [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];
     [tester waitForTimeInterval:1];
     [tester tapViewWithAccessibilityLabel:@"Sign Out"];

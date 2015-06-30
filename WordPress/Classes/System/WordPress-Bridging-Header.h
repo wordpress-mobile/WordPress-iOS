@@ -11,9 +11,15 @@
 #import "NSAttributedString+Util.h"
 #import "NSDate+StringFormatting.h"
 #import "NSURL+Util.h"
+#import "UIAlertView+Blocks.h"
+#import "UIAlertViewProxy.h"
+
+#import "ContextManager.h"
 
 #import "AccountService.h"
 #import "WPAccount.h"
+
+#import "WordPressComApi.h"
 
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"

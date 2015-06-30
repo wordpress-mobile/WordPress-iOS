@@ -98,8 +98,8 @@ import Foundation
             return false
         }
         
-        for operation in downloadQueue.operations as [AFHTTPRequestOperation] {
-            if operation.request.URL.isEqual(url) {
+        for operation in downloadQueue.operations as! [AFHTTPRequestOperation] {
+            if operation.request.URL!.isEqual(url) {
                 return false
             }
         }

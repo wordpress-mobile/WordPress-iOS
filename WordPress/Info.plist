@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>4.8.1</string>
+	<string>5.3</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,17 +37,39 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>4.8.1</string>
+	<string>5.3</string>
+	<key>Fabric</key>
+	<dict>
+		<key>APIKey</key>
+		<string>FABRIC_API_KEY</string>
+		<key>Kits</key>
+		<array>
+			<dict>
+				<key>KitInfo</key>
+				<dict/>
+				<key>KitName</key>
+				<string>Crashlytics</string>
+			</dict>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
 	<string>4.0</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To take photos or videos to use in your posts.</string>
 	<key>NSLocationUsageDescription</key>
+	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>WordPress would like to add your location to posts on sites where you have enabled geotagging.</string>
 	<key>NSMainNibFile</key>
 	<string>MainWindow</string>
 	<key>NSMainNibFile~ipad</key>
 	<string>MainWindow-iPad</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>For your videos to have sound on them.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To add photos or videos to your posts.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Merriweather-Bold.ttf</string>
@@ -69,6 +91,6 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

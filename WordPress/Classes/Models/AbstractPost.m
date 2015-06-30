@@ -1,17 +1,33 @@
 #import "AbstractPost.h"
 #import "Media.h"
 #import "ContextManager.h"
+#import "NSDate+StringFormatting.h"
 
 @implementation AbstractPost
 
-@dynamic blog, media;
+@dynamic blog;
+@dynamic media;
+@dynamic metaIsLocal;
+@dynamic metaPublishImmediately;
 @dynamic comments;
+
+@synthesize restorableStatus;
+
++ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
+{
+    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
+    if ([key isEqualToString:@"metaIsLocal"]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"remoteStatusNumber"]];
+
+    } else if ([key isEqualToString:@"metaPublishImmediately"]) {
+        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"date_created_gmt"]];
+    }
+
+    return keyPaths;
+}
 
 - (void)remove
 {
-    for (Media *media in self.media) {
-        [media cancelUpload];
-    }
     [super remove];
 }
 
@@ -24,7 +40,24 @@
         // when wrong saving -- the app crashed for instance. So change our remote status to failed.
         [self setPrimitiveValue:@(AbstractPostRemoteStatusFailed) forKey:@"remoteStatusNumber"];
     }
+}
 
+- (void)setRemoteStatusNumber:(NSNumber *)remoteStatusNumber
+{
+    NSString *key = @"remoteStatusNumber";
+    [self willChangeValueForKey:key];
+    self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
+    [self setPrimitiveValue:remoteStatusNumber forKey:key];
+    [self didChangeValueForKey:key];
+}
+
+- (void)setDate_created_gmt:(NSDate *)date_created_gmt
+{
+    NSString *key = @"date_created_gmt";
+    [self willChangeValueForKey:key];
+    self.metaPublishImmediately = (date_created_gmt == nil);
+    [self setPrimitiveValue:date_created_gmt forKey:key];
+    [self didChangeValueForKey:key];
 }
 
 + (NSString *const)remoteUniqueIdentifier
@@ -232,17 +265,73 @@
     return featuredMedia;
 }
 
-#pragma mark - WPContentViewProvider protocol
 
-- (NSString *)blogNameForDisplay
+#pragma mark - WPPostContentViewProvider protocol
+
+- (NSString *)authorNameForDisplay
 {
-    return self.blog.blogName;
+    return self.author;
 }
 
 - (NSURL *)avatarURLForDisplay
 {
     return [NSURL URLWithString:self.blog.blavatarUrl];
 }
+
+- (NSString *)blogNameForDisplay
+{
+    return self.blog.blogName;
+}
+
+- (NSURL *)blogURL
+{
+    return [NSURL URLWithString:self.blog.url];
+}
+
+- (NSString *)blogURLForDisplay
+{
+    return self.blog.displayURL;
+}
+
+- (NSString *)blavatarForDisplay
+{
+    return self.blog.blavatarUrl;
+}
+
+- (NSString *)contentPreviewForDisplay
+{
+    return self.mt_excerpt;
+}
+
+- (NSString *)dateStringForDisplay
+{
+    NSDate *date = [self dateCreated];
+    if (!date) {
+        return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
+    }
+    return [date shortString];
+}
+
+- (BOOL)supportsStats
+{
+    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
+}
+
+- (BOOL)isPrivate
+{
+    return self.blog.isPrivate;
+}
+
+- (BOOL)isMultiAuthorBlog
+{
+    return self.blog.isMultiAuthor;
+}
+
+- (BOOL)isUploading
+{
+    return self.remoteStatus == AbstractPostRemoteStatusPushing;
+}
+
 
 #pragma mark - Post
 
@@ -277,27 +366,34 @@
     AbstractPost *original = (AbstractPost *)self.original;
     
     // We need the extra check since [nil isEqual:nil] returns NO
-    if ((self.postTitle != original.postTitle) && (![self.postTitle isEqual:original.postTitle])) {
+    // and because @"" != nil
+    if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
+        && (![self.postTitle isEqual:original.postTitle])) {
         return YES;
     }
     
-    if ((self.content != original.content) && (![self.content isEqual:original.content])) {
+    if (!([self.content length] == 0 && [original.content length] == 0)
+        && (![self.content isEqual:original.content])) {
         return YES;
     }
     
-    if ((self.status != original.status) && (![self.status isEqual:original.status])) {
+    if (!([self.status length] == 0 && [original.status length] == 0)
+        && (![self.status isEqual:original.status])) {
         return YES;
     }
     
-    if ((self.password != original.password) && (![self.password isEqual:original.password])) {
+    if (!([self.password length] == 0 && [original.password length] == 0)
+        && (![self.password isEqual:original.password])) {
         return YES;
     }
     
-    if ((self.dateCreated != original.dateCreated) && (![self.dateCreated isEqual:original.dateCreated])) {
+    if ((self.dateCreated != original.dateCreated)
+        && (![self.dateCreated isEqual:original.dateCreated])) {
         return YES;
     }
     
-    if ((self.permaLink != original.permaLink) && (![self.permaLink  isEqual:original.permaLink])) {
+    if (!([self.permaLink length] == 0 && [original.permaLink length] == 0)
+        && (![self.permaLink isEqual:original.permaLink])) {
         return YES;
     }
     

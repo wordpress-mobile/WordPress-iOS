@@ -13,6 +13,8 @@
 /// @name Properties
 ///-----------------
 
+@property (nonatomic, strong)   NSNumber    *userID;
+@property (nonatomic, strong)   NSString    *avatarURL;
 @property (nonatomic, copy)     NSString    *xmlrpc;
 @property (nonatomic, copy)     NSString    *username;
 @property (nonatomic, assign)   BOOL        isWpcom;
@@ -24,7 +26,7 @@
 @property (nonatomic, strong)   Blog        *defaultBlog;
 
 /**
- The account's password
+ The self hosted account's password
  
  Note that the password is stored using the keychain, not core data
  */

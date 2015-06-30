@@ -65,6 +65,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 @property (nonatomic, assign) UIDeviceOrientation previousOrientation;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
+@property (nonatomic) BOOL canComment;
+@property (nonatomic) BOOL isLoggedIn;
+
 @end
 
 
@@ -99,7 +102,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     [super viewDidLoad];
 
     self.mediaCellCache = [NSMutableDictionary dictionary];
-    
+    [self checkIfLoggedIn];
+    [self checkIfCanComment];
+
     [self configureNavbar];
     [self configurePostHeader];
     [self configureTableView];
@@ -183,27 +188,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }
 
     [self.tableViewHandler refreshCachedRowHeightsForWidth:width];
-}
-
-- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator
-{
-    [super viewWillTransitionToSize:size withTransitionCoordinator:coordinator];
-    
-    // TODO:
-    // This snippet prevents an AutoLayout constraint error message, due to an 'Out of Bounds' bottom constraint.
-    // We can't really calculate the exact bottom padding required  before the error is printed, since the target NavBar's height
-    // and KeyboardHeight are unknown.
-    // During the rotation sequence, the OS itself will quickly post the 'KeyboardWillHide' / 'KeyboardWillShow' notifications,
-    // and the exact bottom inset will be properly calculated. Please, nuke this if we (ever) find a better approach.
-    //
-    if (!self.replyTextView.isFirstResponder) {
-        return;
-    }
-    
-    CGFloat delta = size.height - PostHeaderHeight - self.replyTextViewBottomConstraint.constant;
-    if (delta < 0) {
-        self.replyTextViewBottomConstraint.constant += delta;
-    }
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -437,7 +421,8 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                       attribute:NSLayoutAttributeBottom
                                                                      multiplier:1.0
                                                                        constant:0.0];
-    
+    self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
+
     [self.view addConstraint:self.replyTextViewBottomConstraint];
     
     if ([UIDevice isPad]) {
@@ -546,6 +531,16 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     }];
 }
 
+- (void)checkIfCanComment
+{
+    self.canComment = self.post.commentsOpen && self.isLoggedIn;
+}
+
+- (void)checkIfLoggedIn
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    self.isLoggedIn = [[[AccountService alloc] initWithManagedObjectContext:context] defaultWordPressComAccount] != nil;
+}
 
 #pragma mark - Accessor methods
 
@@ -585,11 +580,6 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
     return _activityFooter;
 }
 
-- (BOOL)canComment
-{
-    return self.post.commentsOpen;
-}
-
 - (BOOL)isLoadingPost
 {
     return self.post == nil;
@@ -597,7 +587,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (BOOL)shouldDisplayReplyTextView
 {
-    return self.post.commentsOpen;
+    return self.canComment;
 }
 
 - (BOOL)shouldDisplaySuggestionsTableView
@@ -775,7 +765,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         DDLogError(@"Error sending reply: %@", error);
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               if (buttonIndex != alertView.cancelButtonIndex) {
@@ -865,20 +855,28 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 #pragma mark - Sync methods
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    [service syncHierarchicalCommentsForPost:self.post page:1 success:success failure:failure];
+    [service syncHierarchicalCommentsForPost:self.post page:1 success:^(NSInteger count, BOOL hasMore) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
     [self refreshNoResultsView];
 }
 
-- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(NSInteger, BOOL))success failure:(void (^)(NSError *))failure
+- (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     NSInteger page = [service numberOfHierarchicalPagesSyncedforPost:self.post] + 1;
-    [service syncHierarchicalCommentsForPost:self.post page:page success:success failure:failure];
+    [service syncHierarchicalCommentsForPost:self.post page:page success:^(NSInteger count, BOOL hasMore) {
+        if (success) {
+            success(hasMore);
+        }
+    } failure:failure];
 }
 
 - (void)syncContentEnded
@@ -939,6 +937,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 - (void)configureCell:(UITableViewCell *)aCell atIndexPath:(NSIndexPath *)indexPath
 {
     ReaderCommentCell *cell = (ReaderCommentCell *)aCell;
+    cell.shouldEnableLoggedinFeatures = self.isLoggedIn;
+    cell.shouldShowReply = self.canComment;
+
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
     if (comment.depth > 0 && indexPath.row > 0) {
@@ -1101,9 +1102,9 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
 
 - (void)commentCell:(UITableViewCell *)cell linkTapped:(NSURL *)url
 {
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:url];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)handleReplyTapped:(id<WPContentViewProvider>)contentProvider
@@ -1114,7 +1115,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         return;
     }
 
-    if (![self canComment]) {
+    if (!self.canComment) {
         return;
     }
 
@@ -1142,44 +1143,31 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
         linkURL = [NSURL URLWithString:linkURL.path relativeToURL:url];
     }
 
-    WPWebViewController *controller = [[WPWebViewController alloc] init];
-    [controller setUrl:linkURL];
-    [self.navigationController pushViewController:controller animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
-    UIViewController *controller;
-
-    if (imageControl.linkURL) {
-        NSString *url = [imageControl.linkURL absoluteString];
-
-        BOOL matched = NO;
-        NSArray *types = @[@".png", @".jpg", @".gif", @".jpeg"];
-        for (NSString *type in types) {
-            if (NSNotFound != [url rangeOfString:type].location) {
-                matched = YES;
-                break;
-            }
-        }
-
-        if (matched) {
-            controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
-        } else {
-            controller = [[WPWebViewController alloc] init];
-            [(WPWebViewController *)controller setUrl:imageControl.linkURL];
-        }
+    UIViewController *controller = nil;
+    BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
+    
+    if (isSupportedNatively) {
+        controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
+    } else if (imageControl.linkURL) {
+        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
+        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
-
+    
     if ([controller isKindOfClass:[WPImageViewController class]]) {
         controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         controller.modalPresentationStyle = UIModalPresentationFullScreen;
-        [self presentViewController:controller animated:YES completion:nil];
-    } else {
-        [self.navigationController pushViewController:controller animated:YES];
     }
+    
+    [self presentViewController:controller animated:YES completion:nil];
 }
 
 

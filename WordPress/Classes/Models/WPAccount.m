@@ -2,10 +2,12 @@
 #import "SFHFKeychainUtils.h"
 #import "WordPressComOAuthClient.h"
 
-@implementation WPAccount {
-    WordPressComApi *_restApi;
-    WordPressXMLRPCApi *_xmlrpcApi;
-}
+@interface WPAccount ()
+@property (nonatomic, strong, readwrite) WordPressComApi *restApi;
+@property (nonatomic, strong, readwrite) WordPressXMLRPCApi *xmlrpcApi;
+@end
+
+@implementation WPAccount
 
 @dynamic xmlrpc;
 @dynamic username;
@@ -15,6 +17,10 @@
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic email;
+@dynamic userID;
+@dynamic avatarURL;
+@synthesize restApi = _restApi;
+@synthesize xmlrpcApi = _xmlrpcApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -44,14 +50,18 @@
 {
     [super didTurnIntoFault];
     
-    _restApi = nil;
-    _xmlrpcApi = nil;
+    self.restApi = nil;
+    self.xmlrpcApi = nil;
 }
 
 #pragma mark - Custom accessors
 
 - (NSString *)password
 {
+    if (self.isWpcom) {
+        return nil;
+    }
+    
     return [SFHFKeychainUtils getPasswordForUsername:self.username andServiceName:self.xmlrpc error:nil];
 }
 
@@ -104,6 +114,9 @@
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
     }
+    
+    // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
+    _restApi = nil;
 }
 
 - (NSArray *)visibleBlogs

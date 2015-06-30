@@ -143,6 +143,12 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
     CGRect avatarFrame = CGRectMake(0.0f, 0.0f, WPContentAttributionViewAvatarSize, WPContentAttributionViewAvatarSize);
     CircularImageView *imageView = [[CircularImageView alloc] initWithFrame:avatarFrame];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
+    imageView.userInteractionEnabled = YES;
+
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleImageTapped:)];
+    tgr.cancelsTouchesInView = YES;
+    [imageView addGestureRecognizer:tgr];
+
     return imageView;
 }
 
@@ -180,6 +186,13 @@ const CGFloat WPContentAttributionMenuSize = 30.0;
 }
 
 #pragma mark - Actions
+
+- (void)handleImageTapped:(UIGestureRecognizer *)gestureRecognizer
+{
+    if (self.delegate && [self.delegate respondsToSelector:@selector(attributionViewDidReceiveAvatarAction:)]) {
+        [self.delegate attributionViewDidReceiveAvatarAction:self];
+    }
+}
 
 - (void)attributionButtonAction:(id)sender
 {

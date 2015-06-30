@@ -1,11 +1,40 @@
 #import "NSString+Helpers.h"
 #import <CommonCrypto/CommonDigest.h>
+#import <WordPress-iOS-Shared/NSString+XMLExtensions.h>
 
 static NSString *const Ellipsis =  @"\u2026";
 
 @implementation NSString (Helpers)
 
 #pragma mark Helpers
+
++ (NSString *)makePlainText:(NSString *)string
+{
+    NSCharacterSet *charSet = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [[[string stringByStrippingHTML] stringByDecodingXMLCharacters] stringByTrimmingCharactersInSet:charSet];
+}
+
++ (NSString *)stripShortcodesFromString:(NSString *)string
+{
+    if (!string) {
+        return nil;
+    }
+    static NSRegularExpression *regex;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSError *error;
+        NSString *pattern = @"\\[[^\\]]+\\]";
+        regex = [[NSRegularExpression alloc] initWithPattern:pattern options:NSRegularExpressionCaseInsensitive error:&error];
+        if (error) {
+            DDLogError(@"Error parsing regex: %@", error);
+        }
+    });
+    NSRange range = NSMakeRange(0, [string length]);
+    return [regex stringByReplacingMatchesInString:string
+                                           options:NSMatchingReportCompletion
+                                             range:range
+                                      withTemplate:@""];
+}
 
 // Taken from AFNetworking's AFPercentEscapedQueryStringPairMemberFromStringWithEncoding
 - (NSString *)stringByUrlEncoding
@@ -186,6 +215,31 @@ static NSString *const Ellipsis =  @"\u2026";
     CFRelease(tokenizer);
 
     return tokens;
+}
+
+- (BOOL)isWordPressComPath
+{
+    NSString *const dotcomDomain    = @"wordpress.com";
+    NSString *const dotcomSuffix    = [@"." stringByAppendingString:dotcomDomain];
+    NSArray *const validProtocols   = @[ @"http", @"https" ];
+    
+    // NOTE: Whenever the protocol is not specified, the host will be actually found in the Path getter
+    NSURLComponents *components     = [NSURLComponents componentsWithString:self];
+    NSString *lowercaseHostname     = components.host ?: components.path.pathComponents.firstObject;
+    lowercaseHostname               = lowercaseHostname.lowercaseString;
+    
+    // Valid Domain names can be:
+    //  -   wordpress.com
+    //  -   *.wordpress.com
+    //  -   http(s)://wordpress.com
+    //  -   http(s):*.wordpress.com
+
+    BOOL isDotcom                   = [lowercaseHostname hasSuffix:dotcomSuffix] ||
+                                      [lowercaseHostname isEqualToString:dotcomDomain];
+    
+    BOOL isProtocolValid            = components.scheme == nil || [validProtocols containsObject:components.scheme];
+    
+    return isDotcom && isProtocolValid;
 }
 
 @end

@@ -45,7 +45,7 @@ import Foundation
             return snippetLabel.attributedText
         }
     }
-    public var noticon: NSString? {
+    public var noticon: String? {
         set {
             noticonLabel.text = newValue
         }
@@ -55,6 +55,10 @@ import Foundation
     }
     
     // MARK: - Public Methods
+    public class func reuseIdentifier() -> String {
+        return classNameWithoutNamespaces()
+    }
+    
     public func downloadGravatarWithURL(url: NSURL?) {
         if url == gravatarURL {
             return

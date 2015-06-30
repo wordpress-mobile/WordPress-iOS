@@ -7,7 +7,7 @@
 #import "UIActionSheet+Helpers.h"
 #import "Comment.h"
 #import "BasePost.h"
-#import "WPToast.h"
+#import "SVProgressHUD.h"
 #import "EditCommentViewController.h"
 #import "EditReplyViewController.h"
 #import "ReaderPostDetailViewController.h"
@@ -17,27 +17,48 @@
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"
 
-static NSString *const CVCReplyToastImage = @"action-icon-replied";
-static NSString *const CVCSuccessToastImage = @"action-icon-success";
-static NSString *const CVCHeaderCellIdentifier = @"CommentTableViewHeaderCell";
-static NSString *const CVCCommentCellIdentifier = @"CommentTableViewCell";
-static CGFloat const CVCFirstSectionHeaderHeight = 40;
-static CGFloat const CVCSectionSeparatorHeight = 10;
-static NSInteger const CVCHeaderSectionIndex = 0;
-static NSInteger const CVCNumberOfRows = 1;
-static NSInteger const CVCNumberOfSections = 2;
+
+
+#pragma mark ==========================================================================================
+#pragma mark Constants
+#pragma mark ==========================================================================================
+
+static NSInteger const CommentsDetailsNumberOfSections  = 1;
+static NSInteger const CommentsDetailsHiddenRowNumber   = -1;
+
+typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
+    CommentsDetailsRowHeader    = 0,
+    CommentsDetailsRowText      = 1,
+    CommentsDetailsRowActions   = 2,
+    CommentsDetailsRowCount     = 3     // Should always be the last element
+};
+
+
+#pragma mark ==========================================================================================
+#pragma mark CommentViewController
+#pragma mark ==========================================================================================
 
 @interface CommentViewController () <UITableViewDataSource, UITableViewDelegate, ReplyTextViewDelegate, SuggestionsTableViewDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) NoteBlockHeaderTableViewCell *headerLayoutCell;
-@property (nonatomic, strong) CommentTableViewCell *bodyLayoutCell;
-@property (nonatomic, strong) ReplyTextView *replyTextView;
-@property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
+@property (nonatomic, strong) UITableView           *tableView;
+@property (nonatomic, strong) ReplyTextView         *replyTextView;
+@property (nonatomic, strong) SuggestionsTableView  *suggestionsTableView;
+
+@property (nonatomic, strong) NSDictionary          *layoutIdentifiersMap;
+@property (nonatomic, strong) NSDictionary          *reuseIdentifiersMap;
+@property (nonatomic, assign) NSUInteger            numberOfRows;
+@property (nonatomic, assign) NSUInteger            rowNumberForHeader;
+@property (nonatomic, assign) NSUInteger            rowNumberForComment;
+@property (nonatomic, assign) NSUInteger            rowNumberForActions;
 
 @end
 
 @implementation CommentViewController
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)loadView
 {
@@ -50,6 +71,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tableView.estimatedRowHeight = 44.0;
@@ -58,17 +80,25 @@ static NSInteger const CVCNumberOfSections = 2;
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 
-    UINib *headerCellNib = [UINib nibWithNibName:@"CommentTableViewHeaderCell" bundle:nil];
-    UINib *bodyCellNib = [UINib nibWithNibName:@"CommentTableViewCell" bundle:nil];
-    [self.tableView registerNib:headerCellNib forCellReuseIdentifier:CVCHeaderCellIdentifier];
-    [self.tableView registerNib:bodyCellNib forCellReuseIdentifier:CVCCommentCellIdentifier];
-    self.headerLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
-    self.bodyLayoutCell = [self.tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier];
+    // Register Cell Nibs
+    NSArray *cellClassNames = @[
+        NSStringFromClass([NoteBlockHeaderTableViewCell class]),
+        NSStringFromClass([NoteBlockCommentTableViewCell class]),
+        NSStringFromClass([NoteBlockActionsTableViewCell class])
+    ];
+    
+    for (NSString *cellClassName in cellClassNames) {
+        Class cellClass         = NSClassFromString(cellClassName);
+        NSString *className     = [cellClass classNameWithoutNamespaces];
+        UINib *tableViewCellNib = [UINib nibWithNibName:className bundle:[NSBundle mainBundle]];
+        
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass reuseIdentifier]];
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[cellClass layoutIdentifier]];
+    }
 
+    
     [self attachSuggestionsTableViewIfNeeded];
-
     [self attachReplyViewIfNeeded];
-
     [self setupAutolayoutConstraints];
 }
 
@@ -169,6 +199,7 @@ static NSInteger const CVCNumberOfSections = 2;
 
     [self attachEditActionButton];
     [self fetchPostIfNecessary];
+    [self reloadData];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -192,7 +223,6 @@ static NSInteger const CVCNumberOfSections = 2;
 
 #pragma mark - Fetching Post
 
-// if the post for the comment is nil, fetch it
 - (void)fetchPostIfNecessary
 {
     // if the post is already set for the comment, no need to do anything else
@@ -209,35 +239,38 @@ static NSInteger const CVCNumberOfSections = 2;
     [postService getPostWithID:self.comment.postID
                        forBlog:self.comment.blog
                        success:^(AbstractPost *post) {
-                           [weakSelf.tableView reloadData];
+                           [weakSelf reloadData];
                        }
                        failure:nil];
 }
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return [self shouldShowHeaderForPostDetails] ? CVCNumberOfSections : CVCNumberOfSections - 1;
+    return CommentsDetailsNumberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return CVCNumberOfRows;
+    return self.numberOfRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
-        NoteBlockHeaderTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCHeaderCellIdentifier];
-        [self setupHeaderCell:cell];
-        return cell;
-    }
-    CommentTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CVCCommentCellIdentifier
-                                                                 forIndexPath:indexPath];
-    [self setupCommentCell:cell];
+    NSString *reuseIdentifier = self.reuseIdentifiersMap[@(indexPath.row)];
+    NSAssert(reuseIdentifier, @"Missing Layout Identifier!");
+    
+    NoteBlockTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    NSAssert([cell isKindOfClass:[NoteBlockTableViewCell class]], @"Missing cell!");
+    
+    [self setupCell:cell];
+    [self setupSeparators:cell indexPath:indexPath];
+    
     return cell;
 }
+
 
 #pragma mark - Table view delegate
 
@@ -245,35 +278,32 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (!self.comment.blog.isWPcom) {
-        [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
-        return;
-    }
+    if (indexPath.row == self.rowNumberForHeader) {
+        if (![self.comment.blog supports:BlogFeatureWPComRESTAPI]) {
+            [self openWebViewWithURL:[NSURL URLWithString:self.comment.post.permaLink]];
+            return;
+        }
 
-    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
-        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.blogID];
+        ReaderPostDetailViewController *vc = [ReaderPostDetailViewController detailControllerWithPostID:self.comment.postID siteID:self.comment.blog.dotComID];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    CGFloat firstSectionHeaderHeight = [UIDevice isPad] ? CVCFirstSectionHeaderHeight : CGFLOAT_MIN;
-    return (section == CVCHeaderSectionIndex) ? firstSectionHeaderHeight : CVCSectionSeparatorHeight;
+    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell;
-    if (indexPath.section == CVCHeaderSectionIndex && [self shouldShowHeaderForPostDetails]) {
-        [self setupHeaderCell:self.headerLayoutCell];
-        cell = self.headerLayoutCell;
-    }
-    else {
-        [self setupCommentCell:self.bodyLayoutCell];
-        cell = self.bodyLayoutCell;
-    }
-
+    NSString *layoutIdentifier = self.layoutIdentifiersMap[@(indexPath.row)];
+    NSAssert(layoutIdentifier, @"Missing Layout Identifier!");
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:layoutIdentifier];
+    NSAssert(cell, @"Missing layout cell!");
+    
+    [self setupCell:cell];
+    
     return [cell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
@@ -282,7 +312,22 @@ static NSInteger const CVCNumberOfSections = 2;
     return CGFLOAT_MIN;
 }
 
+
 #pragma mark - Setup Cells
+
+- (void)setupCell:(UITableViewCell *)cell
+{
+    NSParameterAssert(cell);
+    
+    // This is gonna look way better in Swift!
+    if ([cell isKindOfClass:[NoteBlockHeaderTableViewCell class]]) {
+        [self setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell];
+    } else if ([cell isKindOfClass:[NoteBlockCommentTableViewCell class]]) {
+        [self setupCommentCell:(NoteBlockCommentTableViewCell *)cell];
+    } else if ([cell isKindOfClass:[NoteBlockActionsTableViewCell class]]) {
+        [self setupActionsCell:(NoteBlockActionsTableViewCell *)cell];
+    }
+}
 
 - (void)setupHeaderCell:(NoteBlockHeaderTableViewCell *)cell
 {
@@ -291,35 +336,34 @@ static NSInteger const CVCNumberOfSections = 2;
         postTitle = [self.comment.post contentPreviewForDisplay];
     }
 
-    cell.name = self.comment.post.author;
-    cell.snippet = postTitle;
-
-    if (cell != self.headerLayoutCell && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
+    // Setup the cell
+    cell.headerTitle = self.comment.post.author;
+    cell.headerDetails = postTitle;
+    
+    // Setup the Separator
+    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    separatorsView.bottomVisible = YES;
+    
+    // Setup the Gravatar if needed
+    if (cell.isLayoutCell == NO && [self.comment.post respondsToSelector:@selector(authorAvatarURL)]) {
         [cell downloadGravatarWithURL:[NSURL URLWithString:self.comment.post.authorAvatarURL]];
     }
 }
 
-- (void)setupCommentCell:(CommentTableViewCell *)cell
+- (void)setupCommentCell:(NoteBlockCommentTableViewCell *)cell
 {
-    cell.isReplyEnabled = [UIDevice isPad];
-    cell.isLikeEnabled = self.comment.blog.isWPcom;
-    cell.isApproveEnabled = YES;
-    cell.isTrashEnabled = YES;
-    cell.isSpamEnabled = YES;
+    // Setup the Cell
+    cell.isTextViewSelectable = YES;
+    cell.dataDetectors = UIDataDetectorTypeAll;
 
+    // Setup the Fields
     cell.name = self.comment.author;
     cell.timestamp = [self.comment.dateCreated shortString];
-
-    cell.timestamp = self.comment.hasAuthorUrl ?
-                            [[self.comment.dateCreated shortString] stringByAppendingString:@" • "]
-                            : [self.comment.dateCreated shortString];
-
-    cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
-    cell.commentText = [self.comment contentForDisplay];
-    cell.isLikeOn = self.comment.isLiked;
     cell.site = self.comment.authorUrlForDisplay;
-
-    if (cell != self.bodyLayoutCell) {
+    cell.commentText = [self.comment contentForDisplay];
+    cell.isApproved = [self.comment.status isEqualToString:@"approve"];
+    
+    if (cell.isLayoutCell == NO) {
         if ([self.comment avatarURLForDisplay]) {
             [cell downloadGravatarWithURL:self.comment.avatarURLForDisplay];
         } else {
@@ -327,11 +371,35 @@ static NSInteger const CVCNumberOfSections = 2;
         }
     }
 
+    // Setup the Callbacks
     __weak __typeof(self) weakSelf = self;
 
     cell.onUrlClick = ^(NSURL *url){
         [weakSelf openWebViewWithURL:url];
     };
+
+    cell.onDetailsClick = ^(UIButton *sender){
+        NSURL *url = [NSURL URLWithString:self.comment.author_url];
+        if (url) {
+            [weakSelf openWebViewWithURL:url];
+        }
+    };
+}
+
+- (void)setupActionsCell:(NoteBlockActionsTableViewCell *)cell
+{
+    // Setup the Cell
+    cell.isReplyEnabled = [UIDevice isPad];
+    cell.isLikeEnabled = [self.comment.blog supports:BlogFeatureCommentLikes];
+    cell.isApproveEnabled = YES;
+    cell.isTrashEnabled = YES;
+    cell.isSpamEnabled = YES;
+
+    cell.isApproveOn = [self.comment.status isEqualToString:@"approve"];
+    cell.isLikeOn = self.comment.isLiked;
+
+    // Setup the Callbacks
+    __weak __typeof(self) weakSelf = self;
 
     cell.onReplyClick = ^(UIButton *sender) {
         [weakSelf editReply];
@@ -360,26 +428,24 @@ static NSInteger const CVCNumberOfSections = 2;
     cell.onSpamClick = ^(UIButton *sender){
         [weakSelf spamComment];
     };
-
-    cell.onSiteClick = ^(UIButton *sender){
-        if (!self.comment.hasAuthorUrl) {
-            return;
-        }
-
-        NSURL *url = [[NSURL alloc] initWithString:self.comment.author_url];
-        if (url) {
-            [weakSelf openWebViewWithURL:url];
-        }
-    };
 }
+
+
+#pragma mark - Setup properties required by Cell Separator Logic
+
+- (void)setupSeparators:(NoteBlockTableViewCell *)cell indexPath:(NSIndexPath *)indexPath
+{
+    cell.isLastRow = (indexPath.row >= self.numberOfRows - 1);
+}
+
 
 #pragma mark - Actions
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [[WPWebViewController alloc] init];
-    webViewController.url = url;
-    [self.navigationController pushViewController:webViewController animated:YES];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)toggleLikeForComment
@@ -393,7 +459,7 @@ static NSInteger const CVCNumberOfSections = 2;
                                         siteID:self.comment.blog.blogID
                                        success:nil
                                        failure:^(NSError *error) {
-                                           [weakSelf.tableView reloadData];
+                                           [weakSelf reloadData];
                                        }];
 }
 
@@ -404,8 +470,10 @@ static NSInteger const CVCNumberOfSections = 2;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService approveComment:self.comment success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
+    
+    [self reloadData];
 }
 
 - (void)unapproveComment
@@ -415,8 +483,10 @@ static NSInteger const CVCNumberOfSections = 2;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
     [commentService unapproveComment:self.comment success:nil failure:^(NSError *error) {
-        [weakSelf.tableView reloadData];
+        [weakSelf reloadData];
     }];
+    
+    [self reloadData];
 }
 
 - (void)trashComment
@@ -471,6 +541,7 @@ static NSInteger const CVCNumberOfSections = 2;
                       tapBlock:completion];
 }
 
+
 #pragma mark - Editing comment
 
 - (void)editComment
@@ -499,7 +570,8 @@ static NSInteger const CVCNumberOfSections = 2;
 {
     // Set the new Content Data
     self.comment.content = content;
-    [self.tableView reloadData];
+    [self reloadData];
+    
     // Hit the backend
     __typeof(self) __weak weakSelf = self;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -507,7 +579,7 @@ static NSInteger const CVCNumberOfSections = 2;
     [commentService uploadComment:self.comment
                           success:^{
                               // The comment might have changed its approval status!
-                              [weakSelf.tableView reloadData];
+                              [weakSelf reloadData];
                           } failure:^(NSError *error) {
                               NSString *message = NSLocalizedString(@"There has been an unexpected error while editing your comment",
                                                                     @"Error displayed if a comment fails to get updated");
@@ -518,7 +590,7 @@ static NSInteger const CVCNumberOfSections = 2;
                                                 tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                                     if (buttonIndex == alertView.cancelButtonIndex) {
                                                         [weakSelf.comment.managedObjectContext refreshObject:weakSelf.comment mergeChanges:false];
-                                                        [weakSelf.tableView reloadData];
+                                                        [weakSelf reloadData];
                                                     } else {
                                                         [weakSelf updateCommentForNewContent:content];
                                                     }
@@ -526,6 +598,7 @@ static NSInteger const CVCNumberOfSections = 2;
                                ];
                           }];
 }
+
 
 #pragma mark - Replying Comments for iPad
 
@@ -553,20 +626,17 @@ static NSInteger const CVCNumberOfSections = 2;
 - (void)sendReplyWithNewContent:(NSString *)content
 {
     NSString *successMessage = NSLocalizedString(@"Reply Sent!", @"The app successfully sent a comment");
-    NSString *sendingMessage = NSLocalizedString(@"Sending...", @"The app is uploading a comment");
-    UIImage *successImage = [UIImage imageNamed:CVCSuccessToastImage];
-    UIImage *sendingImage = [UIImage imageNamed:CVCReplyToastImage];
 
     __typeof(self) __weak weakSelf = self;
 
     void (^successBlock)() = ^void() {
-        [WPToast showToastWithMessage:successMessage andImage:successImage];
+        [SVProgressHUD showSuccessWithStatus:successMessage];
     };
 
     void (^failureBlock)(NSError *error) = ^void(NSError *error) {
         [UIAlertView showWithTitle:nil
                            message:NSLocalizedString(@"There has been an unexpected error while sending your reply", nil)
-                 cancelButtonTitle:NSLocalizedString(@"Give Up", nil)
+                 cancelButtonTitle:NSLocalizedString(@"Cancel", nil)
                  otherButtonTitles:@[ NSLocalizedString(@"Try Again", nil) ]
                           tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
                               if (buttonIndex != alertView.cancelButtonIndex) {
@@ -580,9 +650,8 @@ static NSInteger const CVCNumberOfSections = 2;
     Comment *reply = [commentService createReplyForComment:self.comment];
     reply.content = content;
     [commentService uploadComment:reply success:successBlock failure:failureBlock];
-
-    [WPToast showToastWithMessage:sendingMessage andImage:sendingImage];
 }
+
 
 #pragma mark - Keyboard Management
 
@@ -658,23 +727,58 @@ static NSInteger const CVCNumberOfSections = 2;
     [self.view endEditing:YES];
 }
 
+
+#pragma mark - Setters
+
+- (void)setComment:(Comment *)comment
+{
+    _comment = comment;
+    [self reloadData];
+}
+
+
 #pragma mark - Helpers
 
 - (BOOL)shouldAttachReplyTextView
 {
     // iPad: We've got a different UI!
-    return !([UIDevice isPad]);
+    return ![UIDevice isPad];
 }
 
 - (BOOL)shouldAttachSuggestionsTableView
 {
-    return ([self shouldAttachReplyTextView] && [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID]);
+    BOOL shouldShowSuggestions = [[SuggestionService sharedInstance] shouldShowSuggestionsForSiteID:self.comment.blog.blogID];
+    return self.shouldAttachReplyTextView && shouldShowSuggestions;
 }
 
-// if the post is not set for the comment, we don't want to show an empty cell for the post details
-- (BOOL)shouldShowHeaderForPostDetails
+- (void)reloadData
 {
-    return self.comment.post != nil;
+    // If we don't have the associated post, let's hide the Header
+    BOOL shouldShowHeader       = self.comment.post != nil;;
+
+    // Number of Rows:
+    // NOTE: If the post wasn't retrieved yet, we'll need to hide the Header.
+    // For that reason, the Row Count is decreased, and rowNumberForHeader is set with a different index.
+    self.numberOfRows           = shouldShowHeader ? CommentsDetailsRowCount  : CommentsDetailsRowCount - 1;
+    self.rowNumberForHeader     = shouldShowHeader ? CommentsDetailsRowHeader : CommentsDetailsHiddenRowNumber;
+    self.rowNumberForComment    = self.rowNumberForHeader + 1;
+    self.rowNumberForActions    = self.rowNumberForComment + 1;
+    
+    // Arrange the Reuse + Layout Identifier Map(s)
+    self.reuseIdentifiersMap = @{
+        @(self.rowNumberForHeader)    : NoteBlockHeaderTableViewCell.reuseIdentifier,
+        @(self.rowNumberForComment)   : NoteBlockCommentTableViewCell.reuseIdentifier,
+        @(self.rowNumberForActions)   : NoteBlockActionsTableViewCell.reuseIdentifier,
+    };
+    
+    self.layoutIdentifiersMap = @{
+        @(self.rowNumberForHeader)    : NoteBlockHeaderTableViewCell.layoutIdentifier,
+        @(self.rowNumberForComment)   : NoteBlockCommentTableViewCell.layoutIdentifier,
+        @(self.rowNumberForActions)   : NoteBlockActionsTableViewCell.layoutIdentifier,
+    };
+    
+    // Reload the table, at last!
+    [self.tableView reloadData];
 }
 
 @end

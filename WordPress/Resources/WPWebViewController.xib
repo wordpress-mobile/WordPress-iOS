@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WPWebViewController">
             <connections>
-                <outlet property="backButton" destination="23" id="36"/>
-                <outlet property="forwardButton" destination="24" id="37"/>
+                <outlet property="backButton" destination="MrE-vk-zRt" id="yms-r2-bmI"/>
+                <outlet property="dismissButton" destination="cwn-cV-SEd" id="0A6-X7-2t3"/>
+                <outlet property="forwardButton" destination="3bZ-k3-0vv" id="aMq-ua-feI"/>
                 <outlet property="optionsButton" destination="51" id="52"/>
-                <outlet property="refreshButton" destination="6" id="49"/>
-                <outlet property="toolbar" destination="3" id="8"/>
+                <outlet property="progressView" destination="KoJ-2F-0M7" id="pbn-M0-taM"/>
+                <outlet property="toolbar" destination="AXg-oh-s2G" id="oAq-hv-8wQ"/>
+                <outlet property="toolbarBottomConstraint" destination="Nlf-af-GR4" id="ogC-wy-f35"/>
                 <outlet property="view" destination="1" id="14"/>
                 <outlet property="webView" destination="5" id="9"/>
             </connections>
@@ -21,56 +23,71 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <webView contentMode="scaleToFill" id="5">
+                <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="436"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                     <connections>
                         <outlet property="delegate" destination="-1" id="22"/>
                     </connections>
                 </webView>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="bottom" barStyle="black" id="3">
+                <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" translatesAutoresizingMaskIntoConstraints="NO" id="KoJ-2F-0M7">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="2.5"/>
+                    <color key="progressTintColor" red="0.023529411764705882" green="0.23921568627450981" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                </progressView>
+                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AXg-oh-s2G">
                     <rect key="frame" x="0.0" y="436" width="320" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <items>
-                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="46"/>
-                        <barButtonItem image="left.png" width="24" style="plain" id="23">
+                        <barButtonItem image="icon-chevron-left" id="MrE-vk-zRt" userLabel="BackBarButtonItem">
                             <connections>
-                                <action selector="goBack" destination="-1" id="38"/>
+                                <action selector="goBack" destination="-1" id="1kD-BD-pVa"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="43"/>
-                        <barButtonItem image="right.png" width="24" style="plain" id="24">
+                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="VJ1-Nd-aYd"/>
+                        <barButtonItem image="icon-chevron-right" id="3bZ-k3-0vv" userLabel="ForwardBarButtonItem">
                             <connections>
-                                <action selector="goForward" destination="-1" id="39"/>
+                                <action selector="goForward" destination="-1" id="Z0l-9l-GUG"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="7"/>
-                        <barButtonItem style="plain" systemItem="refresh" id="6">
-                            <inset key="imageInsets" minX="2" minY="0.0" maxX="-2" maxY="0.0"/>
-                            <connections>
-                                <action selector="reload" destination="-1" id="50"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem width="10" style="plain" systemItem="fixedSpace" id="47"/>
                     </items>
-                    <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="barTintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </toolbar>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="KoJ-2F-0M7" secondAttribute="trailing" id="ISH-w3-feS"/>
+                <constraint firstAttribute="bottom" secondItem="AXg-oh-s2G" secondAttribute="bottom" id="Nlf-af-GR4"/>
+                <constraint firstItem="5" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="Qem-AA-aZi"/>
+                <constraint firstItem="KoJ-2F-0M7" firstAttribute="top" secondItem="1" secondAttribute="top" id="R7H-hb-JSn"/>
+                <constraint firstItem="5" firstAttribute="top" secondItem="1" secondAttribute="top" id="Rjd-Cu-o65"/>
+                <constraint firstItem="KoJ-2F-0M7" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="XPs-kd-Qp3"/>
+                <constraint firstAttribute="trailing" secondItem="AXg-oh-s2G" secondAttribute="trailing" id="c0p-pM-tqz"/>
+                <constraint firstItem="AXg-oh-s2G" firstAttribute="top" secondItem="5" secondAttribute="bottom" id="cW6-TV-6na"/>
+                <constraint firstItem="AXg-oh-s2G" firstAttribute="leading" secondItem="1" secondAttribute="leading" id="hjY-y9-jer"/>
+                <constraint firstAttribute="trailing" secondItem="5" secondAttribute="trailing" id="vUg-E4-QFJ"/>
+            </constraints>
             <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
-        <barButtonItem image="icon-posts-share" id="51">
+        <barButtonItem image="icon-cross" id="cwn-cV-SEd" userLabel="DismissBarButtonItem">
+            <inset key="imageInsets" minX="-12" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <action selector="dismiss" destination="-1" id="8vH-rJ-oZS"/>
+            </connections>
+        </barButtonItem>
+        <barButtonItem enabled="NO" image="icon-share-ios" id="51" userLabel="OptionsBarButtonItem">
+            <inset key="imageInsets" minX="-10" minY="0.0" maxX="10" maxY="0.0"/>
             <connections>
                 <action selector="showLinkOptions" destination="-1" id="53"/>
             </connections>
         </barButtonItem>
     </objects>
     <resources>
-        <image name="icon-posts-share" width="44" height="44"/>
-        <image name="left.png" width="16" height="22"/>
-        <image name="right.png" width="16" height="22"/>
+        <image name="icon-chevron-left" width="24" height="24"/>
+        <image name="icon-chevron-right" width="24" height="24"/>
+        <image name="icon-cross" width="24" height="24"/>
+        <image name="icon-share-ios" width="24" height="24"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

@@ -4,7 +4,7 @@ import Foundation
 @objc public class NoteBlockImageTableViewCell : NoteBlockTableViewCell
 {
     // MARK: - Public Properties
-    public var isBadge: Bool = false {
+    public override var isBadge: Bool {
         didSet {
             backgroundColor = isBadge ? Styles.badgeBackgroundColor : Styles.blockBackgroundColor
         }

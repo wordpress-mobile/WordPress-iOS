@@ -184,6 +184,26 @@ static const CGFloat ReaderCommentCellBottomPaddingMore = -20.0;
     self.commentContentView.delegate = delegate;
 }
 
+- (BOOL)shouldEnableLoggedinFeatures
+{
+    return self.commentContentView.shouldEnableLoggedinFeatures;
+}
+
+- (void)setShouldEnableLoggedinFeatures:(BOOL)shouldEnableLoggedinFeatures
+{
+    self.commentContentView.shouldEnableLoggedinFeatures = shouldEnableLoggedinFeatures;
+}
+
+- (BOOL)shouldShowReply
+{
+    return self.commentContentView.shouldShowReply;
+}
+
+- (void)setShouldShowReply:(BOOL)shouldShowReply
+{
+    self.commentContentView.shouldShowReply = shouldShowReply;
+}
+
 - (void)refreshMediaLayout
 {
     [self.commentContentView refreshMediaLayout];

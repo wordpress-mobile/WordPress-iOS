@@ -1,6 +1,5 @@
 #import "WPLegacyEditPostViewController.h"
 #import "PostSettingsViewController.h"
-#import "MediaBrowserViewController.h"
 #import "PostPreviewViewController.h"
 #import "AbstractPost.h"
 

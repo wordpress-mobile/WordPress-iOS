@@ -2,11 +2,12 @@
 #import "WordPressComApiCredentials.h"
 #import "NSString+Helpers.h"
 #import <UIDeviceHardware.h>
-#import "UIDevice+WordPressIdentifier.h"
+#import "UIDevice+Helpers.h"
 #import "WordPressAppDelegate.h"
 #import "NotificationsManager.h"
+#import "WPUserAgent.h"
 
-static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1/";
+static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
@@ -30,22 +31,33 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 // This will match all public-api.wordpress.com/rest/v1/ URI's and parse them as JSON
 
 @interface WPJSONRequestOperation : AFHTTPRequestOperation
+@property (nonatomic, assign) BOOL disallowsCancellation;
 @end
+
 @implementation WPJSONRequestOperation
 
--(id)initWithRequest:(NSURLRequest *)urlRequest
+- (instancetype)initWithRequest:(NSURLRequest *)urlRequest
 {
 	self = [super initWithRequest:urlRequest];
 	
-	if (self)
-	{
+	if (self) {
 		self.responseSerializer = [[AFJSONResponseSerializer alloc] init];
 	}
 	
 	return self;
 }
 
+- (void)cancel
+{
+    if (self.disallowsCancellation) {
+        return;
+    }
+    
+    [super cancel];
+}
+
 @end
+
 
 @interface WordPressComApi ()
 @property (readwrite, nonatomic, strong) NSString *username;
@@ -58,7 +70,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 
 #pragma - Initializers
 
-- (id)initWithOAuthToken:(NSString *)authToken
+- (instancetype)initWithOAuthToken:(NSString *)authToken
 {
 	NSParameterAssert([authToken isKindOfClass:[NSString class]]);
 	
@@ -66,14 +78,13 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
 	
 	self = [super initWithBaseURL:url];
 	
-	if (self)
-	{
+    if (self) {
         _authToken = authToken;
         self.requestSerializer = [AFJSONRequestSerializer serializer];
 		
         [self setAuthorizationHeaderWithToken:_authToken];
 		
-		NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 		[self.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
 	}
 	
@@ -115,6 +126,20 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
+- (WPJSONRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                     cancellable:(BOOL)cancellable
+                         success:(void (^)(AFHTTPRequestOperation *operation, id responseObject))success
+                         failure:(void (^)(AFHTTPRequestOperation *operation, NSError *error))failure
+{
+    WPJSONRequestOperation *operation = (WPJSONRequestOperation *) [super POST:URLString parameters:parameters success:success failure:failure];
+    NSParameterAssert([operation isKindOfClass:[WPJSONRequestOperation class]]);
+    
+    operation.disallowsCancellation = !cancellable;
+    
+    return operation;
+}
+
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
     static dispatch_once_t oncePredicate;
@@ -122,7 +147,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
         DDLogVerbose(@"Initializing anonymous API");
         _anonymousApi = [[self alloc] initWithBaseURL:[NSURL URLWithString:WordPressComApiClientEndpointURL] ];
 
-		NSString* userAgent = [[WordPressAppDelegate sharedWordPressApplicationDelegate] applicationUserAgent];
+        NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
 		[_anonymousApi.requestSerializer setValue:userAgent forHTTPHeaderField:@"User-Agent"];
     });
 
@@ -360,21 +385,21 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     }
 
     NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
-    [self POST:path
-        parameters:nil
-           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-               DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
-               if (success) {
-                   success();
-               }
-           }
-           failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
-               if (failure) {
-                   failure(error);
-               }
-           }
-     ];
+    WordPressComApiRestSuccessResponseBlock successBlock = ^(AFHTTPRequestOperation *operation, id responseObject) {
+        DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
+        if (success) {
+            success();
+        }
+    };
+    
+    WordPressComApiRestSuccessFailureBlock failureBlock = ^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Unable to unregister push for device ID %@: %@", deviceId, error);
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    [self POST:path parameters:nil cancellable:NO success:successBlock failure:failureBlock];
 }
 
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
@@ -397,7 +422,7 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
                                  @"device_model"    : [UIDeviceHardware platform],
                                  @"os_version"      : [[UIDevice currentDevice] systemVersion],
                                  @"app_version"     : [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"],
-                                 @"device_uuid"     : [[UIDevice currentDevice] wordpressIdentifier],
+                                 @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
                                  };
     
     [self POST:@"devices/new"

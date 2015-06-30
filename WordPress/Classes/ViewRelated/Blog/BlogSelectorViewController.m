@@ -6,7 +6,6 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WPTableViewSectionHeaderView.h"
 #import "AccountService.h"
 
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -148,35 +147,6 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (![self hasDotComAndSelfHosted]) {
-        return nil;
-    }
-    return [[self.resultsController sectionIndexTitles] objectAtIndex:section];
-}
-
-- (NSInteger)sectionForDotCom
-{
-    if ([self.resultsController sections].count > 0) {
-        id<NSFetchedResultsSectionInfo> sectionInfo = [[self.resultsController sections] objectAtIndex:0];
-        if ([[sectionInfo name] isEqualToString:@"1"]) {
-            return 0;
-        }
-    }
-
-    return -1;
-}
-
-- (NSInteger)sectionForSelfHosted
-{
-    if ([self sectionForDotCom] >= 0) {
-        return 1;
-    }
-
-    return 0;
-}
-
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     cell.textLabel.textAlignment = NSTextAlignmentLeft;
@@ -191,26 +161,10 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
         cell.textLabel.text = blog.url;
     }
 
-    [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl isWPcom:blog.isWPcom];
+    [cell.imageView setImageWithBlavatarUrl:blog.blavatarUrl];
 
     cell.accessoryType = blog.objectID == self.selectedObjectID ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.fixedWidthEnabled = NO;
-    header.title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return header;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title
-                                               andWidth:CGRectGetWidth(self.view.bounds)
-                                      fixedWidthEnabled:NO];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -257,6 +211,11 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     return 54;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return CGFLOAT_MIN;
+}
+
 #pragma mark - NSFetchedResultsController
 
 - (NSFetchedResultsController *)resultsController
@@ -273,7 +232,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
     _resultsController = [[NSFetchedResultsController alloc]
                           initWithFetchRequest:fetchRequest
                           managedObjectContext:moc
-                          sectionNameKeyPath:@"isWPcom"
+                          sectionNameKeyPath:nil
                           cacheName:nil];
     _resultsController.delegate = self;
 
@@ -287,23 +246,7 @@ static NSString *const BlogCellIdentifier = @"BlogCell";
 
 - (NSPredicate *)fetchRequestPredicate
 {
-    if ([self.tableView isEditing]) {
-        return nil;
-    }
-
     return [NSPredicate predicateWithFormat:@"visible = YES"];
-}
-
-- (NSString *)controller:(NSFetchedResultsController *)controller sectionIndexTitleForSectionName:(NSString *)sectionName
-{
-    if ([sectionName isEqualToString:@"1"]) {
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-        WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-        return [NSString stringWithFormat:NSLocalizedString(@"%@'s sites", @"Section header for WordPress.com blogs"), [defaultAccount username]];
-    }
-    return NSLocalizedString(@"Self Hosted", @"Section header for self hosted blogs");
 }
 
 @end

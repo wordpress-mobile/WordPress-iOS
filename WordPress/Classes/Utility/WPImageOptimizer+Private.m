@@ -8,13 +8,17 @@ static const CGFloat CompressionQuality = 0.7;
 
 - (NSData *)rawDataFromAssetRepresentation:(ALAssetRepresentation *)representation
                           stripGeoLocation:(BOOL) stripGeoLocation
+                             convertToType:(NSString *)convertionType
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     NSDictionary *metadata = [self metadataFromRepresentation:representation 
                                                      stripXMP:NO
                                              stripOrientation:NO
                                              stripGeoLocation:stripGeoLocation];
-    NSString *type = representation.UTI;
+    NSString *type = convertionType;
+    if (!type){
+        type = representation.UTI;
+    }
     NSData *optimizedData = [self dataWithImage:sourceImage compressionQuality:1.0  type:type andMetadata:metadata];
 
     CGImageRelease(sourceImage);
@@ -26,6 +30,7 @@ static const CGFloat CompressionQuality = 0.7;
 - (NSData *)resizedDataFromAssetRepresentation:(ALAssetRepresentation *)representation
                                    fittingSize:(CGSize)targetSize
                               stripGeoLocation:(BOOL) stripGeoLocation
+                                 convertToType:(NSString *)convertionType
 {
     CGImageRef sourceImage = [self newImageFromAssetRepresentation:representation];
     CGImageRef resizedImage = [self resizedImageWithImage:sourceImage scale:representation.scale orientation:representation.orientation fittingSize:targetSize];
@@ -33,7 +38,10 @@ static const CGFloat CompressionQuality = 0.7;
                                                      stripXMP:YES
                                              stripOrientation:YES
                                              stripGeoLocation:stripGeoLocation];
-    NSString *type = representation.UTI;
+    NSString *type = convertionType;
+    if (!type){
+        type = representation.UTI;
+    }
     NSData *imageData = [self dataWithImage:resizedImage compressionQuality:CompressionQuality type:type andMetadata:metadata];
 
     CGImageRelease(sourceImage);
