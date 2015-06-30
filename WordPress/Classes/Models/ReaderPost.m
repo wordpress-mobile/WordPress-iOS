@@ -1,14 +1,14 @@
 #import "ReaderPost.h"
-#import "WordPressComApi.h"
-#import "NSString+Helpers.h"
-#import "NSString+Util.h"
-#import "NSString+XMLExtensions.h"
-#import "WPAvatarSource.h"
-#import "NSString+Helpers.h"
-#import "WordPressAppDelegate.h"
-#import "ContextManager.h"
-#import "WPAccount.h"
 #import "AccountService.h"
+#import "ContextManager.h"
+#import "DiscoverAttribution.h"
+#import "NSString+Util.h"
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+#import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
+#import "WPAccount.h"
+#import "WPAvatarSource.h"
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
@@ -43,6 +43,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
+@dynamic discoverAttribution;
 
 
 - (BOOL)isPrivate
