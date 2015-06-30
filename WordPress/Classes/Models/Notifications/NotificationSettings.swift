@@ -20,6 +20,25 @@ public class NotificationSettings
     
     
     /**
+    *  @brief       Filters the settings for a specific site
+    *
+    *  @param       siteId  The siteId to filter.
+    *  @returns             An array of NotificationSettings.Site objects.
+    */
+    public func settingsForSiteWithId(siteId: Int?) -> [NotificationSettings.Site] {
+        if siteId == nil {
+            return []
+        }
+        
+        return sites.filter {
+            (site: NotificationSettings.Site) in
+            return site.siteId == siteId!
+        }
+    }
+
+    
+    
+    /**
     *  @enum        StreamKind
     *  @brief       Each WordPress.com site may contain a different set of notification preferences, depending on
     *               the Stream Kind:
