@@ -3,6 +3,7 @@
 #import "RemoteReaderTopic.h"
 #import "ReaderTopic.h"
 
+NSString * const WordPressComReaderEndpointURL = @"https://public-api.wordpress.com/rest/v1.2/";
 static NSString * const TopicMenuSectionDefaultKey = @"default";
 static NSString * const TopicMenuSectionSubscribedKey = @"subscribed";
 static NSString * const TopicMenuSectionRecommendedKey = @"recommended";
@@ -18,7 +19,7 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
 
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
-    NSString *path = @"read/menu";
+    NSString *path = [NSString stringWithFormat:@"%@read/menu", WordPressComReaderEndpointURL];
 
     [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
         if (!success) {
