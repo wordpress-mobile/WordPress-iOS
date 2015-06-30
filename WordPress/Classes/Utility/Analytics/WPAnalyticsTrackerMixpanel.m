@@ -343,10 +343,35 @@ NSString *const SessionCount = @"session_count";
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_stats"];
             break;
+        case WPAnalyticsStatStatsInsightsAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Insights Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_insights_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_insights_screen_stats"];
+            break;
         case WPAnalyticsStatStatsOpenedWebVersion:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Opened Web Version"];
             [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_web_version_of_stats"];
             [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_web_version_of_stats"];
+            break;
+        case WPAnalyticsStatStatsPeriodDaysAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Days Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_days_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_days_screen_stats"];
+            break;
+        case WPAnalyticsStatStatsPeriodMonthsAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Months Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_months_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_months_screen_stats"];
+            break;
+        case WPAnalyticsStatStatsPeriodWeeksAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Weeks Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_weeks_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_weeks_screen_stats"];
+            break;
+        case WPAnalyticsStatStatsPeriodYearsAccessed:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Period Years Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_years_screen_stats"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_years_screen_stats"];
             break;
         case WPAnalyticsStatStatsScrolledToBottom:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Stats - Scrolled to Bottom"];
