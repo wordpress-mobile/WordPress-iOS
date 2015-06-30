@@ -93,7 +93,7 @@ public class NotificationsServiceRemote
     *  @param       success     A closure to be called on success, which will receive the parsed settings entity
     *  @param       failure     Optional closure to be called on failure. Will receive the error that was encountered.
     */
-    public func getWordPressComSettings(success: (RemoteNotificationSettings.WordPressCom -> Void)?, failure: (NSError! -> Void)?) {
+    public func getWordPressComSettings(success: ([RemoteNotificationSettings.WordPressCom] -> Void)?, failure: (NSError! -> Void)?) {
         let path = "me/notifications/settings/wpcom/"
         
         remoteApi.POST(path,
