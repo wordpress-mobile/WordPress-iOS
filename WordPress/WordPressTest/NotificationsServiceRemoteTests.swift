@@ -93,7 +93,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     func testNotificationSettingsCorretlyParsesDotcomSettings() {
         
         let settings                = loadNotificationSettings()
-        let wordPressComSettings    = settings.wpcom
+        let wordPressComSettings    = settings.wpcom.first!
         
         XCTAssert(wordPressComSettings.news == false,               "Error while parsing WordPress.com Settings")
         XCTAssert(wordPressComSettings.recommendations == false,    "Error while parsing WordPress.com Settings")
