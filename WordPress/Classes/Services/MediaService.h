@@ -97,6 +97,16 @@ extern NSInteger const MediaMaxImageSizeDimension;
                  size:(CGSize)size
               success:(void (^)(UIImage *image))success
               failure:(void (^)(NSError *error))failure;
+/**
+ *  Get number of items in media library
+ *
+ *  @param blog    from where to count the media items
+ *  @param success a block that will be invoked when the media is retrieved
+ *  @param failure a block that will be invoked if an error happens returnin the associated error object with the details.
+ */
+- (void)getMediaLibraryCountForBlog:(Blog *)blog
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *error))failure;
 
 #pragma mark - Media cleanup
 
