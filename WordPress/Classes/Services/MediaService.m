@@ -293,7 +293,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         if (media.mediaType == MediaTypeVideo) {
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
         } else if (media.mediaType == MediaTypeImage) {
-            remoteURL = [NSURL URLWithString:media.remoteURL];
+            NSString *remote = media.remoteURL;
+            if ([media.blog isHostedAtWPcom]) {
+                remote = [NSString stringWithFormat:@"%@?w=%ld",remote, (long)size.width];
+            }
+            remoteURL = [NSURL URLWithString:remote];
         }
         if (!remoteURL) {
             if (failure) {
@@ -310,11 +314,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
                     NSData *data = UIImagePNGRepresentation(image);
                     [data writeToFile:filePath atomically:YES];
-                    UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
-                    NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
-                    [thumbnailData writeToFile:thumbnailPath atomically:YES];
+                    //UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
+                    //NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
+                    [data writeToFile:thumbnailPath atomically:YES];
                     if (success) {
-                        success(thumbnail);
+                        success(image);
                     }
                 }];
             }];
