@@ -25,6 +25,29 @@ public class NotificationSettings
     
     
     /**
+    *  @details Returns the localized description for any given preference key
+    */
+    public func localizedDescription(preferenceKey: String) -> String {
+        return localizedDescriptionMap[preferenceKey] ?? String()
+    }
+    
+    
+    /**
+    *  @details Returns an array of the sorted Preference Keys
+    */
+    public func sortedPreferenceKeys() -> [String] {
+        switch channel {
+        case let .Site(siteId):
+            return sitePreferenceKeys
+        case .Other:
+            return otherPreferenceKeys
+        case .WordPressCom:
+            return wpcomPreferenceKeys
+        }
+    }
+    
+
+    /**
     *  @enum        Channel
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
@@ -99,6 +122,26 @@ public class NotificationSettings
             static let allValues = [ Timeline, Email, Device ]
         }
     }
+    
+    // MARK: - Private Properties
+    private let sitePreferenceKeys  = ["new-comment", "comment-like", "post-like", "follow", "achievement", "mentions"]
+    private let otherPreferenceKeys = ["comment-like", "comment-reply"]
+    private let wpcomPreferenceKeys = ["news", "recommendation", "promotion", "digest"]
+    
+    // MARK: - Localized Setting Descriptions
+    private let localizedDescriptionMap = [
+        "new-comment" 	 : NSLocalizedString("New Comments",             comment: "Notifications Settings"),
+        "comment-like" 	 : NSLocalizedString("Comment Likes",            comment: "Notifications Settings"),
+        "post-like" 	 : NSLocalizedString("Post Likes",               comment: "Notifications Settings"),
+        "follow"      	 : NSLocalizedString("Follows",                  comment: "Notifications Settings"),
+        "achievement" 	 : NSLocalizedString("Achievements",             comment: "Notifications Settings"),
+        "mentions" 		 : NSLocalizedString("Mentions",                 comment: "Notifications Settings"),
+        "comment-reply"  : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
+        "news"			 : NSLocalizedString("News",                     comment: "Notifications Settings"),
+        "recommendation" : NSLocalizedString("Recomendations",           comment: "Notifications Settings"),
+        "promotion"		 : NSLocalizedString("Promotions",               comment: "Notifications Settings"),
+        "digest"		 : NSLocalizedString("Digest",                   comment: "Notifications Settings")
+    ]
 }
 
 
