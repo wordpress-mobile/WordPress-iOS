@@ -3,175 +3,199 @@ import Foundation
 
 /**
 *  @class           RemoteNotificationSettings
-*  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure
-*                   it into a flat hierarchy, for easy access / mapping.
+*  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure it
+*                   in a meaninful way. Notification Settings come in three different flavors:
+*                   
+*                   -   "Our Own" Site Settings
+*                   -   "Third Party" Site Settings
+*                   -   WordPress.com Settings
+*
+*                   Each one of the possible channels may post notifications via different streams: Email, 
+*                   Push Notifications, and Timeline.
 */
 
 public class RemoteNotificationSettings
 {
-    let sites           : [Site]
-    let other           : [Other]
-    let wpcom           : [WordPressCom]
+    public let channel : Channel
+    public let streams : [Stream]
     
-    init(dictionary : NSDictionary?) {
-        sites           = Site.fromArray(dictionary?["sites"] as? [NSDictionary])
-        other           = Other.fromDictionary(dictionary?["other"] as? NSDictionary)
-        wpcom           = WordPressCom.fromDictionary(dictionary?["wpcom"] as? NSDictionary)
-    }
     
-
     /**
-    *  @enum        StreamKind
-    *  @brief       Each WordPress.com site may contain a different set of notification preferences, depending on
-    *               the Stream Kind:
-    *               -   WordPress.com Timeline
-    *               -   Emails
-    *               -   Push Notifications
-    *
+    *  @enum        Channel
+    *  @brief       Represents a communication channel that may post notifications to the user.
     */
-    public enum StreamKind : String {
-        case Timeline   = "timeline"
-        case Email      = "email"
-        case Device     = "device"
-        
-        static let allValues = [ Timeline, Email, Device ]
+    public enum Channel {
+        case Site(siteId: Int)
+        case Other
+        case WordPressCom
     }
     
     
     /**
-    *  @class       Site
-    *  @brief       This nested class represents the Notification Settings, for a given Site, in a specific stream.
+    *  @class       Stream
+    *  @brief       Contains the Notification Settings for a specific communications stream.
     */
-    public class Site
-    {
-        let siteId      : Int
-        let streamKind  : StreamKind
-        let newComment  : Bool
-        let commentLike : Bool
-        let postLike    : Bool
-        let follow      : Bool
-        let achievement : Bool
-        let mentions    : Bool
+    public class Stream {
+        public var kind         : Kind?
+        public var preferences  : [String : Bool]?
         
-        init(siteId _siteId: Int, streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
-            siteId      = _siteId
-            streamKind  = _streamKind
-            newComment  = _settings["new-comment"]  as? Bool ?? false
-            commentLike = _settings["comment-like"] as? Bool ?? false
-            postLike    = _settings["post-like"]    as? Bool ?? false
-            follow      = _settings["follow"]       as? Bool ?? false
-            achievement = _settings["achievement"]  as? Bool ?? false
-            mentions    = _settings["mentions"]     as? Bool ?? false
+        /**
+        *  @enum    Stream.Kind
+        *  @brief   Enumerates all of the possible Stream Kinds
+        */
+        public enum Kind : String {
+            case Timeline       = "timeline"
+            case Email          = "email"
+            case Device         = "device"
+            
+            static let allValues = [ Timeline, Email, Device ]
         }
         
         
         /**
-        *  @brief   Parses a collection of "Site" dictionaries, into a flat collection of "Site" object instances.
-        *
-        *  @param   sitesArray      The raw array of dictionaries, retrieved from the backend.
-        *  @returns                 An array of Site objects. Each Site will get three instances, one per strem
-        *                           settings (we flatten out the collection).
+        *  @details Private Designated Initializer
+        *  @param   kind            The Kind of stream we're currently dealing with
+        *  @param   preferences     Raw remote preferences, retrieved from the backend
         */
-        private static func fromArray(sitesArray: [NSDictionary]?) -> [Site] {
-            var parsed = [Site]()
-            
-            if let unwrappedSitesSettings = sitesArray {
-                for siteSettings in unwrappedSitesSettings {
-                    parsed += fromDictionary(siteSettings)
-                }
+        private init(kind: Kind?, preferences: NSDictionary?) {
+            self.kind           = kind
+            self.preferences    = filterNonBooleanEntries(preferences)
+        }
+
+        
+        /**
+        *  @brief   Helper method that will filter out non boolean entries, and return a native Swift collection.
+        *  @param   dictionary      NextStep Dictionary containing raw values
+        *  @return                  A native Swift dictionary, containing only the Boolean entries
+        */
+        private func filterNonBooleanEntries(dictionary: NSDictionary?) -> [String : Bool] {
+            var filtered = [String : Bool]()
+            if dictionary == nil {
+                return filtered
             }
             
-            return parsed
-        }
-        
-        /**
-        *  @brief   Parses "Site" settings dictionary, into a flat collection of "Site" object instances.
-        *
-        *  @param   siteDictionary  The raw "Site Settings" dictionary retrieved from the backend.
-        *  @returns                 An array of Site objects. Each Site will get three instances, one per stream.
-        */
-        public static func fromDictionary(siteDictionary: NSDictionary?) -> [Site] {
-            var parsed = [Site]()
-            
-            if let siteId = siteDictionary?["site_id"] as? Int {
-                for streamKind in StreamKind.allValues {
-                    if let streamSettings = siteDictionary?[streamKind.rawValue] as? NSDictionary {
-                        parsed.append(Site(siteId: siteId, streamKind: streamKind, settings: streamSettings))
+            for (key, value) in dictionary! {
+                if let stringKey = key   as? String,
+                   let boolValue = value as? Bool
+                {
+                    // NSNumbers might get converted to Bool anyways
+                    if value === kCFBooleanFalse || value === kCFBooleanTrue {
+                        filtered[stringKey] = boolValue
                     }
                 }
             }
             
-            return parsed
+            return filtered
         }
-    }
-    
-    
-    /**
-    *  @class       Other
-    *  @brief       This nested class represents the Notification Settings for "Other Sites" (AKA 3rd party blogs), 
-    *               in a specific stream.
-    */
-    public class Other
-    {
-        let streamKind      : StreamKind
-        let commentLike     : Bool
-        let commentReply    : Bool
         
-        init(streamKind _streamKind: StreamKind, settings _settings: NSDictionary) {
-            streamKind      = _streamKind
-            commentLike     = _settings["comment-like"]  as? Bool ?? false
-            commentReply    = _settings["comment-reply"] as? Bool ?? false
-        }
         
         /**
-        *  @brief   Parses "Other Sites" settings dictionary into a flat collection of "Other" object instances,
-        *           one per stream.
-        *
-        *  @param   otherDictionary The raw "Other Settings" dictionary, retrieved from the backend.
-        *  @returns                 An array of "Other" object instances, one per stream.
+        *  @brief   Parser method that will convert a raw dictionary of stream settings into Swift Native objects.
+        *  @param   dictionary      NextStep Dictionary containing raw Stream Preferences
+        *  @return                  A native Swift array containing Stream entities
         */
-        public static func fromDictionary(otherDictionary: NSDictionary?) -> [Other] {
-            var parsed = [Other]()
-
-            for streamKind in StreamKind.allValues {
-                if let streamSettings = otherDictionary?[streamKind.rawValue] as? NSDictionary {
-                    parsed.append(Other(streamKind: streamKind, settings: streamSettings))
+        private static func fromDictionary(dictionary: NSDictionary?) -> [Stream] {
+            var parsed = [Stream]()
+            
+            for kind in Kind.allValues {
+                if let preferences = dictionary?[kind.rawValue] as? NSDictionary {
+                    parsed.append(Stream(kind: kind, preferences: preferences))
                 }
             }
-        
+            
             return parsed
         }
     }
     
     
     /**
-    *  @class       WordPressCom
-    *  @brief       This nested class represents the Notification Settings for WordPress.com. This is not 
-    *               associated to a specific site.
+    *  @details     Private Designated Initializer
+    *  @param       channel         The communications channel that uses the current settings
+    *  @param       settings        Raw dictionary containing the remote settings response
     */
-    public class WordPressCom
-    {
-        let news            : Bool
-        let recommendations : Bool
-        let promotion       : Bool
-        let digest          : Bool
+    private init(channel: Channel, settings: NSDictionary?) {
+        self.channel = channel
+        self.streams = Stream.fromDictionary(settings)
+    }
+    
+    
+    /**
+    *  @details     Private Designated Initializer
+    *  @param       wpcomSettings   Dictionary containing the collection of WordPress.com Settings
+    */
+    private init(wpcomSettings: NSDictionary?) {
+        // WordPress.com is a special scenario: It contains just one (unspecified) stream
+        self.channel = Channel.WordPressCom
+        self.streams = [ Stream(kind: nil, preferences: wpcomSettings) ]
+    }
+    
+    
+    /**
+    *  @details     Private Convenience Initializer
+    *  @param       siteSettings    Dictionary containing the collection of settings for a single site
+    */
+    private convenience init(siteSettings: NSDictionary?) {
+        let siteId = siteSettings?["site_id"] as? Int ?? Int.max
+        self.init(channel: Channel.Site(siteId: siteId), settings: siteSettings)
+    }
+    
+    
+    /**
+    *  @details     Private Convenience Initializer
+    *  @param       otherSettings   Dictionary containing the collection of "Other Settings"
+    */
+    private convenience init(otherSettings: NSDictionary?) {
+        self.init(channel: Channel.Other, settings: otherSettings)
+    }
+    
+    
+    
+    /**
+    *  @details     Static Helper that will parse all of the Remote Settings, into a collection of
+    *               Swift Native RemoteNotificationSettings objects
+    *  @param       dictionary      Dictionary containing the remote Settings response
+    *  @returns                     An array of RemoteNotificationSettings objects
+    */
+    public static func fromDictionary(dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
+        var parsed = [RemoteNotificationSettings]()
         
-        init(settings _settings: NSDictionary?) {
-            news            = _settings?["news"]            as? Bool ?? false
-            recommendations = _settings?["recommendation"]  as? Bool ?? false
-            promotion       = _settings?["promotion"]       as? Bool ?? false
-            digest          = _settings?["digest"]          as? Bool ?? false
+        if let rawSites = dictionary?["sites"] as? [NSDictionary] {
+            for rawSite in rawSites {
+                let parsedSite = RemoteNotificationSettings(siteSettings: rawSite)
+                parsed.append(parsedSite)
+            }
         }
         
+        let other = RemoteNotificationSettings(otherSettings: dictionary?["other"] as? NSDictionary)
+        parsed.append(other)
         
-        /**
-        *  @brief   Parses "WordPress.com" settings dictionary, and returns a WordPressCom instance.
-        *
-        *  @param   wordPressComDictionary  The raw "WordPress.com" dictionary, retrieved from the backend.
-        *  @returns                         An array of the WordPress.com parsed settings.
-        */
-        public static func fromDictionary(wordPressComDictionary: NSDictionary?) -> [WordPressCom] {
-            return [WordPressCom(settings: wordPressComDictionary)]
-        }
+        let wpcom = RemoteNotificationSettings(wpcomSettings: dictionary?["wpcom"] as? NSDictionary)
+        parsed.append(wpcom)
+        
+        return parsed
+    }
+}
+
+
+
+/**
+*  @brief           RemoteNotificationSettings.Channel Equatable Implementation
+*  @details         Swift requires this method to be implemented globally. Sorry about that!
+*
+*  @param           lhs         Left Hand Side Channel
+*  @param           rhs         Right Hand Side Channel
+*  @returns                     A boolean indicating whether two channels are equal. Or not!
+*/
+public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
+{
+    switch (lhs, rhs) {
+    case (let .Site(firstSiteId), let .Site(secondSiteId)) where firstSiteId == secondSiteId:
+        return true
+    case (.Other, .Other):
+        return true
+    case (.WordPressCom, .WordPressCom):
+        return true
+    default:
+        return false
     }
 }
