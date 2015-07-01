@@ -1,7 +1,7 @@
-#import "DiscoverAttribution.h"
+#import "SourcePostAttribution.h"
 #import "ReaderPost.h"
 
-@implementation DiscoverAttribution
+@implementation SourcePostAttribution
 
 @dynamic permalink;
 @dynamic authorName;

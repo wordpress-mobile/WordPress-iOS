@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface RemoteDiscoverAttribution : UIView
+@interface RemoteSourcePostAttribution : UIView
 
 @property (nonatomic, strong) NSString *permalink;
 @property (nonatomic, strong) NSString *authorName;

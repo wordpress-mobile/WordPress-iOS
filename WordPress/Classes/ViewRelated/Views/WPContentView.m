@@ -88,6 +88,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
     CGFloat height = 0;
     height += self.attributionView.intrinsicContentSize.height;
+    height += self.originalAttributionView.intrinsicContentSize.height;
     height += self.actionView.intrinsicContentSize.height;
     if (!self.featuredImageView.hidden) {
         height += (size.width * WPContentViewMaxImageHeightPercentage);

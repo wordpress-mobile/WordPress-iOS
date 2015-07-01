@@ -1,7 +1,7 @@
 #import "ReaderPost.h"
 #import "AccountService.h"
 #import "ContextManager.h"
-#import "DiscoverAttribution.h"
+#import "SourcePostAttribution.h"
 #import "NSString+Util.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
@@ -43,7 +43,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
-@dynamic discoverAttribution;
+@dynamic sourceAttribution;
 
 
 - (BOOL)isPrivate
