@@ -12,6 +12,17 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - Public Helpers
     public func setupWithSettings(settings: NotificationSettings) {
         self.settings = settings
+        
+        switch settings.channel {
+        case let .Site(siteId):
+// TODO: Fixme
+            title = NSLocalizedString("Other Sites", comment: "Blog Notifications Streams Title")
+        case .Other:
+            title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
+        default:
+            break
+        }
+        
         tableView.reloadData()
     }
     
