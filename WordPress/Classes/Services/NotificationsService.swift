@@ -31,7 +31,7 @@ public class NotificationsService : NSObject, LocalCoreDataService
         notificationsServiceRemote?.getAllSettings(deviceId,
             success: {
                 (remote: [RemoteNotificationSettings]) in
-                let parsed = NotificationSettings.fromRemoteArray(remote)
+                let parsed = NotificationSettings.fromArray(remote)
                 success?(parsed)
             },
             failure: { (error: NSError!) in
