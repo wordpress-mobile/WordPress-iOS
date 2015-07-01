@@ -19,7 +19,7 @@
                       "mentions": false
                   },
                   "device": {
-                      "device_id": 2,
+                      "device_id": 1,
                       "new-comment": false,
                       "comment-like": true,
                       "post-like": false,
