@@ -107,7 +107,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             Media *media = [self newMediaForPost:post];
             media.filename = [mediaPath lastPathComponent];
             media.absoluteLocalURL = mediaPath;
-            [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
+            media.absoluteThumbnailLocalURL = [self pathForThumbnailOfFile:mediaPath];
+            [thumbnailData writeToFile:media.absoluteThumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
@@ -265,7 +266,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return _queueForResizeMediaOperations;
 }
 
-- (void)imageForMedia:(Media *)mediaInRandomContext
+- (void)thumbnailForMedia:(Media *)mediaInRandomContext
                  size:(CGSize)size
               success:(void (^)(UIImage *image))success
               failure:(void (^)(NSError *error))failure
@@ -276,9 +277,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         BOOL isPrivate = media.blog.isPrivate;
         NSString *pathForFile;
         if (media.mediaType == MediaTypeImage) {
-            pathForFile = media.thumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL;
         } else if (media.mediaType == MediaTypeVideo) {
-            pathForFile = media.thumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL;
         }
         if (pathForFile && [[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
             [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
@@ -308,15 +309,12 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         WPImageSource *imageSource = [WPImageSource sharedSource];
         void (^successBlock)(UIImage *) = ^(UIImage *image) {
             [self.managedObjectContext performBlock:^{
-                NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
-                media.absoluteLocalURL = filePath;
-                NSString *thumbnailPath = media.thumbnailLocalURL;
+                NSString *filePath = [self pathForFilename:[self pathForThumbnailOfFile:media.filename] supportedFileFormats:nil];
+                media.absoluteThumbnailLocalURL = filePath;            
+                [self.managedObjectContext save:nil];
                 [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
                     NSData *data = UIImagePNGRepresentation(image);
                     [data writeToFile:filePath atomically:YES];
-                    //UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
-                    //NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
-                    [data writeToFile:thumbnailPath atomically:YES];
                     if (success) {
                         success(image);
                     }
@@ -427,6 +425,15 @@ static NSString * const MediaDirectory = @"Media";
         index++;
     }
     return path;
+}
+
+- (NSString *)pathForThumbnailOfFile:(NSString *)filename
+{
+    NSString *extension = [filename pathExtension];
+    NSString *fileWithoutExtension = [filename stringByDeletingPathExtension];
+    NSString *thumbnailPath = [fileWithoutExtension stringByAppendingString:@"-thumbnail"];
+    thumbnailPath = [thumbnailPath stringByAppendingPathExtension:extension];
+    return thumbnailPath;
 }
 
 - (NSString *)mimeTypeForFilename:(NSString *)filename
