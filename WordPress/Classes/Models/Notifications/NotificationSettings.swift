@@ -3,15 +3,14 @@ import Foundation
 
 /**
 *  @class           NotificationSettings
-*  @brief           The goal of this class is to encapsulate all of the User's Notification Settings, in a generic way.
-*                   The user may toggle settings for a specific Site, 3rd party sites, or WordPress.com.
-*                   Each set of settings may be applicable to different streams (Email / Timeline / Push Notifications).
+*  @brief           The goal of this class is to encapsulate all of the User's Notification Settings in a generic way.
+*                   Settings are grouped into different Channels, and each channel may contain different streams.
 */
 
 public class NotificationSettings
 {
     public let channel : Channel
-    public let streams : [Stream]!
+    public let streams : [Stream]
     
     
     /**
@@ -23,7 +22,13 @@ public class NotificationSettings
         case Other
         case WordPressCom
         
-        static func fromRemoteChannel(remote: RemoteNotificationSettings.Channel) -> Channel {
+        
+        /**
+        *  @details Helper method to convert RemoteNotificationSettings.Channel into a NotificationSettings.Channel enum.
+        *  @param   remote      An instance of the RemoteNotificationSettings.Channel enum
+        *  @returns             Instance of NotificationSettings.Channel Enum
+        */
+        private static func fromRemote(remote: RemoteNotificationSettings.Channel) -> Channel {
             switch remote {
             case let .Site(siteId):
                 return .Site(siteId: siteId)
@@ -41,8 +46,9 @@ public class NotificationSettings
     *  @brief       Contains the Notification Settings for a specific communications stream.
     */
     public class Stream {
-        public var kind         : Kind?
+        public var kind         : Kind
         public var preferences  : [String : Bool]?
+        
         
         /**
         *  @enum    Stream.Kind
@@ -62,16 +68,23 @@ public class NotificationSettings
         *  @param   kind            The Kind of stream we're currently dealing with
         *  @param   preferences     Raw remote preferences, retrieved from the backend
         */
-        private init(kind: Kind?, preferences: [String : Bool]?) {
+        private init(kind: Kind, preferences: [String : Bool]?) {
             self.kind           = kind
             self.preferences    = preferences
         }
         
-        private static func fromRemoteArray(streams: [RemoteNotificationSettings.Stream]) -> [Stream] {
+        
+        /**
+        *  @details     Static Helper that will parse RemoteNotificationSettings.Stream instances into a collection of
+        *               NotificationSettings.Stream instances.
+        *  @param       remoteSettings  Array of RemoteNotificationSettings.Stream
+        *  @returns                     An array of NotificationSettings.Stream objects
+        */
+        private static func fromArray(remoteStreams: [RemoteNotificationSettings.Stream]) -> [Stream] {
             var parsed = [Stream]()
             
-            for remoteStream in streams {
-                let kind    = Kind(rawValue: remoteStream.kind?.rawValue ?? String())
+            for remoteStream in remoteStreams {
+                let kind    = Kind(rawValue: remoteStream.kind.rawValue)!
                 let stream  = Stream(kind: kind, preferences: remoteStream.preferences)
                 
                 parsed.append(stream)
@@ -87,12 +100,18 @@ public class NotificationSettings
     *  @param       settings   An instance of RemoteNotificationSettings
     */
     private init(settings: RemoteNotificationSettings) {
-        self.channel = Channel.fromRemoteChannel(settings.channel)
-        self.streams = Stream.fromRemoteArray(settings.streams)
+        self.channel = Channel.fromRemote(settings.channel)
+        self.streams = Stream.fromArray(settings.streams)
     }
 
     
-    public static func fromRemoteArray(remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
+    /**
+    *  @details     Static Helper that will parse RemoteNotificationSettings instances into a collection of 
+    *               NotificationSettings instances.
+    *  @param       remoteSettings  Array of RemoteNotificationSettings
+    *  @returns                     An array of NotificationSettings objects
+    */
+    public static func fromArray(remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
         var parsed = [NotificationSettings]()
 
         for remoteSetting in remoteSettings {
@@ -126,36 +145,3 @@ public func ==(first: NotificationSettings.Channel, second: NotificationSettings
         return false
     }
 }
-
-
-
-//  TODO:
-//      -   Defaults
-//      -   Descriptions
-//      -   NotificationSettings Docs
-//
-//    public class Site
-//    {
-//        newComment  = settings["new-comment"]  as? Bool ?? false
-//        commentLike = settings["comment-like"] as? Bool ?? false
-//        postLike    = settings["post-like"]    as? Bool ?? false
-//        follow      = settings["follow"]       as? Bool ?? false
-//        achievement = settings["achievement"]  as? Bool ?? false
-//        mentions    = settings["mentions"]     as? Bool ?? false
-//    }
-//
-//    public class Other
-//    {
-//        commentLike     = settings["comment-like"]  as? Bool ?? false
-//        commentReply    = settings["comment-reply"] as? Bool ?? false
-//    }
-//
-//    public class WordPressCom
-//    {
-//        news            = settings?["news"]            as? Bool ?? false
-//        recommendations = settings?["recommendation"]  as? Bool ?? false
-//        promotion       = settings?["promotion"]       as? Bool ?? false
-//        digest          = settings?["digest"]          as? Bool ?? false
-//    }
-
-
