@@ -4,7 +4,7 @@ import XCTest
 
 class NotificationsServiceRemoteTests : XCTestCase
 {
-    typealias Kind          = RemoteNotificationSettings.StreamKind
+    typealias StreamKind = RemoteNotificationSettings.Stream.Kind
     
     // MARK: - Properties
     var contextManager      : TestContextManager!
@@ -22,8 +22,8 @@ class NotificationsServiceRemoteTests : XCTestCase
     override func setUp() {
         super.setUp()
         
-        contextManager  = TestContextManager()
-        remoteApi       = WordPressComApi.anonymousApi()
+        contextManager      = TestContextManager()
+        remoteApi           = WordPressComApi.anonymousApi()
         
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
                 return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
@@ -40,77 +40,128 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     
     // MARK: - Unit Tests!
-    func testNotificationSettingsCorretlyParsesThreeSiteEntities() {
+    func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
         
-        let settings                = loadNotificationSettings()
-        let sites                   = settings.sites
-        let siteDeviceSettings      = sites.filter { $0.streamKind == Kind.Device }.first
-        let siteEmailSettings       = sites.filter { $0.streamKind == Kind.Email }.first
-        let siteTimelineSettings    = sites.filter { $0.streamKind == Kind.Timeline }.first
+        let targetChannel   = RemoteNotificationSettings.Channel.Site(siteId: 1)
+        let targetSettings  = loadNotificationSettings().filter { $0.channel == targetChannel }
+        XCTAssert(targetSettings.count == 1, "Error while parsing Site Settings")
+        
+        let targetSite = targetSettings.first!
+        XCTAssert(targetSite.streams.count == 3, "Error while parsing Site Stream Settings")
+        
+        let parsedDeviceSettings    = targetSite.streams.filter { $0.kind == StreamKind.Device }.first
+        let parsedEmailSettings     = targetSite.streams.filter { $0.kind == StreamKind.Email }.first
+        let parsedTimelineSettings  = targetSite.streams.filter { $0.kind == StreamKind.Timeline }.first
 
-        XCTAssert(sites.count == 3,                                 "Error while parsing Site Settings")
+        let expectedTimelineSettings = [
+            "new-comment"   : false,
+            "comment-like"  : true,
+            "post-like"     : false,
+            "follow"        : true,
+            "achievement"   : false,
+            "mentions"      : true
+        ]
         
-        XCTAssert(siteDeviceSettings?.newComment == false,          "Error while parsing Site Device Settings")
-        XCTAssert(siteDeviceSettings?.commentLike == true,          "Error while parsing Site Device Settings")
-        XCTAssert(siteDeviceSettings?.postLike == false,            "Error while parsing Site Device Settings")
-        XCTAssert(siteDeviceSettings?.follow == true,               "Error while parsing Site Device Settings")
-        XCTAssert(siteDeviceSettings?.achievement == false,         "Error while parsing Site Device Settings")
-        XCTAssert(siteDeviceSettings?.mentions == true,             "Error while parsing Site Device Settings")
-
-        XCTAssert(siteEmailSettings?.newComment == true,            "Error while parsing Site Email Settings")
-        XCTAssert(siteEmailSettings?.commentLike == false,          "Error while parsing Site Email Settings")
-        XCTAssert(siteEmailSettings?.postLike == true,              "Error while parsing Site Email Settings")
-        XCTAssert(siteEmailSettings?.follow == false,               "Error while parsing Site Email Settings")
-        XCTAssert(siteEmailSettings?.achievement == true,           "Error while parsing Site Email Settings")
-        XCTAssert(siteEmailSettings?.mentions == false,             "Error while parsing Site Email Settings")
+        let expectedEmailSettings = [
+            "new-comment"   : true,
+            "comment-like"  : false,
+            "post-like"     : true,
+            "follow"        : false,
+            "achievement"   : true,
+            "mentions"      : false
+        ]
         
-        XCTAssert(siteTimelineSettings?.newComment == false,        "Error while parsing Site Timeline Settings")
-        XCTAssert(siteTimelineSettings?.commentLike == true,        "Error while parsing Site Timeline Settings")
-        XCTAssert(siteTimelineSettings?.postLike == false,          "Error while parsing Site Timeline Settings")
-        XCTAssert(siteTimelineSettings?.follow == true,             "Error while parsing Site Timeline Settings")
-        XCTAssert(siteTimelineSettings?.achievement == false,       "Error while parsing Site Timeline Settings")
-        XCTAssert(siteTimelineSettings?.mentions == true,           "Error while parsing Site Timeline Settings")
+        let expectedDeviceSettings = [
+            "new-comment"   : false,
+            "comment-like"  : true,
+            "post-like"     : false,
+            "follow"        : true,
+            "achievement"   : false,
+            "mentions"      : true
+        ]
+        
+        for (key, value) in parsedDeviceSettings!.preferences! {
+            XCTAssert(expectedDeviceSettings[key]! == value, "Error while parsing Site Device Settings")
+        }
+        
+        for (key, value) in parsedEmailSettings!.preferences! {
+            XCTAssert(expectedEmailSettings[key]! == value, "Error while parsing Site Email Settings")
+        }
+        
+        for (key, value) in parsedTimelineSettings!.preferences! {
+            XCTAssert(expectedTimelineSettings[key]! == value, "Error while parsing Site Timeline Settings")
+        }
     }
     
-    func testNotificationSettingsCorretlyParsesThreeOtherEntities() {
+    func testNotificationSettingsCorrectlyParsesThreeOtherEntities() {
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .Other }
+        XCTAssert(filteredSettings.count == 1, "Error while parsing Other Settings")
         
-        let settings                = loadNotificationSettings()
-        let other                   = settings.other
-        let otherDeviceSettings     = other.filter { $0.streamKind == Kind.Device }.first
-        let otherEmailSettings      = other.filter { $0.streamKind == Kind.Email }.first
-        let otherTimelineSettings   = other.filter { $0.streamKind == Kind.Timeline }.first
+        let otherSettings = filteredSettings.first!
+        XCTAssert(otherSettings.streams.count == 3, "Error while parsing Other Streams")
         
-        XCTAssert(otherDeviceSettings?.commentLike == true,         "Error while parsing Other Device Settings")
-        XCTAssert(otherDeviceSettings?.commentReply == true,        "Error while parsing Other Device Settings")
+        let parsedDeviceSettings    = otherSettings.streams.filter { $0.kind == StreamKind.Device }.first
+        let parsedEmailSettings     = otherSettings.streams.filter { $0.kind == StreamKind.Email }.first
+        let parsedTimelineSettings  = otherSettings.streams.filter { $0.kind == StreamKind.Timeline }.first
+        
+        let expectedDeviceSettings = [
+            "comment-like"  : true,
+            "comment-reply" : true
+        ]
+        
+        let expectedEmailSettings = [
+            "comment-like"  : false,
+            "comment-reply" : false
+        ]
+        
+        let expectedTimelineSettings = [
+            "comment-like"  : false,
+            "comment-reply" : true
+        ]
 
-        XCTAssert(otherEmailSettings?.commentLike == false,         "Error while parsing Other Email Settings")
-        XCTAssert(otherEmailSettings?.commentReply == false,        "Error while parsing Other Email Settings")
-
-        XCTAssert(otherTimelineSettings?.commentLike == false,      "Error while parsing Other Timeline Settings")
-        XCTAssert(otherTimelineSettings?.commentReply == true,      "Error while parsing Other Timeline Settings")
+        for (key, value) in parsedDeviceSettings!.preferences! {
+            XCTAssert(expectedDeviceSettings[key]! == value, "Error while parsing Other Device Settings")
+        }
+        
+        for (key, value) in parsedEmailSettings!.preferences! {
+            XCTAssert(expectedEmailSettings[key]! == value, "Error while parsing Other Email Settings")
+        }
+        
+        for (key, value) in parsedTimelineSettings!.preferences! {
+            XCTAssert(expectedTimelineSettings[key]! == value, "Error while parsing Other Timeline Settings")
+        }
     }
     
-    func testNotificationSettingsCorretlyParsesDotcomSettings() {
+    func testNotificationSettingsCorrectlyParsesDotcomSettings() {
+        let filteredSettings = loadNotificationSettings().filter { $0.channel == .WordPressCom }
+        XCTAssert(filteredSettings.count == 1, "Error while parsing WordPress.com Settings")
         
-        let settings                = loadNotificationSettings()
-        let wordPressComSettings    = settings.wpcom
+        let wordPressComSettings = filteredSettings.first!
+        XCTAssert(wordPressComSettings.streams.count == 1, "Error while parsing WordPress.com Settings")
         
-        XCTAssert(wordPressComSettings.news == false,               "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.recommendations == false,    "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.promotion == true,           "Error while parsing WordPress.com Settings")
-        XCTAssert(wordPressComSettings.digest == true,              "Error while parsing WordPress.com Settings")
+        let expectedSettings = [
+            "news"          : false,
+            "recommendation": false,
+            "promotion"     : true,
+            "digest"        : true
+        ]
+        
+        for (key, value) in wordPressComSettings.streams.first!.preferences! {
+            XCTAssert(expectedSettings[key]! == value, "Error while parsing WordPress.com Settings")
+        }
     }
+    
     
     
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> RemoteNotificationSettings {
+    private func loadNotificationSettings() -> [RemoteNotificationSettings] {
         let remote      = NotificationsServiceRemote(api: remoteApi)
-        var settings : RemoteNotificationSettings?
+        var settings : [RemoteNotificationSettings]?
         
         let expectation = expectationWithDescription(nil)
         
         remote?.getAllSettings(dummyDeviceId,
-            success: { (theSettings: RemoteNotificationSettings) in
+            success: { (theSettings: [RemoteNotificationSettings]) in
                 settings = theSettings
                 expectation.fulfill()
             },

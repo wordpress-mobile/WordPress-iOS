@@ -25,73 +25,13 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @param       success Closure to be called on success.
     *  @param       failure Closure to be called on failure, with the associated error.
     */
-    public func getAllSettings(success: (NotificationSettings -> Void)?, failure: (NSError! -> Void)?) {
+    public func getAllSettings(success: ([NotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
         let deviceId = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
         
         notificationsServiceRemote?.getAllSettings(deviceId,
             success: {
-                (remote: RemoteNotificationSettings) in
-                let parsed = NotificationSettings(remote: remote)
-                success?(parsed)
-            },
-            failure: { (error: NSError!) in
-                failure?(error)
-            })
-    }
-    
-    
-    /**
-    *  @details     This method will retrieve all of the Notification Settings for a specified Site
-    *  @param       success Closure to be called on success.
-    *  @param       failure Closure to be called on failure, with the associated error.
-    */
-    public func getSiteSettings(siteId: Int, success: ([NotificationSettings.Site] -> Void)?, failure: (NSError! -> Void)?) {
-        let deviceId = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
-        
-        notificationsServiceRemote?.getSiteSettings(deviceId,
-            siteId: siteId,
-            success: {
-                (remote: [RemoteNotificationSettings.Site]) in
-                let parsed = NotificationSettings.Site.fromArray(remote)
-                success?(parsed)
-            },
-            failure: {
-                (error: NSError!) in
-                failure?(error)
-            })
-    }
-    
-    
-    /**
-    *  @details     This method will retrieve all of the Notification Settings for the default WordPress.com account
-    *  @param       success Closure to be called on success.
-    *  @param       failure Closure to be called on failure, with the associated error.
-    */
-    public func getOtherSettings(success: ([NotificationSettings.Other] -> Void)?, failure: (NSError! -> Void)?) {
-        let deviceId = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
-        
-        notificationsServiceRemote?.getOtherSettings(deviceId,
-            success: {
-                (remote: [RemoteNotificationSettings.Other]) in
-                let parsed = NotificationSettings.Other.fromArray(remote)
-                success?(parsed)
-            },
-            failure: {
-                (error: NSError!) in
-                failure?(error)
-            })
-    }
-    
-    
-    /**
-    *  @details     This method will retrieve all of the Notification Settings for the default WordPress.com account
-    *  @param       success Closure to be called on success, with the parsed settings.
-    *  @param       failure Closure to be called on failure, with the associated error.
-    */
-    public func getWordPressComSettings(success: ([NotificationSettings.WordPressCom] -> Void)?, failure: (NSError! -> Void)?) {
-        notificationsServiceRemote?.getWordPressComSettings({
-                (remote: [RemoteNotificationSettings.WordPressCom]) in
-                let parsed = NotificationSettings.WordPressCom.fromArray(remote)
+                (remote: [RemoteNotificationSettings]) in
+                let parsed = NotificationSettings.fromArray(remote)
                 success?(parsed)
             },
             failure: { (error: NSError!) in
