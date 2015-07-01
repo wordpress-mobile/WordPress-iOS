@@ -3,7 +3,6 @@
 #import "AccountService.h"
 #import "ContextManager.h"
 #import "DateUtils.h"
-#import "DiscoverAttribution.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
 #import "ReaderPost.h"
@@ -11,7 +10,8 @@
 #import "ReaderSiteService.h"
 #import "ReaderTopic.h"
 #import "RemoteReaderPost.h"
-#import "RemoteDiscoverAttribution.h"
+#import "RemoteSourcePostAttribution.h"
+#import "SourcePostAttribution.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 
@@ -842,10 +842,10 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
-    if (remotePost.discoverAttribution) {
-        post.discoverAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.discoverAttribution forPost:post];
+    if (remotePost.sourceAttribution) {
+        post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
     } else {
-        post.discoverAttribution = nil;
+        post.sourceAttribution = nil;
     }
 
     // Construct a summary if necessary.
@@ -866,25 +866,25 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     return post;
 }
 
-- (DiscoverAttribution *)createOrReplaceFromRemoteDiscoverAttribution:(RemoteDiscoverAttribution *)remoteDiscoverAttribution
-                                                              forPost:(ReaderPost *)post
+- (SourcePostAttribution *)createOrReplaceFromRemoteDiscoverAttribution:(RemoteSourcePostAttribution *)remoteAttribution
+                                                                forPost:(ReaderPost *)post
 {
-    DiscoverAttribution *attribution = post.discoverAttribution;
+    SourcePostAttribution *attribution = post.sourceAttribution;
 
     if (!attribution) {
-        attribution = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([DiscoverAttribution class])
+        attribution = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SourcePostAttribution class])
                                              inManagedObjectContext:self.managedObjectContext];
     }
-    attribution.authorName = remoteDiscoverAttribution.authorName;
-    attribution.authorURL = remoteDiscoverAttribution.authorURL;
-    attribution.avatarURL = remoteDiscoverAttribution.avatarURL;
-    attribution.blogName = remoteDiscoverAttribution.blogName;
-    attribution.blogURL = remoteDiscoverAttribution.blogURL;
-    attribution.permalink = remoteDiscoverAttribution.permalink;
-    attribution.blogID = remoteDiscoverAttribution.blogID;
-    attribution.postID = remoteDiscoverAttribution.postID;
-    attribution.commentCount = remoteDiscoverAttribution.commentCount;
-    attribution.likeCount = remoteDiscoverAttribution.likeCount;
+    attribution.authorName = remoteAttribution.authorName;
+    attribution.authorURL = remoteAttribution.authorURL;
+    attribution.avatarURL = remoteAttribution.avatarURL;
+    attribution.blogName = remoteAttribution.blogName;
+    attribution.blogURL = remoteAttribution.blogURL;
+    attribution.permalink = remoteAttribution.permalink;
+    attribution.blogID = remoteAttribution.blogID;
+    attribution.postID = remoteAttribution.postID;
+    attribution.commentCount = remoteAttribution.commentCount;
+    attribution.likeCount = remoteAttribution.likeCount;
 
     return attribution;
 }

@@ -3,7 +3,7 @@
 #import "BasePost.h"
 
 @class ReaderTopic;
-@class DiscoverAttribution;
+@class SourcePostAttribution;
 
 extern NSString * const ReaderPostStoredCommentIDKey;
 extern NSString * const ReaderPostStoredCommentTextKey;
@@ -38,7 +38,7 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
 @property (nonatomic) BOOL isSiteBlocked;
-@property (nonatomic, strong) DiscoverAttribution *discoverAttribution;
+@property (nonatomic, strong) SourcePostAttribution *sourceAttribution;
 
 - (BOOL)isPrivate;
 - (void)storeComment:(NSNumber *)commentID comment:(NSString *)comment;
