@@ -3,162 +3,159 @@ import Foundation
 
 /**
 *  @class           NotificationSettings
-*  @brief           The goal of this class is to encapsulate all of the User's Notification Settings.
+*  @brief           The goal of this class is to encapsulate all of the User's Notification Settings, in a generic way.
+*                   The user may toggle settings for a specific Site, 3rd party sites, or WordPress.com.
+*                   Each set of settings may be applicable to different streams (Email / Timeline / Push Notifications).
 */
 
 public class NotificationSettings
 {
-    let sites           : [Site]
-    let other           : [Other]
-    let wpcom           : [WordPressCom]
+    public let channel : Channel
+    public let streams : [Stream]!
     
-    init(remote : RemoteNotificationSettings) {
-        sites           = Site.fromArray(remote.sites)
-        other           = Other.fromArray(remote.other)
-        wpcom           = WordPressCom.fromArray(remote.wpcom)
+    
+    /**
+    *  @enum        Channel
+    *  @brief       Represents a communication channel that may post notifications to the user.
+    */
+    public enum Channel : Equatable {
+        case Site(siteId: Int)
+        case Other
+        case WordPressCom
+        
+        static func fromRemoteChannel(remote: RemoteNotificationSettings.Channel) -> Channel {
+            switch remote {
+            case let .Site(siteId):
+                return .Site(siteId: siteId)
+            case .Other:
+                return .Other
+            case .WordPressCom:
+                return .WordPressCom
+            }
+        }
     }
     
     
     /**
-    *  @brief       Filters the settings for a specific site
-    *
-    *  @param       siteId  The siteId to filter.
-    *  @returns             An array of NotificationSettings.Site objects.
+    *  @class       Stream
+    *  @brief       Contains the Notification Settings for a specific communications stream.
     */
-    public func settingsForSiteWithId(siteId: Int?) -> [NotificationSettings.Site] {
-        if siteId == nil {
-            return []
+    public class Stream {
+        public var kind         : Kind?
+        public var preferences  : [String : Bool]?
+        
+        /**
+        *  @enum    Stream.Kind
+        *  @brief   Enumerates all of the possible Stream Kinds
+        */
+        public enum Kind : String {
+            case Timeline       = "timeline"
+            case Email          = "email"
+            case Device         = "device"
+            
+            static let allValues = [ Timeline, Email, Device ]
         }
         
-        return sites.filter {
-            (site: NotificationSettings.Site) in
-            return site.siteId == siteId!
+        
+        /**
+        *  @details Private Designated Initializer
+        *  @param   kind            The Kind of stream we're currently dealing with
+        *  @param   preferences     Raw remote preferences, retrieved from the backend
+        */
+        private init(kind: Kind?, preferences: [String : Bool]?) {
+            self.kind           = kind
+            self.preferences    = preferences
         }
+        
+        private static func fromRemoteArray(streams: [RemoteNotificationSettings.Stream]) -> [Stream] {
+            var parsed = [Stream]()
+            
+            for remoteStream in streams {
+                let kind    = Kind(rawValue: remoteStream.kind?.rawValue ?? String())
+                let stream  = Stream(kind: kind, preferences: remoteStream.preferences)
+                
+                parsed.append(stream)
+            }
+            
+            return parsed
+        }
+    }
+    
+    
+    /**
+    *  @details     Private Designated Initializer
+    *  @param       settings   An instance of RemoteNotificationSettings
+    */
+    private init(settings: RemoteNotificationSettings) {
+        self.channel = Channel.fromRemoteChannel(settings.channel)
+        self.streams = Stream.fromRemoteArray(settings.streams)
     }
 
     
-    
-    /**
-    *  @enum        StreamKind
-    *  @brief       Each WordPress.com site may contain a different set of notification preferences, depending on
-    *               the Stream Kind:
-    *               -   WordPress.com Timeline
-    *               -   Emails
-    *               -   Push Notifications
-    *
-    */
-    public enum StreamKind : String {
-        case Timeline   = "timeline"
-        case Email      = "email"
-        case Device     = "device"
-        
-        static let allValues = [ Timeline, Email, Device ]
-    }
-    
-    
-    /**
-    *  @class       Site
-    *  @brief       This nested class represents the Notification Settings, for a given Site, in a specific stream.
-    */
-    public class Site
-    {
-        var siteId          : Int
-        var streamKind      : StreamKind
-        var newComment      : Bool
-        var commentLike     : Bool
-        var postLike        : Bool
-        var follow          : Bool
-        var achievement     : Bool
-        var mentions        : Bool
-        
-        init(remote: RemoteNotificationSettings.Site) {
-            siteId          = remote.siteId
-            streamKind      = StreamKind(rawValue: remote.streamKind.rawValue)!
-            newComment      = remote.newComment
-            commentLike     = remote.commentLike
-            postLike        = remote.postLike
-            follow          = remote.follow
-            achievement     = remote.achievement
-            mentions        = remote.mentions
+    public static func fromRemoteArray(remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
+        var parsed = [NotificationSettings]()
+
+        for remoteSetting in remoteSettings {
+            parsed.append(NotificationSettings(settings: remoteSetting))
         }
         
-        
-        /**
-        *  @brief   Parses a collection of "Remote Site" entities, into a collection of "Site" instances.
-        *
-        *  @param   remote          An array of RemoteNotificationSettings.Site entities.
-        *  @returns                 An array of NotificationSettings.Site objects.
-        */
-        public static func fromArray(remote: [RemoteNotificationSettings.Site]) -> [Site] {
-            return remote.map {
-                return Site(remote: $0)
-            }
-        }
-    }
-    
-    
-    /**
-    *  @class       Other
-    *  @brief       This nested class represents the Notification Settings for "Other Sites" (AKA 3rd party blogs),
-    *               in a specific stream.
-    */
-    public class Other
-    {
-        var streamKind      : StreamKind
-        var commentLike     : Bool
-        var commentReply    : Bool
-        
-        init(remote: RemoteNotificationSettings.Other) {
-            streamKind      = StreamKind(rawValue: remote.streamKind.rawValue)!
-            commentLike     = remote.commentLike
-            commentReply    = remote.commentReply
-        }
-        
-        
-        /**
-        *  @brief   Parses a collection of "Remote Other" entities, into a collection of "Other" instances.
-        *
-        *  @param   remote          An array of RemoteNotificationSettings.Other entities.
-        *  @returns                 An array of NotificationSettings.Other objects.
-        */
-        public static func fromArray(remote: [RemoteNotificationSettings.Other]) -> [Other] {
-            return remote.map {
-                return Other(remote: $0)
-            }
-        }
-    }
-    
-    
-    /**
-    *  @class       WordPressCom
-    *  @brief       This nested class represents the Notification Settings for WordPress.com. This is not
-    *               associated to a specific site.
-    */
-    public class WordPressCom
-    {
-        var news            : Bool
-        var recommendations : Bool
-        var promotion       : Bool
-        var digest          : Bool
-        
-        init(remote: RemoteNotificationSettings.WordPressCom) {
-            news            = remote.news
-            recommendations = remote.recommendations
-            promotion       = remote.promotion
-            digest          = remote.digest
-        }
-        
-        
-        /**
-        *  @brief   Parses a collection of "Remote WordPressCom" entities, into a collection of "WordPressCom" instances.
-        *
-        *  @param   remote          An array of RemoteNotificationSettings.WordPressCom entities.
-        *  @returns                 An array of NotificationSettings.WordPressCom objects.
-        */
-        public static func fromArray(remote: [RemoteNotificationSettings.WordPressCom]) -> [WordPressCom] {
-            return remote.map {
-                return WordPressCom(remote: $0)
-            }
-        }
+        return parsed
     }
 }
+
+
+
+/**
+*  @brief           NotificationSettings.Channel Equatable Implementation
+*  @details         Swift requires this method to be implemented globally. Sorry about that!
+*
+*  @param           lhs         Left Hand Side Channel
+*  @param           rhs         Right Hand Side Channel
+*  @returns                     A boolean indicating whether two channels are equal. Or not!
+*/
+public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool
+{
+    switch (first, second) {
+    case (let .Site(firstSiteId), let .Site(secondSiteId)) where firstSiteId == secondSiteId:
+        return true
+    case (.Other, .Other):
+        return true
+    case (.WordPressCom, .WordPressCom):
+        return true
+    default:
+        return false
+    }
+}
+
+
+
+//  TODO:
+//      -   Defaults
+//      -   Descriptions
+//      -   NotificationSettings Docs
+//
+//    public class Site
+//    {
+//        newComment  = settings["new-comment"]  as? Bool ?? false
+//        commentLike = settings["comment-like"] as? Bool ?? false
+//        postLike    = settings["post-like"]    as? Bool ?? false
+//        follow      = settings["follow"]       as? Bool ?? false
+//        achievement = settings["achievement"]  as? Bool ?? false
+//        mentions    = settings["mentions"]     as? Bool ?? false
+//    }
+//
+//    public class Other
+//    {
+//        commentLike     = settings["comment-like"]  as? Bool ?? false
+//        commentReply    = settings["comment-reply"] as? Bool ?? false
+//    }
+//
+//    public class WordPressCom
+//    {
+//        news            = settings?["news"]            as? Bool ?? false
+//        recommendations = settings?["recommendation"]  as? Bool ?? false
+//        promotion       = settings?["promotion"]       as? Bool ?? false
+//        digest          = settings?["digest"]          as? Bool ?? false
+//    }
+
+
