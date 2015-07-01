@@ -10,9 +10,9 @@ public class NotificationSettingViewController : UITableViewController
         // Initialize Interface
         setupNavigationItem()
         setupTableView()
+        setupServices()
         
-        // Load Blogs + Settings
-        reloadBlogs()
+        // Load Settings
         reloadSettings()
     }
     
@@ -38,43 +38,52 @@ public class NotificationSettingViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
-    
-    // MARK: - Service Helpers
-    private func reloadBlogs() {
-// TODO: Filter
-        let service = BlogService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        if let allBlogs = service.blogsForAllAccounts() as? [Blog] {
-            blogs = allBlogs
-        }
+    private func setupServices() {
+        let contextManager      = ContextManager.sharedInstance().mainContext
+        blogService             = BlogService(managedObjectContext: contextManager)
+        notificationsService    = NotificationsService(managedObjectContext: contextManager)
     }
     
+    
+    // MARK: - Service Helpers
     private func reloadSettings() {
 // TODO: Spinner
-println("Loading")
-        let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        service.getAllSettings({ (settings: [NotificationSettings]) in
-println("Loaded!")
-                self.settings = settings
+        notificationsService?.getAllSettings({ (settings: [NotificationSettings]) in
+                self.groupedSettings = self.groupSettings(settings)
+                self.tableView.reloadData()
             },
             failure: { (error: NSError!) in
+// TODO: Handle Error
 println("Error \(error)")
             })
+    }
+    
+    private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
+        // TODO: Review this whenever we switch to Swift 2.0, and kill the switch filtering. JLP Jul.1.2015
+        let siteSettings = settings.filter {
+            switch $0.channel {
+            case .Site:
+                return true
+            default:
+                return false
+            }
+        }
+        
+        let otherSettings = settings.filter { $0.channel == .Other }
+        let wpcomSettings = settings.filter { $0.channel == .WordPressCom }
+        
+        return [siteSettings, otherSettings, wpcomSettings]
     }
 
 
 
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return NotificationSettings.Channel.allValues.count
+        return groupedSettings?.count ?? emptyCount
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        switch channelForSection(section) {
-        case .Site:
-            return blogs?.count ?? emptyRowCount
-        default:
-            return defaultRowCount
-        }
+        return groupedSettings?[section].count ?? emptyCount
     }
 
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -89,65 +98,51 @@ println("Error \(error)")
 
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let settings = settingsForRowAtIndexPath(indexPath) {
-            let identifier = destinationSegueIdentifier(indexPath)
-            performSegueWithIdentifier(identifier, sender: settings)
-        } else {
+        let settings = settingsForRowAtIndexPath(indexPath)
+        if settings == nil {
             tableView.deselectSelectedRowWithAnimation(true)
+            return
         }
+
+        let identifier = destinationSegueIdentifier(indexPath)
+        performSegueWithIdentifier(identifier, sender: settings)
     }
 
 
 
     // MARK: - UITableView Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let description : String
-        let channel = channelForSection(indexPath.section)
+        let channel = settingsForRowAtIndexPath(indexPath)?.channel
+        var description : String?
         
-        switch channel {
-        case .Site:
-            description = blogs?[indexPath.row].blogName ?? channel.description()
-        default:
-            description = channel.description()
+        if channel == nil {
+            return
         }
         
-        cell.textLabel?.text = description
+        switch channel! {
+        case let .Site(siteId):
+            description = blogService?.blogByBlogId(siteId)?.blogName
+        default:
+            break
+        }
+        
+        cell.textLabel?.text = description ?? channel!.description()
         WPStyleGuide.configureTableViewCell(cell)
     }
     
     private func destinationSegueIdentifier(indexPath: NSIndexPath) -> String {
-        // WordPress.com Row will push the SettingDetails ViewController, directly
-        if channelForSection(indexPath.section) == .WordPressCom {
+        switch settingsForRowAtIndexPath(indexPath)!.channel {
+        case .WordPressCom:
+            // WordPress.com Row will push the SettingDetails ViewController, directly
             return NotificationSettingDetailsViewController.classNameWithoutNamespaces()
+        default:
+            // Our Sites + 3rd Party Sites rows will push the Streams View
+            return NotificationSettingStreamsViewController.classNameWithoutNamespaces()
         }
-        
-        // Our Sites + 3rd Party Sites rows will push the Streams View
-        return NotificationSettingStreamsViewController.classNameWithoutNamespaces()
     }
     
     private func settingsForRowAtIndexPath(indexPath: NSIndexPath) -> NotificationSettings? {
-// TODO: Fix This
-        var targetChannel = channelForSection(indexPath.section)
-        
-        switch targetChannel {
-        case .Site:
-            if let siteId = blogAtRow(indexPath.row)?.blogID?.integerValue {
-                targetChannel = NotificationSettings.Channel.Site(siteId: siteId)
-            }
-        default:
-println("")
-        }
-        
-        let filtered = settings?.filter { $0.channel == targetChannel }
-        return filtered?.first
-    }
-    
-    private func channelForSection(section: Int) -> NotificationSettings.Channel {
-        return NotificationSettings.Channel.allValues[section]
-    }
-    
-    private func blogAtRow(row: Int) -> Blog? {
-        return blogs?[row]
+        return groupedSettings?[indexPath.section][indexPath.row]
     }
     
     
@@ -162,8 +157,7 @@ println("")
             streamsViewController.setupWithSettings(targetSettings!)
             
         } else if let detailsViewController = segue.destinationViewController as? NotificationSettingDetailsViewController {
-// TODO: Fixme
-            detailsViewController.setupWithSettings(targetSettings!, streamAtIndex: 0)
+            detailsViewController.setupWithSettings(targetSettings!, streamAtIndex: firstStreamIndex)
         }
     }
 
@@ -175,11 +169,12 @@ println("")
 
 
     // MARK: - Private Constants
-    private let emptyRowCount   = 0
-    private let defaultRowCount = 1
-    private let reuseIdentifier = "NotificationSettingsTableViewCell"
+    private let emptyCount              = 0
+    private let firstStreamIndex        = 0
+    private let reuseIdentifier         = "NotificationSettingsTableViewCell"
     
     // MARK: - Private Properties
-    private var blogs           : [Blog]?
-    private var settings        : [NotificationSettings]?
+    private var blogService             : BlogService?
+    private var notificationsService    : NotificationsService?
+    private var groupedSettings         : [[NotificationSettings]]?
 }
