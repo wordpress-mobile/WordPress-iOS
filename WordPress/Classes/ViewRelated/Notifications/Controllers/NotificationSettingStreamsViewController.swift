@@ -9,6 +9,12 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     
+    // MARK: - Public Helpers
+    public func setupWithSettings(settings: NotificationSettings) {
+        self.settings = settings
+        tableView.reloadData()
+    }
+    
     
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -16,66 +22,48 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Row.Count
+        return settings?.streams.count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        
         configureCell(cell, indexPath: indexPath)
         
         return cell
     }
-
     
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let identifier = NotificationSettingDetailsViewController.classNameWithoutNamespaces()
-        performSegueWithIdentifier(identifier, sender: nil)
+        let identifier  = NotificationSettingDetailsViewController.classNameWithoutNamespaces()
+        let streamIndex = indexPath.row
+        performSegueWithIdentifier(identifier, sender: streamIndex)
     }
-    
     
     
     // MARK: - UITableView Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text = Row(rawValue: indexPath.row)!.description()
+        cell.textLabel?.text = settings?.streams[indexPath.row].kind.description() ?? String()
         WPStyleGuide.configureTableViewCell(cell)
     }
     
     
-    
-    // MARK: - Public Helpers
-    public func setupWithSiteSettings(settings: [NotificationSettings.Site]) {
-        println("Site Settings \(settings)")
-    }
-    
-    public func setupWithOtherSettings(settings: [NotificationSettings.Other]) {
-        title = NSLocalizedString("Other Sites", comment: "")
-        println("Other Settings \(settings)")
-    }
-    
-    
-    
-    // MARK: - Table Rows
-    private enum Row : Int {
-        case Timeline = 0
-        case Device
-        case Email
-        
-        func description() -> String {
-            switch self {
-            case .Timeline:
-                return NSLocalizedString("Timeline", comment: "WordPress.com Notifications Timeline")
-            case .Device:
-                return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
-            case .Email:
-                return NSLocalizedString("Email", comment: "Email Notifications Channel")
-            }
+    // MARK: - Segue Helpers
+    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if let streamsViewController = segue.destinationViewController as? NotificationSettingDetailsViewController,
+           let streamIndex = sender as? Int
+        {
+            streamsViewController.setupWithSettings(settings!, streamAtIndex: streamIndex)
         }
-        
-        static let Count = 3
     }
     
+    
+    // MARK: - Private Constants
+    private let emptyRowCount   = 0
     private let sectionCount    = 1
     private let reuseIdentifier = "NotificationSettingStreamTableViewCell"
+
+    // MARK: - Private Properties
+    private var settings        : NotificationSettings?
 }
