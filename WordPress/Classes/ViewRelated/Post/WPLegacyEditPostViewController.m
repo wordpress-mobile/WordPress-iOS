@@ -997,7 +997,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
         }
         [WPError showAlertWithTitle:NSLocalizedString(@"Media upload failed", @"The title for an alert that says to the user the media (image or video) failed to be uploaded to the server.") message:error.localizedDescription];
     }];
-    UIImage * image = [UIImage imageWithContentsOfFile:media.thumbnailLocalURL];
+    UIImage * image = [UIImage imageWithContentsOfFile:media.absoluteThumbnailLocalURL];
     [uploadProgress setUserInfoObject:image forKey:WPProgressImageThumbnailKey];
     uploadProgress.kind = NSProgressKindFile;
     [uploadProgress setUserInfoObject:NSProgressFileOperationKindCopying forKey:NSProgressFileOperationKindKey];
