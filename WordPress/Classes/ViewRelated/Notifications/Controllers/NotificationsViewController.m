@@ -400,7 +400,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showNotificationSettings
 {
-    [self performSegueWithIdentifier:[NotificationSettingSectionsViewController classNameWithoutNamespaces] sender:self];
+    [self performSegueWithIdentifier:[NotificationSettingViewController classNameWithoutNamespaces] sender:self];
 }
 
 - (void)reloadResultsControllerIfNeeded
