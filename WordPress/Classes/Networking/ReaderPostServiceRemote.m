@@ -405,8 +405,10 @@
  */
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict
 {
-    NSNumber *isExternal = [dict numberForKey:@"is_external"];
-    return ![isExternal boolValue];
+    BOOL isExternal = [[dict numberForKey:@"is_external"] boolValue];
+    BOOL isJetpack = [[dict numberForKey:@"is_jetpack"] boolValue];
+
+    return !isJetpack && !isExternal;
 }
 
 /**
