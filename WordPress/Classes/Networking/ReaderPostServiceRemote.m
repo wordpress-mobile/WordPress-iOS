@@ -4,7 +4,7 @@
 #import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
 #import "ReaderTopicServiceRemote.h"
-#import "RemoteDiscoverAttribution.h"
+#import "RemoteSourcePostAttribution.h"
 
 @implementation ReaderPostServiceRemote
 
@@ -272,7 +272,7 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
-    post.discoverAttribution = [self discoverAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
+    post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
 
     return post;
 }
@@ -283,13 +283,13 @@
  @param dict A dictionary representing a discover_metadata object from the REST API
  @return A `RemoteDiscoverAttribution` object
  */
-- (RemoteDiscoverAttribution *)discoverAttributionFromDictionary:(NSDictionary *)dict
+- (RemoteSourcePostAttribution *)sourceAttributionFromDictionary:(NSDictionary *)dict
 {
     if (!dict) {
         return nil;
     }
 
-    RemoteDiscoverAttribution *disc = [RemoteDiscoverAttribution new];
+    RemoteSourcePostAttribution *disc = [RemoteSourcePostAttribution new];
     disc.permalink = [dict stringForKey:@"permalink"];
     disc.authorName = [dict stringForKeyPath:@"attribution.author_name"];
     disc.authorURL = [dict stringForKeyPath:@"attribution.author_url"];

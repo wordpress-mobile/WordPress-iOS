@@ -1,5 +1,5 @@
 #import "RemoteReaderPost.h"
-#import "RemoteDiscoverAttribution.h"
+#import "RemoteSourcePostAttribution.h"
 
 @implementation RemoteReaderPost
 

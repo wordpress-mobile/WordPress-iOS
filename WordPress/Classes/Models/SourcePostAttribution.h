@@ -3,13 +3,13 @@
 
 @class ReaderPost;
 
-@interface DiscoverAttribution : NSManagedObject
+@interface SourcePostAttribution : NSManagedObject
 
 @property (nonatomic, strong) NSString *permalink;
 @property (nonatomic, strong) NSString *authorName;
 @property (nonatomic, strong) NSString *authorURL;
 @property (nonatomic, strong) NSString *blogName;
-@property (nonatomic, strong) NSString * blogURL;
+@property (nonatomic, strong) NSString *blogURL;
 @property (nonatomic, strong) NSNumber *blogID;
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSNumber *commentCount;

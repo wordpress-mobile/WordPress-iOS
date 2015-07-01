@@ -1,6 +1,6 @@
 #import <Foundation/Foundation.h>
 
-@class RemoteDiscoverAttribution;
+@class RemoteSourcePostAttribution;
 
 @interface RemoteReaderPost : NSObject
 
@@ -28,7 +28,7 @@
 @property (nonatomic, strong) NSString *tags;
 @property (nonatomic) BOOL isLikesEnabled;
 @property (nonatomic) BOOL isSharingEnabled;
-@property (nonatomic, strong) RemoteDiscoverAttribution *discoverAttribution;
+@property (nonatomic, strong) RemoteSourcePostAttribution *sourceAttribution;
 
 // Base Post Model
 @property (nonatomic, strong) NSString *author;
