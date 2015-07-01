@@ -40,7 +40,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return stream?.preferences?.count ?? emptyRowCount
+        return settings?.sortedPreferenceKeys().count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -54,16 +54,14 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - UITableView Helpers
     private func configureCell(cell: NoteSettingsTableViewCell, indexPath: NSIndexPath) {
-// TODO: Localized and Sorted Preferences
         let preferences = stream?.preferences
-        if preferences == nil {
+        let key         = settings?.sortedPreferenceKeys()[indexPath.row]
+        if preferences == nil || key == nil {
             return
         }
         
-        let key     = preferences?.keys.array[indexPath.row] ?? String()
-        let value   = preferences?[key] ?? true
-        
-        cell.textLabel?.text = key
+        cell.name = settings?.localizedDescription(key!) ?? String()
+        cell.isOn = preferences?[key!] ?? true
         
         WPStyleGuide.configureTableViewCell(cell)
     }
