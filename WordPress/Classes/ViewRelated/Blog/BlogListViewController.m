@@ -16,6 +16,8 @@
 #import "WPTabBarController.h"
 #import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
+#import "WordPress-Swift.h"
+#import "WPSearchControllerConfigurator.h"
 
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
@@ -27,6 +29,10 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 @property (nonatomic, strong) NSFetchedResultsController *resultsController;
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UILabel *headerLabel;
+@property (nonatomic, strong) WPSearchController *searchController;
+@property (nonatomic, strong) IBOutlet UIView *searchWrapperView;
+@property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (nonatomic, strong) IBOutlet NSLayoutConstraint *searchWrapperViewHeightConstraint;
 
 @end
 
@@ -42,9 +48,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+- (instancetype)init
 {
-    self = [super initWithStyle:UITableViewStyleGrouped];
+    self = [super init];
     if (self) {
         self.restorationIdentifier = NSStringFromClass([self class]);
         self.restorationClass = [self class];
@@ -55,6 +61,12 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
                                                                       target:nil
                                                                       action:nil];
         [self.navigationItem setBackBarButtonItem:backButton];
+        
+        UIBarButtonItem *searchButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-search"]
+                                                                         style:UIBarButtonItemStylePlain
+                                                                        target:self
+                                                                        action:@selector(toggleSearch)];
+        [self.navigationItem setRightBarButtonItem:searchButton];
     }
     return self;
 }
@@ -97,7 +109,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -106,14 +117,11 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     }
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-
-    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
-    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
-    self.tableView.allowsSelectionDuringEditing = YES;
-    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
     self.editButtonItem.accessibilityIdentifier = NSLocalizedString(@"Edit", @"");
-
-    [self setupHeaderView];
+    
+    [self configureTableView];
+    [self configureHeaderView];
+    [self configureSearchController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -131,6 +139,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [self.searchController setActive:NO];
     [super viewWillDisappear:animated];
     self.resultsController.delegate = nil;
 }
@@ -197,10 +206,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 #pragma mark - Header methods
 
-- (void)setupHeaderView
+- (void)configureHeaderView
 {
     self.headerView = [[UIView alloc] initWithFrame:CGRectZero];
-
     self.headerLabel = [[UILabel alloc] initWithFrame:CGRectZero];
     self.headerLabel.numberOfLines = 0;
     self.headerLabel.textAlignment = NSTextAlignmentCenter;
@@ -239,6 +247,53 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     [self tableView:self.tableView didSelectRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
+#pragma mark - Configuration
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
+- (void)configureTableView
+{
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:AddSiteCellIdentifier];
+    [self.tableView registerClass:[WPBlogTableViewCell class] forCellReuseIdentifier:BlogCellIdentifier];
+    self.tableView.allowsSelectionDuringEditing = YES;
+    self.tableView.accessibilityIdentifier = NSLocalizedString(@"Blogs", @"");
+}
+
+- (void)configureSearchController
+{
+    self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
+    
+    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController
+                                                                                                    withSearchWrapperView:self.searchWrapperView];
+    [searchControllerConfigurator configureSearchControllerAndWrapperView];
+    [self configureSearchBarPlaceholder];
+    self.searchController.delegate = self;
+    self.searchController.searchResultsUpdater = self;
+}
+
+- (void)configureSearchBarPlaceholder
+{
+    // Adjust color depending on where the search bar is being presented.
+    UIColor *placeholderColor = [WPStyleGuide wordPressBlue];
+    NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
+    NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
+}
+
+- (CGFloat)heightForSearchWrapperView
+{
+    if ([UIDevice isPad]) {
+        return SearchWrapperViewPortraitHeight;
+    }
+    return UIDeviceOrientationIsPortrait(self.interfaceOrientation) ? SearchWrapperViewPortraitHeight : SearchWrapperViewLandscapeHeight;
+}
+
 #pragma mark - Notifications
 
 - (void)wordPressComApiDidLogin:(NSNotification *)notification
@@ -255,8 +310,11 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    // Don't show "Add Site" when editing
-    return (self.tableView.isEditing ? 1 : 2);
+    if (self.tableView.isEditing || [self.searchController isActive]) { // Don't show "Add Site"
+        return 1;
+    } else {
+        return 2;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -326,7 +384,6 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
     } else {
-
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
         if ([blog.blogName length] != 0) {
             cell.textLabel.text = blog.blogName;
@@ -417,6 +474,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
         Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+        blog.visible = YES;
         [blogService flagBlogAsLastUsed:blog];
 
         BlogDetailsViewController *blogDetailsViewController = [[BlogDetailsViewController alloc] init];
@@ -430,9 +488,45 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     return 54;
 }
 
+# pragma mark - WPSeachController delegate methods
+
+- (void)presentSearchController:(WPSearchController *)searchController
+{
+    [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
+    self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
+    [UIView animateWithDuration:SearchBarAnimationDuration
+                          delay:0.0
+                        options:0
+                     animations:^{
+                         [self.view layoutIfNeeded];
+                     } completion:^(BOOL finished) {
+                         [self.searchController.searchBar becomeFirstResponder];
+                     }];
+}
+
+- (void)willDismissSearchController:(WPSearchController *)searchController
+{
+    [self.searchController.searchBar resignFirstResponder];
+    [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
+    self.searchWrapperViewHeightConstraint.constant = 0;
+    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
+        [self.view layoutIfNeeded];
+    }];
+    
+    self.searchController.searchBar.text = nil;
+}
+
+- (void)updateSearchResultsForSearchController:(WPSearchController *)searchController
+{
+    [self updateFetchRequest];
+}
+
+# pragma mark - Navigation Bar
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
     [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
 
     if (editing) {
         [self updateHeaderSize];
@@ -462,6 +556,11 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
             snapshot = nil;
         }];
     }
+}
+
+- (void)toggleSearch
+{
+    self.searchController.active = !self.searchController.active;
 }
 
 - (void)visibilitySwitchAction:(id)sender
@@ -506,9 +605,22 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     if ([self.tableView isEditing]) {
         return [self fetchRequestPredicateForHideableBlogs];
+    } else if ([self.searchController isActive]) {
+        return [self fetchRequestPredicateForSearch];
     }
 
     return [NSPredicate predicateWithFormat:@"visible = YES"];
+}
+
+- (NSPredicate *)fetchRequestPredicateForSearch
+{
+    NSString *searchText = self.searchController.searchBar.text;
+    
+    if ([searchText isEmpty]) {
+        return [self fetchRequestPredicateForHideableBlogs];
+    } else {
+        return [NSPredicate predicateWithFormat:@"( blogName contains[cd] %@ ) OR ( url contains[cd] %@)", searchText, searchText];
+    }
 }
 
 - (NSPredicate *)fetchRequestPredicateForHideableBlogs

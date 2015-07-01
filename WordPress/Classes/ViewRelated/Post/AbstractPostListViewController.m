@@ -7,17 +7,14 @@
 #import "PostSettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
+#import "WPSearchControllerConfigurator.h"
 
 const NSTimeInterval PostsControllerRefreshInterval = 300; // 5 minutes
-const NSTimeInterval PostSearchBarAnimationDuration = 0.2; // seconds
 const NSInteger HTTPErrorCodeForbidden = 403;
 const NSInteger PostsFetchRequestBatchSize = 10;
 const NSInteger PostsLoadMoreThreshold = 4;
-const CGFloat PostsSearchBarWidth = 280.0;
-const CGFloat PostsSearchBariPadWidth = 600.0;
 const CGSize PreferredFiltersPopoverContentSize = {320.0, 220.0};
-const CGFloat SearchWrapperViewPortraitHeight = 64.0;
-const CGFloat SearchWrapperViewLandscapeHeight = 44.0;
+
 const CGFloat DefaultHeightForFooterView = 44.0;
 
 @implementation AbstractPostListViewController
@@ -39,10 +36,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self configureFooterView];
     [self configureSyncHelper];
     [self configureNavbar];
-    [self configureAuthorFilter];
     [self configureSearchController];
-    [self configureSearchBar];
-    [self configureSearchWrapper];
+    [self configureAuthorFilter];
     [self configureTableViewHandler];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
@@ -230,65 +225,12 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (void)configureSearchController
 {
     self.searchController = [[WPSearchController alloc] initWithSearchResultsController:nil];
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.hidesNavigationBarDuringPresentation = YES;
+    
+    WPSearchControllerConfigurator *searchControllerConfigurator = [[WPSearchControllerConfigurator alloc] initWithSearchController:self.searchController withSearchWrapperView:self.searchWrapperView];
+    [searchControllerConfigurator configureSearchControllerAndWrapperView];
+    [self configureSearchBarPlaceholder];
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
-}
-
-- (void)configureSearchBar
-{
-    [self configureSearchBarPlaceholder];
-
-    UISearchBar *searchBar = self.searchController.searchBar;
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.accessibilityIdentifier = @"Search";
-    searchBar.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    searchBar.backgroundImage = [[UIImage alloc] init];
-    searchBar.tintColor = [WPStyleGuide grey]; // cursor color
-    searchBar.translucent = NO;
-    [searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
-    [searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
-
-    [self configureSearchBarForSearchView];
-}
-
-- (void)configureSearchBarForSearchView
-{
-    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
-
-    UISearchBar *searchBar = self.searchController.searchBar;
-    searchBar.translatesAutoresizingMaskIntoConstraints = NO;
-    searchBar.barStyle = UIBarStyleBlack;
-    searchBar.barTintColor = [WPStyleGuide wordPressBlue];
-    searchBar.showsCancelButton = YES;
-
-    [self.searchWrapperView addSubview:searchBar];
-
-    NSDictionary *views = NSDictionaryOfVariableBindings(searchBar);
-    NSDictionary *metrics = @{@"searchbarWidth":@(PostsSearchBariPadWidth)};
-    if ([UIDevice isPad]) {
-        [self.searchWrapperView addConstraint:[NSLayoutConstraint constraintWithItem:searchBar
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                           relatedBy:NSLayoutRelationEqual
-                                                                              toItem:self.searchWrapperView
-                                                                           attribute:NSLayoutAttributeCenterX
-                                                                          multiplier:1.0
-                                                                            constant:0.0]];
-        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[searchBar(searchbarWidth)]"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
-    } else {
-        [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[searchBar]|"
-                                                                                       options:0
-                                                                                       metrics:metrics
-                                                                                         views:views]];
-    }
-    [self.searchWrapperView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[searchBar]|"
-                                                                                   options:0
-                                                                                   metrics:metrics
-                                                                                     views:views]];
 }
 
 - (void)configureSearchBarPlaceholder
@@ -298,6 +240,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     NSString *placeholderText = NSLocalizedString(@"Search", @"Placeholder text for the search bar on the post screen.");
     NSAttributedString *attrPlacholderText = [[NSAttributedString alloc] initWithString:placeholderText attributes:[WPStyleGuide defaultSearchBarTextAttributes:placeholderColor]];
     [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setAttributedPlaceholder:attrPlacholderText];
+    [[UITextField appearanceWhenContainedIn:[UISearchBar class], [self class], nil] setDefaultTextAttributes:[WPStyleGuide defaultSearchBarTextAttributes:[UIColor whiteColor]]];
 }
 
 - (void)configureSearchWrapper
@@ -899,7 +842,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [WPAnalytics track:WPAnalyticsStatPostListSearchOpened withProperties:[self propertiesForAnalytics]];
     [self.navigationController setNavigationBarHidden:YES animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = [self heightForSearchWrapperView];
-    [UIView animateWithDuration:PostSearchBarAnimationDuration
+    [UIView animateWithDuration:SearchBarAnimationDuration
                           delay:0.0
                         options:0
                      animations:^{
@@ -914,7 +857,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [self.searchController.searchBar resignFirstResponder];
     [self.navigationController setNavigationBarHidden:NO animated:YES]; // Remove this line when switching to UISearchController.
     self.searchWrapperViewHeightConstraint.constant = 0;
-    [UIView animateWithDuration:PostSearchBarAnimationDuration animations:^{
+    [UIView animateWithDuration:SearchBarAnimationDuration animations:^{
         [self.view layoutIfNeeded];
     }];
 
