@@ -111,11 +111,11 @@ public class NotificationSettings
             func description() -> String {
                 switch self {
                 case .Timeline:
-                    return NSLocalizedString("Timeline", comment: "WordPress.com Notifications Timeline")
+                    return NSLocalizedString("Notifications Tab", comment: "WordPress.com Notifications Timeline")
                 case .Email:
                     return NSLocalizedString("Email", comment: "Email Notifications Channel")
                 case .Device:
-                    return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
+                    return NSLocalizedString("Mobile Notifications", comment: "Mobile Push Notifications")
                 }
             }
             
