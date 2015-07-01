@@ -322,6 +322,7 @@
 		93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A379DA19FE6D3000415023 /* DDLogSwift.m */; };
 		93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 93A379EB19FFBF7900415023 /* KeychainTest.m */; };
 		93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */; };
+		93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */; };
 		93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1147E18EC5DD500DAC95C /* AccountService.m */; };
 		93C1148518EDF6E100DAC95C /* BlogService.m in Sources */ = {isa = PBXBuildFile; fileRef = 93C1148418EDF6E100DAC95C /* BlogService.m */; };
 		93C4864F181043D700A24725 /* ActivityLogDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 93069F581762410B000C966D /* ActivityLogDetailViewController.m */; };
@@ -1160,6 +1161,7 @@
 		93A379DA19FE6D3000415023 /* DDLogSwift.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DDLogSwift.m; sourceTree = "<group>"; };
 		93A379EB19FFBF7900415023 /* KeychainTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainTest.m; sourceTree = "<group>"; };
 		93A3F7DD1843F6F00082FEEA /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPAnalyticsTrackerAutomatticTracksTests.m; sourceTree = "<group>"; };
 		93C1147D18EC5DD500DAC95C /* AccountService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountService.h; sourceTree = "<group>"; };
 		93C1147E18EC5DD500DAC95C /* AccountService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountService.m; sourceTree = "<group>"; };
 		93C1148318EDF6E100DAC95C /* BlogService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogService.h; sourceTree = "<group>"; };
@@ -2428,6 +2430,7 @@
 		852416D01A12ED2D0030700C /* Utility */ = {
 			isa = PBXGroup;
 			children = (
+				93B853211B44165B0064FE72 /* Analytics */,
 				852416D11A12ED690030700C /* AppRatingUtilityTests.m */,
 				5DA988051AEEA594002AFB12 /* DisplayableImageHelperTest.m */,
 				93A379EB19FFBF7900415023 /* KeychainTest.m */,
@@ -2634,6 +2637,14 @@
 				937D9A1019F838C2007B9D5F /* AccountToAccount22to23.swift */,
 			);
 			name = "22-23";
+			sourceTree = "<group>";
+		};
+		93B853211B44165B0064FE72 /* Analytics */ = {
+			isa = PBXGroup;
+			children = (
+				93B853221B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m */,
+			);
+			name = Analytics;
 			sourceTree = "<group>";
 		};
 		93E5283D19A7741A003A1A9C /* WordPressTodayWidget */ = {
@@ -4239,6 +4250,7 @@
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
+				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,
 				5DFA7EBC1AF7B8D30072023B /* NSDateStringFormattingTest.m in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
 				85F8E1981B017A86000859BB /* PushAuthenticationServiceRemote.swift in Sources */,
