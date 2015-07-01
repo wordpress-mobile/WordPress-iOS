@@ -19,36 +19,16 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Public Helpers
-    public func loadBlogSettings(blogId: Int?) {
-        if blogId == nil {
-            return
-        }
-
-        notificationsService.getSiteSettings(blogId!,
-            success: { (settings: [NotificationSettings.Site]) in
-
-            },
-            failure: { (error: NSError!) in
-
-            })
+    public func setupWithSiteSettings(settings: NotificationSettings.Site) {
+println("Site Settings \(settings)")
     }
     
-    public func loadOtherSettings() {
-        notificationsService.getOtherSettings({ (settings: [NotificationSettings.Other]) in
-
-            },
-            failure: { (error: NSError!) in
-
-            })
+    public func setupWithOtherSettings(settings: NotificationSettings.Other) {
+println("Other Settings \(settings)")
     }
     
-    public func loadWordPressSettings() {
-        notificationsService.getWordPressComSettings({ (wpcom: NotificationSettings.WordPressCom) in
-
-            },
-            failure: { (error: NSError!) in
-
-            })
+    public func setupWithWordPressSettings(settings: [NotificationSettings.WordPressCom]) {
+println("WordPressCom Settings \(settings)")
     }
     
     
