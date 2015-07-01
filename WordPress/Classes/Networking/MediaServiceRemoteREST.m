@@ -79,6 +79,28 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
           }];
 }
 
+- (void)getMediaLibraryCountForBlog:(Blog *)blog
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
+{
+    NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
+    NSDictionary *parameters = @{ @"number" : @1 };
+    [self.api GET:path
+       parameters:[NSDictionary dictionaryWithDictionary:parameters]
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
+              NSNumber *count = [jsonDictionary numberForKey:@"found"];
+              if (success) {
+                  success([count intValue]);
+              }
+          }
+          failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)createMedia:(RemoteMedia *)media
             forBlog:(Blog *)blog
            progress:(NSProgress **)progress
