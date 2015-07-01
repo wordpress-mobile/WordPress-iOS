@@ -24,7 +24,7 @@ public class RemoteNotificationSettings
     *  @enum        Channel
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
-    public enum Channel {
+    public enum Channel : Equatable {
         case Site(siteId: Int)
         case Other
         case WordPressCom
@@ -36,8 +36,9 @@ public class RemoteNotificationSettings
     *  @brief       Contains the Notification Settings for a specific communications stream.
     */
     public class Stream {
-        public var kind         : Kind?
+        public var kind         : Kind
         public var preferences  : [String : Bool]?
+        
         
         /**
         *  @enum    Stream.Kind
@@ -57,7 +58,7 @@ public class RemoteNotificationSettings
         *  @param   kind            The Kind of stream we're currently dealing with
         *  @param   preferences     Raw remote preferences, retrieved from the backend
         */
-        private init(kind: Kind?, preferences: NSDictionary?) {
+        private init(kind: Kind, preferences: NSDictionary?) {
             self.kind           = kind
             self.preferences    = filterNonBooleanEntries(preferences)
         }
@@ -124,9 +125,9 @@ public class RemoteNotificationSettings
     *  @param       wpcomSettings   Dictionary containing the collection of WordPress.com Settings
     */
     private init(wpcomSettings: NSDictionary?) {
-        // WordPress.com is a special scenario: It contains just one (unspecified) stream
+        // WordPress.com is a special scenario: It contains just one (unspecified) stream: Email
         self.channel = Channel.WordPressCom
-        self.streams = [ Stream(kind: nil, preferences: wpcomSettings) ]
+        self.streams = [ Stream(kind: .Email, preferences: wpcomSettings) ]
     }
     
     
