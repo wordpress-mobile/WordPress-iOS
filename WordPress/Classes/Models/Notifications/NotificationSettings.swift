@@ -18,9 +18,26 @@ public class NotificationSettings
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
     public enum Channel : Equatable {
-        case Site(siteId: Int)
+        case Site(siteId: Int?)
         case Other
         case WordPressCom
+        
+        static let allValues = [ Site(siteId: nil), Other, WordPressCom ]
+        
+        
+        /**
+        *  @details Returns the localized description of the current enum value
+        */
+        func description() -> String {
+            switch self {
+            case .Site:
+                return NSLocalizedString("WordPress Blog", comment: "Notification Settings Channel")
+            case .Other:
+                return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
+            case .WordPressCom:
+                return NSLocalizedString("Updates from WordPress.com", comment: "Notification Settings Channel")
+            }
+        }
         
         
         /**
@@ -58,6 +75,21 @@ public class NotificationSettings
             case Timeline       = "timeline"
             case Email          = "email"
             case Device         = "device"
+            
+            
+            /**
+            *  @details Returns the localized description of the current enum value
+            */
+            func description() -> String {
+                switch self {
+                case .Timeline:
+                    return NSLocalizedString("Timeline", comment: "WordPress.com Notifications Timeline")
+                case .Email:
+                    return NSLocalizedString("Email", comment: "Email Notifications Channel")
+                case .Device:
+                    return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
+                }
+            }
             
             static let allValues = [ Timeline, Email, Device ]
         }
