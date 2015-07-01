@@ -20,8 +20,16 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - Public Helpers
     public func setupWithSettings(settings: NotificationSettings, streamAtIndex streamIndex: Int) {
-        self.settings   = settings
-        self.stream     = settings.streams[streamIndex]
+        self.settings = settings
+        self.stream = settings.streams[streamIndex]
+        
+        switch settings.channel {
+        case .WordPressCom:
+            title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+        default:
+            title = stream!.kind.description()
+        }
+        
         tableView.reloadData()
     }
     
@@ -36,7 +44,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! NoteSettingsTableViewCell
         
         configureCell(cell, indexPath: indexPath)
         
@@ -45,8 +53,18 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - UITableView Helpers
-    private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text = "Something"
+    private func configureCell(cell: NoteSettingsTableViewCell, indexPath: NSIndexPath) {
+// TODO: Localized and Sorted Preferences
+        let preferences = stream?.preferences
+        if preferences == nil {
+            return
+        }
+        
+        let key     = preferences?.keys.array[indexPath.row] ?? String()
+        let value   = preferences?[key] ?? true
+        
+        cell.textLabel?.text = key
+        
         WPStyleGuide.configureTableViewCell(cell)
     }
     
