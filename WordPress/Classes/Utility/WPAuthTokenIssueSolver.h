@@ -15,7 +15,10 @@ typedef void(^WPAuthTokenissueSolverCompletionBlock)();
  *
  *  @param      onComplete      The block to execute once the issues are solved.  Will be executed
  *                              also if there's no issue to solve at all.
+ *
+ *  @returns    YES if the authToken issue is being fixed.  NO otherwise.  Useful to inhibit the
+ *              app's state restoration.
  */
-- (void)fixAuthTokenIssueAndDo:(WPAuthTokenissueSolverCompletionBlock)onComplete;
+- (BOOL)fixAuthTokenIssueAndDo:(WPAuthTokenissueSolverCompletionBlock)onComplete;
 
 @end

@@ -4,16 +4,17 @@
 #import "ContextManager.h"
 #import "LoginViewController.h"
 #import "UIAlertView+Blocks.h"
-#import "WordPressAppDelegate.h"
 #import "WPAccount.h"
 
 @implementation WPAuthTokenIssueSolver
 
 #pragma mark - Fixing the authToken issue.
 
-- (void)fixAuthTokenIssueAndDo:(WPAuthTokenissueSolverCompletionBlock)onComplete
+- (BOOL)fixAuthTokenIssueAndDo:(WPAuthTokenissueSolverCompletionBlock)onComplete
 {
     NSParameterAssert(onComplete);
+    
+    BOOL isFixingAuthTokenIssue = NO;
     
     if ([self hasAuthTokenIssues]) {
         LoginViewController *loginViewController = [[LoginViewController alloc] init];
@@ -35,13 +36,15 @@
             }
         };
         
-        WordPressAppDelegate *appDelegate = (WordPressAppDelegate *)[UIApplication sharedApplication].delegate;
-        appDelegate.window.rootViewController = loginViewController;
+        [UIApplication sharedApplication].keyWindow.rootViewController = loginViewController;
         
         [self showExplanationAlertForReAuthenticationDueToMissingAuthToken];
+        isFixingAuthTokenIssue = YES;
     } else {
         onComplete();
     }
+    
+    return isFixingAuthTokenIssue;
 }
 
 #pragma mark - Misc
