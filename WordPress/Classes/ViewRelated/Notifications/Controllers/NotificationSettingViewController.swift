@@ -10,7 +10,6 @@ public class NotificationSettingViewController : UITableViewController
         // Initialize Interface
         setupNavigationItem()
         setupTableView()
-        setupServices()
         
         // Load Settings
         reloadSettings()
@@ -38,17 +37,13 @@ public class NotificationSettingViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
-    private func setupServices() {
-        let contextManager      = ContextManager.sharedInstance().mainContext
-        blogService             = BlogService(managedObjectContext: contextManager)
-        notificationsService    = NotificationsService(managedObjectContext: contextManager)
-    }
-    
     
     // MARK: - Service Helpers
     private func reloadSettings() {
+        let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        
 // TODO: Spinner
-        notificationsService?.getAllSettings({ (settings: [NotificationSettings]) in
+        service.getAllSettings({ (settings: [NotificationSettings]) in
                 self.groupedSettings = self.groupSettings(settings)
                 self.tableView.reloadData()
             },
@@ -112,21 +107,16 @@ println("Error \(error)")
 
     // MARK: - UITableView Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let channel = settingsForRowAtIndexPath(indexPath)?.channel
-        var description : String?
-        
-        if channel == nil {
-            return
+        if let settings = settingsForRowAtIndexPath(indexPath) {
+            switch settings.channel {
+            case let .Site(siteId):
+                cell.textLabel?.text = settings.blog?.blogName ?? settings.channel.description()
+            default:
+                cell.textLabel?.text = settings.channel.description()
+                break
+            }
         }
         
-        switch channel! {
-        case let .Site(siteId):
-            description = blogService?.blogByBlogId(siteId)?.blogName
-        default:
-            break
-        }
-        
-        cell.textLabel?.text = description ?? channel!.description()
         WPStyleGuide.configureTableViewCell(cell)
     }
     
@@ -174,7 +164,5 @@ println("Error \(error)")
     private let reuseIdentifier         = "NotificationSettingsTableViewCell"
     
     // MARK: - Private Properties
-    private var blogService             : BlogService?
-    private var notificationsService    : NotificationsService?
     private var groupedSettings         : [[NotificationSettings]]?
 }
