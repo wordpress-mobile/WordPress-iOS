@@ -20,6 +20,9 @@
 #import "ContextManager.h"
 
 #import "AccountService.h"
+#import "BlogService.h"
+
+#import "Blog.h"
 #import "WPAccount.h"
 
 #import "Blog.h"
