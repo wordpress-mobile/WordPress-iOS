@@ -15,8 +15,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         switch settings.channel {
         case let .Site(siteId):
-// TODO: Fixme
-            title = NSLocalizedString("Other Sites", comment: "Blog Notifications Streams Title")
+            title = settings.blog?.blogName ?? settings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
