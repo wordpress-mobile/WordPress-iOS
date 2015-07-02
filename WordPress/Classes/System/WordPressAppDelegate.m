@@ -128,6 +128,9 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     // Simperium: Wire CoreData Stack
     [self configureSimperiumWithLaunchOptions:launchOptions];
+    
+    // Local Notifications
+    [self listenLocalNotifications];
 
     WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
@@ -371,9 +374,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     // Start Simperium
     [self loginSimperium];
-    
-    // Local Notifications
-    [self listenLocalNotifications];
     
     // Debugging
     [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
@@ -990,7 +990,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
-        [self logoutSimperiumAndResetNotifications];
+        
+        if (self.simperium.user.authenticated) {
+            [self logoutSimperiumAndResetNotifications];
+        } else {
+            [self resetSimperiumOnAuthTokenIssue];
+        }
+        
         [self removeTodayWidgetConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
@@ -1019,6 +1025,15 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     TodayExtensionService *service = [TodayExtensionService new];
     [service removeTodayWidgetConfiguration];
+}
+
+#pragma mark - Simperium helpers
+
+- (void)resetSimperiumOnAuthTokenIssue
+{
+    SPBucket *notesBucket = [self.simperium bucketForName:NSStringFromClass([Notification class])];
+    [notesBucket deleteAllObjects];
+    [self.simperium saveWithoutSyncing];
 }
 
 #pragma mark - What's new
