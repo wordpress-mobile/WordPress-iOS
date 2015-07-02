@@ -1029,6 +1029,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 #pragma mark - Simperium helpers
 
+/**
+ *  @brief      This code exists for the sole purpose of fixing the missing-auth-token issue in
+ *              WPiOS 5.3.
+ *  @details    Read this: https://github.com/wordpress-mobile/WordPress-iOS/issues/3964
+ *  @todo       Remove this once enough version numbers have passed :)
+ */
 - (void)resetSimperiumOnAuthTokenIssue
 {
     SPBucket *notesBucket = [self.simperium bucketForName:NSStringFromClass([Notification class])];
