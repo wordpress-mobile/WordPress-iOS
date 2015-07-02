@@ -316,7 +316,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 LoginViewController *loginViewController = [[LoginViewController alloc] init];
                 loginViewController.onlyDotComAllowed = YES;
                 loginViewController.cancellable = YES;
-                loginViewController.dismissBlock = ^{
+                loginViewController.dismissBlock = ^(BOOL cancelled){
                     [self dismissViewControllerAnimated:YES completion:nil];
                 };
 

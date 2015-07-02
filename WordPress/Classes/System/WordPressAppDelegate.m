@@ -27,6 +27,7 @@
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
+#import "UIAlertView+Blocks.h"
 #import "UIDevice+Helpers.h"
 
 // Data model
@@ -114,69 +115,27 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     [WordPressAppDelegate fixKeychainAccess];
 
+    // Basic networking setup
+    [self setupReachability];
+    
     // Simperium: Wire CoreData Stack
     [self configureSimperiumWithLaunchOptions:launchOptions];
 
-    // Crash reporting, logging
-    self.logger = [[WPLogger alloc] init];
-    [self configureHockeySDK];
-    [self configureCrashlytics];
-    [self initializeAppRatingUtility];
-    
-    // Analytics
-    [self configureAnalytics];
-
-    // Start Simperium
-    [self loginSimperium];
-
-    // Local Notifications
-    [self listenLocalNotifications];
-    
-    // Debugging
-    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
-    [self toggleExtraDebuggingIfNeeded];
-    [self removeCredentialsForDebug];
-
-    // Stop Storing WordPress.com passwords
-    [self removeWordPressComPassword];
-    
-    // Stats and feedback    
-    [SupportViewController checkIfFeedbackShouldBeEnabled];
-
-    [HelpshiftUtils setup];
-
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-
-    // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [self setupReachability];
-    self.userAgent = [[WPUserAgent alloc] init];
-    [self setupSingleSignOn];
-
-    [self customizeAppearance];
-
-    // Push notifications
-    [NotificationsManager registerForPushNotifications];
-
-    // Deferred tasks to speed up app launch
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
-        [MediaService cleanUnusedMediaFileFromTmpDir];
-
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
-    });
-    
-    // Configure Today Widget
-    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
-
-    if ([WPPostViewController makeNewEditorAvailable]) {
-        [self setMustShowWhatsNewPopup:YES];
+    // If we have a default account but no auth token, something's broken.  The following code
+    // asks the user to re-authenticate if this is the case.  Check this github issue for more
+    // information...
+    //
+    // https://github.com/wordpress-mobile/WordPress-iOS/pull/3956
+    //
+    if ([self hasAuthTokenIssues]) {
+        __weak __typeof(self) weakSelf = self;
+        
+        [self fixAuthTokenIssuesAndDo:^void(){
+            [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
+        }];
+    } else {
+        [self runStartupSequenceWithLaunchOptions:launchOptions];
     }
-    
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
-    self.window.rootViewController = [WPTabBarController sharedInstance];
 
     return YES;
 }
@@ -395,6 +354,71 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     return YES;
 }
 
+#pragma mark - Application startup
+
+- (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
+{
+    // Crash reporting, logging
+    self.logger = [[WPLogger alloc] init];
+    [self configureHockeySDK];
+    [self configureCrashlytics];
+    [self initializeAppRatingUtility];
+    
+    // Analytics
+    [self configureAnalytics];
+    
+    // Start Simperium
+    [self loginSimperium];
+    
+    // Local Notifications
+    [self listenLocalNotifications];
+    
+    // Debugging
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
+    [self toggleExtraDebuggingIfNeeded];
+    [self removeCredentialsForDebug];
+    
+    // Stop Storing WordPress.com passwords
+    [self removeWordPressComPassword];
+    
+    // Stats and feedback
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
+    
+    [HelpshiftUtils setup];
+    
+    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
+    
+    // Networking setup
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    self.userAgent = [[WPUserAgent alloc] init];
+    [self setupSingleSignOn];
+    
+    [self customizeAppearance];
+    
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
+    
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [WPAppFilesManager changeWorkingDirectoryToWordPressSubdirectory];
+        [MediaService cleanUnusedMediaFileFromTmpDir];
+        
+        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+    });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
+    
+    if ([WPPostViewController makeNewEditorAvailable]) {
+        [self setMustShowWhatsNewPopup:YES];
+    }
+    
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds]; // for good measure.
+    self.window.rootViewController = [WPTabBarController sharedInstance];
+}
+
 #pragma mark - Push Notification delegate
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
@@ -521,7 +545,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
     loginViewController.cancellable = hasWordpressAccountButNoSelfHostedBlogs;
-    loginViewController.dismissBlock = ^{
+    loginViewController.dismissBlock = ^(BOOL cancelled){
         
         __strong __typeof(weakSelf) strongSelf = self;
         
@@ -830,6 +854,85 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }
     }
     DDLogVerbose(@"End keychain fixing");
+}
+
+- (BOOL)hasAuthTokenIssues
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
+    WPAccount *account = [accountService defaultWordPressComAccount];
+    
+    BOOL hasAuthTokenIssues = account && ![account authToken];
+    
+    return hasAuthTokenIssues;
+}
+
+- (void)fixAuthTokenIssuesAndDo:(void(^)())actionBlock
+{
+    NSParameterAssert(actionBlock);
+    
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    
+    loginViewController.onlyDotComAllowed = YES;
+    loginViewController.shouldReauthenticateDefaultAccount = YES;
+    loginViewController.cancellable = ![self noSelfHostedBlogs];
+    loginViewController.dismissBlock = ^(BOOL cancelled) {
+        if (cancelled) {
+            [self showCancelReAuthenticationAlertAndOnOK:^{
+                NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
+                
+                [accountService removeDefaultWordPressComAccount];
+                actionBlock();
+            }];
+        } else {
+            actionBlock();
+        }
+    };
+    
+    self.window.rootViewController = loginViewController;
+    
+    [self showExplanationAlertForReAuthenticationDueToMissingAuthToken];
+}
+
+- (void)showCancelReAuthenticationAlertAndOnOK:(void(^)())okBlock
+{
+    NSParameterAssert(okBlock);
+    
+    NSString *alertTitle = NSLocalizedString(@"Careful!",
+                                             @"Title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
+    NSString *alertMessage = NSLocalizedString(@"If you proceed, all your WP.com account data will be removed from this device.  This means any unsaved data such as locally stored posts will be deleted.  This will not affect data that has already been uploaded to your WP.com account.",
+                                               @"Message for the warning shown to the user when he refuses to re-login when the authToken is missing.");
+    NSString *cancelButtonTitle = NSLocalizedString(@"Cancel",
+                                                    @"Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
+    NSString *deleteButtonTitle = NSLocalizedString(@"Delete",
+                                                    @"Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
+
+    [UIAlertView showWithTitle:alertTitle
+                       message:alertMessage
+             cancelButtonTitle:cancelButtonTitle
+             otherButtonTitles:@[deleteButtonTitle]
+                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
+                          if (buttonIndex == alertView.firstOtherButtonIndex) {
+                              okBlock();
+                          }
+                      }];
+}
+
+- (void)showExplanationAlertForReAuthenticationDueToMissingAuthToken
+{
+    NSString *alertTitle = NSLocalizedString(@"Oops!",
+                                             @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
+    NSString *alertMessage = NSLocalizedString(@"We have detected a synchronization problem with your locally stored WP.com credentials. You're going to be prompted to re-authenticate.",
+                                               @"Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
+    NSString *okButtonTitle = NSLocalizedString(@"OK",
+                                                @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
+
+    [UIAlertView showWithTitle:alertTitle
+                       message:alertMessage
+             cancelButtonTitle:nil
+             otherButtonTitles:@[okButtonTitle]
+                      tapBlock:nil];
 }
 
 #pragma mark - WordPress.com Accounts
