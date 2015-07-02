@@ -93,7 +93,7 @@
     
     NSString *alertTitle = NSLocalizedString(@"Careful!",
                                              @"Title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    NSString *alertMessage = NSLocalizedString(@"If you proceed, all your WP.com account data will be removed from this device.  This means any unsaved data such as locally stored posts will be deleted.  This will not affect data that has already been uploaded to your WP.com account.",
+    NSString *alertMessage = NSLocalizedString(@"Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not loose anything already saved to your WordPress.com blog(s).",
                                                @"Message for the warning shown to the user when he refuses to re-login when the authToken is missing.");
     NSString *cancelButtonTitle = NSLocalizedString(@"Cancel",
                                                     @"Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
@@ -118,7 +118,7 @@
 {
     NSString *alertTitle = NSLocalizedString(@"Oops!",
                                              @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-    NSString *alertMessage = NSLocalizedString(@"We have detected a synchronization problem with your locally stored WP.com credentials. You're going to be prompted to re-authenticate.",
+    NSString *alertMessage = NSLocalizedString(@"There was a problem connecting to WordPress.com. Please sign in again.",
                                                @"Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
     NSString *okButtonTitle = NSLocalizedString(@"OK",
                                                 @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
