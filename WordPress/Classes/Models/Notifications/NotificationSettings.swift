@@ -9,8 +9,9 @@ import Foundation
 
 public class NotificationSettings
 {
-    public let channel : Channel
-    public let streams : [Stream]
+    public let channel  : Channel
+    public let streams  : [Stream]
+    public let blog     : Blog?
     
     
     /**
@@ -18,9 +19,10 @@ public class NotificationSettings
     *  @param       channel     The related Notifications Channel
     *  @param       streams     An array of all of the involved streams
     */
-    public init(channel: Channel, streams: [Stream]) {
+    public init(channel: Channel, streams: [Stream], blog: Blog?) {
         self.channel = channel
         self.streams = streams
+        self.blog    = blog
     }
     
     
