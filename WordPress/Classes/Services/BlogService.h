@@ -80,6 +80,11 @@
 
 - (NSArray *)blogsForAllAccounts;
 
+/**
+ Returns every stored blog, arranged in a Dictionary by blogId.
+ */
+- (NSDictionary *)blogsForAllAccountsById;
+
 /*! Determine timezone for blog from blog options.  If no timezone information is stored on
  *  the device, then assume GMT+0 is the default.
  *  
