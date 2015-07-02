@@ -52,6 +52,7 @@
 #import "HelpshiftUtils.h"
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
+#import "WPAuthTokenIssueSolver.h"
 #import "WPWhatsNew.h"
 
 // Networking
@@ -121,21 +122,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Simperium: Wire CoreData Stack
     [self configureSimperiumWithLaunchOptions:launchOptions];
 
-    // If we have a default account but no auth token, something's broken.  The following code
-    // asks the user to re-authenticate if this is the case.  Check this github issue for more
-    // information...
-    //
-    // https://github.com/wordpress-mobile/WordPress-iOS/pull/3956
-    //
-    if ([self hasAuthTokenIssues]) {
-        __weak __typeof(self) weakSelf = self;
-        
-        [self fixAuthTokenIssuesAndDo:^void(){
-            [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
-        }];
-    } else {
-        [self runStartupSequenceWithLaunchOptions:launchOptions];
-    }
+    WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
+    
+    __weak __typeof(self) weakSelf = self;
+    
+    [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
+        [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
+    }];
 
     return YES;
 }
@@ -854,85 +847,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         }
     }
     DDLogVerbose(@"End keychain fixing");
-}
-
-- (BOOL)hasAuthTokenIssues
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *account = [accountService defaultWordPressComAccount];
-    
-    BOOL hasAuthTokenIssues = account && ![account authToken];
-    
-    return hasAuthTokenIssues;
-}
-
-- (void)fixAuthTokenIssuesAndDo:(void(^)())actionBlock
-{
-    NSParameterAssert(actionBlock);
-    
-    LoginViewController *loginViewController = [[LoginViewController alloc] init];
-    
-    loginViewController.onlyDotComAllowed = YES;
-    loginViewController.shouldReauthenticateDefaultAccount = YES;
-    loginViewController.cancellable = ![self noSelfHostedBlogs];
-    loginViewController.dismissBlock = ^(BOOL cancelled) {
-        if (cancelled) {
-            [self showCancelReAuthenticationAlertAndOnOK:^{
-                NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
-                AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:mainContext];
-                
-                [accountService removeDefaultWordPressComAccount];
-                actionBlock();
-            }];
-        } else {
-            actionBlock();
-        }
-    };
-    
-    self.window.rootViewController = loginViewController;
-    
-    [self showExplanationAlertForReAuthenticationDueToMissingAuthToken];
-}
-
-- (void)showCancelReAuthenticationAlertAndOnOK:(void(^)())okBlock
-{
-    NSParameterAssert(okBlock);
-    
-    NSString *alertTitle = NSLocalizedString(@"Careful!",
-                                             @"Title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    NSString *alertMessage = NSLocalizedString(@"If you proceed, all your WP.com account data will be removed from this device.  This means any unsaved data such as locally stored posts will be deleted.  This will not affect data that has already been uploaded to your WP.com account.",
-                                               @"Message for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    NSString *cancelButtonTitle = NSLocalizedString(@"Cancel",
-                                                    @"Cancel button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-    NSString *deleteButtonTitle = NSLocalizedString(@"Delete",
-                                                    @"Delete button title for the warning shown to the user when he refuses to re-login when the authToken is missing.");
-
-    [UIAlertView showWithTitle:alertTitle
-                       message:alertMessage
-             cancelButtonTitle:cancelButtonTitle
-             otherButtonTitles:@[deleteButtonTitle]
-                      tapBlock:^(UIAlertView *alertView, NSInteger buttonIndex) {
-                          if (buttonIndex == alertView.firstOtherButtonIndex) {
-                              okBlock();
-                          }
-                      }];
-}
-
-- (void)showExplanationAlertForReAuthenticationDueToMissingAuthToken
-{
-    NSString *alertTitle = NSLocalizedString(@"Oops!",
-                                             @"Title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-    NSString *alertMessage = NSLocalizedString(@"We have detected a synchronization problem with your locally stored WP.com credentials. You're going to be prompted to re-authenticate.",
-                                               @"Message for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-    NSString *okButtonTitle = NSLocalizedString(@"OK",
-                                                @"OK button title for the warning shown to the user when the app realizes there should be an auth token but there isn't one.");
-
-    [UIAlertView showWithTitle:alertTitle
-                       message:alertMessage
-             cancelButtonTitle:nil
-             otherButtonTitles:@[okButtonTitle]
-                      tapBlock:nil];
 }
 
 #pragma mark - WordPress.com Accounts
