@@ -109,6 +109,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+
     // Remove one-pixel gap resulting from a top-aligned grouped table view
     if (IS_IPHONE) {
         UIEdgeInsets tableInset = [self.tableView contentInset];
@@ -127,7 +128,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    [self registerForKeyboardNotifications];
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     self.resultsController.delegate = self;
     [self.resultsController performFetch:nil];
@@ -141,6 +142,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [self.searchController setActive:NO];
     [super viewWillDisappear:animated];
+    [self unregisterForKeyboardNotifications];
     self.resultsController.delegate = nil;
 }
 
@@ -153,6 +155,35 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         // this forces the tableHeaderView to resize
         self.tableView.tableHeaderView = self.headerView;
     }
+}
+
+- (void)registerForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)unregisterForKeyboardNotifications
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillHideNotification object:nil];
+}
+
+- (void)keyboardDidShow:(NSNotification *)notification
+{
+    NSDictionary *info = notification.userInfo;
+    CGFloat keyboardHeight = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
+    CGFloat tabBarHeight = self.tabBarController.tabBar.bounds.size.height;
+    
+    UIEdgeInsets newInsets = UIEdgeInsetsMake(0.0, 0.0, keyboardHeight - tabBarHeight, 0.0);
+    self.tableView.contentInset = newInsets;
+    self.tableView.scrollIndicatorInsets = newInsets;
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.tableView.contentInset = UIEdgeInsetsZero;
+    self.tableView.scrollIndicatorInsets = UIEdgeInsetsZero;
 }
 
 - (NSUInteger)numSites
