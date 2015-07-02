@@ -88,6 +88,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
+@property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -119,6 +120,12 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     // Basic networking setup
     [self setupReachability];
     
+    // Set the main window up
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds];
+    [self.window makeKeyAndVisible];
+    
     // Simperium: Wire CoreData Stack
     [self configureSimperiumWithLaunchOptions:launchOptions];
 
@@ -126,9 +133,11 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     
     __weak __typeof(self) weakSelf = self;
     
-    [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
+    BOOL isFixingAuthTokenIssue = [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
         [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
     }];
+    
+    self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
     return YES;
 }
@@ -344,7 +353,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
 {
-    return YES;
+    return self.shouldRestoreApplicationState;
 }
 
 #pragma mark - Application startup
@@ -406,9 +415,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         [self setMustShowWhatsNewPopup:YES];
     }
     
-    CGRect bounds = [[UIScreen mainScreen] bounds];
-    [self.window setFrame:bounds];
-    [self.window setBounds:bounds]; // for good measure.
     self.window.rootViewController = [WPTabBarController sharedInstance];
 }
 
