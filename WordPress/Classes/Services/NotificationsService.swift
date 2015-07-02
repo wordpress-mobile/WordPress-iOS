@@ -47,12 +47,14 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @returns                     An array of NotificationSettings objects
     */
     private func settingsFromRemote(remoteSettings: [RemoteNotificationSettings]) -> [NotificationSettings] {
-        var parsed = [NotificationSettings]()
+        var parsed       = [NotificationSettings]()
+        let blogMap      = blogService.blogsForAllAccountsById() as? [Int: Blog]
         
         for remoteSetting in remoteSettings {
             let channel  = channelFromRemote(remoteSetting.channel)
             let streams  = streamsFromRemote(remoteSetting.streams)
-            let settings = NotificationSettings(channel: channel, streams: streams)
+            let blog     = blogForChannel(channel, blogMap: blogMap)
+            let settings = NotificationSettings(channel: channel, streams: streams, blog: blog)
             
             parsed.append(settings)
         }
@@ -97,6 +99,24 @@ public class NotificationsService : NSObject, LocalCoreDataService
     }
     
     
+    /**
+    *  @details Helper method that filters the Blog associated with a specific Channel, if any.
+    *  @param   channel     An instance of the RemoteNotificationSettings.Channel enum
+    *  @param   blogMap     A Map of Blog entities, with their BlogID's as keys
+    *  @returns             Instance of the associated Blog, if any
+    */
+    private func blogForChannel(channel: NotificationSettings.Channel, blogMap: [Int : Blog]?) -> Blog? {
+        // We reuse a Blog Map by ID, since it's actually one order of magnitude faster than fetching
+        // each time.
+        switch channel {
+        case let .Site(siteId) where siteId != nil:
+            return blogMap?[siteId!]
+        default:
+            return nil
+        }
+    }
+    
+    
     
     // MARK: - Private Computed Properties
     private var remoteApi : WordPressComApi? {
@@ -108,6 +128,10 @@ public class NotificationsService : NSObject, LocalCoreDataService
 
     private var notificationsServiceRemote : NotificationsServiceRemote? {
         return NotificationsServiceRemote(api: remoteApi)
+    }
+
+    private var blogService : BlogService {
+        return BlogService(managedObjectContext: managedObjectContext)
     }
     
     // MARK: - Private Internal Properties
