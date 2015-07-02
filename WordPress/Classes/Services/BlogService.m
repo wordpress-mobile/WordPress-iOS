@@ -421,6 +421,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     return [self blogsWithPredicate:nil];
 }
 
+- (NSDictionary *)blogsForAllAccountsById
+{
+    NSMutableDictionary *blogMap = [NSMutableDictionary dictionary];
+    NSArray *allBlogs = [self blogsWithPredicate:nil];
+    
+    for (Blog *blog in allBlogs) {
+        if (blog.blogID != nil) {
+            blogMap[blog.blogID] = blog;
+        }
+    }
+    
+    return blogMap;
+}
+
+
 ///--------------------
 /// @name Blog creation
 ///--------------------
