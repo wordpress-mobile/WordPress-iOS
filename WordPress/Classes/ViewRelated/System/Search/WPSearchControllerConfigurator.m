@@ -54,6 +54,7 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     self.searchBar.barStyle = UIBarStyleBlack;
     self.searchBar.barTintColor = [WPStyleGuide wordPressBlue];
     self.searchBar.showsCancelButton = YES;
+    self.searchBar.returnKeyType = UIReturnKeyDone;
     [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     
