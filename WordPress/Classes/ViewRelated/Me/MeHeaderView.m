@@ -68,7 +68,7 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
     NSDictionary *metrics = @{@"gravatarSize": @(MeHeaderViewGravatarSize),
                               @"labelHeight":@(MeHeaderViewLabelHeight),
                               @"verticalMargin":@(MeHeaderViewVerticalMargin)};
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalMargin-[_displayNameLabel(labelHeight)]-verticalMargin-[_usernameLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalMargin-[_displayNameLabel(labelHeight)]-[_usernameLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
