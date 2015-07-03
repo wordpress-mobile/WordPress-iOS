@@ -63,6 +63,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         cell.name = settings?.localizedDescription(key!) ?? String()
         cell.isOn = preferences?[key!] ?? true
+        cell.onChange = {
+            (newValue: Bool) in
+            println("Key: \(key) Value: \(newValue)")
+        }
     }
     
     
