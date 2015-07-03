@@ -2,7 +2,7 @@
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
 
-const CGFloat MeHeaderViewHeight = 175;
+const CGFloat MeHeaderViewHeight = 215;
 const CGFloat MeHeaderViewGravatarSize = 120.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;
 const CGFloat MeHeaderViewVerticalMargin = 10.0;
@@ -10,6 +10,7 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 @interface MeHeaderView ()
 
 @property (nonatomic, strong) UIImageView *gravatarImageView;
+@property (nonatomic, strong) UILabel *displayNameLabel;
 @property (nonatomic, strong) UILabel *usernameLabel;
 
 @end
@@ -22,6 +23,9 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
     if (self) {
         _gravatarImageView = [self imageViewForGravatar];
         [self addSubview:_gravatarImageView];
+
+        _displayNameLabel = [self labelForDisplayName];
+        [self addSubview:_displayNameLabel];
 
         _usernameLabel = [self labelForUsername];
         [self addSubview:_usernameLabel];
@@ -36,6 +40,11 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 - (CGSize)intrinsicContentSize
 {
     return CGSizeMake(UIViewNoIntrinsicMetric, MeHeaderViewHeight);
+}
+
+- (void)setDisplayName:(NSString *)displayName
+{
+    self.displayNameLabel.text = displayName;
 }
 
 - (void)setUsername:(NSString *)username
@@ -55,11 +64,11 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 
 - (void)configureConstraints
 {
-    NSDictionary *views = NSDictionaryOfVariableBindings(_gravatarImageView, _usernameLabel);
+    NSDictionary *views = NSDictionaryOfVariableBindings(_gravatarImageView, _displayNameLabel, _usernameLabel);
     NSDictionary *metrics = @{@"gravatarSize": @(MeHeaderViewGravatarSize),
                               @"labelHeight":@(MeHeaderViewLabelHeight),
                               @"verticalMargin":@(MeHeaderViewVerticalMargin)};
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalMargin-[_usernameLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalMargin-[_displayNameLabel(labelHeight)]-verticalMargin-[_usernameLabel(labelHeight)]"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -69,6 +78,14 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
                                                                    views:views]];
 
     [self addConstraint:[NSLayoutConstraint constraintWithItem:self.gravatarImageView
+                                                     attribute:NSLayoutAttributeCenterX
+                                                     relatedBy:NSLayoutRelationEqual
+                                                        toItem:self
+                                                     attribute:NSLayoutAttributeCenterX
+                                                    multiplier:1
+                                                      constant:0]];
+
+    [self addConstraint:[NSLayoutConstraint constraintWithItem:self.displayNameLabel
                                                      attribute:NSLayoutAttributeCenterX
                                                      relatedBy:NSLayoutRelationEqual
                                                         toItem:self
@@ -87,6 +104,21 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
 }
 
 #pragma mark - Subview factories
+
+- (UILabel *)labelForDisplayName
+{
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectZero];
+    label.translatesAutoresizingMaskIntoConstraints = NO;
+    label.numberOfLines = 1;
+    label.backgroundColor = [UIColor clearColor];
+    label.opaque = YES;
+    label.textColor = [WPStyleGuide darkGrey];
+    label.font = [WPStyleGuide regularTextFontSemiBold];
+    label.adjustsFontSizeToFitWidth = NO;
+    label.textAlignment = NSTextAlignmentCenter;
+
+    return label;
+}
 
 - (UILabel *)labelForUsername
 {
