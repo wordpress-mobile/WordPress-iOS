@@ -9,6 +9,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
         registerCellNibs()
     }
 
+    public override func viewWillDisappear(animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveSettingsIfNeeded()
+    }
     
     // MARK: - Setup Helpers
     private func registerCellNibs() {
@@ -20,8 +24,9 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - Public Helpers
     public func setupWithSettings(settings: NotificationSettings, streamAtIndex streamIndex: Int) {
-        self.settings = settings
-        self.stream = settings.streams[streamIndex]
+        self.settings   = settings
+        self.stream     = settings.streams[streamIndex]
+        self.newValues  = [String: Bool]()
         
         switch settings.channel {
         case .WordPressCom:
@@ -63,10 +68,26 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         cell.name = settings?.localizedDescription(key!) ?? String()
         cell.isOn = preferences?[key!] ?? true
-        cell.onChange = {
-            (newValue: Bool) in
-            println("Key: \(key) Value: \(newValue)")
+        cell.onChange = { (newValue: Bool) in
+            self.newValues?[key!] = newValue
         }
+    }
+    
+    
+    // MARK: - Service Helpers
+    private func saveSettingsIfNeeded() {
+        if newValues?.count == 0 || settings == nil {
+            return
+        }
+        
+        let context = ContextManager.sharedInstance().mainContext
+        let service = NotificationsService(managedObjectContext: context)
+                
+        service.updateSettings(settings!,
+            stream: stream!,
+            newValues: newValues!,
+            success: nil,
+            failure: nil)
     }
     
     
@@ -77,4 +98,5 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
     private var stream          : NotificationSettings.Stream?
+    private var newValues       : [String: Bool]?
 }
