@@ -6,6 +6,15 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+        registerCellNibs()
+    }
+    
+    
+    // MARK: - Setup Helpers
+    private func registerCellNibs() {
+        let reuseIdentifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
+        let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
+        tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
     }
     
     
@@ -36,7 +45,8 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        let reuseIdentifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
+        let cell            = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
         
         configureCell(cell, indexPath: indexPath)
         
@@ -72,7 +82,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - Private Constants
     private let emptyRowCount   = 0
     private let sectionCount    = 1
-    private let reuseIdentifier = "NotificationSettingStreamTableViewCell"
 
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
