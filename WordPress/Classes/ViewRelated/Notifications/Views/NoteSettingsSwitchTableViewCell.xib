@@ -14,14 +14,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pzd-gS-Kvg">
-                        <rect key="frame" x="263" y="6" width="51" height="31"/>
+                        <rect key="frame" x="256" y="6" width="51" height="31"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="49" id="PTc-3x-E8G"/>
                         </constraints>
                     </switch>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="trailing" secondItem="pzd-gS-Kvg" secondAttribute="trailing" constant="8" id="0hw-F2-DMf"/>
+                    <constraint firstAttribute="trailing" secondItem="pzd-gS-Kvg" secondAttribute="trailing" constant="15" id="0hw-F2-DMf"/>
                     <constraint firstItem="pzd-gS-Kvg" firstAttribute="top" secondItem="NUH-vn-4WW" secondAttribute="top" constant="6" id="O50-0R-mMX"/>
                     <constraint firstAttribute="bottom" secondItem="pzd-gS-Kvg" secondAttribute="bottom" constant="6.5" id="vkp-Qc-xWV"/>
                 </constraints>

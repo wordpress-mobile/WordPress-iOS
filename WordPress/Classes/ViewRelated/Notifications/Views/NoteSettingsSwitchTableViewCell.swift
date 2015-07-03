@@ -4,6 +4,8 @@ import Foundation
 public class NoteSettingsSwitchTableViewCell : UITableViewCell
 {
     // MARK: - Public Properties
+    public var onChange : ((newValue: Bool) -> ())?
+    
     public var name : String {
         get {
             return textLabel?.text ?? String()
@@ -22,9 +24,18 @@ public class NoteSettingsSwitchTableViewCell : UITableViewCell
         }
     }
     
+    
     // MARK: - UITapGestureRecognizer Helpers
     public func rowWasPressed(recognizer: UITapGestureRecognizer) {
+        // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
+        // programatically
         flipSwitch.setOn(!isOn, animated: true)
+        switchDidChange(flipSwitch)
+    }
+    
+    // MARK: - UISwitch Helpers
+    public func switchDidChange(theSwitch: UISwitch) {
+        onChange?(newValue: theSwitch.on)
     }
     
     // MARK: - UIView Methods
@@ -34,6 +45,8 @@ public class NoteSettingsSwitchTableViewCell : UITableViewCell
         
         contentView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.addTarget(self, action: "rowWasPressed:")
+        
+        flipSwitch.addTarget(self, action: "switchDidChange:", forControlEvents: .ValueChanged)
         
         WPStyleGuide.configureTableViewCell(self)
     }
