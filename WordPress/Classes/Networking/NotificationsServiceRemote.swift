@@ -45,6 +45,26 @@ public class NotificationsServiceRemote
     }
     
     
+    /**
+    *  @details     Updates the specified Notification Settings
+    *  @param       settings    The complete (or partial) dictionary of settings to be updated.
+    *  @param       success     Optional closure to be called on success.
+    *  @param       failure     Optional closure to be called on failure.
+    */
+    public func updateSettings(settings: [String: AnyObject], success: (() -> ())?, failure: (NSError! -> Void)?) {
+        let path = String(format: "me/notifications/settings/")
+        let parameters = settings as NSDictionary
+        
+        remoteApi?.POST(path,
+            parameters: parameters,
+            success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
+                success?()
+            },
+            failure: { (operation: AFHTTPRequestOperation!, error: NSError!) -> Void in
+                failure?(error)
+            })
+    }
+    
     
     // MARK: - Private Internal Constants
     private let remoteApi: WordPressComApi!
