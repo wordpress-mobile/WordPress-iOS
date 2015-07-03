@@ -8,6 +8,11 @@ import Foundation
 
 public class NotificationsService : NSObject, LocalCoreDataService
 {
+    // MARK: - Aliases
+    public typealias Channel    = NotificationSettings.Channel
+    public typealias Stream     = NotificationSettings.Stream
+    
+    
     /**
     *  @details     Designated Initializer
     *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with the Core Data Stack.
@@ -38,7 +43,26 @@ public class NotificationsService : NSObject, LocalCoreDataService
     }
     
     
-    
+    /**
+    *  @details     Updates the specified NotificationSettings's Stream, with a collection of new values.
+    *  @param       settings    The NotificationSettings to be updated.
+    *  @param       stream      Reference to the specific Settings Stream to update.
+    *  @param       newValues   The collection of new values to be submited.
+    *  @param       success     Closure to be called on success.
+    *  @param       failure     Closure to be called on failure, with the associated error.
+    */
+    public func updateSettings(settings: NotificationSettings, stream: Stream, newValues: [String: Bool], success: (() -> ())?, failure: (NSError! -> Void)?) {
+        let remote = remoteFromSettings(newValues, channel: settings.channel, stream: stream)
+        
+        notificationsServiceRemote?.updateSettings(remote,
+            success: {
+                success?()
+            },
+            failure: { (error: NSError!) in
+                failure?(error)
+            })
+    }
+
     
     /**
     *  @details     Static Helper that will parse RemoteNotificationSettings instances into a collection of
@@ -109,13 +133,55 @@ public class NotificationsService : NSObject, LocalCoreDataService
         // We reuse a Blog Map by ID, since it's actually one order of magnitude faster than fetching
         // each time.
         switch channel {
-        case let .Site(siteId) where siteId != nil:
-            return blogMap?[siteId!]
+        case let .Site(siteId):
+            return blogMap?[siteId]
         default:
             return nil
         }
     }
     
+    
+    /**
+    *  @details Transforms a collection of Settings into a format that's the one expected by the backend,
+    *           depending on whether the channel is a Site (will post the Site ID), Other or WordPress.com
+    *  @param   settings    A collection of the settings that need to be updated
+    *  @param   channel     A reference to the Chanel that must be updated
+    *  @param   stream      A reference to the Stream that must be updated
+    *  @returns             Dictionary of values, as expected by the Backend, for the specified Channel and Stream.
+    */
+    private func remoteFromSettings(settings: [String: Bool], channel: Channel, stream: Stream) -> [String: AnyObject] {
+        // First:
+        // Inject the Device Id, if needd, into the Settings Dictionary. Since that's where the backend expects it.
+        var updatedSettings = settings as [String: AnyObject]
+        
+        switch stream.kind {
+        case .Device:
+            updatedSettings["device_id"] = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
+        default:
+            break
+        }
+        
+        // Second:
+        // Prepare the Remote Settings Dictionary
+        switch channel {
+        case let .Site(siteId):
+            return [
+                "sites": [
+                    [   "site_id"               : siteId,
+                        stream.kind.rawValue    : updatedSettings
+                    ]
+                ]
+            ]
+        case .Other:
+            return [
+                "other": [
+                    stream.kind.rawValue : updatedSettings
+                ]
+            ]
+        case .WordPressCom:
+            return [ "wpcom": updatedSettings ]
+        }
+    }
     
     
     // MARK: - Private Computed Properties
