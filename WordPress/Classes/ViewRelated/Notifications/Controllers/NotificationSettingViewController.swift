@@ -34,6 +34,16 @@ public class NotificationSettingViewController : UITableViewController
     }
     
     private func setupTableView() {
+        let reuseIdentifiers = [
+            NoteSettingsTitleTableViewCell.classNameWithoutNamespaces(),
+            NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
+        ]
+        
+        for reuseIdentifier in reuseIdentifiers {
+            let cellNib = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
+            tableView.registerNib(cellNib, forCellReuseIdentifier: reuseIdentifier)
+        }
+        
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
@@ -72,7 +82,7 @@ println("Error \(error)")
 
 
 
-    // MARK: - UITableView Delegate Methods
+    // MARK: - UITableView Datasource Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return groupedSettings?.count ?? emptyCount
     }
@@ -82,14 +92,18 @@ println("Error \(error)")
     }
 
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        let settings    = settingsForRowAtIndexPath(indexPath)!
+        let cell        = dequeueCellForSettings(settings, tableView: tableView)
         
-        configureCell(cell, indexPath: indexPath)
+        configureCell(cell, settings: settings)
         
         return cell
     }
-
-
+    
+    public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return cellHeight
+    }
+    
 
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -106,18 +120,28 @@ println("Error \(error)")
 
 
     // MARK: - UITableView Helpers
-    private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        if let settings = settingsForRowAtIndexPath(indexPath) {
-            switch settings.channel {
-            case let .Site(siteId):
-                cell.textLabel?.text = settings.blog?.blogName ?? settings.channel.description()
-            default:
-                cell.textLabel?.text = settings.channel.description()
-                break
-            }
+    private func dequeueCellForSettings(settings: NotificationSettings, tableView: UITableView) -> UITableViewCell {
+        let identifier : String
+        
+        switch settings.channel {
+        case let .Site(siteId):
+            identifier = NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
+        default:
+            identifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
         }
         
-        WPStyleGuide.configureTableViewCell(cell)
+        return tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
+    }
+    
+    private func configureCell(cell: UITableViewCell, settings: NotificationSettings) {
+        switch settings.channel {
+        case let .Site(siteId):
+            cell.textLabel?.text        = settings.blog?.blogName ?? settings.channel.description()
+            cell.detailTextLabel?.text  = settings.blog?.displayURL ?? String()
+            cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
+        default:
+            cell.textLabel?.text        = settings.channel.description()
+        }
     }
     
     private func destinationSegueIdentifier(indexPath: NSIndexPath) -> String {
@@ -159,9 +183,9 @@ println("Error \(error)")
 
 
     // MARK: - Private Constants
+    private let cellHeight              = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
-    private let reuseIdentifier         = "NotificationSettingsTableViewCell"
     
     // MARK: - Private Properties
     private var groupedSettings         : [[NotificationSettings]]?

@@ -12,9 +12,9 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - Setup Helpers
     private func registerCellNibs() {
-        let nibName = NoteSettingsTableViewCell.classNameWithoutNamespaces()
-        let cellNib = UINib(nibName: nibName, bundle: NSBundle.mainBundle())
-        tableView.registerNib(cellNib, forCellReuseIdentifier: reuseIdentifier)
+        let reuseIdentifier = NoteSettingsSwitchTableViewCell.classNameWithoutNamespaces()
+        let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
+        tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
     }
     
     
@@ -44,7 +44,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! NoteSettingsTableViewCell
+        let identifier  = NoteSettingsSwitchTableViewCell.classNameWithoutNamespaces()
+        let cell        = tableView.dequeueReusableCellWithIdentifier(identifier) as! NoteSettingsSwitchTableViewCell
         
         configureCell(cell, indexPath: indexPath)
         
@@ -53,7 +54,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - UITableView Helpers
-    private func configureCell(cell: NoteSettingsTableViewCell, indexPath: NSIndexPath) {
+    private func configureCell(cell: NoteSettingsSwitchTableViewCell, indexPath: NSIndexPath) {
         let preferences = stream?.preferences
         let key         = settings?.sortedPreferenceKeys()[indexPath.row]
         if preferences == nil || key == nil {
@@ -62,15 +63,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         cell.name = settings?.localizedDescription(key!) ?? String()
         cell.isOn = preferences?[key!] ?? true
-        
-        WPStyleGuide.configureTableViewCell(cell)
     }
     
     
     // MARK: - Private Constants
     private let emptyRowCount   = 0
     private let sectionCount    = 1
-    private let reuseIdentifier = NoteSettingsTableViewCell.classNameWithoutNamespaces()
     
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
