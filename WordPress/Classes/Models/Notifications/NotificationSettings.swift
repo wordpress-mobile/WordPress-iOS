@@ -54,11 +54,9 @@ public class NotificationSettings
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
     public enum Channel : Equatable {
-        case Site(siteId: Int?)
+        case Site(siteId: Int)
         case Other
         case WordPressCom
-        
-        static let allValues = [ Site(siteId: nil), Other, WordPressCom ]
         
         
         /**
