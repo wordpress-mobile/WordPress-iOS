@@ -10,6 +10,7 @@ public class NotificationSettingsViewController : UITableViewController
         // Initialize Interface
         setupNavigationItem()
         setupTableView()
+        setupSpinner()
         
         // Load Settings
         reloadSettings()
@@ -48,14 +49,23 @@ public class NotificationSettingsViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
+    private func setupSpinner() {
+        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
+        activityIndicatorView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        view.addSubview(activityIndicatorView)
+        view.pinSubviewAtCenter(activityIndicatorView)
+    }
+    
     
     // MARK: - Service Helpers
     private func reloadSettings() {
         let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
-// TODO: Spinner
+        activityIndicatorView.startAnimating()
+        
         service.getAllSettings({ (settings: [NotificationSettings]) in
                 self.groupedSettings = self.groupSettings(settings)
+                self.activityIndicatorView.stopAnimating()
                 self.tableView.reloadData()
             },
             failure: { (error: NSError!) in
@@ -115,7 +125,11 @@ println("Error \(error)")
         frame.size.height   = seaparatorHeight
         return UIView(frame: frame)
     }
-
+    
+    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return seaparatorHeight
+    }
+    
 
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -183,5 +197,6 @@ println("Error \(error)")
     private let seaparatorHeight        = CGFloat(20.0)
     
     // MARK: - Private Properties
+    private var activityIndicatorView   : UIActivityIndicatorView!
     private var groupedSettings         : [[NotificationSettings]]?
 }
