@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NotificationSettingViewController : UITableViewController
+public class NotificationSettingsViewController : UITableViewController
 {
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
@@ -25,11 +25,7 @@ public class NotificationSettingViewController : UITableViewController
 
     // MARK: - Setup Helpers
     private func setupNavigationItem() {
-        let closeTitle  = NSLocalizedString("Close", comment: "Close the currrent screen. Action")
-        let closeAction = Selector("dismissWasPressed:")
-        
-        title = NSLocalizedString("Settings", comment: "Title displayed in the Notification settings")
-        navigationItem.leftBarButtonItem = UIBarButtonItem(title: closeTitle, style: .Plain, target: self, action: closeAction)
+        title = NSLocalizedString("Notifications", comment: "Title displayed in the Notification settings")
         navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
     }
     
@@ -123,14 +119,11 @@ println("Error \(error)")
 
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let settings = settingsForRowAtIndexPath(indexPath)
-        if settings == nil {
+        if let settings = settingsForRowAtIndexPath(indexPath) {
+            displayDetailsForSettings(settings)
+        } else  {
             tableView.deselectSelectedRowWithAnimation(true)
-            return
         }
-
-        let identifier = destinationSegueIdentifier(indexPath)
-        performSegueWithIdentifier(identifier, sender: settings)
     }
 
 
@@ -160,41 +153,25 @@ println("Error \(error)")
         }
     }
     
-    private func destinationSegueIdentifier(indexPath: NSIndexPath) -> String {
-        switch settingsForRowAtIndexPath(indexPath)!.channel {
-        case .WordPressCom:
-            // WordPress.com Row will push the SettingDetails ViewController, directly
-            return NotificationSettingDetailsViewController.classNameWithoutNamespaces()
-        default:
-            // Our Sites + 3rd Party Sites rows will push the Streams View
-            return NotificationSettingStreamsViewController.classNameWithoutNamespaces()
-        }
-    }
-    
     private func settingsForRowAtIndexPath(indexPath: NSIndexPath) -> NotificationSettings? {
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
     
     // MARK: - Segue Helpers
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        let targetSettings = sender as? NotificationSettings
-        if targetSettings == nil {
-            return
+    private func displayDetailsForSettings(settings: NotificationSettings) {
+        switch settings.channel {
+        case .WordPressCom:
+            // WordPress.com Row will push the SettingDetails ViewController, directly
+            let detailsViewController = NotificationSettingDetailsViewController()
+            detailsViewController.setupWithSettings(settings, streamAtIndex: firstStreamIndex)
+            navigationController?.pushViewController(detailsViewController, animated: true)
+        default:
+            // Our Sites + 3rd Party Sites rows will push the Streams View
+            let streamsViewController = NotificationSettingStreamsViewController()
+            streamsViewController.setupWithSettings(settings)
+            navigationController?.pushViewController(streamsViewController, animated: true)
         }
-        
-        if let streamsViewController = segue.destinationViewController as? NotificationSettingStreamsViewController {
-            streamsViewController.setupWithSettings(targetSettings!)
-            
-        } else if let detailsViewController = segue.destinationViewController as? NotificationSettingDetailsViewController {
-            detailsViewController.setupWithSettings(targetSettings!, streamAtIndex: firstStreamIndex)
-        }
-    }
-
-
-    // MARK: - Button Handlers
-    public func dismissWasPressed(sender: AnyObject) {
-        dismissViewControllerAnimated(true, completion: nil)
     }
 
 

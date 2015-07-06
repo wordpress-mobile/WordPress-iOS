@@ -23,7 +23,6 @@
                     <connections>
                         <segue destination="xj3-6N-2Jy" kind="push" identifier="ReaderPostDetailViewController" id="4ec-Ni-5a5"/>
                         <segue destination="veA-Pg-QAw" kind="push" identifier="NotificationDetailsViewController" id="Wf0-ec-EMc"/>
-                        <segue destination="iBf-zV-28l" kind="modal" identifier="NotificationSettingViewController" modalPresentationStyle="formSheet" id="QrZ-up-rBR"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tfv-il-pov" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -39,86 +38,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="59U-6R-KoD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1573" y="-1877"/>
-        </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="8B8-SX-meJ">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="iBf-zV-28l" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Olg-sf-tkb">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <connections>
-                        <segue destination="o4M-cF-u8L" kind="relationship" relationship="rootViewController" id="Xsm-h1-9hr"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Kke-8Z-ISh" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="899" y="-2596"/>
-        </scene>
-        <!--Notification Setting View Controller-->
-        <scene sceneID="JGF-kk-ftb">
-            <objects>
-                <tableViewController id="o4M-cF-u8L" customClass="NotificationSettingViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="dyI-oR-VLC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="o4M-cF-u8L" id="IfE-r6-kq9"/>
-                            <outlet property="delegate" destination="o4M-cF-u8L" id="p8p-MQ-FJ2"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="QBz-QD-L12"/>
-                    <connections>
-                        <segue destination="ZLr-7M-8pd" kind="push" identifier="NotificationSettingDetailsViewController" id="hEB-up-Nhf"/>
-                        <segue destination="E5e-Sc-Zg2" kind="push" identifier="NotificationSettingStreamsViewController" id="gaV-jn-KcA"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="jet-cb-DLo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1532" y="-2596"/>
-        </scene>
-        <!--Notification Setting Streams View Controller-->
-        <scene sceneID="ACu-Ob-dO1">
-            <objects>
-                <tableViewController id="E5e-Sc-Zg2" customClass="NotificationSettingStreamsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="cuI-OW-XFp">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="E5e-Sc-Zg2" id="WfY-9f-jif"/>
-                            <outlet property="delegate" destination="E5e-Sc-Zg2" id="rYU-y2-jXp"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="ahh-jz-EyI"/>
-                    <connections>
-                        <segue destination="ZLr-7M-8pd" kind="push" identifier="NotificationSettingDetailsViewController" id="nMU-vV-0fG"/>
-                    </connections>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="83V-Q3-cDm" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2004" y="-3344"/>
-        </scene>
-        <!--Notification Setting Details View Controller-->
-        <scene sceneID="wIl-Y4-rpy">
-            <objects>
-                <tableViewController id="ZLr-7M-8pd" customClass="NotificationSettingDetailsViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="iNb-OS-QRh">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <connections>
-                            <outlet property="dataSource" destination="ZLr-7M-8pd" id="aFh-jd-ORM"/>
-                            <outlet property="delegate" destination="ZLr-7M-8pd" id="mkZ-dM-aka"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="mgR-vv-fGv"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qqq-Ir-7eo" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2004" y="-2596"/>
         </scene>
         <!--Reader Post Details-->
         <scene sceneID="ET8-9p-ZLz">
@@ -210,6 +129,5 @@
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
         <segue reference="4ec-Ni-5a5"/>
-        <segue reference="hEB-up-Nhf"/>
     </inferredMetricsTieBreakers>
 </document>

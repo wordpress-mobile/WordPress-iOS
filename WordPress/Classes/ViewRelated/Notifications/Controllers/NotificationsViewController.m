@@ -133,13 +133,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // Don't show 'Notifications' in the next-view back button
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:[NSString string] style:UIBarButtonItemStylePlain target:nil action:nil];
     self.navigationItem.backBarButtonItem = backButton;
-
-    // Manage Button
-    UIBarButtonItem *manageButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Manage", @"")
-                                                                     style:UIBarButtonItemStylePlain
-                                                                    target:self
-                                                                    action:@selector(showNotificationSettings)];
-    self.navigationItem.rightBarButtonItem = manageButton;
     
     [self showNoResultsViewIfNeeded];
     [self showBucketNameIfNeeded];
@@ -396,11 +389,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     }
 
     self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
-}
-
-- (void)showNotificationSettings
-{
-    [self performSegueWithIdentifier:[NotificationSettingViewController classNameWithoutNamespaces] sender:self];
 }
 
 - (void)reloadResultsControllerIfNeeded

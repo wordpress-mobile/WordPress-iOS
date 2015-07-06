@@ -63,9 +63,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let identifier  = NotificationSettingDetailsViewController.classNameWithoutNamespaces()
-        let streamIndex = indexPath.row
-        performSegueWithIdentifier(identifier, sender: streamIndex)
+        let detailsViewController  = NotificationSettingDetailsViewController()
+        detailsViewController.setupWithSettings(settings!, streamAtIndex: indexPath.row)
+        navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     
@@ -73,16 +73,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
         cell.textLabel?.text = settings?.streams[indexPath.row].kind.description() ?? String()
         WPStyleGuide.configureTableViewCell(cell)
-    }
-    
-    
-    // MARK: - Segue Helpers
-    public override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let streamsViewController = segue.destinationViewController as? NotificationSettingDetailsViewController,
-           let streamIndex = sender as? Int
-        {
-            streamsViewController.setupWithSettings(settings!, streamAtIndex: streamIndex)
-        }
     }
     
     
