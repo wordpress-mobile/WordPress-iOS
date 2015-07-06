@@ -34,6 +34,7 @@ public class NotificationSettingViewController : UITableViewController
     }
     
     private func setupTableView() {
+        // Register the cells
         let reuseIdentifiers = [
             NoteSettingsTitleTableViewCell.classNameWithoutNamespaces(),
             NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
@@ -44,6 +45,10 @@ public class NotificationSettingViewController : UITableViewController
             tableView.registerNib(cellNib, forCellReuseIdentifier: reuseIdentifier)
         }
         
+        // Hide the separators, whenever the table is empty
+        tableView.tableFooterView = UIView()
+        
+        // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
