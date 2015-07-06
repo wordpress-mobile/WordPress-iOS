@@ -6,7 +6,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        registerCellNibs()
+        setupTableView()
     }
 
     public override func viewWillDisappear(animated: Bool) {
@@ -15,10 +15,18 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     // MARK: - Setup Helpers
-    private func registerCellNibs() {
+    private func setupTableView() {
+        // Register the cells
         let reuseIdentifier = NoteSettingsSwitchTableViewCell.classNameWithoutNamespaces()
         let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
         tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
+        
+        
+        // Hide the separators, whenever the table is empty
+        tableView.tableFooterView = UIView()
+        
+        // Style!
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
     
