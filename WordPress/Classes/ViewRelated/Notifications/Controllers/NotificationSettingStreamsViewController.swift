@@ -6,15 +6,22 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-        registerCellNibs()
+        setupTableView()
     }
     
     
     // MARK: - Setup Helpers
-    private func registerCellNibs() {
+    private func setupTableView() {
+        // Register the cells
         let reuseIdentifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
         let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
         tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
+        
+        // Hide the separators, whenever the table is empty
+        tableView.tableFooterView = UIView()
+        
+        // Style!
+        WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
     
