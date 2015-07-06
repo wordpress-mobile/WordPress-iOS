@@ -101,7 +101,12 @@ println("Error \(error)")
     }
     
     public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return cellHeight
+        switch settingsForRowAtIndexPath(indexPath)!.channel {
+        case let .Site(siteId):
+            return subtitleRowHeight
+        default:
+            return titleRowHeight
+        }
     }
     
 
@@ -183,7 +188,8 @@ println("Error \(error)")
 
 
     // MARK: - Private Constants
-    private let cellHeight              = CGFloat(54.0)
+    private let titleRowHeight          = CGFloat(44.0)
+    private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
     
