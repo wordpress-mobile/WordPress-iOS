@@ -114,6 +114,12 @@ println("Error \(error)")
         }
     }
     
+    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        var frame           = CGRectZero
+        frame.size.height   = seaparatorHeight
+        return UIView(frame: frame)
+    }
+
 
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -197,6 +203,7 @@ println("Error \(error)")
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
+    private let seaparatorHeight        = CGFloat(20.0)
     
     // MARK: - Private Properties
     private var groupedSettings         : [[NotificationSettings]]?
