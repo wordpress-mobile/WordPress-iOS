@@ -53,12 +53,20 @@ public class NotificationsService : NSObject, LocalCoreDataService
     */
     public func updateSettings(settings: NotificationSettings, stream: Stream, newValues: [String: Bool], success: (() -> ())?, failure: (NSError! -> Void)?) {
         let remote = remoteFromSettings(newValues, channel: settings.channel, stream: stream)
+        let pristine = stream.preferences
+        
+        // Preemptively Update the new settings
+        for (key, value) in newValues {
+            stream.preferences?[key] = value
+        }
         
         notificationsServiceRemote?.updateSettings(remote,
             success: {
                 success?()
             },
             failure: { (error: NSError!) in
+                // Fall back to Pristine Settings
+                stream.preferences = pristine
                 failure?(error)
             })
     }
