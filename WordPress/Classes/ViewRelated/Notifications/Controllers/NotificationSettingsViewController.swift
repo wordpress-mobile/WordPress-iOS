@@ -120,14 +120,20 @@ println("Error \(error)")
         }
     }
     
+    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
+        return CGFloat.min
+    }
+    
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        var frame           = CGRectZero
-        frame.size.height   = seaparatorHeight
-        return UIView(frame: frame)
+        let footerView      = WPTableViewSectionFooterView(frame: CGRectZero)
+        footerView.title    = titleForFooterInSection(section)
+        return footerView
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return seaparatorHeight
+        let title = titleForFooterInSection(section)
+        return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width) + footerExtraPadding
     }
     
 
@@ -171,6 +177,21 @@ println("Error \(error)")
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
+    private func titleForFooterInSection(section: Int) -> String {
+        switch Section(rawValue: section)! {
+        case .Blog:
+            return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
+                comment: "Notification Settings for your own blogs")
+        case .Other:
+            return NSLocalizedString("Control your notification settings when you comment on other blogs",
+                comment: "3rd Party Site Notification Settings")
+        case .WordPressCom:
+            return NSLocalizedString("Decide what emails you get from us regarding your account and sites. " +
+                "We'll still send you important emails like password recovery and domain expiration.",
+                comment: "WordPress.com Notification Settings")
+        }
+    }
+
     
     // MARK: - Segue Helpers
     private func displayDetailsForSettings(settings: NotificationSettings) {
@@ -194,7 +215,13 @@ println("Error \(error)")
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
-    private let seaparatorHeight        = CGFloat(20.0)
+    private let footerExtraPadding      = CGFloat(14.0)
+    
+    private enum Section : Int {
+        case Blog           = 0
+        case Other          = 1
+        case WordPressCom   = 2
+    }
     
     // MARK: - Private Properties
     private var activityIndicatorView   : UIActivityIndicatorView!
