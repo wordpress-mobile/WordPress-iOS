@@ -761,7 +761,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
-            control.alpha = GeneralWalkthroughAlphaEnabled;
+            // Fix: Revert to Enabled only those fields that were, effectively, hidden!
+            if (control.alpha == GeneralWalkthroughAlphaHidden) {
+                control.alpha = GeneralWalkthroughAlphaEnabled;
+            }
         }
         
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
