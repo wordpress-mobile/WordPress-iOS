@@ -19,22 +19,7 @@ NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 const NSInteger PostServiceNumberToFetch = 40;
 
-@interface PostService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation PostService
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 + (instancetype)serviceWithMainContext {
     return [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
