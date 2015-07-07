@@ -55,7 +55,7 @@
           success:(void (^)(RemoteReaderPost *post))success
           failure:(void (^)(NSError *error))failure {
 
-    NSString *path = [NSString stringWithFormat:@"%@sites/%d/posts/%d/?meta=site", WordPressComReaderEndpointURL, siteID, postID];
+    NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
     [self.api GET:path
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
