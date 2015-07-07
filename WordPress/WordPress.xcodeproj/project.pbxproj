@@ -416,6 +416,7 @@
 		BE20F5E71B2F76660020694C /* WPSearchControllerConfiguratorTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BE20F5E61B2F76660020694C /* WPSearchControllerConfiguratorTests.m */; };
 		BEBFE86F1B2F50C5002C04EF /* WPSearchController.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFE86E1B2F50C5002C04EF /* WPSearchController.m */; };
 		BEBFE8721B2F50E0002C04EF /* WPSearchControllerConfigurator.m in Sources */ = {isa = PBXBuildFile; fileRef = BEBFE8711B2F50E0002C04EF /* WPSearchControllerConfigurator.m */; };
+		BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = BEC8A3FE1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m */; };
 		C533CF350E6D3ADA000C3DE8 /* CommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */; };
 		C545E0A21811B9880020844C /* ContextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C545E0A11811B9880020844C /* ContextManager.m */; };
 		C56636E91868D0CE00226AAB /* StatsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C56636E71868D0CE00226AAB /* StatsViewController.m */; };
@@ -1297,6 +1298,7 @@
 		BEBFE86E1B2F50C5002C04EF /* WPSearchController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPSearchController.m; path = Search/WPSearchController.m; sourceTree = "<group>"; };
 		BEBFE8701B2F50E0002C04EF /* WPSearchControllerConfigurator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WPSearchControllerConfigurator.h; path = Search/WPSearchControllerConfigurator.h; sourceTree = "<group>"; };
 		BEBFE8711B2F50E0002C04EF /* WPSearchControllerConfigurator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WPSearchControllerConfigurator.m; path = Search/WPSearchControllerConfigurator.m; sourceTree = "<group>"; };
+		BEC8A3FE1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BlogListViewControllerTests.m; path = ViewRelated/Blog/BlogListViewControllerTests.m; sourceTree = "<group>"; };
 		C52812131832E071008931FD /* WordPress 13.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 13.xcdatamodel"; sourceTree = "<group>"; };
 		C533CF330E6D3ADA000C3DE8 /* CommentsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsViewController.h; sourceTree = "<group>"; };
 		C533CF340E6D3ADA000C3DE8 /* CommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsViewController.m; sourceTree = "<group>"; };
@@ -2927,6 +2929,7 @@
 			isa = PBXGroup;
 			children = (
 				BE20F5E21B2F739F0020694C /* System */,
+				BEC8A3FD1B4BAA08001CB8C3 /* Blog */,
 			);
 			name = ViewRelated;
 			sourceTree = "<group>";
@@ -2956,6 +2959,14 @@
 				BEBFE8711B2F50E0002C04EF /* WPSearchControllerConfigurator.m */,
 			);
 			name = Search;
+			sourceTree = "<group>";
+		};
+		BEC8A3FD1B4BAA08001CB8C3 /* Blog */ = {
+			isa = PBXGroup;
+			children = (
+				BEC8A3FE1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m */,
+			);
+			name = Blog;
 			sourceTree = "<group>";
 		};
 		C430074CAC011A24F4A74E17 /* Pods */ = {
@@ -4247,6 +4258,7 @@
 				5981FE051AB8A89A0009E080 /* WPUserAgentTests.m in Sources */,
 				59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */,
 				85B1253F1B02849B008A3D95 /* PushAuthenticationService.swift in Sources */,
+				BEC8A3FF1B4BAA2C001CB8C3 /* BlogListViewControllerTests.m in Sources */,
 				931D26F519ED7E6D00114F17 /* BlogJetpackTest.m in Sources */,
 				5D12FE1E1988243700378BD6 /* RemoteReaderPost.m in Sources */,
 				5D12FE221988245B00378BD6 /* RemoteReaderSite.m in Sources */,
