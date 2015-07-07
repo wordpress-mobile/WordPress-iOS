@@ -6,7 +6,7 @@
 extern NSString *const WPAccountDefaultWordPressComAccountChangedNotification;
 extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
 
-@interface AccountService : NSObject <LocalCoreDataService>
+@interface AccountService : LocalCoreDataService
 
 ///------------------------------------
 /// @name Default WordPress.com account
