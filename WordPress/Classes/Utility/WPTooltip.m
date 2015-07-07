@@ -3,11 +3,30 @@
 
 @implementation WPTooltip
 
-+ (void)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text
++ (void)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
 {
     NSParameterAssert([view isKindOfClass:[UIView class]]);
     NSParameterAssert([text isKindOfClass:[NSString class]]);
     NSParameterAssert([text length] > 0);
+    
+    AMPopTipDirection amDirection;
+    switch (direction) {
+        case WPTooltipDirectionDown:
+            amDirection = AMPopTipDirectionDown;
+            break;
+        case WPTooltipDirectionUp:
+            amDirection = AMPopTipDirectionUp;
+            break;
+        case WPTooltipDirectionRight:
+            amDirection = AMPopTipDirectionRight;
+            break;
+        case WPTooltipDirectionLeft:
+            amDirection = AMPopTipDirectionLeft;
+            break;
+        default:
+            amDirection = AMPopTipDirectionNone;
+            break;
+    }
     
     AMPopTip *popTip = [AMPopTip popTip];
     [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
@@ -21,7 +40,7 @@
     popTip.shouldDismissOnTap = YES;
     popTip.shouldDismissOnTapOutside = YES;
     [popTip showText:text
-           direction:AMPopTipDirectionDown
+           direction:amDirection
             maxWidth:200
               inView:view
            fromFrame:frame
