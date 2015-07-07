@@ -78,7 +78,7 @@ println("Error \(error)")
         // TODO: Review this whenever we switch to Swift 2.0, and kill the switch filtering. JLP Jul.1.2015
         let siteSettings = settings.filter {
             switch $0.channel {
-            case .Site:
+            case .Blog:
                 return true
             default:
                 return false
@@ -113,7 +113,7 @@ println("Error \(error)")
     
     public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch settingsForRowAtIndexPath(indexPath)!.channel {
-        case let .Site(siteId):
+        case let .Blog(blogId):
             return subtitleRowHeight
         default:
             return titleRowHeight
@@ -153,7 +153,7 @@ println("Error \(error)")
         let identifier : String
         
         switch settings.channel {
-        case let .Site(siteId):
+        case let .Blog(blogId):
             identifier = NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
         default:
             identifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
@@ -164,7 +164,7 @@ println("Error \(error)")
     
     private func configureCell(cell: UITableViewCell, settings: NotificationSettings) {
         switch settings.channel {
-        case let .Site(siteId):
+        case let .Blog(blogId):
             cell.textLabel?.text        = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text  = settings.blog?.displayURL ?? String()
             cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
