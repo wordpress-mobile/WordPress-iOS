@@ -161,7 +161,6 @@
 		5D7DEA2919D488DD0032EE77 /* WPStyleGuide+Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7DEA2819D488DD0032EE77 /* WPStyleGuide+Comments.swift */; };
 		5D839AA8187F0D6B00811F4A /* PostFeaturedImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */; };
 		5D839AAB187F0D8000811F4A /* PostGeolocationCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */; };
-		5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */; };
 		5D8CBC471A6F47880081F4AE /* EditImageDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */; };
 		5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D8D53EE19250412003C8859 /* BlogSelectorViewController.m */; };
 		5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D97C2F215CAF8D8009B44DD /* UINavigationController+KeyboardFix.m */; };
@@ -857,8 +856,6 @@
 		5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostFeaturedImageCell.m; sourceTree = "<group>"; };
 		5D839AA9187F0D8000811F4A /* PostGeolocationCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationCell.h; sourceTree = "<group>"; };
 		5D839AAA187F0D8000811F4A /* PostGeolocationCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationCell.m; sourceTree = "<group>"; };
-		5D87E10915F5120C0012C595 /* SettingsPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPageViewController.h; sourceTree = "<group>"; };
-		5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPageViewController.m; sourceTree = "<group>"; };
 		5D8CBC451A6F47880081F4AE /* EditImageDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditImageDetailsViewController.h; sourceTree = "<group>"; };
 		5D8CBC461A6F47880081F4AE /* EditImageDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditImageDetailsViewController.m; sourceTree = "<group>"; };
 		5D8D53ED19250412003C8859 /* BlogSelectorViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSelectorViewController.h; sourceTree = "<group>"; };
@@ -2151,8 +2148,6 @@
 				93069F55176237A4000C966D /* ActivityLogViewController.m */,
 				37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */,
 				37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */,
-				5D87E10915F5120C0012C595 /* SettingsPageViewController.h */,
-				5D87E10A15F5120C0012C595 /* SettingsPageViewController.m */,
 				E1AB07AB1578D34300D6AD64 /* SettingsViewController.h */,
 				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
 				93027BB61758332300483FFD /* SupportViewController.h */,
@@ -4080,7 +4075,6 @@
 				5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */,
 				5D3E334E15EEBB6B005FC6F2 /* ReachabilityUtils.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
-				5D87E10C15F5120C0012C595 /* SettingsPageViewController.m in Sources */,
 				5DC3A44D1610B9BC00A890BE /* UINavigationController+Rotation.m in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
 				B5E06E311A9CD31D00128985 /* WPURLRequest.m in Sources */,
