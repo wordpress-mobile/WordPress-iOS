@@ -1,6 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@interface RemoteSourcePostAttribution : UIView
+@interface RemoteSourcePostAttribution : NSObject
 
 @property (nonatomic, strong) NSString *permalink;
 @property (nonatomic, strong) NSString *authorName;
@@ -12,5 +12,6 @@
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *commentCount;
+@property (nonatomic, strong) NSString *attributionType;
 
 @end
