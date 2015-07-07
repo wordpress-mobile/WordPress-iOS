@@ -133,7 +133,7 @@ println("Error \(error)")
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width) + footerExtraPadding
+        return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width)
     }
     
 
@@ -215,7 +215,6 @@ println("Error \(error)")
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
-    private let footerExtraPadding      = CGFloat(14.0)
     
     private enum Section : Int {
         case Blog           = 0
