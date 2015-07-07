@@ -102,8 +102,8 @@ public class NotificationsService : NSObject, LocalCoreDataService
     */
     private func channelFromRemote(remote: RemoteNotificationSettings.Channel) -> NotificationSettings.Channel {
         switch remote {
-        case let .Site(siteId):
-            return .Site(siteId: siteId)
+        case let .Blog(blogId):
+            return .Blog(blogId: blogId)
         case .Other:
             return .Other
         case .WordPressCom:
@@ -141,8 +141,8 @@ public class NotificationsService : NSObject, LocalCoreDataService
         // We reuse a Blog Map by ID, since it's actually one order of magnitude faster than fetching
         // each time.
         switch channel {
-        case let .Site(siteId):
-            return blogMap?[siteId]
+        case let .Blog(blogId):
+            return blogMap?[blogId]
         default:
             return nil
         }
@@ -172,10 +172,10 @@ public class NotificationsService : NSObject, LocalCoreDataService
         // Second:
         // Prepare the Remote Settings Dictionary
         switch channel {
-        case let .Site(siteId):
+        case let .Blog(blogId):
             return [
                 "sites": [
-                    [   "site_id"               : siteId,
+                    [   "blog_id"               : blogId,
                         stream.kind.rawValue    : updatedSettings
                     ]
                 ]

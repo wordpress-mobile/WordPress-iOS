@@ -39,8 +39,8 @@ public class NotificationSettings
     */
     public func sortedPreferenceKeys() -> [String] {
         switch channel {
-        case let .Site(siteId):
-            return sitePreferenceKeys
+        case let .Blog(blogId):
+            return blogPreferenceKeys
         case .Other:
             return otherPreferenceKeys
         case .WordPressCom:
@@ -54,7 +54,7 @@ public class NotificationSettings
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
     public enum Channel : Equatable {
-        case Site(siteId: Int)
+        case Blog(blogId: Int)
         case Other
         case WordPressCom
         
@@ -64,7 +64,7 @@ public class NotificationSettings
         */
         func description() -> String {
             switch self {
-            case .Site:
+            case .Blog:
                 return NSLocalizedString("WordPress Blog", comment: "Notification Settings Channel")
             case .Other:
                 return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
@@ -124,19 +124,19 @@ public class NotificationSettings
     }
     
     // MARK: - Private Properties
-    private let sitePreferenceKeys  = ["new-comment", "comment-like", "post-like", "follow", "achievement", "mentions"]
-    private let otherPreferenceKeys = ["comment-like", "comment-reply"]
+    private let blogPreferenceKeys  = ["new_comment", "comment_like", "post_like", "follow", "achievement", "mentions"]
+    private let otherPreferenceKeys = ["comment_like", "comment_reply"]
     private let wpcomPreferenceKeys = ["news", "recommendation", "promotion", "digest"]
     
     // MARK: - Localized Setting Descriptions
     private let localizedDescriptionMap = [
-        "new-comment" 	 : NSLocalizedString("New Comments",             comment: "Notifications Settings"),
-        "comment-like" 	 : NSLocalizedString("Comment Likes",            comment: "Notifications Settings"),
-        "post-like" 	 : NSLocalizedString("Post Likes",               comment: "Notifications Settings"),
+        "new_comment" 	 : NSLocalizedString("New Comments",             comment: "Notifications Settings"),
+        "comment_like" 	 : NSLocalizedString("Comment Likes",            comment: "Notifications Settings"),
+        "post_like" 	 : NSLocalizedString("Post Likes",               comment: "Notifications Settings"),
         "follow"      	 : NSLocalizedString("Follows",                  comment: "Notifications Settings"),
         "achievement" 	 : NSLocalizedString("Achievements",             comment: "Notifications Settings"),
         "mentions" 		 : NSLocalizedString("Mentions",                 comment: "Notifications Settings"),
-        "comment-reply"  : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
+        "comment_reply"  : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
         "news"			 : NSLocalizedString("News",                     comment: "Notifications Settings"),
         "recommendation" : NSLocalizedString("Recomendations",           comment: "Notifications Settings"),
         "promotion"		 : NSLocalizedString("Promotions",               comment: "Notifications Settings"),
@@ -157,7 +157,7 @@ public class NotificationSettings
 public func ==(first: NotificationSettings.Channel, second: NotificationSettings.Channel) -> Bool
 {
     switch (first, second) {
-    case (let .Site(firstSiteId), let .Site(secondSiteId)) where firstSiteId == secondSiteId:
+    case (let .Blog(firstBlogId), let .Blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
     case (.Other, .Other):
         return true

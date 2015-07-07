@@ -1,28 +1,28 @@
 {
-    "sites": [
+    "blogs": [
               {
-                  "site_id": 1,
+                  "blog_id": 1,
                   "timeline": {
-                      "new-comment": false,
-                      "comment-like": true,
-                      "post-like": false,
+                      "new_comment": false,
+                      "comment_like": true,
+                      "post_like": false,
                       "follow": true,
                       "achievement": false,
                       "mentions": true
                   },
                   "email": {
-                      "new-comment": true,
-                      "comment-like": false,
-                      "post-like": true,
+                      "new_comment": true,
+                      "comment_like": false,
+                      "post_like": true,
                       "follow": false,
                       "achievement": true,
                       "mentions": false
                   },
                   "device": {
                       "device_id": 1,
-                      "new-comment": false,
-                      "comment-like": true,
-                      "post-like": false,
+                      "new_comment": false,
+                      "comment_like": true,
+                      "post_like": false,
                       "follow": true,
                       "achievement": false,
                       "mentions": true
@@ -31,17 +31,17 @@
               ],
     "other": {
         "timeline": {
-            "comment-like": false,
-            "comment-reply": true
+            "comment_like": false,
+            "comment_reply": true
         },
         "email": {
-            "comment-like": false,
-            "comment-reply": false
+            "comment_like": false,
+            "comment_reply": false
         },
         "device": {
             "device_id": 123,
-            "comment-like": true,
-            "comment-reply": true
+            "comment_like": true,
+            "comment_reply": true
         }
     },
     "wpcom": {
