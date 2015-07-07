@@ -4,9 +4,6 @@
 // Service dictionary keys
 static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
-@interface ThemeServiceRemote ()
-@end
-
 @implementation ThemeServiceRemote
 
 #pragma mark - Getting themes
