@@ -108,6 +108,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) WPTooltip *formatBarToolTip;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) CGRect keyboardRect;
@@ -304,6 +305,9 @@ EditImageDetailsViewControllerDelegate
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -333,6 +337,9 @@ EditImageDetailsViewControllerDelegate
     [self.mediaProgressView removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
                                                   object:nil];
     
     
@@ -624,6 +631,7 @@ EditImageDetailsViewControllerDelegate
         CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
         NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
         
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
         });
@@ -663,9 +671,10 @@ EditImageDetailsViewControllerDelegate
 - (void)showFormatBarOnboarding
 {
     if (!IS_IPAD && !self.wasFormatBarOnboardingShown) {
+        __typeof__(self) __weak weakSelf = self;
         NSString *tooltipText = NSLocalizedString(@"Slide for more", @"Tooltip that lets a user know they can slide the formatting toolbar displayed when the user is editing a post.");
         dispatch_async(dispatch_get_main_queue(), ^{
-            [WPTooltip displayToolTipInView:self.view fromFrame:self.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
+            weakSelf.formatBarToolTip = [WPTooltip displayToolTipInView:self.view fromFrame:self.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
         });
         [self setFormatBarOnboardingShown:YES];
     }
@@ -990,6 +999,14 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Instance Methods
 
+- (void)keyboardWillHide:(NSNotification*)aNotification
+{
+    // If the format bar tooltip is still hanging around, let's git rid of it
+    if (self.formatBarToolTip) {
+        [self.formatBarToolTip cancelCurrentTooltip];
+        self.formatBarToolTip = nil;
+    }
+}
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
