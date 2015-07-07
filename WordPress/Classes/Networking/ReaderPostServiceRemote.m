@@ -272,8 +272,9 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
-    post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
-
+    if ([dict dictionaryForKeyPath:@"discover_metadata.featured_post_wpcom_data"]) {
+        post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
+    }
     return post;
 }
 
@@ -285,7 +286,7 @@
  */
 - (RemoteSourcePostAttribution *)sourceAttributionFromDictionary:(NSDictionary *)dict
 {
-    if (!dict) {
+    if (!dict || ![dict dictionaryForKey:@"featured_post_wpcom_data"]) {
         return nil;
     }
 
