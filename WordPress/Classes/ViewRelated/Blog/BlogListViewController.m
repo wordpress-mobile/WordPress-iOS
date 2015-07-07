@@ -558,7 +558,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
-
+    self.navigationItem.rightBarButtonItem.enabled = !editing;
+    
     if (editing) {
         [self updateHeaderSize];
         self.tableView.tableHeaderView = self.headerView;
