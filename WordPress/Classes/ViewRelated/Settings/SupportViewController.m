@@ -416,14 +416,23 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
     WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForFooterInSection:section];
+    header.title = title;
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return CGFLOAT_MIN;
+    }
+    
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
