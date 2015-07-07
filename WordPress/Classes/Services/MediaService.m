@@ -18,12 +18,6 @@ CGSize const MediaMaxImageSize = {3000, 3000};
 NSInteger const MediaMinImageSizeDimension = 150;
 NSInteger const MediaMaxImageSizeDimension = 3000;
 
-@interface MediaService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation MediaService
 
 + (CGSize)maxImageSizeSetting
@@ -47,16 +41,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
     [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
     [NSUserDefaults resetStandardUserDefaults];
-}
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
 }
 
 - (void)createMediaWithAsset:(ALAsset *)asset

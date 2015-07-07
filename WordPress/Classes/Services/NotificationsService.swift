@@ -6,7 +6,7 @@ import Foundation
 *  @brief           This service encapsulates the Restful API related to WordPress Notifications.
 */
 
-public class NotificationsService : NSObject, LocalCoreDataService
+public class NotificationsService : LocalCoreDataService
 {
     // MARK: - Aliases
     public typealias Channel    = NotificationSettings.Channel
@@ -17,9 +17,8 @@ public class NotificationsService : NSObject, LocalCoreDataService
     *  @details     Designated Initializer
     *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with the Core Data Stack.
     */
-    public required init(managedObjectContext context: NSManagedObjectContext) {
-        managedObjectContext = context
-        super.init()
+    public override init(managedObjectContext context: NSManagedObjectContext) {
+        super.init(managedObjectContext: context)
     }
     
 
@@ -207,7 +206,4 @@ public class NotificationsService : NSObject, LocalCoreDataService
     private var blogService : BlogService {
         return BlogService(managedObjectContext: managedObjectContext)
     }
-    
-    // MARK: - Private Internal Properties
-    private var managedObjectContext : NSManagedObjectContext
 }
