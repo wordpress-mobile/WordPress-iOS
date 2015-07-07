@@ -7,7 +7,7 @@ import Foundation
 *                   Code Verification.
 */
 
-@objc public class PushAuthenticationService : NSObject, LocalCoreDataService
+@objc public class PushAuthenticationService : LocalCoreDataService
 {
     var authenticationServiceRemote:PushAuthenticationServiceRemote?
     
@@ -16,9 +16,8 @@ import Foundation
     *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with
     *                                       the Core Data Persistent Store.
     */
-    public required init(managedObjectContext: NSManagedObjectContext) {
-        super.init()
-        self.managedObjectContext = managedObjectContext
+    public required override init(managedObjectContext: NSManagedObjectContext) {
+        super.init(managedObjectContext: managedObjectContext)
         self.authenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
     }
 
@@ -56,8 +55,4 @@ import Foundation
         
         return nil
     }
-
-    
-    // MARK: - Private Internal Properties
-    private var managedObjectContext : NSManagedObjectContext!
 }
