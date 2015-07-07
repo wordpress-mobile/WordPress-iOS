@@ -6,7 +6,7 @@ import Foundation
 *  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure it
 *                   in a meaninful way. Notification Settings come in three different flavors:
 *                   
-*                   -   "Our Own" Site Settings
+*                   -   "Our Own" Blog Settings
 *                   -   "Third Party" Site Settings
 *                   -   WordPress.com Settings
 *
@@ -25,7 +25,7 @@ public class RemoteNotificationSettings
     *  @brief       Represents a communication channel that may post notifications to the user.
     */
     public enum Channel : Equatable {
-        case Site(siteId: Int)
+        case Blog(blogId: Int)
         case Other
         case WordPressCom
     }
@@ -133,11 +133,11 @@ public class RemoteNotificationSettings
     
     /**
     *  @details     Private Convenience Initializer
-    *  @param       siteSettings    Dictionary containing the collection of settings for a single site
+    *  @param       blogSettings    Dictionary containing the collection of settings for a single blog
     */
-    private convenience init(siteSettings: NSDictionary?) {
-        let siteId = siteSettings?["site_id"] as? Int ?? Int.max
-        self.init(channel: Channel.Site(siteId: siteId), settings: siteSettings)
+    private convenience init(blogSettings: NSDictionary?) {
+        let blogId = blogSettings?["blog_id"] as? Int ?? Int.max
+        self.init(channel: Channel.Blog(blogId: blogId), settings: blogSettings)
     }
     
     
@@ -160,10 +160,10 @@ public class RemoteNotificationSettings
     public static func fromDictionary(dictionary: NSDictionary?) -> [RemoteNotificationSettings] {
         var parsed = [RemoteNotificationSettings]()
         
-        if let rawSites = dictionary?["sites"] as? [NSDictionary] {
-            for rawSite in rawSites {
-                let parsedSite = RemoteNotificationSettings(siteSettings: rawSite)
-                parsed.append(parsedSite)
+        if let rawBlogs = dictionary?["blogs"] as? [NSDictionary] {
+            for rawBlog in rawBlogs {
+                let parsedBlog = RemoteNotificationSettings(blogSettings: rawBlog)
+                parsed.append(parsedBlog)
             }
         }
         
@@ -190,7 +190,7 @@ public class RemoteNotificationSettings
 public func ==(lhs: RemoteNotificationSettings.Channel, rhs: RemoteNotificationSettings.Channel) -> Bool
 {
     switch (lhs, rhs) {
-    case (let .Site(firstSiteId), let .Site(secondSiteId)) where firstSiteId == secondSiteId:
+    case (let .Blog(firstBlogId), let .Blog(secondBlogId)) where firstBlogId == secondBlogId:
         return true
     case (.Other, .Other):
         return true
