@@ -1,9 +1,13 @@
 #import "WPTooltip.h"
 #import <AMPopTip/AMPopTip.h>
 
+@interface WPTooltip ()
+@property (nonatomic, strong) AMPopTip *popTip;
+@end
+
 @implementation WPTooltip
 
-+ (void)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
++ (instancetype)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
 {
     NSParameterAssert([view isKindOfClass:[UIView class]]);
     NSParameterAssert([text isKindOfClass:[NSString class]]);
@@ -28,7 +32,8 @@
             break;
     }
     
-    AMPopTip *popTip = [AMPopTip popTip];
+    WPTooltip *returnTip = [[self alloc] init];
+    returnTip.popTip = [AMPopTip popTip];
     [[AMPopTip appearance] setFont:[WPStyleGuide regularTextFont]];
     [[AMPopTip appearance] setTextColor:[UIColor whiteColor]];
     [[AMPopTip appearance] setPopoverColor:[WPStyleGuide littleEddieGrey]];
@@ -37,14 +42,23 @@
     [[AMPopTip appearance] setDelayIn:0.5];
     UIEdgeInsets insets = {6,5,6,5};
     [[AMPopTip appearance] setEdgeInsets:insets];
-    popTip.shouldDismissOnTap = YES;
-    popTip.shouldDismissOnTapOutside = YES;
-    [popTip showText:text
+    returnTip.popTip.shouldDismissOnTap = YES;
+    returnTip.popTip.shouldDismissOnTapOutside = YES;
+    [returnTip.popTip showText:text
            direction:amDirection
             maxWidth:200
               inView:view
            fromFrame:frame
             duration:3];
+    
+    return returnTip;
+}
+
+- (void)cancelCurrentTooltip
+{
+    if (self.popTip) {
+        [self.popTip hide];
+    }
 }
 
 @end
