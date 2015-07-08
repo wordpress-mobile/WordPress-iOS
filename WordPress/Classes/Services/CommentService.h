@@ -8,7 +8,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 @class ReaderPost;
 @class BasePost;
 
-@interface CommentService : NSObject <LocalCoreDataService>
+@interface CommentService : LocalCoreDataService
 
 + (BOOL)isSyncingCommentsForBlog:(Blog *)blog;
 
