@@ -1,5 +1,6 @@
 #import "PostServiceRemoteREST.h"
 #import "WordPressComApi.h"
+#import "BasePost.h"
 #import "Blog.h"
 #import "DisplayableImageHelper.h"
 #import "RemotePost.h"
@@ -282,7 +283,6 @@
     }
     
     parameters[@"content"] = post.content;
-    parameters[@"status"] = post.status;
     parameters[@"password"] = post.password ? post.password : @"";
     parameters[@"type"] = post.type;
 
@@ -312,6 +312,15 @@
     }
     parameters[@"featured_image"] = post.postThumbnailID ? [post.postThumbnailID stringValue] : @"";
     parameters[@"metadata"] = [self metadataForPost:post];
+
+    // Scheduled posts need to sync with a status of 'publish'.
+    // Passing a status of 'future' will set the post status to 'draft'
+    // This is an apparent inconsistency in the API as 'future' should
+    // be a valid status.
+    if ([post.status isEqualToString:PostStatusScheduled]) {
+        post.status = PostStatusPublish;
+    }
+    parameters[@"status"] = post.status;
 
     // Test what happens for nil and not present values
     return [NSDictionary dictionaryWithDictionary:parameters];
