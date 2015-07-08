@@ -436,6 +436,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 {
     NSString *title = [self titleForFooterInSection:section];
     if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
         return CGFLOAT_MIN;
     }
     
