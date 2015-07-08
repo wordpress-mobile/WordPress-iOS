@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteXMLRPC.h"
 #import <WordPressApi.h>
 #import "Blog.h"
+#import "RemoteBlogSettings.h"
 
 @interface BlogServiceRemoteXMLRPC ()
 
@@ -53,6 +54,61 @@
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
+
+- (void)syncSettingsForBlog:(Blog *)blog
+                    success:(SettingsHandler)success
+                    failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
+        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
+        if (success) {
+            success(remoteSettings);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing settings: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+- (void)updateSettingsForBlog:(Blog *)blog
+                      success:(SuccessHandler)success
+                      failure:(void (^)(NSError *error))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:@{@"blog_title" : blog.blogName,
+                                                         @"blog_tagline": blog.blogTagline
+                                                         }
+                           ];
+    [self.api callMethod:@"wp.setOptions" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (![responseObject isKindOfClass:[NSDictionary class]]) {
+            if (failure) {
+                failure(nil);
+            }
+            return;
+        }
+        NSDictionary *XMLRPCDictionary = (NSDictionary *)responseObject;
+        RemoteBlogSettings *remoteSettings = [self remoteBlogSettingFromXMLRPCDictionary:XMLRPCDictionary];
+        if (success) {
+            success(remoteSettings);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        DDLogError(@"Error syncing settings: %@", error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
 
 - (WPXMLRPCRequestOperation *)operationForOptionsWithBlog:(Blog *)blog
                                                   success:(OptionsHandler)success
@@ -123,6 +179,17 @@
     }];
 
     return operation;
+}
+
+- (RemoteBlogSettings *)remoteBlogSettingFromXMLRPCDictionary:(NSDictionary *)json
+{
+    RemoteBlogSettings *remoteSettings = [[RemoteBlogSettings alloc] init];
+    
+    remoteSettings.name = [json stringForKeyPath:@"blog_title.value"];
+    remoteSettings.desc = [json stringForKeyPath:@"blog_tagline.value"];
+    //remoteSettings.blogPublic = [json numberForKey:@"blog_public"];
+    
+    return remoteSettings;
 }
 
 @end
