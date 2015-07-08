@@ -4,6 +4,7 @@
 #import "WordPressAppDelegate.h"
 #import "ContextManager.h"
 #import "Constants.h"
+#import "WPGUIConstants.h"
 
 #import "WPTableViewHandler.h"
 #import "WPWebViewController.h"
@@ -43,8 +44,6 @@
 
 static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
-static CGRect NotificationsTableHeaderFrame             = {0.0f, 0.0f, 0.0f, 40.0f};
-static CGRect NotificationsTableFooterFrame             = {0.0f, 0.0f, 0.0f, 48.0f};
 static NSTimeInterval NotificationsSyncTimeout          = 10;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
@@ -107,8 +106,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
-        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:NotificationsTableHeaderFrame];
-        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:NotificationsTableFooterFrame];
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
     
     // iPhone Fix: Hide the cellSeparators, when the table is empty
     } else {
