@@ -12,6 +12,9 @@ public class NotificationSettingsViewController : UITableViewController
         setupTableView()
         setupSpinner()
         
+        // Legacy Settings
+        nukeLegacySettingsIfNeeded()
+        
         // Load Settings
         reloadSettings()
     }
@@ -54,6 +57,13 @@ public class NotificationSettingsViewController : UITableViewController
         activityIndicatorView.setTranslatesAutoresizingMaskIntoConstraints(false)
         view.addSubview(activityIndicatorView)
         view.pinSubviewAtCenter(activityIndicatorView)
+    }
+    
+    // MARK: - Legacy Cleanup
+    private func nukeLegacySettings() {
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.removeObjectForKey(legacySettingsKey)
+        userDefaults.synchronize()
     }
     
     
@@ -215,6 +225,7 @@ println("Error \(error)")
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
+    private let legacySettingsKey       = "notification_preferences"
     
     private enum Section : Int {
         case Blog           = 0
