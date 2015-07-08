@@ -21,6 +21,7 @@
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
+#import "WPGUIConstants.h"
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
@@ -152,6 +153,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         [self.tableView setRowHeight:UITableViewAutomaticDimension];
     } else {
         [self.tableView setRowHeight:SupportRowHeight];
+    }
+    
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
