@@ -30,6 +30,7 @@ NSString *const NotificationsManagerDidRegisterDeviceToken          = @"Notifica
 NSString *const NotificationsManagerDidUnregisterDeviceToken        = @"NotificationsManagerDidUnregisterDeviceToken";
 
 static NSString *const NotificationsDeviceIdKey                     = @"notification_device_id";
+static NSString *const NotificationsLegacyPreferencesKey            = @"notification_preferences";
 static NSString *const NotificationsDeviceToken                     = @"apnsDeviceToken";
 
 // These correspond to the 'category' data WP.com will send with a push notification
@@ -109,6 +110,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     // Notify Listeners
     [[NSNotificationCenter defaultCenter] postNotificationName:NotificationsManagerDidRegisterDeviceToken object:newToken];
 
+    [self nukeLegacyPreferences];
     [self syncPushNotificationInfo];
 }
 
@@ -276,6 +278,13 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
 
 
 #pragma mark - WordPress.com XML RPC API
+
++ (void)nukeLegacyPreferences
+{
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults removeObjectForKey:NotificationsLegacyPreferencesKey];
+    [userDefaults synchronize];
+}
 
 + (void)syncPushNotificationInfo
 {
