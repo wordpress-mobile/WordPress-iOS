@@ -2,10 +2,11 @@
 #import "Blog.h"
 #import "UIImageView+Gravatar.h"
 
-const CGFloat MeHeaderViewHeight = 215;
+const CGFloat MeHeaderViewHeight = 210;
 const CGFloat MeHeaderViewGravatarSize = 120.0;
 const CGFloat MeHeaderViewLabelHeight = 20.0;
-const CGFloat MeHeaderViewVerticalMargin = 10.0;
+const CGFloat MeHeaderViewVerticalMargin = 20.0;
+const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 
 @interface MeHeaderView ()
 
@@ -67,8 +68,9 @@ const CGFloat MeHeaderViewVerticalMargin = 10.0;
     NSDictionary *views = NSDictionaryOfVariableBindings(_gravatarImageView, _displayNameLabel, _usernameLabel);
     NSDictionary *metrics = @{@"gravatarSize": @(MeHeaderViewGravatarSize),
                               @"labelHeight":@(MeHeaderViewLabelHeight),
+                              @"verticalSpacing":@(MeHeaderViewVerticalSpacing),
                               @"verticalMargin":@(MeHeaderViewVerticalMargin)};
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalMargin-[_displayNameLabel(labelHeight)]-[_usernameLabel(labelHeight)]"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-verticalMargin-[_gravatarImageView(gravatarSize)]-verticalSpacing-[_displayNameLabel(labelHeight)][_usernameLabel(labelHeight)]-verticalMargin-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
