@@ -660,11 +660,12 @@ EditImageDetailsViewControllerDelegate
 /**
  *	@brief      Displays the tooltop for the formatbar
  *	@details    This method triggers the display of the format bar tooltip only if the 
- *              current device is NOT an iPad or it was NOT shown already.
+ *              current device is NOT an iPad and the current orientation is not landscape 
+ *              and it was NOT shown already.
  */
 - (void)showFormatBarOnboarding
 {
-    if (!IS_IPAD && !self.wasFormatBarOnboardingShown) {
+    if (!IS_IPAD && !self.isLandscape && !self.wasFormatBarOnboardingShown) {
         __typeof__(self) __weak weakSelf = self;
         NSString *tooltipText = NSLocalizedString(@"Slide for more", @"Tooltip that lets a user know they can slide the formatting toolbar displayed when the user is editing a post.");
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -1008,12 +1009,9 @@ EditImageDetailsViewControllerDelegate
     CGRect rawKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect kRect = [self.view.window convertRect:rawKeyboardRect toView:self.view.window.rootViewController.view];
     
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    BOOL isLandscape = (orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight);
-    
     // We need to adjust the vertical space a little bit for the iPad and iPhone 6 in landscape
     CGFloat verticalOffset = 0.0;
-    if (isLandscape && !WPDeviceIdentification.isiPhoneSixPlus) {
+    if (self.isLandscape && !WPDeviceIdentification.isiPhoneSixPlus) {
         verticalOffset = -12.0;
     }
     kRect.origin.y -= self.toolbarView.layer.frame.size.height + verticalOffset;
@@ -1021,6 +1019,13 @@ EditImageDetailsViewControllerDelegate
 
     self.keyboardRect = kRect;
     [self showFormatBarOnboarding];
+}
+
+- (BOOL)isLandscape
+{
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    BOOL isLandscape = (orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight);
+    return isLandscape;
 }
 
 - (void)cancelEditingOrDismiss
