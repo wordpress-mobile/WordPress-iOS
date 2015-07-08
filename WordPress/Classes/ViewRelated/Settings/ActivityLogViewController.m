@@ -130,6 +130,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 {
     NSString *title = [self titleForHeaderInSection:section];
     if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
         return CGFLOAT_MIN;
     }
     
