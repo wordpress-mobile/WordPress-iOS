@@ -288,7 +288,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    [self refreshNavigationBarButtons:NO];
+    if (!self.isOpenedDirectlyForEditing) {
+        [self refreshNavigationBarButtons:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
