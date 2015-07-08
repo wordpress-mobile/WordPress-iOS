@@ -341,12 +341,6 @@ EditImageDetailsViewControllerDelegate
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
-    
-    
-    // TODO: Remove
-    [self setFormatBarOnboardingShown:NO];
-    [self setEditButtonOnboardingShown:NO];
-    /////
 }
 
 - (void)viewWillLayoutSubviews
