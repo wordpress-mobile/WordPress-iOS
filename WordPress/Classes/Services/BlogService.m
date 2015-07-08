@@ -29,23 +29,7 @@ NSString *const MinimumVersion = @"3.6";
 NSString *const HttpsPrefix = @"https://";
 CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
-@interface BlogService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation BlogService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID
 {

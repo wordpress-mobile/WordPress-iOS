@@ -18,3 +18,9 @@ Migration details:
 
 - Only `Account` objects where `isWpcom == YES` will be migrated, added a predicate filter to the mapping model
 - `Blog` has a custom migration policy to calculate `isHostedAtWPcom` and `username`
+
+## WordPress 35 (@sergioestevao 2015-07-08)
+
+Changes to the data model:
+
+- `Blog` added a new attribute called blogTagline to store the tagline of a site
