@@ -153,6 +153,8 @@ public class AboutViewController : UITableViewController
     }
     
     private var rowDetails : [[String]] {
+        let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()
+
         return filterDisabledRows([
             [
                 NSBundle.mainBundle().detailedVersionNumber(),
@@ -161,7 +163,7 @@ public class AboutViewController : UITableViewController
             ],
             [
                 WPTwitterWordPressHandle,
-                String(),
+                appsBlogHostname,
                 String(),
                 String()
             ]
@@ -177,7 +179,7 @@ public class AboutViewController : UITableViewController
             ],
             [
                 { self.displayTwitterComposer() },
-                { self.displayWebView(WPAutomatticMobileURL) },
+                { self.displayWebView(WPAutomatticAppsBlogURL) },
                 { self.displayRatingPrompt() },
                 { self.displayWebView(WPGithubMainURL) }
             ]
