@@ -1,6 +1,9 @@
 #import "SourcePostAttribution.h"
 #import "ReaderPost.h"
 
+NSString * const SourcePostAttributionTypePost = @"post";
+NSString * const SourcePostAttributionTypeSite = @"site";
+
 @implementation SourcePostAttribution
 
 @dynamic permalink;
@@ -14,5 +17,6 @@
 @dynamic likeCount;
 @dynamic avatarURL;
 @dynamic post;
+@dynamic attributionType;
 
 @end
