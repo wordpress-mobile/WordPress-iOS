@@ -415,6 +415,10 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
         [self.passwordTextField becomeFirstResponder];
     } else if (textField == self.passwordTextField) {
         [self.passwordTextField resignFirstResponder];
+    } else if (textField == self.siteTitleTextField) {
+        [self.siteTaglineTextField becomeFirstResponder];
+    } else if (textField == self.siteTaglineTextField) {
+        [self.siteTaglineTextField resignFirstResponder];
     }
     return NO;
 }
@@ -702,11 +706,14 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     }
 }
 
-- (void)save:(id)sender
+- (void)save:(UIBarButtonItem *)sender
 {
     [self.urlTextField resignFirstResponder];
     [self.usernameTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
+    [self.siteTitleTextField resignFirstResponder];
+    [self.siteTaglineTextField resignFirstResponder];
+    
     self.url = [NSURL IDNEncodedURL:self.urlTextField.text];
     self.username = self.usernameTextField.text;
     self.password = self.passwordTextField.text;
