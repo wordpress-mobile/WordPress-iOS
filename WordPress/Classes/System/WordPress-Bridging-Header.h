@@ -7,6 +7,7 @@
 #import "Notification+Internals.h"
 
 #import "Constants.h"
+#import "WPGUIConstants.h"
 
 #import "DDLogSwift.h"
 #import "NSObject+Helpers.h"
