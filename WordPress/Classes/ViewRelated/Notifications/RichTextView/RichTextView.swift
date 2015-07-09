@@ -134,16 +134,21 @@ import Foundation
     }
 
     public override func intrinsicContentSize() -> CGSize {
+        let width: CGFloat = (preferredMaxLayoutWidth != 0) ? preferredMaxLayoutWidth : frame.width
+        let size = CGSize(width: width, height: CGFloat.max)
+        return sizeThatFits(size)
+    }
+
+    public override func sizeThatFits(size: CGSize) -> CGSize {
         // Fix: Let's add 1pt extra size. There are few scenarios in which text gets clipped by 1 point
         let bottomPadding   = CGFloat(1)
-        let maxWidth        = (preferredMaxLayoutWidth != 0) ? preferredMaxLayoutWidth : frame.width
+        let maxWidth        = (preferredMaxLayoutWidth != 0) ? min(preferredMaxLayoutWidth, size.width) : size.width
         let maxSize         = CGSize(width: maxWidth, height: CGFloat.max)
         let requiredSize    = textView!.sizeThatFits(maxSize)
         let roundedSize     = CGSize(width: ceil(requiredSize.width), height: ceil(requiredSize.height) + bottomPadding)
-        
-        return roundedSize
+
+        return roundedSize;
     }
-    
     
     // MARK: - Private Methods
     private func setupSubviews() {
