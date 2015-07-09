@@ -10,7 +10,7 @@ extern NSString *const WPJetpackInformationURL;
 extern NSString *const WPAutomatticMainURL;
 extern NSString *const WPAutomatticTermsOfServiceURL;
 extern NSString *const WPAutomatticPrivacyURL;
-extern NSString *const WPAutomatticMobileURL;
+extern NSString *const WPAutomatticAppsBlogURL;
 extern NSString *const WPGithubMainURL;
 extern NSString *const WPTwitterWordPressHandle;
 
