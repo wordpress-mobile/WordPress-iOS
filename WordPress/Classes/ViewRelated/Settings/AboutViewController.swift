@@ -27,10 +27,14 @@ public class AboutViewController : UITableViewController
         let tintedImage             = UIImage(named: "icon-wp")?.imageTintedWithColor(color)
         let imageView               = UIImageView(image: tintedImage)
         imageView.autoresizingMask  = .FlexibleLeftMargin | .FlexibleRightMargin
-        imageView.contentMode       = .Center
+        imageView.contentMode       = .Top
+        
+        // Let's add a bottom padding!
+        imageView.frame.size.height += iconBottomPadding
         
         // Finally, setup the TableView
         tableView.tableHeaderView   = imageView
+        tableView.contentInset      = WPTableViewContentInsets
         
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
@@ -126,6 +130,7 @@ public class AboutViewController : UITableViewController
     // MARK: - Private Constants
     private let reuseIdentifier         = "reuseIdentifierValue1"
     private let twitterIndexPath        = NSIndexPath(forRow: 0, inSection: 1)
+    private let iconBottomPadding       = CGFloat(30)
     
     // MARK: - Private Aliases
     typealias RowHandler = (Void -> Void)
