@@ -209,11 +209,6 @@
     
     remoteSettings.name = [json stringForKey:@"name"];
     remoteSettings.desc = [json stringForKey:@"description"];
-    remoteSettings.blogPublic = [json numberForKey:@"setting.blog_public"];
-    remoteSettings.language = [json stringForKey:@"lang"];
-    remoteSettings.relatedPosts = [[json numberForKeyPath:@"settings.jetpack_relatedposts_enabled"] boolValue];
-    remoteSettings.relatedPostsShowHeadline = [[json numberForKeyPath:@"settings.jetpack_relatedposts_show_headline"] boolValue];
-    remoteSettings.relatedPostsShowThumbnails = [[json numberForKeyPath:@"settings.jetpack_relatedposts_show_thumbnails"] boolValue];
     
     return remoteSettings;
 }

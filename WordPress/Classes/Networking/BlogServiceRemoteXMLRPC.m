@@ -187,7 +187,6 @@
     
     remoteSettings.name = [json stringForKeyPath:@"blog_title.value"];
     remoteSettings.desc = [json stringForKeyPath:@"blog_tagline.value"];
-    //remoteSettings.blogPublic = [json numberForKey:@"blog_public"];
     
     return remoteSettings;
 }
