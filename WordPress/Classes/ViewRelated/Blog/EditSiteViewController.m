@@ -329,24 +329,16 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     switch (row) {
         case EditSiteRowTitle: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            cell.textLabel.text = NSLocalizedString(@"Title", @"");
+            cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
             self.siteTitleTextField = cell.textField;
             self.siteTitleTextField.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
             [self.siteTitleTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
             [self configureTextField:self.siteTitleTextField asPassword:NO];
             self.siteTitleTextField.keyboardType = UIKeyboardTypeDefault;
-            if (self.blog.blogName != nil) {
-                self.siteTitleTextField.text = self.blog.blogName;
-                
-                // Make a margin exception for URLs since they're so long
-                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
-            } else {
-                self.siteTitleTextField.text = @"";
-            }
-            
+            self.siteTitleTextField.text = self.blog.blogName;
             self.siteTitleTextField.enabled = YES;
             [WPStyleGuide configureTableViewTextCell:cell];
-            
+            self.siteTitleTextField.textAlignment = NSTextAlignmentRight;
             return cell;
         } break;
         case EditSiteRowTagline: {
@@ -361,7 +353,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
             self.siteTaglineTextField.enabled = YES;
             [WPStyleGuide configureTableViewTextCell:cell];
-            
+            self.siteTaglineTextField.textAlignment = NSTextAlignmentRight;
             return cell;
         } break;
     }
