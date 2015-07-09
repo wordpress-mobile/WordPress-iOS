@@ -1006,11 +1006,9 @@ EditImageDetailsViewControllerDelegate
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
-    NSDictionary* info = [aNotification userInfo];
+    NSDictionary *info = [aNotification userInfo];
     CGRect rawKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect kRect = [self.view.window convertRect:rawKeyboardRect toView:self.view.window.rootViewController.view];
-    kRect.origin.y -= self.toolbarView.layer.frame.size.height;
-    kRect.size.height += self.toolbarView.layer.frame.size.height;
+    CGRect kRect = [self.view convertRect:rawKeyboardRect fromView:self.view.window];
     self.keyboardRect = kRect;
     
     [self showFormatBarOnboarding];
