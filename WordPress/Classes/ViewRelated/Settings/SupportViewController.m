@@ -458,12 +458,31 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
         } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            NSString *nibName = [AboutViewController classNameWithoutNamespaces];
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:nibName bundle:nil];
-            [self.navigationController pushViewController:aboutViewController animated:YES];
+            [self displayAboutViewController];
         }
     }
 }
+
+
+#pragma mark - Helpers
+
+- (void)displayAboutViewController
+{
+    NSString *nibName               = [AboutViewController classNameWithoutNamespaces];
+    AboutViewController *aboutVC    = [[AboutViewController alloc] initWithNibName:nibName bundle:nil];
+    
+    // Display as modal on iPad Devices!
+    if (self.presentingViewController != nil || [UIDevice isPad] == false) {
+        [self.navigationController pushViewController:aboutVC animated:YES];
+        return;
+    }
+    
+    UINavigationController *nc      = [[UINavigationController alloc] initWithRootViewController:aboutVC];
+    nc.navigationBar.translucent    = NO;
+    nc.modalPresentationStyle       = UIModalPresentationFormSheet;
+    [self.navigationController presentViewController:nc animated:YES completion:nil];
+}
+
 
 #pragma mark - SupportViewController methods
 
