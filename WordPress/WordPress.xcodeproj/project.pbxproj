@@ -48,8 +48,6 @@
 		2FAE97090E33B21600CA8540 /* defaultPostTemplate_old.html in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */; };
 		2FAE970C0E33B21600CA8540 /* xhtml1-transitional.dtd in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */; };
 		2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
-		30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 30AF6CF413C2289600A29C00 /* AboutViewController.xib */; };
-		30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 30AF6CFC13C230C600A29C00 /* AboutViewController.m */; };
 		30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */; };
 		3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3101866A1A373B01008F7DF6 /* WPTabBarController.m */; };
 		313692791A5D6F7900EBE645 /* HelpshiftUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 313692781A5D6F7900EBE645 /* HelpshiftUtils.m */; };
@@ -376,6 +374,8 @@
 		B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
 		B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */; };
+		B57D268B1B4EE8B4005105DE /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57D268A1B4EE8B4005105DE /* AboutViewController.swift */; };
+		B57D268D1B4EED30005105DE /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B57D268C1B4EED30005105DE /* AboutViewController.xib */; };
 		B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B580E4781AEA91000091A094 /* UIViewController+Helpers.swift */; };
 		B587797A19B799D800E57C5A /* NSDate+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587796F19B799D800E57C5A /* NSDate+Helpers.swift */; };
 		B587797B19B799D800E57C5A /* NSIndexPath+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587797019B799D800E57C5A /* NSIndexPath+Swift.swift */; };
@@ -654,9 +654,6 @@
 		2FAE97040E33B21600CA8540 /* defaultPostTemplate_old.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; name = defaultPostTemplate_old.html; path = Resources/HTML/defaultPostTemplate_old.html; sourceTree = "<group>"; };
 		2FAE97070E33B21600CA8540 /* xhtml1-transitional.dtd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = "xhtml1-transitional.dtd"; path = "Resources/HTML/xhtml1-transitional.dtd"; sourceTree = "<group>"; };
 		2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = xhtmlValidatorTemplate.xhtml; path = Resources/HTML/xhtmlValidatorTemplate.xhtml; sourceTree = "<group>"; };
-		30AF6CF413C2289600A29C00 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = AboutViewController.xib; path = Resources/AboutViewController.xib; sourceTree = "<group>"; };
-		30AF6CFB13C230C600A29C00 /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AboutViewController.h; path = ../System/AboutViewController.h; sourceTree = "<group>"; };
-		30AF6CFC13C230C600A29C00 /* AboutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AboutViewController.m; path = ../System/AboutViewController.m; sourceTree = "<group>"; };
 		30EABE0718A5903400B73A9C /* WPBlogTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBlogTableViewCell.h; sourceTree = "<group>"; };
 		30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBlogTableViewCell.m; sourceTree = "<group>"; };
 		310186691A373B01008F7DF6 /* WPTabBarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTabBarController.h; sourceTree = "<group>"; };
@@ -1253,6 +1250,8 @@
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
 		B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Helpers.h"; sourceTree = "<group>"; };
 		B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Helpers.m"; sourceTree = "<group>"; };
+		B57D268A1B4EE8B4005105DE /* AboutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		B57D268C1B4EED30005105DE /* AboutViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		B580E4781AEA91000091A094 /* UIViewController+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Helpers.swift"; sourceTree = "<group>"; };
 		B587796F19B799D800E57C5A /* NSDate+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Helpers.swift"; sourceTree = "<group>"; };
 		B587797019B799D800E57C5A /* NSIndexPath+Swift.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSIndexPath+Swift.swift"; sourceTree = "<group>"; };
@@ -2157,8 +2156,8 @@
 				E1AB07AC1578D34300D6AD64 /* SettingsViewController.m */,
 				93027BB61758332300483FFD /* SupportViewController.h */,
 				93027BB71758332300483FFD /* SupportViewController.m */,
-				30AF6CFB13C230C600A29C00 /* AboutViewController.h */,
-				30AF6CFC13C230C600A29C00 /* AboutViewController.m */,
+				B57D268A1B4EE8B4005105DE /* AboutViewController.swift */,
+				B57D268C1B4EED30005105DE /* AboutViewController.xib */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -3314,7 +3313,6 @@
 				595B02231A6C4FC500415A30 /* WhatsNew */,
 				37245ADB13FC23FF006CDBE3 /* WPWebViewController.xib */,
 				28AD735F0D9D9599002E5188 /* MainWindow.xib */,
-				30AF6CF413C2289600A29C00 /* AboutViewController.xib */,
 				5DF94E311962B9D800359241 /* WPAlertView.xib */,
 				5DF94E321962B9D800359241 /* WPAlertViewSideBySide.xib */,
 			);
@@ -3628,10 +3626,10 @@
 				E1D91456134A853D0089019C /* Localizable.strings in Resources */,
 				B5E23BDF19AD0D00000D6879 /* NoteTableViewCell.xib in Resources */,
 				5DC02A3918E4C5BD009A1765 /* ThemeDetailsViewController~ipad.xib in Resources */,
-				30AF6CF513C2289600A29C00 /* AboutViewController.xib in Resources */,
 				37245ADC13FC23FF006CDBE3 /* WPWebViewController.xib in Resources */,
 				4645AFC51961E1FB005F7509 /* AppImages.xcassets in Resources */,
 				B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */,
+				B57D268D1B4EED30005105DE /* AboutViewController.xib in Resources */,
 				E18165FD14E4428B006CE885 /* loader.html in Resources */,
 				5DB767411588F64D00EBE36C /* postPreview.html in Resources */,
 				93740DC917D8F85600C41B2F /* WPAlertView.h in Resources */,
@@ -4036,7 +4034,6 @@
 				B587797E19B799D800E57C5A /* UIImageView+Animations.swift in Sources */,
 				5D7B414719E482C9007D9EC7 /* WPRichTextImage.swift in Sources */,
 				5DA912F41B03A6B300CBC13E /* AbstractPostListViewController.m in Sources */,
-				30AF6CFD13C230C600A29C00 /* AboutViewController.m in Sources */,
 				E1F80825146420B000726BC7 /* UIImageView+Gravatar.m in Sources */,
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
@@ -4094,6 +4091,7 @@
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
+				B57D268B1B4EE8B4005105DE /* AboutViewController.swift in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,
 				5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */,
 				5D8D53F119250412003C8859 /* BlogSelectorViewController.m in Sources */,
