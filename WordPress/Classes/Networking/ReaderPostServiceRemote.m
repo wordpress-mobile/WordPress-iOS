@@ -272,7 +272,7 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
-    if ([dict dictionaryForKeyPath:@"discover_metadata.featured_post_wpcom_data"]) {
+    if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
         post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
     }
     return post;
@@ -286,23 +286,24 @@
  */
 - (RemoteSourcePostAttribution *)sourceAttributionFromDictionary:(NSDictionary *)dict
 {
-    if (!dict || ![dict dictionaryForKey:@"featured_post_wpcom_data"]) {
+    NSArray *taxonomies = [dict arrayForKey:@"discover_fp_post_formats"];
+    if (![taxonomies count] == 0) {
         return nil;
     }
 
-    RemoteSourcePostAttribution *disc = [RemoteSourcePostAttribution new];
-    disc.permalink = [dict stringForKey:@"permalink"];
-    disc.authorName = [dict stringForKeyPath:@"attribution.author_name"];
-    disc.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
-    disc.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
-    disc.blogName = [dict stringForKeyPath:@"attribution.blog_name"];
-    disc.blogURL = [dict stringForKeyPath:@"attribution.blog_url"];
-    disc.blogID = [dict numberForKeyPath:@"featured_post_wpcom_data.blog_id"];
-    disc.postID = [dict numberForKeyPath:@"featured_post_wpcom_data.post_id"];
-    disc.commentCount = [dict numberForKeyPath:@"featured_post_wpcom_data.comment_count"];
-    disc.likeCount = [dict numberForKeyPath:@"featured_post_wpcom_data.like_count"];
-
-    return disc;
+    RemoteSourcePostAttribution *sourceAttr = [RemoteSourcePostAttribution new];
+    sourceAttr.permalink = [dict stringForKey:@"permalink"];
+    sourceAttr.authorName = [dict stringForKeyPath:@"attribution.author_name"];
+    sourceAttr.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
+    sourceAttr.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
+    sourceAttr.blogName = [dict stringForKeyPath:@"attribution.blog_name"];
+    sourceAttr.blogURL = [dict stringForKeyPath:@"attribution.blog_url"];
+    sourceAttr.blogID = [dict numberForKeyPath:@"featured_post_wpcom_data.blog_id"];
+    sourceAttr.postID = [dict numberForKeyPath:@"featured_post_wpcom_data.post_id"];
+    sourceAttr.commentCount = [dict numberForKeyPath:@"featured_post_wpcom_data.comment_count"];
+    sourceAttr.likeCount = [dict numberForKeyPath:@"featured_post_wpcom_data.like_count"];
+    sourceAttr.taxonomies = [self slugsFromDiscoverPostTaxonomies:taxonomies];
+    return sourceAttr;
 }
 
 
@@ -569,6 +570,16 @@
     }
 
     return [isPrivate boolValue];
+}
+
+- (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
+{
+    NSMutableArray *slugs = [NSMutableArray array];
+    for (NSDictionary *dict in discoverPostTaxonomies) {
+        NSString *slug = [dict stringForKey:@"slug"];
+        [slugs addObject:slug];
+    }
+    return slugs;
 }
 
 @end

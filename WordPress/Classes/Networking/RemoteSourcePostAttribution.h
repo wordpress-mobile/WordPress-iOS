@@ -12,6 +12,6 @@
 @property (nonatomic, strong) NSNumber *postID;
 @property (nonatomic, strong) NSNumber *likeCount;
 @property (nonatomic, strong) NSNumber *commentCount;
-@property (nonatomic, strong) NSString *attributionType;
+@property (nonatomic, strong) NSArray *taxonomies;
 
 @end
