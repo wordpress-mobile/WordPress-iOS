@@ -8,6 +8,7 @@ public class AboutViewController : UITableViewController
         title = NSLocalizedString("About", comment: "About this app (information page title)")
         
         // Setup Interface
+        setupTableViewFooter()
         setupTableView()
         setupDismissButtonIfNeeded()
     }
@@ -32,7 +33,18 @@ public class AboutViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
+    private func setupTableViewFooter() {
+        let calendar                = NSCalendar.currentCalendar()
+        let year                    = calendar.component(.CalendarUnitYear, fromDate: NSDate())
+
+        let footerView              = WPTableViewSectionFooterView()
+        footerView.title            = NSLocalizedString("© \(year) Automattic, Inc", comment: "About View's Footer Text")
+        footerView.titleAlignment   = .Center
+        self.footerView             = footerView
+    }
+    
     private func setupDismissButtonIfNeeded() {
+        // Don't display a dismiss button, unless this is the only view in the stack!
         if navigationController?.viewControllers.count > 1 {
             return
         }
@@ -77,21 +89,20 @@ public class AboutViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if section != (rowTitles.count - 1) {
+        let isLastSection = section == (rowTitles.count - 1)
+        if isLastSection == false || footerView == nil {
             return CGFloat.min
         }
         
-        return WPTableViewSectionFooterView.heightForTitle(footerLegend, andWidth: tableView.bounds.width)
+        return footerView!.bounds.height
     }
 
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if section != (rowTitles.count - 1) {
             return nil
         }
-
-        let footer      = WPTableViewSectionFooterView()
-        footer.title    = footerLegend
-        return footer
+        
+        return footerView
     }
     
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
@@ -165,6 +176,8 @@ public class AboutViewController : UITableViewController
     typealias RowHandler = (Void -> Void)
     
     // MARK: - Private Properties
+    private var footerView : WPTableViewSectionFooterView!
+    
     private var rowTitles : [[String]] {
         return filterDisabledRows([
             [
@@ -213,12 +226,5 @@ public class AboutViewController : UITableViewController
                 { self.displayWebView(WPGithubMainURL) }
             ]
         ])
-    }
-    
-    private var footerLegend : String {
-        let calendar    = NSCalendar.currentCalendar()
-        let year        = calendar.component(.CalendarUnitYear, fromDate: NSDate())
-        
-        return NSLocalizedString("© \(year) Automattic, Inc", comment: "About View's Footer Text")
     }
 }
