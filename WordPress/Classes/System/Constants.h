@@ -13,6 +13,7 @@ extern NSString *const WPAutomatticPrivacyURL;
 extern NSString *const WPAutomatticAppsBlogURL;
 extern NSString *const WPGithubMainURL;
 extern NSString *const WPTwitterWordPressHandle;
+extern NSString *const WPTwitterWordPressMobileURL;
 
 extern NSString *const WPNotificationsBucketName;
 

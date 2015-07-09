@@ -1,5 +1,4 @@
 import Foundation
-import Social
 
 
 public class AboutViewController : UITableViewController
@@ -11,14 +10,7 @@ public class AboutViewController : UITableViewController
         // Setup Interface
         setupTableView()
     }
-    
-    public override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
         
-        // Manually reload, just in case Twitter was just setup
-        tableView.reloadData()
-    }
-    
     
     // MARK: - Private Helpers
     private func setupTableView() {
@@ -101,16 +93,17 @@ public class AboutViewController : UITableViewController
         if isTwitterUnavailable() {
             return
         }
-        
-        var tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
-        tweetSheet.setInitialText("\(WPTwitterWordPressHandle) ")
-        presentViewController(tweetSheet, animated: true, completion: nil)
+
+        let twitterURL = NSURL(string: WPTwitterWordPressMobileURL)!
+        UIApplication.sharedApplication().openURL(twitterURL)
+
     }
     
     
     // MARK: - Twitter Helpers
     private func isTwitterUnavailable() -> Bool {
-        return SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) == false
+        let emptyTwitterURL = NSURL(string: WPTwitterWordPressMobileURL)!
+        return UIApplication.sharedApplication().canOpenURL(emptyTwitterURL) == false
     }
     
     private func filterDisabledRows<T>(array: [[T]]) -> [[T]] {
