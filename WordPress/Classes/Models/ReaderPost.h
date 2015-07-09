@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 #import "BasePost.h"
+#import "ReaderPostContentProvider.h"
 
 @class ReaderTopic;
 @class SourcePostAttribution;
@@ -8,7 +9,7 @@
 extern NSString * const ReaderPostStoredCommentIDKey;
 extern NSString * const ReaderPostStoredCommentTextKey;
 
-@interface ReaderPost : BasePost
+@interface ReaderPost : BasePost <ReaderPostContentProvider>
 
 @property (nonatomic, strong) NSString *authorDisplayName;
 @property (nonatomic, strong) NSString *authorEmail;
@@ -48,5 +49,6 @@ extern NSString * const ReaderPostStoredCommentTextKey;
 - (UIImage *)cachedAvatarWithSize:(CGSize)size;
 - (void)fetchAvatarWithSize:(CGSize)size success:(void (^)(UIImage *image))success;
 - (BOOL)contentIncludesFeaturedImage;
+- (BOOL)isSourceAttributionWPCom;
 
 @end
