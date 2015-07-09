@@ -16,11 +16,11 @@
 #import "Blog.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
-#import "AboutViewController.h"
 #import "WPTabBarController.h"
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
+
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
@@ -458,7 +458,8 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
         } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
+            NSString *nibName = [AboutViewController classNameWithoutNamespaces];
+            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:nibName bundle:nil];
             [self.navigationController pushViewController:aboutViewController animated:YES];
         }
     }
