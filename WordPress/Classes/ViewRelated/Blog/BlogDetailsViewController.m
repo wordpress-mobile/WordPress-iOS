@@ -225,6 +225,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.headerView setBlog:self.blog];
     [self.tableView reloadData];
 }
 
