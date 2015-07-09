@@ -627,7 +627,7 @@ EditImageDetailsViewControllerDelegate
         
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
+            [WPTooltip displayTooltipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
         });
         [self setEditButtonOnboardingShown:YES];
     }
@@ -665,11 +665,12 @@ EditImageDetailsViewControllerDelegate
  */
 - (void)showFormatBarOnboarding
 {
-    if (!IS_IPAD && !self.isLandscape && !self.wasFormatBarOnboardingShown) {
+    BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
+    if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
         __typeof__(self) __weak weakSelf = self;
         NSString *tooltipText = NSLocalizedString(@"Slide for more", @"Tooltip that lets a user know they can slide the formatting toolbar displayed when the user is editing a post.");
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.formatBarToolTip = [WPTooltip displayToolTipInView:self.view fromFrame:self.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
+            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:weakSelf.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
         });
         [self setFormatBarOnboardingShown:YES];
     }
@@ -1008,24 +1009,11 @@ EditImageDetailsViewControllerDelegate
     NSDictionary* info = [aNotification userInfo];
     CGRect rawKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect kRect = [self.view.window convertRect:rawKeyboardRect toView:self.view.window.rootViewController.view];
-    
-    // We need to adjust the vertical space a little bit for the iPad and iPhone 6 in landscape
-    CGFloat verticalOffset = 0.0;
-    if (self.isLandscape && !WPDeviceIdentification.isiPhoneSixPlus) {
-        verticalOffset = -12.0;
-    }
-    kRect.origin.y -= self.toolbarView.layer.frame.size.height + verticalOffset;
+    kRect.origin.y -= self.toolbarView.layer.frame.size.height;
     kRect.size.height += self.toolbarView.layer.frame.size.height;
-
     self.keyboardRect = kRect;
+    
     [self showFormatBarOnboarding];
-}
-
-- (BOOL)isLandscape
-{
-    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
-    BOOL isLandscape = (orientation == UIInterfaceOrientationLandscapeLeft) || (orientation == UIInterfaceOrientationLandscapeRight);
-    return isLandscape;
 }
 
 - (void)cancelEditingOrDismiss

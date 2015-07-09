@@ -27,9 +27,9 @@ typedef NS_ENUM(NSInteger, WPTooltipDirection) {
  *  @param      text        The text to display.
  *  @param      direction   The direction of the popover.
  *
- *  @return     WPToolTip   New instance of WPTooltip.
+ *  @return     WPTooltip   New instance of WPTooltip.
  */
-+ (instancetype)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
++ (instancetype)displayTooltipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
 
 
 /**
