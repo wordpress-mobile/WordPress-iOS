@@ -65,10 +65,8 @@
 
 - (BOOL)shouldShowActionButtons
 {
-    if (self.post.sourceAttribution && [self.post isSourceAttributionWPCom]) {
-         return (self.post.sourceAttributionStyle != SourceAttributionStyleSite);
-    }
-    return self.post.isWPCom;
+    // Do not show action buttons for source attributed posts.
+    return self.post.isWPCom && !self.post.sourceAttribution;
 }
 
 - (void)buildActionButtons
