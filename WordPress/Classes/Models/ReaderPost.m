@@ -179,5 +179,71 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
+- (BOOL)hasSourceAttibution
+{
+    return (self.sourceAttribution != nil);
+}
+
+- (SourceAttributionStyle)sourceAttributionStyle
+{
+    if (!self.sourceAttribution) {
+        return SourceAttributionStyleNone;
+    }
+    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+        return SourceAttributionStylePost;
+    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
+        return SourceAttributionStyleSite;
+    } else {
+        return SourceAttributionStyleNone;
+    }
+}
+
+- (NSString *)sourceAuthorNameForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return self.sourceAttribution.authorName;
+}
+
+- (NSURL *)sourceAuthorURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.authorURL];
+}
+
+- (NSURL *)sourceAvatarURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.avatarURL];
+}
+
+- (NSString *)sourceBlogNameForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return self.sourceAttribution.blogName;
+}
+
+- (NSURL *)sourceBlogURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.blogURL];
+}
+
+- (BOOL)isSourceAttributionWPCom
+{
+    if (!self.sourceAttribution) {
+        return NO;
+    }
+    return (self.sourceAttribution.blogID) ? YES : NO;
+}
 
 @end
