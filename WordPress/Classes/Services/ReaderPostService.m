@@ -21,6 +21,11 @@ NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
+static NSString * const SourceAttributionSiteTaxonomy = @"site-pick";
+static NSString * const SourceAttributionImageTaxonomy = @"image-pick";
+static NSString * const SourceAttributionQuoteTaxonomy = @"quote-pick";
+static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
+
 /**
  ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
  */
@@ -885,9 +890,25 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     attribution.postID = remoteAttribution.postID;
     attribution.commentCount = remoteAttribution.commentCount;
     attribution.likeCount = remoteAttribution.likeCount;
-
+    attribution.attributionType = [self attributionTypeFromTaxonomies:remoteAttribution.taxonomies];
     return attribution;
 }
+
+- (NSString *)attributionTypeFromTaxonomies:(NSArray *)taxonomies
+{
+    if ([taxonomies containsObject:SourceAttributionSiteTaxonomy]) {
+        return SourcePostAttributionTypeSite;
+    }
+
+    if ([taxonomies containsObject:SourceAttributionImageTaxonomy] ||
+        [taxonomies containsObject:SourceAttributionQuoteTaxonomy] ||
+        [taxonomies containsObject:SourceAttributionStandardTaxonomy] ) {
+        return SourcePostAttributionTypePost;
+    }
+
+    return nil;
+}
+
 
 #pragma mark - Content Formatting and Sanitization
 
