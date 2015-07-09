@@ -668,7 +668,7 @@ EditImageDetailsViewControllerDelegate
     BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
     if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
         __typeof__(self) __weak weakSelf = self;
-        NSString *tooltipText = NSLocalizedString(@"Slide for more", @"Tooltip that lets a user know they can slide the formatting toolbar displayed when the user is editing a post.");
+        NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
         dispatch_async(dispatch_get_main_queue(), ^{
             weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:weakSelf.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
         });
