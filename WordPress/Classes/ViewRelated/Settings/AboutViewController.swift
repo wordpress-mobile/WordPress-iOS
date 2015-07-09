@@ -1,4 +1,5 @@
 import Foundation
+import Social
 
 
 public class AboutViewController : UITableViewController
@@ -11,6 +12,12 @@ public class AboutViewController : UITableViewController
         setupTableView()
     }
     
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Manually reload, just in case Twitter was just setup
+        tableView.reloadData()
+    }
     
     
     // MARK: - Private Helpers
@@ -66,7 +73,7 @@ public class AboutViewController : UITableViewController
     
     
     // MARK: - Private Helpers
-    private func openUrl(url: String) {
+    private func displayWebView(url: String) {
         let webViewController = WPWebViewController(URL: NSURL(string: url)!)
         if presentingViewController != nil {
             navigationController?.pushViewController(webViewController, animated: true)
@@ -76,7 +83,7 @@ public class AboutViewController : UITableViewController
         }
     }
 
-    private func promptForReview() {
+    private func displayRatingPrompt() {
         // Note: 
         // Let's follow the same procedure executed as in NotificationsViewController, so that if the user
         // manually decides to rate the app, we don't render the prompt!
@@ -86,16 +93,46 @@ public class AboutViewController : UITableViewController
         ABXAppStore.openAppStoreForApp(WPiTunesAppId)
     }
     
+    private func displayTwitterComposer() {
+        if isTwitterUnavailable() {
+            return
+        }
+        
+        var tweetSheet = SLComposeViewController(forServiceType: SLServiceTypeTwitter)
+        tweetSheet.setInitialText("\(WPTwitterWordPressHandle) ")
+        presentViewController(tweetSheet, animated: true, completion: nil)
+    }
+    
+    
+    // MARK: - Twitter Helpers
+    private func isTwitterUnavailable() -> Bool {
+        return SLComposeViewController.isAvailableForServiceType(SLServiceTypeTwitter) == false
+    }
+    
+    private func filterDisabledRows<T>(array: [[T]]) -> [[T]] {
+        var filtered = array
+        
+        if isTwitterUnavailable() {
+            var section = array[twitterIndexPath.section] as [T]
+            section.removeAtIndex(twitterIndexPath.row)
+            filtered[twitterIndexPath.section] = section
+        }
+        
+        return filtered
+    }
+    
+    
 
     // MARK: - Private Constants
-    private let reuseIdentifier = "reuseIdentifierValue1"
-
+    private let reuseIdentifier         = "reuseIdentifierValue1"
+    private let twitterIndexPath        = NSIndexPath(forRow: 0, inSection: 1)
+    
     // MARK: - Private Aliases
     typealias RowHandler = (Void -> Void)
     
     // MARK: - Private Properties
     private var rowTitles : [[String]] {
-        return [
+        return filterDisabledRows([
             [
                 NSLocalizedString("Version",                    comment: "Displays the version of the App"),
                 NSLocalizedString("Terms of Service",           comment: "Opens the Terms of Service Web"),
@@ -107,11 +144,11 @@ public class AboutViewController : UITableViewController
                 NSLocalizedString("Rate Us on the App Store",   comment: "Prompts the user to rate us on the store"),
                 NSLocalizedString("Source Code",                comment: "Opens the Github Repository Web")
             ]
-        ]
+        ])
     }
     
     private var rowDetails : [[String]] {
-        return [
+        return filterDisabledRows([
             [
                 NSBundle.mainBundle().detailedVersionNumber(),
                 String(),
@@ -123,22 +160,22 @@ public class AboutViewController : UITableViewController
                 String(),
                 String()
             ]
-        ]
+        ])
     }
     
     private var rowHandlers : [[ RowHandler? ]] {
-        return [
+        return filterDisabledRows([
             [
                 nil,
-                { self.openUrl(WPAutomatticTermsOfServiceURL) },
-                { self.openUrl(WPAutomatticPrivacyURL) }
+                { self.displayWebView(WPAutomatticTermsOfServiceURL) },
+                { self.displayWebView(WPAutomatticPrivacyURL) }
             ],
             [
-                { },
-                { self.openUrl(WPAutomatticMobileURL) },
-                { self.promptForReview() },
-                { self.openUrl(WPGithubMainURL) }
+                { self.displayTwitterComposer() },
+                { self.displayWebView(WPAutomatticMobileURL) },
+                { self.displayRatingPrompt() },
+                { self.displayWebView(WPGithubMainURL) }
             ]
-        ]
+        ])
     }
 }
