@@ -63,7 +63,7 @@ public class AboutViewController : UITableViewController
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as? UITableViewCell
         if cell == nil {
-            cell = UITableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
+            cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
             WPStyleGuide.configureTableViewCell(cell)
         }
         
