@@ -7,7 +7,7 @@
 
 @implementation WPTooltip
 
-+ (instancetype)displayToolTipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
++ (instancetype)displayTooltipInView:(UIView *)view fromFrame:(CGRect)frame withText:(NSString *)text direction:(WPTooltipDirection)direction;
 {
     NSParameterAssert([view isKindOfClass:[UIView class]]);
     NSParameterAssert([text isKindOfClass:[NSString class]]);
