@@ -423,6 +423,9 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     shouldChangeCharactersInRange:(NSRange)range
     replacementString:(NSString *)string
 {
+    if (!(textField == self.usernameTextField || textField == self.passwordTextField)) {
+        return YES;
+    }
     // Adjust the text color of the containing cell's textLabel if
     // the entered information is invalid.
     if ([textField isDescendantOfView:self.tableView]) {
