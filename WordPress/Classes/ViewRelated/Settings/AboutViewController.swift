@@ -76,6 +76,24 @@ public class AboutViewController : UITableViewController
         return cell!
     }
     
+    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section != (rowTitles.count - 1) {
+            return CGFloat.min
+        }
+        
+        return WPTableViewSectionFooterView.heightForTitle(footerLegend, andWidth: tableView.bounds.width)
+    }
+
+    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if section != (rowTitles.count - 1) {
+            return nil
+        }
+
+        let footer      = WPTableViewSectionFooterView()
+        footer.title    = footerLegend
+        return footer
+    }
+    
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
@@ -195,5 +213,12 @@ public class AboutViewController : UITableViewController
                 { self.displayWebView(WPGithubMainURL) }
             ]
         ])
+    }
+    
+    private var footerLegend : String {
+        let calendar    = NSCalendar.currentCalendar()
+        let year        = calendar.component(.CalendarUnitYear, fromDate: NSDate())
+        
+        return NSLocalizedString("© \(year) Automattic, Inc", comment: "About View's Footer Text")
     }
 }
