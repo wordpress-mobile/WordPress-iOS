@@ -20,6 +20,7 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicService.h"
+#import "SourcePostAttribution.h"
 #import "UIView+Subviews.h"
 #import "WordPressAppDelegate.h"
 #import "WPAccount.h"
@@ -27,6 +28,7 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
+#import "WPWebViewController.h"
 #import "BlogService.h"
 
 #import "WPTableViewHandler.h"
@@ -1085,7 +1087,29 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         return;
     }
 
-    ReaderPostDetailViewController *detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    ReaderPostDetailViewController *detailController;
+    if ([post sourceAttributionStyle] == SourceAttributionStylePost) {
+        if (post.sourceAttribution.blogID && post.sourceAttribution.postID) {
+            detailController = [ReaderPostDetailViewController detailControllerWithPostID:post.sourceAttribution.postID
+                                                                                   siteID:post.sourceAttribution.blogID];
+        } else {
+            detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+        }
+
+    } else if ([post sourceAttributionStyle] == SourceAttributionStyleSite) {
+        if (post.sourceAttribution.blogID) {
+            ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
+            [self.navigationController pushViewController:controller animated:YES];
+            return;
+
+        } else {
+            detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+        }
+
+    } else {
+        detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
+    }
+
     detailController.readerViewStyle = self.readerViewStyle;
     [self.navigationController pushViewController:detailController animated:YES];
 
@@ -1194,6 +1218,13 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     ReaderPost *post = [self postFromCellSubview:sender];
     ReaderCommentsViewController *controller = [ReaderCommentsViewController controllerWithPost:post];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)contentView:(UIView *)contentView didTapOriginalAttributionLink:(NSURL *)link forProvider:(id<WPContentViewProvider>)provider
+{
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:link];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 
