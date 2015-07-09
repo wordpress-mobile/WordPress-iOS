@@ -458,8 +458,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     return YES;
 }
 
-#pragma mark -
-#pragma mark Custom methods
+#pragma mark - Custom methods
 
 - (void)refreshData
 {
@@ -723,19 +722,6 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             [SVProgressHUD showErrorWithStatus:@"Settings update failed"];
         }];
     }
-    
-//    if (self.blog == nil || self.blog.usernameForSite == nil) {
-//        [self validateUrl];
-//    } else {
-//        if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
-//            [self.startingPwd isEqualToString:self.passwordTextField.text] &&
-//            [self.startingUrl isEqualToString:self.urlTextField.text]) {
-//            // No need to check if nothing changed
-//            [self cancel:nil];
-//        } else {
-//            [self validateUrl];
-//        }
-//    }
 }
 
 - (IBAction)cancel:(id)sender
