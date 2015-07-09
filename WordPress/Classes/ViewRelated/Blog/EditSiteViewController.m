@@ -100,6 +100,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
     
     self.url = self.blog.url;
     self.authToken = self.blog.authToken;
@@ -460,9 +461,13 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 #pragma mark - Custom methods
 
+- (IBAction)refreshTriggered:(id)sender
+{
+    [self refreshData];
+}
+
 - (void)refreshData
 {
-    [self.refreshControl beginRefreshing];
     BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     __weak __typeof__(self) weakSelf = self;
     [service syncSettingsForBlog:self.blog success:^{
