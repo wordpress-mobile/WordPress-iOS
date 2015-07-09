@@ -179,11 +179,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
-- (BOOL)hasSourceAttibution
-{
-    return (self.sourceAttribution != nil);
-}
-
 - (SourceAttributionStyle)sourceAttributionStyle
 {
     if (!self.sourceAttribution) {
