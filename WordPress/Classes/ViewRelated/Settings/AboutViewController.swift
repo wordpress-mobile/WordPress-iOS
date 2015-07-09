@@ -9,8 +9,9 @@ public class AboutViewController : UITableViewController
         
         // Setup Interface
         setupTableView()
+        setupDismissButtonIfNeeded()
     }
-        
+    
     
     // MARK: - Private Helpers
     private func setupTableView() {
@@ -29,6 +30,23 @@ public class AboutViewController : UITableViewController
         tableView.contentInset      = WPTableViewContentInsets
         
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
+    }
+    
+    private func setupDismissButtonIfNeeded() {
+        if navigationController?.viewControllers.count > 1 {
+            return
+        }
+        
+        let title = NSLocalizedString("Close", comment: "Dismiss the current view")
+        let style = WPStyleGuide.barButtonStyleForBordered()
+        navigationItem.leftBarButtonItem = UIBarButtonItem(title: title, style: style, target: self, action: "dismissWasPressed:")
+    }
+
+    
+    
+    // MARK: - Button Helpers
+    @IBAction private func dismissWasPressed(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     
