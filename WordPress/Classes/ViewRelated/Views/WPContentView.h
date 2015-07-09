@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
+#import "ReaderPostContentProvider.h"
 
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
@@ -54,6 +55,15 @@ extern const CGFloat WPContentViewBorderHeight;
  */
 - (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender;
 
+/**
+ Tells the delegate the user has tapped on the original blog link shown in the view's original attribution view
+
+ @param contentView The content view informing the delegate of the event.
+ @param link The URL for the original blog or author
+ @param provider The WPContentViewProvider for the content view.
+ */
+- (void)contentView:(UIView *)contentView didTapOriginalAttributionLink:(NSURL *)link
+        forProvider:(id<WPContentViewProvider>)provider;
 @end
 
 
@@ -75,7 +85,7 @@ extern const CGFloat WPContentViewBorderHeight;
 /**
 The object specifying the content (text, images, etc.) to display.
  */
-@property (nonatomic, weak) id<WPContentViewProvider> contentProvider;
+@property (nonatomic, weak) id<ReaderPostContentProvider> contentProvider;
 
 /**
  A Boolean value specifying whether a featured image should be hidden, even if 
@@ -120,6 +130,7 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) WPContentActionView *actionView;
 @property (nonatomic, strong) OriginalAttributionView *originalAttributionView;
+@property (nonatomic, strong) UIView *originalAttributionSpacerView;
 
 /* Factory methos for subviews */
 - (void)buildAttributionView;
