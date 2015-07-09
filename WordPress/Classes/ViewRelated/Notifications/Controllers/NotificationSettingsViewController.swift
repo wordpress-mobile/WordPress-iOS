@@ -24,6 +24,7 @@ public class NotificationSettingsViewController : UITableViewController
     }
 
 
+    
     // MARK: - Setup Helpers
     private func setupNavigationItem() {
         title = NSLocalizedString("Notifications", comment: "Title displayed in the Notification settings")
@@ -100,21 +101,30 @@ println("Error \(error)")
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return groupedSettings?[section].count ?? emptyCount
-    }
+        if groupedSettings == nil {
+            return emptyCount
+        }
 
+        switch Section(rawValue: section)! {
+        case .Blog where displaysLoadMoreRow():
+            return loadMoreRowNumber + 1
+        default:
+            return groupedSettings![section].count
+        }
+    }
+    
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let settings    = settingsForRowAtIndexPath(indexPath)!
-        let cell        = dequeueCellForSettings(settings, tableView: tableView)
+        let identifier  = reusableIdentifierForIndexPath(indexPath)
+        let cell        = tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
         
-        configureCell(cell, settings: settings)
+        configureCell(cell, indexPath: indexPath)
         
         return cell
     }
     
     public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch settingsForRowAtIndexPath(indexPath)!.channel {
-        case let .Blog(blogId):
+        case let .Blog(blogId) where !isLoadMoreRow(indexPath):
             return subtitleRowHeight
         default:
             return titleRowHeight
@@ -138,44 +148,68 @@ println("Error \(error)")
     }
     
 
+    
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if let settings = settingsForRowAtIndexPath(indexPath) {
+        if isLoadMoreRow(indexPath) {
+            displayMoreBlogs()
+        } else  if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
         } else  {
             tableView.deselectSelectedRowWithAnimation(true)
         }
     }
 
-
+    
 
     // MARK: - UITableView Helpers
-    private func dequeueCellForSettings(settings: NotificationSettings, tableView: UITableView) -> UITableViewCell {
-        let identifier : String
-        
-        switch settings.channel {
-        case let .Blog(blogId):
-            identifier = NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
+    private func reusableIdentifierForIndexPath(indexPath: NSIndexPath) -> String {
+        switch Section(rawValue: indexPath.section)! {
+        case .Blog where !isLoadMoreRow(indexPath):
+            return NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
         default:
-            identifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
+            return NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
         }
-        
-        return tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
     }
     
-    private func configureCell(cell: UITableViewCell, settings: NotificationSettings) {
+    private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
+        // Special Case: Load More Row
+        if isLoadMoreRow(indexPath) {
+            cell.textLabel?.text            = NSLocalizedString("View all...", comment: "Displays More Rows")
+            cell.textLabel?.textAlignment   = .Center
+            cell.accessoryType              = .None
+            return
+        }
+        
+        // It's an actual Settings Row
+        let settings = settingsForRowAtIndexPath(indexPath)!
+        
         switch settings.channel {
         case let .Blog(blogId):
-            cell.textLabel?.text        = settings.blog?.blogName ?? settings.channel.description()
-            cell.detailTextLabel?.text  = settings.blog?.displayURL ?? String()
+            cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
+            cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
         default:
-            cell.textLabel?.text        = settings.channel.description()
+            cell.textLabel?.text            = settings.channel.description()
         }
+        
+        cell.accessoryType = .DisclosureIndicator
     }
     
     private func settingsForRowAtIndexPath(indexPath: NSIndexPath) -> NotificationSettings? {
         return groupedSettings?[indexPath.section][indexPath.row]
+    }
+    
+    private func displaysLoadMoreRow() -> Bool {
+        return groupedSettings?[Section.Blog.rawValue].count > loadMoreRowNumber && !displayMoreWasAccepted
+    }
+    
+    private func isLoadMoreRow(indexPath: NSIndexPath) -> Bool {
+        if !displaysLoadMoreRow() {
+            return false
+            
+        }
+        return indexPath.section == Section.Blog.rawValue && indexPath.row == loadMoreRowNumber
     }
     
     private func titleForFooterInSection(section: Int) -> String {
@@ -194,6 +228,7 @@ println("Error \(error)")
     }
 
     
+    
     // MARK: - Segue Helpers
     private func displayDetailsForSettings(settings: NotificationSettings) {
         switch settings.channel {
@@ -210,12 +245,23 @@ println("Error \(error)")
         }
     }
 
-
+    private func displayMoreBlogs() {
+        // Remember this action!
+        displayMoreWasAccepted = true
+        
+        // And refresh the section
+        let sections = NSIndexSet(index: Section.Blog.rawValue)
+        tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
+    }
+    
+    
+    
     // MARK: - Private Constants
     private let titleRowHeight          = CGFloat(44.0)
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
     private let firstStreamIndex        = 0
+    private let loadMoreRowNumber       = 3
     
     private enum Section : Int {
         case Blog           = 0
@@ -226,4 +272,5 @@ println("Error \(error)")
     // MARK: - Private Properties
     private var activityIndicatorView   : UIActivityIndicatorView!
     private var groupedSettings         : [[NotificationSettings]]?
+    private var displayMoreWasAccepted  = false
 }
