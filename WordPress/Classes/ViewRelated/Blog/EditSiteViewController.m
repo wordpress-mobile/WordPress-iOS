@@ -715,11 +715,14 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     self.blog.blogTagline = self.siteTaglineTextField.text;
     self.blog.geolocationEnabled = self.geolocationEnabled;
     if ([self.blog hasChanges]) {
+        sender.enabled = NO;
         [SVProgressHUD show];
         [blogService updateSettingForBlog:self.blog success:^{
             [SVProgressHUD showInfoWithStatus:@"Settings Saved"];
+            sender.enabled = YES;
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:@"Settings update failed"];
+            sender.enabled = YES;
         }];
     }
 }
