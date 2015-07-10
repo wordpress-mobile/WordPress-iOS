@@ -1004,7 +1004,6 @@
 		74F313ED1A9B97A200AA8B45 /* WPTooltip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTooltip.h; sourceTree = "<group>"; };
 		74F313EE1A9B97A200AA8B45 /* WPTooltip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTooltip.m; sourceTree = "<group>"; };
 		83043E54126FA31400EC9953 /* MessageUI.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
-		8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = EditSiteViewController.xib; path = Resources/EditSiteViewController.xib; sourceTree = "<group>"; };
 		833AF259114575A50016DE8F /* PostAnnotation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAnnotation.h; sourceTree = "<group>"; };
 		833AF25A114575A50016DE8F /* PostAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAnnotation.m; sourceTree = "<group>"; };
 		83418AA811C9FA6E00ACF00C /* Comment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Comment.h; sourceTree = "<group>"; };
@@ -2772,7 +2771,6 @@
 		ACFF1DC00E231EF600EC6BF5 /* Blog */ = {
 			isa = PBXGroup;
 			children = (
-				8333FE0D11FF6EF200A495C1 /* EditSiteViewController.xib */,
 				8370D1BC11FA6295009D650F /* AddSiteViewController.xib */,
 			);
 			name = Blog;
