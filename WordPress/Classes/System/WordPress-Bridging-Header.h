@@ -34,6 +34,7 @@
 #import "WPStyleGuide.h"
 #import "WPFontManager.h"
 #import "WPRichTextView.h"
+#import "WPBlogTableViewCell.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableViewSectionFooterView.h"

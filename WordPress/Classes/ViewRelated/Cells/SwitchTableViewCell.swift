@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NoteSettingsSwitchTableViewCell : WPTableViewCell
+public class SwitchTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
     public var onChange : ((newValue: Bool) -> ())?
@@ -25,31 +25,52 @@ public class NoteSettingsSwitchTableViewCell : WPTableViewCell
     }
     
     
+    
+    // MARK: - Initializers
+    public required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupSubviews()
+    }
+    
+    public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSubviews()
+    }
+    
+    
+    
     // MARK: - UITapGestureRecognizer Helpers
-    public func rowWasPressed(recognizer: UITapGestureRecognizer) {
+    @IBAction private func rowWasPressed(recognizer: UITapGestureRecognizer) {
         // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
         // programatically
         flipSwitch.setOn(!isOn, animated: true)
         switchDidChange(flipSwitch)
     }
     
+    
+    
     // MARK: - UISwitch Helpers
-    public func switchDidChange(theSwitch: UISwitch) {
+    @IBAction private func switchDidChange(theSwitch: UISwitch) {
         onChange?(newValue: theSwitch.on)
     }
     
-    // MARK: - UIView Methods
-    public override func awakeFromNib() {
-        super.awakeFromNib()
+    
+    
+    // MARK: - Private Helpers
+    private func setupSubviews() {
         selectionStyle = .None
         
         contentView.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.addTarget(self, action: "rowWasPressed:")
         
+        flipSwitch = UISwitch()
         flipSwitch.addTarget(self, action: "switchDidChange:", forControlEvents: .ValueChanged)
+        accessoryView = flipSwitch
         
         WPStyleGuide.configureTableViewCell(self)
     }
+    
+    
     
     // MARK: - Private Properties
     private let tapGestureRecognizer = UITapGestureRecognizer()
