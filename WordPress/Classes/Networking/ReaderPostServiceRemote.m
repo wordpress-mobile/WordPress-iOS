@@ -287,7 +287,7 @@
 - (RemoteSourcePostAttribution *)sourceAttributionFromDictionary:(NSDictionary *)dict
 {
     NSArray *taxonomies = [dict arrayForKey:@"discover_fp_post_formats"];
-    if (![taxonomies count] == 0) {
+    if ([taxonomies count] == 0) {
         return nil;
     }
 
