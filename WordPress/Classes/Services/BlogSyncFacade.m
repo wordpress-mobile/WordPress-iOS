@@ -49,7 +49,7 @@
     blog.password = password;
     blog.options = options;
     [[ContextManager sharedInstance] saveContext:context];
-    [blogService syncBlog:blog success:nil failure:nil];
+    [blogService backgroundSyncBlog:blog];
 
     if (blog.jetpack.isInstalled) {
         if (blog.jetpack.isConnected) {

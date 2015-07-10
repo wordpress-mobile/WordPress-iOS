@@ -840,7 +840,7 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
             [[ContextManager sharedInstance] saveContext:context];
 
             [accountService updateUserDetailsForAccount:defaultAccount success:nil failure:nil];
-            [blogService syncBlog:blog success:nil failure:nil];
+            [blogService backgroundSyncBlog:blog];
             [WPAnalytics refreshMetadata];
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
