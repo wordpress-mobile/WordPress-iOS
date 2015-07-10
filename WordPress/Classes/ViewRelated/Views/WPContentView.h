@@ -55,15 +55,6 @@ extern const CGFloat WPContentViewBorderHeight;
  */
 - (void)contentView:(UIView *)contentView didReceiveAttributionMenuAction:(id)sender;
 
-/**
- Tells the delegate the user has tapped on the original blog link shown in the view's original attribution view
-
- @param contentView The content view informing the delegate of the event.
- @param link The URL for the original blog or author
- @param provider The WPContentViewProvider for the content view.
- */
-- (void)contentView:(UIView *)contentView didTapOriginalAttributionLink:(NSURL *)link
-        forProvider:(id<WPContentViewProvider>)provider;
 @end
 
 
