@@ -1,10 +1,6 @@
 #import <UIKit/UIKit.h>
 
-@protocol OriginalAttributionViewDelegate;
-
 @interface OriginalAttributionView : UIView
-
-@property (nonatomic, weak) id<OriginalAttributionViewDelegate>delegate;
 
 /**
  Resets the view. 
@@ -17,20 +13,11 @@
  */
 - (void)setPostAttributionWithGravatar:(NSURL *)avatarURL
                              forAuthor:(NSString *)authorName
-                             authorURL:(NSURL *)authorURL
-                                  blog:(NSString *)blogName
-                               blogURL:(NSURL *)blogURL;
+                                  blog:(NSString *)blogName;
 
 /**
  Sets the blog information for the Site Pick attribution style
  */
 - (void)setSiteAttributionWithBlavatar:(NSURL *)blavatarURL
-                               forBlog:(NSString *)blogName
-                               blogURL:(NSURL *)blogURL;
-@end
-
-@protocol OriginalAttributionViewDelegate <NSObject>
-@optional
-- (void)originalAttributionView:(OriginalAttributionView *)view
-              didTapLink:(NSURL *)link;
+                               forBlog:(NSString *)blogName;
 @end

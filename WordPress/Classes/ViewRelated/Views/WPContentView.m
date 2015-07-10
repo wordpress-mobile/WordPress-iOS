@@ -16,7 +16,7 @@ const CGFloat WPContentViewAuthorViewHeight = 32.0;
 const CGFloat WPContentViewActionViewHeight = 48.0;
 const CGFloat WPContentViewBorderHeight = 1.0;
 
-@interface WPContentView()<WPContentAttributionViewDelegate, OriginalAttributionViewDelegate>
+@interface WPContentView()<WPContentAttributionViewDelegate>
 // Stores a reference to the image height constraints for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
@@ -410,7 +410,6 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 {
     OriginalAttributionView *originalAttributionView = (OriginalAttributionView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([OriginalAttributionView class]) owner:nil options:nil] firstObject];
     originalAttributionView.translatesAutoresizingMaskIntoConstraints = NO;
-    originalAttributionView.delegate = self;
 
     // RichTextView relies on frame width for calculating intrinsic content size.
     // Set the starting width so the initial intrinsic size is correct.
@@ -489,14 +488,11 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     if ([self.contentProvider sourceAttributionStyle] == SourceAttributionStylePost) {
         [self.originalAttributionView setPostAttributionWithGravatar:[self.contentProvider sourceAvatarURLForDisplay]
                                                            forAuthor:[self.contentProvider sourceAuthorNameForDisplay]
-                                                           authorURL:[self.contentProvider sourceAuthorURLForDisplay]
-                                                                blog:[self.contentProvider sourceBlogNameForDisplay]
-                                                             blogURL:[self.contentProvider sourceBlogURLForDisplay]];
+                                                                blog:[self.contentProvider sourceBlogNameForDisplay]];
 
     } else if ([self.contentProvider sourceAttributionStyle] == SourceAttributionStyleSite) {
         [self.originalAttributionView setSiteAttributionWithBlavatar:[self.contentProvider sourceAvatarURLForDisplay]
-                                                             forBlog:[self.contentProvider sourceBlogNameForDisplay]
-                                                             blogURL:[self.contentProvider sourceBlogURLForDisplay]];
+                                                             forBlog:[self.contentProvider sourceBlogNameForDisplay]];
     } else {
         [self.originalAttributionView reset];
     }
@@ -649,16 +645,6 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 {
     if ([self.delegate respondsToSelector:@selector(contentViewDidReceiveAvatarAction:)]) {
         [self.delegate contentViewDidReceiveAvatarAction:self];
-    }
-}
-
-
-#pragma mark - Original Attribution Delegate Methods
-
-- (void)originalAttributionView:(OriginalAttributionView *)view didTapLink:(NSURL *)link
-{
-    if ([self.delegate respondsToSelector:@selector(contentView:didTapOriginalAttributionLink:forProvider:)]) {
-        [self.delegate contentView:self didTapOriginalAttributionLink:link forProvider:self.contentProvider];
     }
 }
 

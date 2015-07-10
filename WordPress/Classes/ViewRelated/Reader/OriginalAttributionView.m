@@ -6,7 +6,7 @@
 static NSString * const GravatarImageName = @"gravatar-reader";
 static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
 
-@interface OriginalAttributionView()<RichTextViewDelegate>
+@interface OriginalAttributionView()
 @property (nonatomic, weak) IBOutlet CircularImageView *imageView;
 @property (nonatomic, weak) IBOutlet RichTextView *richTextView;
 @property (nonatomic, strong) NSURL *authorURL;
@@ -16,18 +16,6 @@ static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
 @implementation OriginalAttributionView
 
 #pragma mark - LifeCycle Methods
-
-- (void)dealloc
-{
-    _delegate = nil;
-    _richTextView.delegate = nil;
-}
-
-- (void)awakeFromNib
-{
-    [super awakeFromNib];
-    self.richTextView.delegate = self;
-}
 
 - (CGSize)intrinsicContentSize
 {
@@ -85,39 +73,19 @@ static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
 
 - (void)setPostAttributionWithGravatar:(NSURL *)avatarURL
                              forAuthor:(NSString *)authorName
-                          authorURL:(NSURL *)authorURL
                                blog:(NSString *)blogName
-                            blogURL:(NSURL *)blogURL
 {
     self.imageView.shouldRoundCorners = YES;
     [self.imageView setImageWithURL:avatarURL placeholderImage:[UIImage imageNamed:GravatarImageName]];
 
     NSString *str = [self originalPostAttributionForAuthor:authorName andBlog:blogName];
-
     NSDictionary *attributes = [WPStyleGuide originalAttributionParagraphAttributes];
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:str attributes:attributes];
-
-    if (authorURL) {
-        NSRange authorRange = [str rangeOfString:authorName];
-        if (authorRange.location != NSNotFound) {
-            [attrString addAttributes:[WPStyleGuide originalAttributionLinkAttributes:authorURL] range:authorRange];
-        }
-    }
-
-    if (blogURL) {
-        NSRange blogRange = [str rangeOfString:blogName];
-        if (blogRange.location != NSNotFound) {
-            [attrString addAttributes:[WPStyleGuide originalAttributionLinkAttributes:blogURL] range:blogRange];
-        }
-    }
-
-    self.richTextView.attributedText = attrString;
+    self.richTextView.attributedText = [[NSAttributedString alloc] initWithString:str attributes:attributes];
     [self invalidateIntrinsicContentSize];
 }
 
 - (void)setSiteAttributionWithBlavatar:(NSURL *)blavatarURL
                                forBlog:(NSString *)blogName
-                               blogURL:(NSURL *)blogURL
 {
     self.imageView.shouldRoundCorners = NO;
     [self.imageView setImageWithURL:blavatarURL placeholderImage:[UIImage imageNamed:BlavatarImageName]];
@@ -125,33 +93,9 @@ static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
     NSString *pattern = NSLocalizedString(@"Visit %@",
                                           @"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.");
     NSString *str = [NSString stringWithFormat:pattern, blogName];
-
     NSDictionary *attributes = [WPStyleGuide originalAttributionParagraphAttributes];
-    NSMutableAttributedString *attrString = [[NSMutableAttributedString alloc] initWithString:str attributes:attributes];
-
-    if (blogURL) {
-        NSRange blogRange = [str rangeOfString:blogName];
-        if (blogRange.location != NSNotFound) {
-            [attrString addAttributes:[WPStyleGuide originalAttributionLinkAttributes:blogURL] range:blogRange];
-        }
-    }
-
-    self.richTextView.attributedText = attrString;
+    self.richTextView.attributedText = [[NSAttributedString alloc] initWithString:str attributes:attributes];
     [self invalidateIntrinsicContentSize];
-}
-
-
-#pragma mark - RichTextView Delegate Methods
-
-- (void)textView:(UITextView *)textView didPressLink:(NSURL *)link
-{
-    if (!self.delegate) {
-        return;
-    }
-
-    if ([self.delegate respondsToSelector:@selector(originalAttributionView:didTapLink:)]) {
-        [self.delegate originalAttributionView:self didTapLink:link];
-    }
 }
 
 @end
