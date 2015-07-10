@@ -10,12 +10,11 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     
+    
     // MARK: - Setup Helpers
     private func setupTableView() {
         // Register the cells
-        let reuseIdentifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
-        let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
-        tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
+        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         
         // iPad Top header
         if UIDevice.isPad() {
@@ -28,6 +27,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
+    
     
     
     // MARK: - Public Helpers
@@ -47,6 +47,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     
+    
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sectionCount
@@ -57,13 +58,13 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let reuseIdentifier = NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
-        let cell            = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
         
         configureCell(cell, indexPath: indexPath)
         
         return cell
     }
+    
     
     
     // MARK: - UITableView Delegate Methods
@@ -74,14 +75,18 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     
+    
     // MARK: - UITableView Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text = settings?.streams[indexPath.row].kind.description() ?? String()
+        cell.textLabel?.text    = settings?.streams[indexPath.row].kind.description() ?? String()
+        cell.accessoryType      = .DisclosureIndicator
         WPStyleGuide.configureTableViewCell(cell)
     }
     
     
+    
     // MARK: - Private Constants
+    private let reuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
     private let emptyRowCount   = 0
     private let sectionCount    = 1
 

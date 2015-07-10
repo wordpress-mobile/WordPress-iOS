@@ -33,15 +33,8 @@ public class NotificationSettingsViewController : UITableViewController
     
     private func setupTableView() {
         // Register the cells
-        let reuseIdentifiers = [
-            NoteSettingsTitleTableViewCell.classNameWithoutNamespaces(),
-            NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
-        ]
-        
-        for reuseIdentifier in reuseIdentifiers {
-            let cellNib = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
-            tableView.registerNib(cellNib, forCellReuseIdentifier: reuseIdentifier)
-        }
+        tableView.registerClass(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
+        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
         
         // iPad Top header
         if UIDevice.isPad() {
@@ -171,9 +164,9 @@ println("Error \(error)")
     private func reusableIdentifierForIndexPath(indexPath: NSIndexPath) -> String {
         switch Section(rawValue: indexPath.section)! {
         case .Blog where !isLoadMoreRow(indexPath):
-            return NoteSettingsSubtitleTableViewCell.classNameWithoutNamespaces()
+            return blogReuseIdentifier
         default:
-            return NoteSettingsTitleTableViewCell.classNameWithoutNamespaces()
+            return defaultReuseIdentifier
         }
     }
     
@@ -183,6 +176,7 @@ println("Error \(error)")
             cell.textLabel?.text            = NSLocalizedString("View all...", comment: "Displays More Rows")
             cell.textLabel?.textAlignment   = .Center
             cell.accessoryType              = .None
+            WPStyleGuide.configureTableViewCell(cell)
             return
         }
         
@@ -194,8 +188,10 @@ println("Error \(error)")
             cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
+            WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         default:
             cell.textLabel?.text            = settings.channel.description()
+            WPStyleGuide.configureTableViewCell(cell)
         }
         
         cell.accessoryType = .DisclosureIndicator
@@ -262,6 +258,8 @@ println("Error \(error)")
     
     
     // MARK: - Private Constants
+    private let blogReuseIdentifier     = WPBlogTableViewCell.classNameWithoutNamespaces()
+    private let defaultReuseIdentifier  = WPTableViewCell.classNameWithoutNamespaces()
     private let titleRowHeight          = CGFloat(44.0)
     private let subtitleRowHeight       = CGFloat(54.0)
     private let emptyCount              = 0
