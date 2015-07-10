@@ -578,9 +578,16 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)handleDataModelChange:(NSNotification *)note
 {
-    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    NSSet *deletedObjects = note.userInfo[NSDeletedObjectsKey];
     if ([deletedObjects containsObject:self.blog]) {
         [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+    
+    NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
+    if ([updatedObjects containsObject:self.blog]) {
+        self.navigationItem.backBarButtonItem.title = self.blog.blogName;
+        self.navigationItem.title = self.blog.blogName;
+        [self.tableView reloadData];
     }
 }
 
