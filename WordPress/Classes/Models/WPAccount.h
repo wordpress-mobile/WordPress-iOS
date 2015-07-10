@@ -16,6 +16,7 @@
 @property (nonatomic, strong)   NSNumber    *userID;
 @property (nonatomic, strong)   NSString    *avatarURL;
 @property (nonatomic, copy)     NSString    *username;
+@property (nonatomic, copy)     NSString    *displayName;
 @property (nonatomic, copy)     NSString    *uuid;
 @property (nonatomic, strong)   NSString    *email;
 @property (nonatomic, strong)   NSSet       *blogs;
