@@ -38,7 +38,7 @@ public class AboutViewController : UITableViewController
         let year                    = calendar.component(.CalendarUnitYear, fromDate: NSDate())
 
         let footerView              = WPTableViewSectionFooterView()
-        footerView.title            = NSLocalizedString("© \(year) Automattic, Inc", comment: "About View's Footer Text")
+        footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
         footerView.titleAlignment   = .Center
         self.footerView             = footerView
     }
