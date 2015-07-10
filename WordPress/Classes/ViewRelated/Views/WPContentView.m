@@ -98,8 +98,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     height += [self sizeThatFitsContent:innerSize].height;
 
     if ([self.contentProvider sourceAttributionStyle] != SourceAttributionStyleNone) {
-        CGFloat attrWidth = size.width - (WPContentViewOuterMargin * 4.0);
-        height += [self.originalAttributionView sizeThatFits:CGSizeMake(attrWidth, CGFLOAT_MAX)].height;
+        height += [self.originalAttributionView sizeThatFits:innerSize].height;
         height += WPContentViewAttributionVerticalPadding;
     }
     height += WPContentViewOuterMargin;
@@ -171,7 +170,6 @@ const CGFloat WPContentViewBorderHeight = 1.0;
                               @"attributionVerticalPadding": @(WPContentViewAttributionVerticalPadding),
                               @"titleContentPadding": @(WPContentViewTitleContentPadding),
                               @"borderHeight": @(WPContentViewBorderHeight),
-                              @"originAttributionMargin" : @(WPContentViewOuterMargin * 2.0),
                               @"priority":@900
                               };
 
@@ -205,11 +203,11 @@ const CGFloat WPContentViewBorderHeight = 1.0;
                                                                  metrics:metrics
                                                                    views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(originAttributionMargin@priority)-[originalAttributionView]-(originAttributionMargin@priority)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin@priority)-[originalAttributionView]-(outerMargin@priority)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(originAttributionMargin@priority)-[originalAttributionSpacer]-(originAttributionMargin@priority)-|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin@priority)-[originalAttributionSpacer]-(outerMargin@priority)-|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
