@@ -345,7 +345,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
             self.siteTaglineTextField = cell.textField;
-            self.siteTaglineTextField.placeholder = NSLocalizedString(@"In a few words, explain what this site is about.", @"Placeholder text for the tagline of a site");
+            self.siteTaglineTextField.placeholder = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
             [self.siteTaglineTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
             [self configureTextField:self.siteTaglineTextField asPassword:NO];
             self.siteTaglineTextField.keyboardType = UIKeyboardTypeDefault;
