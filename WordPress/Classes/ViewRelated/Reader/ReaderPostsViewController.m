@@ -1220,13 +1220,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)contentView:(UIView *)contentView didTapOriginalAttributionLink:(NSURL *)link forProvider:(id<WPContentViewProvider>)provider
-{
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:link];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
-}
-
 
 #pragma mark - WPTableImageSourceDelegate
 
