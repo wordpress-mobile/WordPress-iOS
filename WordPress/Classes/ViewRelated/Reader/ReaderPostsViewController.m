@@ -1088,23 +1088,11 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
     }
 
     ReaderPostDetailViewController *detailController;
-    if ([post sourceAttributionStyle] == SourceAttributionStylePost) {
-        if (post.sourceAttribution.blogID && post.sourceAttribution.postID) {
-            detailController = [ReaderPostDetailViewController detailControllerWithPostID:post.sourceAttribution.postID
-                                                                                   siteID:post.sourceAttribution.blogID];
-        } else {
-            detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
-        }
-
-    } else if ([post sourceAttributionStyle] == SourceAttributionStyleSite) {
-        if (post.sourceAttribution.blogID) {
-            ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithPost:post];
-            [self.navigationController pushViewController:controller animated:YES];
-            return;
-
-        } else {
-            detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
-        }
+    if (([post sourceAttributionStyle] == SourceAttributionStylePost) &&
+        (post.sourceAttribution.blogID && post.sourceAttribution.postID)) {
+        // Display the source post.
+        detailController = [ReaderPostDetailViewController detailControllerWithPostID:post.sourceAttribution.postID
+                                                                               siteID:post.sourceAttribution.blogID];
 
     } else {
         detailController = [ReaderPostDetailViewController detailControllerWithPost:post];
