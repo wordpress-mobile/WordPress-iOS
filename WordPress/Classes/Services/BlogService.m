@@ -546,6 +546,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
+        blog.blogTagline = [remoteBlog.description stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
