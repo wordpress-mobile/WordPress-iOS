@@ -213,15 +213,21 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                      success:(void (^)())success
                      failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote updateSettingsForBlog:blog
-                          success:^() {
-                            [self.managedObjectContext save:nil];
-                            if (success) {
-                                success();
-                            }
-                          }
-                          failure:failure];
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        [remote updateSettingsForBlog:blogInContext
+                              success:^() {
+                                [self.managedObjectContext performBlock:^{
+                                    [self.managedObjectContext save:nil];
+                                    if (success) {
+                                        success();
+                                    }
+                                }];
+                              }
+                              failure:failure];
+    }];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
