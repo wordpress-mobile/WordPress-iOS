@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NoteSettingsSubtitleTableViewCell : UITableViewCell
+public class NoteSettingsSubtitleTableViewCell : WPTableViewCell
 {
     // MARK: - UIView Methods
     public override func awakeFromNib() {

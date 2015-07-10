@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NoteSettingsSwitchTableViewCell : UITableViewCell
+public class NoteSettingsSwitchTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
     public var onChange : ((newValue: Bool) -> ())?
