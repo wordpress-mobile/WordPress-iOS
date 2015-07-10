@@ -18,7 +18,7 @@
                         <constraint firstAttribute="width" constant="20" id="tmc-6t-N7q"/>
                     </constraints>
                 </imageView>
-                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKr-cZ-akB" customClass="RichTextView" customModule="WordPress">
+                <view clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cKr-cZ-akB" customClass="RichTextView" customModule="WordPress">
                     <rect key="frame" x="28" y="-2" width="292" height="44"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                 </view>
