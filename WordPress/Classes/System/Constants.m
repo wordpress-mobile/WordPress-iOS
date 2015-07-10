@@ -12,7 +12,7 @@ NSString *const WPAutomatticTermsOfServiceURL                       = @"https://
 NSString *const WPAutomatticPrivacyURL                              = @"https://automattic.com/privacy/";
 NSString *const WPAutomatticAppsBlogURL                             = @"https://apps.wordpress.org/blog/";
 NSString *const WPGithubMainURL                                     = @"https://github.com/wordpress-mobile/WordPress-iOS/";
-NSString *const WPTwitterWordPressHandle                            = @"@wordpressios";
+NSString *const WPTwitterWordPressHandle                            = @"@WordPressiOS";
 NSString *const WPTwitterWordPressMobileURL                         = @"twitter://user?screen_name=wordpressios";
 
 NSString *const WPNotificationsBucketName                           = @"note20";
