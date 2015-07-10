@@ -18,6 +18,7 @@
 #import "UIAlertViewProxy.h"
 
 #import "ContextManager.h"
+#import "WPGUIConstants.h"
 
 #import "AccountService.h"
 #import "BlogService.h"
