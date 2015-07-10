@@ -250,12 +250,23 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
 }
 
-- (void)backgroundSyncBlog:(Blog *)blog
+- (void)syncBlog:(Blog *)blog
 {
-    [self backgroundSyncMetaForBlog:blog];
-
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID
+                                                               completionHandler:nil]
+                       failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
+
+    [remote syncPostFormatsForBlog:blog
+                           success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
+                                                          completionHandler:nil]
+                           failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
+
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [categoryService syncCategoriesForBlog:blog
+                                   success:nil
+                                   failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
 
     [remote checkMultiAuthorForBlog:blog
                             success:^(BOOL isMultiAuthor) {
@@ -263,26 +274,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                             } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
                             }];
-
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    // Right now, none of the callers care about the results of the sync
-    // We're ignoring the callbacks here but this needs refactoring
-    [commentService syncCommentsForBlog:blog
-                                success:nil
-                                failure:^(NSError *error) { DDLogError(@"Failed syncing comments for blog %@: %@", blog.url, error); }];
-
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    // FIXME: this is hacky, ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
-    [postService syncPostsOfType:PostServiceTypePost
-                         forBlog:blog
-                         success:nil
-                         failure:^(NSError *error) { DDLogError(@"Failed syncing posts for blog %@: %@", blog.url, error); }];
-
-    [postService syncPostsOfType:PostServiceTypePage
-                         forBlog:blog
-                         success:nil
-                         failure:^(NSError *error) { DDLogError(@"Failed syncing pages for blog %@: %@", blog.url, error); }];
-
 }
 
 - (BOOL)hasVisibleWPComAccounts
