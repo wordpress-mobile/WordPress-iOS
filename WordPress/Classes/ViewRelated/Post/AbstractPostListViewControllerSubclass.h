@@ -53,7 +53,7 @@ extern const CGSize PreferredFiltersPopoverContentSize;
 @property (nonatomic, strong) WPSearchController *searchController; // Stand-in for UISearchController
 @property (nonatomic, strong) UIPopoverController *postFilterPopoverController;
 @property (nonatomic, strong) NSArray *postListFilters;
-@property (nonatomic, strong) NSMutableArray *recentlyTrashedPostIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
+@property (nonatomic, strong) NSMutableArray *recentlyTrashedPostObjectIDs; // IDs of trashed posts. Cleared on refresh or when filter changes.
 
 - (NSString *)postTypeToSync;
 - (NSDate *)lastSyncDate;
