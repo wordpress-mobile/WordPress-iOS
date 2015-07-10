@@ -9,6 +9,7 @@
 
 @implementation WPAccount
 
+@dynamic displayName;
 @dynamic username;
 @dynamic blogs;
 @dynamic jetpackBlogs;
