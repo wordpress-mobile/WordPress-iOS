@@ -726,6 +726,8 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
         [SVProgressHUD show];
         [blogService updateSettingForBlog:self.blog success:^{
             [SVProgressHUD showInfoWithStatus:@"Settings Saved"];
+            self.navigationController.navigationBar.backItem.title = self.blog.blogName;
+            self.navigationController.navigationBar.backItem.backBarButtonItem.title = self.blog.blogName;
             sender.enabled = YES;
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:@"Settings update failed"];
