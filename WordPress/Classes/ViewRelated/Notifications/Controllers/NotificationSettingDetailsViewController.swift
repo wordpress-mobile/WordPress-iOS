@@ -21,6 +21,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
         let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
         tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
         
+        // iPad Top header
+        if UIDevice.isPad() {
+            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
+        }
         
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
