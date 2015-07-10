@@ -468,7 +468,7 @@ NS_ENUM(NSInteger, WPLegacyEditPostViewControllerActionSheet)
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-        [blogService backgroundSyncBlog:blog];
+        [blogService syncBlog:blog];
     }
 }
 

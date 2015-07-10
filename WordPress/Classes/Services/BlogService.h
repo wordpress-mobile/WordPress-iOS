@@ -59,18 +59,11 @@
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 
 /**
- Syncs an entire blog in the background including posts, pages, comments, and blog meta such as
- post formats, blog options, and categories. Also checks if the blog is multi-author.
+ Syncs an blog "meta data" including post formats, blog options, and categories. 
+ Also checks if the blog is multi-author.
  Used for instances where the entire blog should be refreshed or initially downloaded.
  */
-- (void)backgroundSyncBlog:(Blog *)blog;
-
-/**
- Syncs blog meta in the background including post formats, blog options and categories.
- post formats, blog options, and categories.
- Used for instances where the blog meta needs to be refreshed, but not posts, comments, etc.
- */
-- (void)backgroundSyncMetaForBlog:(Blog *)blog;
+- (void)syncBlog:(Blog *)blog;
 
 - (BOOL)hasVisibleWPComAccounts;
 
