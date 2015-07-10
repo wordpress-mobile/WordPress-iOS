@@ -75,20 +75,24 @@ println("Error \(error)")
     }
     
     private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
-        // TODO: Review this whenever we switch to Swift 2.0, and kill the switch filtering. JLP Jul.1.2015
-        let siteSettings = settings.filter {
-            switch $0.channel {
+        var blogSettings    = [NotificationSettings]()
+        var otherSettings   = [NotificationSettings]()
+        var wpcomSettings   = [NotificationSettings]()
+        
+        for setting in settings {
+            switch setting.channel {
             case .Blog:
-                return true
-            default:
-                return false
+                blogSettings.append(setting)
+            case .Other:
+                otherSettings.append(setting)
+            case .WordPressCom:
+                wpcomSettings.append(setting)
             }
         }
+        assert(otherSettings.count == 1)
+        assert(wpcomSettings.count == 1)
         
-        let otherSettings = settings.filter { $0.channel == .Other }
-        let wpcomSettings = settings.filter { $0.channel == .WordPressCom }
-        
-        return [siteSettings, otherSettings, wpcomSettings]
+        return [blogSettings, otherSettings, wpcomSettings]
     }
 
 
@@ -105,7 +109,7 @@ println("Error \(error)")
 
         switch Section(rawValue: section)! {
         case .Blog where displaysLoadMoreRow():
-            return loadMoreRowNumber + 1
+            return loadMoreRowCount
         default:
             return groupedSettings![section].count
         }
@@ -123,9 +127,9 @@ println("Error \(error)")
     public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch settingsForRowAtIndexPath(indexPath)!.channel {
         case let .Blog(blogId) where !isLoadMoreRow(indexPath):
-            return subtitleRowHeight
+            return blogRowHeight
         default:
-            return titleRowHeight
+            return defaultRowHeight
         }
     }
     
@@ -151,7 +155,7 @@ println("Error \(error)")
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if isLoadMoreRow(indexPath) {
             displayMoreBlogs()
-        } else  if let settings = settingsForRowAtIndexPath(indexPath) {
+        } else if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
         } else  {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -171,61 +175,58 @@ println("Error \(error)")
     }
     
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        // Special Case: Load More Row
-        if isLoadMoreRow(indexPath) {
+        let settings = settingsForRowAtIndexPath(indexPath)!
+        
+        switch settings.channel {
+        case let .Blog(blogId) where isLoadMoreRow(indexPath):
             cell.textLabel?.text            = NSLocalizedString("View all...", comment: "Displays More Rows")
             cell.textLabel?.textAlignment   = .Center
             cell.accessoryType              = .None
             WPStyleGuide.configureTableViewCell(cell)
-            return
-        }
-        
-        // It's an actual Settings Row
-        let settings = settingsForRowAtIndexPath(indexPath)!
-        
-        switch settings.channel {
         case let .Blog(blogId):
             cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
+            cell.accessoryType              = .DisclosureIndicator
             cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
         default:
             cell.textLabel?.text            = settings.channel.description()
+            cell.textLabel?.textAlignment   = .Left
+            cell.accessoryType              = .DisclosureIndicator
             WPStyleGuide.configureTableViewCell(cell)
         }
-        
-        cell.accessoryType = .DisclosureIndicator
     }
     
     private func settingsForRowAtIndexPath(indexPath: NSIndexPath) -> NotificationSettings? {
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
+    private func titleForFooterInSection(section: Int) -> String {
+        return Section(rawValue: section)!.footerText()
+    }
+    
+    
+    
+    // MARK: - Load More Helpers
     private func displaysLoadMoreRow() -> Bool {
-        return groupedSettings?[Section.Blog.rawValue].count > loadMoreRowNumber && !displayMoreWasAccepted
+        return groupedSettings?[Section.Blog.rawValue].count > loadMoreRowIndex && !displayMoreWasAccepted
     }
     
     private func isLoadMoreRow(indexPath: NSIndexPath) -> Bool {
-        if !displaysLoadMoreRow() {
-            return false
-            
+        if displaysLoadMoreRow() {
+            return indexPath.section == Section.Blog.rawValue && indexPath.row == loadMoreRowIndex
         }
-        return indexPath.section == Section.Blog.rawValue && indexPath.row == loadMoreRowNumber
+        
+        return false
     }
     
-    private func titleForFooterInSection(section: Int) -> String {
-        switch Section(rawValue: section)! {
-        case .Blog:
-            return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
-                comment: "Notification Settings for your own blogs")
-        case .Other:
-            return NSLocalizedString("Control your notification settings when you comment on other blogs",
-                comment: "3rd Party Site Notification Settings")
-        case .WordPressCom:
-            return NSLocalizedString("Decide what emails you get from us regarding your account and sites. " +
-                "We'll still send you important emails like password recovery and domain expiration.",
-                comment: "WordPress.com Notification Settings")
-        }
+    private func displayMoreBlogs() {
+        // Remember this action!
+        displayMoreWasAccepted = true
+        
+        // And refresh the section
+        let sections = NSIndexSet(index: Section.Blog.rawValue)
+        tableView.reloadSections(sections, withRowAnimation: .Fade)
     }
 
     
@@ -245,32 +246,42 @@ println("Error \(error)")
             navigationController?.pushViewController(streamsViewController, animated: true)
         }
     }
-
-    private func displayMoreBlogs() {
-        // Remember this action!
-        displayMoreWasAccepted = true
-        
-        // And refresh the section
-        let sections = NSIndexSet(index: Section.Blog.rawValue)
-        tableView.reloadSections(sections, withRowAnimation: UITableViewRowAnimation.Fade)
-    }
     
     
     
-    // MARK: - Private Constants
-    private let blogReuseIdentifier     = WPBlogTableViewCell.classNameWithoutNamespaces()
-    private let defaultReuseIdentifier  = WPTableViewCell.classNameWithoutNamespaces()
-    private let titleRowHeight          = CGFloat(44.0)
-    private let subtitleRowHeight       = CGFloat(54.0)
-    private let emptyCount              = 0
-    private let firstStreamIndex        = 0
-    private let loadMoreRowNumber       = 3
-    
+    // MARK: - Table Sections
     private enum Section : Int {
         case Blog           = 0
         case Other          = 1
         case WordPressCom   = 2
+        
+        func footerText() -> String {
+            switch self {
+            case .Blog:
+                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
+                    comment: "Notification Settings for your own blogs")
+            case .Other:
+                return NSLocalizedString("Control your notification settings when you comment on other blogs",
+                    comment: "3rd Party Site Notification Settings")
+            case .WordPressCom:
+                return NSLocalizedString("Decide what emails you get from us regarding your account and sites. " +
+                    "We'll still send you important emails like password recovery " +
+                    "and domain expiration.", comment: "WordPress.com Notification Settings")
+            }
+        }
     }
+    
+    // MARK: - Private Constants
+    private let blogReuseIdentifier     = WPBlogTableViewCell.classNameWithoutNamespaces()
+    private let blogRowHeight           = CGFloat(54.0)
+    
+    private let defaultReuseIdentifier  = WPTableViewCell.classNameWithoutNamespaces()
+    private let defaultRowHeight        = CGFloat(44.0)
+    
+    private let emptyCount              = 0
+    private let firstStreamIndex        = 0
+    private let loadMoreRowIndex        = 3
+    private let loadMoreRowCount        = 4
     
     // MARK: - Private Properties
     private var activityIndicatorView   : UIActivityIndicatorView!
