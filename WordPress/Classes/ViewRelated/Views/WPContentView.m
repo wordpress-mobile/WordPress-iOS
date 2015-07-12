@@ -414,7 +414,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     // RichTextView relies on frame width for calculating intrinsic content size.
     // Set the starting width so the initial intrinsic size is correct.
     CGRect frame = originalAttributionView.frame;
-    frame.size.width = CGRectGetWidth(self.frame) - (WPContentViewOuterMargin * 4.0);
+    frame.size.width = CGRectGetWidth(self.frame) - (WPContentViewOuterMargin * 2.0);
     originalAttributionView.frame = frame;
 
     self.originalAttributionView = originalAttributionView;
