@@ -28,7 +28,6 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
-#import "WPWebViewController.h"
 #import "BlogService.h"
 
 #import "WPTableViewHandler.h"
