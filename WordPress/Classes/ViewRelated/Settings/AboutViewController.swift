@@ -188,7 +188,7 @@ public class AboutViewController : UITableViewController
             [
                 NSLocalizedString("Twitter",                    comment: "Launches the Twitter App"),
                 NSLocalizedString("Blog",                       comment: "Opens the WordPress Mobile Blog"),
-                NSLocalizedString("Rate Us on the App Store",   comment: "Prompts the user to rate us on the store"),
+                NSLocalizedString("Rate us on the App Store",   comment: "Prompts the user to rate us on the store"),
                 NSLocalizedString("Source Code",                comment: "Opens the Github Repository Web")
             ]
         ])
