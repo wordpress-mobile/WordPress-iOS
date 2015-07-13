@@ -75,6 +75,7 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
@@ -390,7 +391,7 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="510"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="525"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
