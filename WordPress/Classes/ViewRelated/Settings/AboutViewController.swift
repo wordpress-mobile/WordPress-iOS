@@ -35,7 +35,7 @@ public class AboutViewController : UITableViewController
     
     private func setupTableViewFooter() {
         let calendar                = NSCalendar.currentCalendar()
-        let year                    = calendar.component(.CalendarUnitYear, fromDate: NSDate())
+        let year                    = calendar.components(.CalendarUnitYear, fromDate: NSDate()).year
 
         let footerView              = WPTableViewSectionFooterView()
         footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
@@ -65,11 +65,11 @@ public class AboutViewController : UITableViewController
     
     // MARK: - UITableView Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return rowTitles.count
+        return rows.count
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return rowTitles[section].count
+        return rows[section].count
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -79,17 +79,17 @@ public class AboutViewController : UITableViewController
             WPStyleGuide.configureTableViewCell(cell)
         }
         
-        let hasRowHandler           = rowHandlers[indexPath.section][indexPath.row] != nil
+        let row = rows[indexPath.section][indexPath.row]
         
-        cell!.textLabel?.text       = rowTitles[indexPath.section][indexPath.row]
-        cell!.detailTextLabel?.text = rowDetails[indexPath.section][indexPath.row]
-        cell!.accessoryType         = hasRowHandler ? .DisclosureIndicator : .None
+        cell!.textLabel?.text       = row.title
+        cell!.detailTextLabel?.text = row.details ?? String()
+        cell!.accessoryType         = (row.handler != nil) ? .DisclosureIndicator : .None
         
         return cell!
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let isLastSection = section == (rowTitles.count - 1)
+        let isLastSection = section == (rows.count - 1)
         if isLastSection == false || footerView == nil {
             return CGFloat.min
         }
@@ -98,7 +98,7 @@ public class AboutViewController : UITableViewController
     }
 
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if section != (rowTitles.count - 1) {
+        if section != (rows.count - 1) {
             return nil
         }
         
@@ -108,7 +108,7 @@ public class AboutViewController : UITableViewController
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
-        if let handler = rowHandlers[indexPath.section][indexPath.row] {
+        if let handler = rows[indexPath.section][indexPath.row].handler {
             handler()
         }
     }
@@ -166,7 +166,21 @@ public class AboutViewController : UITableViewController
     }
     
     
+    // MARK: - Nested Row Class
+    private class Row {
+        let title   : String
+        let details : String?
+        let handler : (Void -> Void)?
+        
+        init(title: String, details: String?, handler: (Void -> Void)?) {
+            self.title      = title
+            self.details    = details
+            self.handler    = handler
+        }
+    }
 
+    
+    
     // MARK: - Private Constants
     private let reuseIdentifier         = "reuseIdentifierValue1"
     private let twitterIndexPath        = NSIndexPath(forRow: 0, inSection: 1)
@@ -178,52 +192,39 @@ public class AboutViewController : UITableViewController
     // MARK: - Private Properties
     private var footerView : WPTableViewSectionFooterView!
     
-    private var rowTitles : [[String]] {
-        return filterDisabledRows([
-            [
-                NSLocalizedString("Version",                    comment: "Displays the version of the App"),
-                NSLocalizedString("Terms of Service",           comment: "Opens the Terms of Service Web"),
-                NSLocalizedString("Privacy Policy",             comment: "Opens the Privacy Policy Web")
-            ],
-            [
-                NSLocalizedString("Twitter",                    comment: "Launches the Twitter App"),
-                NSLocalizedString("Blog",                       comment: "Opens the WordPress Mobile Blog"),
-                NSLocalizedString("Rate us on the App Store",   comment: "Prompts the user to rate us on the store"),
-                NSLocalizedString("Source Code",                comment: "Opens the Github Repository Web")
-            ]
-        ])
-    }
-    
-    private var rowDetails : [[String]] {
+    private var rows : [[Row]] {
         let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()
-
+        
         return filterDisabledRows([
             [
-                NSBundle.mainBundle().shortVersionNumber(),
-                String(),
-                String()
+                Row(title:   NSLocalizedString("Version", comment: "Displays the version of the App"),
+                    details: NSBundle.mainBundle().shortVersionNumber(),
+                    handler: nil),
+                
+                Row(title:   NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
+                    details: nil,
+                    handler: { self.displayWebView(WPAutomatticTermsOfServiceURL) }),
+                
+                Row(title:   NSLocalizedString("Privacy Policy", comment: "Opens the Privacy Policy Web"),
+                    details: nil,
+                    handler: { self.displayWebView(WPAutomatticPrivacyURL) }),
             ],
             [
-                WPTwitterWordPressHandle,
-                appsBlogHostname,
-                String(),
-                String()
-            ]
-        ])
-    }
-    
-    private var rowHandlers : [[ RowHandler? ]] {
-        return filterDisabledRows([
-            [
-                nil,
-                { self.displayWebView(WPAutomatticTermsOfServiceURL) },
-                { self.displayWebView(WPAutomatticPrivacyURL) }
-            ],
-            [
-                { self.displayTwitterComposer() },
-                { self.displayWebView(WPAutomatticAppsBlogURL) },
-                { self.displayRatingPrompt() },
-                { self.displayWebView(WPGithubMainURL) }
+                Row(title:   NSLocalizedString("Twitter", comment: "Launches the Twitter App"),
+                    details: WPTwitterWordPressHandle,
+                    handler: { self.displayTwitterComposer() }),
+                
+                Row(title:   NSLocalizedString("Blog", comment: "Opens the WordPress Mobile Blog"),
+                    details: appsBlogHostname,
+                    handler: { self.displayWebView(WPAutomatticAppsBlogURL) }),
+                
+                Row(title:   NSLocalizedString("Rate us on the App Store", comment: "Prompts the user to rate us on the store"),
+                    details: nil,
+                    handler: { self.displayRatingPrompt() }),
+                
+                Row(title:   NSLocalizedString("Source Code", comment: "Opens the Github Repository Web"),
+                    details: nil,
+                    handler: { self.displayWebView(WPGithubMainURL) }),
             ]
         ])
     }
