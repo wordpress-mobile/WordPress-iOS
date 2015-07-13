@@ -230,26 +230,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            failure:failure];
 }
 
-- (void)backgroundSyncMetaForBlog:(Blog *)blog
-{
-    NSManagedObjectID *blogObjectID = blog.objectID;
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID
-                                                               completionHandler:nil]
-                       failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
-
-    [remote syncPostFormatsForBlog:blog
-                           success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
-                                                          completionHandler:nil]
-                           failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
-
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [categoryService syncCategoriesForBlog:blog
-                                   success:nil
-                                   failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
-
-}
-
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
