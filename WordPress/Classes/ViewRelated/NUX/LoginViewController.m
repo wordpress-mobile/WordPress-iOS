@@ -285,7 +285,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(YES);
     }
 }
 
@@ -623,7 +623,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     }
 
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(NO);
     }
 }
 
@@ -818,7 +818,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     loginViewController.onlyDotComAllowed = YES;
     loginViewController.shouldReauthenticateDefaultAccount = YES;
     loginViewController.cancellable = YES;
-    loginViewController.dismissBlock = ^{
+    loginViewController.dismissBlock = ^(BOOL cancelled){
         [rootViewController dismissViewControllerAnimated:YES completion:nil];
     };
     

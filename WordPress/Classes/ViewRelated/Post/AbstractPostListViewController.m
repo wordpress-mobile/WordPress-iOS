@@ -25,7 +25,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     [super viewDidLoad];
 
-    self.recentlyTrashedPostIDs = [NSMutableArray array];
+    self.recentlyTrashedPostObjectIDs = [NSMutableArray array];
     self.tableView = self.postListViewController.tableView;
     self.refreshControl = self.postListViewController.refreshControl;
     [self.refreshControl addTarget:self action:@selector(refresh:) forControlEvents:UIControlEventValueChanged];
@@ -346,8 +346,8 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    if ([self.recentlyTrashedPostIDs count]) {
-        [self.recentlyTrashedPostIDs removeAllObjects];
+    if ([self.recentlyTrashedPostObjectIDs count]) {
+        [self.recentlyTrashedPostObjectIDs removeAllObjects];
         [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     }
 
@@ -569,8 +569,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 - (void)deletePost:(AbstractPost *)apost
 {
     [WPAnalytics track:WPAnalyticsStatPostListTrashAction withProperties:[self propertiesForAnalytics]];
-    NSNumber *postID = apost.postID;
-    [self.recentlyTrashedPostIDs addObject:postID];
+    NSManagedObjectID *postObjectID = apost.objectID;
+
+    [self.recentlyTrashedPostObjectIDs addObject:postObjectID];
 
     // Update the fetch request *before* making the service call.
     [self updateAndPerformFetchRequest];
@@ -589,7 +590,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
                            [WPError showXMLRPCErrorAlert:error];
                        }
 
-                       [self.recentlyTrashedPostIDs removeObject:postID];
+                       [self.recentlyTrashedPostObjectIDs removeObject:postObjectID];
                        [self.tableViewHandler invalidateCachedRowHeightAtIndexPath:indexPath];
                        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
                    }];
@@ -599,10 +600,9 @@ const CGFloat DefaultHeightForFooterView = 44.0;
 {
     [WPAnalytics track:WPAnalyticsStatPostListRestoreAction withProperties:[self propertiesForAnalytics]];
     // if the post was recently deleted, update the status helper and reload the cell to display a spinner
-    NSNumber *postID = apost.postID;
     NSManagedObjectID *postObjectID = apost.objectID;
 
-    [self.recentlyTrashedPostIDs removeObject:postID];
+    [self.recentlyTrashedPostObjectIDs removeObject:postObjectID];
 
     PostService *postService = [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [postService restorePost:apost
@@ -631,7 +631,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
                          } else {
                              [WPError showXMLRPCErrorAlert:error];
                          }
-                         [self.recentlyTrashedPostIDs addObject:postID];
+                         [self.recentlyTrashedPostObjectIDs addObject:postObjectID];
                      }];
 }
 
@@ -750,7 +750,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(newIndex) forKey:[self keyForCurrentListStatusFilter]];
     [NSUserDefaults resetStandardUserDefaults];
 
-    [self.recentlyTrashedPostIDs removeAllObjects];
+    [self.recentlyTrashedPostObjectIDs removeAllObjects];
     [self updateFilterTitle];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
 }
