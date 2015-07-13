@@ -969,13 +969,8 @@ EditImageDetailsViewControllerDelegate
 {
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        [blogService syncBlog:blog success:^{
-            blogService = nil;
-        } failure:^(NSError *error) {
-            blogService = nil;
-        }];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService syncBlog:blog];
     }
 }
 
