@@ -9,4 +9,9 @@
     return versionNumberString;
 }
 
+- (NSString *)shortVersionNumber
+{
+    return [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleShortVersionString"];
+}
+
 @end
