@@ -19,7 +19,8 @@
 
 - (void)syncBlogWithUsername:(NSString *)username
                     password:(NSString *)password
-                      xmlrpc:(NSString *)xmlrpc options:(NSDictionary *)options
+                      xmlrpc:(NSString *)xmlrpc
+                     options:(NSDictionary *)options
                 finishedSync:(void(^)())finishedSync
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -49,7 +50,6 @@
     blog.password = password;
     blog.options = options;
     [[ContextManager sharedInstance] saveContext:context];
-    [blogService syncBlog:blog];
 
     if (blog.jetpack.isInstalled) {
         if (blog.jetpack.isConnected) {
