@@ -162,7 +162,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     if ([self.navigationController.viewControllers count] == 1) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }
 
