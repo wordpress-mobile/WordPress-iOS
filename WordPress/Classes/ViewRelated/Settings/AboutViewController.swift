@@ -5,9 +5,8 @@ public class AboutViewController : UITableViewController
 {
     public override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("About", comment: "About this app (information page title)")
         
-        // Setup Interface
+        setupNavigationItem()
         setupTableViewFooter()
         setupTableView()
         setupDismissButtonIfNeeded()
@@ -15,6 +14,13 @@ public class AboutViewController : UITableViewController
     
     
     // MARK: - Private Helpers
+    private func setupNavigationItem() {
+        title = NSLocalizedString("About", comment: "About this app (information page title)")
+        
+        // Don't show 'About' in the next-view back button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+    }
+    
     private func setupTableView() {
         // Load and Tint the Logo
         let color                   = WPStyleGuide.wordPressBlue()
@@ -94,7 +100,8 @@ public class AboutViewController : UITableViewController
             return CGFloat.min
         }
         
-        return footerView!.bounds.height
+        let height = WPTableViewSectionFooterView.heightForTitle(footerView!.title, andWidth: view.frame.width)
+        return height + footerBottomPadding
     }
 
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -182,12 +189,10 @@ public class AboutViewController : UITableViewController
     
     
     // MARK: - Private Constants
-    private let reuseIdentifier         = "reuseIdentifierValue1"
-    private let twitterIndexPath        = NSIndexPath(forRow: 0, inSection: 1)
-    private let iconBottomPadding       = CGFloat(30)
-    
-    // MARK: - Private Aliases
-    typealias RowHandler = (Void -> Void)
+    private let reuseIdentifier = "reuseIdentifierValue1"
+    private let twitterIndexPath    = NSIndexPath(forRow: 0, inSection: 1)
+    private let iconBottomPadding   = CGFloat(30)
+    private let footerBottomPadding = CGFloat(12)
     
     // MARK: - Private Properties
     private var footerView : WPTableViewSectionFooterView!
