@@ -766,8 +766,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     if (blog.restApi) {
         remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
     return remote;
 }
