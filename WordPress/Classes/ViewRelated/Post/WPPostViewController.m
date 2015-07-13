@@ -85,6 +85,7 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
 
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
+static CGFloat const FormatBarTooltipHorizontalOffsetFromCenter = 75.0;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
@@ -304,10 +305,12 @@ EditImageDetailsViewControllerDelegate
     [super viewWillAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWasShown:)
-                                                 name:UIKeyboardDidShowNotification object:nil];
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification object:nil];
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -670,7 +673,8 @@ EditImageDetailsViewControllerDelegate
         __typeof__(self) __weak weakSelf = self;
         NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
         dispatch_async(dispatch_get_main_queue(), ^{
-            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:weakSelf.keyboardRect withText:tooltipText direction:WPTooltipDirectionUp];
+            CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
+            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:updatedRect withText:tooltipText direction:WPTooltipDirectionUp];
         });
         [self setFormatBarOnboardingShown:YES];
     }
