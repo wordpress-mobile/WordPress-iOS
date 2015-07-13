@@ -199,7 +199,7 @@ public class AboutViewController : UITableViewController
 
         return filterDisabledRows([
             [
-                NSBundle.mainBundle().detailedVersionNumber(),
+                NSBundle.mainBundle().shortVersionNumber(),
                 String(),
                 String()
             ],
