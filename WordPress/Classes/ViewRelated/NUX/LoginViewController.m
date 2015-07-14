@@ -285,7 +285,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 - (IBAction)cancelButtonAction:(id)sender
 {
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(YES);
     }
 }
 
@@ -623,7 +623,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     }
 
     if (self.dismissBlock) {
-        self.dismissBlock();
+        self.dismissBlock(NO);
     }
 }
 
@@ -761,7 +761,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
     [UIView animateWithDuration:animationDuration animations:^{
         for (UIControl *control in [self controlsToHideWithKeyboardOffset:currentKeyboardOffset]) {
-            control.alpha = GeneralWalkthroughAlphaEnabled;
+            // Fix: Revert to Enabled only those fields that were, effectively, hidden!
+            if (control.alpha == GeneralWalkthroughAlphaHidden) {
+                control.alpha = GeneralWalkthroughAlphaEnabled;
+            }
         }
         
         for (UIControl *control in [self controlsToMoveForTextEntry]) {
@@ -815,7 +818,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     loginViewController.onlyDotComAllowed = YES;
     loginViewController.shouldReauthenticateDefaultAccount = YES;
     loginViewController.cancellable = YES;
-    loginViewController.dismissBlock = ^{
+    loginViewController.dismissBlock = ^(BOOL cancelled){
         [rootViewController dismissViewControllerAnimated:YES completion:nil];
     };
     

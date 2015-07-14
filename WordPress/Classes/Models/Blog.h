@@ -31,37 +31,38 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 @interface Blog : NSManagedObject
 
-@property (nonatomic, strong, readwrite) NSNumber       *blogID;
-@property (nonatomic, strong, readwrite) NSString       *blogName;
-@property (nonatomic, strong, readwrite) NSString       *xmlrpc;
-@property (nonatomic, strong, readwrite) NSString       *apiKey;
-@property (nonatomic, strong, readwrite) NSNumber       *hasOlderPosts;
-@property (nonatomic, strong, readwrite) NSNumber       *hasOlderPages;
-@property (nonatomic, strong, readwrite) NSSet          *posts;
-@property (nonatomic, strong, readwrite) NSSet          *categories;
-@property (nonatomic, strong, readwrite) NSSet          *comments;
-@property (nonatomic, strong, readwrite) NSSet          *themes;
-@property (nonatomic, strong, readwrite) NSSet          *media;
-@property (nonatomic, strong, readwrite) NSString       *currentThemeId;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingPosts;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingPages;
-@property (nonatomic, assign, readwrite) BOOL           isSyncingMedia;
-@property (nonatomic, strong, readwrite) NSDate         *lastPostsSync;
-@property (nonatomic, strong, readwrite) NSDate         *lastPagesSync;
-@property (nonatomic, strong, readwrite) NSDate         *lastCommentsSync;
-@property (nonatomic, strong, readwrite) NSDate         *lastStatsSync;
-@property (nonatomic, strong, readwrite) NSString       *lastUpdateWarning;
-@property (nonatomic, assign, readwrite) BOOL           geolocationEnabled;
-@property (nonatomic, assign, readwrite) BOOL           visible;
-@property (nonatomic,   weak, readwrite) NSNumber       *isActivated;
-@property (nonatomic, strong, readwrite) NSDictionary   *options;
-@property (nonatomic, strong, readwrite) NSDictionary   *postFormats;
-@property (nonatomic, strong, readwrite) WPAccount      *account;
-@property (nonatomic, strong, readwrite) WPAccount      *jetpackAccount;
-@property (nonatomic, assign, readwrite) BOOL           videoPressEnabled;
-@property (nonatomic, assign, readwrite) BOOL           isMultiAuthor;
-@property (nonatomic, assign, readwrite) BOOL           isHostedAtWPcom;
-@property (nonatomic, strong, readwrite) NSString       *icon;
+@property (nonatomic, strong, readwrite) NSNumber *blogID;
+@property (nonatomic, strong, readwrite) NSString *blogName;
+@property (nonatomic, strong, readwrite) NSString *blogTagline;
+@property (nonatomic, strong, readwrite) NSString *xmlrpc;
+@property (nonatomic, strong, readwrite) NSString *apiKey;
+@property (nonatomic, strong, readwrite) NSNumber *hasOlderPosts;
+@property (nonatomic, strong, readwrite) NSNumber *hasOlderPages;
+@property (nonatomic, strong, readwrite) NSSet *posts;
+@property (nonatomic, strong, readwrite) NSSet *categories;
+@property (nonatomic, strong, readwrite) NSSet *comments;
+@property (nonatomic, strong, readwrite) NSSet *themes;
+@property (nonatomic, strong, readwrite) NSSet *media;
+@property (nonatomic, strong, readwrite) NSString *currentThemeId;
+@property (nonatomic, assign, readwrite) BOOL isSyncingPosts;
+@property (nonatomic, assign, readwrite) BOOL isSyncingPages;
+@property (nonatomic, assign, readwrite) BOOL isSyncingMedia;
+@property (nonatomic, strong, readwrite) NSDate *lastPostsSync;
+@property (nonatomic, strong, readwrite) NSDate *lastPagesSync;
+@property (nonatomic, strong, readwrite) NSDate *lastCommentsSync;
+@property (nonatomic, strong, readwrite) NSDate *lastStatsSync;
+@property (nonatomic, strong, readwrite) NSString *lastUpdateWarning;
+@property (nonatomic, assign, readwrite) BOOL geolocationEnabled;
+@property (nonatomic, assign, readwrite) BOOL visible;
+@property (nonatomic, weak, readwrite) NSNumber *isActivated;
+@property (nonatomic, strong, readwrite) NSDictionary *options;
+@property (nonatomic, strong, readwrite) NSDictionary *postFormats;
+@property (nonatomic, strong, readwrite) WPAccount *account;
+@property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
+@property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
+@property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
+@property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
+@property (nonatomic, strong, readwrite) NSString *icon;
 /**
  Stores the username for self hosted sites
  
