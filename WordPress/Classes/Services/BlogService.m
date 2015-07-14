@@ -275,23 +275,22 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 }
 
 - (void)syncBlog:(Blog *)blog
-         success:(void (^)())success
-         failure:(void (^)(NSError *error))failure
 {
-    if ([self shouldStaggerRequestsForBlog:blog]) {
-        [self syncBlogStaggeringRequests:blog];
-        return;
-    }
     NSManagedObjectID *blogObjectID = blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:blog];
     [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID
                                                                completionHandler:nil]
                        failure:^(NSError *error) { DDLogError(@"Failed syncing options for blog %@: %@", blog.url, error); }];
-    
+
     [remote syncPostFormatsForBlog:blog
                            success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
+
+    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [categoryService syncCategoriesForBlog:blog
+                                   success:nil
+                                   failure:^(NSError *error) { DDLogError(@"Failed syncing categories for blog %@: %@", blog.url, error); }];
 
     [remote checkMultiAuthorForBlog:blog
                             success:^(BOOL isMultiAuthor) {
@@ -299,151 +298,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                             } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
                             }];
-
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    // Right now, none of the callers care about the results of the sync
-    // We're ignoring the callbacks here but this needs refactoring
-    [commentService syncCommentsForBlog:blog
-                                success:nil
-                                failure:nil];
-
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [categoryService syncCategoriesForBlog:blog
-                                   success:nil
-                                   failure:nil];
-
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    // FIXME: this is hacky, ideally we'd do a multicall and fetch both posts/pages, but it's out of scope for this commit
-    [postService syncPostsOfType:PostServiceTypePost
-                         forBlog:blog
-                         success:nil
-                         failure:nil];
-    [postService syncPostsOfType:PostServiceTypePage
-                         forBlog:blog
-                         success:nil
-                         failure:nil];
-
-}
-
-- (void)syncBlogStaggeringRequests:(Blog *)blog
-{
-    [self staggerSyncPostsForBlog:blog];
-}
-
-- (void)staggerSyncPostsForBlog:(Blog *)blog
-{
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSManagedObjectID *blogID = blog.objectID;
-    void(^next)() = ^ {
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        [self staggerSyncPagesForBlog:blog];
-    };
-    [postService syncPostsOfType:PostServiceTypePost forBlog:blog success:^{
-        next();
-    } failure:^(NSError *error) {
-        next();
-    }];
-}
-
-- (void)staggerSyncPagesForBlog:(Blog *)blog
-{
-    PostService *postService = [[PostService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSManagedObjectID *blogID = blog.objectID;
-    void(^next)() = ^ {
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        [self staggerSyncCommentsForBlog:blog];
-    };
-    [postService syncPostsOfType:PostServiceTypePage forBlog:blog success:^{
-        next();
-    } failure:^(NSError *error) {
-        next();
-    }];
-}
-
-- (void)staggerSyncCommentsForBlog:(Blog *)blog
-{
-    CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSManagedObjectID *blogID = blog.objectID;
-    void(^next)() = ^ {
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        [self staggerSyncCategoriesForBlog:blog];
-    };
-
-    [commentService syncCommentsForBlog:blog success:^{
-        next();
-    } failure:^(NSError *error) {
-        next();
-    }];
-}
-
-- (void)staggerSyncCategoriesForBlog:(Blog *)blog
-{
-    PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    NSManagedObjectID *blogID = blog.objectID;
-    void(^next)() = ^ {
-        Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
-        if (!blog) {
-            return;
-        }
-        [self staggerSyncBlogMetaForBlog:blog];
-    };
-
-    [categoryService syncCategoriesForBlog:blog success:^{
-        next();
-    } failure:^(NSError *error) {
-        next();
-    }];
-}
-
-- (void)staggerSyncBlogMetaForBlog:(Blog *)blog
-{
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    NSManagedObjectID *blogObjectID = blog.objectID;
-    NSString *url = blog.url;
-    [remote syncOptionsForBlog:blog success:[self optionsHandlerWithBlogObjectID:blogObjectID completionHandler:nil] failure:^(NSError *error) {
-        DDLogError(@"Failed syncing options for blog %@: %@", url, error);
-    }];
-
-    [remote syncPostFormatsForBlog:blog success:[self postFormatsHandlerWithBlogObjectID:blogObjectID completionHandler:nil] failure:^(NSError *error) {
-        DDLogError(@"Failed syncing post formats for blog %@: %@", url, error);
-    }];
-
-    [remote checkMultiAuthorForBlog:blog
-                            success:^(BOOL isMultiAuthor) {
-                                [self updateMutliAuthor:isMultiAuthor forBlog:blogObjectID];
-                            } failure:^(NSError *error) {
-                                DDLogError(@"Failed checking muti-author status for blog %@: %@", url, error);
-                            }];
-}
-
-// Batch requests to sites using basic http auth to avoid auth failures in certain cases.
-// See: https://github.com/wordpress-mobile/WordPress-iOS/issues/3016
-- (BOOL)shouldStaggerRequestsForBlog:(Blog *)blog
-{
-    if (blog.account || blog.jetpackAccount) {
-        return NO;
-    }
-
-    __block BOOL stagger = NO;
-    NSURL *url = [NSURL URLWithString:blog.url];
-    [[[NSURLCredentialStorage sharedCredentialStorage] allCredentials] enumerateKeysAndObjectsUsingBlock:^(NSURLProtectionSpace *ps, NSDictionary *dict, BOOL *stop) {
-        [dict enumerateKeysAndObjectsUsingBlock:^(id key, NSURLCredential *credential, BOOL *stop) {
-            if ([[ps host] isEqualToString:[url host]]) {
-                stagger = YES;
-                *stop = YES;
-            }
-        }];
-    }];
-    return stagger;
 }
 
 - (BOOL)hasVisibleWPComAccounts

@@ -81,15 +81,12 @@
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 
-/*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
- *  Used for instances where the entire blog should be refreshed or initially downloaded.
- *
- *  \param success Completion block called if the operation was a success
- *  \param failure Completion block called if the operation was a failure
+/**
+ Syncs an blog "meta data" including post formats, blog options, and categories. 
+ Also checks if the blog is multi-author.
+ Used for instances where the entire blog should be refreshed or initially downloaded.
  */
-- (void)syncBlog:(Blog *)blog
-         success:(void (^)())success
-         failure:(void (^)(NSError *error))failure;
+- (void)syncBlog:(Blog *)blog;
 
 - (BOOL)hasVisibleWPComAccounts;
 
