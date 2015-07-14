@@ -1,9 +1,9 @@
 #import <UIKit/UIKit.h>
 #import "WPContentViewProvider.h"
 #import "ReaderPostContentProvider.h"
-
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
+#import "DiscoverPostAttributionView.h"
 
 extern const CGFloat WPContentViewHorizontalInnerPadding;
 extern const CGFloat WPContentViewOuterMargin;
@@ -120,8 +120,8 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) UILabel *titleLabel;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) WPContentActionView *actionView;
-@property (nonatomic, strong) OriginalAttributionView *originalAttributionView;
-@property (nonatomic, strong) UIView *originalAttributionSpacerView;
+@property (nonatomic, strong) UIView<DiscoverPostAttributionView> *discoverPostAttributionView;
+@property (nonatomic, strong) UIView *discoverAttributionSpacerView;
 
 /* Factory methos for subviews */
 - (void)buildAttributionView;
@@ -130,7 +130,7 @@ The object specifying the content (text, images, etc.) to display.
 - (void)buildTitleLabel;
 - (void)buildContentView;
 - (void)buildActionView;
-- (void)buildOriginalAttributionView;
+- (void)buildDiscoverAttributionView;
 
 /**
  Configures the appearance of the attribution view based on the content provider.
