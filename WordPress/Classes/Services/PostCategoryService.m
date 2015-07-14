@@ -7,23 +7,7 @@
 #import "PostCategoryServiceRemoteREST.h"
 #import "PostCategoryServiceRemoteXMLRPC.h"
 
-@interface PostCategoryService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation PostCategoryService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 - (PostCategory *)newCategoryForBlog:(Blog *)blog
 {
