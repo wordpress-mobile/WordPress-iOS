@@ -198,6 +198,40 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
 }
 
+- (void)setFollowing:(BOOL)following
+  forWPComSiteWithID:(NSNumber *)siteID
+              andURL:(NSString *)siteURL
+             success:(void (^)())success
+             failure:(void (^)(NSError *error))failure
+{
+    // Optimistically Update
+    [self setFollowing:following forPostsFromSiteWithID:siteID andURL:siteURL];
+
+    // Define success block
+    void (^successBlock)() = ^void() {
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        [self setFollowing:!following forPostsFromSiteWithID:siteID andURL:siteURL];
+
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    if (following) {
+        [siteService followSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+    } else {
+        [siteService unfollowSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+    }
+}
+
 - (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     // Get a the post in our own context
@@ -256,6 +290,8 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         failureBlock(error);
     }
 }
+
+
 
 - (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure
 {

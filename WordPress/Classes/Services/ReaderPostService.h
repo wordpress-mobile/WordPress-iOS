@@ -149,4 +149,20 @@ extern NSString * const ReaderPostServiceErrorDomain;
 
 - (void)flagPostsFromSite:(NSNumber *)siteID asBlocked:(BOOL)blocked;
 
+/**
+ Follows or unfollows the specified site. Posts belonging to that site and URL
+ have their following status updated in core data. 
+
+ @param following Whether the user is following the site.
+ @param siteID The ID of the site
+ @siteURL the URL of the site. 
+ @param success block called on a successful call.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)setFollowing:(BOOL)following
+  forWPComSiteWithID:(NSNumber *)siteID
+              andURL:(NSString *)siteURL
+             success:(void (^)())success
+             failure:(void (^)(NSError *error))failure;
+
 @end
