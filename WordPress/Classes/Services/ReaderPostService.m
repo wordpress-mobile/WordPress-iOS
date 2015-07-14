@@ -41,23 +41,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @implementation ReaderPostServiceBackfillState
 @end
 
-@interface ReaderPostService()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation ReaderPostService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 #pragma mark - Fetch Methods
 

@@ -9,7 +9,7 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 @class ReaderSite;
 @class ReaderPost;
 
-@interface ReaderTopicService : NSObject <LocalCoreDataService>
+@interface ReaderTopicService : LocalCoreDataService
 
 /**
  Sets the currentTopic and dispatches the `ReaderTopicDidChangeNotification` notification.

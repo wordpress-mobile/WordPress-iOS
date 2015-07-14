@@ -4,7 +4,7 @@
 
 @class WPAccount;
 
-@interface BlogService : NSObject<LocalCoreDataService>
+@interface BlogService : LocalCoreDataService
 
 /**
  Returns the blog that matches with a given blogID
@@ -56,17 +56,37 @@
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
+/**
+ *  Sync blog settings from the server
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull
+ *  @param failure a block that in invoked when the sync fails.
+ */
+- (void)syncSettingsForBlog:(Blog *)blog
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
+ *  Update blog settings to server
+ *
+ *  @param blog    the blog to update
+ *  @param success a block that is invoked when the update is sucessfull
+ *  @param failure a block that in invoked when the update fails.
+ */
+- (void)updateSettingForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
+
+
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 
-/*! Syncs an entire blog include posts, pages, comments, options, post formats and categories.
- *  Used for instances where the entire blog should be refreshed or initially downloaded.
- *
- *  \param success Completion block called if the operation was a success
- *  \param failure Completion block called if the operation was a failure
+/**
+ Syncs an blog "meta data" including post formats, blog options, and categories. 
+ Also checks if the blog is multi-author.
+ Used for instances where the entire blog should be refreshed or initially downloaded.
  */
-- (void)syncBlog:(Blog *)blog
-         success:(void (^)())success
-         failure:(void (^)(NSError *error))failure;
+- (void)syncBlog:(Blog *)blog;
 
 - (BOOL)hasVisibleWPComAccounts;
 
