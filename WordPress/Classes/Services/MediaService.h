@@ -9,7 +9,7 @@ extern NSInteger const MediaMaxImageSizeDimension;
 @class Media;
 @class Blog;
 
-@interface MediaService : NSObject <LocalCoreDataService>
+@interface MediaService : LocalCoreDataService
 
 + (CGSize)maxImageSizeSetting;
 
@@ -87,16 +87,16 @@ extern NSInteger const MediaMaxImageSizeDimension;
                         failure:(void (^)(NSError *error))failure;
 
 /**
- + Get a image for a Media by downloading its image or using the local cache
+ + Get a thumbnail image for a Media by downloading its image or using the local cache
  +
  + @param media
  + @success a block that will be invoked when the media is retrieved
  + @failure a block that will be invoked if an error happens returnin the associated error object with the details.
  + */
-- (void)imageForMedia:(Media *)media
-                 size:(CGSize)size
-              success:(void (^)(UIImage *image))success
-              failure:(void (^)(NSError *error))failure;
+- (void)thumbnailForMedia:(Media *)media
+                     size:(CGSize)size
+                  success:(void (^)(UIImage *image))success
+                  failure:(void (^)(NSError *error))failure;
 /**
  *  Get number of items in media library
  *
