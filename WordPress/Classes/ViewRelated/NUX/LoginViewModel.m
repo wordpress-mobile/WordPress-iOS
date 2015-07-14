@@ -63,7 +63,9 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
 
 - (LoginFields *)loginFields
 {
-    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:self.multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
+    // Do not return the Multifactor Code, unless the field is actually onscreen!
+    NSString *multifactorCode = self.isMultifactorEnabled ? self.multifactorCode : nil;
+    return [LoginFields loginFieldsWithUsername:self.username password:self.password siteUrl:self.siteUrl multifactorCode:multifactorCode userIsDotCom:self.userIsDotCom shouldDisplayMultiFactor:self.shouldDisplayMultifactor];
 }
 
 - (void)signInButtonAction
