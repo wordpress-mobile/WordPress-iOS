@@ -31,6 +31,7 @@
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:post];
         _deviceLibraryDataSource = [[WPALAssetDataSource alloc] init];
         _currentDataSource = _deviceLibraryDataSource;
+        _observers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
