@@ -113,7 +113,7 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                            success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
                            failure:(void (^)(NSError *error))failure
 {
-    NSString *path =[NSString stringWithFormat:@"sites/%@", siteID];
+    NSString *path = [NSString stringWithFormat:@"sites/%@", siteID];
 
     [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {

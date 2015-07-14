@@ -147,7 +147,7 @@ import Foundation
         let requiredSize    = textView!.sizeThatFits(maxSize)
         let roundedSize     = CGSize(width: ceil(requiredSize.width), height: ceil(requiredSize.height) + bottomPadding)
 
-        return roundedSize;
+        return roundedSize
     }
     
     // MARK: - Private Methods
