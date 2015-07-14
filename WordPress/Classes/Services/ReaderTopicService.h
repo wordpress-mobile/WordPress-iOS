@@ -91,4 +91,9 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
  */
 - (ReaderTopic *)siteTopicForPost:(ReaderPost *)post;
 
+
+- (void)siteTopicForSiteWithID:(NSNumber *)siteID
+                       success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
+                       failure:(void (^)(NSError *error))failure;
+
 @end
