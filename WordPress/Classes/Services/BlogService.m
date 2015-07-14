@@ -144,29 +144,33 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogMethod();
 
-    NSManagedObjectID *accountID = account.objectID;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
-            WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountID error:nil];
-            if (!account) {
+            // Reload the Account in the current Context
+            NSError *error = nil;
+            WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:account.objectID
+                                                                                                 error:&error];
+            if (!accountInContext) {
+                DDLogError(@"Error loading WordPress Account: %@", error);
                 return;
             }
-            [self mergeBlogs:blogs
-                 withAccount:account
-                  completion:success];
             
-            Blog *defaultBlog = account.defaultBlog;
+            [self mergeBlogs:blogs withAccount:accountInContext completion:success];
+            
+            // Update the Widget Configuration
+            Blog *defaultBlog = accountInContext.defaultBlog;
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
             
             if (WIDGETS_EXIST
                 && !widgetIsConfigured
-                && defaultBlog != nil) {
+                && defaultBlog != nil
+                && !defaultBlog.isDeleted) {
                 NSNumber *siteId = defaultBlog.blogID;
                 NSString *blogName = defaultBlog.blogName;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
-                NSString *oauth2Token = account.authToken;
+                NSString *oauth2Token = accountInContext.authToken;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     TodayExtensionService *service = [TodayExtensionService new];
