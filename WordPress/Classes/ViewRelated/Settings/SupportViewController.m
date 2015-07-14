@@ -371,11 +371,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowVersion) {
             // App Version
             cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
-#if DEBUG
-            appVersion = [appVersion stringByAppendingString:@" (DEV)"];
-#endif
-            cell.detailTextLabel.text = appVersion;
+            cell.detailTextLabel.text = [[NSBundle mainBundle] shortVersionString];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == SettingsSectionSettingsRowExtraDebug) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
