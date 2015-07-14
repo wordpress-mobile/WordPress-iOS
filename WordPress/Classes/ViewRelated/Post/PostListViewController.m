@@ -289,8 +289,8 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 
     // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
     // or posts that were recently deleted.
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+    if ([searchText length] == 0 && [self.recentlyTrashedPostObjectIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", self.recentlyTrashedPostObjectIDs];
         filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
     }
     [predicates addObject:filterPredicate];
@@ -391,7 +391,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
 - (NSString *)cellIdentifierForPost:(Post *)post
 {
     NSString *identifier;
-    if ([self.recentlyTrashedPostIDs containsObject:post.postID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
+    if ([self.recentlyTrashedPostObjectIDs containsObject:post.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
         identifier = PostCardRestoreCellIdentifier;
     } else if (![post.pathForDisplayImage length]) {
         identifier = PostCardTextCellIdentifier;
@@ -541,7 +541,7 @@ static const CGFloat PostListHeightForFooterView = 34.0;
     [[NSUserDefaults standardUserDefaults] setObject:@(filter) forKey:CurrentPostAuthorFilterKey];
     [NSUserDefaults resetStandardUserDefaults];
 
-    [self.recentlyTrashedPostIDs removeAllObjects];
+    [self.recentlyTrashedPostObjectIDs removeAllObjects];
     [self updateAndPerformFetchRequestRefreshingCachedRowHeights];
     [self syncItemsWithUserInteraction:NO];
 }

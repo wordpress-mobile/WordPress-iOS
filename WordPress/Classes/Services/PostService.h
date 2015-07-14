@@ -7,7 +7,7 @@ extern NSString * const PostServiceTypePost;
 extern NSString * const PostServiceTypePage;
 extern NSString * const PostServiceTypeAny;
 
-@interface PostService : NSObject <LocalCoreDataService>
+@interface PostService : LocalCoreDataService
 
 - (Post *)createDraftPostForBlog:(Blog *)blog;
 - (Page *)createDraftPageForBlog:(Blog *)blog;
