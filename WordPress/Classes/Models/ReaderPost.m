@@ -183,8 +183,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 {
     if (!self.sourceAttribution) {
         return SourceAttributionStyleNone;
-    }
-    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
         return SourceAttributionStylePost;
     } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
         return SourceAttributionStyleSite;
@@ -195,9 +194,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSString *)sourceAuthorNameForDisplay
 {
-    if (!self.sourceAttribution) {
-        return nil;
-    }
     return self.sourceAttribution.authorName;
 }
 
@@ -219,9 +215,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSString *)sourceBlogNameForDisplay
 {
-    if (!self.sourceAttribution) {
-        return nil;
-    }
     return self.sourceAttribution.blogName;
 }
 
@@ -235,9 +228,6 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (BOOL)isSourceAttributionWPCom
 {
-    if (!self.sourceAttribution) {
-        return NO;
-    }
     return (self.sourceAttribution.blogID) ? YES : NO;
 }
 
