@@ -674,7 +674,7 @@ EditImageDetailsViewControllerDelegate
 {
     BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
     if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
-        __typeof__(self) __weak weakSelf = self;
+        __weak __typeof__(self) weakSelf = self;
         NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
         dispatch_async(dispatch_get_main_queue(), ^{
             CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
@@ -683,7 +683,6 @@ EditImageDetailsViewControllerDelegate
         });
         [self setFormatBarOnboardingShown:YES];
     }
-    
 }
 
 /**
@@ -1038,8 +1037,6 @@ EditImageDetailsViewControllerDelegate
     CGRect rawKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     CGRect kRect = [self.view convertRect:rawKeyboardRect fromView:self.view.window];
     self.keyboardRect = kRect;
-    
-    [self showFormatBarOnboarding];
 }
 
 - (void)cancelEditingOrDismiss
@@ -2174,6 +2171,13 @@ EditImageDetailsViewControllerDelegate
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorFormatBarStatusChanged:(WPEditorViewController *)editorController enabled:(BOOL)isEnabled
+{
+    if (isEnabled) {
+        [self showFormatBarOnboarding];
+    }
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
