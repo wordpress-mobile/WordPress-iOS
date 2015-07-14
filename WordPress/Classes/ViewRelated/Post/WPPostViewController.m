@@ -3,10 +3,12 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import <WordPress-iOS-Editor/WPEditorField.h>
 #import <WordPress-iOS-Editor/WPEditorView.h>
+#import <WordPress-iOS-Editor/WPEditorToolbarView.h>
 #import <WordPress-iOS-Shared/NSString+Util.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
+#import <WordPress-iOS-Shared/WPDeviceIdentification.h>
 #import <WordPressCom-Analytics-iOS/WPAnalytics.h>
 #import <SVProgressHUD.h>
 #import <WPMediaPicker/WPMediaPicker.h>
@@ -59,7 +61,8 @@ static NSString* const WPProgressMedia = @"WPProgressMedia";
 
 NSString* const kUserDefaultsNewEditorAvailable = @"kUserDefaultsNewEditorAvailable";
 NSString* const kUserDefaultsNewEditorEnabled = @"kUserDefaultsNewEditorEnabled";
-NSString* const OnboardingWasShown = @"OnboardingWasShown";
+NSString* const EditButtonOnboardingWasShown = @"OnboardingWasShown";
+NSString* const FormatBarOnboardingWasShown = @"FormatBarOnboardingWasShown";
 
 const CGRect NavigationBarButtonRect = {
     .origin.x = 0.0f,
@@ -82,10 +85,20 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
 
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
+static CGFloat const FormatBarTooltipHorizontalOffsetFromCenter = 75.0;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
+static CGFloat const FormatBarAnimationXOffset = 40.0;
+static CGFloat const FormatBarAnimationDuration = 0.3;
+static CGFloat const FormatBarAnimationDelay = 1.0;
+
 static void *ProgressObserverContext = &ProgressObserverContext;
+
+@interface WPEditorViewController ()
+@property (nonatomic, strong, readwrite) WPEditorToolbarView *toolbarView;
+@end
+
 @interface WPPostViewController () <
 WPMediaPickerViewControllerDelegate,
 UIActionSheetDelegate,
@@ -100,9 +113,11 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
+@property (nonatomic, strong) WPTooltip *formatBarToolTip;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
+@property (nonatomic) CGRect keyboardRect;
 
 #pragma mark - Media related properties
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
@@ -293,6 +308,19 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -305,11 +333,8 @@ EditImageDetailsViewControllerDelegate
         if (self.isEditing) {
             [self setNeedsStatusBarAppearanceUpdate];
         } else {
-            // Preview mode...show the onboarding hint the first time through only
-            if (!self.wasOnboardingShown) {
-                [self showOnboardingTips];
-                [self setOnboardingShown:YES];
-            }
+            // View appeared in preview mode, show the edit button onboarding hint if needed
+            [self showEditButtonOnboarding];
         }
     }
 
@@ -321,6 +346,12 @@ EditImageDetailsViewControllerDelegate
 - (void)viewWillDisappear:(BOOL)animated{
     [super viewWillDisappear:animated];
     [self.mediaProgressView removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardDidShowNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)viewWillLayoutSubviews
@@ -563,29 +594,117 @@ EditImageDetailsViewControllerDelegate
 
 #pragma mark - Onboarding
 
-- (void)setOnboardingShown:(BOOL)wasShown
+/**
+ *	@brief      Sets the edit button tooltip's displayed/not displayed state
+ *	@details    Sets a flag in NSUserDefaults designating that the edit button's
+ *              tooltip was displayed already.
+ *
+ *	@param      BOOL    YES if the edit button tooltip was shown
+ */
+- (void)setEditButtonOnboardingShown:(BOOL)wasShown
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:wasShown forKey:OnboardingWasShown];
+    [defaults setBool:wasShown forKey:EditButtonOnboardingWasShown];
     [defaults synchronize];
 }
 
-- (BOOL)wasOnboardingShown
+/**
+ *	@brief      Was the edit button tooltip already displayed?
+ *	@details    Returns YES if the edit button tooltip was already displayed to the
+ *              user, otherwise NO.
+ */
+- (BOOL)wasEditButtonOnboardingShown
 {
-    return [[NSUserDefaults standardUserDefaults] boolForKey:OnboardingWasShown];
+    return [[NSUserDefaults standardUserDefaults] boolForKey:EditButtonOnboardingWasShown];
+    return NO;
 }
 
-- (void)showOnboardingTips
+/**
+ *	@brief      Displays the tooltop for the edit button
+ *	@details    This method triggers the display of the navbar edit button tooltip only if the
+ *              it was NOT shown already.
+ */
+- (void)showEditButtonOnboarding
 {
-    CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
-    if (IS_IPAD) {
-        xValue -= 20.0;
-    } else {
-        xValue -= 10.0;
+    if (!self.wasEditButtonOnboardingShown) {
+        CGFloat xValue = CGRectGetMaxX(self.view.frame) - NavigationBarButtonRect.size.width;
+        if (IS_IPAD) {
+            xValue -= 20.0;
+        } else {
+            xValue -= 10.0;
+        }
+        CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
+        NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [WPTooltip displayTooltipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
+        });
+        [self setEditButtonOnboardingShown:YES];
     }
-    CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
-    NSString *tooltipText = NSLocalizedString(@"Tap to edit post", @"Tooltip for the button that allows the user to edit the current post.");
-    [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
+}
+
+/**
+ *	@brief      Sets the format bar tooltip's displayed/not displayed state
+ *	@details    Sets a flag in NSUserDefaults designating that the format bar's
+ *              tooltip was displayed already.
+ *
+ *	@param      BOOL    YES if the format bar tooltip was shown
+ */
+- (void)setFormatBarOnboardingShown:(BOOL)wasShown
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setBool:wasShown forKey:FormatBarOnboardingWasShown];
+    [defaults synchronize];
+}
+
+/**
+ *	@brief      Was the format bar tooltip already displayed?
+ *	@details    Returns YES if the format bar tooltip was already displayed to the
+ *              user, otherwise NO.
+ */
+- (BOOL)wasFormatBarOnboardingShown
+{
+    return [[NSUserDefaults standardUserDefaults] boolForKey:FormatBarOnboardingWasShown];
+}
+
+/**
+ *	@brief      Displays the tooltop for the formatbar
+ *	@details    This method triggers the display of the format bar tooltip only if the 
+ *              current device is NOT an iPad and the current orientation is not landscape 
+ *              and it was NOT shown already.
+ */
+- (void)showFormatBarOnboarding
+{
+    BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
+    if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
+        __weak __typeof__(self) weakSelf = self;
+        NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
+        dispatch_async(dispatch_get_main_queue(), ^{
+            CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
+            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:updatedRect withText:tooltipText direction:WPTooltipDirectionUp];
+            [weakSelf animateFormatBar];
+        });
+        [self setFormatBarOnboardingShown:YES];
+    }
+}
+
+/**
+ *	@brief      Animates the horizontal scrolling of the format bar
+ *	@details    This method triggers the format bar's horizontal scroll animation
+ *              which is used during onboarding.
+ */
+- (void)animateFormatBar
+{
+    CGPoint offset = self.toolbarView.toolbarScroll.contentOffset;
+    CGPoint newOffset = CGPointMake(offset.x + FormatBarAnimationXOffset, offset.y);
+    
+    __weak __typeof__(self) weakSelf = self;
+    [UIView animateWithDuration:FormatBarAnimationDuration delay:FormatBarAnimationDelay options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAutoreverse animations:^{
+        [weakSelf.toolbarView.toolbarScroll setContentOffset:newOffset animated: NO];
+    } completion:^(BOOL finished) {
+        [weakSelf.toolbarView.toolbarScroll setContentOffset:offset animated:NO];
+    }];
 }
 
 #pragma mark - Actions
@@ -906,6 +1025,23 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - Instance Methods
+
+- (void)keyboardWillHide:(NSNotification*)aNotification
+{
+    // If the format bar tooltip is still hanging around, let's git rid of it
+    if (self.formatBarToolTip) {
+        [self.formatBarToolTip cancelCurrentTooltip];
+        self.formatBarToolTip = nil;
+    }
+}
+
+- (void)keyboardWasShown:(NSNotification*)aNotification
+{
+    NSDictionary *info = [aNotification userInfo];
+    CGRect rawKeyboardRect = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    CGRect kRect = [self.view convertRect:rawKeyboardRect fromView:self.view.window];
+    self.keyboardRect = kRect;
+}
 
 - (void)cancelEditingOrDismiss
 {
@@ -2034,6 +2170,13 @@ EditImageDetailsViewControllerDelegate
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
     [self refreshUIForCurrentPost];
+}
+
+- (void)editorFormatBarStatusChanged:(WPEditorViewController *)editorController enabled:(BOOL)isEnabled
+{
+    if (isEnabled) {
+        [self showFormatBarOnboarding];
+    }
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
