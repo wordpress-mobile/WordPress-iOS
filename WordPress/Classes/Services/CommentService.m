@@ -1007,8 +1007,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (blog.restApi) {
         remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
     return remote;
 }
