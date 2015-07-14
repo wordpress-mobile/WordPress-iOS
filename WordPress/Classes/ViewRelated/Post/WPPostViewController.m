@@ -89,6 +89,10 @@ static CGFloat const FormatBarTooltipHorizontalOffsetFromCenter = 75.0;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
 
+static CGFloat const FormatBarAnimationXOffset = 40.0;
+static CGFloat const FormatBarAnimationDuration = 0.3;
+static CGFloat const FormatBarAnimationDelay = 1.0;
+
 static void *ProgressObserverContext = &ProgressObserverContext;
 
 @interface WPEditorViewController ()
@@ -675,9 +679,29 @@ EditImageDetailsViewControllerDelegate
         dispatch_async(dispatch_get_main_queue(), ^{
             CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
             weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:updatedRect withText:tooltipText direction:WPTooltipDirectionUp];
+            [weakSelf animateFormatBar];
         });
         [self setFormatBarOnboardingShown:YES];
     }
+    
+}
+
+/**
+ *	@brief      Animates the horizontal scrolling of the format bar
+ *	@details    This method triggers the format bar's horizontal scroll animation
+ *              which is used during onboarding.
+ */
+- (void)animateFormatBar
+{
+    CGPoint offset = self.toolbarView.toolbarScroll.contentOffset;
+    CGPoint newOffset = CGPointMake(offset.x + FormatBarAnimationXOffset, offset.y);
+    
+    __weak __typeof__(self) weakSelf = self;
+    [UIView animateWithDuration:FormatBarAnimationDuration delay:FormatBarAnimationDelay options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAutoreverse animations:^{
+        [weakSelf.toolbarView.toolbarScroll setContentOffset:newOffset animated: NO];
+    } completion:^(BOOL finished) {
+        [weakSelf.toolbarView.toolbarScroll setContentOffset:offset animated:NO];
+    }];
 }
 
 #pragma mark - Actions
