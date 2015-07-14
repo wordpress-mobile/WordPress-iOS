@@ -665,7 +665,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
     AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
     WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
 
-    return [NSPredicate predicateWithFormat:@"account = %@", defaultAccount];
+    return [NSPredicate predicateWithFormat:@"account != NULL AND account = %@", defaultAccount];
 }
 
 - (void)updateFetchRequest
