@@ -2,7 +2,7 @@
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
         <relationship name="original" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="revision" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
@@ -56,7 +56,7 @@
         <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="status" optional="YES" attributeType="String">
+        <attribute name="status" optional="YES" attributeType="String" defaultValueString="publish">
             <userInfo/>
         </attribute>
         <attribute name="wp_slug" optional="YES" attributeType="String">
@@ -75,6 +75,7 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
@@ -222,6 +223,7 @@
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="localThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localURL" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -376,13 +378,13 @@
         <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="blogID" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="blogID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="commentCount" optional="YES" attributeType="Integer 32" syncable="YES"/>
-        <attribute name="likeCount" optional="YES" attributeType="Integer 32" syncable="YES"/>
+        <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="permalink" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="postID" optional="YES" attributeType="Integer 64" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <relationship name="post" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="sourceAttribution" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
@@ -404,10 +406,10 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="510"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="525"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
@@ -415,7 +417,7 @@
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
-        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>

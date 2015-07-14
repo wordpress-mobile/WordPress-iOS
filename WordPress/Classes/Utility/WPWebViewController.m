@@ -183,7 +183,7 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return;
     }
 
-    if (!self.needsLogin && self.username && self.password && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
+    if (!self.needsLogin && self.hasCredentials && ![WPCookie hasCookieForURL:self.url andUsername:self.username]) {
         DDLogWarn(@"We have login credentials but no cookie, let's try login first");
         [self retryWithLogin];
         return;
@@ -262,7 +262,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     }
     
     _url = theURL;
-    [self loadWebViewRequest];
+    
+    // Prevent double load in viewDidLoad Method
+    if (self.isViewLoaded) {
+        [self loadWebViewRequest];
+    }
 }
 
 
@@ -333,9 +337,8 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     // WP Login: Send the credentials, if needed
     NSRange loginRange  = [request.URL.absoluteString rangeOfString:@"wp-login.php"];
     BOOL isLoginURL     = loginRange.location != NSNotFound;
-    BOOL hasCredentials = (self.username && (self.password || self.authToken));
     
-    if (isLoginURL && !self.needsLogin && hasCredentials) {
+    if (isLoginURL && !self.needsLogin && self.hasCredentials) {
         DDLogInfo(@"WP is asking for credentials, let's login first");
         [self retryWithLogin];
         return NO;
@@ -423,6 +426,14 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
            self.progressView.alpha = WPWebViewAnimationAlphaHidden;
        }];
     }];
+}
+
+
+#pragma mark - Authentication Helpers
+
+- (BOOL)hasCredentials
+{
+    return self.username && (self.password || self.authToken);
 }
 
 

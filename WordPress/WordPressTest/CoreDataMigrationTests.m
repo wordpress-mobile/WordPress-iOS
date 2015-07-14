@@ -2,6 +2,7 @@
 #import <CoreData/CoreData.h>
 #import <XCTest/XCTest.h>
 #import "ALIterativeMigrator.h"
+#import "Blog.h"
 
 @interface CoreDataMigrationTests : XCTestCase
 
@@ -425,6 +426,83 @@
     XCTAssertNil([newBlog3 valueForKey:@"username"]);
     XCTAssertEqualObjects(@"dotcomuser1", [newBlog3 valueForKeyPath:@"account.username"]);
     XCTAssertFalse([[newBlog3 valueForKey:@"isHostedAtWPcom"] boolValue]);
+}
+
+- (void)testMigrate34to35
+{
+    // Properties
+    NSURL *model34Url = [self urlForModelName:@"WordPress 34" inDirectory:nil];
+    NSURL *model35Url = [self urlForModelName:@"WordPress 35" inDirectory:nil];
+    NSURL *storeUrl = [self urlForStoreWithName:@"WordPress34.sqlite"];
+    
+    // Load a Model 34 Stack
+    NSManagedObjectModel *model34 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model34Url];
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model34];
+    
+    NSDictionary *options = @{
+                              NSInferMappingModelAutomaticallyOption          : @(YES),
+                              NSMigratePersistentStoresAutomaticallyOption    : @(YES)
+                              };
+    
+    NSError *error = nil;
+    NSPersistentStore *ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                                              configuration:nil
+                                                        URL:storeUrl
+                                                    options:options
+                                                      error:&error];
+    
+    NSManagedObjectContext *context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 34");
+    XCTAssertNotNil(context, @"Invalid NSManagedObjectContext");
+    
+
+    Blog *blog = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog setValue:@(1001) forKey:@"blogID"];
+    [blog setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    XCTAssertThrows(blog.blogTagline = @"TagLine", @"Model 34 doesn't support tagline");
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
+    
+    // Cleanup
+    XCTAssertNotNil(ps);
+    psc = nil;
+    
+    // Migrate to Model 35
+    NSManagedObjectModel *model35 = [[NSManagedObjectModel alloc] initWithContentsOfURL:model35Url];
+    BOOL migrateResult = [ALIterativeMigrator iterativeMigrateURL:storeUrl
+                                                           ofType:NSSQLiteStoreType
+                                                          toModel:model35
+                                                orderedModelNames:@[@"WordPress 34", @"WordPress 35"]
+                                                            error:&error];
+    if (!migrateResult) {
+        NSLog(@"Error while migrating: %@", error);
+    }
+    XCTAssertTrue(migrateResult);
+    
+    // Load a Model 35 Stack
+    psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model35];
+    ps = [psc addPersistentStoreWithType:NSSQLiteStoreType
+                           configuration:nil
+                                     URL:storeUrl
+                                 options:options
+                                   error:&error];
+    
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    context.persistentStoreCoordinator = psc;
+    
+    XCTAssertNil(error, @"Error while loading the PSC for Model 35");
+    XCTAssertNotNil(ps);
+    
+    Blog *blog2 = (Blog *)[NSEntityDescription insertNewObjectForEntityForName:@"Blog" inManagedObjectContext:context];
+    [blog2 setValue:@(1002) forKey:@"blogID"];
+    [blog2 setValue:@"https://test1.wordpress.com" forKey:@"url"];
+    [blog2 setValue:@"https://test1.wordpress.com/xmlrpc.php" forKey:@"xmlrpc"];
+    XCTAssertNoThrow(blog2.blogTagline = @"TagLine", @"Model 34 doesn't support tagline");
+    [context save:&error];
+    XCTAssertNil(error, @"Error while saving context");
 }
 
 #pragma mark - Private Helpers

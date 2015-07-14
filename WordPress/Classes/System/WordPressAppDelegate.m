@@ -27,6 +27,7 @@
 #import "NSBundle+VersionNumberHelper.h"
 #import "NSProcessInfo+Util.h"
 #import "NSString+Helpers.h"
+#import "UIAlertView+Blocks.h"
 #import "UIDevice+Helpers.h"
 
 // Data model
@@ -47,7 +48,9 @@
 #import "HelpshiftUtils.h"
 #import "WPLookbackPresenter.h"
 #import "TodayExtensionService.h"
+#import "WPAuthTokenIssueSolver.h"
 #import "WPWhatsNew.h"
+#import "WPThemeSettings.h"
 
 // Networking
 #import "WPUserAgent.h"
@@ -82,6 +85,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 @property (nonatomic, assign, readwrite) UIBackgroundTaskIdentifier     bgTask;
 @property (nonatomic, assign, readwrite) BOOL                           connectionAvailable;
 @property (nonatomic, strong, readwrite) WPUserAgent                    *userAgent;
+@property (nonatomic, assign, readwrite) BOOL                           shouldRestoreApplicationState;
 
 /**
  *  @brief      Flag that signals wether Whats New is on screen or not.
@@ -110,61 +114,31 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     [WordPressAppDelegate fixKeychainAccess];
 
+    // Basic networking setup
+    [self setupReachability];
+    
+    // Set the main window up
+    CGRect bounds = [[UIScreen mainScreen] bounds];
+    [self.window setFrame:bounds];
+    [self.window setBounds:bounds];
+    [self.window makeKeyAndVisible];
+    
     // Simperium: Wire CoreData Stack
     [self configureSimperiumWithLaunchOptions:launchOptions];
-
-    // Crash reporting, logging
-    self.logger = [[WPLogger alloc] init];
-    [self configureHockeySDK];
-    [self configureCrashlytics];
-    [self initializeAppRatingUtility];
     
-    // Analytics
-    [self configureAnalytics];
-
-    // Start Simperium
-    [self loginSimperium];
-
     // Local Notifications
     [self listenLocalNotifications];
+
+    WPAuthTokenIssueSolver *authTokenIssueSolver = [[WPAuthTokenIssueSolver alloc] init];
     
-    // Debugging
-    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
-    [self toggleExtraDebuggingIfNeeded];
-    [self removeCredentialsForDebug];
+    __weak __typeof(self) weakSelf = self;
 
-    // Stats and feedback    
-    [SupportViewController checkIfFeedbackShouldBeEnabled];
+    BOOL isFixingAuthTokenIssue = [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
+        [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
+    }];
 
-    [HelpshiftUtils setup];
+    self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
-    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
-
-    // Networking setup
-    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
-    [self setupReachability];
-    self.userAgent = [[WPUserAgent alloc] init];
-    [self setupSingleSignOn];
-
-    [self customizeAppearance];
-
-    // Push notifications
-    [NotificationsManager registerForPushNotifications];
-
-    // Deferred tasks to speed up app launch
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-        [MediaService cleanUnusedMediaFileFromTmpDir];
-        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
-    });
-    
-    // Configure Today Widget
-    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
-
-    if ([WPPostViewController makeNewEditorAvailable]) {
-        [self setMustShowWhatsNewPopup:YES];
-    }
-    
-    self.window.rootViewController = [WPTabBarController sharedInstance];
     return YES;
 }
 
@@ -285,7 +259,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     navController.navigationBar.translucent = NO;
                     [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
                 }
-                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -304,7 +277,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     }
                 }
             }
-		}
+        } else if ([WPThemeSettings shouldHandleURL:url]) {
+            returnValue = [WPThemeSettings handleURL:url];
+            
+            if (returnValue) {
+                if ([WPThemeSettings isEnabled]) {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes enabled."];
+                } else {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes disabled."];
+                }
+            }
+        }
     }
 
     return returnValue;
@@ -379,7 +362,61 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (BOOL)application:(UIApplication *)application shouldRestoreApplicationState:(NSCoder *)coder
 {
-    return YES;
+    return self.shouldRestoreApplicationState;
+}
+
+#pragma mark - Application startup
+
+- (void)runStartupSequenceWithLaunchOptions:(NSDictionary *)launchOptions
+{
+    // Crash reporting, logging
+    self.logger = [[WPLogger alloc] init];
+    [self configureHockeySDK];
+    [self configureCrashlytics];
+    [self initializeAppRatingUtility];
+    
+    // Analytics
+    [self configureAnalytics];
+    
+    // Start Simperium
+    [self loginSimperium];
+    
+    // Debugging
+    [self printDebugLaunchInfoWithLaunchOptions:launchOptions];
+    [self toggleExtraDebuggingIfNeeded];
+    [self removeCredentialsForDebug];
+    
+    // Stats and feedback
+    [SupportViewController checkIfFeedbackShouldBeEnabled];
+    
+    [HelpshiftUtils setup];
+    
+    [[GPPSignIn sharedInstance] setClientID:[WordPressComApiCredentials googlePlusClientId]];
+    
+    // Networking setup
+    [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
+    self.userAgent = [[WPUserAgent alloc] init];
+    [self setupSingleSignOn];
+    
+    [self customizeAppearance];
+    
+    // Push notifications
+    [NotificationsManager registerForPushNotifications];
+    
+    // Deferred tasks to speed up app launch
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+        [MediaService cleanUnusedMediaFileFromTmpDir];
+        [[PocketAPI sharedAPI] setConsumerKey:[WordPressComApiCredentials pocketConsumerKey]];
+    });
+    
+    // Configure Today Widget
+    [self determineIfTodayWidgetIsConfiguredAndShowAppropriately];
+    
+    if ([WPPostViewController makeNewEditorAvailable]) {
+        [self setMustShowWhatsNewPopup:YES];
+    }
+    
+    self.window.rootViewController = [WPTabBarController sharedInstance];
 }
 
 #pragma mark - Push Notification delegate
@@ -508,7 +545,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     LoginViewController *loginViewController = [[LoginViewController alloc] init];
     loginViewController.showEditorAfterAddingSites = thenEditor;
     loginViewController.cancellable = hasWordpressAccountButNoSelfHostedBlogs;
-    loginViewController.dismissBlock = ^{
+    loginViewController.dismissBlock = ^(BOOL cancelled){
         
         __strong __typeof(weakSelf) strongSelf = self;
         
@@ -603,7 +640,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [barButtonItem setTitleTextAttributes:@{NSForegroundColorAttributeName: [UIColor whiteColor], NSFontAttributeName : [WPFontManager openSansSemiBoldFontOfSize:16.0]} forState:UIControlStateDisabled];
     [[UICollectionView appearanceWhenContainedIn:[WPMediaPickerViewController class],nil] setBackgroundColor:[WPStyleGuide greyLighten30]];
     [[WPMediaCollectionViewCell appearanceWhenContainedIn:[WPMediaCollectionViewController class],nil] setBackgroundColor:[WPStyleGuide lightGrey]];
-    [[UIActivityIndicatorView appearanceWhenContainedIn:[WPMediaCollectionViewController class],nil] setColor:[WPStyleGuide grey]];
 }
 
 #pragma mark - Analytics
@@ -945,7 +981,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
         if ([self noSelfHostedBlogs] && [self noWordPressDotComAccount]) {
             [WPAnalytics track:WPAnalyticsStatLogout];
         }
-        [self logoutSimperiumAndResetNotifications];
+        
+        if (self.simperium.user.authenticated) {
+            [self logoutSimperiumAndResetNotifications];
+        } else {
+            [self resetSimperiumOnAuthTokenIssue];
+        }
+        
         [self removeTodayWidgetConfiguration];
         [self showWelcomeScreenIfNeededAnimated:NO];
     }
@@ -974,6 +1016,21 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 {
     TodayExtensionService *service = [TodayExtensionService new];
     [service removeTodayWidgetConfiguration];
+}
+
+#pragma mark - Simperium helpers
+
+/**
+ *  @brief      This code exists for the sole purpose of fixing the missing-auth-token issue in
+ *              WPiOS 5.3.
+ *  @details    Read this: https://github.com/wordpress-mobile/WordPress-iOS/issues/3964
+ *  @todo       Remove this once enough version numbers have passed :)
+ */
+- (void)resetSimperiumOnAuthTokenIssue
+{
+    SPBucket *notesBucket = [self.simperium bucketForName:NSStringFromClass([Notification class])];
+    [notesBucket deleteAllObjects];
+    [self.simperium saveWithoutSyncing];
 }
 
 #pragma mark - What's new
