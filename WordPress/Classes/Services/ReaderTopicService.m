@@ -9,6 +9,7 @@
 #import "WordPressComApi.h"
 #import "ReaderPost.h"
 #import "ReaderSite.h"
+#import "RemoteReaderSiteInfo.h"
 
 NSString * const ReaderTopicDidChangeViaUserInteractionNotification = @"ReaderTopicDidChangeViaUserInteractionNotification";
 NSString * const ReaderTopicDidChangeNotification = @"ReaderTopicDidChangeNotification";
@@ -207,6 +208,9 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
 - (void)deleteTopic:(ReaderTopic *)topic
 {
+    if (!topic) {
+        return;
+    }
     [self.managedObjectContext deleteObject:topic];
     [self.managedObjectContext performBlockAndWait:^{
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -377,6 +381,42 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
     return topic;
 }
+
+- (void)siteTopicForSiteWithID:(NSNumber *)siteID
+                       success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
+                       failure:(void (^)(NSError *error))failure
+{
+    ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithApi:[self apiForRequest]];
+    [remoteService fetchSiteInfoForSiteWithID:siteID success:^(RemoteReaderSiteInfo *siteInfo) {
+        if (!success) {
+            return;
+        }
+        NSEntityDescription *entity = [NSEntityDescription entityForName:NSStringFromClass([ReaderTopic class])
+                                                  inManagedObjectContext:self.managedObjectContext];
+        ReaderTopic *topic = [[ReaderTopic alloc] initWithEntity:entity
+                     insertIntoManagedObjectContext:self.managedObjectContext];
+
+        topic.topicID = siteInfo.siteID;
+        topic.type = ReaderTopicTypeSite;
+        topic.title = siteInfo.siteName;
+        topic.topicDescription = siteInfo.siteDescription;
+        topic.path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+
+        NSError *error;
+        [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
+        if (error) {
+            DDLogError(@"%@ error obtaining permanent ID for topic for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        }
+        success(topic.objectID, siteInfo.isFollowing);
+
+    } failure:^(NSError *error) {
+        DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 #pragma mark - Private Methods
 
