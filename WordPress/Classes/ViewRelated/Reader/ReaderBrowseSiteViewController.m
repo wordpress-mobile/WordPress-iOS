@@ -13,9 +13,11 @@
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderPreviewHeaderView.h"
 #import "ReaderSiteHeaderView.h"
+#import "ReaderSiteService.h"
 #import "ReaderTopic.h"
 #import "ReaderTopicService.h"
 #import "UIImageView+AFNetworkingExtra.h"
+#import "WPNoResultsView+AnimatedBox.h"
 #import "WPTabBarController.h"
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
@@ -26,6 +28,11 @@
 @property (nonatomic, strong) ReaderPreviewHeaderView *tableHeaderView;
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) ReaderTopic *siteTopic;
+@property (nonatomic, strong) NSNumber *siteID;
+@property (nonatomic, strong) NSString *siteURL;
+@property (nonatomic) BOOL isFollowing;
+@property (nonatomic) BOOL isWPcom;
+@property (nonatomic, strong) WPNoResultsView *noResultsView;
 @end
 
 @implementation ReaderBrowseSiteViewController
@@ -43,7 +50,24 @@
 {
     self = [super init];
     if (self) {
-        _post = post;
+        _siteID = post.siteID;
+        _siteURL = post.blogURL;
+        _isWPcom = post.isWPCom;
+        _isFollowing = post.isFollowing;
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:context];
+        _siteTopic = [topicService siteTopicForPost:post];
+    }
+    return self;
+}
+
+- (instancetype)initWithSiteID:(NSNumber *)siteID siteURL:(NSString *)siteURL isWPcom:(BOOL)isWPcom
+{
+    self = [super init];
+    if (self) {
+        _siteID = siteID;
+        _siteURL = siteURL;
+        _isWPcom = isWPcom;
     }
     return self;
 }
@@ -54,14 +78,12 @@
     self.title = NSLocalizedString(@"Site Detail", @"Title of the blog preview screen. The screen shows a list of posts from a blog and provides an option to follow the blog.");
     self.view.backgroundColor = [WPStyleGuide itsEverywhereGrey];
 
-    if (!self.post) {
+    if (self.siteTopic) {
+        [self configureView];
         return;
     }
 
-    [self createSiteTopic];
-    [self configureSiteHeaderView];
-    [self configurePostsViewController];
-    [self configureViewConstraints];
+    [self getTopicFromSiteID];
 }
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -78,10 +100,50 @@
 
 #pragma mark - Configuration
 
-- (void)createSiteTopic
+- (void)getTopicFromSiteID
 {
+    [self showLoadingSite];
+    __weak __typeof(self) weakSelf = self;
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    self.siteTopic = [topicService siteTopicForPost:self.post];
+    [topicService siteTopicForSiteWithID:self.siteID
+                                 success:^(NSManagedObjectID *objectID, BOOL isFollowing) {
+                                     weakSelf.isFollowing = isFollowing;
+                                     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+                                     NSError *error;
+                                     weakSelf.siteTopic = (ReaderTopic *)[context existingObjectWithID:objectID error:&error];
+                                     [weakSelf configureView];
+
+                                 } failure:^(NSError *error) {
+                                     weakSelf.noResultsView.titleText = NSLocalizedString(@"Problem Loading Site", @"Error message title informing the user that a site could not be loaded.");
+                                     weakSelf.noResultsView.messageText = NSLocalizedString(@"Sorry. The site could not be loaded.", @"A short error message leting the user know the requested site could not be loaded.");
+                                 }];
+}
+
+- (void)configureView
+{
+    if (self.noResultsView) {
+        [self.noResultsView removeFromSuperview];
+        self.noResultsView = nil;
+    }
+    [self configureSiteHeaderView];
+    [self configurePostsViewController];
+    [self configureViewConstraints];
+}
+
+- (void)showLoadingSite
+{
+    if (!self.isViewLoaded) {
+        return;
+    }
+
+    if (!self.noResultsView) {
+        self.noResultsView = [[WPNoResultsView alloc] init];
+    }
+
+    // Refresh the NoResultsView Properties
+    self.noResultsView.titleText = NSLocalizedString(@"Loading site...", @"A short message to inform the user the requested site is being loaded.");
+
+    [self.noResultsView showInView:self.view];
 }
 
 - (void)configureSiteHeaderView
@@ -94,11 +156,11 @@
     attributionView.attributionNameLabel.text = self.siteTopic.title;
     attributionView.delegate = self;
     attributionView.backgroundColor = [UIColor whiteColor];
-    [attributionView selectAttributionButton:self.post.isFollowing];
+    [attributionView selectAttributionButton:self.isFollowing];
 
-    NSURL *blogURL = [NSURL URLWithString:self.post.blogURL];
-    if (self.post.isWPCom) {
-        [attributionView.avatarImageView setImageWithSiteIcon:[blogURL host] placeholderImage:[UIImage imageNamed:@"blavatar-wpcom"]];
+    NSURL *blogURL = [NSURL URLWithString:self.siteURL];
+    if (self.isWPcom) {
+        [attributionView.avatarImageView setImageWithSiteIcon:[blogURL host] placeholderImage:[UIImage imageNamed:@"blavatar-default"]];
     } else {
         [attributionView.avatarImageView setImageWithSiteIcon:[blogURL host] placeholderImage:[UIImage imageNamed:@"icon-feed"]];
     }
@@ -171,7 +233,7 @@
 
 - (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
 {
-    NSURL *targetURL = [NSURL URLWithString:self.post.blogURL];
+    NSURL *targetURL = [NSURL URLWithString:self.siteURL];
     WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:targetURL];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
@@ -180,30 +242,31 @@
 
 - (void)attributionView:(WPContentAttributionView *)attributionView didReceiveAttributionLinkAction:(id)sender
 {
+    // Update it optimistically
     UIButton *followButton = (UIButton *)sender;
+    self.isFollowing = !self.isFollowing;
+    [followButton setSelected:self.isFollowing];
 
-    if (!self.post.isFollowing) {
+    // Track all the things.
+    if (self.isFollowing) {
         [WPAnalytics track:WPAnalyticsStatReaderFollowedSite];
     }
 
-    [followButton setSelected:!self.post.isFollowing]; // Set it optimistically
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
 
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-    ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-
-    [context performBlock:^{
-        ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:self.post.objectID error:nil];
-        if (!postInContext) {
-            return;
-        }
-
-        [service toggleFollowingForPost:postInContext success:nil failure:^(NSError *error) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                DDLogError(@"Error Following Blog : %@", [error localizedDescription]);
-                [followButton setSelected:postInContext.isFollowing];
-            });
-        }];
-    }];
+    __weak __typeof(self) weakSelf = self;
+    ReaderPostService *postService = [[ReaderPostService alloc] initWithManagedObjectContext:context];
+    [postService setFollowing:self.isFollowing
+           forWPComSiteWithID:self.siteID
+                       andURL:self.siteURL
+                      success:^{
+                          // no op
+                      } failure:^(NSError *error) {
+                          DDLogError(@"Error Following/Unfollowing Site : %@", [error localizedDescription]);
+                          // Roll back changes.
+                          weakSelf.isFollowing = !weakSelf.isFollowing;
+                          [followButton setSelected:weakSelf.isFollowing];
+                      }];
 }
 
 @end
