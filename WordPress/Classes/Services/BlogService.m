@@ -144,9 +144,14 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
 {
     DDLogMethod();
 
+    NSManagedObjectID *accountID = account.objectID;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
+            WPAccount *account = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountID error:nil];
+            if (!account) {
+                return;
+            }
             [self mergeBlogs:blogs
                  withAccount:account
                   completion:success];
