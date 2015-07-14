@@ -141,7 +141,23 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
         DDLogError(@"Couldn't unregister push token: %@", [error localizedDescription]);
     };
     
-    [defaultAccount.restApi unregisterForPushNotificationsWithDeviceId:deviceId success:successBlock failure:failureBlock];
+    // This method may have been called as a result of an issue that's setting authTokens to nil
+    // in WordPress v5.3, if the user decides to log out of his WP.com account.  This is part of a
+    // hotfix for WordPress v5.3.1.
+    //
+    // The following conditional check is only performed in case the authToken is nil, since we
+    // can't really use the restApi to unregister the token in this case.
+    //
+    // For more info on the issue check this URL:
+    // https://github.com/wordpress-mobile/WordPress-iOS/pull/3956
+    //
+    // Feel free to remove the following code once we're in a galaxy far, far away (from WPiOS 5.3).
+    //
+    if (defaultAccount.authToken) {
+        [defaultAccount.restApi unregisterForPushNotificationsWithDeviceId:deviceId
+                                                                   success:successBlock
+                                                                   failure:failureBlock];
+    }
 }
 
 + (BOOL)deviceRegisteredForPushNotifications

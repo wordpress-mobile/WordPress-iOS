@@ -1,11 +1,10 @@
 #import <UIKit/UIKit.h>
-#import "WordPressAppDelegate.h"
 #import "UITableViewTextFieldCell.h"
 #import "SettingsViewControllerDelegate.h"
 
 @class Blog;
 
-@interface EditSiteViewController : UIViewController
+@interface EditSiteViewController : UITableViewController
 
 @property (nonatomic,   weak, readwrite) id<SettingsViewControllerDelegate> delegate;
 @property (nonatomic, assign, readwrite) BOOL isCancellable;
