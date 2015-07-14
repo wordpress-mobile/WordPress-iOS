@@ -1,6 +1,7 @@
 #import "ReaderPostRichContentView.h"
 #import "WPRichTextView.h"
 #import <DTCoreText/DTCoreText.h>
+#import "OriginalSiteAttributionView.h"
 
 @interface ReaderPostRichContentView()<WPRichTextViewDelegate>
 
@@ -51,6 +52,19 @@
 {
     [super buildFeaturedImageview];
     self.featuredImageView.userInteractionEnabled = YES;
+}
+
+- (void)buildDiscoverAttributionView
+{
+    // Return a ui lable subclass implementing the necessary protocol
+    OriginalSiteAttributionView *originalAttributionView = [OriginalSiteAttributionView new];
+    originalAttributionView.translatesAutoresizingMaskIntoConstraints = NO;
+    originalAttributionView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapDiscoverAttribution:)];
+    [originalAttributionView addGestureRecognizer:tgr];
+
+    self.discoverPostAttributionView = originalAttributionView;
+    [self addSubview:self.discoverPostAttributionView];
 }
 
 - (void)configureContentView
@@ -109,6 +123,13 @@
 {
     if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
         [self.delegate richTextViewDidLoadMediaBatch:richTextView];
+    }
+}
+
+- (void)didTapDiscoverAttribution:(UITapGestureRecognizer *)gestureRecognizer
+{
+    if ([self.delegate respondsToSelector:@selector(postView:didTapDiscoverAttribution:)]) {
+        [self.delegate postView:self didTapDiscoverAttribution:self.discoverPostAttributionView];
     }
 }
 
