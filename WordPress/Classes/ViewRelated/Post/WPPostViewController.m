@@ -102,6 +102,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic) BOOL isOpenedDirectlyForEditing;
 
 #pragma mark - Media related properties
 @property (nonatomic, strong) NSProgress * mediaGlobalProgress;
@@ -222,6 +223,7 @@ EditImageDetailsViewControllerDelegate
         
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
+        _isOpenedDirectlyForEditing = (mode == kWPEditorViewControllerModeEdit);
         
         if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
@@ -286,7 +288,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    [self refreshNavigationBarButtons:NO];
+    if (!self.isOpenedDirectlyForEditing) {
+        [self refreshNavigationBarButtons:NO];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -969,13 +973,8 @@ EditImageDetailsViewControllerDelegate
 {
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        [blogService syncBlog:blog success:^{
-            blogService = nil;
-        } failure:^(NSError *error) {
-            blogService = nil;
-        }];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService syncBlog:blog];
     }
 }
 
@@ -1372,7 +1371,7 @@ EditImageDetailsViewControllerDelegate
 {
     [self discardChanges];
     
-    if (!self.post) {
+    if (!self.post || self.isOpenedDirectlyForEditing) {
         [self dismissEditView];
     } else {
         [self refreshUIForCurrentPost];

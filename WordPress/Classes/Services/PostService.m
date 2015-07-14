@@ -19,22 +19,7 @@ NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 const NSInteger PostServiceNumberToFetch = 40;
 
-@interface PostService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation PostService
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 + (instancetype)serviceWithMainContext {
     return [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -514,12 +499,6 @@ const NSInteger PostServiceNumberToFetch = 40;
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = PostStatusPublish;
-
-    // HACK: aerych - 2015-06-18
-    // The date_create_gmt should arleady be nil for a draft but
-    // triggering the setter correctly sets the metaPublishImmediately flag.
-    post.date_created_gmt = nil;
 }
 
 - (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
@@ -787,8 +766,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     if (blog.restApi) {
         remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
     return remote;
 }

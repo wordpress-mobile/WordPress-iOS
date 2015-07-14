@@ -9,7 +9,7 @@ extern NSInteger const MediaMaxImageSizeDimension;
 @class Media;
 @class Blog;
 
-@interface MediaService : NSObject <LocalCoreDataService>
+@interface MediaService : LocalCoreDataService
 
 + (CGSize)maxImageSizeSetting;
 

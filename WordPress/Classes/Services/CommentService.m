@@ -15,12 +15,6 @@
 
 NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
 
-@interface CommentService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation CommentService
 
 + (NSMutableSet *)syncingCommentsLocks
@@ -61,16 +55,6 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     @synchronized([self syncingCommentsLocks]) {
         [[self syncingCommentsLocks] removeObject:blogID];
     }
-}
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
 }
 
 - (NSSet *)findCommentsWithPostID:(NSNumber *)postID inBlog:(Blog *)blog
@@ -993,8 +977,7 @@ NSUInteger const WPTopLevelHierarchicalCommentsPerPage = 20;
     if (blog.restApi) {
         remote = [[CommentServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[CommentServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
     return remote;
 }

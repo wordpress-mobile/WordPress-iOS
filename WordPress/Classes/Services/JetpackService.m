@@ -7,20 +7,7 @@
 #import "WPAccount.h"
 #import "Blog.h"
 
-@interface JetpackService ()
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-@end
-
 @implementation JetpackService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-    return self;
-}
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
