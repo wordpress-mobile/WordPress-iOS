@@ -3,6 +3,6 @@
 @interface NSBundle (VersionNumberHelper)
 
 - (NSString *)detailedVersionNumber;
-- (NSString *)shortVersionNumber;
+- (NSString *)shortVersionString;
 
 @end
