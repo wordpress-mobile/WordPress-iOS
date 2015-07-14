@@ -152,7 +152,7 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U6E-MB-03K">
                                         <rect key="frame" x="217" y="332" width="77" height="18"/>
                                         <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4X-fn-9uf">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U4X-fn-9uf" customClass="PostMetaButton">
                                                 <rect key="frame" x="47" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="YVF-bx-Qxo"/>
@@ -164,7 +164,7 @@
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2K-8g-nnA">
+                                            <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="f2K-8g-nnA" customClass="PostMetaButton">
                                                 <rect key="frame" x="4" y="0.0" width="30" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="GFc-LE-9Ao"/>

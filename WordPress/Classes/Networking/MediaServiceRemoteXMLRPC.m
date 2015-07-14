@@ -60,6 +60,27 @@
                  }];
 }
 
+- (void)getMediaLibraryCountForBlog:(Blog *)blog
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *))failure
+{
+    NSArray *parameters = [blog getXMLRPCArgsWithExtra:nil];
+    [self.api callMethod:@"wp.getMediaLibrary"
+              parameters:parameters
+                 success:^(AFHTTPRequestOperation *operation, id responseObject) {
+                     NSAssert([responseObject isKindOfClass:[NSArray class]], @"Response should be an array.");
+                     if (success) {
+                         success([responseObject count]);
+                     }
+                 }
+                 failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                     if (failure) {
+                         failure(error);
+                     }
+                 }];
+}
+
+
 - (NSURLCredential *)findCredentialForHost:(NSString *)host port:(NSInteger)port
 {
     __block NSURLCredential *foundCredential = nil;

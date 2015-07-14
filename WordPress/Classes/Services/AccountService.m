@@ -14,27 +14,11 @@
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
-@interface AccountService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 ///------------------------------------
 /// @name Default WordPress.com account

@@ -80,8 +80,21 @@
 - (id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
 {
     NSUUID *blockKey = [NSUUID UUID];
-    id<NSObject> oneKey = [self.deviceLibraryDataSource registerChangeObserverBlock:callback];
-    id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:callback];
+    __weak __typeof__(self) weakSelf = self;
+    id<NSObject> oneKey = [self.deviceLibraryDataSource registerChangeObserverBlock:^{
+        if (weakSelf.currentDataSource == weakSelf.deviceLibraryDataSource) {
+            if (callback) {
+                callback();
+            }
+        }
+    }];
+    id<NSObject> secondKey = [self.mediaLibraryDataSource registerChangeObserverBlock:^{
+        if (weakSelf.currentDataSource == weakSelf.mediaLibraryDataSource) {
+            if (callback) {
+                callback();
+            }
+        }
+    }];
     
     self.observers[blockKey] = @[oneKey, secondKey];
     return blockKey;
