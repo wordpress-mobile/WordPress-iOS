@@ -9,6 +9,7 @@ Changes to the data model:
 
 - `Blog` added a new attribute called blogTagline to store the tagline of a site
 - `BasePost` set the default value for the status attribute to "publish" 
+- `Account` added a `displayName` attribute (@koke)
 
 ## WordPress 34 (@sergioestevao 2015-06-20)
 
