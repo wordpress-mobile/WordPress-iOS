@@ -4,6 +4,7 @@
 extern NSString * const WordPressComReaderEndpointURL;
 
 @class WordPressComApi;
+@class RemoteReaderSiteInfo;
 
 @interface ReaderTopicServiceRemote : ServiceRemoteREST
 
@@ -40,5 +41,18 @@ extern NSString * const WordPressComReaderEndpointURL;
 - (void)followTopicNamed:(NSString *)topicName
              withSuccess:(void (^)(NSNumber *topicID))success
                  failure:(void (^)(NSError *error))failure;
+
+
+/**
+ Fetches public information about the site with the specified ID. 
+ 
+ @param siteID The ID of the site.
+ @param success block called on a successful fetch. An instance of RemoteReaderSiteInfo
+ is passed to the callback block.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
+                           success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
+                           failure:(void (^)(NSError *error))failure;
 
 @end
