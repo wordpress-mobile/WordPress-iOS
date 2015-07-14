@@ -210,6 +210,18 @@
     return self.media[index];
 }
 
+-(id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
+{
+    NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+    __block Media *media = nil;
+    [mainContext performBlockAndWait:^{
+        NSURL *assetURL = [NSURL URLWithString:identifier];
+        NSManagedObjectID *assetID = [[[ContextManager sharedInstance] persistentStoreCoordinator] managedObjectIDForURIRepresentation:assetURL];
+        media = (Media *)[mainContext objectWithID:assetID];
+    }];
+    return media;
+}
+
 + (NSPredicate *)predicateForFilter:(WPMediaType)filter blog:(Blog *)blog
 {
     NSPredicate *predicate;
