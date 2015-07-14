@@ -2,6 +2,7 @@
 #import "WordPressComApi.h"
 #import "RemoteReaderTopic.h"
 #import "ReaderTopic.h"
+#import "RemoteReaderSiteInfo.h"
 
 NSString * const WordPressComReaderEndpointURL = @"https://public-api.wordpress.com/rest/v1.2/";
 static NSString * const TopicMenuSectionDefaultKey = @"default";
@@ -14,6 +15,12 @@ static NSString * const TopicDictionarySlugKey = @"slug";
 static NSString * const TopicDictionaryTitleKey = @"title";
 static NSString * const TopicDictionaryURLKey = @"URL";
 static NSString * const TopicNotFoundMarker = @"-notfound-";
+
+static NSString * const SiteDictionaryIDKey = @"ID";
+static NSString * const SiteDictionaryNameKey = @"name";
+static NSString * const SiteDictionaryDescriptionKey = @"description";
+static NSString * const SiteDictionaryURLKey = @"URL";
+static NSString * const SiteDictionaryFollowingKey = @"is_following";
 
 @implementation ReaderTopicServiceRemote
 
@@ -101,6 +108,33 @@ static NSString * const TopicNotFoundMarker = @"-notfound-";
         }
     }];
 }
+
+- (void)fetchSiteInfoForSiteWithID:(NSNumber *)siteID
+                           success:(void (^)(RemoteReaderSiteInfo *siteInfo))success
+                           failure:(void (^)(NSError *error))failure
+{
+    NSString *path =[NSString stringWithFormat:@"sites/%@", siteID];
+
+    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (!success) {
+            return;
+        }
+        NSDictionary *response = (NSDictionary *)responseObject;
+        RemoteReaderSiteInfo *siteInfo = [RemoteReaderSiteInfo new];
+        siteInfo.siteID = [response numberForKey:SiteDictionaryIDKey];
+        siteInfo.siteName = [response stringForKey:SiteDictionaryNameKey];
+        siteInfo.siteDescription = [response stringForKey:SiteDictionaryDescriptionKey];
+        siteInfo.siteURL = [response stringForKey:SiteDictionaryURLKey];
+        siteInfo.isFollowing = [[response numberForKey:SiteDictionaryFollowingKey] boolValue];
+        success(siteInfo);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
 
 #pragma mark - Private Methods
 
