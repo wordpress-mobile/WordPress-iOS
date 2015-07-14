@@ -64,7 +64,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     SettingsSectionSettingsRowJetpackREST,
     SettingsSectionSettingsRowTracking,
     SettingsSectionSettingsRowActivityLogs,
-    SettingsSectionSettingsRowAbout,
     SettingsSectionSettingsRowCount
 };
 
@@ -391,9 +390,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         } else if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
@@ -453,21 +449,8 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            [self displayAboutViewController];
         }
     }
-}
-
-
-#pragma mark - Helpers
-
-- (void)displayAboutViewController
-{
-    NSString *nibName               = [AboutViewController classNameWithoutNamespaces];
-    AboutViewController *aboutVC    = [[AboutViewController alloc] initWithNibName:nibName bundle:nil];
-
-    [self.navigationController pushViewController:aboutVC animated:YES];
 }
 
 
