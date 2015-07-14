@@ -6,7 +6,7 @@
 
 extern NSString * const ReaderPostServiceErrorDomain;
 
-@interface ReaderPostService : NSObject<LocalCoreDataService>
+@interface ReaderPostService : LocalCoreDataService
 
 /**
  Fetches the posts for the specified topic

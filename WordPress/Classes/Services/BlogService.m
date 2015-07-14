@@ -19,6 +19,7 @@
 #import "RemoteBlog.h"
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
+#import "RemoteBlogSettings.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -28,23 +29,7 @@ NSString *const MinimumVersion = @"3.6";
 NSString *const HttpsPrefix = @"https://";
 CGFloat const OneHourInSeconds = 60.0 * 60.0;
 
-@interface BlogService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation BlogService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 - (Blog *)blogByBlogId:(NSNumber *)blogID
 {
@@ -205,6 +190,44 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                        success:[self optionsHandlerWithBlogObjectID:blog.objectID
                                                   completionHandler:success]
                        failure:failure];
+}
+
+- (void)syncSettingsForBlog:(Blog *)blog
+                    success:(void (^)())success
+                    failure:(void (^)(NSError *error))failure
+{
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    [remote syncSettingsForBlog:blog
+                        success:^(RemoteBlogSettings *settings) {
+                            blog.blogName = settings.name;
+                            blog.blogTagline = settings.desc;
+                            [self.managedObjectContext save:nil];
+                            if (success) {
+                                success();
+                            }
+                        }
+                        failure:failure];
+}
+
+- (void)updateSettingForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        [remote updateSettingsForBlog:blogInContext
+                              success:^() {
+                                [self.managedObjectContext performBlock:^{
+                                    [self.managedObjectContext save:nil];
+                                    if (success) {
+                                        success();
+                                    }
+                                }];
+                              }
+                              failure:failure];
+    }];
 }
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
@@ -523,6 +546,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
+        blog.blogTagline = [remoteBlog.description stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;

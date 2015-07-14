@@ -349,11 +349,12 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
                     helpshiftUnreadCountLabel.text = [NSString stringWithFormat:@"%ld", [HelpshiftUtils unreadNotificationCount]];
 
                     cell.accessoryView = helpshiftUnreadCountLabel;
-                    cell.accessoryType = UITableViewCellAccessoryNone;
                 } else {
                     cell.accessoryView = nil;
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
+                
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                [WPStyleGuide configureTableViewActionCell:cell];
             } else {
                 cell.textLabel.text = NSLocalizedString(@"WordPress Forums", @"");
                 [WPStyleGuide configureTableViewActionCell:cell];
