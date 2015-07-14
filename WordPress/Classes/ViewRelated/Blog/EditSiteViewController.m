@@ -9,49 +9,54 @@
 #import "Blog.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "NotificationsManager.h"
-#import <WPXMLRPC/WPXMLRPC.h>
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
 #import "NotificationsManager.h"
 #import "AccountService.h"
 #import "ContextManager.h"
+#import <WPXMLRPC/WPXMLRPC.h>
+#import "BlogService.h"
 
-const typedef enum {
+NS_ENUM(NSInteger, EditSiteRow) {
     EditSiteRowURL = 0,
     EditSiteRowUsername = 1,
     EditSiteRowPassword = 2,
+    EditSiteRowTitle = 0,
+    EditSiteRowTagline = 1,
     EditSiteRowGeotagging = 0,
     EditSiteRowPushNotifications = 1,
-} EditSiteRow;
+};
 
-const typedef enum {
+NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionTitle = 0,
-    TableViewSectionSettings,
-} TableSectionContentType;
+    TableViewSectionGeneralSettings,
+    TableViewSectionMobileSettings,
+};
 
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
-NSInteger const EditSiteSectionCount = 2;
+NSInteger const EditSiteSectionCount = 3;
 
 NSInteger const EditSiteRowCountForSectionTitle = 1;
 NSInteger const EditSiteRowCountForSectionTitleSelfHosted = 3;
 NSInteger const EditSiteRowCountForSectionSettings = 2;
 NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
+NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 @interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (nonatomic,   weak) IBOutlet UITableView *tableView;
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
-@property (nonatomic, strong) UIActivityIndicatorView *savingIndicator;
 @property (nonatomic,   weak) UITextField *lastTextField;
 @property (nonatomic,   weak) UITextField *usernameTextField;
 @property (nonatomic,   weak) UITextField *passwordTextField;
 @property (nonatomic,   weak) UITextField *urlTextField;
-
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
+@property (nonatomic,   weak) UITextField *siteTitleTextField;
+@property (nonatomic,   weak) UITextField *siteTaglineTextField;
+
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *authToken;
@@ -73,7 +78,8 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
-    self = [super init];
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
         _blog = blog;
     }
@@ -90,29 +96,29 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     DDLogMethod();
     [super viewDidLoad];
 
-    if (self.blog) {
-        self.navigationItem.title = NSLocalizedString(@"Settings", @"");
+    self.navigationItem.title = NSLocalizedString(@"Settings", @"");
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    
+    self.refreshControl = [[UIRefreshControl alloc] init];
+    [self.refreshControl addTarget:self action:@selector(refreshTriggered:) forControlEvents:UIControlEventValueChanged];
+    
+    self.url = self.blog.url;
+    self.authToken = self.blog.authToken;
+    self.username = self.blog.usernameForSite;
+    self.password = self.blog.password;
 
-        [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+    self.startingUser = self.username;
+    self.startingPwd = self.password;
+    self.startingUrl = self.url;
+    self.geolocationEnabled = self.blog.geolocationEnabled;
 
-        self.url = self.blog.url;
-        self.authToken = self.blog.authToken;
-        self.username = self.blog.usernameForSite;
-        self.password = self.blog.password;
-
-        self.startingUser = self.username;
-        self.startingPwd = self.password;
-        self.startingUrl = self.url;
-        self.geolocationEnabled = self.blog.geolocationEnabled;
-
-        _notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
-        if (!_notificationPreferences) {
-            [NotificationsManager fetchNotificationSettingsWithSuccess:^{
-                [self reloadNotificationSettings];
-            } failure:^(NSError *error) {
-                [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
-            }];
-        }
+    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
+    if (!self.notificationPreferences) {
+        [NotificationsManager fetchNotificationSettingsWithSuccess:^{
+            [self reloadNotificationSettings];
+        } failure:^(NSError *error) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
+        }];
     }
 
     if (self.isCancellable) {
@@ -124,7 +130,10 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     }
 
     // Create the save button but don't show it until something changes
-    self.saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).") style:[WPStyleGuide barButtonStyleForDone] target:self action:@selector(save:)];
+    self.saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
+                                                       style:[WPStyleGuide barButtonStyleForDone]
+                                                      target:self
+                                                      action:@selector(save:)];
 
     if (!IS_IPAD) {
         [[NSNotificationCenter defaultCenter] addObserver:self
@@ -145,6 +154,8 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
+    
+    [self refreshData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -168,11 +179,13 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
             return EditSiteRowCountForSectionTitle;
         }
         return EditSiteRowCountForSectionTitleSelfHosted;
-    } else if (section == TableViewSectionSettings) {
+    } else if (section == TableViewSectionMobileSettings) {
         if ([self canTogglePushNotifications]) {
             return EditSiteRowCountForSectionSettings;
         }
         return EditSiteRowCountForSectionSettingsSelfHosted;
+    } else if (section == TableViewSectionGeneralSettings) {
+        return EditSiteRowCountForSectionGeneralSettings;
     }
     return 0;
 }
@@ -206,41 +219,42 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     NSString *headingTitle = nil;
     if (section == TableViewSectionTitle) {
         headingTitle = self.blog.blogName;
-    } else if (section == TableViewSectionSettings) {
+    } else if (section == TableViewSectionMobileSettings) {
         headingTitle = NSLocalizedString(@"Settings", @"");
+    }  else if (section == TableViewSectionGeneralSettings) {
+        headingTitle = NSLocalizedString(@"General", @"");
     }
     return headingTitle;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForSectionTitleInRow:(NSInteger)row
 {
-    if ([indexPath section] == TableViewSectionTitle) {
-        if (indexPath.row == EditSiteRowURL) {
+    switch (row) {
+        case EditSiteRowURL: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             self.urlTextField = cell.textField;
-            cell.textLabel.text = NSLocalizedString(@"URL", @"");
-
+            cell.textLabel.text = NSLocalizedString(@"URL", @"");            
             self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
-            self.urlTextField.keyboardType = UIKeyboardTypeURL;
             [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
             [self configureTextField:self.urlTextField asPassword:NO];
             self.urlTextField.keyboardType = UIKeyboardTypeURL;
             if (self.blog.url != nil) {
                 self.urlTextField.text = self.blog.url;
-
+                
                 // Make a margin exception for URLs since they're so long
                 cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
             } else {
                 self.urlTextField.text = @"";
             }
-
+            
             self.urlTextField.enabled = [self canEditUsernameAndURL];
             [WPStyleGuide configureTableViewTextCell:cell];
-
+            
             return cell;
-        } else if (indexPath.row == EditSiteRowUsername) {
+        } break;
+        case EditSiteRowUsername: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-
+            
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
             self.usernameTextField = cell.textField;
             self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
@@ -251,14 +265,15 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
             } else {
                 self.usernameTextField.text = @"";
             }
-
+            
             self.usernameTextField.enabled = [self canEditUsernameAndURL];
             [WPStyleGuide configureTableViewTextCell:cell];
-
+            
             return cell;
-        } else if (indexPath.row == EditSiteRowPassword) {
+        } break;
+        case EditSiteRowPassword: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-
+            
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
             self.passwordTextField = cell.textField;
             self.passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
@@ -270,36 +285,95 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
                 self.passwordTextField.text = @"";
             }
             [WPStyleGuide configureTableViewTextCell:cell];
-
+            
             // If the other rows can't be edited, it looks better to align the password to the right as well
             if (![self canEditUsernameAndURL]) {
                 self.passwordTextField.textAlignment = NSTextAlignmentRight;
             }
-
+            
             return cell;
-        }
-    } else if (indexPath.section == TableViewSectionSettings) {
-        if (indexPath.row == EditSiteRowGeotagging) {
-            UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
-            UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
-            geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-            geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            geotaggingSwitch.on = self.geolocationEnabled;
-            [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
-            geotaggingCell.accessoryView = geotaggingSwitch;
-            [WPStyleGuide configureTableViewCell:geotaggingCell];
-            return geotaggingCell;
+        } break;
+    }
+    return nil;
+}
 
-        } else if (indexPath.row == EditSiteRowPushNotifications) {
-            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
-            UISwitch *pushSwitch = [[UISwitch alloc] init];
-            pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
-            pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
-            pushSwitch.on = [self getBlogPushNotificationsSetting];
-            [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
-            pushCell.accessoryView = pushSwitch;
-            [WPStyleGuide configureTableViewCell:pushCell];
-            return pushCell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForMobileSettingsAtRow:(NSInteger)row
+{
+    if (row == EditSiteRowGeotagging) {
+        UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
+        UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
+        geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
+        geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        geotaggingSwitch.on = self.geolocationEnabled;
+        [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
+        geotaggingCell.accessoryView = geotaggingSwitch;
+        [WPStyleGuide configureTableViewCell:geotaggingCell];
+        return geotaggingCell;
+    } else if (row == EditSiteRowPushNotifications) {
+        UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
+        pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PushNotificationsCellIdentifier];
+        UISwitch *pushSwitch = [[UISwitch alloc] init];
+        pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
+        pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
+        pushCell.accessoryView = pushSwitch;
+        [WPStyleGuide configureTableViewCell:pushCell];
+        pushSwitch.on = [self getBlogPushNotificationsSetting];
+        return pushCell;
+    }
+    return nil;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForSectionGeneralSettingsInRow:(NSInteger)row
+{
+    switch (row) {
+        case EditSiteRowTitle: {
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
+            self.siteTitleTextField = cell.textField;
+            self.siteTitleTextField.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            [self.siteTitleTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.siteTitleTextField asPassword:NO];
+            self.siteTitleTextField.keyboardType = UIKeyboardTypeDefault;
+            self.siteTitleTextField.text = self.blog.blogName;
+            self.siteTitleTextField.enabled = YES;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            self.siteTitleTextField.textAlignment = NSTextAlignmentRight;
+            return cell;
+        } break;
+        case EditSiteRowTagline: {
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
+            self.siteTaglineTextField = cell.textField;
+            self.siteTaglineTextField.placeholder = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            [self.siteTaglineTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.siteTaglineTextField asPassword:NO];
+            self.siteTaglineTextField.keyboardType = UIKeyboardTypeDefault;
+            self.siteTaglineTextField.text = self.blog.blogTagline;
+            cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
+            self.siteTaglineTextField.enabled = YES;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            self.siteTaglineTextField.textAlignment = NSTextAlignmentRight;
+            return cell;
+        } break;
+    }
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case TableViewSectionTitle:
+            return [self tableView:tableView cellForSectionTitleInRow:indexPath.row];
+            break;
+        case TableViewSectionMobileSettings: {
+            return [self tableView:tableView cellForMobileSettingsAtRow:indexPath.row];
+            break;
+        }
+        case TableViewSectionGeneralSettings: {
+            return [self tableView:tableView cellForSectionGeneralSettingsInRow:indexPath.row];
+            break;
         }
     }
 
@@ -341,6 +415,10 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
         [self.passwordTextField becomeFirstResponder];
     } else if (textField == self.passwordTextField) {
         [self.passwordTextField resignFirstResponder];
+    } else if (textField == self.siteTitleTextField) {
+        [self.siteTaglineTextField becomeFirstResponder];
+    } else if (textField == self.siteTaglineTextField) {
+        [self.siteTaglineTextField resignFirstResponder];
     }
     return NO;
 }
@@ -349,6 +427,9 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     shouldChangeCharactersInRange:(NSRange)range
     replacementString:(NSString *)string
 {
+    if (!(textField == self.usernameTextField || textField == self.passwordTextField)) {
+        return YES;
+    }
     // Adjust the text color of the containing cell's textLabel if
     // the entered information is invalid.
     if ([textField isDescendantOfView:self.tableView]) {
@@ -377,8 +458,33 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     return YES;
 }
 
-#pragma mark -
-#pragma mark Custom methods
+#pragma mark - Custom methods
+
+- (IBAction)refreshTriggered:(id)sender
+{
+    [self refreshData];
+}
+
+- (void)refreshData
+{
+    BlogService *service = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    __weak __typeof__(self) weakSelf = self;
+    [service syncSettingsForBlog:self.blog success:^{
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        [strongSelf.refreshControl endRefreshing];
+        [strongSelf.tableView reloadData];
+    } failure:^(NSError *error) {
+        __typeof__(self) strongSelf = weakSelf;
+        if (!strongSelf) {
+            return;
+        }
+        [strongSelf.refreshControl endRefreshing];
+    }];
+    
+}
 
 - (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword
 {
@@ -527,8 +633,6 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 
 - (void)validationSuccess:(NSString *)xmlrpc
 {
-    [self.savingIndicator stopAnimating];
-    [self.savingIndicator setHidden:YES];
     self.blog.geolocationEnabled = self.geolocationEnabled;
     self.blog.password = self.password;
 
@@ -542,8 +646,6 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 
 - (void)validationDidFail:(NSError *)error
 {
-    [self.savingIndicator stopAnimating];
-    [self.savingIndicator setHidden:YES];
     self.saveButton.enabled = YES;
     [self.navigationItem setHidesBackButton:NO animated:NO];
 
@@ -604,46 +706,31 @@ NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
     }
 }
 
-- (void)save:(id)sender
+- (void)save:(UIBarButtonItem *)sender
 {
     [self.urlTextField resignFirstResponder];
     [self.usernameTextField resignFirstResponder];
     [self.passwordTextField resignFirstResponder];
-
+    [self.siteTitleTextField resignFirstResponder];
+    [self.siteTaglineTextField resignFirstResponder];
+    
     self.url = [NSURL IDNEncodedURL:self.urlTextField.text];
-    DDLogInfo(@"blog url: %@", self.url);
     self.username = self.usernameTextField.text;
     self.password = self.passwordTextField.text;
-
-    if (!self.savingIndicator) {
-        self.savingIndicator = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-        self.savingIndicator.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        CGRect frm = self.savingIndicator.frame;
-        frm.origin.x = (self.tableView.frame.size.width / 2.0f) - (frm.size.width / 2.0f);
-        self.savingIndicator.frame = frm;
-        UIView *aView = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, self.tableView.frame.size.width, frm.size.height)];
-        [aView addSubview:self.savingIndicator];
-
-        [self.tableView setTableFooterView:aView];
-    }
-    [self.savingIndicator setHidden:NO];
-    [self.savingIndicator startAnimating];
-
-    if (self.blog) {
-        self.blog.geolocationEnabled = self.geolocationEnabled;
-        [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
-    }
-    if (self.blog == nil || self.blog.usernameForSite == nil) {
-        [self validateUrl];
-    } else {
-        if ([self.startingUser isEqualToString:self.usernameTextField.text] &&
-            [self.startingPwd isEqualToString:self.passwordTextField.text] &&
-            [self.startingUrl isEqualToString:self.urlTextField.text]) {
-            // No need to check if nothing changed
-            [self cancel:nil];
-        } else {
-            [self validateUrl];
-        }
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    self.blog.blogName = self.siteTitleTextField.text;
+    self.blog.blogTagline = self.siteTaglineTextField.text;
+    self.blog.geolocationEnabled = self.geolocationEnabled;
+    if ([self.blog hasChanges]) {
+        sender.enabled = NO;
+        [SVProgressHUD show];
+        [blogService updateSettingForBlog:self.blog success:^{
+            [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"Settings Saved", @"Message to show when settings are saved")];
+            sender.enabled = YES;
+        } failure:^(NSError *error) {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
+            sender.enabled = YES;
+        }];
     }
 }
 

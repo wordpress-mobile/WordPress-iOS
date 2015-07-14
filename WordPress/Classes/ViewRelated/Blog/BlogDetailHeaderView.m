@@ -107,6 +107,7 @@ const CGFloat BlogDetailHeaderViewLabelHorizontalPadding = 10.0;
 {
     CGRect blavatarFrame = CGRectMake(0.0f, 0.0f, BlogDetailHeaderViewBlavatarSize, BlogDetailHeaderViewBlavatarSize);
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:blavatarFrame];
+    imageView.backgroundColor = [UIColor whiteColor];
     imageView.translatesAutoresizingMaskIntoConstraints = NO;
     imageView.layer.borderColor = [[UIColor whiteColor] CGColor];
     imageView.layer.borderWidth = 1.0;

@@ -50,6 +50,7 @@
 #import "TodayExtensionService.h"
 #import "WPAuthTokenIssueSolver.h"
 #import "WPWhatsNew.h"
+#import "WPThemeSettings.h"
 
 // Networking
 #import "WPUserAgent.h"
@@ -135,7 +136,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     BOOL isFixingAuthTokenIssue = [authTokenIssueSolver fixAuthTokenIssueAndDo:^{
         [weakSelf runStartupSequenceWithLaunchOptions:launchOptions];
     }];
-    
+
     self.shouldRestoreApplicationState = !isFixingAuthTokenIssue;
 
     return YES;
@@ -258,7 +259,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     navController.navigationBar.translucent = NO;
                     [[WPTabBarController sharedInstance] presentViewController:navController animated:YES completion:nil];
                 }
-                
             }
         } else if ([URLString rangeOfString:@"debugging"].length) {
             NSDictionary *params = [[url query] dictionaryFromQueryString];
@@ -277,7 +277,17 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
                     }
                 }
             }
-		}
+        } else if ([WPThemeSettings shouldHandleURL:url]) {
+            returnValue = [WPThemeSettings handleURL:url];
+            
+            if (returnValue) {
+                if ([WPThemeSettings isEnabled]) {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes enabled."];
+                } else {
+                    [SVProgressHUD showSuccessWithStatus:@"Themes disabled."];
+                }
+            }
+        }
     }
 
     return returnValue;

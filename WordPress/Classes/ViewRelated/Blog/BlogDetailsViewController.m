@@ -34,6 +34,7 @@
 #import "WPAccount.h"
 #import "PostListViewController.h"
 #import "PageListViewController.h"
+#import "WPThemeSettings.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowStats = 1;
@@ -47,6 +48,7 @@ const NSInteger BlogDetailsRowRemove = 0;
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
     TableViewSectionPublishType,
+    TableViewSectionAppearance,
     TableViewSectionConfigurationType,
     TableViewSectionAdmin,
     TableViewSectionRemove,
@@ -61,6 +63,7 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 2;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
+NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 NSInteger const BlogDetailsRowCountForSectionRemove = 1;
@@ -70,6 +73,16 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 @property (nonatomic, strong) BlogDetailHeaderView *headerView;
 @property (nonatomic, weak) UIActionSheet *removeSiteActionSheet;
 @property (nonatomic, weak) UIAlertView *removeSiteAlertView;
+
+/**
+ *  @brief      Property to store the themes-enabled state when the VC opens.
+ *  @details    The reason it's important to store this in a property as opposed to checking if
+ *              themes are enabled in real time, is that this VC is not ready to update the themes
+ *              feature visibility if it's changed when this VC is open.  This is not a big problem
+ *              though since this feature exists only for testing purposes, but it could still crash
+ *              the app if not handled properly.
+ */
+@property (nonatomic, assign, readwrite, getter=areThemesEnabled) BOOL themesEnabled;
 
 @end
 
@@ -127,14 +140,15 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.themesEnabled = [WPThemeSettings isEnabled];
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:BlogDetailsCellIdentifier];
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog success:nil failure:nil];
-
+    [blogService syncBlog:_blog];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -210,6 +224,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.headerView setBlog:self.blog];
     [self.tableView reloadData];
 }
 
@@ -222,24 +237,33 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+    NSInteger result = TableViewSectionCount;
+    
     if (![self.blog supports:BlogFeatureRemovable]) {
         // No "Remove Site" for wp.com
-        return TableViewSectionCount - 1;
+        result -= 1;
     }
-    return TableViewSectionCount;
+    
+    if (!self.areThemesEnabled) {
+        result -= 1;
+    }
+    
+    return result;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == TableViewSectionGeneralType) {
+    if ([self isGeneralSection:section]) {
         return BlogDetailsRowCountForSectionGeneralType;
-    } else if (section == TableViewSectionPublishType) {
+    } else if ([self isPublishSection:section]) {
         return BlogDetailsRowCountForSectionPublishType;
-    } else if (section == TableViewSectionConfigurationType) {
+    } else if ([self isAppearanceSection:section]) {
+        return BlogDetailsRowCountForSectionAppearance;
+    } else if ([self isConfigurationSection:section]) {
         return BlogDetailsRowCountForSectionConfigurationType;
-    } else if (section == TableViewSectionAdmin) {
+    } else if ([self isAdminSection:section]) {
         return BlogDetailsRowCountForSectionAdmin;
-    } else if (section == TableViewSectionRemove) {
+    } else if ([self isRemoveSection:section]) {
         return BlogDetailsRowCountForSectionRemove;
     }
 
@@ -248,7 +272,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == TableViewSectionGeneralType) {
+    if ([self isGeneralSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowViewSite:
                 cell.textLabel.text = NSLocalizedString(@"View Site", nil);
@@ -261,7 +285,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             default:
                 break;
         }
-    } else if (indexPath.section == TableViewSectionPublishType) {
+    } else if ([self isPublishSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
                 cell.textLabel.text = NSLocalizedString(@"Blog Posts", nil);
@@ -282,17 +306,20 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             default:
                 break;
         }
-    } else if (indexPath.section == TableViewSectionConfigurationType) {
+    } else if ([self isAppearanceSection:indexPath.section]) {
+        cell.textLabel.text = NSLocalizedString(@"Themes", @"Themes option in the blog details");
+        cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
+    } else if ([self isConfigurationSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowEditSite) {
             cell.textLabel.text = NSLocalizedString(@"Settings", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         }
-    } else if (indexPath.section == TableViewSectionAdmin) {
+    } else if ([self isAdminSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowViewAdmin) {
             cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
         }
-    } else if (indexPath.section == TableViewSectionRemove) {
+    } else if ([self isRemoveSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowRemove) {
             cell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
             cell.textLabel.textAlignment = NSTextAlignmentCenter;
@@ -318,13 +345,13 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if (indexPath.section == TableViewSectionConfigurationType && indexPath.row == BlogDetailsRowEditSite) {
+    if ([self isConfigurationSection:indexPath.section] && indexPath.row == BlogDetailsRowEditSite) {
         EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
 
     Class controllerClass;
-    if (indexPath.section == TableViewSectionGeneralType) {
+    if ([self isGeneralSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
@@ -336,7 +363,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             default:
                 break;
         }
-    } else if (indexPath.section == TableViewSectionPublishType) {
+    } else if ([self isPublishSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
                 [self showPostList];
@@ -351,11 +378,11 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             default:
                 break;
         }
-    } else if (indexPath.section == TableViewSectionAdmin) {
+    } else if ([self isAdminSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowViewAdmin) {
             [self showViewAdminForBlog:self.blog];
         }
-    } else if (indexPath.section == TableViewSectionRemove) {
+    } else if ([self isRemoveSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowRemove) {
             [self showRemoveSiteForBlog:self.blog];
         }
@@ -406,15 +433,67 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *headingTitle = nil;
-    if (section == TableViewSectionPublishType) {
+    if ([self isPublishSection:section]) {
         headingTitle = NSLocalizedString(@"Publish", @"");
-    } else if (section == TableViewSectionConfigurationType) {
+    } else if ([self isAppearanceSection:section]) {
+        headingTitle = NSLocalizedString(@"Appearance",
+                                         @"Section title for the appearance table section in the" \
+                                         " blog details screen.");
+    } else if ([self isConfigurationSection:section]) {
         headingTitle = NSLocalizedString(@"Configuration", @"");
-    } else if (section == TableViewSectionAdmin) {
+    } else if ([self isAdminSection:section]) {
         headingTitle = NSLocalizedString(@"Admin", @"");
     }
 
     return headingTitle;
+}
+
+#pragma mark - Identifying sections
+
+- (BOOL)isGeneralSection:(NSInteger)section
+{
+    return section == TableViewSectionGeneralType;
+}
+
+- (BOOL)isPublishSection:(NSInteger)section
+{
+    return section == TableViewSectionPublishType;
+}
+
+- (BOOL)isAppearanceSection:(NSInteger)section
+{
+    return self.areThemesEnabled && section == TableViewSectionAppearance;
+}
+
+- (BOOL)isConfigurationSection:(NSInteger)section
+{
+    if (!self.areThemesEnabled) {
+        section += 1;
+    }
+    
+    return section == TableViewSectionConfigurationType;
+}
+
+- (BOOL)isAdminSection:(NSInteger)section
+{
+    if (!self.areThemesEnabled) {
+        section += 1;
+    }
+    
+    return section == TableViewSectionAdmin;
+}
+
+- (BOOL)isRemoveSection:(NSInteger)section
+{
+    if (![self.blog supports:BlogFeatureRemovable]) {
+        return NO;
+    }
+    
+    if (!self.areThemesEnabled) {
+        section += 1;
+    }
+    
+    return section == TableViewSectionRemove;
 }
 
 #pragma mark - Private methods
@@ -498,9 +577,16 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)handleDataModelChange:(NSNotification *)note
 {
-    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    NSSet *deletedObjects = note.userInfo[NSDeletedObjectsKey];
     if ([deletedObjects containsObject:self.blog]) {
         [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+    
+    NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
+    if ([updatedObjects containsObject:self.blog]) {
+        self.navigationItem.backBarButtonItem.title = self.blog.blogName;
+        self.navigationItem.title = self.blog.blogName;
+        [self.tableView reloadData];
     }
 }
 

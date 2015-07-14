@@ -77,6 +77,16 @@
     return [self.currentDataSource mediaAtIndex:index];
 }
 
+- (id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
+{
+    id<WPMediaAsset> result = [self.deviceLibraryDataSource mediaWithIdentifier:identifier];
+    if (result) {
+        return result;
+    }
+    result = [self.mediaLibraryDataSource mediaWithIdentifier:identifier];
+    return result;
+}
+
 - (id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
 {
     NSUUID *blockKey = [NSUUID UUID];
