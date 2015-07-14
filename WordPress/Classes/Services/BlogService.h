@@ -4,7 +4,7 @@
 
 @class WPAccount;
 
-@interface BlogService : NSObject<LocalCoreDataService>
+@interface BlogService : LocalCoreDataService
 
 /**
  Returns the blog that matches with a given blogID
@@ -55,6 +55,29 @@
 - (void)syncPostFormatsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
+
+/**
+ *  Sync blog settings from the server
+ *
+ *  @param blog    the blog from where to read the information from
+ *  @param success a block that is invoked when the sync is sucessfull
+ *  @param failure a block that in invoked when the sync fails.
+ */
+- (void)syncSettingsForBlog:(Blog *)blog
+                   success:(void (^)())success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
+ *  Update blog settings to server
+ *
+ *  @param blog    the blog to update
+ *  @param success a block that is invoked when the update is sucessfull
+ *  @param failure a block that in invoked when the update fails.
+ */
+- (void)updateSettingForBlog:(Blog *)blog
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
+
 
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success;
 

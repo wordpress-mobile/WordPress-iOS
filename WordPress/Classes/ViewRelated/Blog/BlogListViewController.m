@@ -488,7 +488,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
         if (!defaultAccount) {
             loginViewController.prefersSelfHosted = YES;
         }
-        loginViewController.dismissBlock = ^{
+        loginViewController.dismissBlock = ^(BOOL cancelled){
             [self dismissViewControllerAnimated:YES completion:nil];
         };
         UINavigationController *loginNavigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
@@ -558,6 +558,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     [super setEditing:editing animated:animated];
     [self.tableView setEditing:editing animated:animated];
+    self.navigationItem.rightBarButtonItem.enabled = !editing;
 
     if (editing) {
         [self updateHeaderSize];
