@@ -95,7 +95,7 @@ extension WPStyleGuide
         public static let contentBlockBoldFont      = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
         public static let contentBlockItalicFont    = WPFontManager.merriweatherLightItalicFontOfSize(blockFontSize)
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
-        public static let blockBoldFont             = WPFontManager.openSansBoldFontOfSize(blockFontSize)
+        public static let blockBoldFont             = WPFontManager.openSansSemiBoldFontOfSize(blockFontSize)
 
         public static let blockTextColor            = WPStyleGuide.littleEddieGrey()
         public static let blockQuotedColor          = UIColor(red: 0x7E/255.0, green: 0x9E/255.0, blue: 0xB5/255.0, alpha: 0xFF/255.0)
@@ -236,9 +236,9 @@ extension WPStyleGuide
         private static let headerTitleContextColor  = WPStyleGuide.allTAllShadeGrey()
         
         // Fonts
-        private static let sectionHeaderFont        = WPFontManager.openSansBoldFontOfSize(headerFontSize)
+        private static let sectionHeaderFont        = WPFontManager.openSansSemiBoldFontOfSize(headerFontSize)
         private static let subjectRegularFont       = WPFontManager.openSansRegularFontOfSize(subjectFontSize)
-        private static let subjectBoldFont          = WPFontManager.openSansBoldFontOfSize(subjectFontSize)
+        private static let subjectBoldFont          = WPFontManager.openSansSemiBoldFontOfSize(subjectFontSize)
         private static let subjectItalicsFont       = WPFontManager.openSansItalicFontOfSize(subjectFontSize)
         private static let subjectNoticonFont       = UIFont(name: "Noticons", size: subjectNoticonSize)
         private static let headerTitleRegularFont   = blockRegularFont
