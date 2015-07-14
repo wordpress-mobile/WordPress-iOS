@@ -192,7 +192,7 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `303b8068530389ea87afde38b77466d685fe3210`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
-    commit `729efce03d7f35de67b4cd8fd2667aaf72e8031d`)
+    commit `452f4ad9113d5468615ce992ae13fe858883b810`)
   - WordPress-iOS-Shared (= 0.3.3)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.34)
@@ -219,7 +219,7 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 729efce03d7f35de67b4cd8fd2667aaf72e8031d
+    :commit: 452f4ad9113d5468615ce992ae13fe858883b810
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 CHECKOUT OPTIONS:
@@ -239,7 +239,7 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: 729efce03d7f35de67b4cd8fd2667aaf72e8031d
+    :commit: 452f4ad9113d5468615ce992ae13fe858883b810
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 SPEC CHECKSUMS:
