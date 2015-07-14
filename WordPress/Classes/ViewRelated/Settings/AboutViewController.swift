@@ -203,7 +203,7 @@ public class AboutViewController : UITableViewController
         return filterDisabledRows([
             [
                 Row(title:   NSLocalizedString("Version", comment: "Displays the version of the App"),
-                    details: NSBundle.mainBundle().shortVersionNumber(),
+                    details: NSBundle.mainBundle().shortVersionString(),
                     handler: nil),
                 
                 Row(title:   NSLocalizedString("Terms of Service", comment: "Opens the Terms of Service Web"),
