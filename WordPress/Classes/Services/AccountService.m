@@ -14,27 +14,11 @@
 static NSString * const DefaultDotcomAccountUUIDDefaultsKey = @"AccountDefaultDotcomUUID";
 static NSString * const DefaultDotcomAccountPasswordRemovedKey = @"DefaultDotcomAccountPasswordRemovedKey";
 
-@interface AccountService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 static NSString * const WordPressDotcomXMLRPCKey = @"https://wordpress.com/xmlrpc.php";
 NSString * const WPAccountDefaultWordPressComAccountChangedNotification = @"WPAccountDefaultWordPressComAccountChangedNotification";
 NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEmailAndDefaultBlogUpdatedNotification";
 
 @implementation AccountService
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 ///------------------------------------
 /// @name Default WordPress.com account
@@ -88,8 +72,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    NSManagedObjectID *accountID = account.objectID;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [NotificationsManager registerForPushNotifications];
     });
@@ -159,7 +146,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         account.username = username;
     }
     account.authToken = authToken;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     if (![self defaultWordPressComAccount]) {
         [self setDefaultWordPressComAccount:account];

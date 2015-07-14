@@ -116,6 +116,7 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) WPTooltip *formatBarToolTip;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
+@property (nonatomic) BOOL isOpenedDirectlyForEditing;
 @property (nonatomic) CGRect keyboardRect;
 
 #pragma mark - Media related properties
@@ -237,6 +238,7 @@ EditImageDetailsViewControllerDelegate
         
         _changedToEditModeDueToUnsavedChanges = changeToEditModeDueToUnsavedChanges;
         _post = post;
+        _isOpenedDirectlyForEditing = (mode == kWPEditorViewControllerModeEdit);
         
         if (post.blog.isHostedAtWPcom) {
             [PrivateSiteURLProtocol registerPrivateSiteURLProtocol];
@@ -301,7 +303,9 @@ EditImageDetailsViewControllerDelegate
     self.delegate = self;
     self.failedMediaAlertView = nil;
     [self configureMediaUpload];
-    [self refreshNavigationBarButtons:NO];
+    if (!self.isOpenedDirectlyForEditing) {
+        [self refreshNavigationBarButtons:NO];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1105,13 +1109,8 @@ EditImageDetailsViewControllerDelegate
 {
     if (blogChanged) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        __block BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-
-        [blogService syncBlog:blog success:^{
-            blogService = nil;
-        } failure:^(NSError *error) {
-            blogService = nil;
-        }];
+        BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+        [blogService syncBlog:blog];
     }
 }
 
@@ -1508,7 +1507,7 @@ EditImageDetailsViewControllerDelegate
 {
     [self discardChanges];
     
-    if (!self.post) {
+    if (!self.post || self.isOpenedDirectlyForEditing) {
         [self dismissEditView];
     } else {
         [self refreshUIForCurrentPost];
@@ -1841,7 +1840,7 @@ EditImageDetailsViewControllerDelegate
             [WPAnalytics track:WPAnalyticsStatEditorAddedVideoViaLocalLibrary];
             [self.editorView replaceLocalVideoWithID:mediaUniqueId
                                       forRemoteVideo:media.remoteURL
-                                        remotePoster:media.thumbnailLocalURL
+                                        remotePoster:media.remoteThumbnailURL
                                           videoPress:media.videopressGUID];
         }
     } failure:^(NSError *error) {
@@ -1953,7 +1952,7 @@ EditImageDetailsViewControllerDelegate
         if ([media mediaType] == MediaTypeImage) {
             [self.editorView insertImage:media.remoteURL alt:media.title];
         } else if ([media mediaType] == MediaTypeVideo) {
-            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media thumbnailLocalURL]];
+            [self.editorView insertInProgressVideoWithID:[media.mediaID stringValue] usingPosterImage:[media absoluteThumbnailLocalURL]];
             [self.editorView replaceLocalVideoWithID:[media.mediaID stringValue] forRemoteVideo:media.remoteURL remotePoster:media.remoteThumbnailURL videoPress:media.videopressGUID];
         }
         [self stopTrackingProgressOfMediaWithId:mediaUniqueID];
@@ -1961,7 +1960,7 @@ EditImageDetailsViewControllerDelegate
         if ([media mediaType] == MediaTypeImage) {
             [self.editorView insertLocalImage:media.absoluteLocalURL uniqueId:mediaUniqueID];
         } else if ([media mediaType] == MediaTypeVideo) {
-            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media thumbnailLocalURL]];
+            [self.editorView insertInProgressVideoWithID:mediaUniqueID usingPosterImage:[media absoluteThumbnailLocalURL]];
         }
         [self uploadMedia:media trackingId:mediaUniqueID];
     }

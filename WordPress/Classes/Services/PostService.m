@@ -19,22 +19,7 @@ NSString * const PostServiceTypeAny = @"any";
 NSString * const PostServiceErrorDomain = @"PostServiceErrorDomain";
 const NSInteger PostServiceNumberToFetch = 40;
 
-@interface PostService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation PostService
-
-- (instancetype)initWithManagedObjectContext:(NSManagedObjectContext *)context {
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
-}
 
 + (instancetype)serviceWithMainContext {
     return [[PostService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
@@ -84,10 +69,15 @@ const NSInteger PostServiceNumberToFetch = 40;
               failure:(void (^)(NSError *))failure
 {
     id<PostServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
     [remote getPostWithID:postID
                   forBlog:blog
                   success:^(RemotePost *remotePost){
                       [self.managedObjectContext performBlock:^{
+                          Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                          if (!blog) {
+                              return;
+                          }
                           if (remotePost) {
                               AbstractPost *post = [self findPostWithID:postID inBlog:blog];
                               if (!post) {
@@ -175,11 +165,16 @@ const NSInteger PostServiceNumberToFetch = 40;
         postCount += 40;
         options[@"number"] = @(postCount);
     }
+    NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
                    forBlog:blog
                    options:options
                    success:^(NSArray *posts) {
         [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+            if (!blog) {
+                return;
+            }
             [self mergePosts:posts
                       ofType:postType
                 withStatuses:nil
@@ -234,12 +229,17 @@ const NSInteger PostServiceNumberToFetch = 40;
         options[@"post_status"] = status;
     }
     options[@"number"] = @(PostServiceNumberToFetch);
+    NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
                    forBlog:blog
                    options:options
                    success:^(NSArray *posts) {
                        BOOL hasMore = ([posts count] < PostServiceNumberToFetch) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
+                           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                           if (!blog) {
+                               return;
+                           }
                            [self mergePosts:posts
                                      ofType:postType
                                withStatuses:postStatus
@@ -248,7 +248,7 @@ const NSInteger PostServiceNumberToFetch = 40;
                               purgeExisting:YES
                           completionHandler:^{
                               // Update the Last Sync Date, accordingly
-                              Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blog.objectID error:nil];
+                              Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
                               
                               BOOL syncedAll = [postType isEqual:PostServiceTypeAny];
                               BOOL syncedPosts = [postType isEqual:PostServiceTypePost] || syncedAll;
@@ -317,10 +317,15 @@ const NSInteger PostServiceNumberToFetch = 40;
     }
 
     options[@"number"] = @(postCount);
+    NSManagedObjectID *blogID = blog.objectID;
     [remote getPostsOfType:postType
                    forBlog:blog
                    options:options
                    success:^(NSArray *posts) {
+                       Blog *blogInContext = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                       if (!blogInContext) {
+                           return;
+                       }
                        BOOL hasMore = ([posts count] < postCount) ? NO : YES;
                        [self.managedObjectContext performBlock:^{
                            [self mergePosts:posts ofType:postType withStatuses:postStatus byAuthor:authorID forBlog:blog purgeExisting:NO completionHandler:^{
@@ -514,12 +519,6 @@ const NSInteger PostServiceNumberToFetch = 40;
 
 - (void)initializeDraft:(AbstractPost *)post {
     post.remoteStatus = AbstractPostRemoteStatusLocal;
-    post.status = PostStatusPublish;
-
-    // HACK: aerych - 2015-06-18
-    // The date_create_gmt should arleady be nil for a draft but
-    // triggering the setter correctly sets the metaPublishImmediately flag.
-    post.date_created_gmt = nil;
 }
 
 - (NSPredicate *)predicateForPostsWithStatuses:(NSArray *)postStatus
@@ -787,8 +786,7 @@ const NSInteger PostServiceNumberToFetch = 40;
     if (blog.restApi) {
         remote = [[PostServiceRemoteREST alloc] initWithApi:blog.restApi];
     } else {
-        WPXMLRPCClient *client = [WPXMLRPCClient clientWithXMLRPCEndpoint:[NSURL URLWithString:blog.xmlrpc]];
-        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:client];
+        remote = [[PostServiceRemoteXMLRPC alloc] initWithApi:blog.api];
     }
     return remote;
 }
