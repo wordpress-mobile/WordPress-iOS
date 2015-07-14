@@ -111,11 +111,17 @@
                                      NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
                                      NSError *error;
                                      weakSelf.siteTopic = (ReaderTopic *)[context existingObjectWithID:objectID error:&error];
+                                     if (error) {
+                                         DDLogError(@"Error retrieving site topic from objectID : %@", error);
+                                     }
+                                     if (!weakSelf.siteTopic) {
+                                         [weakSelf showLoadingFailed];
+                                         return;
+                                     }
                                      [weakSelf configureView];
 
                                  } failure:^(NSError *error) {
-                                     weakSelf.noResultsView.titleText = NSLocalizedString(@"Problem Loading Site", @"Error message title informing the user that a site could not be loaded.");
-                                     weakSelf.noResultsView.messageText = NSLocalizedString(@"Sorry. The site could not be loaded.", @"A short error message leting the user know the requested site could not be loaded.");
+                                     [weakSelf showLoadingFailed];
                                  }];
 }
 
@@ -128,6 +134,12 @@
     [self configureSiteHeaderView];
     [self configurePostsViewController];
     [self configureViewConstraints];
+}
+
+- (void)showLoadingFailed
+{
+    self.noResultsView.titleText = NSLocalizedString(@"Problem Loading Site", @"Error message title informing the user that a site could not be loaded.");
+    self.noResultsView.messageText = NSLocalizedString(@"Sorry. The site could not be loaded.", @"A short error message leting the user know the requested site could not be loaded.");
 }
 
 - (void)showLoadingSite

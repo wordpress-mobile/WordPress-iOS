@@ -391,6 +391,12 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         if (error) {
             DDLogError(@"%@ error obtaining permanent ID for topic for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
         }
+
+        [self.managedObjectContext save:&error];
+        if (error) {
+            DDLogError(@"%@ error saving topic for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
+        }
+
         success(topic.objectID, siteInfo.isFollowing);
 
     } failure:^(NSError *error) {
