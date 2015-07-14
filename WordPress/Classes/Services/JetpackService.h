@@ -3,7 +3,7 @@
 
 @class WPAccount;
 
-@interface JetpackService : NSObject<LocalCoreDataService>
+@interface JetpackService : LocalCoreDataService
 
 - (void)validateAndLoginWithUsername:(NSString *)username
                             password:(NSString *)password
