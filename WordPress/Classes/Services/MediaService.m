@@ -18,12 +18,6 @@ CGSize const MediaMaxImageSize = {3000, 3000};
 NSInteger const MediaMinImageSizeDimension = 150;
 NSInteger const MediaMaxImageSizeDimension = 3000;
 
-@interface MediaService ()
-
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
-
-@end
-
 @implementation MediaService
 
 + (CGSize)maxImageSizeSetting
@@ -47,16 +41,6 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSString *strSize = NSStringFromCGSize(CGSizeMake(width, height));
     [[NSUserDefaults standardUserDefaults] setObject:strSize forKey:SavedMaxImageSizeSetting];
     [NSUserDefaults resetStandardUserDefaults];
-}
-
-- (id)initWithManagedObjectContext:(NSManagedObjectContext *)context
-{
-    self = [super init];
-    if (self) {
-        _managedObjectContext = context;
-    }
-
-    return self;
 }
 
 - (void)createMediaWithAsset:(ALAsset *)asset
@@ -107,7 +91,8 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
             Media *media = [self newMediaForPost:post];
             media.filename = [mediaPath lastPathComponent];
             media.absoluteLocalURL = mediaPath;
-            [thumbnailData writeToFile:media.thumbnailLocalURL atomically:NO];
+            media.absoluteThumbnailLocalURL = [self pathForThumbnailOfFile:mediaPath];
+            [thumbnailData writeToFile:media.absoluteThumbnailLocalURL atomically:NO];
             NSDictionary *fileAttributes = [[NSFileManager defaultManager] attributesOfItemAtPath:mediaPath error:nil];
             // This is kind of lame, but we've been storing file size as KB so far
             // We should store size in bytes or rename the property to avoid confusion
@@ -182,9 +167,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
     
     [remote getMediaWithID:mediaID forBlog:blog success:^(RemoteMedia *remoteMedia) {
        [self.managedObjectContext performBlock:^{
+           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+           if (!blog) {
+               return;
+           }
            Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
                media = [self newMediaForBlog:blog];
@@ -222,8 +212,12 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     NSError *error = nil;
     Media *media = [[self.managedObjectContext executeFetchRequest:request error:&error] firstObject];
     if (media) {
+        NSString  *posterURL = media.absoluteThumbnailLocalURL;
+        if (!posterURL) {
+            posterURL = media.remoteThumbnailURL;
+        }
         if (success) {
-            success(media.remoteURL, media.remoteThumbnailURL);
+            success(media.remoteURL, posterURL);
         }
     } else {
         if (failure) {
@@ -265,7 +259,7 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
     return _queueForResizeMediaOperations;
 }
 
-- (void)imageForMedia:(Media *)mediaInRandomContext
+- (void)thumbnailForMedia:(Media *)mediaInRandomContext
                  size:(CGSize)size
               success:(void (^)(UIImage *image))success
               failure:(void (^)(NSError *error))failure
@@ -276,9 +270,9 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         BOOL isPrivate = media.blog.isPrivate;
         NSString *pathForFile;
         if (media.mediaType == MediaTypeImage) {
-            pathForFile = media.thumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL;
         } else if (media.mediaType == MediaTypeVideo) {
-            pathForFile = media.thumbnailLocalURL;
+            pathForFile = media.absoluteThumbnailLocalURL;
         }
         if (pathForFile && [[NSFileManager defaultManager] fileExistsAtPath:pathForFile isDirectory:nil]) {
             [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{
@@ -293,7 +287,11 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         if (media.mediaType == MediaTypeVideo) {
             remoteURL = [NSURL URLWithString:media.remoteThumbnailURL];
         } else if (media.mediaType == MediaTypeImage) {
-            remoteURL = [NSURL URLWithString:media.remoteURL];
+            NSString *remote = media.remoteURL;
+            if ([media.blog isHostedAtWPcom]) {
+                remote = [NSString stringWithFormat:@"%@?w=%ld",remote, (long)size.width];
+            }
+            remoteURL = [NSURL URLWithString:remote];
         }
         if (!remoteURL) {
             if (failure) {
@@ -304,17 +302,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
         WPImageSource *imageSource = [WPImageSource sharedSource];
         void (^successBlock)(UIImage *) = ^(UIImage *image) {
             [self.managedObjectContext performBlock:^{
-                NSString *filePath = [self pathForFilename:media.filename supportedFileFormats:nil];
-                media.absoluteLocalURL = filePath;
-                NSString *thumbnailPath = media.thumbnailLocalURL;
+                NSString *filePath = [self pathForFilename:[self pathForThumbnailOfFile:media.filename] supportedFileFormats:nil];
+                media.absoluteThumbnailLocalURL = filePath;            
+                [self.managedObjectContext save:nil];
                 [[[self class] queueForResizeMediaOperations] addOperationWithBlock:^{                    
                     NSData *data = UIImagePNGRepresentation(image);
                     [data writeToFile:filePath atomically:YES];
-                    UIImage *thumbnail = [image thumbnailImage:size.width transparentBorder:0 cornerRadius:0 interpolationQuality:kCGInterpolationHigh];
-                    NSData *thumbnailData = UIImagePNGRepresentation(thumbnail);
-                    [thumbnailData writeToFile:thumbnailPath atomically:YES];
                     if (success) {
-                        success(thumbnail);
+                        success(image);
                     }
                 }];
             }];
@@ -333,6 +328,26 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                                      failure:failure];
         }
     }];
+}
+
+- (void)getMediaLibraryCountForBlog:(Blog *)blog
+                            success:(void (^)(NSInteger))success
+                            failure:(void (^)(NSError *error))failure
+{
+    id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    [remote getMediaLibraryCountForBlog:blog
+                           success:^(NSInteger count) {
+                               if (success) {
+                                   success(count);
+                               }
+                           }
+                           failure:^(NSError *error) {
+                               if (failure) {
+                                   [self.managedObjectContext performBlock:^{
+                                       failure(error);
+                                   }];
+                               }
+                           }];
 }
 
 #pragma mark - Private
@@ -403,6 +418,15 @@ static NSString * const MediaDirectory = @"Media";
         index++;
     }
     return path;
+}
+
+- (NSString *)pathForThumbnailOfFile:(NSString *)filename
+{
+    NSString *extension = [filename pathExtension];
+    NSString *fileWithoutExtension = [filename stringByDeletingPathExtension];
+    NSString *thumbnailPath = [fileWithoutExtension stringByAppendingString:@"-thumbnail"];
+    thumbnailPath = [thumbnailPath stringByAppendingPathExtension:extension];
+    return thumbnailPath;
 }
 
 - (NSString *)mimeTypeForFilename:(NSString *)filename

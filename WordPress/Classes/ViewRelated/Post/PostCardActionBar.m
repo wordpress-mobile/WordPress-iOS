@@ -177,6 +177,7 @@ static const UIEdgeInsets MoreButtonImageInsets = {3.0, 0.0, 0.0, 4.0};
 {
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.translatesAutoresizingMaskIntoConstraints = NO;
+    button.exclusiveTouch = YES;
     button.backgroundColor = [WPStyleGuide lightGrey];
     button.titleLabel.font = [WPStyleGuide subtitleFont];
     [button setTitleColor:[WPStyleGuide wordPressBlue] forState:UIControlStateNormal];

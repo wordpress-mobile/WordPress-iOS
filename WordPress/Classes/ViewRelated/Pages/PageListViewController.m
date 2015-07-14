@@ -209,8 +209,8 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 
     // If we have recently trashed posts, create an OR predicate to find posts matching the filter,
     // or posts that were recently deleted.
-    if ([searchText length] == 0 && [self.recentlyTrashedPostIDs count] > 0) {
-        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"postID IN %@", self.recentlyTrashedPostIDs];
+    if ([searchText length] == 0 && [self.recentlyTrashedPostObjectIDs count] > 0) {
+        NSPredicate *trashedPredicate = [NSPredicate predicateWithFormat:@"SELF IN %@", self.recentlyTrashedPostObjectIDs];
         filterPredicate = [NSCompoundPredicate orPredicateWithSubpredicates:@[filterPredicate, trashedPredicate]];
     }
     [predicates addObject:filterPredicate];
@@ -323,7 +323,7 @@ static NSString * const CurrentPageListStatusFilterKey = @"CurrentPageListStatus
 - (NSString *)cellIdentifierForPage:(Page *)page
 {
     NSString *identifier;
-    if ([self.recentlyTrashedPostIDs containsObject:page.postID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
+    if ([self.recentlyTrashedPostObjectIDs containsObject:page.objectID] && [self currentPostListFilter].filterType != PostListStatusFilterTrashed) {
         identifier = RestorePageCellIdentifier;
     } else {
         identifier = PageCellIdentifier;
