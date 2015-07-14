@@ -26,6 +26,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 @dynamic blogID;
 @dynamic blogName;
+@dynamic blogTagline;
 @dynamic url;
 @dynamic xmlrpc;
 @dynamic apiKey;
