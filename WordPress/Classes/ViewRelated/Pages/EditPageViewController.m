@@ -63,7 +63,7 @@
     }
     CGRect targetFrame = CGRectMake(xValue, 0.0, NavigationBarButtonRect.size.width, 0.0);
     NSString *tooltipText = NSLocalizedString(@"Tap to edit page", @"Tooltip for the button that allows the user to edit the current page.");
-    [WPTooltip displayToolTipInView:self.view fromFrame:targetFrame withText:tooltipText];
+    [WPTooltip displayTooltipInView:self.view fromFrame:targetFrame withText:tooltipText direction:WPTooltipDirectionDown];
 }
 
 @end

@@ -72,8 +72,11 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     [[NSUserDefaults standardUserDefaults] setObject:account.uuid forKey:DefaultDotcomAccountUUIDDefaultsKey];
     [[NSUserDefaults standardUserDefaults] synchronize];
 
+    NSManagedObjectID *accountID = account.objectID;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:account];
+        NSManagedObjectContext *mainContext = [[ContextManager sharedInstance] mainContext];
+        NSManagedObject *accountInContext = [mainContext existingObjectWithID:accountID error:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:WPAccountDefaultWordPressComAccountChangedNotification object:accountInContext];
 
         [NotificationsManager registerForPushNotifications];
     });
@@ -143,7 +146,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
         account.username = username;
     }
     account.authToken = authToken;
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+    [[ContextManager sharedInstance] saveContextAndWait:self.managedObjectContext];
 
     if (![self defaultWordPressComAccount]) {
         [self setDefaultWordPressComAccount:account];
@@ -212,6 +215,7 @@ NSString * const WPAccountEmailAndDefaultBlogUpdatedNotification = @"WPAccountEm
     account.username = userDetails.username;
     account.email = userDetails.email;
     account.avatarURL = userDetails.avatarURL;
+    account.displayName = userDetails.displayName;
     if (userDetails.primaryBlogID) {
         account.defaultBlog = [[account.blogs filteredSetUsingPredicate:[NSPredicate predicateWithFormat:@"blogID = %@", userDetails.primaryBlogID]] anyObject];
     }
