@@ -181,9 +181,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (SourceAttributionStyle)sourceAttributionStyle
 {
-    if (!self.sourceAttribution) {
-        return SourceAttributionStyleNone;
-    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
         return SourceAttributionStylePost;
     } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
         return SourceAttributionStyleSite;
