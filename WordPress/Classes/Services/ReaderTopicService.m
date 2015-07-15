@@ -382,7 +382,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         topic.topicID = siteInfo.siteID;
         topic.type = ReaderTopicTypeSite;
-        topic.title = siteInfo.siteName;
+        topic.title = [siteInfo.siteName length] ? siteInfo.siteName : [NSURL URLWithString:siteInfo.siteURL].host;
         topic.topicDescription = siteInfo.siteDescription;
         topic.path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
 
