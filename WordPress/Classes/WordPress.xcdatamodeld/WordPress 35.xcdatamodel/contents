@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -347,6 +347,7 @@
         <attribute name="storedComment" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="summary" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="tags" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="sourceAttribution" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="SourcePostAttribution" inverseName="post" inverseEntity="SourcePostAttribution" syncable="YES"/>
         <relationship name="topic" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderTopic" inverseName="posts" inverseEntity="ReaderTopic" syncable="YES"/>
     </entity>
     <entity name="ReaderSite" representedClassName="ReaderSite" syncable="YES">
@@ -372,6 +373,20 @@
         <attribute name="type" attributeType="String" indexed="YES" syncable="YES"/>
         <relationship name="account" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Account" inverseName="readerTopics" inverseEntity="Account" syncable="YES"/>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="ReaderPost" inverseName="topic" inverseEntity="ReaderPost" syncable="YES"/>
+    </entity>
+    <entity name="SourcePostAttribution" representedClassName="SourcePostAttribution" syncable="YES">
+        <attribute name="attributionType" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="authorURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <attribute name="blogName" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="blogURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="commentCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="likeCount" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="permalink" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="postID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
+        <relationship name="post" maxCount="1" deletionRule="Nullify" destinationEntity="ReaderPost" inverseName="sourceAttribution" inverseEntity="ReaderPost" syncable="YES"/>
     </entity>
     <entity name="Theme" representedClassName="Theme" syncable="YES">
         <attribute name="details" optional="YES" attributeType="String" syncable="YES"/>
@@ -400,9 +415,10 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="465"/>
+        <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
     </elements>
 </model>
