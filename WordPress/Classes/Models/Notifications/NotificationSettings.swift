@@ -115,7 +115,7 @@ public class NotificationSettings
                 case .Email:
                     return NSLocalizedString("Email", comment: "Email Notifications Channel")
                 case .Device:
-                    return NSLocalizedString("Mobile Notifications", comment: "Mobile Push Notifications")
+                    return NSLocalizedString("Push Notifications", comment: "Mobile Push Notifications")
                 }
             }
             
