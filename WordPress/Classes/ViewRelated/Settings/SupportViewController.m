@@ -16,11 +16,12 @@
 #import "Blog.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
-#import "AboutViewController.h"
 #import "WPTabBarController.h"
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
+#import "WPGUIConstants.h"
+
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
@@ -64,7 +65,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     SettingsSectionSettingsRowJetpackREST,
     SettingsSectionSettingsRowTracking,
     SettingsSectionSettingsRowActivityLogs,
-    SettingsSectionSettingsRowAbout,
     SettingsSectionSettingsRowCount
 };
 
@@ -153,6 +153,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     } else {
         [self.tableView setRowHeight:SupportRowHeight];
     }
+    
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
+    }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     self.feedbackEnabled = [defaults boolForKey:UserDefaultsFeedbackEnabled];
@@ -162,7 +167,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     if ([self.navigationController.viewControllers count] == 1) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }
 
@@ -371,11 +376,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowVersion) {
             // App Version
             cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
-#if DEBUG
-            appVersion = [appVersion stringByAppendingString:@" (DEV)"];
-#endif
-            cell.detailTextLabel.text = appVersion;
+            cell.detailTextLabel.text = [[NSBundle mainBundle] shortVersionString];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == SettingsSectionSettingsRowExtraDebug) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -395,23 +396,42 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         } else if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // Make sure no Section Header is rendered
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Make sure no Section Header is rendered
+    return CGFLOAT_MIN;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
     WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForFooterInSection:section];
+    header.title = title;
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
+        return CGFLOAT_MIN;
+    }
+    
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
@@ -457,12 +477,10 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-            [self.navigationController pushViewController:aboutViewController animated:YES];
         }
     }
 }
+
 
 #pragma mark - SupportViewController methods
 

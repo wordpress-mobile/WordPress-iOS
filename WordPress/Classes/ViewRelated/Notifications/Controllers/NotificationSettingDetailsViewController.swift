@@ -14,13 +14,17 @@ public class NotificationSettingDetailsViewController : UITableViewController
         saveSettingsIfNeeded()
     }
     
+    
+    
     // MARK: - Setup Helpers
     private func setupTableView() {
         // Register the cells
-        let reuseIdentifier = NoteSettingsSwitchTableViewCell.classNameWithoutNamespaces()
-        let switchCellNib   = UINib(nibName: reuseIdentifier, bundle: NSBundle.mainBundle())
-        tableView.registerNib(switchCellNib, forCellReuseIdentifier: reuseIdentifier)
+        tableView.registerClass(SwitchTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         
+        // iPad Top header
+        if UIDevice.isPad() {
+            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
+        }
         
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -28,6 +32,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         // Style!
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
+    
     
     
     // MARK: - Public Helpers
@@ -47,6 +52,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     
+    
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return sectionCount
@@ -57,8 +63,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let identifier  = NoteSettingsSwitchTableViewCell.classNameWithoutNamespaces()
-        let cell        = tableView.dequeueReusableCellWithIdentifier(identifier) as! NoteSettingsSwitchTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! SwitchTableViewCell
         
         configureCell(cell, indexPath: indexPath)
         
@@ -66,20 +71,22 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     
+    
     // MARK: - UITableView Helpers
-    private func configureCell(cell: NoteSettingsSwitchTableViewCell, indexPath: NSIndexPath) {
+    private func configureCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
         let preferences = stream?.preferences
         let key         = settings?.sortedPreferenceKeys()[indexPath.row]
         if preferences == nil || key == nil {
             return
         }
         
-        cell.name = settings?.localizedDescription(key!) ?? String()
-        cell.isOn = preferences?[key!] ?? true
-        cell.onChange = { (newValue: Bool) in
+        cell.name       = settings?.localizedDescription(key!) ?? String()
+        cell.isOn       = preferences?[key!] ?? true
+        cell.onChange   = { (newValue: Bool) in
             self.newValues?[key!] = newValue
         }
     }
+    
     
     
     // MARK: - Service Helpers
@@ -99,7 +106,9 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     
+    
     // MARK: - Private Constants
+    private let reuseIdentifier = SwitchTableViewCell.classNameWithoutNamespaces()
     private let emptyRowCount   = 0
     private let sectionCount    = 1
     

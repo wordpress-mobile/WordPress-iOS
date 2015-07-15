@@ -148,8 +148,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService syncBlog:_blog success:nil failure:nil];
-
+    [blogService syncBlog:_blog];
     if (self.blog.account && !self.blog.account.userID) {
         // User's who upgrade may not have a userID recorded.
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
@@ -225,6 +224,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.headerView setBlog:self.blog];
     [self.tableView reloadData];
 }
 
@@ -577,9 +577,16 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (void)handleDataModelChange:(NSNotification *)note
 {
-    NSSet *deletedObjects = [[note userInfo] objectForKey:NSDeletedObjectsKey];
+    NSSet *deletedObjects = note.userInfo[NSDeletedObjectsKey];
     if ([deletedObjects containsObject:self.blog]) {
         [self.navigationController popToRootViewControllerAnimated:NO];
+    }
+    
+    NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
+    if ([updatedObjects containsObject:self.blog]) {
+        self.navigationItem.backBarButtonItem.title = self.blog.blogName;
+        self.navigationItem.title = self.blog.blogName;
+        [self.tableView reloadData];
     }
 }
 
