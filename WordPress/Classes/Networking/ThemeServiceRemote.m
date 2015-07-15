@@ -8,120 +8,130 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Getting themes
 
-- (void)getActiveThemeForBlogId:(NSNumber *)blogId
-                        success:(ThemeServiceThemeRequestSuccessBlock)success
-                        failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)getActiveThemeForBlogId:(NSNumber *)blogId
+                                 success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                                 failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     
-    [self.api GET:path
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
-              if (success) {
-                  success(themeDictionary);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+    NSOperation *operation = [self.api GET:path
+                                parameters:nil
+                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
+                                       if (success) {
+                                           success(themeDictionary);
+                                       }
+                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+    
+    return operation;
 }
 
-- (void)getPurchasedThemesForBlogId:(NSNumber *)blogId
-                            success:(ThemeServiceThemesRequestSuccessBlock)success
-                            failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)getPurchasedThemesForBlogId:(NSNumber *)blogId
+                                     success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                                     failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
     
-    [self.api GET:path
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-              if (success) {
-                  NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                  
-                  success(themes);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+    NSOperation *operation = [self.api GET:path
+                                parameters:nil
+                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                       if (success) {
+                                           NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
+                                           
+                                           success(themes);
+                                       }
+                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+    
+    return operation;
 }
 
-- (void)getThemeId:(NSString*)themeId
-           success:(ThemeServiceThemeRequestSuccessBlock)success
-           failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)getThemeId:(NSString*)themeId
+                    success:(ThemeServiceRemoteThemeRequestSuccessBlock)success
+                    failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
     NSString *path = [NSString stringWithFormat:@"themes/%@", themeId];
     
-    [self.api GET:path
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
-              if (success) {
-                  success(themeDictionary);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+    NSOperation *operation = [self.api GET:path
+                                parameters:nil
+                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *themeDictionary) {
+                                       if (success) {
+                                           success(themeDictionary);
+                                       }
+                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+    
+    return operation;
 }
 
-- (void)getThemes:(ThemeServiceThemesRequestSuccessBlock)success
-          failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)getThemes:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                   failure:(ThemeServiceRemoteFailureBlock)failure
 {
     static NSString* const path = @"themes";
     
-    [self.api GET:path
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-              if (success) {
-                  NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
+    NSOperation *operation = [self.api GET:path
+                                parameters:nil
+                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                       if (success) {
+                                           NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
                   
-                  success(themes);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+                                           success(themes);
+                                       }
+                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+    
+    return operation;
 }
 
-- (void)getThemesForBlogId:(NSNumber *)blogId
-                   success:(ThemeServiceThemesRequestSuccessBlock)success
-                   failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)getThemesForBlogId:(NSNumber *)blogId
+                            success:(ThemeServiceRemoteThemesRequestSuccessBlock)success
+                            failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     
-    [self.api GET:path
-       parameters:nil
-          success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-              if (success) {
-                  NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                  
-                  success(themes);
-              }
-          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-              if (failure) {
-                  failure(error);
-              }
-          }];
+    NSOperation *operation = [self.api GET:path
+                                parameters:nil
+                                   success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                       if (success) {
+                                           NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
+                                           
+                                           success(themes);
+                                       }
+                                   } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                       if (failure) {
+                                           failure(error);
+                                       }
+                                   }];
+    
+    return operation;
 }
 
 #pragma mark - Activating themes
 
-- (void)activateThemeId:(NSString*)themeId
-              forBlogId:(NSNumber *)blogId
-                success:(ThemeServiceSuccessBlock)success
-                failure:(ThemeServiceFailureBlock)failure
+- (NSOperation *)activateThemeId:(NSString*)themeId
+                       forBlogId:(NSNumber *)blogId
+                         success:(ThemeServiceRemoteSuccessBlock)success
+                         failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
@@ -129,19 +139,21 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSString* const path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     NSDictionary* parameters = @{@"theme": themeId};
     
-    [self.api POST:path
-        parameters:parameters
-           success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
-               if (success) {
-                   NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
-                   
-                   success(themes);
-               }
-           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-               if (failure) {
-                   failure(error);
-               }
-           }];
+    NSOperation *operation = [self.api POST:path
+                                 parameters:parameters
+                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+                                        if (success) {
+                                            NSArray *themes = [response arrayForKey:ThemeServiceRemoteThemesKey];
+                                            
+                                            success(themes);
+                                        }
+                                    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+                                        if (failure) {
+                                            failure(error);
+                                        }
+                                    }];
+    
+    return operation;
 }
 
 @end
