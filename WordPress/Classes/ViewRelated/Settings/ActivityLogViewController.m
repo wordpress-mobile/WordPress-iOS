@@ -116,14 +116,24 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
+    NSString *title = [self titleForHeaderInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
     WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForHeaderInSection:section];
+    header.title = title;
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
+    if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
+        return CGFLOAT_MIN;
+    }
+    
     return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
