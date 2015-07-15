@@ -21,6 +21,7 @@
 @dynamic desc;
 @dynamic mediaTypeString;
 @dynamic videopressGUID;
+@dynamic localThumbnailURL;
 @dynamic remoteThumbnailURL;
 
 @synthesize unattached;
@@ -167,7 +168,7 @@
     if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteLocalURL error:&error]) {
         DDLogError(@"Error removing media files:%@", error);
     }
-    if (![[NSFileManager defaultManager] removeItemAtPath:self.thumbnailLocalURL error:&error]) {
+    if (![[NSFileManager defaultManager] removeItemAtPath:self.absoluteThumbnailLocalURL error:&error]) {
         DDLogError(@"Error removing media files:%@", error);
     }
     [super prepareForDeletion];
@@ -269,13 +270,25 @@
     return result;
 }
 
-- (NSString *)thumbnailLocalURL;
+- (NSString *)absoluteThumbnailLocalURL;
 {
-    if ( self.absoluteLocalURL ) {
-        return [NSString stringWithFormat:@"%@-thumbnail",self.absoluteLocalURL];
+    if ( self.localThumbnailURL ) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [paths firstObject];
+        NSString *absolutePath = [NSString pathWithComponents:@[documentsDirectory, self.localThumbnailURL]];
+        return absolutePath;
     } else {
         return nil;
     }
+}
+
+- (void)setAbsoluteThumbnailLocalURL:(NSString *)absoluteLocalURL
+{
+    NSParameterAssert([absoluteLocalURL isAbsolutePath]);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths firstObject];
+    NSString *localPath =  [absoluteLocalURL stringByReplacingOccurrencesOfString:documentsDirectory withString:@""];
+    self.localThumbnailURL = localPath;
 }
 
 - (NSString *)absoluteLocalURL
