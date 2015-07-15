@@ -20,6 +20,7 @@
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
+#import "WPGUIConstants.h"
 
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
@@ -151,6 +152,11 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         [self.tableView setRowHeight:UITableViewAutomaticDimension];
     } else {
         [self.tableView setRowHeight:SupportRowHeight];
+    }
+    
+    if (UIDevice.isPad) {
+        self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
+        self.tableView.tableFooterView = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
     }
 
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -394,16 +400,38 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     }
 }
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    // Make sure no Section Header is rendered
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    // Make sure no Section Header is rendered
+    return CGFLOAT_MIN;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
+    NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        return nil;
+    }
+    
     WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = [self titleForFooterInSection:section];
+    header.title = title;
     return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
+    if (!title) {
+        // Fix: Prevents extra spacing when dealing with empty footers
+        return CGFLOAT_MIN;
+    }
+    
     return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 }
 
