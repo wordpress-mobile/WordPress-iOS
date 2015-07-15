@@ -15,6 +15,7 @@
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic email;
+@dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
 @synthesize restApi = _restApi;
@@ -47,6 +48,27 @@
 }
 
 #pragma mark - Custom accessors
+
+- (void)setUsername:(NSString *)username
+{
+    NSString *previousUsername = self.username;
+    
+    BOOL usernameChanged = ![previousUsername isEqualToString:username];
+    NSString *authToken = nil;
+    
+    if (usernameChanged) {
+        authToken = self.authToken;
+        self.authToken = nil;
+    }
+    
+    [self willChangeValueForKey:@"username"];
+    [self setPrimitiveValue:username forKey:@"username"];
+    [self didChangeValueForKey:@"username"];
+    
+    if (usernameChanged) {
+        self.authToken = authToken;
+    }
+}
 
 - (NSString *)authToken
 {

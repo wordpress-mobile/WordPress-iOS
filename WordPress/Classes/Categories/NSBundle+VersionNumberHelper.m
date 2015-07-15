@@ -9,4 +9,15 @@
     return versionNumberString;
 }
 
+- (NSString *)shortVersionString
+{
+    NSString *appVersion = [NSBundle.mainBundle.infoDictionary objectForKey:@"CFBundleShortVersionString"];
+    
+#if DEBUG
+    appVersion = [appVersion stringByAppendingString:@" (DEV)"];
+#endif
+    
+    return appVersion;
+}
+
 @end
