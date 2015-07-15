@@ -15,7 +15,6 @@
 
 #import "SettingsViewController.h"
 #import "WordPressComApi.h"
-#import "SettingsPageViewController.h"
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"

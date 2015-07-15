@@ -16,12 +16,12 @@
 #import "Blog.h"
 #import "NSBundle+VersionNumberHelper.h"
 #import "WordPress-Swift.h"
-#import "AboutViewController.h"
 #import "WPTabBarController.h"
 #import "WPAppAnalytics.h"
 #import "HelpshiftUtils.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
+
 
 static NSString *const WPSupportRestorationID = @"WPSupportRestorationID";
 
@@ -65,7 +65,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionActivitySettingsRows)
     SettingsSectionSettingsRowJetpackREST,
     SettingsSectionSettingsRowTracking,
     SettingsSectionSettingsRowActivityLogs,
-    SettingsSectionSettingsRowAbout,
     SettingsSectionSettingsRowCount
 };
 
@@ -168,7 +167,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 
     if ([self.navigationController.viewControllers count] == 1) {
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Close", @"") style:[WPStyleGuide barButtonStyleForBordered] target:self action:@selector(dismiss)];
     }
 }
 
@@ -377,11 +376,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowVersion) {
             // App Version
             cell.textLabel.text = NSLocalizedString(@"Version", @"");
-            NSString *appVersion = [[NSBundle mainBundle] detailedVersionNumber];
-#if DEBUG
-            appVersion = [appVersion stringByAppendingString:@" (DEV)"];
-#endif
-            cell.detailTextLabel.text = appVersion;
+            cell.detailTextLabel.text = [[NSBundle mainBundle] shortVersionString];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
         } else if (indexPath.row == SettingsSectionSettingsRowExtraDebug) {
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -400,9 +395,6 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
             aSwitch.on = [[WordPressAppDelegate sharedInstance].analytics isTrackingUsage];
         } else if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             cell.textLabel.text = NSLocalizedString(@"Activity Logs", @"");
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            cell.textLabel.text = NSLocalizedString(@"About", @"");
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
@@ -485,12 +477,10 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         if (indexPath.row == SettingsSectionSettingsRowActivityLogs) {
             ActivityLogViewController *activityLogViewController = [[ActivityLogViewController alloc] init];
             [self.navigationController pushViewController:activityLogViewController animated:YES];
-        } else if (indexPath.row == SettingsSectionSettingsRowAbout) {
-            AboutViewController *aboutViewController = [[AboutViewController alloc] initWithNibName:@"AboutViewController" bundle:nil];
-            [self.navigationController pushViewController:aboutViewController animated:YES];
         }
     }
 }
+
 
 #pragma mark - SupportViewController methods
 
