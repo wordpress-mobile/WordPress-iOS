@@ -91,9 +91,14 @@
                       failure:(void (^)(NSError *error))failure
 {
     id<PostCategoryServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
     [remote getCategoriesForBlog:blog
                          success:^(NSArray *categories) {
                              [self.managedObjectContext performBlock:^{
+                                 Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+                                 if (!blog) {
+                                     return;
+                                 }
                                  [self mergeCategories:categories forBlog:blog completionHandler:success];
                              }];
                          } failure:failure];
@@ -119,6 +124,10 @@
                    forBlog:blog
                    success:^(RemotePostCategory *receivedCategory) {
                        [self.managedObjectContext performBlock:^{
+                           Blog *blog = [self blogWithObjectID:blogObjectID];
+                           if (!blog) {
+                               return;
+                           }
                            PostCategory *newCategory = [self newCategoryForBlog:blog];
                            newCategory.categoryID = receivedCategory.categoryID;
                            if ([remote isKindOfClass:[PostCategoryServiceRemoteXMLRPC class]]) {
