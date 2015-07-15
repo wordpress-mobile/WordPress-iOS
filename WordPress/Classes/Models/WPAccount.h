@@ -52,4 +52,15 @@
 - (void)addJetpackBlogs:(NSSet *)values;
 - (void)removeJetpackBlogs:(NSSet *)values;
 
+#pragma mark - WordPress.com support methods
+
+/**
+ *  @brief      Call this method to know if the account is a WordPress.com account.
+ *  @details    This is the same as checking if restApi != nil, but it conveys its own meaning
+ *              in a cleaner way to the reader.
+ *
+ *  @returns    YES if this account is a WordPress.com account, NO otherwise.
+ */
+- (BOOL)isWPComAccount;
+
 @end
