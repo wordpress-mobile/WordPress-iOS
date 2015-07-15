@@ -2,7 +2,7 @@
 //
 // + (No Title)
 // | View Site
-// | View Admin
+// | WP Admin
 // | Stats
 //
 // + Publish
@@ -273,7 +273,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
                 break;
             case BlogDetailsRowViewAdmin:
-                cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
+                cell.textLabel.text = NSLocalizedString(@"WP Admin", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
             case BlogDetailsRowStats:
