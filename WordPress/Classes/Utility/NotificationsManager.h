@@ -37,13 +37,13 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)unregisterDeviceToken;
 
+
 /**
- Returns whether the device is currently registered for remote notifications
- 
- @return YES if the device is registered for WordPress.com notifications
- @return NO if not
+ Returns whether the app has Push Notifications Enabled in Settings.app
+ @return Boolean, indicating whether Push Notifications are enabled, or not.
  */
-+ (BOOL)deviceRegisteredForPushNotifications;
+
++ (BOOL)pushNotificationsEnabledInDeviceSettings;
 
 /**
  Retrieves and returns the last registered Device Token
