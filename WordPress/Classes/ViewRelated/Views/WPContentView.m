@@ -2,6 +2,7 @@
 #import "ContentActionButton.h"
 #import "WPContentAttributionView.h"
 #import "WPContentActionView.h"
+#import "OriginalAttributionView.h"
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
@@ -19,6 +20,8 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 // Stores a reference to the image height constraints for easy adjustment.
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *discoverAttriubtionZeroHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *discoverAttributionBottomPaddingHeightConstraint;
 @property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
@@ -28,8 +31,8 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 
 - (void)dealloc
 {
-    self.contentProvider = nil;
-    self.delegate = nil;
+    _contentProvider = nil;
+    _delegate = nil;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -51,7 +54,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 
 #pragma mark - Public Methods
 
-- (void)setContentProvider:(id<WPContentViewProvider>)contentProvider
+- (void)setContentProvider:(id<ReaderPostContentProvider>)contentProvider
 {
     if (_contentProvider == contentProvider) {
         return;
@@ -83,7 +86,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 
 - (CGSize)sizeThatFits:(CGSize)size
 {
-    CGFloat innerWidth = size.width - (WPContentViewOuterMargin * 2);
+    CGFloat innerWidth = size.width - (WPContentViewOuterMargin * 2.0);
     CGSize innerSize = CGSizeMake(innerWidth, CGFLOAT_MAX);
     CGFloat height = 0;
     height += self.attributionView.intrinsicContentSize.height;
@@ -94,10 +97,14 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     height += [self.titleLabel sizeThatFits:innerSize].height;
     height += [self sizeThatFitsContent:innerSize].height;
 
+    if ([self.contentProvider sourceAttributionStyle] != SourceAttributionStyleNone) {
+        height += [self.discoverPostAttributionView sizeThatFits:innerSize].height;
+        height += WPContentViewAttributionVerticalPadding;
+    }
     height += WPContentViewOuterMargin;
     height += WPContentViewAttributionVerticalPadding;
     height += WPContentViewTitleContentPadding;
-    height += (WPContentViewVerticalPadding * 2);
+    height += (WPContentViewVerticalPadding * 2.0);
 
     return CGSizeMake(size.width, ceil(height));
 }
@@ -143,10 +150,20 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     UIView *featuredImageView = self.featuredImageView;
     UIView *titleLabel = self.titleLabel;
     UIView *contentView = self.contentView;
+    UIView *discoverAttributionView = self.discoverPostAttributionView;
+    UIView *discoverAttributionSpacer = self.discoverAttributionSpacerView;
     UIView *actionView = self.actionView;
 
     CGFloat contentViewOuterMargin = [self horizontalMarginForContent];
-    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView, attributionBorderView, featuredImageView, titleLabel, contentView, actionView);
+    NSDictionary *views = NSDictionaryOfVariableBindings(attributionView,
+                                                         attributionBorderView,
+                                                         featuredImageView,
+                                                         titleLabel,
+                                                         contentView,
+                                                         discoverAttributionView,
+                                                         discoverAttributionSpacer,
+                                                         actionView);
+
     NSDictionary *metrics = @{@"outerMargin": @(WPContentViewOuterMargin),
                               @"contentViewOuterMargin": @(contentViewOuterMargin),
                               @"verticalPadding": @(WPContentViewVerticalPadding),
@@ -186,8 +203,16 @@ const CGFloat WPContentViewBorderHeight = 1.0;
                                                                  metrics:metrics
                                                                    views:views]];
 
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin@priority)-[discoverAttributionView]-(outerMargin@priority)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(outerMargin@priority)-[discoverAttributionSpacer]-(outerMargin@priority)-|"
+                                                                 options:0
+                                                                 metrics:metrics
+                                                                   views:views]];
 
-    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[actionView]|"
+    [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-(outerMargin@priority)-[attributionView]-(attributionVerticalPadding@priority)-[featuredImageView]-(verticalPadding@priority)-[titleLabel]-(titleContentPadding@priority)-[contentView]-(verticalPadding@priority)-[discoverAttributionView][discoverAttributionSpacer][actionView]|"
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
@@ -197,6 +222,16 @@ const CGFloat WPContentViewBorderHeight = 1.0;
                                                                  options:0
                                                                  metrics:metrics
                                                                    views:views]];
+
+    // Create a constraint to wrangle height of the original attribution spacer view
+    self.discoverAttributionBottomPaddingHeightConstraint = [NSLayoutConstraint constraintWithItem:self.discoverAttributionSpacerView
+                                                                                         attribute:NSLayoutAttributeHeight
+                                                                                         relatedBy:NSLayoutRelationEqual
+                                                                                            toItem:nil
+                                                                                         attribute:nil
+                                                                                        multiplier:1.0
+                                                                                          constant:0];
+    [self addConstraint:self.discoverAttributionBottomPaddingHeightConstraint];
 }
 
 - (void)configureFeaturedImageHeightConstraint
@@ -244,6 +279,45 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     }
 }
 
+/**
+ Wrangles the constraints that control the height of the original attriubtion view
+ and its bottom padding.
+ */
+- (void)configureConstraintsForDiscoverAttributionView
+{
+    // Create a constraint to zero out original attribution height when its not needed
+    if (!self.discoverAttriubtionZeroHeightConstraint) {
+        self.discoverAttriubtionZeroHeightConstraint = [NSLayoutConstraint constraintWithItem:self.discoverPostAttributionView
+                                                                                    attribute:NSLayoutAttributeHeight
+                                                                                    relatedBy:NSLayoutRelationEqual
+                                                                                       toItem:nil
+                                                                                    attribute:nil
+                                                                                   multiplier:1
+                                                                                     constant:0];
+    }
+
+    // Zeros the height of the original attribution view and its spacer
+    if (![self.contentProvider sourceAttributionStyle] != SourceAttributionStyleNone) {
+       // Add the height constraint if necessasry
+        if ([self.constraints indexOfObject:self.discoverAttriubtionZeroHeightConstraint] == NSNotFound) {
+            [self addConstraint:self.discoverAttriubtionZeroHeightConstraint];
+        }
+
+        self.discoverAttributionBottomPaddingHeightConstraint.constant = 0;
+
+    } else {
+        // Shows the discoverAttributionView
+        // Remove the height constraint if necessary
+        if ([self.constraints indexOfObject:self.discoverAttriubtionZeroHeightConstraint] != NSNotFound) {
+            [self removeConstraint:self.discoverAttriubtionZeroHeightConstraint];
+        }
+
+        self.discoverAttributionBottomPaddingHeightConstraint.constant = WPContentViewAttributionVerticalPadding;
+    }
+
+    [self setNeedsUpdateConstraints];
+}
+
 - (void)constructSubviews
 {
     [self buildAttributionView];
@@ -252,6 +326,8 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     [self buildTitleLabel];
     [self buildContentView];
     [self buildActionView];
+    [self buildDiscoverAttributionView];
+    [self buildDiscoverAttributionSpacerView];
 }
 
 #pragma mark - Subview factories
@@ -331,6 +407,33 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     [self addSubview:self.actionView];
 }
 
+- (void)buildDiscoverAttributionView
+{
+    OriginalAttributionView *originalAttributionView = (OriginalAttributionView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([OriginalAttributionView class]) owner:nil options:nil] firstObject];
+    originalAttributionView.translatesAutoresizingMaskIntoConstraints = NO;
+
+    // RichTextView relies on frame width for calculating intrinsic content size.
+    // Set the starting width so the initial intrinsic size is correct.
+    CGRect frame = originalAttributionView.frame;
+    frame.size.width = CGRectGetWidth(self.frame) - (WPContentViewOuterMargin * 2.0);
+    originalAttributionView.frame = frame;
+
+    self.discoverPostAttributionView = originalAttributionView;
+    [self addSubview:self.discoverPostAttributionView];
+}
+
+- (void)buildDiscoverAttributionSpacerView
+{
+    // A spacer view for providing some bottom padding because constraints are dumb.
+    UIView *view = [UIView new];
+    view.translatesAutoresizingMaskIntoConstraints = NO;
+    view.hidden = YES;
+
+    self.discoverAttributionSpacerView = view;
+    [self addSubview:self.discoverAttributionSpacerView];
+}
+
+
 #pragma mark - Configuration
 
 - (void)configureView
@@ -343,6 +446,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     [self configureActionButtons];
     [self setAvatarImage:nil];
     [self setFeaturedImage:nil];
+    [self configureDiscoverAttributionView];
 
     [self setNeedsUpdateConstraints];
 }
@@ -381,6 +485,22 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 - (void)configureActionView
 {
     self.actionView.contentProvider = self.contentProvider;
+}
+
+- (void)configureDiscoverAttributionView
+{
+    if ([self.contentProvider sourceAttributionStyle] == SourceAttributionStylePost) {
+        [self.discoverPostAttributionView setPostAttributionWithGravatar:[self.contentProvider sourceAvatarURLForDisplay]
+                                                               forAuthor:[self.contentProvider sourceAuthorNameForDisplay]
+                                                                    blog:[self.contentProvider sourceBlogNameForDisplay]];
+
+    } else if ([self.contentProvider sourceAttributionStyle] == SourceAttributionStyleSite) {
+        [self.discoverPostAttributionView setSiteAttributionWithBlavatar:[self.contentProvider sourceAvatarURLForDisplay]
+                                                                 forBlog:[self.contentProvider sourceBlogNameForDisplay]];
+    } else {
+        [self.discoverPostAttributionView reset];
+    }
+    [self configureConstraintsForDiscoverAttributionView];
 }
 
 - (void)configureActionButtons
