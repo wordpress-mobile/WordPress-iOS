@@ -170,6 +170,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
     if (defaultAccount) {
         self.tableView.tableHeaderView = self.headerView;
+        [self.headerView setDisplayName:defaultAccount.displayName];
         [self.headerView setUsername:defaultAccount.username];
         [self.headerView setGravatarEmail:defaultAccount.email];
     }
