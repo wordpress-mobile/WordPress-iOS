@@ -48,6 +48,11 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
 - (void)track:(WPAnalyticsStat)stat withProperties:(NSDictionary *)properties
 {
     TracksEventPair *eventPair = [self eventPairForStat:stat];
+    if (!eventPair) {
+        DDLogInfo(@"WPAnalyticsStat not supported by WPAnalyticsTrackerAutomatticTracks: %@", @(stat));
+        return;
+    }
+    
     NSMutableDictionary *mergedProperties = [NSMutableDictionary new];
 
     [mergedProperties addEntriesFromDictionary:eventPair.properties];
@@ -162,6 +167,9 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatAppInstalled:
             eventName = @"application_installed";
+            break;
+        case WPAnalyticsStatAppUpgraded:
+            eventName = @"application_upgraded";
             break;
         case WPAnalyticsStatApplicationOpened:
             eventName = @"application_opened";
@@ -323,7 +331,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"login_failed_to_guess_xmlrpc";
             break;
         case WPAnalyticsStatLogout:
-            eventName = @"logout";
+            eventName = @"account_logout";
             break;
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
@@ -616,7 +624,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"two_factor_sent_sms";
             break;
             
-        case WPAnalyticsStatAppUpgraded:
         case WPAnalyticsStatDefaultAccountChanged:
         case WPAnalyticsStatNoStat:
         case WPAnalyticsStatPerformedCoreDataMigrationFixFor45:
