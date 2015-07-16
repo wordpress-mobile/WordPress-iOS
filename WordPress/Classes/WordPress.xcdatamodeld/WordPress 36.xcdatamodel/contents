@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14D136" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
-        <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
+        <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
         <relationship name="blog" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="posts" inverseEntity="Blog" indexed="YES" syncable="YES"/>
         <relationship name="media" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Media" inverseName="posts" inverseEntity="Media" indexed="YES" syncable="YES"/>
         <relationship name="original" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="AbstractPost" inverseName="revision" inverseEntity="AbstractPost" indexed="YES" syncable="YES"/>
@@ -11,6 +11,7 @@
     </entity>
     <entity name="Account" representedClassName="WPAccount" syncable="YES">
         <attribute name="avatarURL" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="displayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="email" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userID" optional="YES" attributeType="Integer 64" defaultValueString="0" syncable="YES"/>
         <attribute name="username" attributeType="String" syncable="YES"/>
@@ -56,7 +57,7 @@
         <attribute name="remoteStatusNumber" optional="YES" attributeType="Integer 16" defaultValueString="0">
             <userInfo/>
         </attribute>
-        <attribute name="status" optional="YES" attributeType="String">
+        <attribute name="status" optional="YES" attributeType="String" defaultValueString="publish">
             <userInfo/>
         </attribute>
         <attribute name="wp_slug" optional="YES" attributeType="String">
@@ -75,6 +76,7 @@
         <attribute name="blogName" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
+        <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
@@ -222,6 +224,7 @@
         <attribute name="length" optional="YES" attributeType="Integer 32" defaultValueString="0">
             <userInfo/>
         </attribute>
+        <attribute name="localThumbnailURL" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="localURL" optional="YES" attributeType="String">
             <userInfo/>
         </attribute>
@@ -387,12 +390,12 @@
     <fetchRequest name="UnreadNotes" entity="Notification" predicateString="unread == 1"/>
     <elements>
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
-        <element name="Account" positionX="0" positionY="0" width="128" height="195"/>
+        <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="510"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="525"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
-        <element name="Media" positionX="0" positionY="0" width="128" height="360"/>
+        <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
         <element name="Meta" positionX="9" positionY="153" width="128" height="105"/>
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
