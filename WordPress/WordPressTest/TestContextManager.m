@@ -79,6 +79,17 @@
     }];
 }
 
+- (void)saveContextAndWait:(NSManagedObjectContext *)context
+{
+    [super saveContextAndWait:context];
+    if (self.testExpectation) {
+        [self.testExpectation fulfill];
+        self.testExpectation = nil;
+    } else {
+        NSLog(@"No test expectation present for context save");
+    }
+}
+
 - (NSURL *)storeURL
 {
     NSString *documentsDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
