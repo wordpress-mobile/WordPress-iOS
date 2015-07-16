@@ -145,13 +145,13 @@ PODS:
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.34)
-  - WordPressCom-Stats-iOS (0.4.1):
+  - WordPressCom-Stats-iOS (0.4.2):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS (~> 0.0.34)
-  - WPMediaPicker (0.4.7)
+  - WPMediaPicker (0.5.0)
   - wpxmlrpc (0.8)
 
 DEPENDENCIES:
@@ -196,8 +196,8 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.3.5)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.34)
-  - WordPressCom-Stats-iOS (= 0.4.1)
-  - WPMediaPicker (~> 0.4.6)
+  - WordPressCom-Stats-iOS (= 0.4.2)
+  - WPMediaPicker (~> 0.5.0)
   - wpxmlrpc (~> 0.8)
 
 EXTERNAL SOURCES:
@@ -282,8 +282,8 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 155109cd666b8416ce0d2bdb2b8f6f6f6ec2ac50
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: 85c1609bbcdc2cec25dddc633568c8970811b9d2
-  WordPressCom-Stats-iOS: c7ec665c037a2bae50cf5971c4ee6dba27859269
-  WPMediaPicker: 71ac9c3e4f1a6aa982b7d352c6a204f96b5f4bd5
+  WordPressCom-Stats-iOS: 53a6d3573f5e443458a6dca4ddb9bb09fd423920
+  WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
 COCOAPODS: 0.37.2
