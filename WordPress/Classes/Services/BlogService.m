@@ -147,9 +147,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
+            
+            // Let's check if the account object is not nil. Otherwise we'll get an exception below.
+            NSManagedObjectID *accountObjectID = account.objectID;
+            if (!accountObjectID) {
+                DDLogError(@"Error: The Account objectID could not be loaded");
+                return;
+            }
+            
             // Reload the Account in the current Context
             NSError *error = nil;
-            WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:account.objectID
+            WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountObjectID
                                                                                                  error:&error];
             if (!accountInContext) {
                 DDLogError(@"Error loading WordPress Account: %@", error);
@@ -159,7 +167,13 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             [self mergeBlogs:blogs withAccount:accountInContext completion:success];
             
             // Update the Widget Configuration
-            Blog *defaultBlog = (Blog *)[self.managedObjectContext existingObjectWithID:accountInContext.defaultBlog.objectID
+            NSManagedObjectID *defaultBlogObjectID = accountInContext.defaultBlog.objectID;
+            if (!defaultBlogObjectID) {
+                DDLogError(@"Error: The Default Blog objectID could not be loaded");
+                return;
+            }
+            
+            Blog *defaultBlog = (Blog *)[self.managedObjectContext existingObjectWithID:defaultBlogObjectID
                                                                                   error:nil];
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
