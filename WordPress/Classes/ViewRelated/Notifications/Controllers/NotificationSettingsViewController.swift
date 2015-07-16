@@ -75,23 +75,36 @@ println("Error \(error)")
     }
     
     private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
+        // Find the Default Blog ID
+        let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let account         = service.defaultWordPressComAccount()
+        let primaryBlogId   = account.defaultBlog?.blogID as? Int
+        
+        // Proceed Grouping
         var blogSettings    = [NotificationSettings]()
         var otherSettings   = [NotificationSettings]()
         var wpcomSettings   = [NotificationSettings]()
         
         for setting in settings {
             switch setting.channel {
-            case .Blog:
-                blogSettings.append(setting)
+            case let .Blog(blogId):
+                // Make sure that the Primary Blog is the first one in its category
+                if blogId == primaryBlogId {
+                    blogSettings.insert(setting, atIndex: 0)
+                } else {
+                    blogSettings.append(setting)
+                }
             case .Other:
                 otherSettings.append(setting)
             case .WordPressCom:
                 wpcomSettings.append(setting)
             }
         }
+        
         assert(otherSettings.count == 1)
         assert(wpcomSettings.count == 1)
         
+        // Sections: Blogs + Other + WpCom
         return [blogSettings, otherSettings, wpcomSettings]
     }
 
