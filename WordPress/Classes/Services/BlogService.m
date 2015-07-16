@@ -175,7 +175,8 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
             [self mergeBlogs:blogs withAccount:accountInContext completion:success];
             
             // Update the Widget Configuration
-            Blog *defaultBlog = accountInContext.defaultBlog;
+            Blog *defaultBlog = (Blog *)[self.managedObjectContext existingObjectWithID:accountInContext.defaultBlog.objectID
+                                                                                  error:nil];
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
             
