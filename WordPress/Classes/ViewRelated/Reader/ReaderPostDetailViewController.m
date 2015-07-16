@@ -15,6 +15,7 @@
 #import "WPWebViewController.h"
 #import "WordPress-Swift.h"
 #import "BlogService.h"
+#import "SourcePostAttribution.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
@@ -443,6 +444,28 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)postView:(ReaderPostContentView *)postView didTapDiscoverAttribution:(id)sender
+{
+    if (!self.post.sourceAttribution) {
+        return;
+    }
+    if (self.post.sourceAttribution.blogID) {
+        ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:self.post.sourceAttribution.blogID
+                                                                                                    siteURL:self.post.sourceAttribution.blogURL
+                                                                                                    isWPcom:YES];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+    NSURL *linkURL = [NSURL URLWithString:self.post.sourceAttribution.blogURL];
+    [self presentWebViewControllerWithLink:linkURL];
+}
+
+- (void)presentWebViewControllerWithLink:(NSURL *)linkURL
+{
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
+}
 
 # pragma mark - Rich Text Delegate Methods
 
@@ -453,29 +476,25 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
         NSURL *postURL = [NSURL URLWithString:self.post.permaLink];
         linkURL = [NSURL URLWithString:[linkURL absoluteString] relativeToURL:postURL];
     }
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
-    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
-    [self presentViewController:navController animated:YES completion:nil];
+    [self presentWebViewControllerWithLink:linkURL];
 }
 
 - (void)richTextView:(WPRichTextView *)richTextView didReceiveImageLinkAction:(WPRichTextImage *)imageControl
 {
-    UIViewController *controller = nil;
+    WPImageViewController *controller = nil;
     BOOL isSupportedNatively = [WPImageViewController isUrlSupported:imageControl.linkURL];
     
     if (isSupportedNatively) {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image andURL:imageControl.linkURL];
     } else if (imageControl.linkURL) {
-        WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:imageControl.linkURL];
-        controller = [[UINavigationController alloc] initWithRootViewController:webViewController];
+        [self presentWebViewControllerWithLink:imageControl.linkURL];
+        return;
     } else {
         controller = [[WPImageViewController alloc] initWithImage:imageControl.imageView.image];
     }
 
-    if ([controller isKindOfClass:[WPImageViewController class]]) {
-        controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        controller.modalPresentationStyle = UIModalPresentationFullScreen;
-    }
+    controller.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+    controller.modalPresentationStyle = UIModalPresentationFullScreen;
     
     [self presentViewController:controller animated:YES completion:nil];
 }
