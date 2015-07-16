@@ -76,9 +76,7 @@ println("Error \(error)")
     
     private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
         // Find the Default Blog ID
-        let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
-        let account         = service.defaultWordPressComAccount()
-        let primaryBlogId   = account.defaultBlog?.blogID as? Int
+        let primaryBlogId   = defaultWordPressComAccount()?.defaultBlog?.blogID as? Int
         
         // Proceed Grouping
         var blogSettings    = [NotificationSettings]()
@@ -108,6 +106,16 @@ println("Error \(error)")
         return [blogSettings, otherSettings, wpcomSettings]
     }
 
+    
+    
+    // MARK: - Helpers
+    private func defaultWordPressComAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        
+        return service.defaultWordPressComAccount()
+    }
+    
     private func isSectionEmpty(sectionIndex: Int) -> Bool {
         return groupedSettings?[sectionIndex].count == 0
     }
