@@ -31,6 +31,7 @@
         _mediaLibraryDataSource = [[MediaLibraryPickerDataSource alloc] initWithPost:post];
         _deviceLibraryDataSource = [[WPALAssetDataSource alloc] init];
         _currentDataSource = _deviceLibraryDataSource;
+        _observers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -75,6 +76,16 @@
 - (id<WPMediaAsset>)mediaAtIndex:(NSInteger)index
 {
     return [self.currentDataSource mediaAtIndex:index];
+}
+
+- (id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
+{
+    id<WPMediaAsset> result = [self.deviceLibraryDataSource mediaWithIdentifier:identifier];
+    if (result) {
+        return result;
+    }
+    result = [self.mediaLibraryDataSource mediaWithIdentifier:identifier];
+    return result;
 }
 
 - (id<NSObject>)registerChangeObserverBlock:(WPMediaChangesBlock)callback
