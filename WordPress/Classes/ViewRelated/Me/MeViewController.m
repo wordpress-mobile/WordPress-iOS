@@ -245,11 +245,13 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
         switch (indexPath.row) {
             case MeSectionAccountSettings:
                 cell.textLabel.text = NSLocalizedString(@"Account Settings", @"");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.accessibilityLabel = @"Account Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case MeSectionAccountNotifications:
                 cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.accessibilityLabel = @"Notifications";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
@@ -258,6 +260,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
         switch (indexPath.row) {
             case MeSectionExtraHelp:
                 cell.textLabel.text = NSLocalizedString(@"Help & Support", @"");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.accessibilityLabel = @"Help & Support";
 
                 NSInteger unreadNotificationCount = [HelpshiftUtils unreadNotificationCount];
@@ -273,6 +276,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                 break;
             case MeSectionExtraAbout:
                 cell.textLabel.text = NSLocalizedString(@"About", @"");
+                cell.textLabel.textAlignment = NSTextAlignmentLeft;
                 cell.accessibilityLabel = @"About";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
