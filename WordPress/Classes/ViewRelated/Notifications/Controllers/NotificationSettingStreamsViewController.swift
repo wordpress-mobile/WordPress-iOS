@@ -13,9 +13,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Setup Helpers
     private func setupTableView() {
-        // Register the cells
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
-        
         // iPad Top header
         if UIDevice.isPad() {
             tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
@@ -58,31 +55,54 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as! UITableViewCell
+        var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as? WPTableViewCell
+        if cell == nil {
+            cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
+        }
         
-        configureCell(cell, indexPath: indexPath)
+        configureCell(cell!, indexPath: indexPath)
         
-        return cell
+        return cell!
     }
     
     
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let detailsViewController  = NotificationSettingDetailsViewController()
+        if !isStreamEnabled(indexPath.row) {
+            tableView.deselectSelectedRowWithAnimation(true)
+            displayDisabledNotificationsView()
+            return
+        }
+        
+        let detailsViewController = NotificationSettingDetailsViewController()
         detailsViewController.setupWithSettings(settings!, streamAtIndex: indexPath.row)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
     
     
-    // MARK: - UITableView Helpers
+    // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text    = settings?.streams[indexPath.row].kind.description() ?? String()
-        cell.accessoryType      = .DisclosureIndicator
+        cell.textLabel?.text        = settings!.streams[indexPath.row].kind.description() ?? String()
+        cell.detailTextLabel?.text  = isStreamEnabled(indexPath.row) ? String() : NSLocalizedString("Off", comment: "Disabled")
+        cell.accessoryType          = .DisclosureIndicator
+        
         WPStyleGuide.configureTableViewCell(cell)
     }
     
+    private func displayDisabledNotificationsView() {
+// TODO!
+    }
+    
+    private func isStreamEnabled(streamIndex: Int) -> Bool {
+        switch settings!.streams[streamIndex].kind {
+        case .Device:
+            return NotificationsManager.pushNotificationsEnabledInDeviceSettings()
+        default:
+            return true
+        }
+    }
     
     
     // MARK: - Private Constants
