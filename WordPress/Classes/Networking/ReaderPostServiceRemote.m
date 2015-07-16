@@ -3,6 +3,8 @@
 #import "DateUtils.h"
 #import "RemoteReaderPost.h"
 #import "DisplayableImageHelper.h"
+#import "ReaderTopicServiceRemote.h"
+#import "RemoteSourcePostAttribution.h"
 
 @implementation ReaderPostServiceRemote
 
@@ -270,9 +272,40 @@
     post.tags = [self tagsFromPostDictionary:dict];
     post.isSharingEnabled = [[dict numberForKey:@"sharing_enabled"] boolValue];
     post.isLikesEnabled = [[dict numberForKey:@"likes_enabled"] boolValue];
-
+    if ([dict arrayForKeyPath:@"discover_metadata.discover_fp_post_formats"]) {
+        post.sourceAttribution = [self sourceAttributionFromDictionary:[dict dictionaryForKey:@"discover_metadata"]];
+    }
     return post;
 }
+
+/**
+ Composes discover attribution if needed.
+
+ @param dict A dictionary representing a discover_metadata object from the REST API
+ @return A `RemoteDiscoverAttribution` object
+ */
+- (RemoteSourcePostAttribution *)sourceAttributionFromDictionary:(NSDictionary *)dict
+{
+    NSArray *taxonomies = [dict arrayForKey:@"discover_fp_post_formats"];
+    if ([taxonomies count] == 0) {
+        return nil;
+    }
+
+    RemoteSourcePostAttribution *sourceAttr = [RemoteSourcePostAttribution new];
+    sourceAttr.permalink = [dict stringForKey:@"permalink"];
+    sourceAttr.authorName = [dict stringForKeyPath:@"attribution.author_name"];
+    sourceAttr.authorURL = [dict stringForKeyPath:@"attribution.author_url"];
+    sourceAttr.avatarURL = [dict stringForKeyPath:@"attribution.avatar_url"];
+    sourceAttr.blogName = [dict stringForKeyPath:@"attribution.blog_name"];
+    sourceAttr.blogURL = [dict stringForKeyPath:@"attribution.blog_url"];
+    sourceAttr.blogID = [dict numberForKeyPath:@"featured_post_wpcom_data.blog_id"];
+    sourceAttr.postID = [dict numberForKeyPath:@"featured_post_wpcom_data.post_id"];
+    sourceAttr.commentCount = [dict numberForKeyPath:@"featured_post_wpcom_data.comment_count"];
+    sourceAttr.likeCount = [dict numberForKeyPath:@"featured_post_wpcom_data.like_count"];
+    sourceAttr.taxonomies = [self slugsFromDiscoverPostTaxonomies:taxonomies];
+    return sourceAttr;
+}
+
 
 #pragma mark - Utils
 
@@ -374,8 +407,10 @@
  */
 - (BOOL)isWPComFromPostDictionary:(NSDictionary *)dict
 {
-    NSNumber *isExternal = [dict numberForKey:@"is_external"];
-    return ![isExternal boolValue];
+    BOOL isExternal = [[dict numberForKey:@"is_external"] boolValue];
+    BOOL isJetpack = [[dict numberForKey:@"is_jetpack"] boolValue];
+
+    return !isJetpack && !isExternal;
 }
 
 /**
@@ -535,6 +570,16 @@
     }
 
     return [isPrivate boolValue];
+}
+
+- (NSArray *)slugsFromDiscoverPostTaxonomies:(NSArray *)discoverPostTaxonomies
+{
+    NSMutableArray *slugs = [NSMutableArray array];
+    for (NSDictionary *dict in discoverPostTaxonomies) {
+        NSString *slug = [dict stringForKey:@"slug"];
+        [slugs addObject:slug];
+    }
+    return slugs;
 }
 
 @end
