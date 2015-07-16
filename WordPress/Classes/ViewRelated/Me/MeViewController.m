@@ -55,8 +55,9 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) MeHeaderView *headerView;
+@property (nonatomic, strong) UITableView   *tableView;
+@property (nonatomic, strong) MeHeaderView  *headerView;
+@property (nonatomic, strong) NSDictionary  *rowCountMap;
 
 @end
 
@@ -103,6 +104,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self buildTableView];
     [self refreshAccountUserDetails];
     [self refreshHeaderView];
+    [self refreshTableView];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -164,9 +166,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (void)refreshHeaderView
 {
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
+    WPAccount *defaultAccount = [self defaultAccount];
 
     if (defaultAccount) {
         self.tableView.tableHeaderView = self.headerView;
@@ -177,8 +177,6 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     else {
         self.tableView.tableHeaderView = nil;
     }
-
-    [self.tableView reloadData];
 }
 
 - (void)refreshHeaderViewEmail
@@ -189,6 +187,30 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     [self.headerView setGravatarEmail:defaultAccount.email];
 }
 
+- (void)refreshTableView
+{
+    // Let's hide the Notifications Row, whenever there is no default account
+    NSInteger accountRowCount = MeSectionAccountCount;
+    if (!self.defaultAccount) {
+        --accountRowCount;
+    }
+    
+    self.rowCountMap = @{
+        @(MeSectionsAccount)    : @(accountRowCount),
+        @(MeSectionsExtra)      : @(MeSectionExtraCount),
+        @(MeSectionsWpCom)      : @(MeSectionWpComCount)
+    };
+    
+    [self.tableView reloadData];
+}
+
+- (WPAccount *)defaultAccount
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    AccountService *accountService  = [[AccountService alloc] initWithManagedObjectContext:context];
+    
+    return accountService.defaultWordPressComAccount;
+}
 
 - (UILabel *)helpshiftBadgeLabel
 {
@@ -201,6 +223,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     return label;
 }
 
+
 #pragma mark - UITableViewDataSource methods
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -210,13 +233,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSDictionary *rowsMap = @{
-        @(MeSectionsAccount)    : @(MeSectionAccountCount),
-        @(MeSectionsExtra)      : @(MeSectionExtraCount),
-        @(MeSectionsWpCom)      : @(MeSectionWpComCount)
-    };
-    
-    return [rowsMap[@(section)] intValue] ?: 0;
+    return [self.rowCountMap[@(section)] intValue] ?: 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -412,6 +429,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (void)defaultAccountDidChange:(NSNotification *)notification
 {
     [self refreshHeaderView];
+    [self refreshTableView];
 }
 
 
@@ -429,7 +447,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             [accountService removeDefaultWordPressComAccount];
 
             // reload all table view to update the header as well
-            [self.tableView reloadData];
+            [self refreshTableView];
         });
     }
 }
