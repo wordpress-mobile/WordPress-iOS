@@ -1,22 +1,30 @@
 #import "ReaderPostService.h"
-#import "ReaderPostServiceRemote.h"
-#import "ReaderSiteService.h"
-#import "WordPressComApi.h"
-#import "ReaderPost.h"
-#import "ReaderTopic.h"
-#import "RemoteReaderPost.h"
-#import "WPAccount.h"
+
 #import "AccountService.h"
-#import "DateUtils.h"
 #import "ContextManager.h"
+#import "DateUtils.h"
 #import "NSString+Helpers.h"
 #import "NSString+XMLExtensions.h"
+#import "ReaderPost.h"
+#import "ReaderPostServiceRemote.h"
+#import "ReaderSiteService.h"
+#import "ReaderTopic.h"
+#import "RemoteReaderPost.h"
+#import "RemoteSourcePostAttribution.h"
+#import "SourcePostAttribution.h"
+#import "WordPressComApi.h"
+#import "WPAccount.h"
 
 NSUInteger const ReaderPostServiceNumberToSync = 20;
 NSUInteger const ReaderPostServiceTitleLength = 30;
 NSUInteger const ReaderPostServiceMaxPosts = 200;
 NSUInteger const ReaderPostServiceMaxBatchesToBackfill = 3;
 NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
+
+static NSString * const SourceAttributionSiteTaxonomy = @"site-pick";
+static NSString * const SourceAttributionImageTaxonomy = @"image-pick";
+static NSString * const SourceAttributionQuoteTaxonomy = @"quote-pick";
+static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 /**
  ReaderPostServiceBackfillState A simple state object used to keep track of backfilling posts.
@@ -174,6 +182,40 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     }
 }
 
+- (void)setFollowing:(BOOL)following
+  forWPComSiteWithID:(NSNumber *)siteID
+              andURL:(NSString *)siteURL
+             success:(void (^)())success
+             failure:(void (^)(NSError *error))failure
+{
+    // Optimistically Update
+    [self setFollowing:following forPostsFromSiteWithID:siteID andURL:siteURL];
+
+    // Define success block
+    void (^successBlock)() = ^void() {
+        if (success) {
+            success();
+        }
+    };
+
+    // Define failure block
+    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+        // Revert changes on failure
+        [self setFollowing:!following forPostsFromSiteWithID:siteID andURL:siteURL];
+
+        if (failure) {
+            failure(error);
+        }
+    };
+
+    ReaderSiteService *siteService = [[ReaderSiteService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    if (following) {
+        [siteService followSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+    } else {
+        [siteService unfollowSiteWithID:[siteID integerValue] success:successBlock failure:failureBlock];
+    }
+}
+
 - (void)toggleFollowingForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
     // Get a the post in our own context
@@ -232,6 +274,8 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
         failureBlock(error);
     }
 }
+
+
 
 - (void)reblogPost:(ReaderPost *)post toSite:(NSUInteger)siteID note:(NSString *)note success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
@@ -823,6 +867,11 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
     post.isSharingEnabled = remotePost.isSharingEnabled;
     post.isLikesEnabled = remotePost.isLikesEnabled;
     post.isSiteBlocked = NO;
+    if (remotePost.sourceAttribution) {
+        post.sourceAttribution = [self createOrReplaceFromRemoteDiscoverAttribution:remotePost.sourceAttribution forPost:post];
+    } else {
+        post.sourceAttribution = nil;
+    }
 
     // Construct a summary if necessary.
     NSString *summary = [self formatSummary:remotePost.summary];
@@ -841,6 +890,45 @@ NSString * const ReaderPostServiceErrorDomain = @"ReaderPostServiceErrorDomain";
 
     return post;
 }
+
+- (SourcePostAttribution *)createOrReplaceFromRemoteDiscoverAttribution:(RemoteSourcePostAttribution *)remoteAttribution
+                                                                forPost:(ReaderPost *)post
+{
+    SourcePostAttribution *attribution = post.sourceAttribution;
+
+    if (!attribution) {
+        attribution = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([SourcePostAttribution class])
+                                             inManagedObjectContext:self.managedObjectContext];
+    }
+    attribution.authorName = remoteAttribution.authorName;
+    attribution.authorURL = remoteAttribution.authorURL;
+    attribution.avatarURL = remoteAttribution.avatarURL;
+    attribution.blogName = remoteAttribution.blogName;
+    attribution.blogURL = remoteAttribution.blogURL;
+    attribution.permalink = remoteAttribution.permalink;
+    attribution.blogID = remoteAttribution.blogID;
+    attribution.postID = remoteAttribution.postID;
+    attribution.commentCount = remoteAttribution.commentCount;
+    attribution.likeCount = remoteAttribution.likeCount;
+    attribution.attributionType = [self attributionTypeFromTaxonomies:remoteAttribution.taxonomies];
+    return attribution;
+}
+
+- (NSString *)attributionTypeFromTaxonomies:(NSArray *)taxonomies
+{
+    if ([taxonomies containsObject:SourceAttributionSiteTaxonomy]) {
+        return SourcePostAttributionTypeSite;
+    }
+
+    if ([taxonomies containsObject:SourceAttributionImageTaxonomy] ||
+        [taxonomies containsObject:SourceAttributionQuoteTaxonomy] ||
+        [taxonomies containsObject:SourceAttributionStandardTaxonomy] ) {
+        return SourcePostAttributionTypePost;
+    }
+
+    return nil;
+}
+
 
 #pragma mark - Content Formatting and Sanitization
 

@@ -8,7 +8,6 @@
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
-@property (nonatomic) BOOL shouldShowActionButtons;
 
 @end
 
@@ -32,7 +31,6 @@
 - (void)configurePost:(ReaderPost *)post
 {
     self.post = post;
-    self.shouldShowActionButtons = post.isWPCom;
     self.contentProvider = post;
 }
 
@@ -65,6 +63,12 @@
 
 #pragma mark - Private Methods
 
+- (BOOL)shouldShowActionButtons
+{
+    // Do not show action buttons for source attributed posts.
+    return self.post.isWPCom && !self.post.sourceAttribution;
+}
+
 - (void)buildActionButtons
 {
     self.shouldShowAttributionButton = YES;
@@ -86,7 +90,7 @@
 
 - (void)configureActionButtons
 {
-    if (!self.shouldShowActionButtons) {
+    if (![self shouldShowActionButtons]) {
         self.actionButtons = @[];
         return;
     }
@@ -108,7 +112,7 @@
 
 - (void)updateActionButtons
 {
-    if (!self.shouldShowActionButtons) {
+    if (![self shouldShowActionButtons]) {
         return;
     }
 

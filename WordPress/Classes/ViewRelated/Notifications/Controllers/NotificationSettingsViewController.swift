@@ -75,27 +75,52 @@ println("Error \(error)")
     }
     
     private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
+        // Find the Default Blog ID
+        let primaryBlogId   = defaultWordPressComAccount()?.defaultBlog?.blogID as? Int
+        
+        // Proceed Grouping
         var blogSettings    = [NotificationSettings]()
         var otherSettings   = [NotificationSettings]()
         var wpcomSettings   = [NotificationSettings]()
         
         for setting in settings {
             switch setting.channel {
-            case .Blog:
-                blogSettings.append(setting)
+            case let .Blog(blogId):
+                // Make sure that the Primary Blog is the first one in its category
+                if blogId == primaryBlogId {
+                    blogSettings.insert(setting, atIndex: 0)
+                } else {
+                    blogSettings.append(setting)
+                }
             case .Other:
                 otherSettings.append(setting)
             case .WordPressCom:
                 wpcomSettings.append(setting)
             }
         }
+        
         assert(otherSettings.count == 1)
         assert(wpcomSettings.count == 1)
         
+        // Sections: Blogs + Other + WpCom
         return [blogSettings, otherSettings, wpcomSettings]
     }
 
+    
+    
+    // MARK: - Helpers
+    private func defaultWordPressComAccount() -> WPAccount? {
+        let context = ContextManager.sharedInstance().mainContext
+        let service = AccountService(managedObjectContext: context)
+        
+        return service.defaultWordPressComAccount()
+    }
+    
+    private func isSectionEmpty(sectionIndex: Int) -> Bool {
+        return groupedSettings?[sectionIndex].count == 0
+    }
 
+    
 
     // MARK: - UITableView Datasource Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -139,12 +164,20 @@ println("Error \(error)")
     }
     
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if isSectionEmpty(section) {
+            return nil
+        }
+        
         let footerView      = WPTableViewSectionFooterView(frame: CGRectZero)
         footerView.title    = titleForFooterInSection(section)
         return footerView
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if isSectionEmpty(section) {
+            return CGFloat.min
+        }
+        
         let title = titleForFooterInSection(section)
         return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width)
     }

@@ -26,6 +26,14 @@
  */
 - (void)postView:(ReaderPostContentView *)postView didReceiveCommentAction:(id)sender;
 
+/**
+ Tells the delegate that the user tapped the discover post attribution view.
+
+ @param postView The post view informing the delegate of the event.
+ @param sender A reference to the receiving `UIControl`.
+ */
+- (void)postView:(ReaderPostContentView *)postView didTapDiscoverAttribution:(id)sender;
+
 @end
 
 
