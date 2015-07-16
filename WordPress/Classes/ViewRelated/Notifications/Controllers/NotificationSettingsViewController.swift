@@ -95,7 +95,11 @@ println("Error \(error)")
         return [blogSettings, otherSettings, wpcomSettings]
     }
 
+    private func isSectionEmpty(sectionIndex: Int) -> Bool {
+        return groupedSettings?[sectionIndex].count == 0
+    }
 
+    
 
     // MARK: - UITableView Datasource Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -139,12 +143,20 @@ println("Error \(error)")
     }
     
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if isSectionEmpty(section) {
+            return nil
+        }
+        
         let footerView      = WPTableViewSectionFooterView(frame: CGRectZero)
         footerView.title    = titleForFooterInSection(section)
         return footerView
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if isSectionEmpty(section) {
+            return CGFloat.min
+        }
+        
         let title = titleForFooterInSection(section)
         return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width)
     }
