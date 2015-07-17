@@ -82,8 +82,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         cell.name       = settings?.localizedDescription(key!) ?? String()
         cell.isOn       = preferences?[key!] ?? true
-        cell.onChange   = { (newValue: Bool) in
-            self.newValues?[key!] = newValue
+        cell.onChange   = { [weak self] (newValue: Bool) in
+            self?.newValues?[key!] = newValue
         }
     }
     
@@ -94,15 +94,34 @@ public class NotificationSettingDetailsViewController : UITableViewController
         if newValues?.count == 0 || settings == nil {
             return
         }
-        
+
         let context = ContextManager.sharedInstance().mainContext
         let service = NotificationsService(managedObjectContext: context)
                 
         service.updateSettings(settings!,
-            stream: stream!,
-            newValues: newValues!,
-            success: nil,
-            failure: nil)
+            stream              : stream!,
+            newValues           : newValues!,
+            success             : nil,
+            failure             : { (error: NSError!) in
+                self.handleUpdateError()
+            })
+    }
+    
+    private func handleUpdateError() {
+        UIAlertView.showWithTitle(NSLocalizedString("Sorry", comment: ""),
+            message             : NSLocalizedString("There has been an unexpected error while updating " +
+                                                    "your Notification Settings",
+                                                    comment: "Displayed after a failed Notification Settings call"),
+            style               : .Default,
+            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
+            otherButtonTitles   : [ NSLocalizedString("Retry", comment: "Retry. Action") ],
+            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
+                if alertView.cancelButtonIndex == buttonIndex {
+                    return
+                }
+                
+                self.saveSettingsIfNeeded()
+            })
     }
     
     
