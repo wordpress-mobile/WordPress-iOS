@@ -462,6 +462,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         blog.blogID = remoteBlog.ID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;
+        blog.visible = remoteBlog.visible;
     }
 
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
