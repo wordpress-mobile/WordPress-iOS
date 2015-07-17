@@ -425,6 +425,7 @@
 		B5EFB1CF1B336266007608A3 /* RemoteNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C61B31F19D007608A3 /* RemoteNotificationSettings.swift */; };
 		B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EFB1D01B33630C007608A3 /* notifications-settings.json */; };
 		B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */; };
+		B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */; };
 		B5FD4543199D0F2800286FBB /* NotificationDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */; };
 		B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B5FD4542199D0F2800286FBB /* NotificationsViewController.m */; };
 		BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BE13B3E51B2B58D800A4211D /* BlogListViewController.m */; };
@@ -1328,6 +1329,7 @@
 		B5EFB1D01B33630C007608A3 /* notifications-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-settings.json"; sourceTree = "<group>"; };
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
+		B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationSettingsViewController.xib; sourceTree = "<group>"; };
 		B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WordPress-Bridging-Header.h"; sourceTree = "<group>"; };
 		B5FD453F199D0F2800286FBB /* NotificationDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationDetailsViewController.h; sourceTree = "<group>"; };
 		B5FD4540199D0F2800286FBB /* NotificationDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = NotificationDetailsViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
@@ -2720,7 +2722,6 @@
 			isa = PBXGroup;
 			children = (
 				B5EFB1C31B31B99D007608A3 /* Facades */,
-				930284B618EAF7B600CB0BF4 /* LocalCoreDataService.h */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
 				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
 				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
@@ -2736,8 +2737,6 @@
 				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
 				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
 				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
-				E1A6DBE319DC7D230071AC1E /* PostService.h */,
-				E1A6DBE419DC7D230071AC1E /* PostService.m */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
@@ -2978,20 +2977,6 @@
 		B5EFB1C31B31B99D007608A3 /* Facades */ = {
 			isa = PBXGroup;
 			children = (
-				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
-				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
-				85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */,
-				85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */,
-				85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */,
-				85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */,
-				85D239A51AE5A5FC0074768D /* LoginFacade.h */,
-				85D239A61AE5A5FC0074768D /* LoginFacade.m */,
-				85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */,
-				85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */,
-				85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */,
-				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
-				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
-				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
 			);
 			name = Facades;
 			sourceTree = "<group>";
@@ -3030,6 +3015,7 @@
 				B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */,
 				B52F8CD71B43260C00D36025 /* NotificationSettingStreamsViewController.swift */,
 				B5899ADD1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift */,
+				B5F9959F1B59708C00AB0B3E /* NotificationSettingsViewController.xib */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -3717,6 +3703,7 @@
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				2906F813110CDA8900169D56 /* EditCommentViewController.xib in Resources */,
+				B5F995A01B59708C00AB0B3E /* NotificationSettingsViewController.xib in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				5DF94E341962B9D800359241 /* WPAlertViewSideBySide.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
