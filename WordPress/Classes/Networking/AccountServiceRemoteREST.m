@@ -93,6 +93,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     blog.xmlrpc = [jsonBlog stringForKeyPath:@"meta.links.xmlrpc"];
     blog.jetpack = [[jsonBlog numberForKey:@"jetpack"] boolValue];
     blog.icon = [jsonBlog stringForKeyPath:@"icon.img"];
+    blog.visible = [[jsonBlog numberForKey:@"visible"] boolValue];
     return blog;
 }
 
