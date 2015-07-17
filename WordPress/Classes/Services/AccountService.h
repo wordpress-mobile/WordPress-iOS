@@ -83,4 +83,13 @@ extern NSString *const WPAccountEmailAndDefaultBlogUpdatedNotification;
  */
 - (void)purgeAccount:(WPAccount *)account;
 
+///--------------------
+/// @name Visible blogs
+///--------------------
+
+/**
+ Sets the visibility for the given blogs
+ */
+- (void)setVisibility:(BOOL)visible forBlogs:(NSArray *)blogs;
+
 @end
