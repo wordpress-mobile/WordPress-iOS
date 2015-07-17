@@ -69,15 +69,14 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if !isStreamEnabled(indexPath.row) {
+        let stream = settings?.streams[indexPath.row]
+        if isStreamDisabled(stream!) {
             tableView.deselectSelectedRowWithAnimation(true)
-            displayDisabledNotificationsView()
+            displayNotificationSettingsAlert()
             return
         }
         
-        let stream                  = settings?.streams[indexPath.row]
-        let detailsViewController   = NotificationSettingDetailsViewController()
-        
+        let detailsViewController = NotificationSettingDetailsViewController()
         detailsViewController.setupWithSettings(settings!, stream: stream!)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
@@ -86,27 +85,30 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text        = settings!.streams[indexPath.row].kind.description() ?? String()
-        cell.detailTextLabel?.text  = isStreamEnabled(indexPath.row) ? String() : NSLocalizedString("Off", comment: "Disabled")
+        let stream                  = settings!.streams[indexPath.row]
+        
+        cell.textLabel?.text        = stream.kind.description() ?? String()
+        cell.detailTextLabel?.text  = isStreamDisabled(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .DisclosureIndicator
         
         WPStyleGuide.configureTableViewCell(cell)
     }
     
-    private func displayDisabledNotificationsView() {
-// TODO!
+    private func isStreamDisabled(stream: NotificationSettings.Stream) -> Bool {
+        return stream.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-    private func isStreamEnabled(streamIndex: Int) -> Bool {
-        switch settings!.streams[streamIndex].kind {
-        case .Device:
-            return NotificationsManager.pushNotificationsEnabledInDeviceSettings()
-        default:
-            return true
+    private func displayNotificationSettingsAlert() {
+        if UIDevice.isOS8() {
+            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
+            UIApplication.sharedApplication().openURL(targetURL!)
+            return
         }
+
     }
-    
-    
+
+
+
     // MARK: - Private Constants
     private let reuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
     private let emptyRowCount   = 0
