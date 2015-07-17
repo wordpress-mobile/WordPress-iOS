@@ -54,15 +54,14 @@ public class NotificationSettingsViewController : UIViewController
         let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
         activityIndicatorView.startAnimating()
-        
-        service.getAllSettings({ (settings: [NotificationSettings]) in
-                self.groupedSettings = self.groupSettings(settings)
-                self.activityIndicatorView.stopAnimating()
-                self.tableView.reloadData()
+    
+        service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
+                self?.groupedSettings = self?.groupSettings(settings)
+                self?.activityIndicatorView.stopAnimating()
+                self?.tableView.reloadData()
             },
-            failure: { (error: NSError!) in
-// TODO: Handle Error
-println("Error \(error)")
+            failure: { [weak self] (error: NSError!) in
+                self?.handleLoadError()
             })
     }
     
@@ -98,6 +97,27 @@ println("Error \(error)")
         return [blogSettings, otherSettings, wpcomSettings]
     }
 
+    
+    
+    // MARK: - Error Handling
+    private func handleLoadError() {
+        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
+            message             : NSLocalizedString("There has been a problem while loading your Notification Settings",
+                                                    comment: "Displayed after Notification Settings failed to load"),
+            style               : .Default,
+            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
+            otherButtonTitles   : [ NSLocalizedString("Try Again", comment: "Try Again. Action") ],
+            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
+                // On Cancel: Let's dismiss this screen
+                if alertView.cancelButtonIndex == buttonIndex {
+                    self.navigationController?.popViewControllerAnimated(true)
+                    return
+                }
+                
+                self.reloadSettings()
+        })
+    }
+    
     
     
     // MARK: - Helpers
