@@ -108,7 +108,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     private func handleUpdateError() {
-        UIAlertView.showWithTitle(NSLocalizedString("Sorry", comment: ""),
+        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
             message             : NSLocalizedString("There has been an unexpected error while updating " +
                                                     "your Notification Settings",
                                                     comment: "Displayed after a failed Notification Settings call"),
