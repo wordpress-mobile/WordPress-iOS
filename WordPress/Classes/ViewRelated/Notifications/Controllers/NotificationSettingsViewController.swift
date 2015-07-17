@@ -270,7 +270,7 @@ println("Error \(error)")
         case .WordPressCom:
             // WordPress.com Row will push the SettingDetails ViewController, directly
             let detailsViewController = NotificationSettingDetailsViewController()
-            detailsViewController.setupWithSettings(settings, streamAtIndex: firstStreamIndex)
+            detailsViewController.setupWithSettings(settings, stream: settings.streams.first!)
             navigationController?.pushViewController(detailsViewController, animated: true)
         default:
             // Our Sites + 3rd Party Sites rows will push the Streams View
@@ -312,7 +312,6 @@ println("Error \(error)")
     private let defaultRowHeight        = CGFloat(44.0)
     
     private let emptyCount              = 0
-    private let firstStreamIndex        = 0
     private let loadMoreRowIndex        = 3
     private let loadMoreRowCount        = 4
     

@@ -36,16 +36,16 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Public Helpers
-    public func setupWithSettings(settings: NotificationSettings, streamAtIndex streamIndex: Int) {
+    public func setupWithSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) {
         self.settings   = settings
-        self.stream     = settings.streams[streamIndex]
+        self.stream     = stream
         self.newValues  = [String: Bool]()
         
         switch settings.channel {
         case .WordPressCom:
             title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
         default:
-            title = stream!.kind.description()
+            title = stream.kind.description()
         }
         
         tableView.reloadData()
