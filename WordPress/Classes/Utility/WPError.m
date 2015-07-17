@@ -4,6 +4,7 @@
 #import "LoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "SupportViewController.h"
 
 NSInteger const SupportButtonIndex = 0;
@@ -88,7 +89,7 @@ NSInteger const SupportButtonIndex = 0;
     }
 
     if (message == nil) {
-        message = [error localizedDescription];
+        message = [[error localizedDescription] stringByStrippingHTML];
         message = [NSString decodeXMLCharactersIn:message];
     }
 
