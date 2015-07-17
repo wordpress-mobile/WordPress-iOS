@@ -395,6 +395,16 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    return ![indexPath isEqual:[self indexPathForAddSite]];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return NO;
 }
 
@@ -405,43 +415,38 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    cell.textLabel.textAlignment = NSTextAlignmentLeft;
-    cell.accessoryType = UITableViewCellAccessoryNone;
-    cell.accessoryView = nil;
-    cell.imageView.image = nil;
-
     if ([indexPath isEqual:[self indexPathForAddSite]]) {
         cell.textLabel.text = NSLocalizedString(@"Add a Site", @"");
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
         cell.textLabel.textAlignment = NSTextAlignmentCenter;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    } else if ([cell isKindOfClass:[WPBlogTableViewCell class]]) {
+        [self configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:indexPath];
+    }
+}
+
+- (void)configureBlogCell:(WPBlogTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
+{
+    Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
+    if ([blog.blogName length] != 0) {
+        cell.textLabel.text = blog.blogName;
+        cell.detailTextLabel.text = [blog displayURL];
     } else {
-        Blog *blog = [self.resultsController objectAtIndexPath:indexPath];
-        if ([blog.blogName length] != 0) {
-            cell.textLabel.text = blog.blogName;
-            cell.detailTextLabel.text = [blog displayURL];
-        } else {
-            cell.textLabel.text = [blog displayURL];
-            cell.detailTextLabel.text = @"";
-        }
+        cell.textLabel.text = [blog displayURL];
+        cell.detailTextLabel.text = @"";
+    }
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
 
-        [cell.imageView setImageWithSiteIcon:blog.icon];
-        if ([self.tableView isEditing] && [blog supports:BlogFeatureVisibility]) {
-            UISwitch *visibilitySwitch = [UISwitch new];
-            visibilitySwitch.on = blog.visible;
-            visibilitySwitch.tag = indexPath.row;
-            [visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
-            visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", blog.blogName];
-            cell.accessoryView = visibilitySwitch;
+    [cell.imageView setImageWithSiteIcon:blog.icon];
+    cell.visibilitySwitch.on = blog.visible;
+    cell.visibilitySwitch.tag = indexPath.row;
+    [cell.visibilitySwitch addTarget:self action:@selector(visibilitySwitchAction:) forControlEvents:UIControlEventValueChanged];
+    cell.visibilitySwitch.accessibilityIdentifier = [NSString stringWithFormat:@"Switch-Visibility-%@", blog.blogName];
 
-            // Make textLabel light gray if blog is not-visible
-            if (!visibilitySwitch.on) {
-                [cell.textLabel setTextColor:[WPStyleGuide readGrey]];
-            }
-
-        } else {
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        }
-        cell.selectionStyle = self.tableView.isEditing ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleBlue;
+    // Make textLabel light gray if blog is not-visible
+    if (!blog.visible) {
+        [cell.textLabel setTextColor:[WPStyleGuide readGrey]];
     }
 }
 
