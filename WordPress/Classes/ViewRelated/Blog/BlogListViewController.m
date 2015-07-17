@@ -604,10 +604,8 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 {
     UISwitch *switcher = (UISwitch *)sender;
     Blog *blog = [self.resultsController objectAtIndexPath:[NSIndexPath indexPathForRow:switcher.tag inSection:0]];
-    if (switcher.on != blog.visible) {
-        blog.visible = switcher.on;
-        [[ContextManager sharedInstance] saveContext:blog.managedObjectContext];
-    }
+    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    [accountService setVisibility:switcher.on forBlogs:@[blog]];
 }
 
 #pragma mark - NSFetchedResultsController

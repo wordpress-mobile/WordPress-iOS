@@ -56,6 +56,35 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
           }];
 }
 
+- (void)updateBlogsVisibility:(NSDictionary *)blogs
+                      success:(void (^)())success
+                      failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([blogs isKindOfClass:[NSDictionary class]]);
+    NSMutableDictionary *sites = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
+    [blogs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        NSParameterAssert([key isKindOfClass:[NSNumber class]]);
+        NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
+        NSString *blogID = [key stringValue];
+        sites[blogID] = obj;
+    }];
+
+    NSDictionary *parameters = @{
+                                 @"sites": sites,
+                                 };
+    NSString *path = @"me/sites";
+    [self.api POST:path
+        parameters:parameters
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               if (success) {
+                   success();
+               }
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
 
 #pragma mark - Private Methods
 

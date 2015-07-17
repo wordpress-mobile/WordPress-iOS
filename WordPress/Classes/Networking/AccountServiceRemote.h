@@ -25,4 +25,16 @@
                      success:(void (^)(RemoteUser *remoteUser))success
                      failure:(void (^)(NSError *error))failure;
 
+/**
+ *  @brief      Updates blogs' visibility
+ *
+ *  @param      blogs       A dictionary with blog IDs as keys and a boolean indicating visibility as values.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)updateBlogsVisibility:(NSDictionary *)blogs
+                      success:(void (^)())success
+                      failure:(void (^)(NSError *error))failure;
+
+
 @end
