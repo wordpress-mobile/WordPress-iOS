@@ -75,8 +75,10 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController()
-        detailsViewController.setupWithSettings(settings!, streamAtIndex: indexPath.row)
+        let stream                  = settings?.streams[indexPath.row]
+        let detailsViewController   = NotificationSettingDetailsViewController()
+        
+        detailsViewController.setupWithSettings(settings!, stream: stream!)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
