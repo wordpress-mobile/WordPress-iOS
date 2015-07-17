@@ -4,6 +4,7 @@
 #import "LoginViewController.h"
 #import "WPAccount.h"
 #import "NSString+XMLExtensions.h"
+#import "NSString+Helpers.h"
 #import "SupportViewController.h"
 
 NSInteger const SupportButtonIndex = 0;
@@ -145,7 +146,7 @@ NSInteger const SupportButtonIndex = 0;
     DDLogInfo(@"Showing alert with title: %@ and message %@", title, message);
     NSString *supportText = showSupport ? NSLocalizedString(@"Need Help?", @"'Need help?' button label, links off to the WP for iOS FAQ.") : nil;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
+                                                    message:[message stringByStrippingHTML]
                                                    delegate:[WPError internalInstance]
                                           cancelButtonTitle:supportText
                                           otherButtonTitles:NSLocalizedString(@"OK", nil), nil];
