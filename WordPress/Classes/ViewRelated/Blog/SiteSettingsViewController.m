@@ -15,20 +15,29 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "BlogService.h"
 
-NS_ENUM(NSInteger, EditSiteRow) {
-    EditSiteRowURL = 0,
-    EditSiteRowUsername = 1,
-    EditSiteRowPassword = 2,
-    EditSiteRowTitle = 0,
-    EditSiteRowTagline = 1,
-    EditSiteRowGeotagging = 0,
-    EditSiteRowPushNotifications = 1,
+NS_ENUM(NSInteger, SiteSettingsGeneral) {
+    SiteSettingsGeneralTitle = 0,
+    SiteSettingsGeneralTagline,
+    SiteSettingsGeneralURL,
+    SiteSettingsGeneralPushNotifications,
+    SiteSettingsGeneralCount,
 };
 
-NS_ENUM(NSInteger, TableSectionContentType) {
-    TableViewSectionTitle = 0,
-    TableViewSectionGeneralSettings,
-    TableViewSectionMobileSettings,
+NS_ENUM(NSInteger, SiteSettingsAccount) {
+    SiteSettingsAccountUsername = 0,
+    SiteSettingsAccountPassword,
+    SiteSettingsAccountCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsWriting) {
+    SiteSettingsWritingGeotagging = 0,
+    SiteSettingsWritingCount,
+};
+
+NS_ENUM(NSInteger, SiteSettingsSection) {
+    SiteSettingsSectionGeneral = 0,
+    SiteSettingsSectionAccount,
+    SiteSettingsSectionWriting,
 };
 
 static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
@@ -36,13 +45,6 @@ static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
-NSInteger const EditSiteSectionCount = 3;
-
-NSInteger const EditSiteRowCountForSectionTitle = 1;
-NSInteger const EditSiteRowCountForSectionTitleSelfHosted = 3;
-NSInteger const EditSiteRowCountForSectionSettings = 2;
-NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
-NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
@@ -70,6 +72,8 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 @property (nonatomic, assign) BOOL isSiteDotCom;
 @property (nonatomic, assign) BOOL isKeyboardVisible;
 
+@property (nonatomic, strong) NSArray *tableSections;
+
 @end
 
 @implementation SiteSettingsViewController
@@ -95,6 +99,11 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Settings", @"");
+    if ([self.blog isHostedAtWPcom]) {
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
+    } else {
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+    }
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -167,30 +176,30 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return EditSiteSectionCount;
+    return self.tableSections.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == TableViewSectionTitle) {
-        if (self.blog.account) {
-            return EditSiteRowCountForSectionTitle;
-        }
-        return EditSiteRowCountForSectionTitleSelfHosted;
-    } else if (section == TableViewSectionMobileSettings) {
-        if ([self canTogglePushNotifications]) {
-            return EditSiteRowCountForSectionSettings;
-        }
-        return EditSiteRowCountForSectionSettingsSelfHosted;
-    } else if (section == TableViewSectionGeneralSettings) {
-        return EditSiteRowCountForSectionGeneralSettings;
+    NSInteger settingsSection = [self.tableSections[section] intValue];
+    switch (settingsSection) {
+        case SiteSettingsSectionGeneral:
+            return SiteSettingsGeneralCount;
+        break;
+        case SiteSettingsSectionAccount:
+            return SiteSettingsAccountCount;
+        break;
+        case SiteSettingsSectionWriting:
+            return SiteSettingsWritingCount;
+        break;
     }
     return 0;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self titleForHeaderInSection:section];
+    NSInteger settingsSection = [self.tableSections[section] intValue];
+    NSString *title = [self titleForHeaderInSection:settingsSection];
     if (title.length > 0) {
         WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
         header.title = title;
@@ -215,42 +224,24 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 - (NSString *)titleForHeaderInSection:(NSInteger)section
 {
     NSString *headingTitle = nil;
-    if (section == TableViewSectionTitle) {
-        headingTitle = self.blog.blogName;
-    } else if (section == TableViewSectionMobileSettings) {
-        headingTitle = NSLocalizedString(@"Settings", @"");
-    }  else if (section == TableViewSectionGeneralSettings) {
-        headingTitle = NSLocalizedString(@"General", @"");
+    switch (section) {
+        case SiteSettingsSectionGeneral:
+                headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
+            break;
+        case SiteSettingsSectionAccount:
+            headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
+            break;
+        case SiteSettingsSectionWriting:
+            headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
     }
     return headingTitle;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForSectionTitleInRow:(NSInteger)row
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForAccountSettingsInRow:(NSInteger)row
 {
     switch (row) {
-        case EditSiteRowURL: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            self.urlTextField = cell.textField;
-            cell.textLabel.text = NSLocalizedString(@"URL", @"");            
-            self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
-            [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.urlTextField asPassword:NO];
-            self.urlTextField.keyboardType = UIKeyboardTypeURL;
-            if (self.blog.url != nil) {
-                self.urlTextField.text = self.blog.url;
-                
-                // Make a margin exception for URLs since they're so long
-                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
-            } else {
-                self.urlTextField.text = @"";
-            }
-            
-            self.urlTextField.enabled = [self canEditUsernameAndURL];
-            [WPStyleGuide configureTableViewTextCell:cell];
-            
-            return cell;
-        } break;
-        case EditSiteRowUsername: {
+        case SiteSettingsAccountUsername: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
@@ -269,7 +260,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             
             return cell;
         } break;
-        case EditSiteRowPassword: {
+        case SiteSettingsAccountPassword: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
@@ -295,9 +286,9 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForMobileSettingsAtRow:(NSInteger)row
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
-    if (row == EditSiteRowGeotagging) {
+    if (row == SiteSettingsWritingGeotagging) {
         UITableViewCell *geotaggingCell = [tableView dequeueReusableCellWithIdentifier:GeotaggingCellIdentifier];
         UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
         geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
@@ -307,25 +298,14 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
         geotaggingCell.accessoryView = geotaggingSwitch;
         [WPStyleGuide configureTableViewCell:geotaggingCell];
         return geotaggingCell;
-    } else if (row == EditSiteRowPushNotifications) {
-        UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
-        pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PushNotificationsCellIdentifier];
-        UISwitch *pushSwitch = [[UISwitch alloc] init];
-        pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
-        pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
-        pushCell.accessoryView = pushSwitch;
-        [WPStyleGuide configureTableViewCell:pushCell];
-        pushSwitch.on = [self getBlogPushNotificationsSetting];
-        return pushCell;
     }
     return nil;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForSectionGeneralSettingsInRow:(NSInteger)row
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
-        case EditSiteRowTitle: {
+        case SiteSettingsGeneralTitle: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
             self.siteTitleTextField = cell.textField;
@@ -339,7 +319,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             self.siteTitleTextField.textAlignment = NSTextAlignmentRight;
             return cell;
         } break;
-        case EditSiteRowTagline: {
+        case SiteSettingsGeneralTagline: {
             UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
             self.siteTaglineTextField = cell.textField;
@@ -354,6 +334,40 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             self.siteTaglineTextField.textAlignment = NSTextAlignmentRight;
             return cell;
         } break;
+        case SiteSettingsGeneralURL: {
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            self.urlTextField = cell.textField;
+            cell.textLabel.text = NSLocalizedString(@"Address", @"");
+            self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
+            [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
+            [self configureTextField:self.urlTextField asPassword:NO];
+            self.urlTextField.keyboardType = UIKeyboardTypeURL;
+            if (self.blog.url != nil) {
+                self.urlTextField.text = self.blog.url;
+                
+                // Make a margin exception for URLs since they're so long
+                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
+            } else {
+                self.urlTextField.text = @"";
+            }
+            
+            self.urlTextField.enabled = [self canEditUsernameAndURL];
+            [WPStyleGuide configureTableViewTextCell:cell];
+            
+            return cell;
+        } break;
+        case SiteSettingsGeneralPushNotifications: {
+            UITableViewCell *pushCell = [tableView dequeueReusableCellWithIdentifier:PushNotificationsCellIdentifier];
+            pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PushNotificationsCellIdentifier];
+            UISwitch *pushSwitch = [[UISwitch alloc] init];
+            pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
+            pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
+            pushCell.accessoryView = pushSwitch;
+            [WPStyleGuide configureTableViewCell:pushCell];
+            pushSwitch.on = [self getBlogPushNotificationsSetting];
+            return pushCell;
+        } break;
     }
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];;
 }
@@ -361,16 +375,17 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section) {
-        case TableViewSectionTitle:
-            return [self tableView:tableView cellForSectionTitleInRow:indexPath.row];
+    NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
+    switch (settingsSection) {
+        case SiteSettingsSectionGeneral:
+            return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
             break;
-        case TableViewSectionMobileSettings: {
-            return [self tableView:tableView cellForMobileSettingsAtRow:indexPath.row];
+        case SiteSettingsSectionAccount: {
+            return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
             break;
         }
-        case TableViewSectionGeneralSettings: {
-            return [self tableView:tableView cellForSectionGeneralSettingsInRow:indexPath.row];
+        case SiteSettingsSectionWriting: {
+            return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
             break;
         }
     }
@@ -379,21 +394,6 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
-    if (indexPath.section == TableViewSectionTitle) {
-        for (UIView *subview in cell.subviews) {
-            if (subview.class == [UITextField class]) {
-                [subview becomeFirstResponder];
-                break;
-            }
-        }
-    }
-    [tableView deselectRowAtIndexPath:indexPath animated:YES];
-}
 
 #pragma mark - UITextField methods
 
