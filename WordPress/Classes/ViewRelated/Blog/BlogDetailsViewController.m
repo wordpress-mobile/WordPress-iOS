@@ -17,7 +17,7 @@
 // | Remove Site
 
 #import "BlogDetailsViewController.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "CommentsViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "StatsViewController.h"
@@ -339,7 +339,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([self isConfigurationSection:indexPath.section] && indexPath.row == BlogDetailsRowEditSite) {
-        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+        SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
 
