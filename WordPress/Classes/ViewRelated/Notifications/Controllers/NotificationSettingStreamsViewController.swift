@@ -6,12 +6,22 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotifications()
         setupTableView()
     }
     
     
     
     // MARK: - Setup Helpers
+    private func setupNotifications() {
+        // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self,
+            selector:   "reloadTable",
+            name:       UIApplicationDidBecomeActiveNotification,
+            object:     nil)
+    }
+    
     private func setupTableView() {
         // iPad Top header
         if UIDevice.isPad() {
@@ -40,6 +50,10 @@ public class NotificationSettingStreamsViewController : UITableViewController
             break
         }
         
+        tableView.reloadData()
+    }
+    
+    public func reloadTable() {
         tableView.reloadData()
     }
     
