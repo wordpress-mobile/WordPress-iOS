@@ -1,4 +1,4 @@
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "NSURL+IDN.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
@@ -44,7 +44,7 @@ NSInteger const EditSiteRowCountForSectionSettings = 2;
 NSInteger const EditSiteRowCountForSectionSettingsSelfHosted = 1;
 NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
-@interface EditSiteViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UIBarButtonItem *saveButton;
 @property (nonatomic,   weak) UITextField *lastTextField;
@@ -72,7 +72,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 
 @end
 
-@implementation EditSiteViewController
+@implementation SiteSettingsViewController
 
 - (instancetype)initWithBlog:(Blog *)blog
 {
