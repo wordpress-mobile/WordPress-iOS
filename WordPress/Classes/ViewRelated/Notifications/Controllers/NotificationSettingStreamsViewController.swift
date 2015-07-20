@@ -69,15 +69,8 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        let stream = settings?.streams[indexPath.row]
-        if isStreamDisabled(stream!) {
-            tableView.deselectSelectedRowWithAnimation(true)
-            displayNotificationSettingsAlert()
-            return
-        }
-        
         let detailsViewController = NotificationSettingDetailsViewController()
-        detailsViewController.setupWithSettings(settings!, stream: stream!)
+        detailsViewController.setupWithSettings(settings!, stream: settings!.streams[indexPath.row])
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -98,15 +91,6 @@ public class NotificationSettingStreamsViewController : UITableViewController
         return stream.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-    private func displayNotificationSettingsAlert() {
-        if UIDevice.isOS8() {
-            let targetURL = NSURL(string: UIApplicationOpenSettingsURLString)
-            UIApplication.sharedApplication().openURL(targetURL!)
-            return
-        }
-
-    }
-
 
 
     // MARK: - Private Constants
