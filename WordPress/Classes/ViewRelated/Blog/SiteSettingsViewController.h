@@ -4,7 +4,7 @@
 
 @class Blog;
 
-@interface EditSiteViewController : UITableViewController
+@interface SiteSettingsViewController : UITableViewController
 
 @property (nonatomic,   weak, readwrite) id<SettingsViewControllerDelegate> delegate;
 @property (nonatomic, assign, readwrite) BOOL isCancellable;
