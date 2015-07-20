@@ -1,0 +1,55 @@
+import Foundation
+
+
+public class AlertInternalView : UIView
+{
+    // MARK: - Public Properties
+    public var onClick : (() -> ())?
+    
+    
+    
+    // MARK: - View Methods
+    public override func awakeFromNib() {
+         super.awakeFromNib()
+        
+        // Check the Outlets
+        assert(backgroundView   != nil)
+        assert(alertView        != nil)
+        assert(titleLabel       != nil)
+        assert(descriptionLabel != nil)
+
+        // Setup please!
+        alertView.layer.cornerRadius    = cornerRadius
+        titleLabel.font                 = Styles.titleFont
+        descriptionLabel.font           = Styles.detailsFont
+
+        titleLabel.textColor            = Styles.titleColor
+        descriptionLabel.textColor      = Styles.detailsColor
+
+        dismissButton.titleLabel?.font  = Styles.buttonFont
+    }
+    
+    
+    
+    // MARK: - Button Delegates
+    @IBAction private func buttonWasPressed(sender: AnyObject!) {
+        // Note: Cleanup after calling the target closure
+        onClick?()
+        onClick = nil
+    }
+    
+    
+    
+    // MARK: - Private Aliases
+    private typealias Styles = WPStyleGuide.AlertView
+    
+    // MARK: - Private Constants
+    private let cornerRadius = CGFloat(7)
+    
+    // MARK: - Outlets
+    @IBOutlet var backgroundView    : UIView!
+    @IBOutlet var alertView         : UIView!
+    @IBOutlet var titleLabel        : UILabel!
+    @IBOutlet var descriptionLabel  : UILabel!
+    @IBOutlet var dismissButton     : UIButton!
+}
