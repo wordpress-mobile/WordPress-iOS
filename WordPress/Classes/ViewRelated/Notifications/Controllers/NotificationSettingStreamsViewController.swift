@@ -83,8 +83,19 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        // iOS <8: Display the 'Enable Push Notifications Alert', when needed
+        // iOS +8: Go ahead and push the details
+        //
+        let stream = settings!.streams[indexPath.row]
+        
+        if isDisabledDeviceStream(stream) && !UIDevice.isOS8() {
+            tableView.deselectSelectedRowWithAnimation(true)
+            displayPushNotificationsAlert()
+            return
+        }
+        
         let detailsViewController = NotificationSettingDetailsViewController()
-        detailsViewController.setupWithSettings(settings!, stream: settings!.streams[indexPath.row])
+        detailsViewController.setupWithSettings(settings!, stream: stream)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -95,17 +106,24 @@ public class NotificationSettingStreamsViewController : UITableViewController
         let stream                  = settings!.streams[indexPath.row]
         
         cell.textLabel?.text        = stream.kind.description() ?? String()
-        cell.detailTextLabel?.text  = isStreamDisabled(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
+        cell.detailTextLabel?.text  = isDisabledDeviceStream(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .DisclosureIndicator
         
         WPStyleGuide.configureTableViewCell(cell)
     }
     
-    private func isStreamDisabled(stream: NotificationSettings.Stream) -> Bool {
+    
+    
+    // MARK: - Disabled Push Notifications Helpers
+    private func isDisabledDeviceStream(stream: NotificationSettings.Stream) -> Bool {
         return stream.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-
+    private func displayPushNotificationsAlert() {
+        
+    }
+    
+    
 
     // MARK: - Private Constants
     private let reuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
