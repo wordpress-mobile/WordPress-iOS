@@ -409,7 +409,8 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (void)navigateToNotificationSettings
 {
-    NotificationSettingsViewController *settingsViewController = [[NotificationSettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    NSString *nibName = [NotificationSettingsViewController classNameWithoutNamespaces];
+    NotificationSettingsViewController *settingsViewController = [[NotificationSettingsViewController alloc] initWithNibName:nibName bundle:nil];
     [self.navigationController pushViewController:settingsViewController animated:YES];
 }
 

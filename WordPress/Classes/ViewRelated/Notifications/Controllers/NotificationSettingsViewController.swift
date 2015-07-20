@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NotificationSettingsViewController : UITableViewController
+public class NotificationSettingsViewController : UIViewController
 {
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
@@ -10,7 +10,6 @@ public class NotificationSettingsViewController : UITableViewController
         // Initialize Interface
         setupNavigationItem()
         setupTableView()
-        setupSpinner()
         
         // Load Settings
         reloadSettings()
@@ -48,13 +47,6 @@ public class NotificationSettingsViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
-    private func setupSpinner() {
-        activityIndicatorView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
-        activityIndicatorView.setTranslatesAutoresizingMaskIntoConstraints(false)
-        view.addSubview(activityIndicatorView)
-        view.pinSubviewAtCenter(activityIndicatorView)
-    }
-
     
     
     // MARK: - Service Helpers
@@ -62,15 +54,14 @@ public class NotificationSettingsViewController : UITableViewController
         let service = NotificationsService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         
         activityIndicatorView.startAnimating()
-        
-        service.getAllSettings({ (settings: [NotificationSettings]) in
-                self.groupedSettings = self.groupSettings(settings)
-                self.activityIndicatorView.stopAnimating()
-                self.tableView.reloadData()
+    
+        service.getAllSettings({ [weak self] (settings: [NotificationSettings]) in
+                self?.groupedSettings = self?.groupSettings(settings)
+                self?.activityIndicatorView.stopAnimating()
+                self?.tableView.reloadData()
             },
-            failure: { (error: NSError!) in
-// TODO: Handle Error
-println("Error \(error)")
+            failure: { [weak self] (error: NSError!) in
+                self?.handleLoadError()
             })
     }
     
@@ -108,6 +99,27 @@ println("Error \(error)")
 
     
     
+    // MARK: - Error Handling
+    private func handleLoadError() {
+        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
+            message             : NSLocalizedString("There has been a problem while loading your Notification Settings",
+                                                    comment: "Displayed after Notification Settings failed to load"),
+            style               : .Default,
+            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
+            otherButtonTitles   : [ NSLocalizedString("Try Again", comment: "Try Again. Action") ],
+            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
+                // On Cancel: Let's dismiss this screen
+                if alertView.cancelButtonIndex == buttonIndex {
+                    self.navigationController?.popViewControllerAnimated(true)
+                    return
+                }
+                
+                self.reloadSettings()
+        })
+    }
+    
+    
+    
     // MARK: - Helpers
     private func defaultWordPressComAccount() -> WPAccount? {
         let context = ContextManager.sharedInstance().mainContext
@@ -123,11 +135,11 @@ println("Error \(error)")
     
 
     // MARK: - UITableView Datasource Methods
-    public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    public func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return groupedSettings?.count ?? emptyCount
     }
     
-    public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if groupedSettings == nil {
             return emptyCount
         }
@@ -140,7 +152,7 @@ println("Error \(error)")
         }
     }
     
-    public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let identifier  = reusableIdentifierForIndexPath(indexPath)
         let cell        = tableView.dequeueReusableCellWithIdentifier(identifier) as! UITableViewCell
         
@@ -149,7 +161,7 @@ println("Error \(error)")
         return cell
     }
     
-    public override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         switch settingsForRowAtIndexPath(indexPath)!.channel {
         case let .Blog(blogId) where !isLoadMoreRow(indexPath):
             return blogRowHeight
@@ -158,12 +170,12 @@ println("Error \(error)")
         }
     }
     
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
         return CGFloat.min
     }
     
-    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if isSectionEmpty(section) {
             return nil
         }
@@ -173,7 +185,7 @@ println("Error \(error)")
         return footerView
     }
     
-    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+    public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         if isSectionEmpty(section) {
             return CGFloat.min
         }
@@ -185,7 +197,7 @@ println("Error \(error)")
 
     
     // MARK: - UITableView Delegate Methods
-    public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if isLoadMoreRow(indexPath) {
             displayMoreBlogs()
         } else if let settings = settingsForRowAtIndexPath(indexPath) {
@@ -304,19 +316,23 @@ println("Error \(error)")
         }
     }
     
+    
+    // MARK: - Private Outlets
+    @IBOutlet private var tableView             : UITableView!
+    @IBOutlet private var activityIndicatorView : UIActivityIndicatorView!
+    
     // MARK: - Private Constants
-    private let blogReuseIdentifier     = WPBlogTableViewCell.classNameWithoutNamespaces()
-    private let blogRowHeight           = CGFloat(54.0)
+    private let blogReuseIdentifier             = WPBlogTableViewCell.classNameWithoutNamespaces()
+    private let blogRowHeight                   = CGFloat(54.0)
     
-    private let defaultReuseIdentifier  = WPTableViewCell.classNameWithoutNamespaces()
-    private let defaultRowHeight        = CGFloat(44.0)
+    private let defaultReuseIdentifier          = WPTableViewCell.classNameWithoutNamespaces()
+    private let defaultRowHeight                = CGFloat(44.0)
     
-    private let emptyCount              = 0
-    private let loadMoreRowIndex        = 3
-    private let loadMoreRowCount        = 4
+    private let emptyCount                      = 0
+    private let loadMoreRowIndex                = 3
+    private let loadMoreRowCount                = 4
     
     // MARK: - Private Properties
-    private var activityIndicatorView   : UIActivityIndicatorView!
-    private var groupedSettings         : [[NotificationSettings]]?
-    private var displayMoreWasAccepted  = false
+    private var groupedSettings                 : [[NotificationSettings]]?
+    private var displayMoreWasAccepted          = false
 }
