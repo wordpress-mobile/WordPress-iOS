@@ -22,6 +22,7 @@
 #import "UIAlertViewProxy.h"
 #import "UIImageView+Gravatar.h"
 #import "UIImage+Tint.h"
+#import "UIView+Subviews.h"
 
 #import "ContextManager.h"
 #import "WPGUIConstants.h"

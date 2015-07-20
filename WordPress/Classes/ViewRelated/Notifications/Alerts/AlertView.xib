@@ -10,6 +10,7 @@
                 <outlet property="alertView" destination="chi-j6-pnv" id="DTT-9R-cEA"/>
                 <outlet property="backgroundView" destination="iN0-l3-epB" id="ySy-SY-5Gd"/>
                 <outlet property="descriptionLabel" destination="tFc-eE-S9q" id="kZK-47-HTv"/>
+                <outlet property="dismissButton" destination="CYa-Fl-hdm" id="yxP-mV-MlM"/>
                 <outlet property="titleLabel" destination="I1j-37-Z7w" id="3I4-ta-URm"/>
             </connections>
         </placeholder>
@@ -48,6 +49,9 @@
                             <state key="normal" title="Dismiss">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="buttonWasPressed:" destination="-1" eventType="touchUpInside" id="Ufj-ZA-1e2"/>
+                            </connections>
                         </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
