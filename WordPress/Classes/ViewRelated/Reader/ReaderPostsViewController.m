@@ -46,9 +46,6 @@ NSString * const BlockedCellIdentifier = @"BlockedCellIdentifier";
 NSString * const FeaturedImageCellIdentifier = @"FeaturedImageCellIdentifier";
 NSString * const NoFeaturedImageCellIdentifier = @"NoFeaturedImageCellIdentifier";
 NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder";
-NSString * const ReaderDetailTypeKey = @"post-detail-type";
-NSString * const ReaderDetailTypeNormal = @"normal";
-NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
 @interface ReaderPostsViewController ()<UIActionSheetDelegate,
                                         WPContentSyncHelperDelegate,
@@ -1099,9 +1096,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
 
     detailController.readerViewStyle = self.readerViewStyle;
     [self.navigationController pushViewController:detailController animated:YES];
-
-    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
-    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:@{ReaderDetailTypeKey:detailType}];
 }
 
 
