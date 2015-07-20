@@ -1,7 +1,5 @@
-#import <WordPressApi/WordPressApi.h>
 #import "EditSiteViewController.h"
 #import "NSURL+IDN.h"
-#import "WordPressComApi.h"
 #import "SupportViewController.h"
 #import "WPWebViewController.h"
 #import "ReachabilityUtils.h"
