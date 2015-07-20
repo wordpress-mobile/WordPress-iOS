@@ -120,15 +120,17 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     private func displayPushNotificationsAlert() {
-        let alert = AlertView(title: "Push Notifications have been turned off in iOS Settings",
-                            message: "To enable notifications:\n\n" +
-                                     "1. Open iOS Settings\n" +
-                                     "2. Tap Notifications\n" +
-                                     "3. Select WordPress\n" +
-                                     "4. Turn on Allow Notifications",
-                            buttons: ["Accept"],
-                         completion: nil)
+        let title   = NSLocalizedString("Push Notifications have been turned off in iOS Settings",
+                                        comment: "Displayed when Push Notifications are disabled (iOS 7)")
+        let message = NSLocalizedString("To enable notifications:\n\n" +
+                                        "1. Open iOS Settings\n" +
+                                        "2. Tap Notifications\n" +
+                                        "3. Select WordPress\n" +
+                                        "4. Turn on Allow Notifications",
+                                        comment: "Displayed when Push Notifications are disabled (iOS 7)")
+        let button = NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
         
+        let alert = AlertView(title: title, message: message, button: button, completion: nil)
         alert.show()
     }
     
