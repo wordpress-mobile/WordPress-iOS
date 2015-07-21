@@ -66,7 +66,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
     public func reloadTable() {
         self.rows                 = rowsForSettings(settings!, stream: stream!)
-        tableView.tableFooterView = isDeviceStreamDisabled() ? disabledDeviceStreamFooter() : nil
+        tableView.tableFooterView = isDeviceStreamDisabled() ? disabledDeviceStreamFooter() : UIView()
         tableView.reloadData()
     }
     
