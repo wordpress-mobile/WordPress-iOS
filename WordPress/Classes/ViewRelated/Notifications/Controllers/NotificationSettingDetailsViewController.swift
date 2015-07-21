@@ -1,6 +1,13 @@
 import Foundation
 
 
+/**
+*  @class           NotificationSettingDetailsViewController
+*  @brief           The purpose of this class is to render a collection of NotificationSettings for a given
+*                   Stream, encapsulated in the class NotificationSettings.Stream, and to provide the user
+*                   a simple interface to update those settings, as needed.
+*/
+
 public class NotificationSettingDetailsViewController : UITableViewController
 {
     // MARK: - View Lifecycle
