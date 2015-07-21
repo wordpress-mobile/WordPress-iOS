@@ -15,6 +15,8 @@
 #import "ContextManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "BlogService.h"
+#import "UITableViewTextFieldCell.h"
+#import "SiteTitleViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -44,6 +46,8 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
 static NSString *const SettingCellIdentifier = @"SettingCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
+static NSString *const PasswordCellIdentifier = @"PasswordCellIdentifier";
+
 static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
@@ -162,6 +166,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
+    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:PasswordCellIdentifier];
     
     [self refreshData];
 }
@@ -173,7 +178,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [self.tableView reloadData];
 }
 
-#pragma mark - UITableView
+#pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -197,48 +202,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return 0;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    NSInteger settingsSection = [self.tableSections[section] intValue];
-    NSString *title = [self titleForHeaderInSection:settingsSection];
-    if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
-    }
-    return nil;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return EditSiteRowHeight;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    NSString *title = [self titleForHeaderInSection:section];
-    CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
-
-    return height;
-}
-
-- (NSString *)titleForHeaderInSection:(NSInteger)section
-{
-    NSString *headingTitle = nil;
-    switch (section) {
-        case SiteSettingsSectionGeneral:
-                headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
-            break;
-        case SiteSettingsSectionAccount:
-            headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
-            break;
-        case SiteSettingsSectionWriting:
-            headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
-            break;
-    }
-    return headingTitle;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForAccountSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -255,15 +218,18 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             return cell;
         } break;
         case SiteSettingsAccountPassword: {
-            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
+            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:PasswordCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
             if (self.blog.usernameForSite) {
-                cell.detailTextLabel.text = self.password;
+                cell.textField.text = self.password;
             } else {
-                cell.detailTextLabel.text = @"";
+                cell.textField.text = @"";
             }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewCell:cell];
+            [WPStyleGuide configureTableViewTextCell:cell];
+            [self configureTextField:cell.textField asPassword:YES];
+            cell.textField.textAlignment = NSTextAlignmentRight;
+            cell.textField.enabled = NO;
             return cell;
         } break;
     }
@@ -363,7 +329,82 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
+#pragma mark - UITableViewDelegate
 
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    NSInteger settingsSection = [self.tableSections[section] intValue];
+    NSString *title = [self titleForHeaderInSection:settingsSection];
+    if (title.length > 0) {
+        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        header.title = title;
+        return header;
+    }
+    return nil;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return EditSiteRowHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    NSString *title = [self titleForHeaderInSection:section];
+    CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    
+    return height;
+}
+
+- (NSString *)titleForHeaderInSection:(NSInteger)section
+{
+    NSString *headingTitle = nil;
+    switch (section) {
+        case SiteSettingsSectionGeneral:
+            headingTitle = NSLocalizedString(@"General", @"Title for the general section in site settings screen");
+            break;
+        case SiteSettingsSectionAccount:
+            headingTitle = NSLocalizedString(@"Account", @"Title for the account section in site settings screen");
+            break;
+        case SiteSettingsSectionWriting:
+            headingTitle = NSLocalizedString(@"Writing", @"Title for the writing section in site settings screen");
+            break;
+    }
+    return headingTitle;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectInGeneralSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsGeneralTitle:{
+            SiteTitleViewController *siteTitleViewController = [[SiteTitleViewController alloc] init];
+            siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
+            [self.navigationController pushViewController:siteTitleViewController animated:YES];
+        }break;
+        case SiteSettingsGeneralTagline:{
+            
+        }break;
+        case SiteSettingsGeneralURL:{
+            
+        }break;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
+    switch (settingsSection) {
+        case SiteSettingsSectionGeneral:
+            [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
+            break;
+        case SiteSettingsSectionAccount:
+            
+            break;
+        case SiteSettingsSectionWriting:
+            
+            break;
+    }
+}
 #pragma mark - UITextField methods
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
