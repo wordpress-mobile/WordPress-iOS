@@ -160,7 +160,7 @@ DEPENDENCIES:
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
     tag `0.0.5`)
-  - CocoaLumberjack (~> 2.0)
+  - CocoaLumberjack (= 2.0.0)
   - CrashlyticsLumberjack (= 2.0.1-beta)
   - DTCoreText (= 1.6.13)
   - EmailChecker (from `https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec`)
