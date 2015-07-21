@@ -1,11 +1,12 @@
 #import "ServiceRemoteREST.h"
 
+@class Blog;
+@class RemoteTheme;
+
 typedef void(^ThemeServiceRemoteSuccessBlock)();
-typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(NSDictionary *theme);
+typedef void(^ThemeServiceRemoteThemeRequestSuccessBlock)(RemoteTheme *theme);
 typedef void(^ThemeServiceRemoteThemesRequestSuccessBlock)(NSArray *themes);
 typedef void(^ThemeServiceRemoteFailureBlock)(NSError *error);
-
-@class Blog;
 
 @interface ThemeServiceRemote : ServiceRemoteREST
 
