@@ -548,6 +548,7 @@
 		FF3BD2EB1B061B9C0042E989 /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF3BD2E91B061B9A0042E989 /* Crashlytics.framework */; };
 		FF3DD6BE19F2B6B3003A52CB /* RemoteMedia.m in Sources */ = {isa = PBXBuildFile; fileRef = FF3DD6BD19F2B6B3003A52CB /* RemoteMedia.m */; };
 		FF8DDCDF1B5DB1C10098826F /* SettingTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */; };
+		FF8DDCE41B5EA6590098826F /* SiteTitleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FF8DDCE31B5EA6590098826F /* SiteTitleViewController.m */; };
 		FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */; };
 		FFAB7CB11A0BD83A00765942 /* WPAssetExporter.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAB7CB01A0BD83A00765942 /* WPAssetExporter.m */; };
 		FFAC89101A96A85800CC06AC /* NSProcessInfo+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = FFAC890F1A96A85800CC06AC /* NSProcessInfo+Util.m */; };
@@ -1565,6 +1566,8 @@
 		FF3DD6BF19F2B77A003A52CB /* RemoteMedia.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = RemoteMedia.h; path = "Remote Objects/RemoteMedia.h"; sourceTree = "<group>"; };
 		FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingTableViewCell.h; sourceTree = "<group>"; };
 		FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingTableViewCell.m; sourceTree = "<group>"; };
+		FF8DDCE21B5EA6590098826F /* SiteTitleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteTitleViewController.h; sourceTree = "<group>"; };
+		FF8DDCE31B5EA6590098826F /* SiteTitleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SiteTitleViewController.m; sourceTree = "<group>"; };
 		FF945F6E1B28242300FB8AC4 /* MediaLibraryPickerDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MediaLibraryPickerDataSource.h; sourceTree = "<group>"; };
 		FF945F6F1B28242300FB8AC4 /* MediaLibraryPickerDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MediaLibraryPickerDataSource.m; sourceTree = "<group>"; };
 		FFAB7CAF1A0BD83A00765942 /* WPAssetExporter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAssetExporter.h; sourceTree = "<group>"; };
@@ -2809,6 +2812,8 @@
 				BE13B3E61B2B58D800A4211D /* BlogListViewController.xib */,
 				FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */,
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
+				FF8DDCE21B5EA6590098826F /* SiteTitleViewController.h */,
+				FF8DDCE31B5EA6590098826F /* SiteTitleViewController.m */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
@@ -4186,6 +4191,7 @@
 				5DA5BF3F18E32DCF005F11F9 /* InputViewButton.m in Sources */,
 				85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */,
 				E149D65019349E69006A843D /* MediaServiceRemoteREST.m in Sources */,
+				FF8DDCE41B5EA6590098826F /* SiteTitleViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
