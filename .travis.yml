@@ -7,7 +7,7 @@ sudo: false
 notifications:
   email: true
 install:
-- gem install cocoapods && pod install
+- gem install cocoapods -v 0.37.2 && pod install
 - ./Scripts/install-oclint.sh
 before_script:
 - xctool --version
