@@ -2,6 +2,7 @@
 //
 // + (No Title)
 // | View Site
+// | WP Admin
 // | Stats
 //
 // + Publish
@@ -11,9 +12,6 @@
 //
 // + Configuration
 // | Edit Site
-//
-// + Admin
-// | View Admin
 //
 // + Remove Site (only for self hosted)
 // | Remove Site
@@ -37,12 +35,12 @@
 #import "WPThemeSettings.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
-const NSInteger BlogDetailsRowStats = 1;
+const NSInteger BlogDetailsRowViewAdmin = 1;
+const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
 const NSInteger BlogDetailsRowEditSite = 0;
-const NSInteger BlogDetailsRowViewAdmin = 0;
 const NSInteger BlogDetailsRowRemove = 0;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
@@ -50,7 +48,6 @@ typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionPublishType,
     TableViewSectionAppearance,
     TableViewSectionConfigurationType,
-    TableViewSectionAdmin,
     TableViewSectionRemove,
     TableViewSectionCount
 };
@@ -61,11 +58,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
-NSInteger const BlogDetailsRowCountForSectionGeneralType = 2;
+NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
-NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
 NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
@@ -261,8 +257,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         return BlogDetailsRowCountForSectionAppearance;
     } else if ([self isConfigurationSection:section]) {
         return BlogDetailsRowCountForSectionConfigurationType;
-    } else if ([self isAdminSection:section]) {
-        return BlogDetailsRowCountForSectionAdmin;
     } else if ([self isRemoveSection:section]) {
         return BlogDetailsRowCountForSectionRemove;
     }
@@ -277,6 +271,10 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             case BlogDetailsRowViewSite:
                 cell.textLabel.text = NSLocalizedString(@"View Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
+                break;
+            case BlogDetailsRowViewAdmin:
+                cell.textLabel.text = NSLocalizedString(@"WP Admin", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
             case BlogDetailsRowStats:
                 cell.textLabel.text = NSLocalizedString(@"Stats", nil);
@@ -313,11 +311,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         if (indexPath.row == BlogDetailsRowEditSite) {
             cell.textLabel.text = NSLocalizedString(@"Settings", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
-        }
-    } else if ([self isAdminSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowViewAdmin) {
-            cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
-            cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
         }
     } else if ([self isRemoveSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowRemove) {
@@ -356,6 +349,9 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
                 break;
+            case BlogDetailsRowViewAdmin:
+                [self showViewAdminForBlog:self.blog];
+                break;
             case BlogDetailsRowStats:
                 [WPAnalytics track:WPAnalyticsStatStatsAccessed];
                 controllerClass =  [StatsViewController class];
@@ -377,10 +373,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                 break;
             default:
                 break;
-        }
-    } else if ([self isAdminSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowViewAdmin) {
-            [self showViewAdminForBlog:self.blog];
         }
     } else if ([self isRemoveSection:indexPath.section]) {
         if (indexPath.row == BlogDetailsRowRemove) {
@@ -441,8 +433,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                                          " blog details screen.");
     } else if ([self isConfigurationSection:section]) {
         headingTitle = NSLocalizedString(@"Configuration", @"");
-    } else if ([self isAdminSection:section]) {
-        headingTitle = NSLocalizedString(@"Admin", @"");
     }
 
     return headingTitle;
@@ -472,15 +462,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     }
     
     return section == TableViewSectionConfigurationType;
-}
-
-- (BOOL)isAdminSection:(NSInteger)section
-{
-    if (!self.areThemesEnabled) {
-        section += 1;
-    }
-    
-    return section == TableViewSectionAdmin;
 }
 
 - (BOOL)isRemoveSection:(NSInteger)section
