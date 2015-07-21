@@ -5,11 +5,27 @@ extension WPStyleGuide
 {
     public struct AlertView
     {
-        public static let titleFont     = WPFontManager.openSansLightFontOfSize(16)
-        public static let detailsFont   = WPFontManager.openSansRegularFontOfSize(14)
-        public static let buttonFont    = WPFontManager.openSansRegularFontOfSize(16)
+        // MARK: - Title Styles
+        public static let titleRegularFont          = WPFontManager.openSansLightFontOfSize(16)
+        public static let titleColor                = WPStyleGuide.grey()
         
-        public static let titleColor    = UIColor(red: 0x87/255.0, green: 0xA6/255.0, blue: 0xBC/255.0, alpha: 0xFF/255.0)
-        public static let detailsColor  = WPStyleGuide.darkGrey()
+        
+        // MARK: - Detail Styles
+        public static let detailsRegularFont        = WPFontManager.openSansRegularFontOfSize(14)
+        public static let detailsBoldFont           = WPFontManager.openSansSemiBoldFontOfSize(14)
+        public static let detailsColor              = WPStyleGuide.darkGrey()
+        
+        public static let detailsRegularAttributes  = [
+                                                            NSFontAttributeName             : detailsRegularFont,
+                                                            NSForegroundColorAttributeName  : detailsColor
+                                                      ]
+        
+        public static let detailsBoldAttributes     = [
+                                                            NSFontAttributeName             : detailsBoldFont,
+                                                            NSForegroundColorAttributeName  : detailsColor
+                                                      ]
+        
+        // MARK: - Button Styles
+        public static let buttonFont                = WPFontManager.openSansRegularFontOfSize(16)
     }
 }
