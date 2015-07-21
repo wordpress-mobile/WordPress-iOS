@@ -20,8 +20,8 @@ public class AlertInternalView : UIView
 
         // Setup please!
         alertView.layer.cornerRadius    = cornerRadius
-        titleLabel.font                 = Styles.titleFont
-        descriptionLabel.font           = Styles.detailsFont
+        titleLabel.font                 = Styles.titleRegularFont
+        descriptionLabel.font           = Styles.detailsRegularFont
 
         titleLabel.textColor            = Styles.titleColor
         descriptionLabel.textColor      = Styles.detailsColor
