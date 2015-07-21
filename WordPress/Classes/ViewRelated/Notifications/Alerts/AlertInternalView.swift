@@ -1,6 +1,11 @@
 import Foundation
 
 
+/**
+*  @class           AlertInternalView
+*  @brief           Helper class, used internally by AlertView. Not designed for general usage.
+*/
+
 public class AlertInternalView : UIView
 {
     // MARK: - Public Properties
@@ -31,7 +36,10 @@ public class AlertInternalView : UIView
     
     
     
-    // MARK: - Button Delegates
+    /**
+    *  @details     Handles the Dismiss Button Tap.
+    *  @param       sender      The button that was pressed.
+    */
     @IBAction private func buttonWasPressed(sender: AnyObject!) {
         // Note: Cleanup after calling the target closure
         onClick?()
