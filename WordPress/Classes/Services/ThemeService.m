@@ -1,6 +1,7 @@
 #import "ThemeService.h"
 
 #import "Blog.h"
+#import "RemoteTheme.h"
 #import "ThemeServiceRemote.h"
 #import "WPAccount.h"
 
@@ -35,9 +36,9 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getActiveThemeForBlogId:[blog dotComID]
-                                                     success:^(NSDictionary *themeDictionary) {
+                                                     success:^(RemoteTheme *remoteTheme) {
                                                          if (success) {
-                                                             Theme *theme = [self themeFromDictionary:themeDictionary];
+                                                             Theme *theme = [self themeFromRemoteTheme:remoteTheme];
                                                              success(theme);
                                                          }
                                                      } failure:failure];
@@ -56,10 +57,9 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getPurchasedThemesForBlogId:[blog dotComID]
-                                                         success:^(NSArray *themeDictionaries) {
+                                                         success:^(NSArray *remoteThemes) {
                                                              if (success) {
-                                                                 NSArray *themes = [self themesFromDictionaries:themeDictionaries];
-                                                                 
+                                                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
                                                                  success(themes);
                                                              }
                                                          } failure:failure];
@@ -79,9 +79,9 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
     NSOperation *operation = [remote getThemeId:themeId
-                                        success:^(NSDictionary *themeDictionary) {
+                                        success:^(RemoteTheme *remoteTheme) {
                                             if (success) {
-                                                Theme *theme = [self themeFromDictionary:themeDictionary];
+                                                Theme *theme = [self themeFromRemoteTheme:remoteTheme];
                                                 success(theme);
                                             }
                                         } failure:failure];
@@ -99,16 +99,15 @@
     
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
-    NSOperation *operation = [remote getThemes:^(NSArray *themeDictionaries) {
+    NSOperation *operation = [remote getThemes:^(NSArray *remoteThemes) {
         if (success) {
-            NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+            NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
             success(themes);
         }
     } failure:failure];
     
     return operation;
 }
-
 
 - (NSOperation *)getThemesForBlog:(Blog *)blog
                           success:(ThemeServiceThemesRequestSuccessBlock)success
@@ -121,9 +120,9 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:blog.restApi];
     
     NSOperation *operation = [remote getThemesForBlogId:[blog dotComID]
-                                                success:^(NSArray *themeDictionaries) {
+                                                success:^(NSArray *remoteThemes) {
                                                     if (success) {
-                                                        NSArray *themes = [self themesFromDictionaries:themeDictionaries];
+                                                        NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
                                                         success(themes);
                                                     }
                                                 } failure:failure];
@@ -156,26 +155,43 @@
 
 #pragma mark - Parsing the dictionary replies
 
-- (Theme *)themeFromDictionary:(NSDictionary *)dictionary
+- (Theme *)themeFromRemoteTheme:(RemoteTheme *)remoteTheme
 {
-    NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
+    NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
-    Theme *theme = nil;
+    Theme *theme = [Theme new];
+    
+    /* MISSING PROPS
+    theme.costCurrency = remoteTheme.costCurrency;
+    theme.costDisplay = remoteTheme.costDisplay;
+    theme.costNumber = remoteTheme.costNumber;
+    theme.desc = remoteTheme.desc;
+    theme.downloadUrl = remoteTheme.downloadUrl;
+     */
+    theme.launchDate = remoteTheme.launchDate;
+    theme.name = remoteTheme.name;
+    theme.popularityRank = remoteTheme.popularityRank;
+    theme.previewUrl = remoteTheme.previewUrl;
+    theme.screenshotUrl = remoteTheme.screenshotUrl;
+    theme.tags = remoteTheme.tags;
+    theme.themeId = remoteTheme.themeId;
+    theme.trendingRank = remoteTheme.trendingRank;
+    theme.version = remoteTheme.version;
     
     return theme;
 }
 
-- (NSArray *)themesFromDictionaries:(NSArray *)dictionaries
+- (NSArray *)themesFromRemoteThemes:(NSArray *)remoteThemes
 {
-    NSParameterAssert([dictionaries isKindOfClass:[NSArray class]]);
+    NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
     
-    NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:dictionaries.count];
+    NSMutableArray *themes = [[NSMutableArray alloc] initWithCapacity:remoteThemes.count];
     
-    for (NSDictionary *dictionary in dictionaries) {
-        NSAssert([dictionary isKindOfClass:[NSDictionary class]],
-                 @"Expected a dictionary.");
+    for (RemoteTheme *remoteTheme in remoteThemes) {
+        NSAssert([remoteTheme isKindOfClass:[RemoteTheme class]],
+                 @"Expected a remote theme.");
         
-        Theme *theme = [self themeFromDictionary:dictionary];
+        Theme *theme = [self themeFromRemoteTheme:remoteTheme];
         
         [themes addObject:theme];
     }
