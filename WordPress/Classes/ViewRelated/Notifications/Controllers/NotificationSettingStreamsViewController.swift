@@ -1,6 +1,14 @@
 import Foundation
 
 
+/**
+*  @class           NotificationSettingStreamsViewController
+*  @brief           This class will simply render the collection of Streams available for a given
+*                   NotificationSettings collection.
+*                   A Stream represents a possible way in which notifications are communicated.
+*                   For instance: Push Notifications / WordPress.com Timeline / Email
+*/
+
 public class NotificationSettingStreamsViewController : UITableViewController
 {
     // MARK: - View Lifecycle
