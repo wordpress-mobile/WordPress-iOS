@@ -2,7 +2,7 @@ osx_image: xcode6.4
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
-xcode_sdk: iphonesimulator8.3
+xcode_sdk: iphonesimulator8.4
 sudo: false
 notifications:
   email: true
