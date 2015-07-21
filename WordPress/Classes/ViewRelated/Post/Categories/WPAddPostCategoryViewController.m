@@ -9,6 +9,7 @@
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
+#import "WPTableViewCell.h"
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 

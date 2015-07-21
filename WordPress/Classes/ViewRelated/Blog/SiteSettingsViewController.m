@@ -6,6 +6,7 @@
 #import "WPAccount.h"
 #import "Blog.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "SettingTableViewCell.h"
 #import "NotificationsManager.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <NSDictionary+SafeExpectations.h>
@@ -40,7 +41,7 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionWriting,
 };
 
-static NSString *const TextFieldCellIdentifier = @"TextFieldCellIdentifier";
+static NSString *const SettingCellIdentifier = @"SettingCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static CGFloat const EditSiteRowHeight = 48.0;
@@ -158,7 +159,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     tgr.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tgr];
 
-    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
+    [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
     
@@ -242,44 +243,27 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     switch (row) {
         case SiteSettingsAccountUsername: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            
+            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
-            self.usernameTextField = cell.textField;
-            self.usernameTextField.placeholder = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
-            [self.usernameTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.usernameTextField asPassword:NO];
-            if (self.blog.usernameForSite != nil) {
-                self.usernameTextField.text = self.blog.usernameForSite;
+            if (self.blog.usernameForSite) {
+                cell.detailTextLabel.text = self.blog.usernameForSite;
             } else {
-                self.usernameTextField.text = @"";
+                cell.detailTextLabel.text = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
             }
-            
-            self.usernameTextField.enabled = [self canEditUsernameAndURL];
-            [WPStyleGuide configureTableViewTextCell:cell];
-            
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
         case SiteSettingsAccountPassword: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            
+            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
-            self.passwordTextField = cell.textField;
-            self.passwordTextField.placeholder = NSLocalizedString(@"Enter password", @"(placeholder) Help user enter password in password field");
-            [self.passwordTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.passwordTextField asPassword:YES];
-            if (self.password != nil) {
-                self.passwordTextField.text = self.password;
+            if (self.blog.usernameForSite) {
+                cell.detailTextLabel.text = self.password;
             } else {
-                self.passwordTextField.text = @"";
+                cell.detailTextLabel.text = @"";
             }
-            [WPStyleGuide configureTableViewTextCell:cell];
-            
-            // If the other rows can't be edited, it looks better to align the password to the right as well
-            if (![self canEditUsernameAndURL]) {
-                self.passwordTextField.textAlignment = NSTextAlignmentRight;
-            }
-            
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
     }
@@ -306,54 +290,39 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     switch (row) {
         case SiteSettingsGeneralTitle: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
-            self.siteTitleTextField = cell.textField;
-            self.siteTitleTextField.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
-            [self.siteTitleTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.siteTitleTextField asPassword:NO];
-            self.siteTitleTextField.keyboardType = UIKeyboardTypeDefault;
-            self.siteTitleTextField.text = self.blog.blogName;
-            self.siteTitleTextField.enabled = YES;
-            [WPStyleGuide configureTableViewTextCell:cell];
-            self.siteTitleTextField.textAlignment = NSTextAlignmentRight;
+            if (self.blog.blogName) {
+                cell.detailTextLabel.text = self.blog.blogName;
+            } else {
+                cell.detailTextLabel.text = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            }
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
         case SiteSettingsGeneralTagline: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
-            self.siteTaglineTextField = cell.textField;
-            self.siteTaglineTextField.placeholder = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
-            [self.siteTaglineTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.siteTaglineTextField asPassword:NO];
-            self.siteTaglineTextField.keyboardType = UIKeyboardTypeDefault;
-            self.siteTaglineTextField.text = self.blog.blogTagline;
-            cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
-            self.siteTaglineTextField.enabled = YES;
-            [WPStyleGuide configureTableViewTextCell:cell];
-            self.siteTaglineTextField.textAlignment = NSTextAlignmentRight;
+            if (self.blog.blogTagline) {
+                cell.detailTextLabel.text = self.blog.blogTagline;
+            } else {
+                cell.detailTextLabel.text = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            }
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
         case SiteSettingsGeneralURL: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
-            self.urlTextField = cell.textField;
+            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Address", @"");
-            self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
-            [self.urlTextField addTarget:self action:@selector(showSaveButton) forControlEvents:UIControlEventEditingChanged];
-            [self configureTextField:self.urlTextField asPassword:NO];
-            self.urlTextField.keyboardType = UIKeyboardTypeURL;
-            if (self.blog.url != nil) {
-                self.urlTextField.text = self.blog.url;
-                
-                // Make a margin exception for URLs since they're so long
-                cell.minimumLabelWidth = EditSiteURLMinimumLabelWidth;
+            if (self.blog.url) {
+                cell.detailTextLabel.text = self.blog.url;
             } else {
-                self.urlTextField.text = @"";
+                cell.detailTextLabel.text = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
             }
-            
-            self.urlTextField.enabled = [self canEditUsernameAndURL];
-            [WPStyleGuide configureTableViewTextCell:cell];
-            
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
         case SiteSettingsGeneralPushNotifications: {
