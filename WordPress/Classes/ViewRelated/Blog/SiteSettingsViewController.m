@@ -16,7 +16,7 @@
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "BlogService.h"
 #import "WPTextFieldTableViewCell.h"
-#import "SiteTitleViewController.h"
+#import "SettingsTextViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -53,14 +53,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 
-@property (nonatomic, strong) UIBarButtonItem *saveButton;
-@property (nonatomic,   weak) UITextField *lastTextField;
-@property (nonatomic,   weak) UITextField *usernameTextField;
+@property (nonatomic, strong) UITableViewCell *usernameTextCell;
 @property (nonatomic,   weak) UITextField *passwordTextField;
-@property (nonatomic,   weak) UITextField *urlTextField;
+@property (nonatomic, strong) UITableViewCell *urlTextCell;
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
-@property (nonatomic,   weak) UITextField *siteTitleTextField;
-@property (nonatomic,   weak) UITextField *siteTaglineTextField;
+@property (nonatomic, strong) UITableViewCell *siteTitleCell;
+@property (nonatomic, strong) UITableViewCell *siteTaglineCell;
 
 
 @property (nonatomic, strong) Blog *blog;
@@ -133,36 +131,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         }];
     }
 
-    if (self.isCancellable) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Cancel", nil)
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(cancel:)];
-        self.navigationItem.leftBarButtonItem = barButton;
-    }
-
-    // Create the save button but don't show it until something changes
-    self.saveButton = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
-                                                       style:[WPStyleGuide barButtonStyleForDone]
-                                                      target:self
-                                                      action:@selector(save:)];
-
-    if (!IS_IPAD) {
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleKeyboardDidShow:)
-                                                     name:UIKeyboardDidShowNotification
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(handleKeyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-    }
-
-    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleViewTapped)];
-    tgr.cancelsTouchesInView = NO;
-    [self.tableView addGestureRecognizer:tgr];
-
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
@@ -206,30 +174,35 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     switch (row) {
         case SiteSettingsAccountUsername: {
-            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
-            cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
-            if (self.blog.usernameForSite) {
-                cell.detailTextLabel.text = self.blog.usernameForSite;
-            } else {
-                cell.detailTextLabel.text = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
+            if (self.usernameTextCell) {
+                return self.usernameTextCell;
             }
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewCell:cell];
-            return cell;
+            self.usernameTextCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SettingCellIdentifier];
+            self.usernameTextCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
+            if (self.blog.usernameForSite) {
+                self.usernameTextCell.detailTextLabel.text = self.blog.usernameForSite;
+            } else {
+                self.usernameTextCell.detailTextLabel.text = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
+            }
+            [WPStyleGuide configureTableViewCell:self.usernameTextCell];
+            self.usernameTextCell.accessoryType = UITableViewCellAccessoryNone;
+            self.usernameTextCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return self.usernameTextCell;
         } break;
         case SiteSettingsAccountPassword: {
             WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PasswordCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
-            if (self.blog.usernameForSite) {
+            if (self.blog.password) {
                 cell.textField.text = self.password;
             } else {
-                cell.textField.text = @"";
+                cell.textField.text = NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password");
             }
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewTextCell:cell];
-            [self configureTextField:cell.textField asPassword:YES];
-            cell.textField.textAlignment = NSTextAlignmentRight;
+            self.passwordTextField = cell.textField;
             cell.textField.enabled = NO;
+            [WPStyleGuide configureTableViewTextCell:cell];
+            cell.textField.secureTextEntry = YES;
+            cell.selectionStyle = UITableViewCellSelectionStyleDefault;
             return cell;
         } break;
     }
@@ -256,31 +229,37 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     switch (row) {
         case SiteSettingsGeneralTitle: {
-            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
-            cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
-            if (self.blog.blogName) {
-                cell.detailTextLabel.text = self.blog.blogName;
-            } else {
-                cell.detailTextLabel.text = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            if (self.siteTitleCell) {
+                return self.siteTitleCell;
             }
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewCell:cell];
-            return cell;
+            self.siteTitleCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SettingCellIdentifier];
+            self.siteTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"");
+            if (self.blog.blogName) {
+                self.siteTitleCell.detailTextLabel.text = self.blog.blogName;
+            } else {
+                self.siteTitleCell.detailTextLabel.text = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+            }
+            self.siteTitleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:self.siteTitleCell];
+            return self.siteTitleCell;
         } break;
         case SiteSettingsGeneralTagline: {
-            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
-            cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
-            if (self.blog.blogTagline) {
-                cell.detailTextLabel.text = self.blog.blogTagline;
-            } else {
-                cell.detailTextLabel.text = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            if (self.siteTaglineCell){
+                return self.siteTaglineCell;
             }
-            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            [WPStyleGuide configureTableViewCell:cell];
-            return cell;
+            self.siteTaglineCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SettingCellIdentifier];
+            self.siteTaglineCell.textLabel.text = NSLocalizedString(@"Tagline", @"");
+            if (self.blog.blogTagline) {
+                self.siteTaglineCell.detailTextLabel.text = self.blog.blogTagline;
+            } else {
+                self.siteTaglineCell.detailTextLabel.text = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+            }
+            self.siteTaglineCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            [WPStyleGuide configureTableViewCell:self.siteTaglineCell];
+            return self.siteTaglineCell;
         } break;
         case SiteSettingsGeneralURL: {
-            SettingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:SettingCellIdentifier];
+            SettingTableViewCell *cell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:SettingCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Address", @"");
             if (self.blog.url) {
                 cell.detailTextLabel.text = self.blog.url;
@@ -377,15 +356,59 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     switch (row) {
         case SiteSettingsGeneralTitle:{
-            SiteTitleViewController *siteTitleViewController = [[SiteTitleViewController alloc] init];
+            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
+                                                                                                 placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
+                                                                   hint:@"" isPassword:NO];
             siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
+            siteTitleViewController.onValueChanged = ^(id value) {
+                self.siteTitleCell.detailTextLabel.text = value;
+                if (![value isEqualToString:self.blog.blogName]){
+                    self.blog.blogName = value;
+                    [self save:nil];
+                }
+            };
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralTagline:{
-            
+            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogTagline
+                                                                                                 placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
+                                                                                                              hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
+                                                                                                        isPassword:NO];
+            siteTitleViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
+            siteTitleViewController.onValueChanged = ^(id value) {
+                self.siteTaglineCell.detailTextLabel.text = value;
+                if (![value isEqualToString:self.blog.blogTagline]){
+                    self.blog.blogTagline = value;
+                    [self save:nil];
+                }
+            };
+            [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralURL:{
             
+        }break;
+    }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectInAccountSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsAccountPassword:{
+            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.password
+                                                                                                       placeholder:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")
+                                                                                                              hint:@""
+                                                                                                        isPassword:YES];
+            siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that self hosted password editor");
+            siteTitleViewController.onValueChanged = ^(id value) {
+                self.passwordTextField.text = value;
+                if (![value isEqualToString:self.blog.password]) {
+                    [self.navigationItem setHidesBackButton:YES animated:YES];
+                    self.password = value;
+                    self.passwordTextField.text = value;
+                    [self validateUrl];
+                }
+            };
+            [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
     }
 }
@@ -398,72 +421,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self tableView:tableView didSelectInGeneralSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionAccount:
-            
+            [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionWriting:
             
             break;
     }
-}
-#pragma mark - UITextField methods
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    if (self.lastTextField) {
-        self.lastTextField = nil;
-    }
-    self.lastTextField = textField;
-}
-
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if (textField == self.urlTextField) {
-        [self.usernameTextField becomeFirstResponder];
-    } else if (textField == self.usernameTextField) {
-        [self.passwordTextField becomeFirstResponder];
-    } else if (textField == self.passwordTextField) {
-        [self.passwordTextField resignFirstResponder];
-    } else if (textField == self.siteTitleTextField) {
-        [self.siteTaglineTextField becomeFirstResponder];
-    } else if (textField == self.siteTaglineTextField) {
-        [self.siteTaglineTextField resignFirstResponder];
-    }
-    return NO;
-}
-
-- (BOOL)textField:(UITextField *)textField
-    shouldChangeCharactersInRange:(NSRange)range
-    replacementString:(NSString *)string
-{
-    if (!(textField == self.usernameTextField || textField == self.passwordTextField)) {
-        return YES;
-    }
-    // Adjust the text color of the containing cell's textLabel if
-    // the entered information is invalid.
-    if ([textField isDescendantOfView:self.tableView]) {
-
-        UITableViewCell *cell = (id)[textField superview];
-        while (![cell.class isSubclassOfClass:[UITableViewCell class]]) {
-            cell = (id)cell.superview;
-
-            // This is a protection against a textfield not placed withing a
-            // table view cell
-            if ([cell.class isSubclassOfClass:[UITableView class]]) {
-                return YES;
-            }
-        }
-
-        NSMutableString *result = [NSMutableString stringWithString:textField.text];
-        [result replaceCharactersInRange:range withString:string];
-
-        if ([result length] == 0) {
-            cell.textLabel.textColor = [WPStyleGuide validationErrorRed];
-        } else {
-            cell.textLabel.textColor = [WPStyleGuide whisperGrey];
-        }
-    }
-
-    return YES;
 }
 
 #pragma mark - Custom methods
@@ -492,20 +455,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         [strongSelf.refreshControl endRefreshing];
     }];
     
-}
-
-- (void)configureTextField:(UITextField *)textField asPassword:(BOOL)asPassword
-{
-    textField.keyboardType = UIKeyboardTypeDefault;
-    textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    textField.delegate = self;
-    if (asPassword) {
-        textField.secureTextEntry = YES;
-        textField.returnKeyType = UIReturnKeyDone;
-    } else {
-        textField.returnKeyType = UIReturnKeyNext;
-    }
 }
 
 - (BOOL)canTogglePushNotifications
@@ -558,6 +507,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     }
 }
 
+#pragma mark - Authentication methods
+
 - (NSString *)getURLToValidate
 {
     NSString *urlToValidate = self.url;
@@ -581,7 +532,9 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (void)validateXmlprcURL:(NSURL *)xmlRpcURL
 {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL
+                                                               username:self.username
+                                                               password:self.password];
 
     [api getBlogOptionsWithSuccess:^(id options){
         if ([options objectForKey:@"wordpress.com"] != nil) {
@@ -599,7 +552,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
 {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextField.text password:self.passwordTextField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextCell.detailTextLabel.text password:self.passwordTextField.text];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
         [self validationSuccess:[xmlRpcURL absoluteString]];
@@ -641,22 +594,19 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (void)validationSuccess:(NSString *)xmlrpc
 {
-    self.blog.geolocationEnabled = self.geolocationEnabled;
     self.blog.password = self.password;
-
-    [self cancel:nil];
+    [self.blog.managedObjectContext save:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
-    self.saveButton.enabled = YES;
     [self.navigationItem setHidesBackButton:NO animated:NO];
 
 }
 
 - (void)validationDidFail:(NSError *)error
 {
-    self.saveButton.enabled = YES;
     [self.navigationItem setHidesBackButton:NO animated:NO];
-
+    self.password = self.blog.password;
+    
     if (error) {
         NSString *message;
         if (error.code == 403) {
@@ -714,32 +664,28 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     }
 }
 
-- (void)save:(UIBarButtonItem *)sender
+#pragma mark - Saving methods
+
+- (void)saveSettings
 {
-    [self.urlTextField resignFirstResponder];
-    [self.usernameTextField resignFirstResponder];
-    [self.passwordTextField resignFirstResponder];
-    [self.siteTitleTextField resignFirstResponder];
-    [self.siteTaglineTextField resignFirstResponder];
-    
-    self.url = [NSURL IDNEncodedURL:self.urlTextField.text];
-    self.username = self.usernameTextField.text;
+    self.url = [NSURL IDNEncodedURL:self.urlTextCell.detailTextLabel.text];
+    self.username = self.usernameTextCell.detailTextLabel.text;
     self.password = self.passwordTextField.text;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    self.blog.blogName = self.siteTitleTextField.text;
-    self.blog.blogTagline = self.siteTaglineTextField.text;
+    self.blog.blogName = self.siteTitleCell.detailTextLabel.text;
+    self.blog.blogTagline = self.siteTaglineCell.detailTextLabel.text;
     self.blog.geolocationEnabled = self.geolocationEnabled;
     if ([self.blog hasChanges]) {
-        sender.enabled = NO;
-        [SVProgressHUD show];
         [blogService updateSettingForBlog:self.blog success:^{
-            [SVProgressHUD showInfoWithStatus:NSLocalizedString(@"Settings Saved", @"Message to show when settings are saved")];
-            sender.enabled = YES;
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
-            sender.enabled = YES;
         }];
     }
+}
+
+- (IBAction)save:(UIBarButtonItem *)sender
+{
+    [self saveSettings];
 }
 
 - (IBAction)cancel:(id)sender
@@ -755,21 +701,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
-}
-
-- (void)showSaveButton
-{
-    BOOL hasContent;
-
-    if ([self.urlTextField.text isEqualToString:@""] ||
-         [self.usernameTextField.text isEqualToString:@""] ||
-         [self.passwordTextField.text isEqualToString:@""]) {
-        hasContent = NO;
-    } else {
-        hasContent = YES;
-    }
-
-    self.navigationItem.rightBarButtonItem = hasContent ? self.saveButton : nil;
 }
 
 - (void)reloadNotificationSettings
@@ -799,62 +730,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 - (BOOL)canEditUsernameAndURL
 {
     return NO;
-}
-
-#pragma mark - Keyboard Related Methods
-
-- (void)handleKeyboardDidShow:(NSNotification *)notification
-{
-    if (_isKeyboardVisible) {
-        return;
-    }
-
-    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect frame = self.view.frame;
-
-    // Slight hack to account for tab bar; ditch this when we switch to a translucent tab bar
-    CGSize tabBarSize = CGSizeZero;
-    if ([self tabBarController]) {
-        tabBarSize = [[[self tabBarController] tabBar] bounds].size;
-    }
-
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        frame.size.height -= rect.size.width - tabBarSize.height;
-    } else {
-        frame.size.height -= rect.size.height - tabBarSize.height;
-    }
-
-    self.view.frame = frame;
-
-    CGPoint point = [self.tableView convertPoint:self.lastTextField.frame.origin fromView:self.lastTextField];
-    if (!CGRectContainsPoint(frame, point)) {
-        NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:point];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
-    }
-
-    _isKeyboardVisible = YES;
-}
-
-- (void)handleKeyboardWillHide:(NSNotification *)notification
-{
-    CGRect rect = [[notification.userInfo valueForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    CGRect frame = self.view.frame;
-    if (UIInterfaceOrientationIsLandscape(self.interfaceOrientation)) {
-        frame.size.height += rect.size.width;
-    } else {
-        frame.size.height += rect.size.height;
-    }
-
-    [UIView animateWithDuration:0.3 animations:^{
-        self.view.frame = frame;
-    }];
-
-    _isKeyboardVisible = NO;
-}
-
-- (void)handleViewTapped
-{
-    [self.lastTextField resignFirstResponder];
 }
 
 @end
