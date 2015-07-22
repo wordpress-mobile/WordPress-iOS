@@ -8,13 +8,8 @@ notifications:
   email: true
 install:
 - gem install cocoapods -v 0.37.2 && pod install
-- ./Scripts/install-oclint.sh
-before_script:
-- xctool --version
 script:
 - ./Scripts/build.sh
-after_success:
-- ./Scripts/run-oclint.sh
 
 env:
   global:
