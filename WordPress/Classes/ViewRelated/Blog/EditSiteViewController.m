@@ -151,7 +151,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
     tgr.cancelsTouchesInView = NO;
     [self.tableView addGestureRecognizer:tgr];
 
-    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
+    [self.tableView registerClass:[WPTextFieldTableViewCell class] forCellReuseIdentifier:TextFieldCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
     
@@ -231,7 +231,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 {
     switch (row) {
         case EditSiteRowURL: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             self.urlTextField = cell.textField;
             cell.textLabel.text = NSLocalizedString(@"URL", @"");            
             self.urlTextField.placeholder = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
@@ -253,7 +253,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             return cell;
         } break;
         case EditSiteRowUsername: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             
             cell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
             self.usernameTextField = cell.textField;
@@ -272,7 +272,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             return cell;
         } break;
         case EditSiteRowPassword: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
             self.passwordTextField = cell.textField;
@@ -328,7 +328,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
 {
     switch (row) {
         case EditSiteRowTitle: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Site Title", @"");
             self.siteTitleTextField = cell.textField;
             self.siteTitleTextField.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
@@ -342,7 +342,7 @@ NSInteger const EditSiteRowCountForSectionGeneralSettings = 2;
             return cell;
         } break;
         case EditSiteRowTagline: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:TextFieldCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Tagline", @"");
             self.siteTaglineTextField = cell.textField;
             self.siteTaglineTextField.placeholder = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
