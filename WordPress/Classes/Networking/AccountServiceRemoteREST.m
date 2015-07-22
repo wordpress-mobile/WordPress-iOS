@@ -66,7 +66,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
         NSParameterAssert([key isKindOfClass:[NSNumber class]]);
         NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
         NSString *blogID = [key stringValue];
-        sites[blogID] = obj;
+        sites[blogID] = @{ @"visible": obj };
     }];
 
     NSDictionary *parameters = @{
