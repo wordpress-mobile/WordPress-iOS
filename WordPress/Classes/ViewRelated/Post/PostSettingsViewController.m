@@ -13,7 +13,7 @@
 #import "PostGeolocationViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "PublishDatePickerView.h"
-#import "UITableViewTextFieldCell.h"
+#import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
 #import "WPAlertView.h"
 #import "WPTableViewActivityCell.h"
@@ -467,7 +467,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
     } else if (indexPath.row == PostSettingsRowTags) {
         // Tags
-        UITableViewTextFieldCell *textCell = [self getTextFieldCell];
+        WPTextFieldTableViewCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Tags", @"Label for the tags field. Should be the same as WP core.");
         textCell.textField.text = self.post.tags;
         textCell.textField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:(NSLocalizedString(@"Comma separated", @"Placeholder text for the tags field. Should be the same as WP core.")) attributes:(@{NSForegroundColorAttributeName: [WPStyleGuide textFieldPlaceholderGrey]})];
@@ -533,7 +533,7 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
     } else {
         // Password
-        UITableViewTextFieldCell *textCell = [self getTextFieldCell];
+        WPTextFieldTableViewCell *textCell = [self getTextFieldCell];
         textCell.textLabel.text = NSLocalizedString(@"Password", @"Label for the tags field. Should be the same as WP core.");
         textCell.textField.text = self.apost.password;
         textCell.textField.attributedPlaceholder = nil;
@@ -695,12 +695,12 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
     return cell;
 }
 
-- (UITableViewTextFieldCell *)getTextFieldCell
+- (WPTextFieldTableViewCell *)getTextFieldCell
 {
     static NSString *textFieldCellIdentifier = @"textFieldCellIdentifier";
-    UITableViewTextFieldCell *cell = [self.tableView dequeueReusableCellWithIdentifier:textFieldCellIdentifier];
+    WPTextFieldTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:textFieldCellIdentifier];
     if (!cell) {
-        cell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:textFieldCellIdentifier];
+        cell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:textFieldCellIdentifier];
         cell.textField.returnKeyType = UIReturnKeyDone;
         cell.textField.delegate = self;
         [WPStyleGuide configureTableViewTextCell:cell];
