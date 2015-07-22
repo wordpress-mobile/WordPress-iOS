@@ -15,7 +15,7 @@
 #import "ContextManager.h"
 #import <WPXMLRPC/WPXMLRPC.h>
 #import "BlogService.h"
-#import "UITableViewTextFieldCell.h"
+#import "WPTextFieldTableViewCell.h"
 #import "SiteTitleViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
@@ -166,7 +166,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [self.tableView registerClass:[SettingTableViewCell class] forCellReuseIdentifier:SettingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:GeotaggingCellIdentifier];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PushNotificationsCellIdentifier];
-    [self.tableView registerClass:[UITableViewTextFieldCell class] forCellReuseIdentifier:PasswordCellIdentifier];
+    [self.tableView registerClass:[WPTextFieldTableViewCell class] forCellReuseIdentifier:PasswordCellIdentifier];
     
     [self refreshData];
 }
@@ -218,7 +218,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             return cell;
         } break;
         case SiteSettingsAccountPassword: {
-            UITableViewTextFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:PasswordCellIdentifier];
+            WPTextFieldTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PasswordCellIdentifier];
             cell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
             if (self.blog.usernameForSite) {
                 cell.textField.text = self.password;
