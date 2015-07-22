@@ -1692,6 +1692,7 @@
 			isa = PBXGroup;
 			children = (
 				5D6C4B0D1B604190005E3C43 /* RichTextView */,
+				5D6C4B231B60449B005E3C43 /* WPRichTextView */,
 				37EAAF4C1A11799A006D6306 /* CircularImageView.swift */,
 				ADF544C0195A0F620092213D /* CustomHighlightButton.h */,
 				ADF544C1195A0F620092213D /* CustomHighlightButton.m */,
@@ -1714,11 +1715,6 @@
 				E2DA78051864B11E007BA447 /* WPFixedWidthScrollView.m */,
 				03958060100D6CFC00850742 /* WPLabel.h */,
 				03958061100D6CFC00850742 /* WPLabel.m */,
-				5D7B414319E482C9007D9EC7 /* WPRichTextEmbed.swift */,
-				5D7B414419E482C9007D9EC7 /* WPRichTextImage.swift */,
-				5D7B414519E482C9007D9EC7 /* WPRichTextMediaAttachment.swift */,
-				5DF94E3E1962BAA700359241 /* WPRichTextView.h */,
-				5DF94E3F1962BAA700359241 /* WPRichTextView.m */,
 				5DEB61B2156FCD3400242C35 /* WPWebView.h */,
 				5DEB61B3156FCD3400242C35 /* WPWebView.m */,
 				591A428A1A6DC1B0003807A6 /* WPBackgroundDimmerView.h */,
@@ -2132,6 +2128,18 @@
 				5D6C4B101B604190005E3C43 /* UITextView+RichTextView.swift */,
 			);
 			path = RichTextView;
+			sourceTree = "<group>";
+		};
+		5D6C4B231B60449B005E3C43 /* WPRichTextView */ = {
+			isa = PBXGroup;
+			children = (
+				5D7B414319E482C9007D9EC7 /* WPRichTextEmbed.swift */,
+				5D7B414419E482C9007D9EC7 /* WPRichTextImage.swift */,
+				5D7B414519E482C9007D9EC7 /* WPRichTextMediaAttachment.swift */,
+				5DF94E3E1962BAA700359241 /* WPRichTextView.h */,
+				5DF94E3F1962BAA700359241 /* WPRichTextView.m */,
+			);
+			name = WPRichTextView;
 			sourceTree = "<group>";
 		};
 		5D7A577D1AFBFD7C0097C028 /* Models */ = {
