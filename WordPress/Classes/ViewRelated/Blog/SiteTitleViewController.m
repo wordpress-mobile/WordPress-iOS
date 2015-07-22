@@ -1,12 +1,12 @@
 #import "SiteTitleViewController.h"
-#import "UITableViewTextFieldCell.h"
+#import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
 
 static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 
 @interface SiteTitleViewController()
 
-@property (nonatomic, strong) UITableViewTextFieldCell *textFieldCell;
+@property (nonatomic, strong) WPTextFieldTableViewCell *textFieldCell;
 
 @end
 
@@ -24,7 +24,7 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.textFieldCell = [[UITableViewTextFieldCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SiteTitleTextCell];
+    self.textFieldCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SiteTitleTextCell];
     self.textFieldCell.textField.clearButtonMode = UITextFieldViewModeAlways;
     self.textFieldCell.minimumLabelWidth = 0.0f;
     self.textFieldCell.textField.placeholder = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
