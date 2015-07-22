@@ -8,8 +8,6 @@ notifications:
   email: true
 install:
 - gem install cocoapods -v 0.37.2 && pod install
-script:
-- ./Scripts/build.sh
 
 env:
   global:
