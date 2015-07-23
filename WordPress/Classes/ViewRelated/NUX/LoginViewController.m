@@ -555,7 +555,7 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     self.helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(self.helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - helpButtonPadding.right + 5;
     CGFloat helpBadgeY = GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
     self.helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(self.helpBadge.frame), CGRectGetHeight(self.helpBadge.frame)));
 
