@@ -111,7 +111,10 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     if ([self.blog isHostedAtWPcom]) {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
     } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting), @(SiteSettingsSectionRemoveSite)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+    }    
+    if ([self.blog supports:BlogFeatureRemovable]) {
+        self.tableSections = [self.tableSections arrayByAddingObject:@(SiteSettingsSectionRemoveSite)];
     }
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
