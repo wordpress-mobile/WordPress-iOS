@@ -61,10 +61,28 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
                       failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([blogs isKindOfClass:[NSDictionary class]]);
+
+    /*
+     The `POST me/sites` endpoint expects it's input in a format like:
+     @{
+       @"sites": @[
+         @"1234": {
+           @"visible": @YES
+         },
+         @"2345": {
+           @"visible": @NO
+         },
+       ]
+     }
+     */
     NSMutableDictionary *sites = [NSMutableDictionary dictionaryWithCapacity:blogs.count];
     [blogs enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         NSParameterAssert([key isKindOfClass:[NSNumber class]]);
         NSParameterAssert([obj isKindOfClass:[NSNumber class]]);
+        /*
+         Blog IDs are pased as strings because JSON dictionaries can't take
+         non-string keys. If you try, you get a NSInvalidArgumentException
+         */
         NSString *blogID = [key stringValue];
         sites[blogID] = @{ @"visible": obj };
     }];
