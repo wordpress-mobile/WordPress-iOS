@@ -41,17 +41,23 @@ NS_ENUM(NSInteger, SiteSettingsSection) {
     SiteSettingsSectionGeneral = 0,
     SiteSettingsSectionAccount,
     SiteSettingsSectionWriting,
+    SiteSettingsSectionRemoveSite,
+};
+
+NS_ENUM(NSInteger, SiteSettinsAlertTag) {
+    SiteSettinsAlertTagSiteRemoval = 201,
 };
 
 static NSString *const SettingCellIdentifier = @"SettingCellIdentifier";
 static NSString *const GeotaggingCellIdentifier = @"GeotaggingCellIdentifier";
 static NSString *const PushNotificationsCellIdentifier = @"PushNotificationsCellIdentifier";
 static NSString *const PasswordCellIdentifier = @"PasswordCellIdentifier";
+static NSString *const RemoveSiteCellIdentifier = @"RemoveSiteCellIdentifier";
 
 static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITableViewCell *usernameTextCell;
 @property (nonatomic,   weak) UITextField *passwordTextField;
@@ -105,7 +111,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     if ([self.blog isHostedAtWPcom]) {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
     } else {
-        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
+        self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting), @(SiteSettingsSectionRemoveSite)];
     }
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
@@ -165,6 +171,9 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         break;
         case SiteSettingsSectionWriting:
             return SiteSettingsWritingCount;
+        break;
+        case SiteSettingsSectionRemoveSite:
+            return 1;
         break;
     }
     return 0;
@@ -291,17 +300,26 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral:
+        case SiteSettingsSectionGeneral:{
             return [self tableView:tableView cellForGeneralSettingsInRow:indexPath.row];
-            break;
+        }break;
         case SiteSettingsSectionAccount: {
             return [self tableView:tableView cellForAccountSettingsInRow:indexPath.row];
-            break;
-        }
+        }break;
         case SiteSettingsSectionWriting: {
             return [self tableView:tableView cellForWritingSettingsAtRow:indexPath.row];
-            break;
-        }
+        }break;
+        case SiteSettingsSectionRemoveSite: {
+            WPTableViewCell *cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:RemoveSiteCellIdentifier];
+            [WPStyleGuide configureTableViewCell:cell];
+            cell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [WPStyleGuide errorRed];
+            cell.imageView.image = nil;
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }break;
     }
 
     // We shouldn't reach this point, but return an empty cell just in case
@@ -426,6 +444,9 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         case SiteSettingsSectionWriting:
             
             break;
+        case SiteSettingsSectionRemoveSite:{
+            [self showRemoveSiteForBlog:self.blog];
+        }break;
     }
 }
 
@@ -730,6 +751,63 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 - (BOOL)canEditUsernameAndURL
 {
     return NO;
+}
+
+#pragma mark - Remove Site
+
+- (void)showRemoveSiteForBlog:(Blog *)blog
+{
+    NSString *model = [[UIDevice currentDevice] localizedModel];
+    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
+    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
+    NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
+    if (IS_IPAD) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Remove Site", @"Remove site confirmation alert title")
+                                                        message:title
+                                                       delegate:self
+                                              cancelButtonTitle:cancelTitle
+                                              otherButtonTitles:destructiveTitle, nil];
+        alert.tag = SiteSettinsAlertTagSiteRemoval;
+        [alert show];
+    } else {
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
+                                                                 delegate:self
+                                                        cancelButtonTitle:cancelTitle
+                                                   destructiveButtonTitle:destructiveTitle
+                                                        otherButtonTitles:nil];
+        actionSheet.tag = SiteSettinsAlertTagSiteRemoval;
+        [actionSheet showInView:self.view];
+    }
+}
+
+- (void)confirmRemoveSite
+{
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
+    [blogService removeBlog:self.blog];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+}
+
+#pragma mark - Action sheet delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (actionSheet.tag == SiteSettinsAlertTagSiteRemoval) {
+        if (buttonIndex == actionSheet.destructiveButtonIndex) {
+            [self confirmRemoveSite];
+        }
+    }
+}
+
+#pragma mark - Alert view delegate
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == SiteSettinsAlertTagSiteRemoval) {
+        if (buttonIndex == alertView.firstOtherButtonIndex) {
+            [self confirmRemoveSite];
+        }
+    }
 }
 
 @end
