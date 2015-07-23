@@ -1,6 +1,10 @@
 #import "WPNUXSecondaryButton.h"
 #import <WordPress-iOS-Shared/WPFontManager.h>
 
+
+static UIEdgeInsets const WPNUXSecondaryButtonTitleEdgeInsets = {0, 15.0, 0, 15.0};
+
+
 @implementation WPNUXSecondaryButton
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -45,7 +49,7 @@
     self.titleLabel.font = [WPFontManager openSansRegularFontOfSize:15.0];
     self.titleLabel.minimumScaleFactor = 10.0/15.0;
     self.titleLabel.adjustsFontSizeToFitWidth = YES;
-    [self setTitleEdgeInsets:UIEdgeInsetsMake(0, 15.0, 0, 15.0)];
+    [self setTitleEdgeInsets:WPNUXSecondaryButtonTitleEdgeInsets];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:1.0] forState:UIControlStateNormal];
     [self setTitleColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4] forState:UIControlStateHighlighted];
 }
