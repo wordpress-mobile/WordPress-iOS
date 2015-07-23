@@ -8,6 +8,9 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 
 @property (nonatomic, strong) WPTextFieldTableViewCell *textFieldCell;
 @property (nonatomic, strong) NSString *hint;
+@property (nonatomic, assign) BOOL isPassword;
+@property (nonatomic, strong) NSString *placeholder;
+@property (nonatomic, strong) NSString *text;
 
 @end
 
@@ -17,18 +20,10 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        _textFieldCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SiteTitleTextCell];
-        _textFieldCell.textField.clearButtonMode = UITextFieldViewModeAlways;
-        _textFieldCell.minimumLabelWidth = 0.0f;
-        [WPStyleGuide configureTableViewTextCell:_textFieldCell];
-        _textFieldCell.textField.text = text;
-        _textFieldCell.textField.placeholder = placeholder;
-        _textFieldCell.textField.returnKeyType = UIReturnKeyDone;
-        _textFieldCell.textField.keyboardType = UIKeyboardTypeASCIICapable;
-        [_textFieldCell.textField becomeFirstResponder];
-        _textFieldCell.shouldDismissOnReturn = YES;
-        _textFieldCell.textField.secureTextEntry = YES;
+        _text = text;
+        _placeholder = placeholder;
         _hint = hint;
+        _isPassword = isPassword;
     }
     return self;
 }
@@ -41,7 +36,26 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (WPTextFieldTableViewCell *)textFieldCell
+{
+    if (_textFieldCell) {
+        return _textFieldCell;
+    }
+    _textFieldCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SiteTitleTextCell];
+    _textFieldCell.textField.clearButtonMode = UITextFieldViewModeAlways;
+    _textFieldCell.minimumLabelWidth = 0.0f;
+    [WPStyleGuide configureTableViewTextCell:_textFieldCell];
+    _textFieldCell.textField.text = self.text;
+    _textFieldCell.textField.placeholder = self.placeholder;
+    _textFieldCell.textField.returnKeyType = UIReturnKeyDone;
+    _textFieldCell.textField.keyboardType = UIKeyboardTypeASCIICapable;
+    [_textFieldCell.textField becomeFirstResponder];
+    _textFieldCell.shouldDismissOnReturn = YES;
+    _textFieldCell.textField.secureTextEntry = self.isPassword;
     
+    return _textFieldCell;
 }
 
 - (void)viewDidDisappear:(BOOL)animated
