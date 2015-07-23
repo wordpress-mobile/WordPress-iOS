@@ -15,7 +15,6 @@
 #import "PublishDatePickerView.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WordPressAppDelegate.h"
-#import "WPAlertView.h"
 #import "WPTableViewActivityCell.h"
 #import "WPTableViewSectionHeaderView.h"
 #import "WPTableImageSource.h"
