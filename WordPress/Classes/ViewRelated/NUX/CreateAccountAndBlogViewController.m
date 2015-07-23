@@ -69,7 +69,7 @@ static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
 static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
 static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
