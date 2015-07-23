@@ -33,9 +33,10 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     return [self initWithText:@"" placeholder:@"" hint:@"" isPassword:NO];
 }
 
-- (void)viewDidLoad
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidLoad];
+    [self.textFieldCell.textField becomeFirstResponder];
+    [super viewDidAppear:animated];
 }
 
 - (WPTextFieldTableViewCell *)textFieldCell
@@ -50,8 +51,7 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     _textFieldCell.textField.text = self.text;
     _textFieldCell.textField.placeholder = self.placeholder;
     _textFieldCell.textField.returnKeyType = UIReturnKeyDone;
-    _textFieldCell.textField.keyboardType = UIKeyboardTypeASCIICapable;
-    [_textFieldCell.textField becomeFirstResponder];
+    _textFieldCell.textField.keyboardType = UIKeyboardTypeDefault;
     _textFieldCell.shouldDismissOnReturn = YES;
     _textFieldCell.textField.secureTextEntry = self.isPassword;
     
