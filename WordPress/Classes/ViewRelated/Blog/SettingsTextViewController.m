@@ -7,6 +7,8 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 @interface SettingsTextViewController()
 
 @property (nonatomic, strong) WPTextFieldTableViewCell *textFieldCell;
+@property (nonatomic, strong) UIView *hintView;
+
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, assign) BOOL isPassword;
 @property (nonatomic, strong) NSString *placeholder;
@@ -58,6 +60,26 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     return _textFieldCell;
 }
 
+- (UIView *)hintView
+{
+    if (_hintView) {
+        return _hintView;
+    }
+    CGFloat horizontalMargin = 15.0f;
+    CGFloat verticalMargin = 10.0f;
+    UILabel *hintLabel = [[UILabel alloc] init];
+    hintLabel.text = _hint;
+    hintLabel.font = [WPStyleGuide subtitleFont];
+    hintLabel.textColor = [WPStyleGuide greyDarken20];
+    hintLabel.numberOfLines = 0;
+    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-(2*horizontalMargin), CGFLOAT_MAX)];
+    hintLabel.frame = CGRectMake(horizontalMargin, verticalMargin, size.width, size.height);
+
+    _hintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, hintLabel.frame.size.height+(2*verticalMargin))];
+    [_hintView addSubview:hintLabel];
+    return _hintView;
+}
+
 - (void)viewDidDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
@@ -85,13 +107,9 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    if (section == 0)
-    {
-        return self.hint;
-    }
-    return @"";
+    return self.hintView;
 }
 
 @end
