@@ -14,6 +14,7 @@
 #import "WPNUXUtility.h"
 #import "WPWebViewController.h"
 #import "WPStyleGuide.h"
+#import "WPFontManager.h"
 #import "UILabel+SuggestSize.h"
 #import "WPAccount.h"
 #import "Blog.h"
@@ -23,6 +24,8 @@
 #import "ContextManager.h"
 #import "NSString+XMLExtensions.h"
 #import "Constants.h"
+
+#import "WordPress-Swift.h"
 
 #import <1PasswordExtension/OnePasswordExtension.h>
 
@@ -59,15 +62,21 @@
 
 @implementation CreateAccountAndBlogViewController
 
-static CGFloat const CreateAccountAndBlogStandardOffset = 15.0;
-static CGFloat const CreateAccountAndBlogMaxTextWidth = 260.0;
-static CGFloat const CreateAccountAndBlogTextFieldWidth = 320.0;
-static CGFloat const CreateAccountAndBlogTextFieldHeight = 44.0;
-static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight = 38.0;
-static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset = 20.0;
-static CGFloat const CreateAccountAndBlogButtonWidth = 290.0;
-static CGFloat const CreateAccountAndBlogButtonHeight = 40.0;
-static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
+static CGFloat const CreateAccountAndBlogStandardOffset             = 15.0;
+static CGFloat const CreateAccountAndBlogMaxTextWidth               = 260.0;
+static CGFloat const CreateAccountAndBlogTextFieldWidth             = 320.0;
+static CGFloat const CreateAccountAndBlogTextFieldHeight            = 44.0;
+static CGFloat const CreateAccountAndBlogTextFieldPhoneHeight       = 38.0;
+static CGFloat const CreateAccountAndBlogiOS7StatusBarOffset        = 20.0;
+static CGFloat const CreateAccountAndBlogButtonWidth                = 290.0;
+static CGFloat const CreateAccountAndBlogButtonHeight               = 41.0;
+static UIOffset const CreateAccountAndBlogOnePasswordPadding        = {9.0, 0.0};
+
+static UIEdgeInsets const CreateAccountAndBlogBackButtonPadding     = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const CreateAccountAndBlogBackButtonPaddingPad  = {1.0, 13.0, 0.0, 0.0};
+
+static UIEdgeInsets const CreateAccountAndBlogHelpButtonPadding     = {1.0, 0.0, 0.0, 13.0};
+static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0, 0.0, 20.0};
 
 - (instancetype)init
 {
@@ -406,16 +415,19 @@ static UIOffset const CreateAccountAndBlogOnePasswordPadding = {9.0, 0.0};
 
     CGFloat viewWidth = CGRectGetWidth(self.view.bounds);
     CGFloat viewHeight = CGRectGetHeight([UIScreen mainScreen].bounds);
-
+    
+    UIEdgeInsets helpButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogHelpButtonPaddingPad : CreateAccountAndBlogHelpButtonPadding;
+    UIEdgeInsets backButtonPadding = [UIDevice isPad] ? CreateAccountAndBlogBackButtonPaddingPad : CreateAccountAndBlogBackButtonPadding;
+    
     // Layout Help Button
     UIImage *helpButtonImage = [UIImage imageNamed:@"btn-help"];
-    x = viewWidth - helpButtonImage.size.width - CreateAccountAndBlogStandardOffset;
-    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    x = viewWidth - helpButtonImage.size.width - helpButtonPadding.right;
+    y = CreateAccountAndBlogiOS7StatusBarOffset + helpButtonPadding.top;
     _helpButton.frame = CGRectMake(x, y, helpButtonImage.size.width, CreateAccountAndBlogButtonHeight);
 
     // Layout Cancel Button
-    x = 0;
-    y = 0.5 * CreateAccountAndBlogStandardOffset + CreateAccountAndBlogiOS7StatusBarOffset;
+    x = backButtonPadding.left;
+    y = CreateAccountAndBlogiOS7StatusBarOffset + backButtonPadding.top;
     _backButton.frame = CGRectMake(x, y, CGRectGetWidth(_backButton.frame), CreateAccountAndBlogButtonHeight);
 
     // Layout the controls starting out from y of 0, then offset them once the height of the controls
