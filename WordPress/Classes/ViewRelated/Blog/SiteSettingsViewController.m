@@ -106,8 +106,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     DDLogMethod();
     [super viewDidLoad];
-    self.clearsSelectionOnViewWillAppear = YES;
-    self.navigationItem.title = NSLocalizedString(@"Settings", @"");
+    self.navigationItem.title = NSLocalizedString(@"Settings", @"Title for screen that allows configuration of your blog/site settings.");
     if (self.blog.account) {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
     } else {
@@ -425,7 +424,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                                                                                                        placeholder:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")
                                                                                                               hint:@""
                                                                                                         isPassword:YES];
-            siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that self hosted password editor");
+            siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
             siteTitleViewController.onValueChanged = ^(id value) {
                 self.passwordTextField.text = value;
                 if (![value isEqualToString:self.blog.password]) {
