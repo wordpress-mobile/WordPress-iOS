@@ -108,7 +108,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [super viewDidLoad];
     self.clearsSelectionOnViewWillAppear = YES;
     self.navigationItem.title = NSLocalizedString(@"Settings", @"");
-    if ([self.blog isHostedAtWPcom]) {
+    if (self.blog.account) {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
     } else {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionAccount), @(SiteSettingsSectionWriting)];
