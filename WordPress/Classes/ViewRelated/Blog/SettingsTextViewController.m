@@ -85,15 +85,6 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     return nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    if (section == 0)
-    {
-        return @"";
-    }
-    return @"";
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
 {
     if (section == 0)
