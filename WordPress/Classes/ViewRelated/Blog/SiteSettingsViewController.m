@@ -106,7 +106,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     DDLogMethod();
     [super viewDidLoad];
-
+    self.clearsSelectionOnViewWillAppear = YES;
     self.navigationItem.title = NSLocalizedString(@"Settings", @"");
     if ([self.blog isHostedAtWPcom]) {
         self.tableSections = @[@(SiteSettingsSectionGeneral), @(SiteSettingsSectionWriting)];
@@ -145,11 +145,16 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [self refreshData];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:animated];
+    [super viewWillAppear:animated];
+}
+
 - (void)viewDidAppear:(BOOL)animated
 {
-    [super viewDidAppear:animated];
-
     [self.tableView reloadData];
+    [super viewDidAppear:animated];
 }
 
 #pragma mark - UITableViewDataSource
@@ -276,6 +281,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 cell.detailTextLabel.text = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
             }
             cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [WPStyleGuide configureTableViewCell:cell];
             return cell;
         } break;
