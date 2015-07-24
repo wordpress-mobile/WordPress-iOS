@@ -3,7 +3,7 @@ import XCTest
 import WordPress
 
 
-class NotificationsServiceRemoteTests : XCTestCase
+class NotificationsServiceTests : XCTestCase
 {
     typealias StreamKind    = NotificationSettings.Stream.Kind
     
@@ -27,7 +27,7 @@ class NotificationsServiceRemoteTests : XCTestCase
         contextManager      = TestContextManager()
         remoteApi           = WordPressComApi.anonymousApi()
         service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
-        
+
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
                 return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
             },
