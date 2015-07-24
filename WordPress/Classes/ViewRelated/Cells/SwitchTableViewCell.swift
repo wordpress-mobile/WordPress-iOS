@@ -1,6 +1,12 @@
 import Foundation
 
 
+/**
+*  @class           SwitchTableViewCell
+*  @brief           The purpose of this class is to simply display a regular TableViewCell, with a Switch
+*                   on the right hand side.
+*/
+
 public class SwitchTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties

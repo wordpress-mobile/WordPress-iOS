@@ -173,7 +173,7 @@ public class NotificationsService : LocalCoreDataService
         switch channel {
         case let .Blog(blogId):
             return [
-                "sites": [
+                "blogs": [
                     [   "blog_id"               : blogId,
                         stream.kind.rawValue    : updatedSettings
                     ]
