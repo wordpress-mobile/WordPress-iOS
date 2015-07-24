@@ -17,6 +17,7 @@
 #import "BlogService.h"
 #import "WPTextFieldTableViewCell.h"
 #import "SettingsTextViewController.h"
+#import "SettingsMultiTextViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -431,19 +432,19 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
         }break;
         case SiteSettingsGeneralTagline:{
-            SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogTagline
+            SettingsMultiTextViewController *siteTaglineViewController = [[SettingsMultiTextViewController alloc] initWithText:self.blog.blogTagline
                                                                                                  placeholder:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")
                                                                                                               hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
                                                                                                         isPassword:NO];
-            siteTitleViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
-            siteTitleViewController.onValueChanged = ^(id value) {
+            siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
+            siteTaglineViewController.onValueChanged = ^(id value) {
                 self.siteTaglineCell.detailTextLabel.text = value;
                 if (![value isEqualToString:self.blog.blogTagline]){
                     self.blog.blogTagline = value;
                     [self save:nil];
                 }
             };
-            [self.navigationController pushViewController:siteTitleViewController animated:YES];
+            [self.navigationController pushViewController:siteTaglineViewController animated:YES];
         }break;
         case SiteSettingsGeneralURL:{
             

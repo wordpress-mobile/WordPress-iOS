@@ -73,8 +73,11 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     hintLabel.textColor = [WPStyleGuide greyDarken20];
     hintLabel.numberOfLines = 0;
     CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-(2*horizontalMargin), CGFLOAT_MAX)];
-    hintLabel.frame = CGRectMake(horizontalMargin, verticalMargin, size.width, size.height);
+    if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
+        horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
+    }
 
+    hintLabel.frame = CGRectMake(horizontalMargin, verticalMargin, size.width, size.height);
     _hintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, hintLabel.frame.size.height+(2*verticalMargin))];
     [_hintView addSubview:hintLabel];
     return _hintView;
