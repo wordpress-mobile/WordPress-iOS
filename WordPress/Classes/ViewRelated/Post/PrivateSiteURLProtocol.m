@@ -49,14 +49,23 @@ static NSInteger regcount = 0;
 
 + (NSString *)bearerToken
 {
-    NSString *token = [[self defaultWPComAccount] authToken];
-    return token;
-}
+    // Thread Safety: Make sure we're running on the Main Thread
+    if ([NSThread isMainThread]) {
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        AccountService *service         = [[AccountService alloc] initWithManagedObjectContext:context];
+        return service.defaultWordPressComAccount.authToken;
+    }
 
-+ (WPAccount *)defaultWPComAccount
-{
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-    return [service defaultWordPressComAccount];
+    // Otherwise, let's use a Derived Context
+    __block NSString *authToken     = nil;
+    NSManagedObjectContext *derived = [[ContextManager sharedInstance] newDerivedContext];
+    AccountService *service         = [[AccountService alloc] initWithManagedObjectContext:derived];
+    
+    [derived performBlockAndWait:^{
+        authToken = service.defaultWordPressComAccount.authToken;
+    }];
+    
+    return authToken;
 }
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
