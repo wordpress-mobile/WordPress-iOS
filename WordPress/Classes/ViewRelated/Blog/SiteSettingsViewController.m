@@ -53,19 +53,19 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
 
+@property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
-@property (nonatomic, strong) UITableViewCell *siteTitleCell;
-@property (nonatomic, strong) UITableViewCell *siteTaglineCell;
-@property (nonatomic, strong) UITableViewCell *addressTextCell;
-@property (nonatomic, strong) UITableViewCell *pushCell;
+@property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
+@property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
+@property (nonatomic, strong) SettingTableViewCell *addressTextCell;
+@property (nonatomic, strong) SettingTableViewCell *pushCell;
 #pragma mark - Account Section
-@property (nonatomic, strong) UITableViewCell *usernameTextCell;
-@property (nonatomic, strong) WPTextFieldTableViewCell *passwordTextCell;
+@property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
+@property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
-@property (nonatomic, strong) UITableViewCell *geotaggingCell;
+@property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
-
-@property (nonatomic,   weak) UITextField *passwordTextField;
+#pragma mark - Other properties
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 
 @property (nonatomic, strong) Blog *blog;
@@ -81,8 +81,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, assign) BOOL isSiteDotCom;
 @property (nonatomic, assign) BOOL isKeyboardVisible;
-
-@property (nonatomic, strong) NSArray *tableSections;
 
 @end
 
@@ -182,31 +180,25 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return 0;
 }
 
-- (UITableViewCell *)usernameTextCell {
+- (SettingTableViewCell *)usernameTextCell
+{
     if (_usernameTextCell){
         return _usernameTextCell;
     }
-    _usernameTextCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _usernameTextCell.textLabel.text = NSLocalizedString(@"Username", @"Label for entering username in the username field");
-    [WPStyleGuide configureTableViewCell:self.usernameTextCell];
-    _usernameTextCell.accessoryType = UITableViewCellAccessoryNone;
-    _usernameTextCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+    _usernameTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Username", @"Label for entering username in the username field")
+                                                           editable:NO
+                                                    reuseIdentifier:nil];
     return _usernameTextCell;
 }
 
-- (WPTextFieldTableViewCell *)passwordTextCell {
+- (SettingTableViewCell *)passwordTextCell
+{
     if (_passwordTextCell) {
         return _passwordTextCell;
     }
-    _passwordTextCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    _passwordTextCell.textLabel.text = NSLocalizedString(@"Password", @"Label for entering password in password field");
-    _passwordTextCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    _passwordTextField = self.passwordTextCell.textField;
-    _passwordTextCell.textField.enabled = NO;
-    [WPStyleGuide configureTableViewTextCell:self.passwordTextCell];
-    _passwordTextCell.textField.secureTextEntry = YES;
-    _passwordTextCell.selectionStyle = UITableViewCellSelectionStyleDefault;
+    _passwordTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Password", @"Label for entering password in password field")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
     return _passwordTextCell;
 }
 
@@ -215,17 +207,17 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     switch (row) {
         case SiteSettingsAccountUsername: {
             if (self.blog.usernameForSite) {
-                self.usernameTextCell.detailTextLabel.text = self.blog.usernameForSite;
+                [self.usernameTextCell setTextValue:self.blog.usernameForSite];
             } else {
-                self.usernameTextCell.detailTextLabel.text = NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username");
+                [self.usernameTextCell setTextValue:NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username")];
             }
             return self.usernameTextCell;
         } break;
         case SiteSettingsAccountPassword: {
             if (self.blog.password) {
-                self.passwordTextCell.textField.text = self.password;
+                [self.passwordTextCell setTextValue:@"••••••••"];
             } else {
-                self.passwordTextCell.textField.text = NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password");
+                [self.passwordTextCell setTextValue:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")];
             }
             return self.passwordTextCell;
         } break;
@@ -233,18 +225,18 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return nil;
 }
 
-- (UITableViewCell *)geotaggingCell {
+- (SettingTableViewCell *)geotaggingCell
+{
     if (_geotaggingCell) {
         return _geotaggingCell;
     }
-    _geotaggingCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _geotaggingCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)")
+                                                         editable:NO
+                                                  reuseIdentifier:nil];
     UISwitch *geotaggingSwitch = [[UISwitch alloc] init];
-    _geotaggingCell.textLabel.text = NSLocalizedString(@"Geotagging", @"Enables geotagging in blog settings (short label)");
-    _geotaggingCell.selectionStyle = UITableViewCellSelectionStyleNone;
     geotaggingSwitch.on = self.geolocationEnabled;
     [geotaggingSwitch addTarget:self action:@selector(toggleGeolocation:) forControlEvents:UIControlEventValueChanged];
     _geotaggingCell.accessoryView = geotaggingSwitch;
-    [WPStyleGuide configureTableViewCell:_geotaggingCell];
     return _geotaggingCell;
 }
 
@@ -258,7 +250,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return nil;
 }
 
-- (UITableViewCell *)siteTitleCell {
+- (SettingTableViewCell *)siteTitleCell
+{
     if (_siteTitleCell) {
         return _siteTitleCell;
     }
@@ -269,40 +262,39 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _siteTitleCell;
 }
 
-- (UITableViewCell *)siteTaglineCell {
+- (SettingTableViewCell *)siteTaglineCell
+{
     if (_siteTaglineCell) {
         return _siteTaglineCell;
     }
-    _siteTaglineCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _siteTaglineCell.textLabel.text = NSLocalizedString(@"Tagline", @"");
-    _siteTaglineCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    [WPStyleGuide configureTableViewCell:_siteTaglineCell];
+    _siteTaglineCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Tagline", @"")
+                                                          editable:YES
+                                                   reuseIdentifier:nil];
     return _siteTaglineCell;
 }
 
-- (UITableViewCell *) addressTextCell {
+- (SettingTableViewCell *)addressTextCell
+{
     if (_addressTextCell) {
         return _addressTextCell;
     }
-    _addressTextCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
-    _addressTextCell.textLabel.text = NSLocalizedString(@"Address", @"");
-    _addressTextCell.accessoryType = UITableViewCellAccessoryNone;
-    _addressTextCell.selectionStyle = UITableViewCellSelectionStyleNone;
-    [WPStyleGuide configureTableViewCell:_addressTextCell];
+    _addressTextCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Address", @"")
+                                                          editable:NO
+                                                   reuseIdentifier:nil];
     return _addressTextCell;
 }
 
-- (UITableViewCell *)pushCell {
+- (SettingTableViewCell *)pushCell
+{
     if (_pushCell) {
         return _pushCell;
     }
-    _pushCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    _pushCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Push Notifications", @"")
+                                                   editable:NO
+                                            reuseIdentifier:nil];
     UISwitch *pushSwitch = [[UISwitch alloc] init];
-    _pushCell.textLabel.text = NSLocalizedString(@"Push Notifications", @"");
-    _pushCell.selectionStyle = UITableViewCellSelectionStyleNone;
     [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
     _pushCell.accessoryView = pushSwitch;
-    [WPStyleGuide configureTableViewCell:_pushCell];
     pushSwitch.on = [self getBlogPushNotificationsSetting];
     return _pushCell;
 }
@@ -312,25 +304,25 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     switch (row) {
         case SiteSettingsGeneralTitle: {
             if (self.blog.blogName) {
-                self.siteTitleCell.detailTextLabel.text = self.blog.blogName;
+                [self.siteTitleCell setTextValue:self.blog.blogName];
             } else {
-                self.siteTitleCell.detailTextLabel.text = NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site");
+                [self.siteTitleCell setTextValue:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")];
             }
             return self.siteTitleCell;
         } break;
         case SiteSettingsGeneralTagline: {
             if (self.blog.blogTagline) {
-                self.siteTaglineCell.detailTextLabel.text = self.blog.blogTagline;
+                [self.siteTaglineCell setTextValue:self.blog.blogTagline];
             } else {
-                self.siteTaglineCell.detailTextLabel.text = NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site");
+                [self.siteTaglineCell setTextValue:NSLocalizedString(@"Explain what this site is about.", @"Placeholder text for the tagline of a site")];
             }
             return self.siteTaglineCell;
         } break;
         case SiteSettingsGeneralURL: {
             if (self.blog.url) {
-                self.addressTextCell.detailTextLabel.text = self.blog.url;
+                [self.addressTextCell setTextValue:self.blog.url];
             } else {
-                self.addressTextCell.detailTextLabel.text = NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field");
+                [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
         } break;
@@ -469,11 +461,9 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                                                                                                         isPassword:YES];
             siteTitleViewController.title = NSLocalizedString(@"Password", @"Title for screen that shows self hosted password editor.");
             siteTitleViewController.onValueChanged = ^(id value) {
-                self.passwordTextField.text = value;
                 if (![value isEqualToString:self.blog.password]) {
                     [self.navigationItem setHidesBackButton:YES animated:YES];
                     self.password = value;
-                    self.passwordTextField.text = value;
                     [self validateUrl];
                 }
             };
@@ -624,7 +614,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
 {
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextCell.detailTextLabel.text password:self.passwordTextField.text];
+    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextCell.detailTextLabel.text password:self.password];
     [api getBlogsWithSuccess:^(NSArray *blogs) {
         [SVProgressHUD dismiss];
         [self validationSuccess:[xmlRpcURL absoluteString]];
@@ -740,9 +730,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (void)saveSettings
 {
-    self.url = [NSURL IDNEncodedURL:self.addressTextCell.detailTextLabel.text];
-    self.username = self.usernameTextCell.detailTextLabel.text;
-    self.password = self.passwordTextField.text;
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     self.blog.blogName = self.siteTitleCell.detailTextLabel.text;
     self.blog.blogTagline = self.siteTaglineCell.detailTextLabel.text;
