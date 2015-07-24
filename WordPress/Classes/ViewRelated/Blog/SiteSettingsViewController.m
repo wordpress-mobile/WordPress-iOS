@@ -263,7 +263,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     _siteTitleCell = [[SettingTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
     _siteTitleCell.textLabel.text = NSLocalizedString(@"Site Title", @"");
     _siteTitleCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    [WPStyleGuide configureTableViewCell:_siteTitleCell];
     return _siteTitleCell;
 }
 
