@@ -1111,15 +1111,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
         
+        // Hi the destruction callback, if any. Do this before effectively calling the backend call
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
+        
+        // Proceed hitting the Backend
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        
-        // Hi the destruction callback, if any, and pop to the root!
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
@@ -1144,15 +1145,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         
         [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
         
+        // Hi the destruction callback, if any. Do this before effectively calling the backend call
+        if (self.onDestructionCallback) {
+            self.onDestructionCallback();
+        }
+
+        // Proceed hitting hte REST API
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
-        
-        // Hi the destruction callback, if any, and pop to the root!
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };

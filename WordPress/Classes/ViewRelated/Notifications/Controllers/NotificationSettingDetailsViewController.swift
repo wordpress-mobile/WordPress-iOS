@@ -1,6 +1,13 @@
 import Foundation
 
 
+/**
+*  @class           NotificationSettingDetailsViewController
+*  @brief           The purpose of this class is to render a collection of NotificationSettings for a given
+*                   Stream, encapsulated in the class NotificationSettings.Stream, and to provide the user
+*                   a simple interface to update those settings, as needed.
+*/
+
 public class NotificationSettingDetailsViewController : UITableViewController
 {
     // MARK: - View Lifecycle
@@ -36,16 +43,16 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Public Helpers
-    public func setupWithSettings(settings: NotificationSettings, streamAtIndex streamIndex: Int) {
+    public func setupWithSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) {
         self.settings   = settings
-        self.stream     = settings.streams[streamIndex]
+        self.stream     = stream
         self.newValues  = [String: Bool]()
         
         switch settings.channel {
         case .WordPressCom:
             title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
         default:
-            title = stream!.kind.description()
+            title = stream.kind.description()
         }
         
         tableView.reloadData()
@@ -82,8 +89,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
         
         cell.name       = settings?.localizedDescription(key!) ?? String()
         cell.isOn       = preferences?[key!] ?? true
-        cell.onChange   = { (newValue: Bool) in
-            self.newValues?[key!] = newValue
+        cell.onChange   = { [weak self] (newValue: Bool) in
+            self?.newValues?[key!] = newValue
         }
     }
     
@@ -94,15 +101,34 @@ public class NotificationSettingDetailsViewController : UITableViewController
         if newValues?.count == 0 || settings == nil {
             return
         }
-        
+
         let context = ContextManager.sharedInstance().mainContext
         let service = NotificationsService(managedObjectContext: context)
                 
         service.updateSettings(settings!,
-            stream: stream!,
-            newValues: newValues!,
-            success: nil,
-            failure: nil)
+            stream              : stream!,
+            newValues           : newValues!,
+            success             : nil,
+            failure             : { (error: NSError!) in
+                self.handleUpdateError()
+            })
+    }
+    
+    private func handleUpdateError() {
+        UIAlertView.showWithTitle(NSLocalizedString("Oops!", comment: ""),
+            message             : NSLocalizedString("There has been an unexpected error while updating " +
+                                                    "your Notification Settings",
+                                                    comment: "Displayed after a failed Notification Settings call"),
+            style               : .Default,
+            cancelButtonTitle   : NSLocalizedString("Cancel", comment: "Cancel. Action."),
+            otherButtonTitles   : [ NSLocalizedString("Retry", comment: "Retry. Action") ],
+            tapBlock            : { (alertView: UIAlertView!, buttonIndex: Int) -> Void in
+                if alertView.cancelButtonIndex == buttonIndex {
+                    return
+                }
+                
+                self.saveSettingsIfNeeded()
+            })
     }
     
     
