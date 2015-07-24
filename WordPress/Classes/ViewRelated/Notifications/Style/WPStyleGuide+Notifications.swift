@@ -109,6 +109,7 @@ extension WPStyleGuide
         public static let blockUnapprovedSideColor  = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0xFF/255.0)
         public static let blockUnapprovedBgColor    = UIColor(red: 0xFF/255.0, green: 0xBA/255.0, blue: 0x00/255.0, alpha: 0x19/255.0)
         public static let blockUnapprovedTextColor  = UIColor(red: 0xF0/255.0, green: 0x82/255.0, blue: 0x1E/255.0, alpha: 0xFF/255.0)
+        public static let blockUnapprovedLinkColor  = WPStyleGuide.mediumBlue()
         
         public static let contentBlockRegularStyle  = [ NSParagraphStyleAttributeName:  contentBlockParagraph,
                                                         NSFontAttributeName:            contentBlockRegularFont,
@@ -181,7 +182,7 @@ extension WPStyleGuide
         }
         
         public static func blockLinkColorForComment(isApproved approved: Bool) -> UIColor {
-            return approved ? blockLinkColor : blockUnapprovedTextColor
+            return approved ? blockLinkColor : blockUnapprovedLinkColor
         }
 
         
