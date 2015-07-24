@@ -2,7 +2,7 @@
 #import "WPStyleGuide.h"
 #import "WPTableViewCell.h"
 
-static CGFloat const HorizontalMargin = 15.0f;
+static CGFloat const HorizontalMargin = 10.0f;
 static CGFloat const VerticalMargin = 10.0f;
 
 @interface SettingsMultiTextViewController() <UITextViewDelegate>
@@ -47,6 +47,7 @@ static CGFloat const VerticalMargin = 10.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -62,13 +63,13 @@ static CGFloat const VerticalMargin = 10.0f;
     }
     _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     
-    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, 15, 0)];
+    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, HorizontalMargin, 0)];
     self.textView.text = self.text;
     self.textView.returnKeyType = UIReturnKeyDefault;
     self.textView.keyboardType = UIKeyboardTypeDefault;
     self.textView.secureTextEntry = self.isPassword;
-    self.textView.font = [WPStyleGuide tableviewSubtitleFont];
-    self.textView.textColor = [WPStyleGuide darkBlue];
+    self.textView.font = [WPStyleGuide tableviewTextFont];
+    self.textView.textColor = [WPStyleGuide greyDarken20];
     self.textView.delegate = self;
     self.textView.scrollEnabled = NO;
     [_textViewCell.contentView addSubview:self.textView];
@@ -86,7 +87,7 @@ static CGFloat const VerticalMargin = 10.0f;
     hintLabel.font = [WPStyleGuide subtitleFont];
     hintLabel.textColor = [WPStyleGuide greyDarken20];
     hintLabel.numberOfLines = 0;
-    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-( 2 * HorizontalMargin), CGFLOAT_MAX)];
+    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width - ( 2 * HorizontalMargin), CGFLOAT_MAX)];
     CGFloat horizontalMargin = HorizontalMargin;
     if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
         horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
