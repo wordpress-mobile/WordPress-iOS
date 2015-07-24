@@ -69,7 +69,7 @@ static CGFloat const VerticalMargin = 10.0f;
     self.textView.keyboardType = UIKeyboardTypeDefault;
     self.textView.secureTextEntry = self.isPassword;
     self.textView.font = [WPStyleGuide tableviewTextFont];
-    self.textView.textColor = [WPStyleGuide greyDarken20];
+    self.textView.textColor = [WPStyleGuide darkGrey];
     self.textView.delegate = self;
     self.textView.scrollEnabled = NO;
     [_textViewCell.contentView addSubview:self.textView];
