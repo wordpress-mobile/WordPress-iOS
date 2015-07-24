@@ -90,7 +90,7 @@ static CGFloat const VerticalMargin = 10.0f;
     if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
         horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
     }
-    hintLabel.frame = CGRectMake(horizontalMargin, VerticalMargin, size.width, size.height);
+    hintLabel.frame = CGRectIntegral(CGRectMake(horizontalMargin, VerticalMargin, size.width, size.height));
     _hintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, hintLabel.frame.size.height+( 2 * VerticalMargin))];
     [_hintView addSubview:hintLabel];
     return _hintView;
