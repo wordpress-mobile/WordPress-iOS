@@ -70,6 +70,7 @@ static CGFloat const VerticalMargin = 10.0f;
     self.textView.font = [WPStyleGuide tableviewSubtitleFont];
     self.textView.textColor = [WPStyleGuide darkBlue];
     self.textView.delegate = self;
+    self.textView.scrollEnabled = NO;
     [_textViewCell.contentView addSubview:self.textView];
     
     return _textViewCell;
