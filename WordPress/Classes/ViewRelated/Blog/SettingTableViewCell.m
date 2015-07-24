@@ -2,7 +2,7 @@
 
 @implementation SettingTableViewCell
 
-- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     return [self initWithLabel:@"" editable:YES reuseIdentifier:reuseIdentifier];
 }
