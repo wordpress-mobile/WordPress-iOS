@@ -1,19 +1,12 @@
-osx_image: beta-xcode6.3
+osx_image: xcode6.4
 language: objective-c
 xcode_workspace: WordPress.xcworkspace
 xcode_scheme: WordPress
-xcode_sdk: iphonesimulator8.3
+xcode_sdk: iphonesimulator8.4
 notifications:
   email: true
 install:
-- gem install cocoapods && pod install
-- ./Scripts/install-oclint.sh
-before_script:
-- xctool --version
-script:
-- ./Scripts/build.sh
-after_success:
-- ./Scripts/run-oclint.sh
+- gem install cocoapods -v 0.37.2 && pod install
 
 env:
   global:
