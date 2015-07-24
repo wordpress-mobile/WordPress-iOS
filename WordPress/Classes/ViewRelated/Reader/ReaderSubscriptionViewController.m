@@ -12,7 +12,6 @@
 #import "ReaderTopicService.h"
 #import "ReaderSiteService.h"
 #import "WPTableViewCell.h"
-#import "WPAlertView.h"
 #import "WPToast.h"
 #import "WordPress-Swift.h"
 

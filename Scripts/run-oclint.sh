@@ -39,7 +39,7 @@ fi
 
 echo "[OCLint] cleaning project"
 xctool clean \
-           -sdk "iphonesimulator8.1" \
+           -sdk "iphonesimulator8.4" \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            CONFIGURATION_BUILD_DIR=$build_dir \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
@@ -48,7 +48,7 @@ xctool clean \
 
 echo "[OCLint] building project"
 xctool build \
-           -sdk "iphonesimulator8.1" \
+           -sdk "iphonesimulator8.4" \
            CONFIGURATION_BUILD_DIR=$build_dir \
            -workspace $xcode_workspace -configuration Debug -scheme WordPress \
            DSTROOT=$build_dir OBJROOT=$build_dir SYMROOT=$build_dir \
