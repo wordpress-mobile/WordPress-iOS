@@ -165,9 +165,13 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     NSInteger settingsSection = [self.tableSections[section] intValue];
     switch (settingsSection) {
-        case SiteSettingsSectionGeneral:
-            return SiteSettingsGeneralCount;
-        break;
+        case SiteSettingsSectionGeneral: {
+            if ([self.blog supports:BlogFeaturePushNotifications]) {
+                return SiteSettingsGeneralCount;
+            } else {
+                return SiteSettingsGeneralCount-1;
+            }
+        } break;
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
         break;
