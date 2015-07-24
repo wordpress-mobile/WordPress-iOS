@@ -2,11 +2,13 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
 
-static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
+static CGFloat const HorizontalMargin = 10.0f;
+static CGFloat const VerticalMargin = 10.0f;
 
 @interface SettingsTextViewController()
 
-@property (nonatomic, strong) WPTextFieldTableViewCell *textFieldCell;
+@property (nonatomic, strong) WPTableViewCell *textFieldCell;
+@property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIView *hintView;
 
 @property (nonatomic, strong) NSString *hint;
@@ -37,25 +39,35 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    [self.textFieldCell.textField becomeFirstResponder];
+    [self.textField becomeFirstResponder];
     [super viewDidAppear:animated];
 }
 
-- (WPTextFieldTableViewCell *)textFieldCell
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
+}
+
+- (WPTableViewCell *)textFieldCell
 {
     if (_textFieldCell) {
         return _textFieldCell;
     }
-    _textFieldCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SiteTitleTextCell];
-    _textFieldCell.textField.clearButtonMode = UITextFieldViewModeAlways;
-    _textFieldCell.minimumLabelWidth = 0.0f;
-    [WPStyleGuide configureTableViewTextCell:_textFieldCell];
-    _textFieldCell.textField.text = self.text;
-    _textFieldCell.textField.placeholder = self.placeholder;
-    _textFieldCell.textField.returnKeyType = UIReturnKeyDone;
-    _textFieldCell.textField.keyboardType = UIKeyboardTypeDefault;
-    _textFieldCell.shouldDismissOnReturn = YES;
-    _textFieldCell.textField.secureTextEntry = self.isPassword;
+    _textFieldCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    
+    self.textField = [[UITextField alloc] initWithFrame:CGRectInset(_textFieldCell.bounds, HorizontalMargin, 0)];
+    self.textField.clearButtonMode = UITextFieldViewModeAlways;
+    self.textField.font = [WPStyleGuide tableviewTextFont];
+    self.textField.textColor = [WPStyleGuide greyDarken20];
+    self.textField.text = self.text;
+    self.textField.placeholder = self.placeholder;
+    self.textField.returnKeyType = UIReturnKeyDone;
+    self.textField.keyboardType = UIKeyboardTypeDefault;
+    self.textField.secureTextEntry = self.isPassword;
+    self.textField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
+    
+    [_textFieldCell.contentView addSubview:self.textField];
     
     return _textFieldCell;
 }
@@ -65,14 +77,14 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
     if (_hintView) {
         return _hintView;
     }
-    CGFloat horizontalMargin = 15.0f;
-    CGFloat verticalMargin = 10.0f;
+    CGFloat horizontalMargin = HorizontalMargin;
+    CGFloat verticalMargin = VerticalMargin;
     UILabel *hintLabel = [[UILabel alloc] init];
     hintLabel.text = _hint;
     hintLabel.font = [WPStyleGuide subtitleFont];
     hintLabel.textColor = [WPStyleGuide greyDarken20];
     hintLabel.numberOfLines = 0;
-    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-(2*horizontalMargin), CGFLOAT_MAX)];
+    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width -( 2 * horizontalMargin), CGFLOAT_MAX)];
     if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
         horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
     }
@@ -86,7 +98,7 @@ static NSString * const SiteTitleTextCell = @"SiteTitleTextCell";
 - (void)viewDidDisappear:(BOOL)animated
 {
     if (self.onValueChanged) {
-        self.onValueChanged(self.textFieldCell.textField.text);
+        self.onValueChanged(self.textField.text);
     }
     [super viewDidDisappear:animated];
 }
