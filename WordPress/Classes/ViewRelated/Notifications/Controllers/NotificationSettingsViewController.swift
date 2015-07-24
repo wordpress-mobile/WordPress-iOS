@@ -1,6 +1,14 @@
 import Foundation
 
 
+/**
+*  @class           NotificationSettingsViewController
+*  @brief           The purpose of this class is to retrieve the collection of NotificationSettings
+*                   from WordPress.com Backend, and render the "Top Level" list.
+*                   On Row Press, we'll push the list of available Streams, which will, in turn,
+*                   push the Details View itself, which is in charge of rendering the actual available settings.
+*/
+
 public class NotificationSettingsViewController : UIViewController
 {
     // MARK: - View Lifecycle
