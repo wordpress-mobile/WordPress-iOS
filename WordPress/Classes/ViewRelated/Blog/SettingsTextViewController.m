@@ -2,7 +2,7 @@
 #import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
 
-static CGFloat const HorizontalMargin = 10.0f;
+static CGFloat const HorizontalMargin = 15.0f;
 static CGFloat const VerticalMargin = 10.0f;
 
 @interface SettingsTextViewController()
