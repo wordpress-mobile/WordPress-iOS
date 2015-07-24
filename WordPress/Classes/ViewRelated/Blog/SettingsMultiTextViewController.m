@@ -1,0 +1,149 @@
+#import "SettingsMultiTextViewController.h"
+#import "WPStyleGuide.h"
+#import "WPTableViewCell.h"
+
+static CGFloat const HorizontalMargin = 15.0f;
+static CGFloat const VerticalMargin = 10.0f;
+
+@interface SettingsMultiTextViewController() <UITextViewDelegate>
+
+@property (nonatomic, strong) UITableViewCell *textViewCell;
+@property (nonatomic, strong) UITextView *textView;
+
+@property (nonatomic, strong) UIView *hintView;
+
+@property (nonatomic, strong) NSString *hint;
+@property (nonatomic, assign) BOOL isPassword;
+@property (nonatomic, strong) NSString *placeholder;
+@property (nonatomic, strong) NSString *text;
+
+@end
+
+@implementation SettingsMultiTextViewController
+
+- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint isPassword:(BOOL)isPassword
+{
+    self = [super initWithStyle:UITableViewStyleGrouped];
+    if (self) {
+        _text = text;
+        _placeholder = placeholder;
+        _hint = hint;
+        _isPassword = isPassword;
+    }
+    return self;
+}
+
+- (instancetype)initWithStyle:(UITableViewStyle)style
+{
+    return [self initWithText:@"" placeholder:@"" hint:@"" isPassword:NO];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.textView becomeFirstResponder];
+    [super viewDidAppear:animated];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+}
+
+- (void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+    [self adjustCellSize];
+}
+
+- (UITableViewCell *)textViewCell
+{
+    if (_textViewCell) {
+        return _textViewCell;
+    }
+    _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    
+    self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, 15, 0)];
+    self.textView.text = self.text;
+    self.textView.returnKeyType = UIReturnKeyDefault;
+    self.textView.keyboardType = UIKeyboardTypeDefault;
+    self.textView.secureTextEntry = self.isPassword;
+    self.textView.font = [WPStyleGuide tableviewSubtitleFont];
+    self.textView.textColor = [WPStyleGuide darkBlue];
+    self.textView.delegate = self;
+    [_textViewCell.contentView addSubview:self.textView];
+    
+    return _textViewCell;
+}
+
+- (UIView *)hintView
+{
+    if (_hintView) {
+        return _hintView;
+    }
+    UILabel *hintLabel = [[UILabel alloc] init];
+    hintLabel.text = _hint;
+    hintLabel.font = [WPStyleGuide subtitleFont];
+    hintLabel.textColor = [WPStyleGuide greyDarken20];
+    hintLabel.numberOfLines = 0;
+    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width-( 2 * HorizontalMargin), CGFLOAT_MAX)];
+    CGFloat horizontalMargin = HorizontalMargin;
+    if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
+        horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
+    }
+    hintLabel.frame = CGRectMake(horizontalMargin, VerticalMargin, size.width, size.height);
+    _hintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, hintLabel.frame.size.height+( 2 * VerticalMargin))];
+    [_hintView addSubview:hintLabel];
+    return _hintView;
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    if (self.onValueChanged) {
+        self.onValueChanged(self.textView.text);
+    }
+    [super viewDidDisappear:animated];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return 1;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0 && indexPath.row == 0)
+    {
+        return self.textViewCell;
+    }
+    return nil;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return self.hintView;
+}
+
+- (void)textViewDidChange:(UITextView *)textView
+{
+    [self adjustCellSize];
+}
+
+- (void)adjustCellSize
+{
+    CGFloat widthAvailable = self.textViewCell.contentView.bounds.size.width - ( 2 * HorizontalMargin);
+    CGSize size = [self.textView sizeThatFits:CGSizeMake(widthAvailable, CGFLOAT_MAX)];
+    self.textView.frame = CGRectMake(HorizontalMargin, 0, widthAvailable, size.height);
+    if (fabs(self.tableView.rowHeight - size.height) > (self.textView.font.lineHeight/2))
+    {
+        self.tableView.rowHeight = size.height;
+        [self.tableView reloadData];
+        [self.textView becomeFirstResponder];
+    }
+}
+
+@end
