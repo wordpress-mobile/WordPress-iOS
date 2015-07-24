@@ -678,16 +678,16 @@ NSString *const SessionCount = @"session_count";
             [instructions setCurrentDateForPeopleProperty:@"last_time_published_post_with_tags"];
             break;
         case WPAnalyticsStatPushAuthenticationApproved:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_approved"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Approved"];
             break;
         case WPAnalyticsStatPushAuthenticationExpired:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_expired"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Expired"];
             break;
         case WPAnalyticsStatPushAuthenticationFailed:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_failed"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Failed"];
             break;
         case WPAnalyticsStatPushAuthenticationIgnored:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"push_authentication_ignored"];
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Push Authentication - Ignored"];
             break;
         case WPAnalyticsStatAddedSelfHostedSite:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Added Self Hosted Site"];

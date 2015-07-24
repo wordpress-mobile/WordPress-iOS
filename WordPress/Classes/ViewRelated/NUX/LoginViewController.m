@@ -88,6 +88,13 @@ static NSTimeInterval const GeneralWalkthroughAnimationDuration = 0.3f;
 static CGFloat const GeneralWalkthroughAlphaHidden              = 0.0f;
 static CGFloat const GeneralWalkthroughAlphaEnabled             = 1.0f;
 
+static UIEdgeInsets const LoginBackButtonTitleInsets            = {0.0, 7.0, 0.0, 15.0};
+static UIEdgeInsets const LoginBackButtonPadding                = {1.0, 0.0, 0.0, 0.0};
+static UIEdgeInsets const LoginBackButtonPaddingPad             = {1.0, 13.0, 0.0, 0.0};
+
+static UIEdgeInsets const LoginHelpButtonPadding                = {1.0, 0.0, 0.0, 13.0};
+static UIEdgeInsets const LoginHelpButtonPaddingPad             = {1.0, 0.0, 0.0, 20.0};
+
 static UIOffset const LoginOnePasswordPadding                   = {9.0, 0.0f};
 static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
 
@@ -457,8 +464,10 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     [cancelButton setTitle:NSLocalizedString(@"Cancel", nil) forState:UIControlStateNormal];
     [cancelButton addTarget:self action:@selector(cancelButtonAction:) forControlEvents:UIControlEventTouchUpInside];
     [cancelButton setExclusiveTouch:YES];
+    [cancelButton setTitleEdgeInsets:LoginBackButtonTitleInsets];
+    [cancelButton.titleLabel setFont:[WPFontManager openSansRegularFontOfSize:15.0]];
     [cancelButton sizeToFit];
-
+    
     // Add status label
     UILabel *statusLabel = [[UILabel alloc] init];
     statusLabel.font = [WPNUXUtility confirmationLabelFont];
@@ -537,19 +546,22 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     CGFloat textLabelX = (viewWidth - GeneralWalkthroughMaxTextWidth) * 0.5f;
     CGFloat buttonX = (viewWidth - GeneralWalkthroughButtonSize.width) * 0.5f;
     
+    UIEdgeInsets helpButtonPadding = [UIDevice isPad] ? LoginHelpButtonPaddingPad : LoginHelpButtonPadding;
+    UIEdgeInsets backButtonPadding = [UIDevice isPad] ? LoginBackButtonPaddingPad : LoginBackButtonPadding;
+    
     // Layout Help Button
-    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - GeneralWalkthroughStandardOffset;
-    CGFloat helpButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    CGFloat helpButtonX = viewWidth - CGRectGetWidth(self.helpButton.frame) - helpButtonPadding.right;
+    CGFloat helpButtonY = GeneralWalkthroughStatusBarOffset + helpButtonPadding.top;
     self.helpButton.frame = CGRectIntegral(CGRectMake(helpButtonX, helpButtonY, CGRectGetWidth(self.helpButton.frame), GeneralWalkthroughButtonSize.height));
 
     // layout help badge
-    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - GeneralWalkthroughStandardOffset + 5;
-    CGFloat helpBadgeY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
+    CGFloat helpBadgeX = viewWidth - CGRectGetWidth(self.helpBadge.frame) - helpButtonPadding.right + 5;
+    CGFloat helpBadgeY = GeneralWalkthroughStatusBarOffset + CGRectGetHeight(self.helpBadge.frame) - 5;
     self.helpBadge.frame = CGRectIntegral(CGRectMake(helpBadgeX, helpBadgeY, CGRectGetWidth(self.helpBadge.frame), CGRectGetHeight(self.helpBadge.frame)));
 
     // Layout Cancel Button
-    CGFloat cancelButtonX = 0;
-    CGFloat cancelButtonY = 0.5 * GeneralWalkthroughStandardOffset + GeneralWalkthroughStatusBarOffset;
+    CGFloat cancelButtonX = backButtonPadding.left;
+    CGFloat cancelButtonY = GeneralWalkthroughStatusBarOffset + backButtonPadding.top;
     self.cancelButton.frame = CGRectIntegral(CGRectMake(cancelButtonX, cancelButtonY, CGRectGetWidth(self.cancelButton.frame), GeneralWalkthroughButtonSize.height));
 
     // Calculate total height and starting Y origin of controls

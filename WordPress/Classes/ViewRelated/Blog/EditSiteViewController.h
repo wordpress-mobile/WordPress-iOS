@@ -1,5 +1,5 @@
 #import <UIKit/UIKit.h>
-#import "UITableViewTextFieldCell.h"
+#import "WPTextFieldTableViewCell.h"
 #import "SettingsViewControllerDelegate.h"
 
 @class Blog;
