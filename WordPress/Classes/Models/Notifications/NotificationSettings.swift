@@ -4,20 +4,35 @@ import Foundation
 /**
 *  @class           NotificationSettings
 *  @brief           The goal of this class is to encapsulate all of the User's Notification Settings in a generic way.
-*                   Settings are grouped into different Channels, and each channel may contain different streams.
+*                   Settings are grouped into different Channels. A Channel is considered anything that might 
+*                   produce Notifications: a WordPress blog, Third Party Sites or WordPress.com.
+*                   Each channel may support different streams, such as: Email + Push Notifications + Timeline.
 */
 
 public class NotificationSettings
 {
+    /**
+    *  @details Represents the Channel to which the current settings are associated.
+    */
     public let channel  : Channel
+    
+    /**
+    *  @details Contains an array of the available Notification Streams.
+    */
     public let streams  : [Stream]
+    
+    /**
+    *  @details Maps to the associated blog, if any.
+    */
     public let blog     : Blog?
+    
     
     
     /**
     *  @details     Designated Initializer
     *  @param       channel     The related Notifications Channel
     *  @param       streams     An array of all of the involved streams
+    *  @param       blog        The associated blog, if any
     */
     public init(channel: Channel, streams: [Stream], blog: Blog?) {
         self.channel = channel
@@ -37,7 +52,7 @@ public class NotificationSettings
     /**
     *  @details Returns an array of the sorted Preference Keys
     */
-    public func sortedPreferenceKeys() -> [String] {
+    public var sortedPreferenceKeys : [String] {
         switch channel {
         case let .Blog(blogId):
             return blogPreferenceKeys
@@ -77,7 +92,7 @@ public class NotificationSettings
     
     /**
     *  @class       Stream
-    *  @brief       Contains the Notification Settings for a specific communications stream.
+    *  @brief       Contains the Notification Settings collection for a specific communications stream.
     */
     public class Stream {
         public var kind         : Kind
