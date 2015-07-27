@@ -6,9 +6,9 @@ extern const CGFloat WPAlphaZero;
 extern const CGFloat WPColorFull;
 extern const CGFloat WPColorZero;
 
-extern const CGFloat WPAnimationDurationDefault;
-extern const CGFloat WPAnimationDurationFast;
-extern const CGFloat WPAnimationDurationFaster;
+extern const NSTimeInterval WPAnimationDurationDefault;
+extern const NSTimeInterval WPAnimationDurationFast;
+extern const NSTimeInterval WPAnimationDurationFaster;
 
 extern const CGFloat WPTableViewTopMargin;
 extern const CGRect WPTableHeaderPadFrame;

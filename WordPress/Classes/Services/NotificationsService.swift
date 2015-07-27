@@ -19,17 +19,30 @@ public class NotificationsService : LocalCoreDataService
     */
     public override init(managedObjectContext context: NSManagedObjectContext) {
         super.init(managedObjectContext: context)
+        
+        if let restApi = AccountService(managedObjectContext: context).defaultWordPressComAccount()?.restApi {
+            remoteApi = restApi.hasCredentials() ? restApi : nil
+        }
     }
     
 
+    /**
+    *  @details     Convenience Initializer. Useful for Unit Testing
+    *  @param       managedObjectContext    A Reference to the MOC that should be used to interact with the Core Data Stack.
+    *  @param       wordPressComApi         The WordPressComApi that should be used.
+    */
+    public convenience init(managedObjectContext context: NSManagedObjectContext, wordPressComApi: WordPressComApi) {
+        self.init(managedObjectContext: context)
+        self.remoteApi = wordPressComApi
+    }
+    
+    
     /**
     *  @details     This method will retrieve all of the Notification Settings for the default WordPress.com account
     *  @param       success Closure to be called on success.
     *  @param       failure Closure to be called on failure, with the associated error.
     */
     public func getAllSettings(success: ([NotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
-        let deviceId = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
-        
         notificationsServiceRemote?.getAllSettings(deviceId,
             success: {
                 (remote: [RemoteNotificationSettings]) in
@@ -163,11 +176,11 @@ public class NotificationsService : LocalCoreDataService
         
         switch stream.kind {
         case .Device:
-            updatedSettings["device_id"] = NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
+            updatedSettings["device_id"] = deviceId
         default:
             break
         }
-        
+            
         // Second:
         // Prepare the Remote Settings Dictionary
         switch channel {
@@ -191,19 +204,20 @@ public class NotificationsService : LocalCoreDataService
     }
     
     
+    // MARK: - Private Properties
+    private var remoteApi : WordPressComApi?
+    
+    
     // MARK: - Private Computed Properties
-    private var remoteApi : WordPressComApi? {
-        let accountService = AccountService(managedObjectContext: managedObjectContext)
-        let unwrappedRestApi = accountService.defaultWordPressComAccount()?.restApi
-        
-        return unwrappedRestApi?.hasCredentials() == true ? unwrappedRestApi! : nil
-    }
-
     private var notificationsServiceRemote : NotificationsServiceRemote? {
         return NotificationsServiceRemote(api: remoteApi)
     }
 
     private var blogService : BlogService {
         return BlogService(managedObjectContext: managedObjectContext)
+    }
+    
+    private var deviceId : String {
+        return NotificationsManager.registeredPushNotificationsDeviceId() ?? String()
     }
 }
