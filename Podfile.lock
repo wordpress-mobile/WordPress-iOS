@@ -77,7 +77,9 @@ PODS:
   - KIF/XCTest (3.2.3)
   - Lookback (0.9.2)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.5.4)
+  - Mixpanel (2.8.2):
+    - Mixpanel/Mixpanel (= 2.8.2)
+  - Mixpanel/Mixpanel (2.8.2)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -173,7 +175,7 @@ DEPENDENCIES:
   - Lookback (= 0.9.2)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`,
     branch `gifsupport`)
-  - Mixpanel (= 2.5.4)
+  - Mixpanel (= 2.8.2)
   - MRProgress (~> 0.7.0)
   - NSLogger-CocoaLumberjack-connector (from `https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git`,
     tag `1.5`)
@@ -261,7 +263,7 @@ SPEC CHECKSUMS:
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
-  Mixpanel: 61f3f69428ec1f4c32245392471ccc2292c05e32
+  Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   NSLogger: 5ed223a2436df96244e033be750656dacdeec034
   NSLogger-CocoaLumberjack-connector: 5d03d0d59a5f40093f1b1bdd66df6a71647d4a9c
