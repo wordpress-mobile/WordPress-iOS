@@ -994,7 +994,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)followSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationFollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteFollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1010,7 +1010,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unfollowSiteWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnfollowAction];
+    [WPAnalytics track:WPAnalyticsStatNotificationsSiteUnfollowAction];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     ReaderSiteService *service      = [[ReaderSiteService alloc] initWithManagedObjectContext:context];
@@ -1026,7 +1026,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)likeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationLiked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentLiked];
 
     // If the associated comment is *not* approved, let's attempt to auto-approve it, automatically
     if (!block.isCommentApproved) {
@@ -1048,7 +1048,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unlikeCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnliked];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnliked];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1064,7 +1064,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)approveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationApproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentApproved];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1084,7 +1084,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)unapproveCommentWithBlock:(NotificationBlock *)block
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationUnapproved];
+    [WPAnalytics track:WPAnalyticsStatNotificationsCommentUnapproved];
     
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
@@ -1109,7 +1109,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationFlaggedAsSpam];
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
         
         // Hi the destruction callback, if any. Do this before effectively calling the backend call
         if (self.onDestructionCallback) {
@@ -1143,7 +1143,7 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationTrashed];
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
         
         // Hi the destruction callback, if any. Do this before effectively calling the backend call
         if (self.onDestructionCallback) {
