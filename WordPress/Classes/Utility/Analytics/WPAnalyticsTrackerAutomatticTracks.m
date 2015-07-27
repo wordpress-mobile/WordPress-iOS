@@ -336,41 +336,38 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
-        case WPAnalyticsStatNotificationsAccessed:
-            eventName = @"notifications_accessed";
-            break;
-        case WPAnalyticsStatNotificationApproved:
+        case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
-        case WPAnalyticsStatNotificationFlaggedAsSpam:
+        case WPAnalyticsStatNotificationsCommentFlaggedAsSpam:
             eventName = @"notifications_flagged_as_spam";
             break;
-        case WPAnalyticsStatNotificationFollowAction:
+        case WPAnalyticsStatNotificationsSiteFollowAction:
             eventName = @"notifications_follow_action";
             break;
-        case WPAnalyticsStatNotificationLiked:
-            eventName = @"notifications_liked_comment";
+        case WPAnalyticsStatNotificationsCommentLiked:
+            eventName = @"notifications_comment_liked";
             break;
-        case WPAnalyticsStatNotificationRepliedTo:
+        case WPAnalyticsStatNotificationsCommentRepliedTo:
             eventName = @"notifications_replied_to";
             break;
-        case WPAnalyticsStatNotificationTrashed:
+        case WPAnalyticsStatNotificationsCommentTrashed:
             eventName = @"notifications_comment_trashed";
             break;
-        case WPAnalyticsStatNotificationUnapproved:
+        case WPAnalyticsStatNotificationsCommentUnapproved:
             eventName = @"notifications_comment_unapproved";
             break;
-        case WPAnalyticsStatNotificationUnfollowAction:
+        case WPAnalyticsStatNotificationsSiteUnfollowAction:
             eventName = @"notifications_unfollow_action";
             break;
-        case WPAnalyticsStatNotificationUnliked:
-            eventName = @"notifications_unliked_comment";
+        case WPAnalyticsStatNotificationsCommentUnliked:
+            eventName = @"notifications_comment_unliked";
             break;
         case WPAnalyticsStatNotificationsMissingSyncWarning:
             eventName = @"notifications_missing_sync_warning";
             break;
-        case WPAnalyticsStatNotificationsOpenedNotificationDetails:
-            eventName = @"notifications_notification_details_opened";
+        case WPAnalyticsStatNotificationsSettingsUpdated:
+            eventName = @"notification_settings_updated";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
@@ -388,6 +385,21 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"library" };
+            break;
+        case WPAnalyticsStatOpenedNotificationsList:
+            eventName = @"notifications_accessed";
+            break;
+        case WPAnalyticsStatOpenedNotificationDetails:
+            eventName = @"notifications_notification_details_opened";
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingsList:
+            eventName = @"notification_settings_list_opened";
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingStreams:
+            eventName = @"notification_settings_streams_opened";
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingDetails:
+            eventName = @"notification_settings_details_opened";
             break;
         case WPAnalyticsStatOpenedPages:
             eventName = @"site_menu_opened";
