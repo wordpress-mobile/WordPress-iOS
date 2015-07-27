@@ -29,7 +29,8 @@ class NotificationsServiceTests : XCTestCase
         service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
 
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
-                return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
+                return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil &&
+                       request.HTTPMethod == "GET"
             },
             withStubResponse: { (request: NSURLRequest!) -> OHHTTPStubsResponse! in
                 return OHHTTPStubsResponse(file: self.settingsFilename, contentType: self.contentTypeJson, responseTime: OHHTTPStubsDownloadSpeedWifi)
