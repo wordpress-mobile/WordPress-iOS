@@ -13,7 +13,6 @@
     if (self) {
         self.textLabel.text = label;
         [WPStyleGuide configureTableViewCell:self];
-        self.textLabel.textColor = [WPStyleGuide darkGrey];
         self.detailTextLabel.textColor = [WPStyleGuide grey];
         if (editable) {
             self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
