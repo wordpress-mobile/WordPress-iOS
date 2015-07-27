@@ -18,8 +18,13 @@ public class NotificationSettingStreamsViewController : UITableViewController
         setupTableView()
     }
     
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        WPAnalytics.track(.OpenedNotificationSettingStreams)
+    }
     
     
+
     // MARK: - Setup Helpers
     private func setupNotifications() {
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
