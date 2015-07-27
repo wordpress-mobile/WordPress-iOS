@@ -442,9 +442,10 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                                                                                                         isPassword:NO];
             siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
             siteTaglineViewController.onValueChanged = ^(NSString *value) {
-                self.siteTaglineCell.detailTextLabel.text = value;
-                if (![value isEqualToString:self.blog.blogTagline]){
-                    self.blog.blogTagline = value;
+                NSString *normalizedTagline = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+                self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
+                if (![normalizedTagline isEqualToString:self.blog.blogTagline]){
+                    self.blog.blogTagline = normalizedTagline;
                     [self save:nil];
                 }
             };
