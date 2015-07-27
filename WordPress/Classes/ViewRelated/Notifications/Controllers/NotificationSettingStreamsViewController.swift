@@ -14,12 +14,22 @@ public class NotificationSettingStreamsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+        setupNotifications()
         setupTableView()
     }
     
     
     
     // MARK: - Setup Helpers
+    private func setupNotifications() {
+        // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
+        let notificationCenter = NSNotificationCenter.defaultCenter()
+        notificationCenter.addObserver(self,
+            selector:   "reloadTable",
+            name:       UIApplicationDidBecomeActiveNotification,
+            object:     nil)
+    }
+    
     private func setupTableView() {
         // iPad Top header
         if UIDevice.isPad() {
@@ -51,6 +61,10 @@ public class NotificationSettingStreamsViewController : UITableViewController
         tableView.reloadData()
     }
     
+    public func reloadTable() {
+        tableView.reloadData()
+    }
+    
     
     
     // MARK: - UITableView Delegate Methods
@@ -77,16 +91,19 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - UITableView Delegate Methods
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if !isStreamEnabled(indexPath.row) {
+        // iOS <8: Display the 'Enable Push Notifications Alert', when needed
+        // iOS +8: Go ahead and push the details
+        //
+        let stream = settings!.streams[indexPath.row]
+        
+        if isDisabledDeviceStream(stream) && !UIDevice.isOS8() {
             tableView.deselectSelectedRowWithAnimation(true)
-            displayDisabledNotificationsView()
+            displayPushNotificationsAlert()
             return
         }
         
-        let stream                  = settings?.streams[indexPath.row]
-        let detailsViewController   = NotificationSettingDetailsViewController()
-        
-        detailsViewController.setupWithSettings(settings!, stream: stream!)
+        let detailsViewController = NotificationSettingDetailsViewController()
+        detailsViewController.setupWithSettings(settings!, stream: stream)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -94,27 +111,39 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text        = settings!.streams[indexPath.row].kind.description() ?? String()
-        cell.detailTextLabel?.text  = isStreamEnabled(indexPath.row) ? String() : NSLocalizedString("Off", comment: "Disabled")
+        let stream                  = settings!.streams[indexPath.row]
+        
+        cell.textLabel?.text        = stream.kind.description() ?? String()
+        cell.detailTextLabel?.text  = isDisabledDeviceStream(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
         cell.accessoryType          = .DisclosureIndicator
         
         WPStyleGuide.configureTableViewCell(cell)
     }
     
-    private func displayDisabledNotificationsView() {
-// TODO!
+    
+    
+    // MARK: - Disabled Push Notifications Helpers
+    private func isDisabledDeviceStream(stream: NotificationSettings.Stream) -> Bool {
+        return stream.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-    private func isStreamEnabled(streamIndex: Int) -> Bool {
-        switch settings!.streams[streamIndex].kind {
-        case .Device:
-            return NotificationsManager.pushNotificationsEnabledInDeviceSettings()
-        default:
-            return true
-        }
+    private func displayPushNotificationsAlert() {
+        let title   = NSLocalizedString("Push Notifications have been turned off in iOS Settings",
+                                        comment: "Displayed when Push Notifications are disabled (iOS 7)")
+        let message = NSLocalizedString("To enable notifications:\n\n" +
+                                        "1. Open **iOS Settings**\n" +
+                                        "2. Tap **Notifications**\n" +
+                                        "3. Select **WordPress**\n" +
+                                        "4. Turn on **Allow Notifications**",
+                                        comment: "Displayed when Push Notifications are disabled (iOS 7)")
+        let button = NSLocalizedString("Dismiss", comment: "Dismiss the AlertView")
+        
+        let alert = AlertView(title: title, message: message, button: button, completion: nil)
+        alert.show()
     }
     
     
+
     // MARK: - Private Constants
     private let reuseIdentifier = WPTableViewCell.classNameWithoutNamespaces()
     private let emptyRowCount   = 0
