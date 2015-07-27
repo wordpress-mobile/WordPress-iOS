@@ -570,6 +570,15 @@ NSString *const SessionCount = @"session_count";
         case WPAnalyticsStatOpenedMediaLibrary:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Media Library"];
             break;
+        case WPAnalyticsStatOpenedNotificationSettingsList:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed List"];
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingStreams:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Stream"];
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingDetails:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed Details"];
+            break;
         case WPAnalyticsStatOpenedSettings:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Settings"];
             break;
@@ -660,6 +669,9 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatNotificationsMissingSyncWarning:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"notifications_sync_timeout"];
+            break;
+        case WPAnalyticsStatNotificationsSettingsUpdated:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Updated"];
             break;
         case WPAnalyticsStatPublishedPostWithPhoto:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsWithSuperPropertyAndPeoplePropertyIncrementor:@"number_of_posts_published_with_photos"];

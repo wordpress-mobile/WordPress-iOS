@@ -371,6 +371,8 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             break;
         case WPAnalyticsStatOpenedNotificationDetails:
             eventName = @"notifications_notification_details_opened";
+        case WPAnalyticsStatNotificationsSettingsUpdated:
+            eventName = @"notification_settings_updated";
             break;
         case WPAnalyticsStatOnePasswordFailed:
             eventName = @"one_password_failed";
@@ -388,6 +390,15 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"library" };
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingsList:
+            eventName = @"notification_settings_list_opened";
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingStreams:
+            eventName = @"notification_settings_streams_opened";
+            break;
+        case WPAnalyticsStatOpenedNotificationSettingDetails:
+            eventName = @"notification_settings_details_opened";
             break;
         case WPAnalyticsStatOpenedPages:
             eventName = @"site_menu_opened";
