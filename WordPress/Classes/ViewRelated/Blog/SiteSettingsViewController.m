@@ -423,7 +423,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         case SiteSettingsGeneralTitle:{
             SettingsTextViewController *siteTitleViewController = [[SettingsTextViewController alloc] initWithText:self.blog.blogName
                                                                                                  placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
-                                                                   hint:@"" isPassword:NO];
+                                                                                                              hint:@""
+                                                                                                        isPassword:NO];
             siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
             siteTitleViewController.onValueChanged = ^(NSString *value) {
                 self.siteTitleCell.detailTextLabel.text = value;
