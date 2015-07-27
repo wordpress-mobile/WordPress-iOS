@@ -467,7 +467,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
-    [WPAnalytics track:WPAnalyticsStatNotificationsAccessed];
+    [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
     self.trackedViewDisplay = YES;
 }
 
@@ -487,7 +487,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showDetailsForNotification:(Notification *)note
 {
-    [WPAnalytics track:WPAnalyticsStatNotificationsOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
+    [WPAnalytics track:WPAnalyticsStatOpenedNotificationDetails withProperties:@{ @"notification_type" : note.type ?: @"unknown"}];
     
     // Mark as Read, if needed
     if(!note.read.boolValue) {
