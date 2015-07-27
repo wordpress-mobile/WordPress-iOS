@@ -1,14 +1,16 @@
 import Foundation
 import XCTest
+import WordPress
 
 
-class NotificationsServiceRemoteTests : XCTestCase
+class NotificationsServiceTests : XCTestCase
 {
-    typealias StreamKind = RemoteNotificationSettings.Stream.Kind
+    typealias StreamKind    = NotificationSettings.Stream.Kind
     
     // MARK: - Properties
     var contextManager      : TestContextManager!
     var remoteApi           : WordPressComApi!
+    var service             : NotificationsService!
     
     // MARK: - Constants
     let timeout             = 2.0
@@ -24,7 +26,8 @@ class NotificationsServiceRemoteTests : XCTestCase
         
         contextManager      = TestContextManager()
         remoteApi           = WordPressComApi.anonymousApi()
-        
+        service             = NotificationsService(managedObjectContext: contextManager.mainContext, wordPressComApi: remoteApi)
+
         OHHTTPStubs.shouldStubRequestsPassingTest({ (request: NSURLRequest!) -> Bool in
                 return request?.URL?.absoluteString?.rangeOfString(self.settingsEndpoint) != nil
             },
@@ -42,7 +45,7 @@ class NotificationsServiceRemoteTests : XCTestCase
     // MARK: - Unit Tests!
     func testNotificationSettingsCorrectlyParsesThreeSiteEntities() {
         
-        let targetChannel   = RemoteNotificationSettings.Channel.Site(siteId: 1)
+        let targetChannel   = NotificationSettings.Channel.Blog(blogId: 1)
         let targetSettings  = loadNotificationSettings().filter { $0.channel == targetChannel }
         XCTAssert(targetSettings.count == 1, "Error while parsing Site Settings")
         
@@ -54,27 +57,27 @@ class NotificationsServiceRemoteTests : XCTestCase
         let parsedTimelineSettings  = targetSite.streams.filter { $0.kind == StreamKind.Timeline }.first
 
         let expectedTimelineSettings = [
-            "new-comment"   : false,
-            "comment-like"  : true,
-            "post-like"     : false,
+            "new_comment"   : false,
+            "comment_like"  : true,
+            "post_like"     : false,
             "follow"        : true,
             "achievement"   : false,
             "mentions"      : true
         ]
         
         let expectedEmailSettings = [
-            "new-comment"   : true,
-            "comment-like"  : false,
-            "post-like"     : true,
+            "new_comment"   : true,
+            "comment_like"  : false,
+            "post_like"     : true,
             "follow"        : false,
             "achievement"   : true,
             "mentions"      : false
         ]
         
         let expectedDeviceSettings = [
-            "new-comment"   : false,
-            "comment-like"  : true,
-            "post-like"     : false,
+            "new_comment"   : false,
+            "comment_like"  : true,
+            "post_like"     : false,
             "follow"        : true,
             "achievement"   : false,
             "mentions"      : true
@@ -105,18 +108,18 @@ class NotificationsServiceRemoteTests : XCTestCase
         let parsedTimelineSettings  = otherSettings.streams.filter { $0.kind == StreamKind.Timeline }.first
         
         let expectedDeviceSettings = [
-            "comment-like"  : true,
-            "comment-reply" : true
+            "comment_like"  : true,
+            "comment_reply" : true
         ]
         
         let expectedEmailSettings = [
-            "comment-like"  : false,
-            "comment-reply" : false
+            "comment_like"  : false,
+            "comment_reply" : false
         ]
         
         let expectedTimelineSettings = [
-            "comment-like"  : false,
-            "comment-reply" : true
+            "comment_like"  : false,
+            "comment_reply" : true
         ]
 
         for (key, value) in parsedDeviceSettings!.preferences! {
@@ -154,14 +157,11 @@ class NotificationsServiceRemoteTests : XCTestCase
     
     
     // MARK: - Private Helpers
-    private func loadNotificationSettings() -> [RemoteNotificationSettings] {
-        let remote      = NotificationsServiceRemote(api: remoteApi)
-        var settings : [RemoteNotificationSettings]?
-        
+    private func loadNotificationSettings() -> [NotificationSettings] {
+        var settings    : [NotificationSettings]?
         let expectation = expectationWithDescription(nil)
-        
-        remote?.getAllSettings(dummyDeviceId,
-            success: { (theSettings: [RemoteNotificationSettings]) in
+
+        service?.getAllSettings({ (theSettings: [NotificationSettings]) in
                 settings = theSettings
                 expectation.fulfill()
             },

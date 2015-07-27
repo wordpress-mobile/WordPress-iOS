@@ -414,7 +414,7 @@
 		B5EFB1C21B31B98E007608A3 /* NotificationsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */; };
 		B5EFB1C51B31BAA2007608A3 /* NotificationsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */; };
 		B5EFB1C71B31F19D007608A3 /* RemoteNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C61B31F19D007608A3 /* RemoteNotificationSettings.swift */; };
-		B5EFB1C91B333C5A007608A3 /* NotificationsServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C81B333C5A007608A3 /* NotificationsServiceRemoteTests.swift */; };
+		B5EFB1C91B333C5A007608A3 /* NotificationsServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */; };
 		B5EFB1CA1B334DD0007608A3 /* NotificationsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */; };
 		B5EFB1CF1B336266007608A3 /* RemoteNotificationSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EFB1C61B31F19D007608A3 /* RemoteNotificationSettings.swift */; };
 		B5EFB1D11B33630C007608A3 /* notifications-settings.json in Resources */ = {isa = PBXBuildFile; fileRef = B5EFB1D01B33630C007608A3 /* notifications-settings.json */; };
@@ -1311,7 +1311,7 @@
 		B5EFB1C11B31B98E007608A3 /* NotificationsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsService.swift; sourceTree = "<group>"; };
 		B5EFB1C41B31BAA2007608A3 /* NotificationsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsServiceRemote.swift; sourceTree = "<group>"; };
 		B5EFB1C61B31F19D007608A3 /* RemoteNotificationSettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteNotificationSettings.swift; sourceTree = "<group>"; };
-		B5EFB1C81B333C5A007608A3 /* NotificationsServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsServiceRemoteTests.swift; sourceTree = "<group>"; };
+		B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsServiceTests.swift; sourceTree = "<group>"; };
 		B5EFB1D01B33630C007608A3 /* notifications-settings.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-settings.json"; sourceTree = "<group>"; };
 		B5F015C9195DFD7600F6ECF2 /* WordPressActivity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressActivity.h; sourceTree = "<group>"; };
 		B5F015CA195DFD7600F6ECF2 /* WordPressActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressActivity.m; sourceTree = "<group>"; };
@@ -2617,7 +2617,6 @@
 			isa = PBXGroup;
 			children = (
 				59E2AAE91B20E3FB0051DC06 /* Remote Services */,
-				B5EFB1C81B333C5A007608A3 /* NotificationsServiceRemoteTests.swift */,
 				85B125401B028E34008A3D95 /* PushAuthenticationManagerTests.swift */,
 				85F8E19A1B017AA6000859BB /* PushAuthenticationServiceRemoteTests.swift */,
 				85F8E19C1B018698000859BB /* PushAuthenticationServiceTests.swift */,
@@ -2681,20 +2680,6 @@
 			children = (
 				B5EFB1C31B31B99D007608A3 /* Facades */,
 				FFC6ADD91B56F366002F3C84 /* LocalCoreDataService.m */,
-				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
-				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
-				85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */,
-				85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */,
-				85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */,
-				85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */,
-				85D239A51AE5A5FC0074768D /* LoginFacade.h */,
-				85D239A61AE5A5FC0074768D /* LoginFacade.m */,
-				85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */,
-				85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */,
-				85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */,
-				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
-				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
-				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
 				93C1147D18EC5DD500DAC95C /* AccountService.h */,
 				93C1147E18EC5DD500DAC95C /* AccountService.m */,
 				93C1148318EDF6E100DAC95C /* BlogService.h */,
@@ -2877,6 +2862,7 @@
 				9363113E19FA996700B0C739 /* AccountServiceTests.swift */,
 				E150520B16CAC5C400D3DDDC /* BlogJetpackTest.m */,
 				930FD0A519882742000CC81D /* BlogServiceTest.m */,
+				B5EFB1C81B333C5A007608A3 /* NotificationsServiceTests.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -4324,7 +4310,7 @@
 				931D26F619ED7F7000114F17 /* BlogServiceTest.m in Sources */,
 				852416D21A12ED690030700C /* AppRatingUtilityTests.m in Sources */,
 				E15618FD16DB8677006532C4 /* UIKitTestHelper.m in Sources */,
-				B5EFB1C91B333C5A007608A3 /* NotificationsServiceRemoteTests.swift in Sources */,
+				B5EFB1C91B333C5A007608A3 /* NotificationsServiceTests.swift in Sources */,
 				B5AEEC721ACACF2F008BF2A4 /* NotificationTests.m in Sources */,
 				B5EFB1CA1B334DD0007608A3 /* NotificationsServiceRemote.swift in Sources */,
 				9358D15919FFD4E10094BBF5 /* WPImageOptimizerTest.m in Sources */,
@@ -4759,6 +4745,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -4808,6 +4795,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1b814f7b-3344-49dd-bd1f-9e4515d539f5";
 				SKIP_INSTALL = YES;
@@ -4857,6 +4845,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0ba82d47-d419-4e2c-a17e-a75537ca0769";
 				SKIP_INSTALL = YES;
@@ -4906,6 +4895,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "f9ad82b2-9f92-4ed0-990a-ea88898921bb";
 				SKIP_INSTALL = YES;
@@ -4954,6 +4944,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49fd1257-e84d-4b8b-8090-10563f832bc7";
 				SKIP_INSTALL = YES;
@@ -4965,6 +4956,7 @@
 		A2795808198819DE0031C6A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4972,6 +4964,7 @@
 		A2795809198819DE0031C6A3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -4979,6 +4972,7 @@
 		A279580A198819DE0031C6A3 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Internal";
@@ -4986,6 +4980,7 @@
 		A279580B198819DE0031C6A3 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Distribution;
@@ -5060,6 +5055,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5087,6 +5083,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5113,6 +5110,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5123,6 +5121,7 @@
 		FFC3F6F61B0DBF1000EFC359 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -5130,6 +5129,7 @@
 		FFC3F6F71B0DBF1000EFC359 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -5137,6 +5137,7 @@
 		FFC3F6F81B0DBF1000EFC359 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Internal";
@@ -5144,6 +5145,7 @@
 		FFC3F6F91B0DBF1000EFC359 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Distribution;
@@ -5190,6 +5192,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5231,6 +5234,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5272,6 +5276,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5313,6 +5318,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
