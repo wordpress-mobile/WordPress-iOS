@@ -82,7 +82,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - Private Helpers
     private func rowsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Row] {
         var rows = [Row]()
-        for key in settings.sortedPreferenceKeys() {
+        for key in settings.sortedPreferenceKeys {
             let name    = settings.localizedDescription(key)
             let value   = stream.preferences?[key] ?? true
             
