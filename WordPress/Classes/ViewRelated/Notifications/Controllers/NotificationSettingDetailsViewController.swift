@@ -66,7 +66,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings?.sortedPreferenceKeys().count ?? emptyRowCount
+        return settings?.sortedPreferenceKeys.count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -82,7 +82,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - UITableView Helpers
     private func configureCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
         let preferences = stream?.preferences
-        let key         = settings?.sortedPreferenceKeys()[indexPath.row]
+        let key         = settings?.sortedPreferenceKeys[indexPath.row]
         if preferences == nil || key == nil {
             return
         }
