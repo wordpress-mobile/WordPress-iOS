@@ -10,7 +10,6 @@ static CGFloat const VerticalMargin = 10.0f;
 @property (nonatomic, strong) WPTableViewCell *textFieldCell;
 @property (nonatomic, strong) UITextField *textField;
 @property (nonatomic, strong) UIView *hintView;
-
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, assign) BOOL isPassword;
 @property (nonatomic, strong) NSString *placeholder;
@@ -20,7 +19,10 @@ static CGFloat const VerticalMargin = 10.0f;
 
 @implementation SettingsTextViewController
 
-- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint isPassword:(BOOL)isPassword
+- (instancetype)initWithText:(NSString *)text
+                 placeholder:(NSString *)placeholder
+                        hint:(NSString *)hint
+                  isPassword:(BOOL)isPassword
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
