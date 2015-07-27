@@ -4727,6 +4727,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -4776,6 +4777,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "1b814f7b-3344-49dd-bd1f-9e4515d539f5";
 				SKIP_INSTALL = YES;
@@ -4825,6 +4827,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0ba82d47-d419-4e2c-a17e-a75537ca0769";
 				SKIP_INSTALL = YES;
@@ -4874,6 +4877,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "f9ad82b2-9f92-4ed0-990a-ea88898921bb";
 				SKIP_INSTALL = YES;
@@ -4922,6 +4926,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "49fd1257-e84d-4b8b-8090-10563f832bc7";
 				SKIP_INSTALL = YES;
@@ -4933,6 +4938,7 @@
 		A2795808198819DE0031C6A3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -4940,6 +4946,7 @@
 		A2795809198819DE0031C6A3 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -4947,6 +4954,7 @@
 		A279580A198819DE0031C6A3 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Internal";
@@ -4954,6 +4962,7 @@
 		A279580B198819DE0031C6A3 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = OClint;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Distribution;
@@ -5028,6 +5037,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5055,6 +5065,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5081,6 +5092,7 @@
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
 				INFOPLIST_FILE = "WordPressTest/WordPressTest-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_MODULE_NAME = WordPressTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "WordPressTest/WordPressTest-Bridging-Header.h";
@@ -5091,6 +5103,7 @@
 		FFC3F6F61B0DBF1000EFC359 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -5098,6 +5111,7 @@
 		FFC3F6F71B0DBF1000EFC359 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -5105,6 +5119,7 @@
 		FFC3F6F81B0DBF1000EFC359 /* Release-Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Release-Internal";
@@ -5112,6 +5127,7 @@
 		FFC3F6F91B0DBF1000EFC359 /* Distribution */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				PRODUCT_MODULE_NAME = UpdatePlistPreprocessor;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Distribution;
@@ -5158,6 +5174,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5199,6 +5216,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5240,6 +5258,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
@@ -5281,6 +5300,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_MODULE_NAME = WordPressUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WordPress.app/WordPress";
 			};
