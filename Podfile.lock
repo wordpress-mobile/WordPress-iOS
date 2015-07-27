@@ -145,7 +145,7 @@ PODS:
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.35)
-  - WordPressCom-Stats-iOS (0.4.2):
+  - WordPressCom-Stats-iOS (0.4.3):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
@@ -196,7 +196,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.4.0)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.35)
-  - WordPressCom-Stats-iOS (= 0.4.2)
+  - WordPressCom-Stats-iOS (= 0.4.3)
   - WPMediaPicker (~> 0.5.0)
   - wpxmlrpc (~> 0.8)
 
@@ -282,7 +282,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 19e63665b3c583e889620147097deb7d1932c706
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: a6c71241b39f1e366a6473ce38f2786481f8acd8
-  WordPressCom-Stats-iOS: 53a6d3573f5e443458a6dca4ddb9bb09fd423920
+  WordPressCom-Stats-iOS: 2810300d77c2d37594d0e4a79145094c517d6c73
   WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
