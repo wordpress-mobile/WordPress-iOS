@@ -336,9 +336,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
-        case WPAnalyticsStatOpenedNotificationsList:
-            eventName = @"notifications_accessed";
-            break;
         case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
@@ -369,8 +366,6 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatNotificationsMissingSyncWarning:
             eventName = @"notifications_missing_sync_warning";
             break;
-        case WPAnalyticsStatOpenedNotificationDetails:
-            eventName = @"notifications_notification_details_opened";
         case WPAnalyticsStatNotificationsSettingsUpdated:
             eventName = @"notification_settings_updated";
             break;
@@ -390,6 +385,12 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatOpenedMediaLibrary:
             eventName = @"site_menu_opened";
             eventProperties = @{ TracksEventPropertyMenuItemKey : @"library" };
+            break;
+        case WPAnalyticsStatOpenedNotificationsList:
+            eventName = @"notifications_accessed";
+            break;
+        case WPAnalyticsStatOpenedNotificationDetails:
+            eventName = @"notifications_notification_details_opened";
             break;
         case WPAnalyticsStatOpenedNotificationSettingsList:
             eventName = @"notification_settings_list_opened";
