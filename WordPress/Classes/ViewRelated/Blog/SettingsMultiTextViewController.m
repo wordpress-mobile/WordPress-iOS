@@ -9,9 +9,7 @@ static CGFloat const VerticalMargin = 10.0f;
 
 @property (nonatomic, strong) UITableViewCell *textViewCell;
 @property (nonatomic, strong) UITextView *textView;
-
 @property (nonatomic, strong) UIView *hintView;
-
 @property (nonatomic, strong) NSString *hint;
 @property (nonatomic, assign) BOOL isPassword;
 @property (nonatomic, strong) NSString *placeholder;
@@ -21,7 +19,10 @@ static CGFloat const VerticalMargin = 10.0f;
 
 @implementation SettingsMultiTextViewController
 
-- (instancetype)initWithText:(NSString *)text placeholder:(NSString *)placeholder hint:(NSString *)hint isPassword:(BOOL)isPassword
+- (instancetype)initWithText:(NSString *)text
+                 placeholder:(NSString *)placeholder
+                        hint:(NSString *)hint
+                  isPassword:(BOOL)isPassword
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
