@@ -47,6 +47,7 @@ static CGFloat const VerticalMargin = 10.0f;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.tableView.allowsSelection = NO;
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -62,7 +63,7 @@ static CGFloat const VerticalMargin = 10.0f;
         return _textViewCell;
     }
     _textViewCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-    
+    _textViewCell.selectionStyle = UITableViewCellSelectionStyleNone;
     self.textView = [[UITextView alloc] initWithFrame:CGRectInset(self.textViewCell.bounds, HorizontalMargin, 0)];
     self.textView.text = self.text;
     self.textView.returnKeyType = UIReturnKeyDefault;
