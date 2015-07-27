@@ -37,6 +37,9 @@
 #import "WPWebViewController.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
+#import "WPContentViewProvider.h"
+#import "ReaderPostContentProvider.h"
+
 #import "ABXAppStore.h"
 #import "AppRatingUtility.h"
 
