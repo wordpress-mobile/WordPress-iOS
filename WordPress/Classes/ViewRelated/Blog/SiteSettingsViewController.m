@@ -425,7 +425,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                                                                                                  placeholder:NSLocalizedString(@"A title for the site", @"Placeholder text for the title of a site")
                                                                    hint:@"" isPassword:NO];
             siteTitleViewController.title = NSLocalizedString(@"Site Title", @"Title for screen that show site title editor");
-            siteTitleViewController.onValueChanged = ^(id value) {
+            siteTitleViewController.onValueChanged = ^(NSString *value) {
                 self.siteTitleCell.detailTextLabel.text = value;
                 if (![value isEqualToString:self.blog.blogName]){
                     self.blog.blogName = value;
@@ -440,7 +440,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                                                                                                               hint:NSLocalizedString(@"In a few words, explain what this site is about.",@"Explain what is the purpose of the tagline")
                                                                                                         isPassword:NO];
             siteTaglineViewController.title = NSLocalizedString(@"Tagline", @"Title for screen that show tagline editor");
-            siteTaglineViewController.onValueChanged = ^(id value) {
+            siteTaglineViewController.onValueChanged = ^(NSString *value) {
                 self.siteTaglineCell.detailTextLabel.text = value;
                 if (![value isEqualToString:self.blog.blogTagline]){
                     self.blog.blogTagline = value;
