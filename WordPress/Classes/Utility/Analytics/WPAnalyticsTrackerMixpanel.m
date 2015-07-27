@@ -533,16 +533,6 @@ NSString *const SessionCount = @"session_count";
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Editor - Toggled New Editor Off"];
             [instructions setPeopleProperty:@"enabled_new_editor" toValue:@(NO)];
             break;
-        case WPAnalyticsStatOpenedNotificationsList:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_notifications"];
-            break;
-        case WPAnalyticsStatOpenedNotificationDetails:
-            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Opened Notification Details"];
-            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_notification_details"];
-            [instructions setCurrentDateForPeopleProperty:@"last_time_opened_notification_details"];
-            break;
         case WPAnalyticsStatOnePasswordLogin:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"1Password - SignIn Filled"];
             break;
@@ -569,6 +559,16 @@ NSString *const SessionCount = @"session_count";
             break;
         case WPAnalyticsStatOpenedMediaLibrary:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Site Menu - Opened Media Library"];
+            break;
+        case WPAnalyticsStatOpenedNotificationsList:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Accessed"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_accessed_notifications"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_accessed_notifications"];
+            break;
+        case WPAnalyticsStatOpenedNotificationDetails:
+            instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notifications - Opened Notification Details"];
+            [instructions setSuperPropertyAndPeoplePropertyToIncrement:@"number_of_times_opened_notification_details"];
+            [instructions setCurrentDateForPeopleProperty:@"last_time_opened_notification_details"];
             break;
         case WPAnalyticsStatOpenedNotificationSettingsList:
             instructions = [WPAnalyticsTrackerMixpanelInstructionsForStat mixpanelInstructionsForEventName:@"Notification Settings - Accessed List"];
