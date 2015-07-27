@@ -139,6 +139,8 @@
 		5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */ = {isa = PBXBuildFile; fileRef = 5D51ADAE19A832AF00539C0B /* WordPress-20-21.xcmappingmodel */; };
 		5D577D33189127BE00B964C3 /* PostGeolocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */; };
 		5D577D361891360900B964C3 /* PostGeolocationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D577D351891360900B964C3 /* PostGeolocationView.m */; };
+		5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */; };
+		5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */; };
 		5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */; };
 		5D62BAD718AA88210044E5F7 /* PageSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D62BAD618AA88210044E5F7 /* PageSettingsViewController.m */; };
 		5D69DBC4165428CA00A2D1F7 /* n.caf in Resources */ = {isa = PBXBuildFile; fileRef = 5D69DBC3165428CA00A2D1F7 /* n.caf */; };
@@ -824,6 +826,8 @@
 		5D577D32189127BE00B964C3 /* PostGeolocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationViewController.m; sourceTree = "<group>"; };
 		5D577D341891360900B964C3 /* PostGeolocationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostGeolocationView.h; sourceTree = "<group>"; };
 		5D577D351891360900B964C3 /* PostGeolocationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostGeolocationView.m; sourceTree = "<group>"; };
+		5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardCell.swift; sourceTree = "<group>"; };
+		5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReaderPostCardCell.xib; sourceTree = "<group>"; };
 		5D5D0025187DA9D30027CEF6 /* PostCategoriesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = PostCategoriesViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		5D5D0026187DA9D30027CEF6 /* PostCategoriesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = PostCategoriesViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		5D62BAD518AA88210044E5F7 /* PageSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PageSettingsViewController.h; sourceTree = "<group>"; };
@@ -2112,6 +2116,15 @@
 			path = Geolocation;
 			sourceTree = "<group>";
 		};
+		5D5A6E901B613C1800DAF819 /* Cards */ = {
+			isa = PBXGroup;
+			children = (
+				5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */,
+				5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */,
+			);
+			name = Cards;
+			sourceTree = "<group>";
+		};
 		5D6651461637324000EBDA7D /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -3098,6 +3111,7 @@
 				5D7DEA2819D488DD0032EE77 /* WPStyleGuide+Comments.swift */,
 				5D1181E61B4D6DEB003F3084 /* WPStyleGuide+Reader.swift */,
 				5D08B8FD19647C0800D5B381 /* Controllers */,
+				5D5A6E901B613C1800DAF819 /* Cards */,
 				5D08B8FC19647C0300D5B381 /* Views */,
 			);
 			path = Reader;
@@ -3578,6 +3592,7 @@
 				5D028F061B3468A000474113 /* OriginalAttributionView.xib in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				931DF4D618D09A2F00540BDD /* InfoPlist.strings in Resources */,
+				5D5A6E941B613CA400DAF819 /* ReaderPostCardCell.xib in Resources */,
 				B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */,
 				5DFA7EC81AF814E40072023B /* PageListTableViewCell.xib in Resources */,
 				B5C66B781ACF073900F68370 /* NoteBlockImageTableViewCell.xib in Resources */,
@@ -3914,6 +3929,7 @@
 				313AE4A019E3F20400AAFABE /* CommentViewController.m in Sources */,
 				93A379DB19FE6D3000415023 /* DDLogSwift.m in Sources */,
 				A0E293F10E21027E00C6919C /* WPAddPostCategoryViewController.m in Sources */,
+				5D5A6E931B613CA400DAF819 /* ReaderPostCardCell.swift in Sources */,
 				5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */,
 				5D028F091B3468BF00474113 /* OriginalAttributionView.m in Sources */,
 				B5AB733D19901F85005F5044 /* WPNoResultsView+AnimatedBox.m in Sources */,
