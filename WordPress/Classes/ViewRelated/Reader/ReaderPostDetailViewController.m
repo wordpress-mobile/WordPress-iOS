@@ -1,24 +1,32 @@
 #import "ReaderPostDetailViewController.h"
 
+#import "BlogService.h"
 #import "ContextManager.h"
 #import "CustomHighlightButton.h"
+#import "ReachabilityUtils.h"
 #import "ReaderBrowseSiteViewController.h"
 #import "ReaderCommentsViewController.h"
 #import "ReaderPost.h"
 #import "ReaderPostRichContentView.h"
 #import "ReaderPostRichUnattributedContentView.h"
 #import "ReaderPostService.h"
+#import "SourcePostAttribution.h"
 #import "WPActivityDefaults.h"
 #import "WPImageViewController.h"
 #import "WPNoResultsView+AnimatedBox.h"
 #import "WPTableImageSource.h"
 #import "WPWebViewController.h"
+#import "WordPressAppDelegate.h"
 #import "WordPress-Swift.h"
-#import "BlogService.h"
-#import "SourcePostAttribution.h"
+#import "WPUserAgent.h"
 
 static CGFloat const VerticalMargin = 40;
 static NSInteger const ReaderPostDetailImageQuality = 65;
+NSString * const ReaderDetailTypeKey = @"post_detail_type";
+NSString * const ReaderDetailTypeNormal = @"normal";
+NSString * const ReaderDetailTypePreviewSite = @"preview_site";
+NSString * const ReaderDetailOfflineKey = @"offline_view";
+NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 @interface ReaderPostDetailViewController ()<ReaderPostContentViewDelegate,
                                             WPRichTextViewDelegate,
@@ -31,6 +39,8 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 @property (nonatomic, strong) UIBarButtonItem *shareButton;
 @property (nonatomic, strong) WPTableImageSource *featuredImageSource;
 @property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic) BOOL didBumpStats;
+@property (nonatomic) BOOL didBumpPageViews;
 
 @end
 
@@ -72,6 +82,7 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
 {
     [super viewWillAppear:animated];
 
+    [self bumpStats];
     [self refresh];
 }
 
@@ -307,11 +318,14 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
     NSParameterAssert(self.postView);
 
     self.postView.hidden = !self.isLoaded;
-    
+
     if (!self.isLoaded) {
         return;
     }
-    
+
+    // We have a post. Bump its page views.
+    [self bumpPageViewsForPost:self.post.postID site:self.post.siteID siteURL:self.post.blogURL];
+
     [self.postView configurePost:self.post];
     
     CGSize imageSize = CGSizeMake(WPContentViewAuthorAvatarSize, WPContentViewAuthorAvatarSize);
@@ -360,6 +374,58 @@ static NSInteger const ReaderPostDetailImageQuality = 65;
                                          indexPath:[NSIndexPath indexPathForRow:0 inSection:0]
                                          isPrivate:self.post.isPrivate];
     }
+}
+
+
+#pragma mark - Analytics
+
+- (void)bumpStats
+{
+    if (self.didBumpStats) {
+        return;
+    }
+    self.didBumpStats = YES;
+    NSString *isOfflineView = [ReachabilityUtils isInternetReachable] ? @"no" : @"yes";
+    NSString *detailType = (self.readerViewStyle == ReaderViewStyleNormal) ? ReaderDetailTypeNormal : ReaderDetailTypePreviewSite;
+    NSDictionary *properties = @{
+                                 ReaderDetailTypeKey:detailType,
+                                 ReaderDetailOfflineKey:isOfflineView
+                                 };
+    [WPAnalytics track:WPAnalyticsStatReaderOpenedArticle withProperties:properties];
+}
+
+- (void)bumpPageViewsForPost:(NSNumber *)postID site:(NSNumber *)siteID siteURL:(NSString *)siteURL
+{
+    if (self.didBumpPageViews) {
+        return;
+    }
+    self.didBumpPageViews = YES;
+
+    NSURL *site = [NSURL URLWithString:siteURL];
+    if (![site host]) {
+        return;
+    }
+    NSString *pixel = @"https://pixel.wp.com/g.gif";
+    NSArray *params = @[
+                        @"v=wpcom",
+                        @"reader=1",
+                        [NSString stringWithFormat:@"ref=%@", ReaderPixelStatReferrer],
+                        [NSString stringWithFormat:@"host=%@",[site host]],
+                        [NSString stringWithFormat:@"blog=%@",siteID],
+                        [NSString stringWithFormat:@"post=%@",postID],
+                        [NSString stringWithFormat:@"t=%d", arc4random()]
+                        ];
+
+    NSString *path = [NSString stringWithFormat:@"%@?%@", pixel, [params componentsJoinedByString:@"&"]];
+    NSString *userAgent = [[WordPressAppDelegate sharedInstance].userAgent currentUserAgent];
+
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:path]];
+    [request setValue:userAgent forHTTPHeaderField:@"User-Agent"];
+    [request setValue:ReaderPixelStatReferrer forHTTPHeaderField:@"Referer"];
+
+    NSURLSession *session = [NSURLSession sharedSession];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+    [task resume];
 }
 
 
