@@ -346,7 +346,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"notifications_follow_action";
             break;
         case WPAnalyticsStatNotificationsCommentLiked:
-            eventName = @"notifications_liked_comment";
+            eventName = @"notifications_comment_liked";
             break;
         case WPAnalyticsStatNotificationsCommentRepliedTo:
             eventName = @"notifications_replied_to";
@@ -361,7 +361,7 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
             eventName = @"notifications_unfollow_action";
             break;
         case WPAnalyticsStatNotificationsCommentUnliked:
-            eventName = @"notifications_unliked_comment";
+            eventName = @"notifications_comment_unliked";
             break;
         case WPAnalyticsStatNotificationsMissingSyncWarning:
             eventName = @"notifications_missing_sync_warning";
