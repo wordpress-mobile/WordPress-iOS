@@ -336,40 +336,40 @@ NSString *const TracksUserDefaultsAnonymousUserIDKey = @"TracksAnonymousUserID";
         case WPAnalyticsStatLowMemoryWarning:
             eventName = @"application_low_memory_warning";
             break;
-        case WPAnalyticsStatNotificationsAccessed:
+        case WPAnalyticsStatOpenedNotificationsList:
             eventName = @"notifications_accessed";
             break;
-        case WPAnalyticsStatNotificationApproved:
+        case WPAnalyticsStatNotificationsCommentApproved:
             eventName = @"notifications_approved";
             break;
-        case WPAnalyticsStatNotificationFlaggedAsSpam:
+        case WPAnalyticsStatNotificationsCommentFlaggedAsSpam:
             eventName = @"notifications_flagged_as_spam";
             break;
-        case WPAnalyticsStatNotificationFollowAction:
+        case WPAnalyticsStatNotificationsSiteFollowAction:
             eventName = @"notifications_follow_action";
             break;
-        case WPAnalyticsStatNotificationLiked:
+        case WPAnalyticsStatNotificationsCommentLiked:
             eventName = @"notifications_liked_comment";
             break;
-        case WPAnalyticsStatNotificationRepliedTo:
+        case WPAnalyticsStatNotificationsCommentRepliedTo:
             eventName = @"notifications_replied_to";
             break;
-        case WPAnalyticsStatNotificationTrashed:
+        case WPAnalyticsStatNotificationsCommentTrashed:
             eventName = @"notifications_comment_trashed";
             break;
-        case WPAnalyticsStatNotificationUnapproved:
+        case WPAnalyticsStatNotificationsCommentUnapproved:
             eventName = @"notifications_comment_unapproved";
             break;
-        case WPAnalyticsStatNotificationUnfollowAction:
+        case WPAnalyticsStatNotificationsSiteUnfollowAction:
             eventName = @"notifications_unfollow_action";
             break;
-        case WPAnalyticsStatNotificationUnliked:
+        case WPAnalyticsStatNotificationsCommentUnliked:
             eventName = @"notifications_unliked_comment";
             break;
         case WPAnalyticsStatNotificationsMissingSyncWarning:
             eventName = @"notifications_missing_sync_warning";
             break;
-        case WPAnalyticsStatNotificationsOpenedNotificationDetails:
+        case WPAnalyticsStatOpenedNotificationDetails:
             eventName = @"notifications_notification_details_opened";
             break;
         case WPAnalyticsStatOnePasswordFailed:
