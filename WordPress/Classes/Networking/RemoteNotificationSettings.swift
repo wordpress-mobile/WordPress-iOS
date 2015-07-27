@@ -16,8 +16,16 @@ import Foundation
 
 public class RemoteNotificationSettings
 {
+    /**
+    *  @details Represents the Channel to which the current settings are associated.
+    */
     public let channel : Channel
+    
+    /**
+    *  @details Contains an array of the available Notification Streams.
+    */
     public let streams : [Stream]
+    
     
     
     /**
