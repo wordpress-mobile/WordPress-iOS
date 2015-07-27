@@ -26,7 +26,7 @@ public class NotificationsServiceRemote
     /**
     *  @details     Retrieves all of the Notification Settings
     *  @param       deviceId    The ID of the current device. Can be nil.
-    *  @param       success     A closure to be called on success, which will receive the parsed settings entity
+    *  @param       success     A closure to be called on success, which will receive the parsed settings entities.
     *  @param       failure     Optional closure to be called on failure. Will receive the error that was encountered.
     */
     public func getAllSettings(deviceId: String, success: ([RemoteNotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
