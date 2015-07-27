@@ -709,13 +709,6 @@ NSString * const ReaderDetailTypePreviewSite = @"preview-site";
         return;
     }
 
-    // Weird we should ever have a topic without an account but check for it just in case
-    NSManagedObjectContext *context = [self managedObjectContext];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
-    if ([service numberOfAccounts] == 0) {
-        return;
-    }
-
     // The synchelper only supports a single sync operation at a time. Since contextForSync is assigned
     // in the delegate callbacks, and cleared when the sync operation is cleared up (or after scrolling
     // finishes) there *should't* be an existing instance of the context when the synchelper's delegate
