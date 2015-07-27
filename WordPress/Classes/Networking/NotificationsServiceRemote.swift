@@ -33,7 +33,7 @@ public class NotificationsServiceRemote
         let unwrappedDeviceId = deviceId ?? String()
         let path = String(format: "me/notifications/settings/?device_id=%@", unwrappedDeviceId)
 
-        remoteApi.POST(path,
+        remoteApi.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
