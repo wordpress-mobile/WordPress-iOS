@@ -215,6 +215,12 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Field parsing
 
+/**
+ *  @brief      Loads the cost structure from a dictionary into the specified remote theme object.
+ *
+ *  @param      theme       The theme to load the info into.  Cannot be nil.
+ *  @param      dictionary  The dictionary to load the info from.  Cannot be nil.
+ */
 - (void)loadCostForTheme:(RemoteTheme *)theme
           fromDictionary:(NSDictionary *)dictionary
 {
@@ -233,6 +239,13 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     theme.costNumber = costDictionary[ThemeCostNumberKey];
 }
 
+/**
+ *  @brief      Loads a theme's launch date from a dictionary into the specified remote theme
+ *              object.
+ *
+ *  @param      theme       The theme to load the info into.  Cannot be nil.
+ *  @param      dictionary  The dictionary to load the info from.  Cannot be nil.
+ */
 - (void)loadLaunchDateForTheme:(RemoteTheme *)theme
                 fromDictionary:(NSDictionary *)dictionary
 {
