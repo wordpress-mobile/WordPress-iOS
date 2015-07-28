@@ -23,6 +23,7 @@ import Foundation
             if deleted != oldValue {
                 refreshSubviewVisibility()
                 refreshBackgrounds()
+                refreshUndoOverlay()
             }
         }
     }
@@ -61,6 +62,7 @@ import Foundation
             return noticonLabel.text
         }
     }
+    public var onUndelete: (Void -> Void)?
     
     
     
@@ -155,15 +157,9 @@ import Foundation
             noticonContainerView.backgroundColor    = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background
-        var newBackgroundColor = Style.noteBackgroundUnreadColor
-        if deleted {
-            newBackgroundColor = Style.noteBackgroundDeleted
-        } else if read {
-            newBackgroundColor = Style.noteBackgroundReadColor
-        }
-        
-        // Assign only if needed, for performance
+        // Cell Background: Assign only if needed, for performance
+        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+
         if backgroundColor != newBackgroundColor {
             backgroundColor = newBackgroundColor
         }
@@ -179,6 +175,27 @@ import Foundation
         // When the snippet is present, let's clip the number of lines in the subject
         let showsSnippet = attributedSnippet != nil
         subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
+    }
+    
+    private func refreshUndoOverlay() {
+        // Remove
+        if deleted == false {
+            undoOverlayView?.removeFromSuperview()
+            return
+        }
+        
+        // Load
+        if undoOverlayView == nil {
+            let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
+            NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil)
+            undoOverlayView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        }
+
+        // Attach
+        if undoOverlayView.superview == nil {
+            contentView.addSubview(undoOverlayView)
+            contentView.pinSubviewToAllEdges(undoOverlayView)
+        }
     }
 
     
@@ -215,6 +232,15 @@ import Foundation
         }
         
         return max(cellHeight, Settings.minimumCellHeight)
+    }
+    
+    
+    
+    // MARK: - Action Handlers
+    @IBAction public func undeleteWasPressed(sender: AnyObject) {
+        if let handler = onUndelete {
+            handler()
+        }
     }
     
     
@@ -257,4 +283,7 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
+    
+    // MARK: - Undo Overlay Optional
+    @IBOutlet private var undoOverlayView:              NoteUndoOverlayView!
 }
