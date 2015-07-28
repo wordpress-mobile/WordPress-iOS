@@ -11,17 +11,6 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
 
 @interface ThemeService : LocalCoreDataService
 
-#pragma mark - Local queries
-
-/**
- *  @brief      Obtains the theme with the specified ID if it exists.
- *
- *  @param      themeId     The ID of the theme to retrieve.  Cannot be nil.
- *
- *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
- */
-- (Theme *)findThemeWithId:(NSString *)themeId;
-
 #pragma mark - Themes availability
 
 /**
@@ -44,7 +33,18 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
  */
 - (BOOL)blogSupportsThemeServices:(Blog *)blog;
 
-#pragma mark - Remote queries: getting theme info
+#pragma mark - Local queries: finding themes
+
+/**
+ *  @brief      Obtains the theme with the specified ID if it exists.
+ *
+ *  @param      themeId     The ID of the theme to retrieve.  Cannot be nil.
+ *
+ *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
+ */
+- (Theme *)findThemeWithId:(NSString *)themeId;
+
+#pragma mark - Remote queries: Getting theme info
 
 /**
  *  @brief      Gets the active theme for a specific blog.
@@ -121,7 +121,7 @@ typedef void(^ThemeServiceFailureBlock)(NSError *error);
                           success:(ThemeServiceThemesRequestSuccessBlock)success
                           failure:(ThemeServiceFailureBlock)failure;
 
-#pragma mark - Remote queries: activating a theme
+#pragma mark - Remote queries: Activating themes
 
 /**
  *  @brief      Activates the specified theme for the specified blog.
