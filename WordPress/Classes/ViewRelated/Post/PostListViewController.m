@@ -10,7 +10,6 @@
 #import "WPLegacyEditPostViewController.h"
 #import "WPPostViewController.h"
 #import "WPTableImageSource.h"
-#import "WPToast.h"
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
 static NSString * const PostCardTextCellIdentifier = @"PostCardTextCellIdentifier";
