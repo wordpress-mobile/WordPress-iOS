@@ -18,6 +18,14 @@ import Foundation
             }
         }
     }
+    public var deleted: Bool = false {
+        didSet {
+            if deleted != oldValue {
+                refreshSubviewVisibility()
+                refreshBackgrounds()
+            }
+        }
+    }
     public var showsBottomSeparator: Bool {
         set {
             separatorsView.bottomVisible = newValue
@@ -81,7 +89,8 @@ import Foundation
     }
  
     
-    // MARK: - View Methods
+    
+    // MARK: - UITableViewCell Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -125,6 +134,7 @@ import Foundation
     }
     
     
+    
     // MARK: - Private Methods
     private func refreshLabelPreferredMaxLayoutWidth() {
         let maxWidthLabel                    = frame.width - Settings.textInsets.right - subjectLabel.frame.minX
@@ -145,10 +155,23 @@ import Foundation
             noticonContainerView.backgroundColor    = Style.noteBackgroundUnreadColor
         }
 
-        // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor  = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        // Cell Background
+        var newBackgroundColor = Style.noteBackgroundUnreadColor
+        if deleted {
+            newBackgroundColor = Style.noteBackgroundDeleted
+        } else if read {
+            newBackgroundColor = Style.noteBackgroundReadColor
+        }
+        
+        // Assign only if needed, for performance
         if backgroundColor != newBackgroundColor {
             backgroundColor = newBackgroundColor
+        }
+    }
+    
+    private func refreshSubviewVisibility() {
+        for subview in contentView.subviews as! [UIView] {
+            subview.hidden = deleted
         }
     }
     
@@ -158,6 +181,9 @@ import Foundation
         subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
     }
 
+    
+    
+    // MARK: - Public Static Helpers
     public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
         
         // Limit the width (iPad Devices)
@@ -190,6 +216,7 @@ import Foundation
         
         return max(cellHeight, Settings.minimumCellHeight)
     }
+    
     
     
     // MARK: - Private Alias
