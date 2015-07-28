@@ -625,8 +625,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-        detailsViewController.onDestructionCallback = ^{
-            [weakSelf disableInteractionsForNotification:note];
+        detailsViewController.onDeletionRequestCallback = ^(NotificationDetailsDeletionActionBlock onUndoTimeout){
+            [weakSelf showUndeleteForNote:note onTimeout:onUndoTimeout];
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
