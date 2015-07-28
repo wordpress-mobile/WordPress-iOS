@@ -161,6 +161,13 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Parsing the dictionary replies
 
+/**
+ *  @brief      Creates a remote theme object from the specified dictionary.
+ *
+ *  @param      dictionary      The dictionary containing the theme information.  Cannot be nil.
+ *
+ *  @returns    A remote theme object.
+ */
 - (RemoteTheme *)themeFromDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
@@ -195,6 +202,14 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     return theme;
 }
 
+/**
+ *  @brief      Creates remote theme objects from the specified array of dictionaries.
+ *
+ *  @param      dictionaries    The array of dictionaries containing the themes information.  Cannot
+ *                              be nil.
+ *
+ *  @returns    An array of remote theme objects.
+ */
 - (NSArray *)themesFromDictionaries:(NSArray *)dictionaries
 {
     NSParameterAssert([dictionaries isKindOfClass:[NSArray class]]);
