@@ -15,6 +15,7 @@
 @dynamic defaultBlog;
 @dynamic uuid;
 @dynamic email;
+@dynamic displayName;
 @dynamic userID;
 @dynamic avatarURL;
 @synthesize restApi = _restApi;

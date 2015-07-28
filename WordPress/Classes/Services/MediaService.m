@@ -167,9 +167,14 @@ NSInteger const MediaMaxImageSizeDimension = 3000;
                 failure:(void (^)(NSError *error))failure
 {
     id<MediaServiceRemote> remote = [self remoteForBlog:blog];
+    NSManagedObjectID *blogID = blog.objectID;
     
     [remote getMediaWithID:mediaID forBlog:blog success:^(RemoteMedia *remoteMedia) {
        [self.managedObjectContext performBlock:^{
+           Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogID error:nil];
+           if (!blog) {
+               return;
+           }
            Media *media = [self findMediaWithID:remoteMedia.mediaID inBlog:blog];
            if (!media) {
                media = [self newMediaForBlog:blog];

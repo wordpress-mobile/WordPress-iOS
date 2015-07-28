@@ -2,6 +2,7 @@
 //
 // + (No Title)
 // | View Site
+// | WP Admin
 // | Stats
 //
 // + Publish
@@ -11,15 +12,9 @@
 //
 // + Configuration
 // | Edit Site
-//
-// + Admin
-// | View Admin
-//
-// + Remove Site (only for self hosted)
-// | Remove Site
 
 #import "BlogDetailsViewController.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "CommentsViewController.h"
 #import "ThemeBrowserViewController.h"
 #import "StatsViewController.h"
@@ -37,21 +32,18 @@
 #import "WPThemeSettings.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
-const NSInteger BlogDetailsRowStats = 1;
+const NSInteger BlogDetailsRowViewAdmin = 1;
+const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
 const NSInteger BlogDetailsRowEditSite = 0;
-const NSInteger BlogDetailsRowViewAdmin = 0;
-const NSInteger BlogDetailsRowRemove = 0;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
     TableViewSectionPublishType,
     TableViewSectionAppearance,
     TableViewSectionConfigurationType,
-    TableViewSectionAdmin,
-    TableViewSectionRemove,
     TableViewSectionCount
 };
 
@@ -61,12 +53,10 @@ NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
 NSInteger const BlogDetailHeaderViewHorizontalMarginiPhone = 15;
 NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 
-NSInteger const BlogDetailsRowCountForSectionGeneralType = 2;
+NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
 NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
-NSInteger const BlogDetailsRowCountForSectionAdmin = 1;
-NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
@@ -237,12 +227,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    NSInteger result = TableViewSectionCount;
-    
-    if (![self.blog supports:BlogFeatureRemovable]) {
-        // No "Remove Site" for wp.com
-        result -= 1;
-    }
+    NSInteger result = TableViewSectionCount;    
     
     if (!self.areThemesEnabled) {
         result -= 1;
@@ -261,10 +246,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         return BlogDetailsRowCountForSectionAppearance;
     } else if ([self isConfigurationSection:section]) {
         return BlogDetailsRowCountForSectionConfigurationType;
-    } else if ([self isAdminSection:section]) {
-        return BlogDetailsRowCountForSectionAdmin;
-    } else if ([self isRemoveSection:section]) {
-        return BlogDetailsRowCountForSectionRemove;
     }
 
     return 0;
@@ -277,6 +258,10 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             case BlogDetailsRowViewSite:
                 cell.textLabel.text = NSLocalizedString(@"View Site", nil);
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewsite"];
+                break;
+            case BlogDetailsRowViewAdmin:
+                cell.textLabel.text = NSLocalizedString(@"WP Admin", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
                 break;
             case BlogDetailsRowStats:
                 cell.textLabel.text = NSLocalizedString(@"Stats", nil);
@@ -314,19 +299,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
             cell.textLabel.text = NSLocalizedString(@"Settings", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
         }
-    } else if ([self isAdminSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowViewAdmin) {
-            cell.textLabel.text = NSLocalizedString(@"View Admin", nil);
-            cell.imageView.image = [UIImage imageNamed:@"icon-menu-viewadmin"];
-        }
-    } else if ([self isRemoveSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowRemove) {
-            cell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = [WPStyleGuide errorRed];
-            cell.imageView.image = nil;
-            cell.accessoryType = UITableViewCellAccessoryNone;
-        }
     }
 }
 
@@ -346,7 +318,7 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([self isConfigurationSection:indexPath.section] && indexPath.row == BlogDetailsRowEditSite) {
-        EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+        SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
         [self.navigationController pushViewController:editSiteViewController animated:YES];
     }
 
@@ -355,6 +327,9 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         switch (indexPath.row) {
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
+                break;
+            case BlogDetailsRowViewAdmin:
+                [self showViewAdminForBlog:self.blog];
                 break;
             case BlogDetailsRowStats:
                 [WPAnalytics track:WPAnalyticsStatStatsAccessed];
@@ -377,14 +352,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                 break;
             default:
                 break;
-        }
-    } else if ([self isAdminSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowViewAdmin) {
-            [self showViewAdminForBlog:self.blog];
-        }
-    } else if ([self isRemoveSection:indexPath.section]) {
-        if (indexPath.row == BlogDetailsRowRemove) {
-            [self showRemoveSiteForBlog:self.blog];
         }
     }
 
@@ -441,8 +408,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
                                          " blog details screen.");
     } else if ([self isConfigurationSection:section]) {
         headingTitle = NSLocalizedString(@"Configuration", @"");
-    } else if ([self isAdminSection:section]) {
-        headingTitle = NSLocalizedString(@"Admin", @"");
     }
 
     return headingTitle;
@@ -472,28 +437,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     }
     
     return section == TableViewSectionConfigurationType;
-}
-
-- (BOOL)isAdminSection:(NSInteger)section
-{
-    if (!self.areThemesEnabled) {
-        section += 1;
-    }
-    
-    return section == TableViewSectionAdmin;
-}
-
-- (BOOL)isRemoveSection:(NSInteger)section
-{
-    if (![self.blog supports:BlogFeatureRemovable]) {
-        return NO;
-    }
-    
-    if (!self.areThemesEnabled) {
-        section += 1;
-    }
-    
-    return section == TableViewSectionRemove;
 }
 
 #pragma mark - Private methods
@@ -540,39 +483,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
 
-- (void)showRemoveSiteForBlog:(Blog *)blog
-{
-    NSString *model = [[UIDevice currentDevice] localizedModel];
-    NSString *title = [NSString stringWithFormat:NSLocalizedString(@"Are you sure you want to continue?\n All site data will be removed from your %@.", @"Title for the remove site confirmation alert, %@ will be replaced with iPhone/iPad/iPod Touch"), model];
-    NSString *cancelTitle = NSLocalizedString(@"Cancel", nil);
-    NSString *destructiveTitle = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-    if (IS_IPAD) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Remove Site", @"Remove site confirmation alert title")
-                                                              message:title
-                                                             delegate:self
-                                                    cancelButtonTitle:cancelTitle
-                                                    otherButtonTitles:destructiveTitle, nil];
-        [alert show];
-        self.removeSiteAlertView = alert;
-    } else {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:title
-                                                                 delegate:self
-                                                        cancelButtonTitle:cancelTitle
-                                                   destructiveButtonTitle:destructiveTitle
-                                                        otherButtonTitles:nil];
-        [actionSheet showInView:self.view];
-        self.removeSiteActionSheet = actionSheet;
-    }
-}
-
-- (void)confirmRemoveSite
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:context];
-    [blogService removeBlog:self.blog];
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 #pragma mark - Notification handlers
 
 - (void)handleDataModelChange:(NSNotification *)note
@@ -587,24 +497,6 @@ NSInteger const BlogDetailsRowCountForSectionRemove = 1;
         self.navigationItem.backBarButtonItem.title = self.blog.blogName;
         self.navigationItem.title = self.blog.blogName;
         [self.tableView reloadData];
-    }
-}
-
-#pragma mark - Action sheet delegate
-
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == actionSheet.destructiveButtonIndex) {
-        [self confirmRemoveSite];
-    }
-}
-
-#pragma mark - Alert view delegate
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex == alertView.firstOtherButtonIndex) {
-        [self confirmRemoveSite];
     }
 }
 

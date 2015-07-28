@@ -4,11 +4,12 @@
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
 #import "Constants.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "WordPressAppDelegate.h"
 #import "PostCategoryService.h"
 #import "ContextManager.h"
 #import "BlogService.h"
+#import "WPTableViewCell.h"
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 
@@ -121,7 +122,7 @@
                                             [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 
                                             // bad login/pass combination
-                                            EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.post.blog];
+                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.post.blog];
                                             [self.navigationController pushViewController:editSiteViewController animated:YES];
 
                                         } else {
