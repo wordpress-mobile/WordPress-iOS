@@ -159,7 +159,8 @@
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
-    Theme *theme = [Theme new];
+    Theme* theme = [Theme findOrCreateThemeWithId:remoteTheme.themeId
+                           inManagedObjectContext:self.managedObjectContext];
     
     /* MISSING PROPS
     theme.costCurrency = remoteTheme.costCurrency;
