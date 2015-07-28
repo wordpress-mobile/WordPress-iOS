@@ -147,21 +147,45 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     id<AccountServiceRemote> remote = [self remoteForAccount:account];
     [remote getBlogsWithSuccess:^(NSArray *blogs) {
         [self.managedObjectContext performBlock:^{
-            [self mergeBlogs:blogs
-                 withAccount:account
-                  completion:success];
             
-            Blog *defaultBlog = account.defaultBlog;
+            // Let's check if the account object is not nil. Otherwise we'll get an exception below.
+            NSManagedObjectID *accountObjectID = account.objectID;
+            if (!accountObjectID) {
+                DDLogError(@"Error: The Account objectID could not be loaded");
+                return;
+            }
+            
+            // Reload the Account in the current Context
+            NSError *error = nil;
+            WPAccount *accountInContext = (WPAccount *)[self.managedObjectContext existingObjectWithID:accountObjectID
+                                                                                                 error:&error];
+            if (!accountInContext) {
+                DDLogError(@"Error loading WordPress Account: %@", error);
+                return;
+            }
+            
+            [self mergeBlogs:blogs withAccount:accountInContext completion:success];
+            
+            // Update the Widget Configuration
+            NSManagedObjectID *defaultBlogObjectID = accountInContext.defaultBlog.objectID;
+            if (!defaultBlogObjectID) {
+                DDLogError(@"Error: The Default Blog objectID could not be loaded");
+                return;
+            }
+            
+            Blog *defaultBlog = (Blog *)[self.managedObjectContext existingObjectWithID:defaultBlogObjectID
+                                                                                  error:nil];
             TodayExtensionService *service = [TodayExtensionService new];
             BOOL widgetIsConfigured = [service widgetIsConfigured];
             
             if (WIDGETS_EXIST
                 && !widgetIsConfigured
-                && defaultBlog != nil) {
+                && defaultBlog != nil
+                && !defaultBlog.isDeleted) {
                 NSNumber *siteId = defaultBlog.blogID;
                 NSString *blogName = defaultBlog.blogName;
                 NSTimeZone *timeZone = [self timeZoneForBlog:defaultBlog];
-                NSString *oauth2Token = account.authToken;
+                NSString *oauth2Token = accountInContext.authToken;
                 
                 dispatch_async(dispatch_get_main_queue(), ^{
                     TodayExtensionService *service = [TodayExtensionService new];
@@ -434,7 +458,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         }
         blog.url = remoteBlog.url;
         blog.blogName = [remoteBlog.title stringByDecodingXMLCharacters];
-        blog.blogTagline = [remoteBlog.description stringByDecodingXMLCharacters];
+        blog.blogTagline = [remoteBlog.desc stringByDecodingXMLCharacters];
         blog.blogID = remoteBlog.ID;
         blog.isHostedAtWPcom = !remoteBlog.jetpack;
         blog.icon = remoteBlog.icon;

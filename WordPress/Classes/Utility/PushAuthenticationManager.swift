@@ -128,7 +128,7 @@ import UIKit
         let title               = NSLocalizedString("Login Request Expired", comment: "Login Request Expired")
         let message             = NSLocalizedString("The login request has expired. Log in to WordPress.com to try again.",
                                                     comment: "WordPress.com Push Authentication Expired message")
-        let acceptButtonTitle   = NSLocalizedString("Accept", comment: "Accept. Verb")
+        let acceptButtonTitle   = NSLocalizedString("OK", comment: "OK")
         
         self.alertViewProxy.showWithTitle(title,
             message:            message,

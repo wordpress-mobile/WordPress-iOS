@@ -3,12 +3,20 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 36 (@sergioestevao 2015-07-08)
+
+Changes to the data model:
+
+- `Blog` added a new attribute called `blogTagline` to store the tagline of a site
+- `Abstract Post` se the default value for `metaPublishImmediately` attribute to yes
+- `BasePost` set the default value for the `status` attribute to "publish" 
+- `Account` added a `displayName` attribute (@koke)
+
 ## WordPress 35 (@sergioestevao 2015-07-08)
 
 Changes to the data model:
 
-- `Blog` added a new attribute called blogTagline to store the tagline of a site
-- `BasePost` set the default value for the status attribute to "publish" 
+- `Media` added a new attribute called localThumbnailURL to store the url of a thumbnail on the server, specially relevant for videos
 
 ## WordPress 34 (@sergioestevao 2015-06-20)
 

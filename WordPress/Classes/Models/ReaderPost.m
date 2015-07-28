@@ -1,14 +1,14 @@
 #import "ReaderPost.h"
-#import "WordPressComApi.h"
-#import "NSString+Helpers.h"
-#import "NSString+Util.h"
-#import "NSString+XMLExtensions.h"
-#import "WPAvatarSource.h"
-#import "NSString+Helpers.h"
-#import "WordPressAppDelegate.h"
-#import "ContextManager.h"
-#import "WPAccount.h"
 #import "AccountService.h"
+#import "ContextManager.h"
+#import "SourcePostAttribution.h"
+#import "NSString+Util.h"
+#import "NSString+Helpers.h"
+#import "NSString+XMLExtensions.h"
+#import "WordPressAppDelegate.h"
+#import "WordPressComApi.h"
+#import "WPAccount.h"
+#import "WPAvatarSource.h"
 
 // These keys are used in the getStoredComment method
 NSString * const ReaderPostStoredCommentIDKey = @"commentID";
@@ -43,6 +43,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 @dynamic isLikesEnabled;
 @dynamic isSharingEnabled;
 @dynamic isSiteBlocked;
+@dynamic sourceAttribution;
 
 
 - (BOOL)isPrivate
@@ -178,5 +179,54 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
     return [self featuredImageURL];
 }
 
+- (SourceAttributionStyle)sourceAttributionStyle
+{
+    if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+        return SourceAttributionStylePost;
+    } else if ([self.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
+        return SourceAttributionStyleSite;
+    } else {
+        return SourceAttributionStyleNone;
+    }
+}
+
+- (NSString *)sourceAuthorNameForDisplay
+{
+    return self.sourceAttribution.authorName;
+}
+
+- (NSURL *)sourceAuthorURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.authorURL];
+}
+
+- (NSURL *)sourceAvatarURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.avatarURL];
+}
+
+- (NSString *)sourceBlogNameForDisplay
+{
+    return self.sourceAttribution.blogName;
+}
+
+- (NSURL *)sourceBlogURLForDisplay
+{
+    if (!self.sourceAttribution) {
+        return nil;
+    }
+    return [NSURL URLWithString:self.sourceAttribution.blogURL];
+}
+
+- (BOOL)isSourceAttributionWPCom
+{
+    return (self.sourceAttribution.blogID) ? YES : NO;
+}
 
 @end
