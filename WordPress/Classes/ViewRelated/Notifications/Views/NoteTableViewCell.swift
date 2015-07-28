@@ -18,12 +18,12 @@ import Foundation
             }
         }
     }
-    public var showsSeparator: Bool {
+    public var showsBottomSeparator: Bool {
         set {
-            separatorView.hidden = !newValue
+            separatorsView.bottomVisible = newValue
         }
         get {
-            return separatorView.hidden == false
+            return separatorsView.bottomVisible == false
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -53,6 +53,8 @@ import Foundation
             return noticonLabel.text
         }
     }
+    
+    
     
     // MARK: - Public Methods
     public class func reuseIdentifier() -> String {
@@ -98,10 +100,10 @@ import Foundation
 
         snippetLabel.numberOfLines      = Settings.snippetNumberOfLines
         
-        // Separator: Make sure the height is 1pixel, not 1point
-        let separatorHeightInPixels     = Settings.separatorHeight / UIScreen.mainScreen().scale
-        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.noteSeparatorColor
+        // Separators: Setup bottom separators!
+        separatorsView.bottomColor      = WPStyleGuide.Notifications.noteSeparatorColor
+        separatorsView.bottomInsets     = Settings.separatorInsets
+        backgroundView                  = separatorsView
     }
     
     public override func layoutSubviews() {
@@ -196,8 +198,8 @@ import Foundation
     // MARK: - Private Settings
     private struct Settings {
         static let minimumCellHeight                    = CGFloat(70)
-        static let separatorHeight                      = CGFloat(1)
         static let textInsets                           = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
+        static let separatorInsets                      = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
         static let subjectNumberOfLinesWithoutSnippet   = 3
         static let subjectNumberOfLinesWithSnippet      = 2
         static let snippetNumberOfLines                 = 2
@@ -217,7 +219,8 @@ import Foundation
     }
 
     // MARK: - Private Properties
-    private var gravatarURL:                            NSURL?
+    private var gravatarURL     : NSURL?
+    private var separatorsView  = NoteSeparatorsView()
     
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!
@@ -227,5 +230,4 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
-    @IBOutlet private weak var separatorView:           UIView!
 }
