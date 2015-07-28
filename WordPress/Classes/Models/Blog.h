@@ -64,6 +64,14 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
 /**
+ Flags whether the current user is an admin on the blog.
+ 
+ @warn `isAdmin` is only being set for wpcom sites and checked when bumping page
+ views in the reader detail.
+ */
+@property (nonatomic, assign, readwrite) BOOL isAdmin;
+
+/**
  Stores the username for self hosted sites
  
  @warn For WordPress.com or Jetpack Managed sites this will be nil. Use usernameForSite instead
