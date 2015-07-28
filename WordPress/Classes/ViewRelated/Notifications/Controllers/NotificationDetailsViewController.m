@@ -95,8 +95,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return;
     }
     
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
 }
 
 - (void)viewDidLoad
