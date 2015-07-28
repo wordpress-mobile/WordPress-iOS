@@ -614,8 +614,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
-    // At last, push the details
+    // Push the Details: Unless the note has a pending deletion!
     Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([self isNotePendingDeletion:note]) {
+        return;
+    }
+    
     [self showDetailsForNotification:note];
 }
 
