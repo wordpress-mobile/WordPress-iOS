@@ -39,7 +39,13 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-
+    public override var frame : CGRect {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    
     
     // MARK: - UIView methods
     convenience init() {
@@ -56,7 +62,6 @@ public class NoteSeparatorsView : UIView
     }
     
     public override func drawRect(rect: CGRect) {
-        
         super.drawRect(rect)
         
         let scale = UIScreen.mainScreen().scale
