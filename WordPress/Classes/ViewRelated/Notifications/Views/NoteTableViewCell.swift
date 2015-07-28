@@ -195,13 +195,13 @@ import Foundation
     
     // MARK: - Private Settings
     private struct Settings {
-        static let minimumCellHeight:                   CGFloat         = 70
-        static let separatorHeight:                     CGFloat         = 1
-        static let textInsets:                          UIEdgeInsets    = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
-        static let subjectNumberOfLinesWithoutSnippet:  Int             = 3
-        static let subjectNumberOfLinesWithSnippet:     Int             = 2
-        static let snippetNumberOfLines:                Int             = 2
-        static let noticonRadius:                       CGFloat         = 10
+        static let minimumCellHeight                    = CGFloat(70)
+        static let separatorHeight                      = CGFloat(1)
+        static let textInsets                           = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
+        static let subjectNumberOfLinesWithoutSnippet   = 3
+        static let subjectNumberOfLinesWithSnippet      = 2
+        static let snippetNumberOfLines                 = 2
+        static let noticonRadius                        = CGFloat(10)
         
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
