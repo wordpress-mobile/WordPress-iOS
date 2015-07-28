@@ -424,20 +424,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
-- (void)showUndeleteForNote:(Notification *)note onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
-{
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
-        return;
-    }
-    
-    // Keep a copy of the Destructive Block
-    self.pendingDestructiveActions[note.objectID] = [onTimeout copy];
-    
-    // Update the cell
-    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
-}
-
 - (void)removeManageButton
 {
     self.navigationItem.rightBarButtonItem = nil;
@@ -483,11 +469,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
 }
 
-- (BOOL)isNotePendingDeletion:(Notification *)note
-{
-    return self.pendingDestructiveActions[note.objectID] != nil;
-}
-
 - (void)trackAppearedIfNeeded
 {
     if (self.trackedViewDisplay) {
@@ -496,6 +477,41 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
     self.trackedViewDisplay = YES;
+}
+
+#pragma mark - Undelete Mechanism
+
+- (void)showUndeleteForNote:(Notification *)note onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
+{
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    // Keep a copy of the Destructive Block
+    self.pendingDestructiveActions[note.objectID] = [onTimeout copy];
+    
+    // Update the cell
+    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (void)cancelNoteDeletion:(Notification *)note
+{
+    // Nuke the Destructive Block
+    [self.pendingDestructiveActions removeObjectForKey:note.objectID];
+    
+    // Reload the Row
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+}
+
+- (BOOL)isNotePendingDeletion:(Notification *)note
+{
+    return self.pendingDestructiveActions[note.objectID] != nil;
 }
 
 
@@ -661,6 +677,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     BOOL isPendingDeletion          = [self isNotePendingDeletion:note];;
     BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
+    __weak __typeof(self) weakSelf  = self;
     
     cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
     cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
@@ -671,8 +688,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.showsBottomSeparator       = !isLastRow && !isPendingDeletion;
     cell.selectionStyle             = isPendingDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
     cell.onUndelete                 = ^{
-        [self.pendingDestructiveActions removeObjectForKey:note.objectID];
-        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+        [weakSelf cancelNoteDeletion:note];
     };
     
     [cell downloadGravatarWithURL:note.iconURL];
