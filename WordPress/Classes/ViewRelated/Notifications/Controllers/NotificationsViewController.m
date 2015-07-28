@@ -498,17 +498,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.trackedViewDisplay = YES;
 }
 
-- (void)disableInteractionsForNotification:(Notification *)note
-{
-    NSIndexPath *indexPath      = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
-        return;
-    }
-    
-    UITableViewCell *cell       = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.userInteractionEnabled = false;
-}
-
 
 #pragma mark - Segue Helpers
 
@@ -668,17 +657,24 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // Note:
     // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
     // For that reason, we draw our own separators.
-    
+ 
     Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
+    BOOL isPendingDeletion          = [self isNotePendingDeletion:note];;
+    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
+    
     cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
     cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
     cell.read                       = note.read.boolValue;
     cell.noticon                    = note.noticon;
     cell.unapproved                 = note.isUnapprovedComment;
-    cell.showsBottomSeparator       = ![self isRowLastRowForSection:indexPath];
-    cell.userInteractionEnabled     = YES;
-
+    cell.deleted                    = isPendingDeletion;
+    cell.showsBottomSeparator       = !isLastRow && !isPendingDeletion;
+    cell.selectionStyle             = isPendingDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
+    cell.onUndelete                 = ^{
+        [self.pendingDestructiveActions removeObjectForKey:note.objectID];
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    };
+    
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
