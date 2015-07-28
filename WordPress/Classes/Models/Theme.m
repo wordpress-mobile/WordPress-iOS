@@ -6,6 +6,8 @@
 
 static NSDateFormatter *dateFormatter;
 
+NSString* const ThemeCoreDataEntityName = @"Theme";
+
 @implementation Theme
 
 @dynamic popularityRank;
@@ -20,8 +22,6 @@ static NSDateFormatter *dateFormatter;
 @dynamic name;
 @dynamic previewUrl;
 @dynamic blog;
-
-static NSString* const ThemeCoreDataEntityName = @"Theme";
 
 + (Theme *)createOrUpdateThemeFromDictionary:(NSDictionary *)themeInfo
                                     withBlog:(Blog*)blog
@@ -67,68 +67,6 @@ static NSString* const ThemeCoreDataEntityName = @"Theme";
 - (BOOL)isPremium
 {
     return [self.premium isEqualToNumber:@1];
-}
-
-#pragma mark - Creating themes
-
-+ (Theme *)newThemeWithId:(NSString *)themeId
-   inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
-    
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ThemeCoreDataEntityName
-                                                         inManagedObjectContext:context];
-    
-    Theme *theme = [[Theme alloc] initWithEntity:entityDescription
-                  insertIntoManagedObjectContext:context];
-    
-    return theme;
-}
-
-#pragma mark - Finding existing themes
-
-+ (Theme *)findThemeWithId:(NSString *)themeId
-    inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
-
-    Theme *theme = nil;
-
-    NSPredicate *predicate = [NSPredicate predicateWithFormat:@""];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:ThemeCoreDataEntityName];
-
-    fetchRequest.predicate = predicate;
-
-    NSError *error = nil;
-    NSArray *results = [context executeFetchRequest:fetchRequest error:&error];
-    
-    if (results) {
-        theme = (Theme *)[results firstObject];
-        NSAssert([theme isKindOfClass:[Theme class]],
-                 @"Expected a Theme object.");
-    } else {
-        NSAssert(error == nil,
-                 @"We shouldn't be getting errors here.  This means something's internally broken.");
-    }
-    
-    return theme;
-}
-
-+ (Theme *)findOrCreateThemeWithId:(NSString *)themeId
-            inManagedObjectContext:(NSManagedObjectContext *)context
-{
-    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
-    NSParameterAssert([context isKindOfClass:[NSManagedObjectContext class]]);
-    
-    Theme *theme = [self findThemeWithId:themeId inManagedObjectContext:context];
-    
-    if (!theme) {
-        theme = [self newThemeWithId:themeId inManagedObjectContext:context];
-    }
-    
-    return theme;
 }
 
 @end
