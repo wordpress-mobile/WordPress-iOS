@@ -18,6 +18,7 @@
 @property (nonatomic, copy)     NSString    *username;
 @property (nonatomic, copy)     NSString    *uuid;
 @property (nonatomic, strong)   NSString    *email;
+@property (nonatomic, strong)   NSString    *displayName;
 @property (nonatomic, strong)   NSSet       *blogs;
 @property (nonatomic, strong)   NSSet       *jetpackBlogs;
 @property (nonatomic, readonly) NSArray     *visibleBlogs;
