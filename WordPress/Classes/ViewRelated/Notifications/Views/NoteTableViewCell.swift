@@ -1,6 +1,15 @@
 import Foundation
 
 
+/**
+*  @class       NoteTableViewCell
+*  @brief       The purpose of this class is to render a Notification entity, onscreen.
+*  @details     This cell should be loaded from its nib, since the autolayout constraints and outlets are not
+*               generated via code.
+*               Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
+*               new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
+*/
+
 @objc public class NoteTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
