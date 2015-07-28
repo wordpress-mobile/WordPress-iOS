@@ -180,6 +180,8 @@ enum CardAction: Int
         configureSummary()
         configureTagAndWordCount()
         configureActionButtons()
+
+        setNeedsUpdateConstraints()
     }
 
     private func configureHeader() {
@@ -206,14 +208,37 @@ enum CardAction: Int
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
             var url = featuredImageURL
             if !(contentProvider!.isPrivate()) {
-                let size = featuredImageView.frame.size
+                let size = CGSizeMake( CGRectGetWidth(featuredImageView.frame), featuredImageHeightConstraintConstant)
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            } else if (url.host!.hasSuffix("wordpress.com")) {
+                // private wpcom image needs special handling. 
+                let request = requestForURL(url)
+                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+            } else {
+                // private but not a wpcom hosted image
+                featuredImageView.setImageWithURL(url, placeholderImage:nil)
             }
-            featuredImageView.setImageWithURL(url, placeholderImage:nil)
             featuredImageHeightConstraint.constant = featuredImageHeightConstraintConstant
+            featuredImageBottomConstraint.constant = featuredImageBottomConstraintConstant
         } else {
             featuredImageHeightConstraint.constant = 0.0
+            featuredImageBottomConstraint.constant = 0.0
         }
+    }
+
+    private func requestForURL(url:NSURL) -> NSURLRequest {
+        var requestURL = url
+        if !(requestURL.absoluteString!.hasPrefix("https")) {
+            var sslUrl = requestURL.absoluteString!.stringByReplacingOccurrencesOfString("http", withString: "https")
+            requestURL = NSURL(string: sslUrl)!
+        }
+        let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let token = acctServ.defaultWordPressComAccount().authToken
+        var request = NSMutableURLRequest(URL: requestURL)
+        var headerValue = String(format: "Bearer %@", token)
+        request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+        return request
     }
 
     private func configureTitle() {
