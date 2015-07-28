@@ -24,7 +24,8 @@ extension WPStyleGuide
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
-
+        public static let noteBackgroundDeleted     = WPStyleGuide.errorRed()
+        
         public static let noteSeparatorColor        = blockSeparatorColor
 
         public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
