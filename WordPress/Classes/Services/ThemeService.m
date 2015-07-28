@@ -8,7 +8,23 @@
 
 @implementation ThemeService
 
-#pragma mark - Creating themes
+#pragma mark - Themes availability
+
+- (BOOL)accountSupportsThemeServices:(WPAccount *)account
+{
+    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
+    
+    return [account isWPComAccount];
+}
+
+- (BOOL)blogSupportsThemeServices:(Blog *)blog
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    
+    return blog.restApi && [blog dotComID];
+}
+
+#pragma mark - Local queries: Creating themes
 
 /**
  *  @brief      Creates and initializes a new theme with the specified theme Id in the specified
@@ -54,7 +70,7 @@
     return theme;
 }
 
-#pragma mark - Finding locally stored themes
+#pragma mark - Local queries: finding themes
 
 - (Theme *)findThemeWithId:(NSString *)themeId
 {
@@ -82,23 +98,7 @@
     return theme;
 }
 
-#pragma mark - Themes availability
-
-- (BOOL)accountSupportsThemeServices:(WPAccount *)account
-{
-    NSParameterAssert([account isKindOfClass:[WPAccount class]]);
-    
-    return [account isWPComAccount];
-}
-
-- (BOOL)blogSupportsThemeServices:(Blog *)blog
-{
-    NSParameterAssert([blog isKindOfClass:[Blog class]]);
-    
-    return blog.restApi && [blog dotComID];
-}
-
-#pragma mark - Getting themes
+#pragma mark - Remote queries: Getting theme info
 
 - (NSOperation *)getActiveThemeForBlog:(Blog *)blog
                                success:(ThemeServiceThemeRequestSuccessBlock)success
@@ -205,7 +205,7 @@
     return operation;
 }
 
-#pragma mark - Activating themes
+#pragma mark - Remote queries: Activating themes
 
 - (NSOperation *)activateTheme:(Theme *)theme
                        forBlog:(Blog *)blog
