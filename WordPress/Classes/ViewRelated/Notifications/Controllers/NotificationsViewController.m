@@ -638,15 +638,15 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
     // For that reason, we draw our own separators.
     
-    Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
 
-    cell.attributedSubject                  = note.subjectBlock.attributedSubjectText;
-    cell.attributedSnippet                  = note.snippetBlock.attributedSnippetText;
-    cell.read                               = note.read.boolValue;
-    cell.noticon                            = note.noticon;
-    cell.unapproved                         = note.isUnapprovedComment;
-    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
-    cell.userInteractionEnabled             = YES;
+    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
+    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
+    cell.read                       = note.read.boolValue;
+    cell.noticon                    = note.noticon;
+    cell.unapproved                 = note.isUnapprovedComment;
+    cell.showsSeparator             = ![self isRowLastRowForSection:indexPath];
+    cell.userInteractionEnabled     = YES;
 
     [cell downloadGravatarWithURL:note.iconURL];
 }
