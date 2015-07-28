@@ -645,7 +645,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.read                       = note.read.boolValue;
     cell.noticon                    = note.noticon;
     cell.unapproved                 = note.isUnapprovedComment;
-    cell.showsSeparator             = ![self isRowLastRowForSection:indexPath];
+    cell.showsBottomSeparator       = ![self isRowLastRowForSection:indexPath];
     cell.userInteractionEnabled     = YES;
 
     [cell downloadGravatarWithURL:note.iconURL];
@@ -668,8 +668,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
     for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
     {
-        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
     }
     
     // Update NoResults View
