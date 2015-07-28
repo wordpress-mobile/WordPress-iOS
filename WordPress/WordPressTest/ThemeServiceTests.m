@@ -288,13 +288,6 @@
                                       failure:nil]);
 }
 
-/*
-- (NSOperation *)activateTheme:(Theme *)theme
-                       forBlog:(Blog *)blog
-                       success:(ThemeServiceSuccessBlock)success
-                       failure:(ThemeServiceFailureBlock)failure
- */
-
 - (void)testThatActivateThemeWorks
 {
     NSManagedObjectContext *context = OCMStrictClassMock([NSManagedObjectContext class]);
