@@ -60,7 +60,9 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
+@property (nonatomic, strong) NSMutableDictionary   *pendingDestructiveActions;
 @end
+
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsViewController
@@ -87,6 +89,9 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
+        
+        // Map of ObjectID > Destruction Block
+        self.pendingDestructiveActions = [NSMutableDictionary dictionary];
     }
     
     return self;
@@ -100,9 +105,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [super viewDidLoad];
     
     // Register the cells
-    NSString *cellNibName = [NoteTableViewCell classNameWithoutNamespaces];
-    UINib *tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
+    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
+    
+    for (NSString *nibName in cellNibs) {
+        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
+    }
     
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
@@ -416,6 +424,20 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.title = [NSString stringWithFormat:@"Notifications from [%@]", name];
 }
 
+- (void)showUndeleteForNote:(Notification *)note onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
+{
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    // Keep a copy of the Destructive Block
+    self.pendingDestructiveActions[note.objectID] = [onTimeout copy];
+    
+    // Update the cell
+    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+}
+
 - (void)removeManageButton
 {
     self.navigationItem.rightBarButtonItem = nil;
@@ -459,6 +481,11 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     id<NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:indexPath.section];
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
+}
+
+- (BOOL)isNotePendingDeletion:(Notification *)note
+{
+    return self.pendingDestructiveActions[note.objectID] != nil;
 }
 
 - (void)trackAppearedIfNeeded
