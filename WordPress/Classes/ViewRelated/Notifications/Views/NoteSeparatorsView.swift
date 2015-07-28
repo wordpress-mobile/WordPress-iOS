@@ -67,7 +67,13 @@ public class NoteSeparatorsView : UIView
         let scale = UIScreen.mainScreen().scale
         let ctx = UIGraphicsGetCurrentContext()
         CGContextClearRect(ctx, rect);
-
+        
+        // Background
+        if backgroundColor != nil {
+            backgroundColor?.setFill()
+            CGContextFillRect(ctx, rect)
+        }
+        
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
