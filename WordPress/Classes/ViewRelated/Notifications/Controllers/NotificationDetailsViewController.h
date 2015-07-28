@@ -5,7 +5,7 @@
 @class Notification;
 
 typedef void (^NotificationDetailsDeletionActionBlock)();
-typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDeletionActionBlock onRequestTimeout);
+typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDeletionActionBlock onUndoTimeout);
 
 
 
