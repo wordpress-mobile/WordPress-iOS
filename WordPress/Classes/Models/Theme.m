@@ -108,11 +108,9 @@ static NSString* const ThemeCoreDataEntityName = @"Theme";
         theme = (Theme *)[results firstObject];
         NSAssert([theme isKindOfClass:[Theme class]],
                  @"Expected a Theme object.");
-#ifndef NS_BLOCK_ASSERTIONS
     } else {
         NSAssert(error == nil,
                  @"We shouldn't be getting errors here.  This means something's internally broken.");
-#endif
     }
     
     return theme;
