@@ -19,4 +19,5 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (NSNumber *)likeCount;
 - (BOOL)commentsOpen;
 - (BOOL)isLikesEnabled;
+- (BOOL)isPrivate;
 @end
