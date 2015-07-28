@@ -103,7 +103,7 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
-        let fontSize:CGFloat = UIDevice.isPad() ? 14.0 : 12.0
+        let fontSize:CGFloat = 14.0
         button.setTitleColor(grey(), forState: .Normal)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
