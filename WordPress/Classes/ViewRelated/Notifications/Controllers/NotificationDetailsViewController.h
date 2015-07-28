@@ -34,6 +34,7 @@ typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDelet
  *
  *	@param		notification    The Notification to display.
  */
+
 - (void)setupWithNotification:(Notification *)notification;
 
 @end
