@@ -401,6 +401,12 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     }
     self.didBumpPageViews = YES;
 
+    // If the user is an admin on the post's site do not bump the page view unless
+    // the the post is private.
+    if (!self.post.isPrivate && [self isUserAdminOnSiteWithID:self.post.siteID]) {
+        return;
+    }
+
     NSURL *site = [NSURL URLWithString:siteURL];
     if (![site host]) {
         return;
@@ -426,6 +432,13 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
     NSURLSession *session = [NSURLSession sharedSession];
     NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
     [task resume];
+}
+
+- (BOOL)isUserAdminOnSiteWithID:(NSNumber *)siteID
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+    Blog *blog = [blogService blogByBlogId:siteID];
+    return blog.isAdmin;
 }
 
 
