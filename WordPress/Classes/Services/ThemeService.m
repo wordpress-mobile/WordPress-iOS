@@ -2,10 +2,85 @@
 
 #import "Blog.h"
 #import "RemoteTheme.h"
+#import "Theme.h"
 #import "ThemeServiceRemote.h"
 #import "WPAccount.h"
 
 @implementation ThemeService
+
+#pragma mark - Creating themes
+
+/**
+ *  @brief      Creates and initializes a new theme with the specified theme Id in the specified
+ *              context.
+ *  @details    You should probably not call this method directly.  Please read the documentation
+ *              for findOrCreateThemeWithId: first.
+ *
+ *  @param      themeId     The ID of the new theme.  Cannot be nil.
+ *
+ *  @returns    The newly created and initialized object.
+ */
+- (Theme *)newThemeWithId:(NSString *)themeId
+{
+    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ThemeCoreDataEntityName
+                                                         inManagedObjectContext:self.managedObjectContext];
+    
+    Theme *theme = [[Theme alloc] initWithEntity:entityDescription
+                  insertIntoManagedObjectContext:self.managedObjectContext];
+    
+    return theme;
+}
+
+/**
+ *  @brief      Obtains the theme with the specified ID if it exists, otherwise a new theme is
+ *              created and returned.
+ *
+ *  @param      themeId     The ID of the theme to retrieve.  Cannot be nil.
+ *
+ *  @returns    The stored theme matching the specified ID if found, or nil if it's not found.
+ */
+- (Theme *)findOrCreateThemeWithId:(NSString *)themeId
+{
+    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    
+    Theme *theme = [self findThemeWithId:themeId];
+    
+    if (!theme) {
+        theme = [self newThemeWithId:themeId];
+    }
+    
+    return theme;
+}
+
+#pragma mark - Finding locally stored themes
+
+- (Theme *)findThemeWithId:(NSString *)themeId
+{
+    NSParameterAssert([themeId isKindOfClass:[NSString class]]);
+    
+    Theme *theme = nil;
+    
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@""];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:ThemeCoreDataEntityName];
+    
+    fetchRequest.predicate = predicate;
+    
+    NSError *error = nil;
+    NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+    
+    if (results) {
+        theme = (Theme *)[results firstObject];
+        NSAssert([theme isKindOfClass:[Theme class]],
+                 @"Expected a Theme object.");
+    } else {
+        NSAssert(error == nil,
+                 @"We shouldn't be getting errors here.  This means something's internally broken.");
+    }
+    
+    return theme;
+}
 
 #pragma mark - Themes availability
 
@@ -159,8 +234,7 @@
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
     
-    Theme* theme = [Theme findOrCreateThemeWithId:remoteTheme.themeId
-                           inManagedObjectContext:self.managedObjectContext];
+    Theme* theme = [self findOrCreateThemeWithId:remoteTheme.themeId];
     
     /* MISSING PROPS
     theme.costCurrency = remoteTheme.costCurrency;
