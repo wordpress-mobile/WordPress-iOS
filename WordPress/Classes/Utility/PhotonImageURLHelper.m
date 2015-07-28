@@ -80,7 +80,7 @@ static const NSInteger MinPhotonImageQuality = 1;
         queryString = [NSString stringWithFormat:@"w=%i", size.width];
     } else {
         NSString *method = forceResize ? @"resize" : @"fit";
-        queryString = [NSString stringWithFormat:@"%@=%i,%i", method, size.width, size.height];
+        queryString = [NSString stringWithFormat:@"%@=%.0f,%.0f", method, size.width, size.height];
     }
 
     if (useSSL) {
