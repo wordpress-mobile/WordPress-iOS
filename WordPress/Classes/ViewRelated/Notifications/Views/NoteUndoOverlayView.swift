@@ -1,6 +1,16 @@
 import Foundation
 
 
+/**
+*  @class       NoteUndoOverlayView
+*  @brief       This class renders a simple overlay view, with a Legend Label on its right, and an undo button on its
+*               right side.
+*  @details     The purpose of this helper view is to act as a simple drop-in overlay, to be used by NoteTableViewCell.
+*               By doing this, we avoid the need of having yet another UITableViewCell subclass, and thus,
+*               we don't need to duplicate any of the mechanisms already available in NoteTableViewCell, such as
+*               custom cell separators and Height Calculation.
+*/
+
 @objc public class NoteUndoOverlayView : UIView
 {
     // MARK: - NSCoder
