@@ -328,25 +328,30 @@ enum CardAction: Int
 
     private func configureLikeActionButton(button: UIButton) {
         button.tag = CardAction.Like.rawValue
-        let title = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
-        var image = UIImage(named: "reader-postaction-like-blue")
-        var highlightImage = UIImage(named: "reader-postaction-like-active")
+        let likeStr = NSLocalizedString("Like", comment: "Text for the 'like' button. Tapping marks a post in the reader as 'liked'.")
+        let likedStr = NSLocalizedString("Liked", comment: "Text for the 'like' button. Tapping removes the 'liked' status from a post.")
+        let title = contentProvider!.isLiked() ? likedStr : likeStr
+
+        let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
+        let image = UIImage(named: imageName)
+        let highlightImage = UIImage(named: "icon-reader-like-highlight")
+
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 
     private func configureCommentActionButton(button: UIButton) {
         button.tag = CardAction.Comment.rawValue
-        var title = contentProvider?.commentCount().stringValue
-        var image = UIImage(named: "reader-postaction-comment-blue")
-        var highlightImage = UIImage(named: "reader-postaction-comment-active")
+        let title = contentProvider?.commentCount().stringValue
+        let image = UIImage(named: "icon-reader-comment")
+        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 
     private func configureVisitActionButton(button: UIButton) {
         button.tag = CardAction.View.rawValue
-        let title = NSLocalizedString("View", comment: "")
-        var image = UIImage(named: "reader-postaction-like-blue")
-        var highlightImage = UIImage(named: "reader-postaction-like-blue")
+        let title = NSLocalizedString("Visit", comment: "")
+        let image = UIImage(named: "icon-reader-visit")
+        let highlightImage = UIImage(named: "icon-reader-visit-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 

@@ -7,21 +7,21 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="391" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="355"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="457" id="IB3-vN-rW4" customClass="ReaderPostCardCell" customModule="WordPress">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="421"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IB3-vN-rW4" id="519-Nh-f7o">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tU3-wI-Ijv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="354"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="420"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qot-SU-GLn">
-                                <rect key="frame" x="5" y="9" width="310" height="335"/>
+                                <rect key="frame" x="5" y="9" width="310" height="401"/>
                                 <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kha-YG-ZlO">
-                                <rect key="frame" x="6" y="10" width="308" height="333"/>
+                                <rect key="frame" x="6" y="10" width="308" height="399"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8A-oh-TmY">
                                         <rect key="frame" x="14" y="15" width="259" height="34"/>
@@ -97,24 +97,24 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag ###words" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eFe-da-xxs">
-                                        <rect key="frame" x="14" y="329" width="280" height="0.0"/>
+                                        <rect key="frame" x="14" y="329" width="280" height="30"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wHE-hH-7uj">
-                                        <rect key="frame" x="14" y="335" width="280" height="18"/>
+                                        <rect key="frame" x="14" y="365" width="280" height="24"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nrn-14-H99" customClass="PostMetaButton">
-                                                <rect key="frame" x="239" y="0.0" width="41" height="18"/>
+                                                <rect key="frame" x="233" y="0.0" width="47" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="O9d-Bt-osU"/>
-                                                    <constraint firstAttribute="height" constant="18" id="hb5-8N-Ylt"/>
+                                                    <constraint firstAttribute="height" constant="24" id="hb5-8N-Ylt"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                <state key="normal" title="Like" image="icon-postmeta-like">
+                                                <state key="normal" title="Like" image="icon-reader-like">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -122,14 +122,14 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iDF-k2-iBh" customClass="PostMetaButton">
-                                                <rect key="frame" x="196" y="0.0" width="30" height="18"/>
+                                                <rect key="frame" x="189" y="0.0" width="31" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="6YU-TX-iww"/>
-                                                    <constraint firstAttribute="height" constant="18" id="jK0-cK-Mx6"/>
+                                                    <constraint firstAttribute="height" constant="24" id="jK0-cK-Mx6"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                <state key="normal" title="0" image="icon-postmeta-comment">
+                                                <state key="normal" title="0" image="icon-reader-comment">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -137,14 +137,14 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbf-vu-8kW" customClass="PostMetaButton">
-                                                <rect key="frame" x="143" y="0.0" width="42" height="18"/>
+                                                <rect key="frame" x="130" y="0.0" width="48" height="24"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="18" id="SEd-e3-XVy"/>
+                                                    <constraint firstAttribute="height" constant="24" id="SEd-e3-XVy"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="WCg-nE-XTI"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                <state key="normal" title="Visit" image="icon-postmeta-like">
+                                                <state key="normal" title="Visit" image="icon-reader-visit">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -152,14 +152,14 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" horizontalCompressionResistancePriority="250" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Thr-u6-Pl7" customClass="PostMetaButton">
-                                                <rect key="frame" x="0.0" y="0.0" width="42" height="18"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="48" height="24"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="height" constant="18" id="CiK-ju-5CG"/>
+                                                    <constraint firstAttribute="height" constant="24" id="CiK-ju-5CG"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="30" id="gxG-8K-9TW"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
-                                                <state key="normal" title="Visit" image="icon-postmeta-like">
+                                                <state key="normal" title="Visit" image="icon-reader-visit">
                                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                                 </state>
                                                 <connections>
@@ -169,7 +169,7 @@
                                         </subviews>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="18" id="ChH-8z-5Of">
+                                            <constraint firstAttribute="height" constant="24" id="ChH-8z-5Of">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="22"/>
                                             </constraint>
                                             <constraint firstAttribute="centerY" secondItem="Thr-u6-Pl7" secondAttribute="centerY" id="GUV-lO-lWj"/>
@@ -280,13 +280,14 @@
                 <outlet property="titleLabel" destination="YTV-MW-ksl" id="AMS-QP-w4w"/>
                 <outlet property="titleLabelBottomConstraint" destination="IDE-wF-Dff" id="y0l-Tc-q8G"/>
             </connections>
-            <point key="canvasLocation" x="354" y="383.5"/>
+            <point key="canvasLocation" x="354" y="416.5"/>
         </tableViewCell>
     </objects>
     <resources>
         <image name="icon-menu-ellipsis" width="15" height="15"/>
-        <image name="icon-postmeta-comment" width="18" height="18"/>
-        <image name="icon-postmeta-like" width="18" height="18"/>
+        <image name="icon-reader-comment" width="24" height="24"/>
+        <image name="icon-reader-like" width="24" height="24"/>
+        <image name="icon-reader-visit" width="24" height="24"/>
         <image name="post-blavatar-placeholder" width="32" height="32"/>
     </resources>
 </document>
