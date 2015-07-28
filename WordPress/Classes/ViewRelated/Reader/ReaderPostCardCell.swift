@@ -17,7 +17,7 @@ enum CardAction: Int
 
 @objc public class ReaderPostCardCell: UITableViewCell
 {
-    // MARK - Properties
+    // MARK: - Properties
 
     @IBOutlet private weak var innerContentView: UIView!
     @IBOutlet private weak var cardContentView: UIView!
@@ -38,7 +38,7 @@ enum CardAction: Int
     @IBOutlet private weak var actionButtonLeft: UIButton!
     @IBOutlet private weak var actionButtonFlushLeft: UIButton!
 
-    @IBOutlet private weak var featuredImageHeightContraint: NSLayoutConstraint!
+    @IBOutlet private weak var featuredImageHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var featuredImageBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabelBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var summaryLabelBottomConstraint: NSLayoutConstraint!
@@ -57,7 +57,7 @@ enum CardAction: Int
     private var summaryLabelBottomConstraintConstant: CGFloat = 0.0
     private var tagLabelBottomConstraintConstant: CGFloat = 0.0
 
-    // MARK - Accessors
+    // MARK: - Accessors
 
     public override var backgroundColor: UIColor? {
         didSet{
@@ -82,11 +82,11 @@ enum CardAction: Int
     }
 
 
-    // MARK - Lifecycle Methods
+    // MARK: - Lifecycle Methods
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-        featuredImageHeightConstraintConstant = featuredImageHeightContraint.constant
+        featuredImageHeightConstraintConstant = featuredImageHeightConstraint.constant
         featuredImageBottomConstraintConstant = featuredImageBottomConstraint.constant
         titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
@@ -116,7 +116,7 @@ enum CardAction: Int
         var height = CGRectGetMinY(cardContentView.frame)
 
         height += CGRectGetMinY(featuredImageView.frame)
-        height += featuredImageHeightContraint.constant
+        height += featuredImageHeightConstraint.constant
         height += featuredImageBottomConstraint.constant
 
         height += titleLabel.sizeThatFits(innerSize).height
@@ -151,7 +151,7 @@ enum CardAction: Int
     }
 
 
-    // MARK - Configuration
+    // MARK: - Configuration
 
     /**
         Applies the default styles to the cell's subviews
@@ -204,10 +204,15 @@ enum CardAction: Int
         // momentarily visible.
         featuredImageView.image = nil
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
-            featuredImageView.setImageWithURL(featuredImageURL)
-            featuredImageHeightContraint.constant = featuredImageHeightConstraintConstant
+            var url = featuredImageURL
+            if !(contentProvider!.isPrivate()) {
+                let size = featuredImageView.frame.size
+                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+            }
+            featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            featuredImageHeightConstraint.constant = featuredImageHeightConstraintConstant
         } else {
-            featuredImageHeightContraint.constant = 0.0
+            featuredImageHeightConstraint.constant = 0.0
         }
     }
 
@@ -332,7 +337,7 @@ enum CardAction: Int
     }
 
 
-    // MARK - Actions
+    // MARK: - Actions
 
     @IBAction func didTapMenuButton(sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
