@@ -33,13 +33,20 @@
                                                     <constraint firstAttribute="height" constant="32" id="7Zk-pV-2kd"/>
                                                 </constraints>
                                             </imageView>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Blog name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yfI-UY-pPA">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lDA-jj-gT4">
                                                 <rect key="frame" x="48" y="0.0" width="211" height="17"/>
-                                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="17" id="jLg-GN-bDS"/>
+                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
+                                                <state key="normal" title="Blog name">
+                                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                                </state>
+                                                <connections>
+                                                    <action selector="didTapBlogNameButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="2hK-9j-FV8"/>
+                                                </connections>
+                                            </button>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time, by Author" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0Tv-jX-0Xi">
                                                 <rect key="frame" x="48" y="18" width="211" height="15"/>
                                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -56,10 +63,10 @@
                                             <constraint firstItem="0Tv-jX-0Xi" firstAttribute="leading" secondItem="Xmp-D3-o2U" secondAttribute="trailing" constant="16" id="NvY-G2-krO"/>
                                             <constraint firstAttribute="trailing" secondItem="0Tv-jX-0Xi" secondAttribute="trailing" id="W2O-Zo-iYV"/>
                                             <constraint firstAttribute="centerY" secondItem="Xmp-D3-o2U" secondAttribute="centerY" id="X3d-Zh-ZGQ"/>
-                                            <constraint firstItem="yfI-UY-pPA" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="top" id="oQV-7O-x8L"/>
-                                            <constraint firstItem="yfI-UY-pPA" firstAttribute="leading" secondItem="Xmp-D3-o2U" secondAttribute="trailing" constant="16" id="oR9-qL-2jX"/>
+                                            <constraint firstItem="lDA-jj-gT4" firstAttribute="leading" secondItem="Xmp-D3-o2U" secondAttribute="trailing" constant="16" id="fh7-55-1Iz"/>
                                             <constraint firstItem="0Tv-jX-0Xi" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="top" constant="18" id="osF-bf-Ikb"/>
-                                            <constraint firstAttribute="trailing" secondItem="yfI-UY-pPA" secondAttribute="trailing" id="oxK-aa-9or"/>
+                                            <constraint firstItem="lDA-jj-gT4" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="top" id="vzp-4I-uaB"/>
+                                            <constraint firstAttribute="trailing" secondItem="lDA-jj-gT4" secondAttribute="trailing" id="yP2-Xa-mSi"/>
                                         </constraints>
                                     </view>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZXc-ck-z8k">
@@ -263,7 +270,7 @@
                 <outlet property="actionButtonViewBottomConstraint" destination="Yi0-cs-5Xj" id="nlv-h5-Sr0"/>
                 <outlet property="actionButtonViewHeightConstraint" destination="ChH-8z-5Of" id="Fpm-Tv-2WN"/>
                 <outlet property="avatarImageView" destination="Xmp-D3-o2U" id="2wE-bI-O60"/>
-                <outlet property="blogNameLabel" destination="yfI-UY-pPA" id="9LQ-z6-3g1"/>
+                <outlet property="blogNameButton" destination="lDA-jj-gT4" id="pFV-4a-nwG"/>
                 <outlet property="bylineLabel" destination="0Tv-jX-0Xi" id="jqB-tU-cZt"/>
                 <outlet property="cardBorderView" destination="Qot-SU-GLn" id="9pV-YG-oeA"/>
                 <outlet property="cardContentBottomConstraint" destination="oS8-JB-YFs" id="KA9-LN-tKU"/>
