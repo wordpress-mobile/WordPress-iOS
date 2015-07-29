@@ -27,9 +27,9 @@ import Foundation
             }
         }
     }
-    public var deleted: Bool = false {
+    public var markedForDeletion: Bool = false {
         didSet {
-            if deleted != oldValue {
+            if markedForDeletion != oldValue {
                 refreshSubviewVisibility()
                 refreshBackgrounds()
                 refreshUndoOverlay()
@@ -176,7 +176,7 @@ import Foundation
     
     private func refreshSubviewVisibility() {
         for subview in contentView.subviews as! [UIView] {
-            subview.hidden = deleted
+            subview.hidden = markedForDeletion
         }
     }
     
@@ -188,7 +188,7 @@ import Foundation
     
     private func refreshUndoOverlay() {
         // Remove
-        if deleted == false {
+        if markedForDeletion == false {
             undoOverlayView?.removeFromSuperview()
             return
         }
