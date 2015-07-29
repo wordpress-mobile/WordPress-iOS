@@ -265,6 +265,13 @@
 		85C720B11730CEFA00460645 /* WPWalkthroughTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 85C720B01730CEFA00460645 /* WPWalkthroughTextField.m */; };
 		85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CE4C1F1A703CF200780DFE /* NSBundle+VersionNumberHelper.m */; };
 		85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D2275818F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m */; };
+		85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */; };
+		85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */; };
+		85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */; };
+		85D239B01AE5A5FC0074768D /* LoginFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A61AE5A5FC0074768D /* LoginFacade.m */; };
+		85D239B11AE5A5FC0074768D /* OnePasswordFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */; };
+		85D239B21AE5A5FC0074768D /* WordPressComOAuthClientFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */; };
+		85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */; };
 		85D239B61AE5A6170074768D /* ReachabilityFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B51AE5A6170074768D /* ReachabilityFacade.m */; };
 		85D239BB1AE5A6620074768D /* LoginFields.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239B81AE5A6620074768D /* LoginFields.m */; };
 		85D239BC1AE5A6620074768D /* LoginViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85D239BA1AE5A6620074768D /* LoginViewModel.m */; };
@@ -327,13 +334,6 @@
 		ACBAB6860E1247F700F38795 /* PostPreviewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACBAB6850E1247F700F38795 /* PostPreviewViewController.m */; };
 		ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACC156CB0E10E67600D6E1A0 /* WPPostViewController.m */; };
 		ADF544C2195A0F620092213D /* CustomHighlightButton.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF544C1195A0F620092213D /* CustomHighlightButton.m */; };
-		B516B9DB1B66ACB90015B15D /* AccountServiceFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9CE1B66ACB90015B15D /* AccountServiceFacade.m */; };
-		B516B9DC1B66ACB90015B15D /* BlogSyncFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9D01B66ACB90015B15D /* BlogSyncFacade.m */; };
-		B516B9DD1B66ACB90015B15D /* HelpshiftEnabledFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9D21B66ACB90015B15D /* HelpshiftEnabledFacade.m */; };
-		B516B9DE1B66ACB90015B15D /* LoginFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9D41B66ACB90015B15D /* LoginFacade.m */; };
-		B516B9DF1B66ACB90015B15D /* OnePasswordFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9D61B66ACB90015B15D /* OnePasswordFacade.m */; };
-		B516B9E01B66ACB90015B15D /* WordPressComOAuthClientFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9D81B66ACB90015B15D /* WordPressComOAuthClientFacade.m */; };
-		B516B9E11B66ACB90015B15D /* WordPressXMLRPCAPIFacade.m in Sources */ = {isa = PBXBuildFile; fileRef = B516B9DA1B66ACB90015B15D /* WordPressXMLRPCAPIFacade.m */; };
 		B51D9A7E19634D4400CA857B /* Noticons-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = B55853F419630AF900FAF6C3 /* Noticons-Regular.otf */; };
 		B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */; };
 		B526DC291B1E47FC002A8C5F /* WPStyleGuide+WebView.m in Sources */ = {isa = PBXBuildFile; fileRef = B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */; };
@@ -1072,6 +1072,20 @@
 		85CE4C1F1A703CF200780DFE /* NSBundle+VersionNumberHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+VersionNumberHelper.m"; sourceTree = "<group>"; };
 		85D2275718F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPAnalyticsTrackerMixpanel.h; sourceTree = "<group>"; };
 		85D2275818F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = WPAnalyticsTrackerMixpanel.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountServiceFacade.h; sourceTree = "<group>"; };
+		85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountServiceFacade.m; sourceTree = "<group>"; };
+		85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSyncFacade.h; sourceTree = "<group>"; };
+		85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSyncFacade.m; sourceTree = "<group>"; };
+		85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpshiftEnabledFacade.h; sourceTree = "<group>"; };
+		85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpshiftEnabledFacade.m; sourceTree = "<group>"; };
+		85D239A51AE5A5FC0074768D /* LoginFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFacade.h; sourceTree = "<group>"; };
+		85D239A61AE5A5FC0074768D /* LoginFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacade.m; sourceTree = "<group>"; };
+		85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordFacade.h; sourceTree = "<group>"; };
+		85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordFacade.m; sourceTree = "<group>"; };
+		85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComOAuthClientFacade.h; sourceTree = "<group>"; };
+		85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComOAuthClientFacade.m; sourceTree = "<group>"; };
+		85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressXMLRPCAPIFacade.h; sourceTree = "<group>"; };
+		85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressXMLRPCAPIFacade.m; sourceTree = "<group>"; };
 		85D239B41AE5A6170074768D /* ReachabilityFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReachabilityFacade.h; sourceTree = "<group>"; };
 		85D239B51AE5A6170074768D /* ReachabilityFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReachabilityFacade.m; sourceTree = "<group>"; };
 		85D239B71AE5A6620074768D /* LoginFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFields.h; sourceTree = "<group>"; };
@@ -1196,20 +1210,6 @@
 		ADF544C1195A0F620092213D /* CustomHighlightButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomHighlightButton.m; sourceTree = "<group>"; };
 		AEFB66560B716519236CEE67 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "../Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		B43F6A7D9B3DC5B8B4A7DDCA /* Pods-WordPressTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.debug.xcconfig"; sourceTree = "<group>"; };
-		B516B9CD1B66ACB90015B15D /* AccountServiceFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AccountServiceFacade.h; sourceTree = "<group>"; };
-		B516B9CE1B66ACB90015B15D /* AccountServiceFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AccountServiceFacade.m; sourceTree = "<group>"; };
-		B516B9CF1B66ACB90015B15D /* BlogSyncFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogSyncFacade.h; sourceTree = "<group>"; };
-		B516B9D01B66ACB90015B15D /* BlogSyncFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogSyncFacade.m; sourceTree = "<group>"; };
-		B516B9D11B66ACB90015B15D /* HelpshiftEnabledFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpshiftEnabledFacade.h; sourceTree = "<group>"; };
-		B516B9D21B66ACB90015B15D /* HelpshiftEnabledFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpshiftEnabledFacade.m; sourceTree = "<group>"; };
-		B516B9D31B66ACB90015B15D /* LoginFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginFacade.h; sourceTree = "<group>"; };
-		B516B9D41B66ACB90015B15D /* LoginFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginFacade.m; sourceTree = "<group>"; };
-		B516B9D51B66ACB90015B15D /* OnePasswordFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OnePasswordFacade.h; sourceTree = "<group>"; };
-		B516B9D61B66ACB90015B15D /* OnePasswordFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OnePasswordFacade.m; sourceTree = "<group>"; };
-		B516B9D71B66ACB90015B15D /* WordPressComOAuthClientFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComOAuthClientFacade.h; sourceTree = "<group>"; };
-		B516B9D81B66ACB90015B15D /* WordPressComOAuthClientFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComOAuthClientFacade.m; sourceTree = "<group>"; };
-		B516B9D91B66ACB90015B15D /* WordPressXMLRPCAPIFacade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressXMLRPCAPIFacade.h; sourceTree = "<group>"; };
-		B516B9DA1B66ACB90015B15D /* WordPressXMLRPCAPIFacade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressXMLRPCAPIFacade.m; sourceTree = "<group>"; };
 		B522C4F71B3DA79B00E47B59 /* NotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		B526DC271B1E47FC002A8C5F /* WPStyleGuide+WebView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "WPStyleGuide+WebView.h"; sourceTree = "<group>"; };
 		B526DC281B1E47FC002A8C5F /* WPStyleGuide+WebView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "WPStyleGuide+WebView.m"; sourceTree = "<group>"; };
@@ -2891,20 +2891,20 @@
 		B5EFB1C31B31B99D007608A3 /* Facades */ = {
 			isa = PBXGroup;
 			children = (
-				B516B9CD1B66ACB90015B15D /* AccountServiceFacade.h */,
-				B516B9CE1B66ACB90015B15D /* AccountServiceFacade.m */,
-				B516B9CF1B66ACB90015B15D /* BlogSyncFacade.h */,
-				B516B9D01B66ACB90015B15D /* BlogSyncFacade.m */,
-				B516B9D11B66ACB90015B15D /* HelpshiftEnabledFacade.h */,
-				B516B9D21B66ACB90015B15D /* HelpshiftEnabledFacade.m */,
-				B516B9D31B66ACB90015B15D /* LoginFacade.h */,
-				B516B9D41B66ACB90015B15D /* LoginFacade.m */,
-				B516B9D51B66ACB90015B15D /* OnePasswordFacade.h */,
-				B516B9D61B66ACB90015B15D /* OnePasswordFacade.m */,
-				B516B9D71B66ACB90015B15D /* WordPressComOAuthClientFacade.h */,
-				B516B9D81B66ACB90015B15D /* WordPressComOAuthClientFacade.m */,
-				B516B9D91B66ACB90015B15D /* WordPressXMLRPCAPIFacade.h */,
-				B516B9DA1B66ACB90015B15D /* WordPressXMLRPCAPIFacade.m */,
+				85D2399F1AE5A5FC0074768D /* AccountServiceFacade.h */,
+				85D239A01AE5A5FC0074768D /* AccountServiceFacade.m */,
+				85D239A11AE5A5FC0074768D /* BlogSyncFacade.h */,
+				85D239A21AE5A5FC0074768D /* BlogSyncFacade.m */,
+				85D239A31AE5A5FC0074768D /* HelpshiftEnabledFacade.h */,
+				85D239A41AE5A5FC0074768D /* HelpshiftEnabledFacade.m */,
+				85D239A51AE5A5FC0074768D /* LoginFacade.h */,
+				85D239A61AE5A5FC0074768D /* LoginFacade.m */,
+				85D239A71AE5A5FC0074768D /* OnePasswordFacade.h */,
+				85D239A81AE5A5FC0074768D /* OnePasswordFacade.m */,
+				85D239A91AE5A5FC0074768D /* WordPressComOAuthClientFacade.h */,
+				85D239AA1AE5A5FC0074768D /* WordPressComOAuthClientFacade.m */,
+				85D239AB1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.h */,
+				85D239AC1AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m */,
 			);
 			name = Facades;
 			sourceTree = "<group>";
@@ -3923,7 +3923,6 @@
 				B587797D19B799D800E57C5A /* UIDevice+Helpers.swift in Sources */,
 				E2AA87A518523E5300886693 /* UIView+Subviews.m in Sources */,
 				5D51ADAF19A832AF00539C0B /* WordPress-20-21.xcmappingmodel in Sources */,
-				B516B9DD1B66ACB90015B15D /* HelpshiftEnabledFacade.m in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
 				ACC156CC0E10E67600D6E1A0 /* WPPostViewController.m in Sources */,
 				93C1148518EDF6E100DAC95C /* BlogService.m in Sources */,
@@ -4008,7 +4007,6 @@
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
-				B516B9DC1B66ACB90015B15D /* BlogSyncFacade.m in Sources */,
 				E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */,
 				B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */,
 				5D6C4B131B604190005E3C43 /* UITextView+RichTextView.swift in Sources */,
@@ -4025,7 +4023,6 @@
 				5DA3EE12192508F700294E0B /* WPImageOptimizer.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
 				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
-				B516B9DF1B66ACB90015B15D /* OnePasswordFacade.m in Sources */,
 				5DA5BF4618E32DCF005F11F9 /* ThemeBrowserViewController.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */,
@@ -4071,6 +4068,7 @@
 				5D5D0027187DA9D30027CEF6 /* PostCategoriesViewController.m in Sources */,
 				E1E4CE0B1773C59B00430844 /* WPAvatarSource.m in Sources */,
 				FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */,
+				85D239AE1AE5A5FC0074768D /* BlogSyncFacade.m in Sources */,
 				5DB93EED19B6190700EC88EB /* ReaderCommentCell.m in Sources */,
 				5D97C2F315CAF8D8009B44DD /* UINavigationController+KeyboardFix.m in Sources */,
 				5D2415CB1A8842C9009BD444 /* ReaderPreviewHeaderView.m in Sources */,
@@ -4103,8 +4101,6 @@
 				FF0AAE0D1A16550D0089841D /* WPMediaProgressTableViewController.m in Sources */,
 				5DFA7EC11AF7CB6B0072023B /* PageListViewController.m in Sources */,
 				5D6C4B111B604190005E3C43 /* NSAttributedString+RichTextView.swift in Sources */,
-				B516B9DB1B66ACB90015B15D /* AccountServiceFacade.m in Sources */,
-				B516B9E01B66ACB90015B15D /* WordPressComOAuthClientFacade.m in Sources */,
 				E1D0D82916D3D19200E33F4C /* PocketAPI.m in Sources */,
 				E1D0D82A16D3D19200E33F4C /* PocketAPILogin.m in Sources */,
 				5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */,
@@ -4114,19 +4110,16 @@
 				46FE8276184FD8A200535844 /* WordPressComOAuthClient.m in Sources */,
 				E1D0D84716D3D2EA00E33F4C /* PocketActivity.m in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
-				5DA5BF3F18E32DCF005F11F9 /* InputViewButton.m in Sources */,
 				85D239AF1AE5A5FC0074768D /* HelpshiftEnabledFacade.m in Sources */,
 				E149D65019349E69006A843D /* MediaServiceRemoteREST.m in Sources */,
 				FF8DDCE41B5EA6590098826F /* SettingsTextViewController.m in Sources */,
 				85D8055D171631F10075EEAC /* SelectWPComLanguageViewController.m in Sources */,
 				B587798719B799EB00E57C5A /* NotificationBlock+Interface.swift in Sources */,
 				E23EEC5E185A72C100F4DE2A /* WPContentCell.m in Sources */,
-				B516B9E11B66ACB90015B15D /* WordPressXMLRPCAPIFacade.m in Sources */,
 				8525398B171761D9003F6B32 /* WPComLanguages.m in Sources */,
 				37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */,
 				E1DF5DFD19E7CFAE004E70D5 /* PostCategoryServiceRemoteREST.m in Sources */,
 				FFC6ADE01B56F421002F3C84 /* WPThemeSettings.m in Sources */,
-				B516B9DE1B66ACB90015B15D /* LoginFacade.m in Sources */,
 				5D7B414619E482C9007D9EC7 /* WPRichTextEmbed.swift in Sources */,
 				85149741171E13DF00B87F3F /* WPAsyncBlockOperation.m in Sources */,
 				858DE40F1730384F000AC628 /* LoginViewController.m in Sources */,
@@ -4163,7 +4156,9 @@
 				B54E1DF01A0A7BAA00807537 /* ReplyBezierView.swift in Sources */,
 				5DF738941965FAB900393584 /* SubscribedTopicsViewController.m in Sources */,
 				E2E7EB46185FB140004F5E72 /* WPBlogSelectorButton.m in Sources */,
+				85D239B21AE5A5FC0074768D /* WordPressComOAuthClientFacade.m in Sources */,
 				5D9BFF041A8557A8001D6D63 /* ReaderPostRichContentView.m in Sources */,
+				85D239B31AE5A5FC0074768D /* WordPressXMLRPCAPIFacade.m in Sources */,
 				E183BD7417621D87000B0822 /* WPCookie.m in Sources */,
 				E10DB0081771926D00B7A0A3 /* GooglePlusActivity.m in Sources */,
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
@@ -4187,6 +4182,7 @@
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
 				5D6C4B0C1B604110005E3C43 /* WPChromelessWebViewController.m in Sources */,
+				85D239AD1AE5A5FC0074768D /* AccountServiceFacade.m in Sources */,
 				B54E1DF11A0A7BAA00807537 /* ReplyTextView.swift in Sources */,
 				5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */,
 				5D42A3FB175E75EE005CFF05 /* ReaderPostDetailViewController.m in Sources */,
@@ -4235,6 +4231,7 @@
 				5948AD0E1AB734F2006E8882 /* WPAppAnalytics.m in Sources */,
 				851734431798C64700A30E27 /* NSURL+Util.m in Sources */,
 				5DF738971965FACD00393584 /* RecommendedTopicsViewController.m in Sources */,
+				85D239B11AE5A5FC0074768D /* OnePasswordFacade.m in Sources */,
 				5D1181E71B4D6DEB003F3084 /* WPStyleGuide+Reader.swift in Sources */,
 				85CE4C201A703CF200780DFE /* NSBundle+VersionNumberHelper.m in Sources */,
 				E1D95EB817A28F5E00A3E9F3 /* WPActivityDefaults.m in Sources */,
