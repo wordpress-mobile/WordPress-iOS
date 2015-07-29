@@ -705,7 +705,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"deletionInProgress == %@", @(NO)];
+    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"deletionInProgress == %@ || deletionInProgress == nil", @(NO)];
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
     fetchRequest.predicate          = predicate;
