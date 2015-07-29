@@ -26,8 +26,9 @@
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l8A-oh-TmY">
                                         <rect key="frame" x="14" y="15" width="259" height="34"/>
                                         <subviews>
-                                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Xmp-D3-o2U">
+                                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="post-blavatar-placeholder" translatesAutoresizingMaskIntoConstraints="NO" id="Xmp-D3-o2U">
                                                 <rect key="frame" x="0.0" y="1" width="32" height="32"/>
+                                                <gestureRecognizers/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="32" id="6Vm-G6-czg"/>
                                                     <constraint firstAttribute="height" constant="32" id="7Zk-pV-2kd"/>

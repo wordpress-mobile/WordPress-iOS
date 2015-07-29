@@ -93,6 +93,7 @@ enum CardAction: Int
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         tagLabelBottomConstraintConstant = tagLabelBottomConstraint.constant
         applyStyles()
+        createAvatarTapGestureRecognizer()
     }
 
     /**
@@ -153,6 +154,11 @@ enum CardAction: Int
 
 
     // MARK: - Configuration
+
+    private func createAvatarTapGestureRecognizer() {
+        let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
+        avatarImageView.addGestureRecognizer(tgr)
+    }
 
     /**
         Applies the default styles to the cell's subviews
