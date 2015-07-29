@@ -366,7 +366,7 @@ import Foundation
 
     private func configureVisitActionButton(button: UIButton) {
         button.tag = CardAction.Visit.rawValue
-        let title = NSLocalizedString("Visit", comment: "")
+        let title = NSLocalizedString("Visit", comment: "Text for the 'visit' button. Tapping takes the user to the web page for a post being viewed in the reader.")
         let image = UIImage(named: "icon-reader-visit")
         let highlightImage = UIImage(named: "icon-reader-visit-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
