@@ -92,6 +92,9 @@ typedef NS_ENUM(NSInteger, NoteBlockGroupType)
 @property (nonatomic, assign,  readonly) BOOL                   isBadge;
 @property (nonatomic, assign,  readonly) BOOL                   hasReply;
 
+// Local Properties
+@property (nonatomic, assign, readwrite) BOOL                   markedForDeletion;
+
 // Helpers
 - (NotificationBlockGroup *)blockGroupOfType:(NoteBlockGroupType)type;
 - (NotificationRange *)notificationRangeWithUrl:(NSURL *)url;

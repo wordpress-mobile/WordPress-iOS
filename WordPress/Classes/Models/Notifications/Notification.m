@@ -562,6 +562,7 @@ NSString const *NoteReplyIdKey          = @"reply_comment";
 @dynamic type;
 @dynamic url;
 @dynamic title;
+@dynamic markedForDeletion;
 
 @synthesize date                = _date;
 @synthesize iconURL             = _iconURL;
