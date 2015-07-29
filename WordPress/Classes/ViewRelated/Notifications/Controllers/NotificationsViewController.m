@@ -516,6 +516,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     deletionBlock(^(NSError * error) {
         [self signalDeletionInProgress:false noteObjectID:noteObjectID];
+        [self.notificationIdsWithPendingDeletion removeObject:noteObjectID];
     });
 }
 
