@@ -20,7 +20,7 @@ typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDelet
 @interface NotificationDetailsViewController : UIViewController <UIViewControllerRestoration>
 
 /**
- *	@brief		Whenever the user performs a destructive action, the Deletion Request Callback will be called,
+ *  @brief      Whenever the user performs a destructive action, the Deletion Request Callback will be called,
  *              and a closure that will effectively perform the deletion action will be passed over.
  *              In turn, the Deletion Action block also expects (yet another) block as a parameter, to be called
  *              in the eventuallity of a failure.
