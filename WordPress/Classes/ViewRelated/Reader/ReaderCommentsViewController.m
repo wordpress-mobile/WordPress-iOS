@@ -19,7 +19,6 @@
 #import "WPImageViewController.h"
 #import "WPRichTextView.h"
 #import "WPTableViewHandler.h"
-#import "WPToast.h"
 #import "WPWebViewController.h"
 #import "SuggestionsTableView.h"
 #import "SuggestionService.h"

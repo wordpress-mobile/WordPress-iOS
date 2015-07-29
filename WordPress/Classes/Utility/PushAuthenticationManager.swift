@@ -16,8 +16,8 @@ import UIKit
     //
     // MARK: - Public Methods
     //
-    var alertViewProxy = UIAlertViewProxy()
-    let pushAuthenticationService:PushAuthenticationService
+    public var alertViewProxy = UIAlertViewProxy()
+    public let pushAuthenticationService:PushAuthenticationService
     
     override convenience init() {
         self.init(pushAuthenticationService: PushAuthenticationService(managedObjectContext: ContextManager.sharedInstance().mainContext))
