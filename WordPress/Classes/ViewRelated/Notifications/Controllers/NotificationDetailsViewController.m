@@ -1115,9 +1115,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
-            onCompletion(true);
+            onCompletion(YES);
         } failure:^(NSError * error){
-            onCompletion(false);
+            onCompletion(NO);
         }];
         
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
@@ -1157,9 +1157,9 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
         [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
-            onCompletion(true);
+            onCompletion(YES);
         } failure:^(NSError *error) {
-            onCompletion(false);
+            onCompletion(NO);
         }];
         
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
