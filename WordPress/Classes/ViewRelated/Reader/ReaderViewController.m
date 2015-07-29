@@ -121,13 +121,6 @@
 
 - (void)syncTopics
 {
-    // TODO: Should we check for an account?
-    NSManagedObjectContext *context = [self managedObjectContext];
-    AccountService *service = [[AccountService alloc] initWithManagedObjectContext:context];
-    if ([service numberOfAccounts] == 0) {
-        return;
-    }
-
     __weak __typeof(self) weakSelf = self;
     ReaderTopicService *topicService = [[ReaderTopicService alloc] initWithManagedObjectContext:[self managedObjectContext]];
     [topicService fetchReaderMenuWithSuccess:^{
