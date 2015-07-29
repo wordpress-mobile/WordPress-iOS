@@ -23,7 +23,6 @@ NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
-    SiteSettingsGeneralPushNotifications,
     SiteSettingsGeneralCount,
 };
 
@@ -59,15 +58,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
-@property (nonatomic, strong) SettingTableViewCell *pushCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
-#pragma mark - Other properties
-@property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *authToken;
@@ -129,15 +125,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     self.startingPwd = self.password;
     self.startingUrl = self.url;
     self.geolocationEnabled = self.blog.geolocationEnabled;
-
-    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
-    if (!self.notificationPreferences) {
-        [NotificationsManager fetchNotificationSettingsWithSuccess:^{
-            [self reloadNotificationSettings];
-        } failure:^(NSError *error) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
-        }];
-    }
     
     [self refreshData];
 }
@@ -288,21 +275,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _addressTextCell;
 }
 
-- (SettingTableViewCell *)pushCell
-{
-    if (_pushCell) {
-        return _pushCell;
-    }
-    _pushCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Push Notifications", @"")
-                                                   editable:NO
-                                            reuseIdentifier:nil];
-    UISwitch *pushSwitch = [[UISwitch alloc] init];
-    [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
-    _pushCell.accessoryView = pushSwitch;
-    pushSwitch.on = [self getBlogPushNotificationsSetting];
-    return _pushCell;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -329,11 +301,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
-        } break;
-        case SiteSettingsGeneralPushNotifications: {
-            UISwitch *pushSwitch = (UISwitch *)self.pushCell.accessoryView;
-            pushSwitch.on = [self getBlogPushNotificationsSetting];
-            return self.pushCell;
         } break;
     }
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];;
@@ -525,18 +492,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     
 }
 
-- (BOOL)canTogglePushNotifications
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    return self.blog &&
-        [self.blog supports:BlogFeaturePushNotifications] &&
-        [[defaultAccount restApi] hasCredentials] &&
-        [NotificationsManager deviceRegisteredForPushNotifications];
-}
-
 - (void)toggleGeolocation:(id)sender
 {
     UISwitch *geolocationSwitch = (UISwitch *)sender;
@@ -547,33 +502,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
-- (void)togglePushNotifications:(id)sender
-{
-    UISwitch *pushSwitch = (UISwitch *)sender;
-    BOOL muted = !pushSwitch.on;
-    if (_notificationPreferences) {
-        NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-        NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
-        NSMutableDictionary *updatedPreference;
-
-        NSNumber *blogID = [self.blog dotComID];
-        for (NSUInteger i = 0; i < [mutedBlogsArray count]; i++) {
-            updatedPreference = [mutedBlogsArray[i] mutableCopy];
-            NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
-            if ([blogID intValue] == [currentblogID intValue]) {
-                [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
-                [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
-                [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
-                [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
-                [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-
-                // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [NotificationsManager saveNotificationSettings];
-                return;
-            }
-        }
-    }
-}
 
 #pragma mark - Authentication methods
 
@@ -766,30 +694,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
-}
-
-- (void)reloadNotificationSettings
-{
-    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
-    if (self.notificationPreferences) {
-        [self.tableView reloadData];
-    }
-}
-
-- (BOOL)getBlogPushNotificationsSetting
-{
-    if (self.notificationPreferences) {
-        NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
-        NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-        NSNumber *blogID = [self.blog dotComID];
-        for (NSDictionary *currentBlog in mutedBlogsArray ){
-            NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
-            if ([blogID intValue] == [currentBlogID intValue]) {
-                return ![[currentBlog objectForKey:@"value"] boolValue];
-            }
-        }
-    }
-    return YES;
 }
 
 - (BOOL)canEditUsernameAndURL
