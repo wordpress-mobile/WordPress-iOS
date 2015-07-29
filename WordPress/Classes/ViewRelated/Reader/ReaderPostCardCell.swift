@@ -4,7 +4,7 @@ import Foundation
 {
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
-    func readerCell(cell: ReaderPostCardCell, viewActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
 }
 
@@ -12,7 +12,7 @@ enum CardAction: Int
 {
     case Comment = 1
     case Like
-    case View
+    case Visit
 }
 
 @objc public class ReaderPostCardCell: UITableViewCell
@@ -72,7 +72,7 @@ enum CardAction: Int
     }
 
     public override func setHighlighted(highlighted: Bool, animated: Bool) {
-        let previouslyHighlighted = highlighted
+        let previouslyHighlighted = self.highlighted
         super.setHighlighted(highlighted, animated: animated)
 
         if previouslyHighlighted == highlighted {
@@ -185,19 +185,20 @@ enum CardAction: Int
     }
 
     private func configureHeader() {
+        let placeholder = UIImage(named: "post-blavatar-placeholder")
         if let url = contentProvider?.avatarURLForDisplay() {
-            let placeholder = UIImage(named: "post-blavatar-placeholder")
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
+        } else {
+            avatarImageView.image = placeholder
         }
 
-        if let blogName = contentProvider?.blogNameForDisplay() {
-            blogNameLabel.text = blogName
-        }
+        blogNameLabel.text = contentProvider?.blogNameForDisplay()
 
         var byline = contentProvider?.dateForDisplay().shortString()
         if let author = contentProvider?.authorForDisplay() {
             byline = String(format: "%@, %@", byline!, author)
         }
+
         bylineLabel.text = byline
     }
 
@@ -211,33 +212,43 @@ enum CardAction: Int
                 let size = CGSizeMake( CGRectGetWidth(featuredImageView.frame), featuredImageHeightConstraintConstant)
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
-            } else if (url.host!.hasSuffix("wordpress.com")) {
+
+            } else if ((url.host != nil) && url.host!.hasSuffix("wordpress.com")) {
                 // private wpcom image needs special handling. 
                 let request = requestForURL(url)
                 featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+
             } else {
                 // private but not a wpcom hosted image
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
             }
+
             featuredImageHeightConstraint.constant = featuredImageHeightConstraintConstant
             featuredImageBottomConstraint.constant = featuredImageBottomConstraintConstant
+
         } else {
             featuredImageHeightConstraint.constant = 0.0
             featuredImageBottomConstraint.constant = 0.0
         }
+        setNeedsUpdateConstraints()
+        setNeedsLayout()
     }
 
     private func requestForURL(url:NSURL) -> NSURLRequest {
         var requestURL = url
-        if !(requestURL.absoluteString!.hasPrefix("https")) {
-            var sslUrl = requestURL.absoluteString!.stringByReplacingOccurrencesOfString("http", withString: "https")
-            requestURL = NSURL(string: sslUrl)!
+        if let absoluteString = requestURL.absoluteString {
+            if !(absoluteString.hasPrefix("https")) {
+                var sslURL = absoluteString.stringByReplacingOccurrencesOfString("http", withString: "https")
+                requestURL = NSURL(string: sslURL)!
+            }
         }
+
         let acctServ = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
         let token = acctServ.defaultWordPressComAccount().authToken
         var request = NSMutableURLRequest(URL: requestURL)
         var headerValue = String(format: "Bearer %@", token)
         request.addValue(headerValue, forHTTPHeaderField: "Authorization")
+
         return request
     }
 
@@ -246,6 +257,7 @@ enum CardAction: Int
             let attributes = WPStyleGuide.readerCardTitleAttributes()
             titleLabel.attributedText = NSAttributedString(string: title, attributes: attributes)
             titleLabelBottomConstraint.constant = titleLabelBottomConstraintConstant
+
         } else {
             titleLabel.attributedText = nil
             titleLabelBottomConstraint.constant = 0.0
@@ -257,10 +269,12 @@ enum CardAction: Int
             let attributes = WPStyleGuide.readerCardSummaryAttributes()
             summaryLabel.attributedText = NSAttributedString(string: summary, attributes: attributes)
             summaryLabelBottomConstraint.constant = summaryLabelBottomConstraintConstant
+
         } else {
             summaryLabel.attributedText = nil
             summaryLabelBottomConstraint.constant = 0.0
         }
+
         summaryLabel.numberOfLines = 3
         summaryLabel.lineBreakMode = .ByTruncatingTail
     }
@@ -279,7 +293,8 @@ enum CardAction: Int
         var buttons = [
             actionButtonLeft,
             actionButtonCenter,
-            actionButtonRight]
+            actionButtonRight
+        ]
 
         // Show Likes
         if contentProvider!.isLikesEnabled() {
@@ -348,7 +363,7 @@ enum CardAction: Int
     }
 
     private func configureVisitActionButton(button: UIButton) {
-        button.tag = CardAction.View.rawValue
+        button.tag = CardAction.Visit.rawValue
         let title = NSLocalizedString("Visit", comment: "")
         let image = UIImage(named: "icon-reader-visit")
         let highlightImage = UIImage(named: "icon-reader-visit-highlight")
@@ -384,10 +399,9 @@ enum CardAction: Int
             delegate?.readerCell(self, commentActionForProvider: contentProvider!)
         case .Like :
             delegate?.readerCell(self, likeActionForProvider: contentProvider!)
-        case .View :
-            delegate?.readerCell(self, viewActionForProvider: contentProvider!)
+        case .Visit :
+            delegate?.readerCell(self, visitActionForProvider: contentProvider!)
         }
     }
 
 }
-
