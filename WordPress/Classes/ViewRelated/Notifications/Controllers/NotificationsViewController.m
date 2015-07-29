@@ -535,6 +535,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:nil];
     note.deletionInProgress         = deletionInProgress;
+    [note.managedObjectContext save:nil];
 }
 
 - (void)cancelNoteDeletion:(Notification *)note
