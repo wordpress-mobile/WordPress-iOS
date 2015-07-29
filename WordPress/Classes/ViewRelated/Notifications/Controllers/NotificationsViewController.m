@@ -511,12 +511,17 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
-    // Hide the Notification + Hit the Deletion Block. On error, simply unhide the Note
+    // Hide the Notification + Hit the Deletion Block
     [self signalDeletionInProgress:true noteObjectID:noteObjectID];
     
-    deletionBlock(^(NSError * error) {
-        [self signalDeletionInProgress:false noteObjectID:noteObjectID];
+    deletionBlock(^(BOOL success) {
+        // Cleanup
         [self.notificationIdsWithPendingDeletion removeObject:noteObjectID];
+        
+        // On error, let's unhide the row
+        if (!success) {
+            [self signalDeletionInProgress:false noteObjectID:noteObjectID];
+        }
     });
 }
 

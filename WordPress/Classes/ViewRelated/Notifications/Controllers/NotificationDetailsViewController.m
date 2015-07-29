@@ -1108,14 +1108,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Spam Action
-    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionFailureBlock onFailure) {
-        NSParameterAssert(onFailure);
+    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError * error){
-            onFailure(error);
+        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(true);
+        } failure:^(NSError * error){
+            onCompletion(false);
         }];
         
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
@@ -1148,14 +1150,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Trash Action
-    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionFailureBlock onFailure) {
-        NSParameterAssert(onFailure);
+    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
         
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
-            onFailure(error);
+        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(true);
+        } failure:^(NSError *error) {
+            onCompletion(false);
         }];
         
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
