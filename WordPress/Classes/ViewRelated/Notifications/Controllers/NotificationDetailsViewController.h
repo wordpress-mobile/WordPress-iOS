@@ -4,7 +4,8 @@
 
 @class Notification;
 
-typedef void (^NotificationDetailsDeletionActionBlock)();
+typedef void (^NotificationDetailsDeletionFailureBlock)(NSError *error);
+typedef void (^NotificationDetailsDeletionActionBlock)(NotificationDetailsDeletionFailureBlock onFailure);
 typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDeletionActionBlock onUndoTimeout);
 
 
@@ -20,7 +21,9 @@ typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDelet
 
 /**
  *	@brief		Whenever the user performs a destructive action, the Deletion Request Callback will be called,
- *              and a closure that will effectively perform the deletion action will be sent over.
+ *              and a closure that will effectively perform the deletion action will be passed over.
+ *              In turn, the Deletion Action block also expects (yet another) block as a parameter, to be called
+ *              in the eventuallity of a failure.
  *  @details    This mechanism has been implemented so that the presenter ViewController can allow the user to
  *              undo the destructive action, before it's effectively executed.
  */

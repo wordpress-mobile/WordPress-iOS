@@ -1108,11 +1108,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Spam Action
-    NotificationDetailsDeletionActionBlock spamAction = ^{
+    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionFailureBlock onFailure) {
+        NSParameterAssert(onFailure);
+        
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError * error){
+            onFailure(error);
+        }];
+        
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
     };
     
@@ -1143,11 +1148,16 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     NSParameterAssert(self.onDeletionRequestCallback);
     
     // Trash Action
-    NotificationDetailsDeletionActionBlock deletionAction = ^{
+    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionFailureBlock onFailure) {
+        NSParameterAssert(onFailure);
+        
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
         
-        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:^(NSError *error) {
+            onFailure(error);
+        }];
+        
         [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
     };
     
