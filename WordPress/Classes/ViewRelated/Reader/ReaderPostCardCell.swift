@@ -9,13 +9,6 @@ import Foundation
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
 }
 
-enum CardAction: Int
-{
-    case Comment = 1
-    case Like
-    case Visit
-}
-
 @objc public class ReaderPostCardCell: UITableViewCell
 {
     // MARK: - Properties
@@ -113,11 +106,11 @@ enum CardAction: Int
 
     public override func sizeThatFits(size: CGSize) -> CGSize {
         let innerWidth = innerWidthForSize(size)
-        let innerSize = CGSizeMake(innerWidth, CGFloat.max)
+        let innerSize = CGSize(width: innerWidth, height: CGFloat.max)
 
-        var height = CGRectGetMinY(cardContentView.frame)
+        var height = cardContentView.frame.minY
 
-        height += CGRectGetMinY(featuredImageView.frame)
+        height += featuredImageView.frame.minY
         height += featuredImageHeightConstraint.constant
         height += featuredImageBottomConstraint.constant
 
@@ -135,18 +128,18 @@ enum CardAction: Int
 
         height += cardContentBottomConstraint.constant
 
-        return CGSizeMake(size.width, height)
+        return CGSize(width: size.width, height: height)
     }
 
     private func innerWidthForSize(size: CGSize) -> CGFloat {
-        var width:CGFloat = 0.0
-        var horizontalMargin = CGRectGetMinX(headerView.frame)
+        var width = CGFloat(0.0)
+        var horizontalMargin = headerView.frame.minX
 
-        if (UIDevice.isPad()) {
+        if UIDevice.isPad() {
             width = maxIPadWidthConstraint.constant
         } else {
             width = size.width
-            horizontalMargin += CGRectGetMinX(cardContentView.frame)
+            horizontalMargin += cardContentView.frame.minX
         }
         width -= (horizontalMargin * 2)
         return width
@@ -218,11 +211,11 @@ enum CardAction: Int
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
             var url = featuredImageURL
             if !(contentProvider!.isPrivate()) {
-                let size = CGSizeMake( CGRectGetWidth(featuredImageView.frame), featuredImageHeightConstraintConstant)
+                let size = CGSize(width:featuredImageView.frame.width, height:featuredImageHeightConstraintConstant)
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
-            } else if ((url.host != nil) && url.host!.hasSuffix("wordpress.com")) {
+            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
                 // private wpcom image needs special handling. 
                 let request = requestForURL(url)
                 featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
@@ -385,7 +378,7 @@ enum CardAction: Int
         UIView.animateWithDuration(duration,
             delay: 0,
             options: .CurveEaseInOut,
-            animations: { () -> Void in
+            animations: {
                 self.cardBorderView.backgroundColor = highlighted ? WPStyleGuide.readerCardCellHighlightedBorderColor() : WPStyleGuide.readerCardCellBorderColor()
         }, completion: nil)
     }
@@ -428,4 +421,13 @@ enum CardAction: Int
         }
     }
 
+
+    // MARK: - Private Types
+
+    private enum CardAction: Int
+    {
+        case Comment = 1
+        case Like
+        case Visit
+    }
 }
