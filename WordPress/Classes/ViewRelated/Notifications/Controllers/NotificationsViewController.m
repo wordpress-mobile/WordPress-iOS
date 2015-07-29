@@ -61,7 +61,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
-@property (nonatomic, strong) NSMutableSet          *notificationIdsWithPendingDeletion;
+@property (nonatomic, strong) NSMutableSet          *notificationIdsMarkedForDeletion;
+@property (nonatomic, strong) NSMutableSet          *notificationIdsBeingDeleted;
 @end
 
 
@@ -91,8 +92,11 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
         
-        // ObjectID's of the Notifications with pending Deletion OP's
-        self.notificationIdsWithPendingDeletion = [NSMutableSet set];
+        // Notifications that received a destructive action will allow the user to Undo this action.
+        // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
+        // so that it can be proactively filtered from the list.
+        self.notificationIdsMarkedForDeletion   = [NSMutableSet set];
+        self.notificationIdsBeingDeleted        = [NSMutableSet set];
     }
     
     return self;
@@ -454,9 +458,32 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
+    [self reloadResultsController];
+}
+
+- (void)reloadResultsController
+{
     [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     self.lastReloadDate = [NSDate date];
+}
+
+- (void)reloadRowForNotificationWithID:(NSManagedObjectID *)noteObjectID
+{
+    // Failsafe
+    if (!noteObjectID) {
+        return;
+    }
+    
+    // Load the Notification and its indexPath
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:nil];
+    NSIndexPath *indexPath          = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (!indexPath) {
+        return;
+    }
+    
+    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
@@ -483,78 +510,52 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 #pragma mark - Undelete Mechanism
 
-- (void)showUndeleteForNote:(Notification *)note onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
+- (void)showUndeleteForNotificationWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
 {
-    // Locate the IndexPath
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
-        return;
-    }
-    
-    // Keep a copy of the Destructive Block
-    [self.notificationIdsWithPendingDeletion addObject:note.objectID];
-    
-    // Update the cell
-    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    // Mark this note as Pending Deletion and Reload
+    [self.notificationIdsMarkedForDeletion addObject:noteObjectID];
+    [self reloadRowForNotificationWithID:noteObjectID];
     
     // Dispatch the Action block
     dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NotificationsUndoTimeout * NSEC_PER_SEC));
     dispatch_after(timeout, dispatch_get_main_queue(), ^{
-        [self performPendingDeletionAction:onTimeout noteObjectID:note.objectID];
+        [self performDeletionActionForNotificationWithID:noteObjectID deletionBlock:onTimeout];
     });
 }
 
-- (void)performPendingDeletionAction:(NotificationDetailsDeletionActionBlock)deletionBlock noteObjectID:(NSManagedObjectID *)noteObjectID
+- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDetailsDeletionActionBlock)deletionBlock
 {
     // Was the Deletion Cancelled?
     if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
         return;
     }
     
-    // Hide the Notification + Hit the Deletion Block
-    [self signalDeletionInProgress:true noteObjectID:noteObjectID];
-    
+    // Hide the Notification
+    [self.notificationIdsBeingDeleted addObject:noteObjectID];
+    [self reloadResultsController];
+
+    // Hit the Deletion Block
     deletionBlock(^(BOOL success) {
         // Cleanup
-        [self.notificationIdsWithPendingDeletion removeObject:noteObjectID];
+        [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+        [self.notificationIdsBeingDeleted removeObject:noteObjectID];
         
-        // On error, let's unhide the row
+        // Error: let's unhide the row
         if (!success) {
-            [self signalDeletionInProgress:false noteObjectID:noteObjectID];
+            [self reloadResultsController];
         }
     });
 }
 
-- (void)signalDeletionInProgress:(BOOL)deletionInProgress noteObjectID:(NSManagedObjectID *)noteObjectID
+- (void)cancelDeletionForNotificationWithID:(NSManagedObjectID *)noteObjectID
 {
-    // ++Paranoid++
-    if (!noteObjectID) {
-        return;
-    }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:nil];
-    note.deletionInProgress         = deletionInProgress;
-    [note.managedObjectContext save:nil];
-}
-
-- (void)cancelNoteDeletion:(Notification *)note
-{
-    // Nuke the Destructive Block
-    [self.notificationIdsWithPendingDeletion removeObject:note.objectID];
-    
-    // Reload the Row
-    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
-        return;
-    }
-    
-    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+    [self reloadRowForNotificationWithID:noteObjectID];
 }
 
 - (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
 {
-    return [self.notificationIdsWithPendingDeletion containsObject:noteObjectID];
+    return [self.notificationIdsMarkedForDeletion containsObject:noteObjectID];
 }
 
 
@@ -685,7 +686,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
         detailsViewController.onDeletionRequestCallback = ^(NotificationDetailsDeletionActionBlock onUndoTimeout){
-            [weakSelf showUndeleteForNote:note onTimeout:onUndoTimeout];
+            [weakSelf showUndeleteForNotificationWithID:note.objectID onTimeout:onUndoTimeout];
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
@@ -705,7 +706,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
-    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"deletionInProgress == %@ || deletionInProgress == nil", @(NO)];
+    NSArray *filteredNoteObjectIDs  = self.notificationIdsBeingDeleted.allObjects;
+    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", filteredNoteObjectIDs];
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
     fetchRequest.predicate          = predicate;
@@ -733,7 +735,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
     cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
     cell.onUndelete                 = ^{
-        [weakSelf cancelNoteDeletion:note];
+        [weakSelf cancelDeletionForNotificationWithID:note.objectID];
     };
     
     [cell downloadGravatarWithURL:note.iconURL];
