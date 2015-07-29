@@ -476,14 +476,18 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     }
     
     // Load the Notification and its indexPath
+    NSError *error                  = nil;
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:nil];
-    NSIndexPath *indexPath          = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
+    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:&error];
+    if (error) {
+        DDLogError(@"Error refreshing Notification Row: %@", error);
         return;
     }
     
-    [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (indexPath) {
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
