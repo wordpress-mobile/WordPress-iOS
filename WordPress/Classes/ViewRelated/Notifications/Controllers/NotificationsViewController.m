@@ -507,7 +507,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (void)performPendingDeletionAction:(NotificationDetailsDeletionActionBlock)deletionBlock noteObjectID:(NSManagedObjectID *)noteObjectID
 {
     // Was the Deletion Cancelled?
-    if ([self isNotePendingDeletion:noteObjectID] == false) {
+    if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
         return;
     }
     
@@ -551,7 +551,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
 }
 
-- (BOOL)isNotePendingDeletion:(NSManagedObjectID *)noteObjectID
+- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
 {
     return [self.notificationIdsWithPendingDeletion containsObject:noteObjectID];
 }
@@ -663,7 +663,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     // Push the Details: Unless the note has a pending deletion!
     Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    if ([self isNotePendingDeletion:note.objectID]) {
+    if ([self isNoteMarkedForDeletion:note.objectID]) {
         return;
     }
     
@@ -719,7 +719,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // For that reason, we draw our own separators.
  
     Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    BOOL isPendingDeletion          = [self isNotePendingDeletion:note.objectID];
+    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
     BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
     __weak __typeof(self) weakSelf  = self;
     
@@ -728,9 +728,9 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.read                       = note.read.boolValue;
     cell.noticon                    = note.noticon;
     cell.unapproved                 = note.isUnapprovedComment;
-    cell.deleted                    = isPendingDeletion;
-    cell.showsBottomSeparator       = !isLastRow && !isPendingDeletion;
-    cell.selectionStyle             = isPendingDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
+    cell.markedForDeletion          = isMarkedForDeletion;
+    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
+    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
     cell.onUndelete                 = ^{
         [weakSelf cancelNoteDeletion:note];
     };
