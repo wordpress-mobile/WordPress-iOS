@@ -13,7 +13,7 @@ import Foundation
     *  @details     Designated Initializer. Fails if the remoteApi is nil.
     *  @param       remoteApi A Reference to the WordPressComApi that should be used to interact with WordPress.com
     */
-    init?(remoteApi: WordPressComApi!) {
+    public init?(remoteApi: WordPressComApi!) {
         self.remoteApi = remoteApi
         if remoteApi == nil {
             return nil

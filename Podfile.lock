@@ -77,7 +77,9 @@ PODS:
   - KIF/XCTest (3.2.3)
   - Lookback (0.9.2)
   - MGImageUtilities (0.0.1)
-  - Mixpanel (2.5.4)
+  - Mixpanel (2.8.2):
+    - Mixpanel/Mixpanel (= 2.8.2)
+  - Mixpanel/Mixpanel (2.8.2)
   - MRProgress (0.7.0):
     - MRProgress/ActivityIndicator (= 0.7.0)
     - MRProgress/Blur (= 0.7.0)
@@ -145,7 +147,7 @@ PODS:
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
   - WordPressCom-Analytics-iOS (0.0.35)
-  - WordPressCom-Stats-iOS (0.4.2):
+  - WordPressCom-Stats-iOS (0.4.3):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
     - NSObject-SafeExpectations (= 0.0.2)
@@ -173,7 +175,7 @@ DEPENDENCIES:
   - Lookback (= 0.9.2)
   - MGImageUtilities (from `git://github.com/wordpress-mobile/MGImageUtilities.git`,
     branch `gifsupport`)
-  - Mixpanel (= 2.5.4)
+  - Mixpanel (= 2.8.2)
   - MRProgress (~> 0.7.0)
   - NSLogger-CocoaLumberjack-connector (from `https://github.com/steipete/NSLogger-CocoaLumberjack-connector.git`,
     tag `1.5`)
@@ -196,7 +198,7 @@ DEPENDENCIES:
   - WordPress-iOS-Shared (= 0.4.0)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.35)
-  - WordPressCom-Stats-iOS (= 0.4.2)
+  - WordPressCom-Stats-iOS (= 0.4.3)
   - WPMediaPicker (~> 0.5.0)
   - wpxmlrpc (~> 0.8)
 
@@ -261,7 +263,7 @@ SPEC CHECKSUMS:
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
   MGImageUtilities: b54a815970e231903c495fff33699467158f61a0
-  Mixpanel: 61f3f69428ec1f4c32245392471ccc2292c05e32
+  Mixpanel: f4d71ac2a306e7cda6ad03d4a2be249a0fd7a967
   MRProgress: 1cb0051b678be4a2ef4881414cd316768fc70028
   NSLogger: 5ed223a2436df96244e033be750656dacdeec034
   NSLogger-CocoaLumberjack-connector: 5d03d0d59a5f40093f1b1bdd66df6a71647d4a9c
@@ -282,7 +284,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Shared: 19e63665b3c583e889620147097deb7d1932c706
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: a6c71241b39f1e366a6473ce38f2786481f8acd8
-  WordPressCom-Stats-iOS: 53a6d3573f5e443458a6dca4ddb9bb09fd423920
+  WordPressCom-Stats-iOS: 2810300d77c2d37594d0e4a79145094c517d6c73
   WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
 
