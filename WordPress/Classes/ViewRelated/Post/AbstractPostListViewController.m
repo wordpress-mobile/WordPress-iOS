@@ -2,7 +2,7 @@
 
 #import "AbstractPostListViewControllerSubclass.h"
 #import "AbstractPost.h"
-#import "EditSiteViewController.h"
+#import "SiteSettingsViewController.h"
 #import "PostPreviewViewController.h"
 #import "PostSettingsSelectionViewController.h"
 #import "UIView+Subviews.h"
@@ -425,7 +425,7 @@ const CGFloat DefaultHeightForFooterView = 44.0;
     [WPError showAlertWithTitle:NSLocalizedString(@"Unable to Connect", @"") message:message];
 
     // bad login/pass combination
-    EditSiteViewController *editSiteViewController = [[EditSiteViewController alloc] initWithBlog:self.blog];
+    SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
     editSiteViewController.isCancellable = YES;
 
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:editSiteViewController];
