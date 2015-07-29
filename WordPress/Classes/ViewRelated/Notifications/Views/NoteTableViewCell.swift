@@ -260,7 +260,7 @@ import Foundation
     // MARK: - Private Settings
     private struct Settings {
         static let minimumCellHeight                    = CGFloat(70)
-        static let textInsets                           = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
+        static let textInsets                           = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
         static let separatorInsets                      = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
         static let subjectNumberOfLinesWithoutSnippet   = 3
         static let subjectNumberOfLinesWithSnippet      = 2
