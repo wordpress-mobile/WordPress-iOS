@@ -57,11 +57,11 @@ function isIpad() {
 }
 
 function dismissNewEditorModalIfApplicable() {
-  var newEditorButton = win.buttons()["new-editor-modal-dismiss-button"];
-  if (newEditorButton.isValid()) {
-    newEditorButton.tap();
-    sleep(1);
-  } 
+    var newEditorButton = win.buttons()["new-editor-modal-dismiss-button"];
+    if (newEditorButton.isValid()) {
+        newEditorButton.tap();
+        sleep(1);
+    } 
 }
 
 UIALogger.logStart("screenshots");
@@ -70,12 +70,18 @@ dismissNewEditorModalIfApplicable();
 
 if (app.tabBar().checkIsValid()) {
     app.tabBar().buttons()[3].tap();
-    win.tableViews()[0].cells()[2].tap();
+    sleep(5);
+    
+    target.frontMostApp().mainWindow().tableViews()[0].cells()[2].scrollToVisible(); sleep(2);
+    target.frontMostApp().mainWindow().tableViews()[0].cells()[2].tap();        
+    
+    sleep(5);
     
     if (model.match(/iPhone/)) {
-        app.actionSheet().elements()[1].tap();
+        app.actionSheet().elements()[2].cells()[0].buttons()[0].tap();
     } else {
-        win.popover().actionSheet().elements()[1].tap();
+        target.frontMostApp().mainWindow().popover().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap();
+        
     }
 }
 sleep(2);
@@ -96,70 +102,45 @@ win.buttons()[1].tap();
 sleep(5);
 dismissNewEditorModalIfApplicable();
 
-app.tabBar().buttons()[1].tap();
+sleep(5);
+target.frontMostApp().tabBar().buttons()[1].tap(); sleep(3);
 if (isIpad()) {
-    app.navigationBar().buttons()[1].tap();    
+    target.frontMostApp().navigationBar().buttons()[1].tap(); sleep(2);
 } else {
-    app.navigationBar().buttons()[0].tap();    
+    app.navigationBar().buttons()[0].tap(); sleep(2); sleep(2);    
 }
 
-win.elements()["Pager View"].scrollViews()[0].tableViews()[0].cells()[0].tap(); sleep(5);
+target.frontMostApp().mainWindow().elements()["Pager View"].scrollViews()[0].tableViews()[0].cells()[0].tap(); sleep(5);
+captureLocalizedScreenshot("1-reader");
 
-UIALogger.logMessage("Capture Reader Screenshot");
-captureLocalizedScreenshot("1-reader"); sleep(1);
+target.frontMostApp().tabBar().buttons()[4].tap(); sleep(5);
+captureLocalizedScreenshot("2-notifications");
 
-// Get Notifications Screenshot
-app.tabBar().buttons()[4].tap(); sleep(3);
-UIALogger.logMessage("Capture Notifications Screenshot");
-captureLocalizedScreenshot("2-notifications"); sleep(1);
+target.frontMostApp().tabBar().buttons()[0].tap(); sleep(2);
+target.frontMostApp().mainWindow().tableViews()[0].cells()[2].tap(); sleep(5);
+captureLocalizedScreenshot("3-posts");
 
-// Get My Sites Screenshot
-app.tabBar().buttons()[0].tap(); sleep(1);
-UIALogger.logMessage("Capture My Sites");
-var blogsTableView = win.tableViews()["Blogs"];
-if (blogsTableView.isValid()) {
-    blogsTableView.cells()[0].tap();
-}
-sleep(1);
-UIALogger.logMessage("Capture My Sites Screenshot");
-captureLocalizedScreenshot("3-my-sites"); sleep(1);    
-
-// Get Editor Screenshot
-win.tableViews()[0].cells()[2].tap(); sleep(1);
-win.tableViews()[0].visibleCells()[2].tap(); sleep(1)
-app.navigationBar().rightButton().tap(); sleep(2);
-// Get the cursor to the end of the text before the image
+target.frontMostApp().mainWindow().tableViews()["PostsTable"].visibleCells()[0].tap(); sleep(3);
+target.frontMostApp().navigationBar().rightButton().tap(); sleep(2);
 if (isIpad()) {
     target.frontMostApp().mainWindow().scrollViews()[0].webViews()[0].textFields()[1].tapWithOptions({tapOffset:{x:0.95, y:0.04}}); sleep(1);    
 } else {
     target.frontMostApp().mainWindow().scrollViews()[0].webViews()[0].textFields()[1].tapWithOptions({tapOffset:{x:0.95, y:0.10}}); sleep(1);        
 }
+captureLocalizedScreenshot("4-post-editor");
 
-target.frontMostApp().mainWindow().scrollViews()[0].webViews()[0].textFields()[1].scrollUp(); sleep(1);
-UIALogger.logMessage("Capture Editor Screenshot");
-captureLocalizedScreenshot("4-editor"); sleep(1);
-
-// Get Stats Screenshot
-target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(1);
+target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(2);
 if (isIpad()) {
-    if (app.popover().isValid()) {
-        win.popover().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap(); sleep(1);
-    }
-    app.navigationBar().buttons()[2].tap(); sleep(1);        
+    target.frontMostApp().mainWindow().popover().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap();
 } else {
-    if (app.actionSheet().isValid()) {
-        app.actionSheet().elements()[1].tap(); sleep(1);        
-    }
-    app.navigationBar().buttons()[0].tap(); sleep(1);    
+    target.frontMostApp().actionSheet().collectionViews()[0].cells()[0].buttons()[0].tap();
 }
 
-// Load Stats
-target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(1);
-win.tableViews()[0].visibleCells()[1].tap(); sleep(10);
-UIALogger.logMessage("Capture Stats Screenshot");
-captureLocalizedScreenshot("5-stats"); sleep(1);
+target.frontMostApp().navigationBar().buttons()[0].tap(); sleep(2);
+target.frontMostApp().navigationBar().leftButton().tap(); sleep(2);
+target.frontMostApp().mainWindow().tableViews()[0].cells()[1].tap(); sleep(5);
+captureLocalizedScreenshot("5-stats");
 
 UIALogger.logPass("screenshots");
-
 
 
