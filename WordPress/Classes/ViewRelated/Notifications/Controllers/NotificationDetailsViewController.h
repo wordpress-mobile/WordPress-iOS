@@ -4,8 +4,8 @@
 
 @class Notification;
 
-typedef void (^NotificationDetailsDeletionFailureBlock)(NSError *error);
-typedef void (^NotificationDetailsDeletionActionBlock)(NotificationDetailsDeletionFailureBlock onFailure);
+typedef void (^NotificationDetailsDeletionCompletionBlock)(BOOL success);
+typedef void (^NotificationDetailsDeletionActionBlock)(NotificationDetailsDeletionCompletionBlock onCompletion);
 typedef void (^NotificationDetailsDeletionRequestBlock)(NotificationDetailsDeletionActionBlock onUndoTimeout);
 
 
