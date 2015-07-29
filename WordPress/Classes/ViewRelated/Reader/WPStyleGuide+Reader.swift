@@ -82,10 +82,18 @@ extension WPStyleGuide
 
     // MARK: - Apply Styles
 
-    public class func applyReaderCardSiteLabelStyle(label:UILabel) {
+    public class func applyReaderCardSiteButtonActiveStyle(button:UIButton) {
         let fontSize:CGFloat = 14.0
-        label.font = WPFontManager.openSansRegularFontOfSize(fontSize)
-        label.textColor = greyDarken20()
+        button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.setTitleColor(mediumBlue(), forState: .Normal)
+        button.setTitleColor(lightBlue(), forState: .Highlighted)
+    }
+
+    public class func applyReaderCardSiteButtonInactiveStyle(button:UIButton) {
+        let fontSize:CGFloat = 14.0
+        button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+        button.setTitleColor(greyDarken20(), forState: .Normal)
+        button.setTitleColor(greyDarken20(), forState: .Highlighted)
     }
 
     public class func applyReaderCardBylineLabelStyle(label:UILabel) {
@@ -105,6 +113,7 @@ extension WPStyleGuide
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
         let fontSize:CGFloat = 14.0
         button.setTitleColor(grey(), forState: .Normal)
+        button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
 

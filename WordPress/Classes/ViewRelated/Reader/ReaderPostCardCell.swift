@@ -2,6 +2,7 @@ import Foundation
 
 @objc public protocol ReaderPostCellDelegate: NSObjectProtocol
 {
+    func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
@@ -24,7 +25,7 @@ enum CardAction: Int
     @IBOutlet private weak var cardBorderView: UIView!
     @IBOutlet private weak var headerView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
-    @IBOutlet private weak var blogNameLabel: UILabel!
+    @IBOutlet private weak var blogNameButton: UIButton!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
@@ -160,7 +161,7 @@ enum CardAction: Int
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
 
-        WPStyleGuide.applyReaderCardSiteLabelStyle(blogNameLabel)
+        WPStyleGuide.applyReaderCardSiteButtonActiveStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
@@ -192,7 +193,9 @@ enum CardAction: Int
             avatarImageView.image = placeholder
         }
 
-        blogNameLabel.text = contentProvider?.blogNameForDisplay()
+        var blogName = contentProvider?.blogNameForDisplay()
+        blogNameButton.setTitle(blogName, forState: .Normal)
+        blogNameButton.setTitle(blogName, forState: .Highlighted)
 
         var byline = contentProvider?.dateForDisplay().shortString()
         if let author = contentProvider?.authorForDisplay() {
@@ -382,7 +385,22 @@ enum CardAction: Int
     }
 
 
+    // MARK: - 
+
+    func notifyDelegateHeaderWasTapped() {
+        delegate?.readerCell(self, headerActionForProvider: contentProvider!)
+    }
+
+
     // MARK: - Actions
+
+    func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
+        notifyDelegateHeaderWasTapped()
+    }
+
+    @IBAction func didTapBlogNameButton(sender: UIButton) {
+        notifyDelegateHeaderWasTapped()
+    }
 
     @IBAction func didTapMenuButton(sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
