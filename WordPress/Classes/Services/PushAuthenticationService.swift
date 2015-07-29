@@ -9,7 +9,7 @@ import Foundation
 
 @objc public class PushAuthenticationService : LocalCoreDataService
 {
-    var authenticationServiceRemote:PushAuthenticationServiceRemote?
+    public var authenticationServiceRemote: PushAuthenticationServiceRemote?
     
     /**
     *  @details     Designated Initializer
