@@ -503,7 +503,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
         
         NSError *error = nil;
-        Comment *reloadedComment = [context existingObjectWithID:weakSelf.comment error:&error];
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
         
         if (error) {
             DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
@@ -539,7 +539,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
         
         NSError *error = nil;
-        Comment *reloadedComment = [context existingObjectWithID:weakSelf.comment error:&error];
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
         
         if (error) {
             DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
