@@ -7,7 +7,7 @@
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
 const CGFloat WPContentViewOuterMargin = 8.0;
-const CGFloat WPContentViewAttributionVerticalPadding = 8.0;
+const CGFloat WPContentViewAttributionVerticalPadding = 16.0;
 const CGFloat WPContentViewVerticalPadding = 14.0;
 const CGFloat WPContentViewTitleContentPadding = 6.0;
 const CGFloat WPContentViewMaxImageHeightPercentage = 0.59;
