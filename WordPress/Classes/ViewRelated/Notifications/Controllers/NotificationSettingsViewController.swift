@@ -311,10 +311,10 @@ public class NotificationSettingsViewController : UIViewController
         func footerText() -> String {
             switch self {
             case .Blog:
-                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
+                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
                     comment: "Notification Settings for your own blogs")
             case .Other:
-                return NSLocalizedString("Notification settings for your comments on other sites",
+                return NSLocalizedString("Notification settings for your comments on other sites.",
                     comment: "3rd Party Site Notification Settings")
             case .WordPressCom:
                 return NSLocalizedString("Decide what emails you get from us regarding your account.",

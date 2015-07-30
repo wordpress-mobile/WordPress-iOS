@@ -158,7 +158,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
             return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
                 comment: "Title displayed in the Notification Settings for Devices")
         case .Email:
-            return NSLocalizedString("Settings for email notifications that are sent to the email tied to your account.",
+            return NSLocalizedString("Settings for notifications that are sent to the email tied to your account.",
                 comment: "Title displayed in the Notification Settings for Email")
         case .Timeline:
             return NSLocalizedString("Settings for notifications that appear in the Notifications tab.",
