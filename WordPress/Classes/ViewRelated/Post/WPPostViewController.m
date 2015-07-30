@@ -1643,23 +1643,12 @@ EditImageDetailsViewControllerDelegate
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+        properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
+        
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-        
-        if ([self.post hasPhoto]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithPhoto];
-        }
-        
-        if ([self.post hasVideo]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithVideo];
-        }
-        
-        if ([self.post hasCategories]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithCategories];
-        }
-        
-        if ([self.post hasTags]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
-        }
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
