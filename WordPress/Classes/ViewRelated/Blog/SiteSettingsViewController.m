@@ -358,13 +358,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 return self.removeSiteCell;
             }
             self.removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            [WPStyleGuide configureTableViewCell:self.removeSiteCell];
+            [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
             self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-            self.removeSiteCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            self.removeSiteCell.textLabel.textColor = [WPStyleGuide errorRed];
-            self.removeSiteCell.imageView.image = nil;
-            self.removeSiteCell.accessoryType = UITableViewCellAccessoryNone;
-            self.removeSiteCell.selectionStyle = UITableViewCellSelectionStyleNone;
             return self.removeSiteCell;
         }break;
     }
