@@ -188,7 +188,7 @@ public class NotificationSettingsViewController : UIViewController
             return nil
         }
         
-        let footerView      = WPTableViewSectionFooterView(frame: CGRectZero)
+        let footerView      = WPTableViewSectionHeaderFooterView(style: .Footer)
         footerView.title    = titleForFooterInSection(section)
         return footerView
     }
@@ -199,7 +199,7 @@ public class NotificationSettingsViewController : UIViewController
         }
         
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width)
+        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
     }
     
 
