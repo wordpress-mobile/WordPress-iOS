@@ -95,8 +95,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
         return;
     }
     
-    self.tableView.delegate = nil;
-    self.tableView.dataSource = nil;
+    _tableView.delegate = nil;
+    _tableView.dataSource = nil;
 }
 
 - (void)viewDidLoad
@@ -1104,23 +1104,32 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)spamCommentWithBlock:(NotificationBlock *)block
 {
+    NSParameterAssert(block);
+    NSParameterAssert(self.onDeletionRequestCallback);
+    
+    // Spam Action
+    NotificationDetailsDeletionActionBlock spamAction = ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(YES);
+        } failure:^(NSError * error){
+            onCompletion(NO);
+        }];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
+    };
+    
+    // Confirmation AlertView
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentFlaggedAsSpam];
-        
-        // Hi the destruction callback, if any. Do this before effectively calling the backend call
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
-        
-        // Proceed hitting the Backend
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
-        
-        [service spamCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        self.onDeletionRequestCallback(spamAction);
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
@@ -1137,29 +1146,36 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
 
 - (void)trashCommentWithBlock:(NotificationBlock *)block
 {
-    // Callback Block
+    NSParameterAssert(block);
+    NSParameterAssert(self.onDeletionRequestCallback);
+    
+    // Trash Action
+    NotificationDetailsDeletionActionBlock deletionAction =  ^(NotificationDetailsDeletionCompletionBlock onCompletion) {
+        NSParameterAssert(onCompletion);
+        
+        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
+        
+        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:^{
+            onCompletion(YES);
+        } failure:^(NSError *error) {
+            onCompletion(NO);
+        }];
+        
+        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
+    };
+    
+    // Confirmation AlertView
     UIAlertViewCompletionBlock completion = ^(UIAlertView *alertView, NSInteger buttonIndex) {
         if (buttonIndex == alertView.cancelButtonIndex) {
             return;
         }
         
-        [WPAnalytics track:WPAnalyticsStatNotificationsCommentTrashed];
-        
-        // Hi the destruction callback, if any. Do this before effectively calling the backend call
-        if (self.onDestructionCallback) {
-            self.onDestructionCallback();
-        }
-
-        // Proceed hitting hte REST API
-        NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-        CommentService *service         = [[CommentService alloc] initWithManagedObjectContext:context];
-        
-        [service deleteCommentWithID:block.metaCommentID siteID:block.metaSiteID success:nil failure:nil];
+        self.onDeletionRequestCallback(deletionAction);
         
         [self.navigationController popToRootViewControllerAnimated:YES];
     };
  
-    // Show the alertView
     NSString *message = NSLocalizedString(@"Are you sure you want to delete this comment?",
                                           @"Message asking for confirmation on comment deletion");
     
