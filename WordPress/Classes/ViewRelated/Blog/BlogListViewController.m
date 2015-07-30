@@ -9,7 +9,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
@@ -448,22 +448,24 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
+    if (title.length == 0) {
+        return nil;
     }
-    return nil;
+    
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+    header.title = title;
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length > 0) {
-        return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    if (title.length == 0) {
+        // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
+        return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : BLVCSectionHeaderHeightForIPad;
     }
-    // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
-    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : BLVCSectionHeaderHeightForIPad;
+    
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
