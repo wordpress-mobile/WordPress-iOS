@@ -32,8 +32,7 @@
 #import "WPFontManager.h"
 #import "WPRichTextView.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
 #import "WPAnalyticsTrackerWPCom.h"
 
