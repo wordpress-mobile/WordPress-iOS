@@ -139,6 +139,11 @@ The object specifying the content (text, images, etc.) to display.
 - (void)configureAttributionView;
 
 /**
+ Configures the discover attribution view based on the content provider.
+ */
+- (void)configureDiscoverAttributionView;
+
+/**
  Configures the appearance of the action view based on the content provider.
  */
 - (void)configureActionView;
