@@ -92,6 +92,7 @@ public class AboutViewController : UITableViewController
             WPStyleGuide.configureTableViewActionCell(cell)
         } else {
             WPStyleGuide.configureTableViewCell(cell)
+            cell?.selectionStyle = .None
         }
         
         return cell!
