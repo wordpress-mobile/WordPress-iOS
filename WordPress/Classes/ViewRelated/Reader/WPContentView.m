@@ -21,7 +21,6 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *discoverAttriubtionZeroHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *discoverAttributionBottomPaddingHeightConstraint;
 @property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
