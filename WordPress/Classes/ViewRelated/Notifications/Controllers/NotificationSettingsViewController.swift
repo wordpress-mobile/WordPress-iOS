@@ -314,12 +314,11 @@ public class NotificationSettingsViewController : UIViewController
                 return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
                     comment: "Notification Settings for your own blogs")
             case .Other:
-                return NSLocalizedString("Control your notification settings when you comment on other blogs",
+                return NSLocalizedString("Notification settings for your comments on other sites",
                     comment: "3rd Party Site Notification Settings")
             case .WordPressCom:
-                return NSLocalizedString("Decide what emails you get from us regarding your account and sites. " +
-                    "We'll still send you important emails like password recovery " +
-                    "and domain expiration.", comment: "WordPress.com Notification Settings")
+                return NSLocalizedString("Decide what emails you get from us regarding your account.",
+                    comment: "WordPress.com Notification Settings")
             }
         }
     }
