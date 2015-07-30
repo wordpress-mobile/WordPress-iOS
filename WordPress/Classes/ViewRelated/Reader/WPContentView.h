@@ -122,6 +122,7 @@ The object specifying the content (text, images, etc.) to display.
 @property (nonatomic, strong) WPContentActionView *actionView;
 @property (nonatomic, strong) UIView<DiscoverPostAttributionView> *discoverPostAttributionView;
 @property (nonatomic, strong) UIView *discoverAttributionSpacerView;
+@property (nonatomic, strong) NSLayoutConstraint *discoverAttributionBottomPaddingHeightConstraint;
 
 /* Factory methos for subviews */
 - (void)buildAttributionView;
