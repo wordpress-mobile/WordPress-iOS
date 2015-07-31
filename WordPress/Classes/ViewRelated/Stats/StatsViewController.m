@@ -18,6 +18,7 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 @interface StatsViewController () <UIActionSheetDelegate, WPStatsViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
+@property (nonatomic, strong) UINavigationController *statsNavVC;
 @property (nonatomic, strong) WPStatsViewController *statsVC;
 @property (nonatomic, weak) WPNoResultsView *noResultsView;
 
@@ -41,7 +42,8 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
     
     NSString *path = [[NSBundle mainBundle] pathForResource:@"WordPressCom-Stats-iOS" ofType:@"bundle"];
     NSBundle *bundle = [NSBundle bundleWithPath:path];
-    self.statsVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
+    self.statsNavVC = [[UIStoryboard storyboardWithName:@"SiteStats" bundle:bundle] instantiateInitialViewController];
+    self.statsVC = self.statsNavVC.viewControllers.firstObject;
     self.statsVC.statsDelegate = self;
     
     self.navigationItem.title = NSLocalizedString(@"Stats", @"Stats window title");
