@@ -19,6 +19,26 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
+    public var topVisible = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var topColor = WPStyleGuide.Notifications.blockSeparatorColor {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var topHeightInPixels = CGFloat(1) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var topInsets = UIEdgeInsetsZero {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
     public var bottomVisible = false {
         didSet {
             setNeedsDisplay()
@@ -56,7 +76,6 @@ public class NoteSeparatorsView : UIView
     }
     
     public override func drawRect(rect: CGRect) {
-        
         super.drawRect(rect)
         
         let scale = UIScreen.mainScreen().scale
@@ -64,6 +83,12 @@ public class NoteSeparatorsView : UIView
         CGContextClearRect(ctx, rect);
         CGContextSetShouldAntialias(ctx, false);
 
+        // Background
+        if backgroundColor != nil {
+            backgroundColor?.setFill()
+            CGContextFillRect(ctx, rect)
+        }
+        
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
@@ -72,7 +97,17 @@ public class NoteSeparatorsView : UIView
             CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
             CGContextStrokePath(ctx);
         }
-        
+
+        // Top Separator
+        if topVisible {
+            topColor.setStroke()
+            let lineWidth = topHeightInPixels / scale
+            CGContextSetLineWidth(ctx, lineWidth);
+            CGContextMoveToPoint(ctx, topInsets.left, lineWidth)
+            CGContextAddLineToPoint(ctx, bounds.maxX - topInsets.right, lineWidth)
+            CGContextStrokePath(ctx);
+        }
+
         // Bottom Separator
         if bottomVisible {
             bottomColor.setStroke()
