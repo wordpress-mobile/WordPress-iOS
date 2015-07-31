@@ -1,6 +1,13 @@
 import Foundation
 
 
+
+/**
+*  @class      NoteTableHeaderView
+*  @brief      This class renders a view with top and bottom separators, meant to be used as UITableView
+*              section header in NotificationsViewController.
+*/
+
 @objc public class NoteTableHeaderView : UIView
 {
     // MARK: - Public Properties
