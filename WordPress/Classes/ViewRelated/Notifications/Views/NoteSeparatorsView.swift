@@ -14,7 +14,7 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var leftWidth : CGFloat = CGFloat(3) {
+    public var leftWidthInPoints = CGFloat(3) {
         didSet {
             setNeedsDisplay()
         }
@@ -29,7 +29,7 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var bottomHeight : CGFloat = CGFloat(0.5) {
+    public var bottomHeightInPoints = CGFloat(0.5) {
         didSet {
             setNeedsDisplay()
         }
@@ -66,7 +66,7 @@ public class NoteSeparatorsView : UIView
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
-            CGContextSetLineWidth(ctx, leftWidth * scale);
+            CGContextSetLineWidth(ctx, leftWidthInPoints * scale);
             CGContextMoveToPoint(ctx, bounds.minX, bounds.minY)
             CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
             CGContextStrokePath(ctx);
@@ -75,7 +75,7 @@ public class NoteSeparatorsView : UIView
         // Bottom Separator
         if bottomVisible {
             bottomColor.setStroke()
-            CGContextSetLineWidth(ctx, bottomHeight * scale);
+            CGContextSetLineWidth(ctx, bottomHeightInPoints * scale);
             CGContextMoveToPoint(ctx, bottomInsets.left, bounds.height)
             CGContextAddLineToPoint(ctx, bounds.maxX - bottomInsets.right, bounds.height)
             CGContextStrokePath(ctx);
