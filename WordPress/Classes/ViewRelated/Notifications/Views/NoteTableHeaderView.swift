@@ -14,10 +14,10 @@ import Foundation
     public var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
-            if let unwrappedTitle = newValue?.uppercaseString {
-                titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: Style.sectionHeaderRegularStyle)
-                setNeedsLayout()
-            }
+            let unwrappedTitle = newValue?.uppercaseString ?? String()
+            let attributes = Style.sectionHeaderRegularStyle
+            titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: attributes)
+            setNeedsLayout()
         }
         get {
             return titleLabel.text
@@ -34,18 +34,14 @@ import Foundation
         }
     }
     
-    // MARK: - Public Methods
-    public class func headerHeight() -> CGFloat {
-        let cellHeight = CGFloat(26)
-        return cellHeight
-    }
     
-    // MARK: - Convenience Inits
+    
+    // MARK: - Convenience Initializers
     public convenience init(width: CGFloat) {
-        let frame = CGRect(x: 0, y: 0, width: width, height: 0)
-        self.init(frame: frame)
+        self.init(frame: CGRect(x: 0.0, y: 0.0, width: width, height: 0.0))
         setupSubviews()
     }
+    
     
     // MARK: - Overriden Properties
     public override var frame: CGRect {
@@ -57,12 +53,14 @@ import Foundation
         }
     }
     
+    
+    
     // MARK: - View Methods
     public override func layoutSubviews() {
         super.layoutSubviews()
         
         let frameWidth              = frame.width
-        let frameHeight             = NoteTableHeaderView.headerHeight()
+        let frameHeight             = NoteTableHeaderView.headerHeight
         let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
         let titleWidth              = frameWidth - (imageOriginX * 2) - imageView.frame.width
         let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
@@ -108,6 +106,13 @@ import Foundation
     }
 
     
+    
+    // MARK: - Aliases
+    typealias Style = WPStyleGuide.Notifications
+    
+    // MARK: - Static Properties
+    public static let headerHeight  = CGFloat(26)
+    
     // MARK: - Constants
     private let imageOriginX        = CGFloat(10)
     private let titleOriginX        = CGFloat(30)
@@ -120,9 +125,6 @@ import Foundation
     // MARK: - Properties
     private var topSeparator:       UIView!
     private var bottomSeparator:    UIView!
-    
-    // MARK: - Aliases
-    typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Outlets
     private var imageView:          UIImageView!
