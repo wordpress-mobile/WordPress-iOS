@@ -197,8 +197,7 @@ DEPENDENCIES:
     commit `a983547b5724d5fc3b79865da83e81db2b0b9de4`)
   - WordPress-iOS-Shared (= 0.4.0)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (from `git@github.com:wordpress-mobile/WordPressCom-Analytics-iOS.git`,
-    tag `0.0.36`)
+  - WordPressCom-Analytics-iOS (= 0.0.36)
   - WordPressCom-Stats-iOS (= 0.4.3)
   - WPMediaPicker (~> 0.5.0)
   - wpxmlrpc (~> 0.8)
@@ -224,9 +223,6 @@ EXTERNAL SOURCES:
   WordPress-iOS-Editor:
     :commit: a983547b5724d5fc3b79865da83e81db2b0b9de4
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
-  WordPressCom-Analytics-iOS:
-    :git: git@github.com:wordpress-mobile/WordPressCom-Analytics-iOS.git
-    :tag: 0.0.36
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
@@ -247,9 +243,6 @@ CHECKOUT OPTIONS:
   WordPress-iOS-Editor:
     :commit: a983547b5724d5fc3b79865da83e81db2b0b9de4
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
-  WordPressCom-Analytics-iOS:
-    :git: git@github.com:wordpress-mobile/WordPressCom-Analytics-iOS.git
-    :tag: 0.0.36
 
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
