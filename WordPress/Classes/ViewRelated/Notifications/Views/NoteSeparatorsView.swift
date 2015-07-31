@@ -4,12 +4,12 @@ import Foundation
 public class NoteSeparatorsView : UIView
 {
     // MARK: - Public Properties
-    public var leftVisible : Bool = false {
+    public var leftVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var leftColor : UIColor = UIColor.clearColor() {
+    public var leftColor = UIColor.clearColor() {
         didSet {
             setNeedsDisplay()
         }
@@ -19,12 +19,12 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var bottomVisible : Bool = false {
+    public var bottomVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomColor : UIColor = WPStyleGuide.Notifications.blockSeparatorColor {
+    public var bottomColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
@@ -34,7 +34,7 @@ public class NoteSeparatorsView : UIView
             setNeedsDisplay()
         }
     }
-    public var bottomInsets : UIEdgeInsets = UIEdgeInsetsZero {
+    public var bottomInsets = UIEdgeInsetsZero {
         didSet {
             setNeedsDisplay()
         }
