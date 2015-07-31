@@ -26,89 +26,54 @@ import Foundation
     
     public var separatorColor: UIColor? {
         set {
-            topSeparator.backgroundColor    = newValue
-            bottomSeparator.backgroundColor = newValue
+            layoutView.bottomColor  = newValue ?? UIColor.clearColor()
+            layoutView.topColor     = newValue ?? UIColor.clearColor()
         }
         get {
-            return topSeparator.backgroundColor
+            return layoutView.bottomColor
         }
     }
     
     
     
     // MARK: - Convenience Initializers
-    public convenience init(width: CGFloat) {
-        self.init(frame: CGRect(x: 0.0, y: 0.0, width: width, height: 0.0))
-        setupSubviews()
+    public convenience init() {
+        self.init(frame: CGRectZero)
+    }
+    
+    required override public init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+    required public init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
     }
     
     
-    
-    // MARK: - Overriden Properties
-    public override var frame: CGRect {
-        didSet {
-            if frame.width <= maximumWidth {
-                return
-            }
-            
-            super.frame.origin.x    = (frame.width - maximumWidth) * 0.5
-            super.frame.size.width  = maximumWidth
-            setNeedsLayout()
-        }
-    }
-    
-    
-    
-    // MARK: - View Methods
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        let frameWidth              = frame.width
-        let frameHeight             = NoteTableHeaderView.headerHeight
-        let imageOriginY            = floor((frameHeight - imageView.frame.height) * 0.5)
-        let titleWidth              = frameWidth - (imageOriginX * 2) - imageView.frame.width
-        let titleOriginY            = floor((frameHeight - titleHeight) * 0.5)
-        let bottomSeparatorY        = frameHeight - separatorHeight
-        
-        if frameWidth > maximumWidth {
-            frame.origin.x          = (frameWidth - maximumWidth) * 0.5;
-        }
-        
-        frame.size.height           = frameHeight
-        
-        imageView.frame.origin      = CGPoint(x: imageOriginX, y: imageOriginY)
-        
-        titleLabel.frame.origin     = CGPoint(x: titleOriginX, y: titleOriginY)
-        titleLabel.frame.size       = CGSize(width: titleWidth, height: titleHeight)
-        
-        topSeparator.frame          = CGRect(x: 0, y: 0,                width: frameWidth, height: separatorHeight)
-        bottomSeparator.frame       = CGRect(x: 0, y: bottomSeparatorY, width: frameWidth, height: separatorHeight)
-    }
     
     // MARK - Private Helpers
-    private func setupSubviews() {
-        backgroundColor             = Style.sectionHeaderBackgroundColor
+    private func setupView() {
+        NSBundle.mainBundle().loadNibNamed("NoteTableHeaderView", owner: self, options: nil)
+        addSubview(contentView)
         
-        titleLabel                  = UILabel()
-        titleLabel.textAlignment    = .Left
-        titleLabel.numberOfLines    = 0;
-        titleLabel.lineBreakMode    = .ByWordWrapping
-        titleLabel.backgroundColor  = UIColor.clearColor()
-        titleLabel.shadowOffset     = CGSizeZero
-        addSubview(titleLabel)
+        // Make sure the Outlets are loaded
+        assert(contentView  != nil)
+        assert(layoutView   != nil)
+        assert(imageView    != nil)
+        assert(titleLabel   != nil)
         
-        let image                   = UIImage(named: imageName)
-        imageView                   = UIImageView(image: image)
-        imageView.sizeToFit()
-        addSubview(imageView)
+        // Layout
+        contentView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        pinSubviewToAllEdges(contentView)
+        
+        // Background + Separators
+        backgroundColor             = UIColor.clearColor()
 
-        topSeparator                = UIView(frame: CGRectZero)
-        addSubview(topSeparator)
-        
-        bottomSeparator             = UIView(frame: CGRectZero)
-        addSubview(bottomSeparator)
-        
-        clipsToBounds               = true
+        layoutView.backgroundColor  = Style.sectionHeaderBackgroundColor
+        layoutView.bottomVisible    = true
+        layoutView.topVisible       = true
     }
 
     
@@ -119,20 +84,9 @@ import Foundation
     // MARK: - Static Properties
     public static let headerHeight  = CGFloat(26)
     
-    // MARK: - Constants
-    private let imageOriginX        = CGFloat(10)
-    private let titleOriginX        = CGFloat(30)
-    private let titleHeight         = CGFloat(16)
-    private let imageName           = "reader-postaction-time"
-    
-    private let separatorHeight     = CGFloat(1) / UIScreen.mainScreen().scale
-    private let maximumWidth        = UIDevice.isPad() ? WPTableViewFixedWidth : CGFloat.max
-    
-    // MARK: - Properties
-    private var topSeparator:       UIView!
-    private var bottomSeparator:    UIView!
-    
     // MARK: - Outlets
-    private var imageView:          UIImageView!
-    private var titleLabel:         UILabel!
+    @IBOutlet private var contentView:        UIView!
+    @IBOutlet private var layoutView:         NoteSeparatorsView!
+    @IBOutlet private var imageView:          UIImageView!
+    @IBOutlet private var titleLabel:         UILabel!
 }
