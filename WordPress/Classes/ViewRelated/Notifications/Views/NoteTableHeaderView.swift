@@ -43,13 +43,17 @@ import Foundation
     }
     
     
+    
     // MARK: - Overriden Properties
     public override var frame: CGRect {
         didSet {
-            if frame.width > maximumWidth {
-                super.frame.origin.x    = (frame.width - maximumWidth) * 0.5
-                super.frame.size.width  = maximumWidth
+            if frame.width <= maximumWidth {
+                return
             }
+            
+            super.frame.origin.x    = (frame.width - maximumWidth) * 0.5
+            super.frame.size.width  = maximumWidth
+            setNeedsLayout()
         }
     }
     
@@ -103,6 +107,8 @@ import Foundation
         
         bottomSeparator             = UIView(frame: CGRectZero)
         addSubview(bottomSeparator)
+        
+        clipsToBounds               = true
     }
 
     
