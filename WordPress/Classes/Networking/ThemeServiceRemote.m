@@ -1,4 +1,6 @@
 #import "ThemeServiceRemote.h"
+
+#import <NSObject-SafeExpectations/NSDictionary+SafeExpectations.h>
 #import "RemoteTheme.h"
 #import "WordPressComApi.h"
 
@@ -188,16 +190,16 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     [self loadCostForTheme:theme fromDictionary:dictionary];
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
     
-    theme.desc = dictionary[ThemeDescriptionKey];
-    theme.downloadUrl = dictionary[ThemeDownloadURLKey];
-    theme.name = dictionary[ThemeNameKey];
-    theme.popularityRank = dictionary[ThemePopularityRankKey];
-    theme.previewUrl = dictionary[ThemePreviewURLKey];
-    theme.screenshotUrl = dictionary[ThemeScreenshotKey];
-    theme.tags = dictionary[ThemeTagsKey];
-    theme.themeId = dictionary[ThemeIdKey];
-    theme.trendingRank = dictionary[ThemeTrendingRankKey];
-    theme.version = dictionary[ThemeVersionKey];
+    theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
+    theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
+    theme.name = [dictionary stringForKey:ThemeNameKey];
+    theme.popularityRank = [dictionary numberForKey:ThemePopularityRankKey];
+    theme.previewUrl = [dictionary stringForKey:ThemePreviewURLKey];
+    theme.screenshotUrl = [dictionary stringForKey:ThemeScreenshotKey];
+    theme.tags = [dictionary arrayForKey:ThemeTagsKey];
+    theme.themeId = [dictionary stringForKey:ThemeIdKey];
+    theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
+    theme.version = [dictionary stringForKey:ThemeVersionKey];
     
     return theme;
 }
@@ -249,9 +251,9 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     
     NSDictionary *costDictionary = dictionary[ThemeCostKey];
     
-    theme.costCurrency = costDictionary[ThemeCostCurrencyKey];
-    theme.costDisplay = costDictionary[ThemeCostDisplayKey];
-    theme.costNumber = costDictionary[ThemeCostNumberKey];
+    theme.costCurrency = [costDictionary stringForKey:ThemeCostCurrencyKey];
+    theme.costDisplay = [costDictionary stringForKey:ThemeCostDisplayKey];
+    theme.costNumber = [costDictionary numberForKey:ThemeCostNumberKey];
 }
 
 /**
