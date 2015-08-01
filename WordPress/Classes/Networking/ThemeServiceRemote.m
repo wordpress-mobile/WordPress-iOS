@@ -1,4 +1,6 @@
 #import "ThemeServiceRemote.h"
+
+#import <NSObject-SafeExpectations/NSDictionary+SafeExpectations.h>
 #import "RemoteTheme.h"
 #import "WordPressComApi.h"
 
@@ -161,40 +163,56 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Parsing the dictionary replies
 
+/**
+ *  @brief      Creates a remote theme object from the specified dictionary.
+ *
+ *  @param      dictionary      The dictionary containing the theme information.  Cannot be nil.
+ *
+ *  @returns    A remote theme object.
+ */
 - (RemoteTheme *)themeFromDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    static NSString* const ThemeIdKey = @"id"; // string
-    static NSString* const ThemeScreenshotKey = @"screenshot"; // string / URL
-    static NSString* const ThemeVersionKey = @"version"; // string - version of the theme "v1.0.4"
-    static NSString* const ThemeDownloadURLKey = @"download_url"; // string / URL
-    static NSString* const ThemeTrendingRankKey = @"trending_rank"; // integer
-    static NSString* const ThemePopularityRankKey = @"popularity_rank"; // integer
-    static NSString* const ThemeNameKey = @"name"; // string
-    static NSString* const ThemeDescriptionKey = @"description"; // string
-    static NSString* const ThemeTagsKey = @"tags"; // array of strings
-    static NSString* const ThemePreviewURLKey = @"preview_url"; // string / URL
+    static NSString* const ThemeIdKey = @"id";
+    static NSString* const ThemeScreenshotKey = @"screenshot";
+    static NSString* const ThemeVersionKey = @"version";
+    static NSString* const ThemeDownloadURLKey = @"download_url";
+    static NSString* const ThemeTrendingRankKey = @"trending_rank";
+    static NSString* const ThemePopularityRankKey = @"popularity_rank";
+    static NSString* const ThemeNameKey = @"name";
+    static NSString* const ThemeDescriptionKey = @"description";
+    static NSString* const ThemeTagsKey = @"tags";
+    static NSString* const ThemePreviewURLKey = @"preview_url";
     
     RemoteTheme *theme = [RemoteTheme new];
     
     [self loadCostForTheme:theme fromDictionary:dictionary];
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
     
-    theme.desc = dictionary[ThemeDescriptionKey];
-    theme.downloadUrl = dictionary[ThemeDownloadURLKey];
-    theme.name = dictionary[ThemeNameKey];
-    theme.popularityRank = dictionary[ThemePopularityRankKey];
-    theme.previewUrl = dictionary[ThemePreviewURLKey];
-    theme.screenshotUrl = dictionary[ThemeScreenshotKey];
-    theme.tags = dictionary[ThemeTagsKey];
-    theme.themeId = dictionary[ThemeIdKey];
-    theme.trendingRank = dictionary[ThemeTrendingRankKey];
-    theme.version = dictionary[ThemeVersionKey];
+
+    theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
+    theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
+    theme.name = [dictionary stringForKey:ThemeNameKey];
+    theme.popularityRank = [dictionary numberForKey:ThemePopularityRankKey];
+    theme.previewUrl = [dictionary stringForKey:ThemePreviewURLKey];
+    theme.screenshotUrl = [dictionary stringForKey:ThemeScreenshotKey];
+    theme.tags = [dictionary arrayForKey:ThemeTagsKey];
+    theme.themeId = [dictionary stringForKey:ThemeIdKey];
+    theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
+    theme.version = [dictionary stringForKey:ThemeVersionKey];
     
     return theme;
 }
 
+/**
+ *  @brief      Creates remote theme objects from the specified array of dictionaries.
+ *
+ *  @param      dictionaries    The array of dictionaries containing the themes information.  Cannot
+ *                              be nil.
+ *
+ *  @returns    An array of remote theme objects.
+ */
 - (NSArray *)themesFromDictionaries:(NSArray *)dictionaries
 {
     NSParameterAssert([dictionaries isKindOfClass:[NSArray class]]);
@@ -215,33 +233,46 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
 
 #pragma mark - Field parsing
 
+/**
+ *  @brief      Loads the cost structure from a dictionary into the specified remote theme object.
+ *
+ *  @param      theme       The theme to load the info into.  Cannot be nil.
+ *  @param      dictionary  The dictionary to load the info from.  Cannot be nil.
+ */
 - (void)loadCostForTheme:(RemoteTheme *)theme
           fromDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([theme isKindOfClass:[RemoteTheme class]]);
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    static NSString* const ThemeCostKey = @"cost"; // struct
-    static NSString* const ThemeCostCurrencyKey = @"currency"; // string
-    static NSString* const ThemeCostDisplayKey = @"display"; // string - to show on screen
-    static NSString* const ThemeCostNumberKey = @"number"; // float (?)
+    static NSString* const ThemeCostKey = @"cost";
+    static NSString* const ThemeCostCurrencyKey = @"currency";
+    static NSString* const ThemeCostDisplayKey = @"display";
+    static NSString* const ThemeCostNumberKey = @"number";
     
     NSDictionary *costDictionary = dictionary[ThemeCostKey];
     
-    theme.costCurrency = costDictionary[ThemeCostCurrencyKey];
-    theme.costDisplay = costDictionary[ThemeCostDisplayKey];
-    theme.costNumber = costDictionary[ThemeCostNumberKey];
+    theme.costCurrency = [costDictionary stringForKey:ThemeCostCurrencyKey];
+    theme.costDisplay = [costDictionary stringForKey:ThemeCostDisplayKey];
+    theme.costNumber = [costDictionary numberForKey:ThemeCostNumberKey];
 }
 
+/**
+ *  @brief      Loads a theme's launch date from a dictionary into the specified remote theme
+ *              object.
+ *
+ *  @param      theme       The theme to load the info into.  Cannot be nil.
+ *  @param      dictionary  The dictionary to load the info from.  Cannot be nil.
+ */
 - (void)loadLaunchDateForTheme:(RemoteTheme *)theme
                 fromDictionary:(NSDictionary *)dictionary
 {
     NSParameterAssert([theme isKindOfClass:[RemoteTheme class]]);
     NSParameterAssert([dictionary isKindOfClass:[NSDictionary class]]);
     
-    static NSString* const ThemeLaunchDateKey = @"launch_date"; // string / date "2015-05-10"
+    static NSString* const ThemeLaunchDateKey = @"launch_date";
     
-    NSString *launchDateString = dictionary[ThemeLaunchDateKey];
+    NSString *launchDateString = [dictionary stringForKey:ThemeLaunchDateKey];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-mm-dd"];

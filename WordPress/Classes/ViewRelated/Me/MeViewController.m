@@ -222,7 +222,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
-    [WPStyleGuide configureTableViewActionCell:cell];
+    [WPStyleGuide configureTableViewCell:cell];
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
@@ -261,8 +261,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
@@ -270,12 +269,15 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                             @"Label for disconnecting from WordPress.com account");
                 cell.textLabel.text = signOutString;
                 cell.accessibilityIdentifier = signOutString;
+                [WPStyleGuide configureTableViewDestructiveActionCell:cell];
             }
             else {
                 NSString *signInString = NSLocalizedString(@"Connect to WordPress.com",
                                                            @"Label for connecting to WordPress.com account");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
+                [WPStyleGuide configureTableViewActionCell:cell];
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
             }
         }
     }

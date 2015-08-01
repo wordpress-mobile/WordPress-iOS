@@ -50,6 +50,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic visible;
 @dynamic account;
 @dynamic jetpackAccount;
+@dynamic isAdmin;
 @dynamic isMultiAuthor;
 @dynamic isHostedAtWPcom;
 @dynamic icon;
