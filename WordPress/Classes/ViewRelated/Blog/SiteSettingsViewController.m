@@ -18,6 +18,8 @@
 #import "WPTextFieldTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "PostCategoryService.h"
+#import "PostCategory.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -35,6 +37,7 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingGeotagging = 0,
+    SiteSettingsWritingDefaultCategory,
     SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingCount,
 };
@@ -66,7 +69,9 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
+@property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
 @property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
+
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Other properties
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
@@ -247,6 +252,17 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _geotaggingCell;
 }
 
+- (SettingTableViewCell *)defaultCategoryCell
+{
+    if (_defaultCategoryCell){
+        return _defaultCategoryCell;
+    }
+    _defaultCategoryCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Category", @"Label for selecting the default category of a post")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    return _defaultCategoryCell;
+}
+
 - (SettingTableViewCell *)defaultPostFormatCell
 {
     if (_defaultPostFormatCell){
@@ -266,6 +282,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
             geotaggingSwitch.on = self.geolocationEnabled;
             return self.geotaggingCell;
+        }break;
+        case (SiteSettingsWritingDefaultCategory):{
+            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategory];
+            [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+            return self.defaultCategoryCell;
         }break;
         case (SiteSettingsWritingDefaultPostFormat):{
             [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
