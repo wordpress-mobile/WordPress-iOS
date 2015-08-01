@@ -55,6 +55,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
+@dynamic defaultCategory;
+@dynamic defaultPostFormat;
+
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
