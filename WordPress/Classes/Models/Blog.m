@@ -257,6 +257,25 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [NSArray arrayWithArray:sortedNames];
 }
 
+- (NSString *)defaultPostFormatText
+{
+    return [self postFormatTextForCode:self.defaultPostFormat];
+}
+
+- (NSString *)postFormatTextForCode:(NSString *)postFormatCode
+{
+    NSDictionary *allFormats = self.postFormats;
+    NSString *formatText = postFormatCode;
+    if (postFormatCode && allFormats[postFormatCode]) {
+        formatText = allFormats[postFormatCode];
+    }
+    // Default to standard if no name is found
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[@"standard"]) {
+        formatText = allFormats[@"standard"];
+    }
+    return formatText;
+}
+
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
