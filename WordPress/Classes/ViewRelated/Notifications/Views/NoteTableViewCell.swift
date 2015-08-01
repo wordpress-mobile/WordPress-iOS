@@ -1,6 +1,15 @@
 import Foundation
 
 
+/**
+*  @class       NoteTableViewCell
+*  @brief       The purpose of this class is to render a Notification entity, onscreen.
+*  @details     This cell should be loaded from its nib, since the autolayout constraints and outlets are not
+*               generated via code.
+*               Supports specific styles for Unapproved Comment Notifications, Unread Notifications, and a brand
+*               new "Undo Deletion" mechanism has been implemented. See "NoteUndoOverlayView" for reference.
+*/
+
 @objc public class NoteTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
@@ -18,12 +27,21 @@ import Foundation
             }
         }
     }
-    public var showsSeparator: Bool {
+    public var markedForDeletion: Bool = false {
+        didSet {
+            if markedForDeletion != oldValue {
+                refreshSubviewVisibility()
+                refreshBackgrounds()
+                refreshUndoOverlay()
+            }
+        }
+    }
+    public var showsBottomSeparator: Bool {
         set {
-            separatorView.hidden = !newValue
+            separatorsView.bottomVisible = newValue
         }
         get {
-            return separatorView.hidden == false
+            return separatorsView.bottomVisible == false
         }
     }
     public var attributedSubject: NSAttributedString? {
@@ -53,6 +71,9 @@ import Foundation
             return noticonLabel.text
         }
     }
+    public var onUndelete: (Void -> Void)?
+    
+    
     
     // MARK: - Public Methods
     public class func reuseIdentifier() -> String {
@@ -79,7 +100,8 @@ import Foundation
     }
  
     
-    // MARK: - View Methods
+    
+    // MARK: - UITableViewCell Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
 
@@ -98,10 +120,10 @@ import Foundation
 
         snippetLabel.numberOfLines      = Settings.snippetNumberOfLines
         
-        // Separator: Make sure the height is 1pixel, not 1point
-        let separatorHeightInPixels     = Settings.separatorHeight / UIScreen.mainScreen().scale
-        separatorView.updateConstraint(.Height, constant: separatorHeightInPixels)
-        separatorView.backgroundColor   = WPStyleGuide.Notifications.noteSeparatorColor
+        // Separators: Setup bottom separators!
+        separatorsView.bottomColor      = WPStyleGuide.Notifications.noteSeparatorColor
+        separatorsView.bottomInsets     = Settings.separatorInsets
+        backgroundView                  = separatorsView
     }
     
     public override func layoutSubviews() {
@@ -121,6 +143,7 @@ import Foundation
         super.setHighlighted(highlighted, animated: animated)
         refreshBackgrounds()
     }
+    
     
     
     // MARK: - Private Methods
@@ -144,9 +167,16 @@ import Foundation
         }
 
         // Cell Background: Assign only if needed, for performance
-        let newBackgroundColor  = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+        let newBackgroundColor = read ? Style.noteBackgroundReadColor : Style.noteBackgroundUnreadColor
+
         if backgroundColor != newBackgroundColor {
             backgroundColor = newBackgroundColor
+        }
+    }
+    
+    private func refreshSubviewVisibility() {
+        for subview in contentView.subviews as! [UIView] {
+            subview.hidden = markedForDeletion
         }
     }
     
@@ -155,7 +185,31 @@ import Foundation
         let showsSnippet = attributedSnippet != nil
         subjectLabel.numberOfLines =  Settings.subjectNumberOfLines(showsSnippet)
     }
+    
+    private func refreshUndoOverlay() {
+        // Remove
+        if markedForDeletion == false {
+            undoOverlayView?.removeFromSuperview()
+            return
+        }
+        
+        // Load
+        if undoOverlayView == nil {
+            let nibName = NoteUndoOverlayView.classNameWithoutNamespaces()
+            NSBundle.mainBundle().loadNibNamed(nibName, owner: self, options: nil)
+            undoOverlayView.setTranslatesAutoresizingMaskIntoConstraints(false)
+        }
 
+        // Attach
+        if undoOverlayView.superview == nil {
+            contentView.addSubview(undoOverlayView)
+            contentView.pinSubviewToAllEdges(undoOverlayView)
+        }
+    }
+
+    
+    
+    // MARK: - Public Static Helpers
     public class func layoutHeightWithWidth(width: CGFloat, subject: NSAttributedString?, snippet: NSAttributedString?) -> CGFloat {
         
         // Limit the width (iPad Devices)
@@ -190,18 +244,28 @@ import Foundation
     }
     
     
+    
+    // MARK: - Action Handlers
+    @IBAction public func undeleteWasPressed(sender: AnyObject) {
+        if let handler = onUndelete {
+            handler()
+        }
+    }
+    
+    
+    
     // MARK: - Private Alias
     private typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Settings
     private struct Settings {
-        static let minimumCellHeight:                   CGFloat         = 70
-        static let separatorHeight:                     CGFloat         = 1
-        static let textInsets:                          UIEdgeInsets    = UIEdgeInsets(top: 9, left: 71, bottom: 12, right: 12)
-        static let subjectNumberOfLinesWithoutSnippet:  Int             = 3
-        static let subjectNumberOfLinesWithSnippet:     Int             = 2
-        static let snippetNumberOfLines:                Int             = 2
-        static let noticonRadius:                       CGFloat         = 10
+        static let minimumCellHeight                    = CGFloat(70)
+        static let textInsets                           = UIEdgeInsets(top: 9.0, left: 71.0, bottom: 12.0, right: 12.0)
+        static let separatorInsets                      = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+        static let subjectNumberOfLinesWithoutSnippet   = 3
+        static let subjectNumberOfLinesWithSnippet      = 2
+        static let snippetNumberOfLines                 = 2
+        static let noticonRadius                        = CGFloat(10)
         
         static func subjectNumberOfLines(showsSnippet: Bool) -> Int {
             return showsSnippet ? subjectNumberOfLinesWithSnippet : subjectNumberOfLinesWithoutSnippet
@@ -217,7 +281,8 @@ import Foundation
     }
 
     // MARK: - Private Properties
-    private var gravatarURL:                            NSURL?
+    private var gravatarURL : NSURL?
+    private var separatorsView = NoteSeparatorsView()
     
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!
@@ -227,5 +292,7 @@ import Foundation
     @IBOutlet private weak var subjectLabel:            UILabel!
     @IBOutlet private weak var snippetLabel:            UILabel!
     @IBOutlet private weak var timestampLabel:          UILabel!
-    @IBOutlet private weak var separatorView:           UIView!
+    
+    // MARK: - Undo Overlay Optional
+    @IBOutlet private var undoOverlayView:              NoteUndoOverlayView!
 }

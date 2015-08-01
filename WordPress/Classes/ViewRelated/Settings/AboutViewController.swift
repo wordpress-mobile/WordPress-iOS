@@ -82,14 +82,18 @@ public class AboutViewController : UITableViewController
         var cell = tableView.dequeueReusableCellWithIdentifier(reuseIdentifier) as? UITableViewCell
         if cell == nil {
             cell = WPTableViewCell(style: .Value1, reuseIdentifier: reuseIdentifier)
-            WPStyleGuide.configureTableViewCell(cell)
         }
         
         let row = rows[indexPath.section][indexPath.row]
         
         cell!.textLabel?.text       = row.title
         cell!.detailTextLabel?.text = row.details ?? String()
-        cell!.accessoryType         = (row.handler != nil) ? .DisclosureIndicator : .None
+        if (row.handler != nil) {
+            WPStyleGuide.configureTableViewActionCell(cell)
+        } else {
+            WPStyleGuide.configureTableViewCell(cell)
+            cell?.selectionStyle = .None
+        }
         
         return cell!
     }
