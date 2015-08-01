@@ -271,7 +271,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     
     static NSString* const ThemeLaunchDateKey = @"launch_date";
     
-    NSString *launchDateString = dictionary[ThemeLaunchDateKey];
+    NSString *launchDateString = [dictionary stringForKey:ThemeLaunchDateKey];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy-mm-dd"];
