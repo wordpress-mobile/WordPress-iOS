@@ -35,6 +35,7 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingGeotagging = 0,
+    SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingCount,
 };
 
@@ -65,6 +66,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
+@property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
 #pragma mark - Other properties
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
@@ -245,12 +247,31 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _geotaggingCell;
 }
 
+- (SettingTableViewCell *)defaultPostFormatCell
+{
+    if (_defaultPostFormatCell){
+        return _defaultPostFormatCell;
+    }
+    _defaultPostFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Post Format", @"Label for selecting the default post format")
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
+    return _defaultPostFormatCell;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
-    if (row == SiteSettingsWritingGeotagging) {
-        UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
-        geotaggingSwitch.on = self.geolocationEnabled;
-        return self.geotaggingCell;
+    switch (row) {
+        case (SiteSettingsWritingGeotagging):{
+            UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
+            geotaggingSwitch.on = self.geolocationEnabled;
+            return self.geotaggingCell;
+        }break;
+        case (SiteSettingsWritingDefaultPostFormat):{
+            [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+            return self.defaultPostFormatCell;
+        }break;
+
     }
     return nil;
 }
