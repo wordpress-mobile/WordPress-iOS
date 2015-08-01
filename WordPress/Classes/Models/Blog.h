@@ -113,6 +113,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
+@property (weak, readonly) NSString *defaultPostFormatText;
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
@@ -126,6 +127,14 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
+/**
+ *  Returnst the text description for a post format code
+ *
+ *  @param postFormatCode of the post format you want to display
+ *
+ *  @return a string with the post format description and if no description was found the postFormatCode sent.
+ */
+- (NSString *)postFormatTextForCode:(NSString *)postFormatCode;
 /**
  Returns a human readable description for logging
  
