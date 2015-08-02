@@ -644,69 +644,6 @@ EditImageDetailsViewControllerDelegate
     }
 }
 
-/**
- *	@brief      Sets the format bar tooltip's displayed/not displayed state
- *	@details    Sets a flag in NSUserDefaults designating that the format bar's
- *              tooltip was displayed already.
- *
- *	@param      BOOL    YES if the format bar tooltip was shown
- */
-- (void)setFormatBarOnboardingShown:(BOOL)wasShown
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:wasShown forKey:FormatBarOnboardingWasShown];
-    [defaults synchronize];
-}
-
-/**
- *	@brief      Was the format bar tooltip already displayed?
- *	@details    Returns YES if the format bar tooltip was already displayed to the
- *              user, otherwise NO.
- */
-- (BOOL)wasFormatBarOnboardingShown
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:FormatBarOnboardingWasShown];
-}
-
-/**
- *	@brief      Displays the tooltop for the formatbar
- *	@details    This method triggers the display of the format bar tooltip only if the 
- *              current device is NOT an iPad and the current orientation is not landscape 
- *              and it was NOT shown already.
- */
-- (void)showFormatBarOnboarding
-{
-    BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
-    if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
-        __weak __typeof__(self) weakSelf = self;
-        NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
-            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:updatedRect withText:tooltipText direction:WPTooltipDirectionUp];
-            [weakSelf animateFormatBar];
-        });
-        [self setFormatBarOnboardingShown:YES];
-    }
-}
-
-/**
- *	@brief      Animates the horizontal scrolling of the format bar
- *	@details    This method triggers the format bar's horizontal scroll animation
- *              which is used during onboarding.
- */
-- (void)animateFormatBar
-{
-    CGPoint offset = self.toolbarView.toolbarScroll.contentOffset;
-    CGPoint newOffset = CGPointMake(offset.x + FormatBarAnimationXOffset, offset.y);
-    
-    __weak __typeof__(self) weakSelf = self;
-    [UIView animateWithDuration:FormatBarAnimationDuration delay:FormatBarAnimationDelay options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAutoreverse animations:^{
-        [weakSelf.toolbarView.toolbarScroll setContentOffset:newOffset animated: NO];
-    } completion:^(BOOL finished) {
-        [weakSelf.toolbarView.toolbarScroll setContentOffset:offset animated:NO];
-    }];
-}
-
 #pragma mark - Actions
 
 /**
@@ -2170,13 +2107,6 @@ EditImageDetailsViewControllerDelegate
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
     [self refreshUIForCurrentPost];
-}
-
-- (void)editorFormatBarStatusChanged:(WPEditorViewController *)editorController enabled:(BOOL)isEnabled
-{
-    if (isEnabled) {
-        [self showFormatBarOnboarding];
-    }
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
