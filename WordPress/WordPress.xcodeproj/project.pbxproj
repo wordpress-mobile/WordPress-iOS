@@ -521,6 +521,7 @@
 		F1564E5B18946087009F8F97 /* NSStringHelpersTest.m in Sources */ = {isa = PBXBuildFile; fileRef = F1564E5A18946087009F8F97 /* NSStringHelpersTest.m */; };
 		F1A0C49C1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */; };
 		F1FA2C4E1AED07FC00255FCD /* MFMailComposeViewController+StatusBarStyle.m in Sources */ = {isa = PBXBuildFile; fileRef = F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */; };
+		FA404C041B6E6F7900A7B761 /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA404C031B6E6F7900A7B761 /* SharingViewController.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
@@ -1513,6 +1514,8 @@
 		F1A0C49B1AF65B02001B544C /* MFMessageComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMessageComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
 		F1FA2C481AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MFMailComposeViewController+StatusBarStyle.h"; sourceTree = "<group>"; };
 		F1FA2C491AECEE1900255FCD /* MFMailComposeViewController+StatusBarStyle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MFMailComposeViewController+StatusBarStyle.m"; sourceTree = "<group>"; };
+		FA404C021B6E6F7900A7B761 /* SharingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingViewController.h; sourceTree = "<group>"; };
+		FA404C031B6E6F7900A7B761 /* SharingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingViewController.m; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -2749,6 +2752,8 @@
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
 				83FEFC7411FF6C5A0078B462 /* SiteSettingsViewController.m */,
+				FA404C021B6E6F7900A7B761 /* SharingViewController.h */,
+				FA404C031B6E6F7900A7B761 /* SharingViewController.m */,
 			);
 			path = Blog;
 			sourceTree = "<group>";
@@ -3870,6 +3875,7 @@
 				FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */,
 				5D1D9C50198837D0009D13B7 /* RemoteReaderPost.m in Sources */,
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
+				FA404C041B6E6F7900A7B761 /* SharingViewController.m in Sources */,
 				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
 				B5C66B6E1ACEE0B500F68370 /* NoteSeparatorsView.swift in Sources */,

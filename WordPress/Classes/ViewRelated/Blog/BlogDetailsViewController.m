@@ -30,6 +30,7 @@
 #import "PostListViewController.h"
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
+#import "SharingViewController.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -465,10 +466,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
 }
 
 - (void)showSharing {
-#warning track and show sharing controller
-    //[WPAnalytics track:WPAnalyticsStatOpenedSharing];
-    //SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
-    //[self.navigationController pushViewController:controller animated:YES];
+    SharingViewController *controller = [[SharingViewController alloc] initWithBlog:self.blog];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)showPostList {
