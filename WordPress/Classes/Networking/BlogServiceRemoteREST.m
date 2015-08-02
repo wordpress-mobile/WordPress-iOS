@@ -210,7 +210,11 @@
     remoteSettings.name = [json stringForKey:@"name"];
     remoteSettings.desc = [json stringForKey:@"description"];
     
-    remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
+    if (json[@"settings.default_category"]) {
+        remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
+    } else {
+        remoteSettings.defaultCategory = @(1);
+    }
     remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
     
     return remoteSettings;
