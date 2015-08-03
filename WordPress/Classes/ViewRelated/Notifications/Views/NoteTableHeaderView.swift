@@ -14,7 +14,7 @@ import Foundation
     public var title: String? {
         set {
             // For layout reasons, we need to ensure that the titleLabel uses an exact Paragraph Height!
-            let unwrappedTitle = newValue?.uppercaseString ?? String()
+            let unwrappedTitle = newValue?.uppercaseStringWithLocale(NSLocale.currentLocale()) ?? String()
             let attributes = Style.sectionHeaderRegularStyle
             titleLabel.attributedText = NSAttributedString(string: unwrappedTitle, attributes: attributes)
             setNeedsLayout()
