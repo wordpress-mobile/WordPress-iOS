@@ -524,7 +524,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
-    NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
+    NoteTableHeaderView *headerView = [NoteTableHeaderView new];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
     headerView.separatorColor       = self.tableView.separatorColor;
     
