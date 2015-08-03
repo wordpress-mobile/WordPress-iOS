@@ -19,10 +19,18 @@
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
 
+typedef NS_ENUM(NSInteger, BlogListSections) {
+    BlogListSectionsAllSites = 0,
+    BlogListSectionsNewSite,
+    BlogListSectionsCount
+};
+
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
+static CGFloat const BLVCSiteRowHeight = 54.0;
+
 
 @interface BlogListViewController () <UIViewControllerRestoration>
 
@@ -342,9 +350,9 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     if (self.tableView.isEditing || [self.searchController isActive]) { // Don't show "Add Site"
-        return 1;
+        return BlogListSectionsCount - 1;
     } else {
-        return 2;
+        return BlogListSectionsCount;
     }
 }
 
@@ -516,7 +524,7 @@ static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 54;
+    return (indexPath.section == BlogListSectionsNewSite) ? WPTableViewDefaultRowHeight : BLVCSiteRowHeight;
 }
 
 # pragma mark - WPSeachController delegate methods
