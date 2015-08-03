@@ -541,7 +541,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 
 - (void)presentWebViewControllerWithLink:(NSURL *)linkURL
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:linkURL];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
