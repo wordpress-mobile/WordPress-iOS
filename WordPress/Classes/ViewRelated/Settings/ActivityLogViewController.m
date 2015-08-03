@@ -6,9 +6,9 @@
 #import "WPTableViewSectionFooterView.h"
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
+#import "WPGUIConstants.h"
 
 static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
-static CGFloat const ActivityLogRowHeight = 44.0f;
 
 @interface ActivityLogViewController ()
 
@@ -44,12 +44,7 @@ static CGFloat const ActivityLogRowHeight = 44.0f;
 {
     [super viewDidLoad];
     
-    if ([UIDevice isOS8]) { // iOS8 or higher
-        [self.tableView setEstimatedRowHeight:ActivityLogRowHeight];
-        [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    } else {
-        [self.tableView setRowHeight:ActivityLogRowHeight];
-    }
+    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
     
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self loadLogFiles];
