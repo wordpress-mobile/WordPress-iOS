@@ -30,6 +30,7 @@
 #import "PostListViewController.h"
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
+#import "WPGUIConstants.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -377,7 +378,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 48;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
