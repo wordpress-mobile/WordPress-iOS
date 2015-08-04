@@ -5,6 +5,7 @@ data model as well as any custom migrations.
 
 ## WordPress 37 (@alexcurylo 2015-08-04)
 
+- Added `Publicize` to store the services capable of being connected to
 - `Blog` added a new attribute called `connections` to store the Publicize connections array
 
 ## WordPress 36 (@sergioestevao 2015-07-08)

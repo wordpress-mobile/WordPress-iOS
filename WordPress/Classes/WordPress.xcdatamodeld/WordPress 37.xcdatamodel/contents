@@ -322,6 +322,24 @@
         </relationship>
         <userInfo/>
     </entity>
+    <entity name="Publicize" representedClassName="Publicize">
+        <attribute name="connect" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="detail" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="icon" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="label" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <attribute name="service" attributeType="String">
+            <userInfo/>
+        </attribute>
+        <userInfo/>
+    </entity>
     <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
@@ -423,5 +441,6 @@
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
+        <element name="Publicize" positionX="9" positionY="153" width="128" height="120"/>
     </elements>
 </model>
