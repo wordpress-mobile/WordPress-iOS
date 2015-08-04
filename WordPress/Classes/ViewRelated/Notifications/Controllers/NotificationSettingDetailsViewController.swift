@@ -78,7 +78,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView          = WPTableViewSectionHeaderFooterView(style: .Footer)
+        let headerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         headerView.title        = titleForStream(stream)
         headerView.titleInsets  = headerTitleInsets
         return headerView
