@@ -24,10 +24,15 @@ extension WPStyleGuide
 
         public static let noteBackgroundReadColor   = UIColor.whiteColor()
         public static let noteBackgroundUnreadColor = UIColor(red: 0xF1/255.0, green: 0xF6/255.0, blue: 0xF9/255.0, alpha: 0xFF/255.0)
-
+        
         public static let noteSeparatorColor        = blockSeparatorColor
 
         public static let gravatarPlaceholderImage  = UIImage(named: "gravatar")
+
+        //  NoteUndoOverlayView
+        public static let noteUndoBackgroundColor   = WPStyleGuide.errorRed()
+        public static let noteUndoTextColor         = UIColor.whiteColor()
+        public static let noteUndoTextFont          = subjectRegularFont
         
         //  Subject Text
         public static let subjectRegularStyle       = [ NSParagraphStyleAttributeName:  subjectParagraph,
