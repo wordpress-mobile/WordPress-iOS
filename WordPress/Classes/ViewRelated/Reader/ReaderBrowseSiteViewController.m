@@ -246,7 +246,7 @@
 - (void)attributionViewDidReceiveAvatarAction:(WPContentAttributionView *)attributionView
 {
     NSURL *targetURL = [NSURL URLWithString:self.siteURL];
-    WPWebViewController *controller = [WPWebViewController webViewControllerWithURL:targetURL];
+    WPWebViewController *controller = [WPWebViewController authenticatedWebViewController:targetURL];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:controller];
     [self presentViewController:navController animated:YES completion:nil];
