@@ -17,7 +17,7 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
-#import <WordPress-iOS-Shared/WPTableViewSectionHeaderView.h>
+#import <WordPress-iOS-Shared/WPTableViewSectionHeaderFooterView.h>
 #import "HelpshiftUtils.h"
 #import "WordPress-Swift.h"
 
@@ -50,8 +50,6 @@ typedef NS_ENUM(NSInteger, MeSectionWpCom) {
 
 static NSString *const WPMeRestorationID = @"WPMeRestorationID";
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
-
-static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
@@ -122,7 +120,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.rowHeight = MVCTableViewRowHeight;
+    self.tableView.rowHeight = WPTableViewDefaultRowHeight;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];
@@ -239,7 +237,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:MVCCellReuseIdentifier];
-    [WPStyleGuide configureTableViewActionCell:cell];
+    [WPStyleGuide configureTableViewCell:cell];
 
     if (indexPath.section == MeSectionsAccount) {
         switch (indexPath.row) {
@@ -286,8 +284,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
             NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
             AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
             WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            
             cell.accessoryType = UITableViewCellAccessoryNone;
 
             if (defaultAccount) {
@@ -295,12 +292,15 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
                                                             @"Label for disconnecting from WordPress.com account");
                 cell.textLabel.text = signOutString;
                 cell.accessibilityIdentifier = signOutString;
+                [WPStyleGuide configureTableViewDestructiveActionCell:cell];
             }
             else {
                 NSString *signInString = NSLocalizedString(@"Connect to WordPress.com",
                                                            @"Label for connecting to WordPress.com account");
                 cell.textLabel.text = signInString;
                 cell.accessibilityIdentifier = signInString;
+                [WPStyleGuide configureTableViewActionCell:cell];
+                cell.textLabel.textAlignment = NSTextAlignmentCenter;
             }
         }
     }
@@ -309,7 +309,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
@@ -321,7 +321,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
         return CGFLOAT_MIN;
     }
     
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section

@@ -44,6 +44,7 @@
 static NSTimeInterval const NotificationPushMaxWait     = 1;
 static CGFloat const NoteEstimatedHeight                = 70;
 static NSTimeInterval NotificationsSyncTimeout          = 10;
+static NSTimeInterval NotificationsUndoTimeout          = 4;
 static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 
@@ -59,7 +60,10 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
+@property (nonatomic, strong) NSMutableSet          *notificationIdsMarkedForDeletion;
+@property (nonatomic, strong) NSMutableSet          *notificationIdsBeingDeleted;
 @end
+
 
 #pragma mark ====================================================================================
 #pragma mark NotificationsViewController
@@ -84,6 +88,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         
         // All of the data will be fetched during the FetchedResultsController init. Prevent overfetching
         self.lastReloadDate = [NSDate date];
+        
+        // Notifications that received a destructive action will allow the user to Undo this action.
+        // Once the Timeout elapses, we'll move the NotificationID to the BeingDeleted collection,
+        // so that it can be proactively filtered from the list.
+        self.notificationIdsMarkedForDeletion   = [NSMutableSet set];
+        self.notificationIdsBeingDeleted        = [NSMutableSet set];
     }
     
     return self;
@@ -97,9 +107,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     [super viewDidLoad];
     
     // Register the cells
-    NSString *cellNibName = [NoteTableViewCell classNameWithoutNamespaces];
-    UINib *tableViewCellNib = [UINib nibWithNibName:cellNibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:[NoteTableViewCell reuseIdentifier]];
+    NSArray *cellNibs = @[ [NoteTableViewCell classNameWithoutNamespaces] ];
+    
+    for (NSString *nibName in cellNibs) {
+        UINib *tableViewCellNib = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+        [self.tableView registerNib:tableViewCellNib forCellReuseIdentifier:nibName];
+    }
     
     // iPad Fix: contentInset breaks tableSectionViews
     if (UIDevice.isPad) {
@@ -402,9 +415,36 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
+    [self reloadResultsController];
+}
+
+- (void)reloadResultsController
+{
     [self.tableViewHandler.resultsController performFetch:nil];
     [self.tableView reloadData];
     self.lastReloadDate = [NSDate date];
+}
+
+- (void)reloadRowForNotificationWithID:(NSManagedObjectID *)noteObjectID
+{
+    // Failsafe
+    if (!noteObjectID) {
+        return;
+    }
+    
+    // Load the Notification and its indexPath
+    NSError *error                  = nil;
+    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
+    Notification *note              = (Notification *)[context existingObjectWithID:noteObjectID error:&error];
+    if (error) {
+        DDLogError(@"Error refreshing Notification Row: %@", error);
+        return;
+    }
+    
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:note];
+    if (indexPath) {
+        [self.tableView reloadRowsAtIndexPaths:@[ indexPath ] withRowAnimation:UITableViewRowAnimationFade];
+    }
 }
 
 - (BOOL)isRowLastRowForSection:(NSIndexPath *)indexPath
@@ -428,15 +468,55 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     self.trackedViewDisplay = YES;
 }
 
-- (void)disableInteractionsForNotification:(Notification *)note
+
+#pragma mark - Undelete Mechanism
+
+- (void)showUndeleteForNotificationWithID:(NSManagedObjectID *)noteObjectID onTimeout:(NotificationDetailsDeletionActionBlock)onTimeout
 {
-    NSIndexPath *indexPath      = [self.tableViewHandler.resultsController indexPathForObject:note];
-    if (!indexPath) {
+    // Mark this note as Pending Deletion and Reload
+    [self.notificationIdsMarkedForDeletion addObject:noteObjectID];
+    [self reloadRowForNotificationWithID:noteObjectID];
+    
+    // Dispatch the Action block
+    dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(NotificationsUndoTimeout * NSEC_PER_SEC));
+    dispatch_after(timeout, dispatch_get_main_queue(), ^{
+        [self performDeletionActionForNotificationWithID:noteObjectID deletionBlock:onTimeout];
+    });
+}
+
+- (void)performDeletionActionForNotificationWithID:(NSManagedObjectID *)noteObjectID deletionBlock:(NotificationDetailsDeletionActionBlock)deletionBlock
+{
+    // Was the Deletion Cancelled?
+    if ([self isNoteMarkedForDeletion:noteObjectID] == false) {
         return;
     }
     
-    UITableViewCell *cell       = [self.tableView cellForRowAtIndexPath:indexPath];
-    cell.userInteractionEnabled = false;
+    // Hide the Notification
+    [self.notificationIdsBeingDeleted addObject:noteObjectID];
+    [self reloadResultsController];
+
+    // Hit the Deletion Block
+    deletionBlock(^(BOOL success) {
+        // Cleanup
+        [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+        [self.notificationIdsBeingDeleted removeObject:noteObjectID];
+        
+        // Error: let's unhide the row
+        if (!success) {
+            [self reloadResultsController];
+        }
+    });
+}
+
+- (void)cancelDeletionForNotificationWithID:(NSManagedObjectID *)noteObjectID
+{
+    [self.notificationIdsMarkedForDeletion removeObject:noteObjectID];
+    [self reloadRowForNotificationWithID:noteObjectID];
+}
+
+- (BOOL)isNoteMarkedForDeletion:(NSManagedObjectID *)noteObjectID
+{
+    return [self.notificationIdsMarkedForDeletion containsObject:noteObjectID];
 }
 
 
@@ -481,7 +561,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
-    NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
+    NoteTableHeaderView *headerView = [NoteTableHeaderView new];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
     headerView.separatorColor       = self.tableView.separatorColor;
     
@@ -544,8 +624,12 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
         return;
     }
     
-    // At last, push the details
+    // Push the Details: Unless the note has a pending deletion!
     Notification *note = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    if ([self isNoteMarkedForDeletion:note.objectID]) {
+        return;
+    }
+    
     [self showDetailsForNotification:note];
 }
 
@@ -562,8 +646,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     if([segue.identifier isEqualToString:detailsSegueID]) {
         NotificationDetailsViewController *detailsViewController = segue.destinationViewController;
         [detailsViewController setupWithNotification:note];
-        detailsViewController.onDestructionCallback = ^{
-            [weakSelf disableInteractionsForNotification:note];
+        detailsViewController.onDeletionRequestCallback = ^(NotificationDetailsDeletionActionBlock onUndoTimeout){
+            [weakSelf showUndeleteForNotificationWithID:note.objectID onTimeout:onUndoTimeout];
         };
         
     } else if([segue.identifier isEqualToString:readerSegueID]) {
@@ -583,8 +667,11 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 - (NSFetchRequest *)fetchRequest
 {
     NSString *sortKey               = NSStringFromSelector(@selector(timestamp));
+    NSArray *filteredNoteObjectIDs  = self.notificationIdsBeingDeleted.allObjects;
+    NSPredicate *predicate          = [NSPredicate predicateWithFormat:@"NOT (SELF IN %@)", filteredNoteObjectIDs];
     NSFetchRequest *fetchRequest    = [NSFetchRequest fetchRequestWithEntityName:self.entityName];
     fetchRequest.sortDescriptors    = @[[NSSortDescriptor sortDescriptorWithKey:sortKey ascending:NO] ];
+    fetchRequest.predicate          = predicate;
     
     return fetchRequest;
 }
@@ -594,17 +681,24 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // Note:
     // iOS 8 has a nice bug in which, randomly, the last cell per section was getting an extra separator.
     // For that reason, we draw our own separators.
+ 
+    Notification *note              = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    BOOL isMarkedForDeletion        = [self isNoteMarkedForDeletion:note.objectID];
+    BOOL isLastRow                  = [self isRowLastRowForSection:indexPath];
+    __weak __typeof(self) weakSelf  = self;
     
-    Notification *note                      = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-
-    cell.attributedSubject                  = note.subjectBlock.attributedSubjectText;
-    cell.attributedSnippet                  = note.snippetBlock.attributedSnippetText;
-    cell.read                               = note.read.boolValue;
-    cell.noticon                            = note.noticon;
-    cell.unapproved                         = note.isUnapprovedComment;
-    cell.showsSeparator                     = ![self isRowLastRowForSection:indexPath];
-    cell.userInteractionEnabled             = YES;
-
+    cell.attributedSubject          = note.subjectBlock.attributedSubjectText;
+    cell.attributedSnippet          = note.snippetBlock.attributedSnippetText;
+    cell.read                       = note.read.boolValue;
+    cell.noticon                    = note.noticon;
+    cell.unapproved                 = note.isUnapprovedComment;
+    cell.markedForDeletion          = isMarkedForDeletion;
+    cell.showsBottomSeparator       = !isLastRow && !isMarkedForDeletion;
+    cell.selectionStyle             = isMarkedForDeletion ? UITableViewCellSelectionStyleNone : UITableViewCellSelectionStyleGray;
+    cell.onUndelete                 = ^{
+        [weakSelf cancelDeletionForNotificationWithID:note.objectID];
+    };
+    
     [cell downloadGravatarWithURL:note.iconURL];
 }
 
@@ -625,8 +719,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     // after a DB OP. This loop has been measured in the order of milliseconds (iPad Mini)
     for (NSIndexPath *indexPath in self.tableView.indexPathsForVisibleRows)
     {
-        NoteTableViewCell *cell = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.showsSeparator     = ![self isRowLastRowForSection:indexPath];
+        NoteTableViewCell *cell     = (NoteTableViewCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.showsBottomSeparator   = ![self isRowLastRowForSection:indexPath];
     }
     
     // Update NoResults View
