@@ -94,7 +94,8 @@
         if (error) {
             DDLogError(@"Error while updating WordPressComOAuthKeychainServiceName token: %@", error);
         }
-
+        
+        _restApi = [[WordPressComApi alloc] initWithOAuthToken:authToken];
     } else {
         NSError *error = nil;
         [SFHFKeychainUtils deleteItemForUsername:self.username
@@ -103,10 +104,9 @@
         if (error) {
             DDLogError(@"Error while deleting WordPressComOAuthKeychainServiceName token: %@", error);
         }
+        
+        _restApi = nil;
     }
-    
-    // Make sure to release any RestAPI alloc'ed, since it might have an invalid token
-    _restApi = nil;
 }
 
 - (NSArray *)visibleBlogs
@@ -116,14 +116,11 @@
     return sortedBlogs;
 }
 
-#pragma mark - API Helpers
+#pragma mark - WordPress.com support methods
 
-- (WordPressComApi *)restApi
+- (BOOL)isWPComAccount
 {
-    if (!_restApi) {
-        _restApi = [[WordPressComApi alloc] initWithOAuthToken:self.authToken];
-    }
-    return _restApi;
+    return self.restApi != nil;
 }
 
 @end
