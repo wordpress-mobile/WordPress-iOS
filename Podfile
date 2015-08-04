@@ -30,7 +30,7 @@ pod 'MGImageUtilities', :git => 'git://github.com/wordpress-mobile/MGImageUtilit
 pod 'NSObject-SafeExpectations', '0.0.2'
 pod 'Simperium', '0.7.9'
 pod 'WordPressApi', '~> 0.3.4'
-pod 'WordPress-iOS-Shared', '0.4.0'
+pod 'WordPress-iOS-Shared', '0.4.2'
 pod 'WordPress-iOS-Editor', :git => 'https://github.com/wordpress-mobile/WordPress-Editor-iOS.git', :commit => 'a983547b5724d5fc3b79865da83e81db2b0b9de4'
 pod 'WordPressCom-Stats-iOS', '0.4.3'
 pod 'WordPressCom-Analytics-iOS', '0.0.35'

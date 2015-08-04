@@ -7,7 +7,7 @@
 
 const CGFloat WPContentViewHorizontalInnerPadding = 12.0;
 const CGFloat WPContentViewOuterMargin = 8.0;
-const CGFloat WPContentViewAttributionVerticalPadding = 8.0;
+const CGFloat WPContentViewAttributionVerticalPadding = 16.0;
 const CGFloat WPContentViewVerticalPadding = 14.0;
 const CGFloat WPContentViewTitleContentPadding = 6.0;
 const CGFloat WPContentViewMaxImageHeightPercentage = 0.59;
@@ -21,7 +21,6 @@ const CGFloat WPContentViewBorderHeight = 1.0;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImageZeroHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *featuredImagePercentageHeightConstraint;
 @property (nonatomic, strong) NSLayoutConstraint *discoverAttriubtionZeroHeightConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *discoverAttributionBottomPaddingHeightConstraint;
 @property (nonatomic, strong) NSMutableArray *labelsNeedingPreferredMaxLayoutWidth;
 @end
 
