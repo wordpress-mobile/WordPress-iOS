@@ -22,6 +22,7 @@ import Foundation
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
+    @IBOutlet private weak var featuredMediaView: UIView!
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var summaryLabel: UILabel!
@@ -32,8 +33,8 @@ import Foundation
     @IBOutlet private weak var actionButtonLeft: UIButton!
     @IBOutlet private weak var actionButtonFlushLeft: UIButton!
 
-    @IBOutlet private weak var featuredImageHeightConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var featuredImageBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var featuredMediaBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabelBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var summaryLabelBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var tagLabelBottomConstraint: NSLayoutConstraint!
@@ -45,11 +46,14 @@ import Foundation
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private var featuredImageHeightConstraintConstant: CGFloat = 0.0
-    private var featuredImageBottomConstraintConstant: CGFloat = 0.0
+    private var featuredMediaHeightConstraintConstant: CGFloat = 0.0
+    private var featuredMediaBottomConstraintConstant: CGFloat = 0.0
     private var titleLabelBottomConstraintConstant: CGFloat = 0.0
     private var summaryLabelBottomConstraintConstant: CGFloat = 0.0
     private var tagLabelBottomConstraintConstant: CGFloat = 0.0
+
+    private let summaryMaxNumberOfLines = 3
+
 
     // MARK: - Accessors
 
@@ -80,8 +84,8 @@ import Foundation
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-        featuredImageHeightConstraintConstant = featuredImageHeightConstraint.constant
-        featuredImageBottomConstraintConstant = featuredImageBottomConstraint.constant
+        featuredMediaHeightConstraintConstant = featuredMediaHeightConstraint.constant
+        featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
         titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
         summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
         tagLabelBottomConstraintConstant = tagLabelBottomConstraint.constant
@@ -110,9 +114,9 @@ import Foundation
 
         var height = cardContentView.frame.minY
 
-        height += featuredImageView.frame.minY
-        height += featuredImageHeightConstraint.constant
-        height += featuredImageBottomConstraint.constant
+        height += featuredMediaView.frame.minY
+        height += featuredMediaHeightConstraint.constant
+        height += featuredMediaBottomConstraint.constant
 
         height += titleLabel.sizeThatFits(innerSize).height
         height += titleLabelBottomConstraint.constant
@@ -211,7 +215,7 @@ import Foundation
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
             var url = featuredImageURL
             if !(contentProvider!.isPrivate()) {
-                let size = CGSize(width:featuredImageView.frame.width, height:featuredImageHeightConstraintConstant)
+                let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
                 url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
@@ -225,13 +229,16 @@ import Foundation
                 featuredImageView.setImageWithURL(url, placeholderImage:nil)
             }
 
-            featuredImageHeightConstraint.constant = featuredImageHeightConstraintConstant
-            featuredImageBottomConstraint.constant = featuredImageBottomConstraintConstant
+            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
+            featuredMediaView.hidden = false
 
         } else {
-            featuredImageHeightConstraint.constant = 0.0
-            featuredImageBottomConstraint.constant = 0.0
+            featuredMediaHeightConstraint.constant = 0.0
+            featuredMediaBottomConstraint.constant = 0.0
+            featuredMediaView.hidden = true
         }
+
         setNeedsUpdateConstraints()
         setNeedsLayout()
     }
@@ -277,7 +284,7 @@ import Foundation
             summaryLabelBottomConstraint.constant = 0.0
         }
 
-        summaryLabel.numberOfLines = 3
+        summaryLabel.numberOfLines = summaryMaxNumberOfLines
         summaryLabel.lineBreakMode = .ByTruncatingTail
     }
 
@@ -308,7 +315,6 @@ import Foundation
         if contentProvider!.commentsOpen() || contentProvider!.commentCount().integerValue > 0 {
             let button = buttons.removeLast() as UIButton
             configureCommentActionButton(button)
-
         }
 
         // Show visit
