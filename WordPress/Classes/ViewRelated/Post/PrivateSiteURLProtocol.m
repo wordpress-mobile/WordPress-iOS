@@ -10,7 +10,7 @@
 
 static NSInteger regcount = 0;
 static NSString const * mutex = @"PrivateSiteURLProtocol-Mutex";
-static NSString *token;
+static NSString *cachedToken;
 
 @implementation PrivateSiteURLProtocol
 
@@ -27,7 +27,7 @@ static NSString *token;
 + (void)unregisterPrivateSiteURLProtocol
 {
     @synchronized(mutex) {
-        token = nil;
+        cachedToken = nil;
         regcount--;
         if (regcount == 0) {
             [NSURLProtocol unregisterClass:[self class]];
@@ -44,12 +44,10 @@ static NSString *token;
     if (![self requestGoesToWPComSite:request]){
         return NO;
     }
-    if (!token) {
-        token = [self bearerToken];
-    }
-    if (!token) {
+    if (![self bearerToken]) {
         return NO;
     }
+    NSLog(@"I will load this using my token:%@", request.URL);
     return YES;
 }
 
@@ -60,6 +58,9 @@ static NSString *token;
 
 + (NSString *)bearerToken
 {
+    if (cachedToken) {
+        return cachedToken;
+    }
     // Thread Safety: Make sure we're running on the Main Thread
     if ([NSThread isMainThread]) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -75,8 +76,8 @@ static NSString *token;
     [derived performBlockAndWait:^{
         authToken = service.defaultWordPressComAccount.authToken;
     }];
-    
-    return authToken;
+    cachedToken = authToken;
+    return cachedToken;
 }
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
