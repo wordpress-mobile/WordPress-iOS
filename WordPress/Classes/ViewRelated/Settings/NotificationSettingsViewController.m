@@ -5,8 +5,7 @@
 #import "WordPressComApi.h"
 #import "NSString+XMLExtensions.h"
 #import "DateUtils.h"
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPAccount.h"
 #import "NotificationsManager.h"
 #import "NSDate+StringFormatting.h"
@@ -304,8 +303,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
@@ -317,8 +315,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
         return nil;
     }
     
-    CGRect frame = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f);
-    WPTableViewSectionFooterView *footer = [[WPTableViewSectionFooterView alloc] initWithFrame:frame];
+    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     footer.title = title;
     return footer;
 }
@@ -326,7 +323,7 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -336,10 +333,8 @@ static CGFloat NotificationFooterExtraPadding       = 10.0f;
         return CGFLOAT_MIN;
     }
 
-    CGFloat calculatedHeight = [WPTableViewSectionFooterView heightForTitle:title
-                                                                   andWidth:CGRectGetWidth(self.view.bounds)];
-    
-    return calculatedHeight + NotificationFooterExtraPadding;
+    CGFloat width = CGRectGetWidth(self.view.bounds);
+    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:width] + NotificationFooterExtraPadding;
 }
 
 
