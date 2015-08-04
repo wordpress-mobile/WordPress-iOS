@@ -1,6 +1,8 @@
 #import <WordPress-iOS-Shared/WPFontManager.h>
 #import <WordPress-iOS-Shared/UIImage+Util.h>
 
+#import <SVProgressHUD/SVProgressHUD.h>
+
 #import "ReaderSubscriptionViewController.h"
 #import "ReaderEditableSubscriptionPage.h"
 #import "SubscribedTopicsViewController.h"
@@ -12,7 +14,7 @@
 #import "ReaderTopicService.h"
 #import "ReaderSiteService.h"
 #import "WPTableViewCell.h"
-#import "WPToast.h"
+
 #import "WordPress-Swift.h"
 
 static NSString *const SubscribedTopicsPageIdentifier = @"SubscribedTopicsPageIdentifier";
@@ -238,9 +240,10 @@ static NSString *const FollowedSitesPageIdentifier = @"FollowedSitesPageIdentifi
     __weak __typeof(self) weakSelf  = self;
     ReaderSiteService *service = [[ReaderSiteService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
     [service followSiteByURL:site success:^{
+        NSString *successMessage = NSLocalizedString(@"Followed", @"User followed a site.");
+        [SVProgressHUD showSuccessWithStatus:successMessage];
+        
         [weakSelf syncSites];
-        [WPToast showToastWithMessage:NSLocalizedString(@"Followed", @"User followed a site.")
-                             andImage:[UIImage imageNamed:@"action-icon-followed"]];
         [service syncPostsForFollowedSites];
     } failure:^(NSError *error) {
         DDLogError(@"Could not follow site: %@", error);
