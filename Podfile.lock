@@ -41,11 +41,11 @@ PODS:
     - DTFoundation/DTAnimatedGIF (~> 1.7.1)
     - DTFoundation/DTHTMLParser (~> 1.7.1)
     - DTFoundation/UIKit (~> 1.7.1)
-  - DTFoundation/Core (1.7.6)
-  - DTFoundation/DTAnimatedGIF (1.7.6)
-  - DTFoundation/DTHTMLParser (1.7.6):
+  - DTFoundation/Core (1.7.7)
+  - DTFoundation/DTAnimatedGIF (1.7.7)
+  - DTFoundation/DTHTMLParser (1.7.7):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.6):
+  - DTFoundation/UIKit (1.7.7):
     - DTFoundation/Core
   - EmailChecker (0.1)
   - Expecta (0.3.2)
@@ -140,7 +140,7 @@ PODS:
     - UIAlertView+Blocks (~> 0.8.1)
     - WordPress-iOS-Shared (~> 0.3)
     - WordPressCom-Analytics-iOS (~> 0.0.30)
-  - WordPress-iOS-Shared (0.4.1):
+  - WordPress-iOS-Shared (0.4.2):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
   - WordPressApi (0.3.4):
@@ -195,7 +195,7 @@ DEPENDENCIES:
     `303b8068530389ea87afde38b77466d685fe3210`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
     commit `a983547b5724d5fc3b79865da83e81db2b0b9de4`)
-  - WordPress-iOS-Shared (= 0.4.1)
+  - WordPress-iOS-Shared (= 0.4.2)
   - WordPressApi (~> 0.3.4)
   - WordPressCom-Analytics-iOS (= 0.0.35)
   - WordPressCom-Stats-iOS (= 0.4.3)
@@ -252,7 +252,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   CrashlyticsLumberjack: 26034b4b6d8b0bf547ea9ba201ff53c6cd50f971
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
-  DTFoundation: bf431de2292484461ff7d92295fdae7dc15a3820
+  DTFoundation: c9b3362b83f0017389082ec067ede719826a579d
   EmailChecker: 406cf1f1b5cd2efb8401803b580abf4a43b0665c
   Expecta: 8c507baf13211207b1e9d0a741480600e6b4ed15
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
@@ -281,7 +281,7 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 2eb1070f189a069184611e21b5e8832443e6f8ec
   WordPress-AppbotX: d0ebf5bb2d70bee56272796e1e7a97787b5bfb14
   WordPress-iOS-Editor: 3ed3f3f1eb226b34542b471a7db41419815bbf28
-  WordPress-iOS-Shared: 1fa8e955d895f3b14d11fe0ddc54f857332aba2d
+  WordPress-iOS-Shared: 310e1c872584303a6f28f62e83085cdd44051711
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
   WordPressCom-Analytics-iOS: a6c71241b39f1e366a6473ce38f2786481f8acd8
   WordPressCom-Stats-iOS: 2810300d77c2d37594d0e4a79145094c517d6c73
