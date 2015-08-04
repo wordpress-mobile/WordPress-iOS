@@ -2,8 +2,7 @@
 #import "WordPressAppDelegate.h"
 #import "ActivityLogDetailViewController.h"
 #import <DDFileLogger.h>
-#import "WPTableViewSectionHeaderView.h"
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WordPress-Swift.h"
 #import "WPLogger.h"
 #import "WPGUIConstants.h"
@@ -116,7 +115,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         return nil;
     }
     
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = title;
     return header;
 }
@@ -129,7 +128,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
         return CGFLOAT_MIN;
     }
     
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
@@ -142,7 +141,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     header.title = [self titleForFooterInSection:section];
     return header;
 }
@@ -150,7 +149,7 @@ static NSString *const ActivityLogCellIdentifier = @"ActivityLogCell";
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     NSString *title = [self titleForFooterInSection:section];
-    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section
