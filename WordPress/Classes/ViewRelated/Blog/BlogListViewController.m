@@ -9,7 +9,7 @@
 #import "ContextManager.h"
 #import "Blog.h"
 #import "WPAccount.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "TodayExtensionService.h"
@@ -18,6 +18,7 @@
 #import "UILabel+SuggestSize.h"
 #import "WordPress-Swift.h"
 #import "WPSearchControllerConfigurator.h"
+#import "WPGUIConstants.h"
 
 typedef NS_ENUM(NSInteger, BlogListSections) {
     BlogListSectionsAllSites = 0,
@@ -28,7 +29,6 @@ typedef NS_ENUM(NSInteger, BlogListSections) {
 static NSString *const AddSiteCellIdentifier = @"AddSiteCell";
 static NSString *const BlogCellIdentifier = @"BlogCell";
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
-static CGFloat const BLVCSectionHeaderHeightForIPad = 40.0;
 static CGFloat const BLVCSiteRowHeight = 54.0;
 
 
@@ -391,11 +391,6 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return nil;
-}
-
 - (NSString *)tableView:(UITableView *)tableView titleForDeleteConfirmationButtonForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return NSLocalizedString(@"Remove", @"Button label when removing a blog");
@@ -453,25 +448,20 @@ static CGFloat const BLVCSiteRowHeight = 54.0;
     }
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    return nil;
+}
+
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
-    }
     return nil;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length > 0) {
-        return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
-    }
     // since we show a tableHeaderView while editing, we want to keep the section header short for iPad during edit
-    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : BLVCSectionHeaderHeightForIPad;
+    return (IS_IPHONE || self.tableView.isEditing) ? CGFLOAT_MIN : WPTableHeaderPadFrame.size.height;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
