@@ -83,14 +83,24 @@
                                             <action selector="didTapMenuButton:" destination="IB3-vN-rW4" eventType="touchUpInside" id="bL8-ej-MlQ"/>
                                         </connections>
                                     </button>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vL4-BG-nfJ">
+                                    <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FV8-lg-7ZL">
                                         <rect key="frame" x="0.0" y="65" width="308" height="196"/>
+                                        <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vL4-BG-nfJ">
+                                                <rect key="frame" x="0.0" y="0.0" width="308" height="196"/>
+                                            </imageView>
+                                        </subviews>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="196" id="m4Q-8i-ALq">
+                                            <constraint firstItem="vL4-BG-nfJ" firstAttribute="leading" secondItem="FV8-lg-7ZL" secondAttribute="leading" id="10n-Z4-rOq"/>
+                                            <constraint firstItem="vL4-BG-nfJ" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="top" id="9yT-Bl-Qlp"/>
+                                            <constraint firstAttribute="trailing" secondItem="vL4-BG-nfJ" secondAttribute="trailing" id="Q1Y-zK-ZaE"/>
+                                            <constraint firstAttribute="height" constant="196" id="Uc8-KW-ShJ">
                                                 <variation key="heightClass=regular-widthClass=regular" constant="226"/>
                                             </constraint>
+                                            <constraint firstAttribute="bottom" secondItem="vL4-BG-nfJ" secondAttribute="bottom" id="rFK-Hl-qfe"/>
                                         </constraints>
-                                    </imageView>
+                                    </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Title Jj" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="0.0" translatesAutoresizingMaskIntoConstraints="NO" id="YTV-MW-ksl">
                                         <rect key="frame" x="14" y="269" width="280" height="24"/>
                                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -195,14 +205,14 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="wHE-hH-7uj" secondAttribute="trailing" constant="14" id="01M-h0-DCH"/>
-                                    <constraint firstItem="vL4-BG-nfJ" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" id="1fG-v0-lQj"/>
+                                    <constraint firstAttribute="trailing" secondItem="FV8-lg-7ZL" secondAttribute="trailing" id="0ar-zQ-7Vp"/>
                                     <constraint firstItem="eFe-da-xxs" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="14" id="407-H5-szq"/>
-                                    <constraint firstItem="YTV-MW-ksl" firstAttribute="top" secondItem="vL4-BG-nfJ" secondAttribute="bottom" constant="8" id="BDF-mf-2rH"/>
+                                    <constraint firstItem="YTV-MW-ksl" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="bottom" constant="8" id="B1V-CZ-VU6"/>
                                     <constraint firstItem="MNF-NN-mpb" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="14" id="Hlt-4l-jIo"/>
                                     <constraint firstItem="MNF-NN-mpb" firstAttribute="top" secondItem="YTV-MW-ksl" secondAttribute="bottom" constant="6" id="IDE-wF-Dff"/>
-                                    <constraint firstItem="vL4-BG-nfJ" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="bottom" constant="16" id="KdY-ev-FcW"/>
                                     <constraint firstItem="eFe-da-xxs" firstAttribute="top" secondItem="MNF-NN-mpb" secondAttribute="bottom" priority="250" constant="13" id="MK6-gi-qGK"/>
                                     <constraint firstAttribute="trailing" secondItem="YTV-MW-ksl" secondAttribute="trailing" constant="14" id="OGv-ei-iaQ"/>
+                                    <constraint firstItem="FV8-lg-7ZL" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" id="OT8-f8-r05"/>
                                     <constraint firstItem="l8A-oh-TmY" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="15" id="PUr-vx-aof"/>
                                     <constraint firstAttribute="trailing" secondItem="eFe-da-xxs" secondAttribute="trailing" constant="14" id="Wy3-W0-RoA"/>
                                     <constraint firstItem="wHE-hH-7uj" firstAttribute="leading" secondItem="kha-YG-ZlO" secondAttribute="leading" constant="14" id="XaG-MI-cnV"/>
@@ -214,8 +224,8 @@
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="leading" secondItem="l8A-oh-TmY" secondAttribute="trailing" constant="6" id="pjc-cr-lMu"/>
                                     <constraint firstAttribute="width" priority="900" constant="600" id="t4d-zR-d9j"/>
                                     <constraint firstAttribute="trailing" secondItem="MNF-NN-mpb" secondAttribute="trailing" constant="14" id="vpN-nS-zeN"/>
-                                    <constraint firstAttribute="trailing" secondItem="vL4-BG-nfJ" secondAttribute="trailing" id="vq8-4G-7Gq"/>
                                     <constraint firstItem="ZXc-ck-z8k" firstAttribute="top" secondItem="kha-YG-ZlO" secondAttribute="top" constant="14" id="xiW-3y-5Gv"/>
+                                    <constraint firstItem="FV8-lg-7ZL" firstAttribute="top" secondItem="l8A-oh-TmY" secondAttribute="bottom" constant="16" id="yeu-jg-E2o"/>
                                 </constraints>
                                 <variation key="default">
                                     <mask key="constraints">
@@ -276,9 +286,10 @@
                 <outlet property="cardBorderView" destination="Qot-SU-GLn" id="9pV-YG-oeA"/>
                 <outlet property="cardContentBottomConstraint" destination="oS8-JB-YFs" id="KA9-LN-tKU"/>
                 <outlet property="cardContentView" destination="kha-YG-ZlO" id="V97-NO-edR"/>
-                <outlet property="featuredImageBottomConstraint" destination="BDF-mf-2rH" id="Xoz-2U-6MU"/>
-                <outlet property="featuredImageHeightConstraint" destination="m4Q-8i-ALq" id="117-i5-aJc"/>
                 <outlet property="featuredImageView" destination="vL4-BG-nfJ" id="9nW-cb-yB4"/>
+                <outlet property="featuredMediaBottomConstraint" destination="B1V-CZ-VU6" id="knd-tk-Lms"/>
+                <outlet property="featuredMediaHeightConstraint" destination="Uc8-KW-ShJ" id="AJk-Mk-3xP"/>
+                <outlet property="featuredMediaView" destination="FV8-lg-7ZL" id="XvD-Nd-A7E"/>
                 <outlet property="headerView" destination="l8A-oh-TmY" id="Iw0-ga-qZG"/>
                 <outlet property="innerContentView" destination="tU3-wI-Ijv" id="pfV-Ts-HN7"/>
                 <outlet property="maxIPadWidthConstraint" destination="t4d-zR-d9j" id="wtt-JC-KZx"/>
