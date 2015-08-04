@@ -5,7 +5,7 @@
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "Blog.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "SettingTableViewCell.h"
 #import "NotificationsManager.h"
 #import <SVProgressHUD/SVProgressHUD.h>
@@ -18,6 +18,7 @@
 #import "WPTextFieldTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "WPGUIConstants.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -48,7 +49,6 @@ NS_ENUM(NSInteger, SiteSettinsAlertTag) {
     SiteSettinsAlertTagSiteRemoval = 201,
 };
 
-static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
@@ -325,13 +325,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 return self.removeSiteCell;
             }
             self.removeSiteCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
-            [WPStyleGuide configureTableViewCell:self.removeSiteCell];
+            [WPStyleGuide configureTableViewDestructiveActionCell:self.removeSiteCell];
             self.removeSiteCell.textLabel.text = NSLocalizedString(@"Remove Site", @"Button to remove a site from the app");
-            self.removeSiteCell.textLabel.textAlignment = NSTextAlignmentCenter;
-            self.removeSiteCell.textLabel.textColor = [WPStyleGuide errorRed];
-            self.removeSiteCell.imageView.image = nil;
-            self.removeSiteCell.accessoryType = UITableViewCellAccessoryNone;
-            self.removeSiteCell.selectionStyle = UITableViewCellSelectionStyleNone;
             return self.removeSiteCell;
         }break;
     }
@@ -346,25 +341,24 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 {
     NSInteger settingsSection = [self.tableSections[section] intValue];
     NSString *title = [self titleForHeaderInSection:settingsSection];
-    if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
+    if (title.length == 0) {
+        return nil;
     }
-    return nil;
+    
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+    header.title = title;
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return EditSiteRowHeight;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self titleForHeaderInSection:section];
-    CGFloat height = [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
-    
-    return height;
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section

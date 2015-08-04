@@ -1,5 +1,5 @@
 #import "WPTableViewHandler.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPTableViewCell.h"
 #import "WordPress-Swift.h"
 
@@ -60,7 +60,7 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (void)updateTitleForSection:(NSUInteger)section
 {
-    WPTableViewSectionHeaderView *sectionHeaderView = (WPTableViewSectionHeaderView *)[self tableView:self.tableView viewForHeaderInSection:section];
+    WPTableViewSectionHeaderFooterView *sectionHeaderView = (WPTableViewSectionHeaderFooterView *)[self tableView:self.tableView viewForHeaderInSection:section];
     sectionHeaderView.title = [self titleForHeaderInSection:section];
 }
 
@@ -324,8 +324,8 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.sectionHeaders count] > section) {
         return [self.sectionHeaders objectAtIndex:section];
     }
-    CGRect frame = CGRectMake(0.0, 0.0, CGRectGetWidth(self.tableView.bounds), 0.0);
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:frame];
+
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
     [self.sectionHeaders addObject:header];
     return header;
@@ -338,7 +338,7 @@ static CGFloat const DefaultCellHeight = 44.0;
     }
 
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.tableView.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

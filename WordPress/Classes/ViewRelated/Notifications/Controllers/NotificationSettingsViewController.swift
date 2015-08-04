@@ -190,7 +190,7 @@ public class NotificationSettingsViewController : UIViewController
             return nil
         }
         
-        let footerView      = WPTableViewSectionFooterView(frame: CGRectZero)
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title    = titleForFooterInSection(section)
         return footerView
     }
@@ -201,7 +201,7 @@ public class NotificationSettingsViewController : UIViewController
         }
         
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionFooterView.heightForTitle(title, andWidth: view.frame.width)
+        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
     }
     
 
@@ -313,15 +313,14 @@ public class NotificationSettingsViewController : UIViewController
         func footerText() -> String {
             switch self {
             case .Blog:
-                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows and more.",
+                return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
                     comment: "Notification Settings for your own blogs")
             case .Other:
-                return NSLocalizedString("Control your notification settings when you comment on other blogs",
+                return NSLocalizedString("Notification settings for your comments on other sites.",
                     comment: "3rd Party Site Notification Settings")
             case .WordPressCom:
-                return NSLocalizedString("Decide what emails you get from us regarding your account and sites. " +
-                    "We'll still send you important emails like password recovery " +
-                    "and domain expiration.", comment: "WordPress.com Notification Settings")
+                return NSLocalizedString("Decide what emails you get from us regarding your account.",
+                    comment: "WordPress.com Notification Settings")
             }
         }
     }
