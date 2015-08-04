@@ -231,16 +231,13 @@ import Foundation
 
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
             featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
-            featuredMediaView.hidden = false
 
         } else {
             featuredMediaHeightConstraint.constant = 0.0
             featuredMediaBottomConstraint.constant = 0.0
-            featuredMediaView.hidden = true
         }
 
-        setNeedsUpdateConstraints()
-        setNeedsLayout()
+        featuredMediaView.setNeedsUpdateConstraints()
     }
 
     private func requestForURL(url:NSURL) -> NSURLRequest {
