@@ -1,9 +1,9 @@
 #import "SettingsTextViewController.h"
 #import "WPTextFieldTableViewCell.h"
 #import "WPStyleGuide.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 
 static CGFloat const HorizontalMargin = 15.0f;
-static CGFloat const VerticalMargin = 10.0f;
 
 @interface SettingsTextViewController()
 
@@ -79,21 +79,9 @@ static CGFloat const VerticalMargin = 10.0f;
     if (_hintView) {
         return _hintView;
     }
-    CGFloat horizontalMargin = HorizontalMargin;
-    CGFloat verticalMargin = VerticalMargin;
-    UILabel *hintLabel = [[UILabel alloc] init];
-    hintLabel.text = _hint;
-    hintLabel.font = [WPStyleGuide subtitleFont];
-    hintLabel.textColor = [WPStyleGuide greyDarken20];
-    hintLabel.numberOfLines = 0;
-    CGSize size = [hintLabel sizeThatFits:CGSizeMake(self.view.frame.size.width -( 2 * horizontalMargin), CGFLOAT_MAX)];
-    if (IS_IPAD && self.tableView.frame.size.width > WPTableViewFixedWidth) {
-        horizontalMargin += (self.tableView.frame.size.width - WPTableViewFixedWidth)/2;
-    }
-
-    hintLabel.frame = CGRectIntegral(CGRectMake(horizontalMargin, verticalMargin, size.width, size.height));
-    _hintView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, hintLabel.frame.size.height+(2*verticalMargin))];
-    [_hintView addSubview:hintLabel];
+    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
+    [footerView setTitle:_hint];
+    _hintView = footerView;
     return _hintView;
 }
 
