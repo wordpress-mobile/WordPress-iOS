@@ -19,7 +19,7 @@
 #import "SupportViewController.h"
 #import "WPAccount.h"
 #import "WPPostViewController.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "SupportViewController.h"
 #import "ContextManager.h"
 #import "NotificationsManager.h"
@@ -128,7 +128,7 @@ static CGFloat const SettingsRowHeight = 44.0;
     UILabel *label = [[UILabel alloc] initWithFrame:frame];
     label.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     label.font = [WPStyleGuide tableviewTextFont];
-    label.textColor = [WPStyleGuide whisperGrey];
+    label.textColor = [WPStyleGuide darkGrey];
     label.text = NSLocalizedString(@"Max Image Upload Size", @"Title for the image size settings option.");
     self.mediaCellTitleLabel = label;
 
@@ -147,8 +147,8 @@ static CGFloat const SettingsRowHeight = 44.0;
     UISlider *slider = [[UISlider alloc] initWithFrame:frame];
     slider.autoresizingMask = UIViewAutoresizingFlexibleWidth;
     slider.continuous = YES;
-    slider.minimumTrackTintColor = [WPStyleGuide whisperGrey];
-    slider.maximumTrackTintColor = [WPStyleGuide whisperGrey];
+    slider.minimumTrackTintColor = [WPStyleGuide darkBlue];
+    slider.maximumTrackTintColor = [WPStyleGuide darkBlue];
     slider.minimumValue = MediaMinImageSizeDimension;
     slider.maximumValue = MediaMaxImageSizeDimension;
     slider.value = [MediaService maxImageSizeSetting].width;
@@ -248,21 +248,21 @@ static CGFloat const SettingsRowHeight = 44.0;
 {
 	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
 		return nil;
-	} else {
-		WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-		header.title = [self titleForHeaderInSection:section];
-		return header;
 	}
+    
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+    header.title = [self titleForHeaderInSection:section];
+    return header;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
 	if (section == SettingsSectionEditor && ![WPPostViewController isNewEditorAvailable]) {
 		return 1;
-	} else {
-		NSString *title = [self titleForHeaderInSection:section];
-		return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
 	}
+    
+    NSString *title = [self titleForHeaderInSection:section];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
