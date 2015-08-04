@@ -51,8 +51,6 @@ typedef NS_ENUM(NSInteger, MeSectionWpCom) {
 static NSString *const WPMeRestorationID = @"WPMeRestorationID";
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
 
-static CGFloat const MVCTableViewRowHeight = 50.0;
-
 @interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
@@ -120,7 +118,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.rowHeight = MVCTableViewRowHeight;
+    self.tableView.rowHeight = WPTableViewDefaultRowHeight;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];

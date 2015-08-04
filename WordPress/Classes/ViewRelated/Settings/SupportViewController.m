@@ -33,8 +33,6 @@ int const kHelpshiftWindowTypeConversation = 2;
 
 static NSString *const FeedbackCheckUrl = @"https://api.wordpress.org/iphoneapp/feedback-check/1.0/";
 
-static CGFloat const SupportRowHeight = 44.0f;
-
 @interface SupportViewController () <UIViewControllerRestoration>
 
 @property (nonatomic, assign) BOOL feedbackEnabled;
@@ -147,12 +145,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
 {
     [super viewDidLoad];
     
-    if ([UIDevice isOS8]) { // iOS8 or higher
-        [self.tableView setEstimatedRowHeight:SupportRowHeight];
-        [self.tableView setRowHeight:UITableViewAutomaticDimension];
-    } else {
-        [self.tableView setRowHeight:SupportRowHeight];
-    }
+    [self.tableView setRowHeight:WPTableViewDefaultRowHeight];
     
     if (UIDevice.isPad) {
         self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
