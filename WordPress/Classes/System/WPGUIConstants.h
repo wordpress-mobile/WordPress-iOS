@@ -11,6 +11,7 @@ extern const NSTimeInterval WPAnimationDurationFast;
 extern const NSTimeInterval WPAnimationDurationFaster;
 
 extern const CGFloat WPTableViewTopMargin;
+extern const CGFloat WPTableViewDefaultRowHeight;
 extern const CGRect WPTableHeaderPadFrame;
 extern const CGRect WPTableFooterPadFrame;
 extern const UIEdgeInsets WPTableViewContentInsets;
