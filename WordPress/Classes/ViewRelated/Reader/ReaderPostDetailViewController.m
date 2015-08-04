@@ -535,7 +535,14 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
         [self.navigationController pushViewController:controller animated:YES];
         return;
     }
-    NSURL *linkURL = [NSURL URLWithString:self.post.sourceAttribution.blogURL];
+
+    NSString *path;
+    if ([self.post.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypePost]) {
+        path = self.post.sourceAttribution.permalink;
+    } else {
+        path = self.post.sourceAttribution.blogURL;
+    }
+    NSURL *linkURL = [NSURL URLWithString:path];
     [self presentWebViewControllerWithLink:linkURL];
 }
 
