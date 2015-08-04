@@ -93,8 +93,14 @@ static NSString * const BlavatarImageName = @"post-blavatar-placeholder";
     NSString *pattern = NSLocalizedString(@"Visit %@",
                                           @"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.");
     NSString *str = [NSString stringWithFormat:pattern, blogName];
-    NSDictionary *attributes = [WPStyleGuide originalAttributionParagraphAttributes];
-    self.richTextView.attributedText = [[NSAttributedString alloc] initWithString:str attributes:attributes];
+    NSDictionary *attributes = [WPStyleGuide siteAttributionParagraphAttributes];
+
+    NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:str attributes:attributes];
+    NSRange range = [str rangeOfString:blogName];
+    UIFont *font = [WPFontManager openSansItalicFontOfSize:[WPStyleGuide originalAttributionFontSize]];
+    [attributedString addAttribute:NSFontAttributeName value:font range:range];
+
+    self.richTextView.attributedText = attributedString;
     [self invalidateIntrinsicContentSize];
 }
 

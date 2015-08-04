@@ -188,7 +188,7 @@ public class NotificationSettingsViewController : UIViewController
             return nil
         }
         
-        let footerView      = WPTableViewSectionHeaderFooterView(style: .Footer)
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title    = titleForFooterInSection(section)
         return footerView
     }
