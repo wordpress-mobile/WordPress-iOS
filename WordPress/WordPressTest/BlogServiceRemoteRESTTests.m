@@ -115,4 +115,40 @@
                                             failure:^(NSError *error) {}]);
 }
 
+
+#pragma mark - Synchronizing connections for a blog
+
+- (void)testThatSyncConnectionsForBlogWorks
+{
+    Blog *blog = OCMStrictClassMock([Blog class]);
+    OCMStub([blog dotComID]).andReturn(@10);
+    
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    NSString* url = [NSString stringWithFormat:@"sites/%@/connections", blog.dotComID];
+    
+    OCMStub([api GET:[OCMArg isEqual:url]
+          parameters:[OCMArg isNil]
+             success:[OCMArg isNotNil]
+             failure:[OCMArg isNotNil]]);
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    
+    [service syncConnectionsForBlog:blog
+                            success:^(NSArray *connections) {}
+                            failure:^(NSError *error) {}];
+}
+
+- (void)testThatSyncConnectionsForBlogThrowsExceptionWithoutBlog
+{
+    WordPressComApi *api = OCMStrictClassMock([WordPressComApi class]);
+    BlogServiceRemoteREST *service = nil;
+    
+    XCTAssertNoThrow(service = [[BlogServiceRemoteREST alloc] initWithApi:api]);
+    XCTAssertThrows([service syncConnectionsForBlog:nil
+                                            success:^(NSArray *connections) {}
+                                            failure:^(NSError *error) {}]);
+}
+
 @end

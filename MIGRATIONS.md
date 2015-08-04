@@ -3,6 +3,10 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 37 (@alexcurylo 2015-08-04)
+
+- `Blog` added a new attribute called `connections` to store the Publicize connections array
+
 ## WordPress 36 (@sergioestevao 2015-07-08)
 
 Changes to the data model:

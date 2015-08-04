@@ -55,6 +55,15 @@
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
+- (void)syncConnectionsForBlog:(Blog *)blog success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+{
+    // not currently available
+    if (failure) {
+        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
+        failure(error);
+    }
+}
+
 - (void)syncSettingsForBlog:(Blog *)blog
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure

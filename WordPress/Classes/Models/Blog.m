@@ -46,6 +46,7 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic geolocationEnabled;
 @dynamic options;
 @dynamic postFormats;
+@dynamic connections;
 @dynamic isActivated;
 @dynamic visible;
 @dynamic account;

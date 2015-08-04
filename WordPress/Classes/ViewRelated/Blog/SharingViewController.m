@@ -42,7 +42,10 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
 
-    [self.publicizeServices addObject:@"Test Service 1"];
+    for (NSDictionary *connection in self.blog.connections) {
+        NSString *label = connection[@"label"];
+        [self.publicizeServices addObject:label];
+    }
 }
 
 - (void)didReceiveMemoryWarning {

@@ -74,6 +74,28 @@
           }];
 }
 
+- (void)syncConnectionsForBlog:(Blog *)blog
+                       success:(ConnectionsHandler)success
+                       failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([blog isKindOfClass:[Blog class]]);
+    NSParameterAssert(blog.dotComID != nil);
+    
+    NSString *path = [self pathForConnectionsWithBlog:blog];
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSArray *connections = [self mapConnectionsFromResponse:responseObject[@"connections"]];
+              if (success) {
+                  success(connections);
+              }
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
 - (void)syncSettingsForBlog:(Blog *)blog
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
@@ -148,6 +170,11 @@
     return [NSString stringWithFormat:@"sites/%@/post-formats", blog.dotComID];
 }
 
+- (NSString *)pathForConnectionsWithBlog:(Blog *)blog
+{
+    return [NSString stringWithFormat:@"sites/%@/connections", blog.dotComID];
+}
+
 - (NSString *)pathForSettingsWithBlog:(Blog *)blog
 {
     return [NSString stringWithFormat:@"sites/%@/settings", blog.dotComID];
@@ -200,6 +227,15 @@
         return response;
     } else {
         return @{};
+    }
+}
+
+- (NSArray *)mapConnectionsFromResponse:(id)response
+{
+    if ([response isKindOfClass:[NSArray class]]) {
+        return response;
+    } else {
+        return @[];
     }
 }
 

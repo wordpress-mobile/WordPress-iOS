@@ -5,6 +5,7 @@
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
+typedef void (^ConnectionsHandler)(NSArray *connections);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
 typedef void (^SuccessHandler)();
 
@@ -43,6 +44,16 @@ typedef void (^SuccessHandler)();
                        success:(PostFormatsHandler)success
                        failure:(void (^)(NSError *error))failure;
 
+/**
+ *  @brief      Synchronizes a blog's 3rd party (Publicize) connections
+ *
+ *  @param      blog        The blog to synchronize.  Cannot be nil.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)syncConnectionsForBlog:(Blog *)blog
+                       success:(ConnectionsHandler)success
+                       failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's settings.

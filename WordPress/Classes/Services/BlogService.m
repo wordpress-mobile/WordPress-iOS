@@ -293,6 +293,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            failure:failure];
 }
 
+- (void)syncConnectionsForBlog:(Blog *)blog
+                        success:(void (^)())success
+                        failure:(void (^)(NSError *error))failure
+{
+    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
+    [remote syncConnectionsForBlog:blog
+                           success:[self connectionsHandlerWithBlogObjectID:blog.objectID
+                                                          completionHandler:success]
+                           failure:failure];
+}
+
 - (void)syncBlog:(Blog *)blog
 {
     NSManagedObjectID *blogObjectID = blog.objectID;
@@ -305,6 +316,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            success:[self postFormatsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
+    
+    [remote syncConnectionsForBlog:blog
+                           success:[self connectionsHandlerWithBlogObjectID:blogObjectID
+                                                          completionHandler:nil]
+                           failure:^(NSError *error) { DDLogError(@"Failed syncing connections for blog %@: %@", blog.url, error); }];
+    
 
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     [categoryService syncCategoriesForBlog:blog
@@ -659,6 +676,26 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
             }
 
+            if (completion) {
+                completion();
+            }
+        }];
+    };
+}
+
+- (ConnectionsHandler)connectionsHandlerWithBlogObjectID:(NSManagedObjectID *)blogObjectID
+                                       completionHandler:(void (^)(void))completion
+{
+    return ^void(NSArray *connections) {
+        [self.managedObjectContext performBlock:^{
+            Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
+                                                                           error:nil];
+            if (blog) {
+                blog.connections = connections;
+                
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }
+            
             if (completion) {
                 completion();
             }

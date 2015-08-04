@@ -57,6 +57,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, weak, readwrite) NSNumber *isActivated;
 @property (nonatomic, strong, readwrite) NSDictionary *options;
 @property (nonatomic, strong, readwrite) NSDictionary *postFormats;
+@property (nonatomic, strong, readwrite) NSArray *connections;
 @property (nonatomic, strong, readwrite) WPAccount *account;
 @property (nonatomic, strong, readwrite) WPAccount *jetpackAccount;
 @property (nonatomic, assign, readwrite) BOOL videoPressEnabled;
