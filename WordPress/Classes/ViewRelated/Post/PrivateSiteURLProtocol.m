@@ -47,7 +47,6 @@ static NSString *cachedToken;
     if (![self bearerToken]) {
         return NO;
     }
-    NSLog(@"I will load this using my token:%@", request.URL);
     return YES;
 }
 
