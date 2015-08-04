@@ -11,6 +11,7 @@
 #import "AccountService.h"
 #import "WPCookie.h"
 #import "UIDevice+Helpers.h"
+#import "WordPress-Swift.h"
 
 NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
@@ -408,7 +409,7 @@ NSString * const WPStatsWebBlogKey = @"WPStatsWebBlogKey";
 
         if ([host rangeOfString:@"wordpress.com"].location == NSNotFound ||
             [query rangeOfString:@"no-chrome"].location == NSNotFound) {
-            WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:request.URL];
+            WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:request.URL];
             [self.navigationController pushViewController:webViewController animated:YES];
             return NO;
         }
