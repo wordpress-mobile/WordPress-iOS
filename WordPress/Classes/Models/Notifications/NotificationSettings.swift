@@ -145,17 +145,17 @@ public class NotificationSettings
     
     // MARK: - Localized Setting Descriptions
     private let localizedDescriptionMap = [
-        "new_comment" 	 : NSLocalizedString("New Comments",                comment: "Notifications Settings"),
-        "comment_like" 	 : NSLocalizedString("Comment Likes",               comment: "Notifications Settings"),
-        "post_like" 	 : NSLocalizedString("Post Likes",                  comment: "Notifications Settings"),
-        "follow"      	 : NSLocalizedString("Follows",                     comment: "Notifications Settings"),
-        "achievement" 	 : NSLocalizedString("Achievements",                comment: "Notifications Settings"),
-        "mentions" 		 : NSLocalizedString("Mentions",                    comment: "Notifications Settings"),
-        "comment_reply"  : NSLocalizedString("Replies to your comments",    comment: "Notifications Settings"),
-        "news"			 : NSLocalizedString("News",                        comment: "Notifications Settings"),
-        "recommendation" : NSLocalizedString("Recomendations",              comment: "Notifications Settings"),
-        "promotion"		 : NSLocalizedString("Promotions",                  comment: "Notifications Settings"),
-        "digest"		 : NSLocalizedString("Digest",                      comment: "Notifications Settings")
+        "new_comment"       : NSLocalizedString("Comments on my site",      comment: "Notifications Settings"),
+        "comment_like"      : NSLocalizedString("Likes on my comments",     comment: "Notifications Settings"),
+        "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Notifications Settings"),
+        "follow"            : NSLocalizedString("Site follows",             comment: "Notifications Settings"),
+        "achievement"       : NSLocalizedString("Site achievements",        comment: "Notifications Settings"),
+        "mentions"          : NSLocalizedString("Mentions",                 comment: "Notifications Settings"),
+        "comment_reply"     : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
+        "news"              : NSLocalizedString("News",                     comment: "Notifications Settings"),
+        "recommendation"    : NSLocalizedString("Recomendations",           comment: "Notifications Settings"),
+        "promotion"         : NSLocalizedString("Promotions",               comment: "Notifications Settings"),
+        "digest"            : NSLocalizedString("Digest",                   comment: "Notifications Settings")
     ]
 }
 
