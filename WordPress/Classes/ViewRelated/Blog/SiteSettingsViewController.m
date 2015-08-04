@@ -18,6 +18,7 @@
 #import "WPTextFieldTableViewCell.h"
 #import "SettingsTextViewController.h"
 #import "SettingsMultiTextViewController.h"
+#import "WPGUIConstants.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -49,7 +50,6 @@ NS_ENUM(NSInteger, SiteSettinsAlertTag) {
     SiteSettinsAlertTagSiteRemoval = 201,
 };
 
-static CGFloat const EditSiteRowHeight = 48.0;
 NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 @interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
@@ -384,7 +384,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return EditSiteRowHeight;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
