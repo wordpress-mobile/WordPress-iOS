@@ -4,37 +4,57 @@ import Foundation
 public class NoteSeparatorsView : UIView
 {
     // MARK: - Public Properties
-    public var leftVisible : Bool = false {
+    public var leftVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var leftColor : UIColor = UIColor.clearColor() {
+    public var leftColor = UIColor.clearColor() {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var leftWidth : CGFloat = CGFloat(3) {
+    public var leftWidthInPoints = CGFloat(3) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomVisible : Bool = false {
+    public var topVisible = false {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomColor : UIColor = WPStyleGuide.Notifications.blockSeparatorColor {
+    public var topColor = WPStyleGuide.Notifications.blockSeparatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomHeight : CGFloat = CGFloat(0.5) {
+    public var topHeightInPixels = CGFloat(1) {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var bottomInsets : UIEdgeInsets = UIEdgeInsetsZero {
+    public var topInsets = UIEdgeInsetsZero {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var bottomVisible = false {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var bottomColor = WPStyleGuide.Notifications.blockSeparatorColor {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var bottomHeightInPixels = CGFloat(1) {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    public var bottomInsets = UIEdgeInsetsZero {
         didSet {
             setNeedsDisplay()
         }
@@ -67,7 +87,8 @@ public class NoteSeparatorsView : UIView
         let scale = UIScreen.mainScreen().scale
         let ctx = UIGraphicsGetCurrentContext()
         CGContextClearRect(ctx, rect);
-        
+        CGContextSetShouldAntialias(ctx, false);
+
         // Background
         if backgroundColor != nil {
             backgroundColor?.setFill()
@@ -77,16 +98,26 @@ public class NoteSeparatorsView : UIView
         // Left Separator
         if leftVisible {
             leftColor.setStroke()
-            CGContextSetLineWidth(ctx, leftWidth * scale);
+            CGContextSetLineWidth(ctx, leftWidthInPoints * scale);
             CGContextMoveToPoint(ctx, bounds.minX, bounds.minY)
             CGContextAddLineToPoint(ctx, bounds.minX, bounds.maxY)
             CGContextStrokePath(ctx);
         }
-        
+
+        // Top Separator
+        if topVisible {
+            topColor.setStroke()
+            let lineWidth = topHeightInPixels / scale
+            CGContextSetLineWidth(ctx, lineWidth);
+            CGContextMoveToPoint(ctx, topInsets.left, lineWidth)
+            CGContextAddLineToPoint(ctx, bounds.maxX - topInsets.right, lineWidth)
+            CGContextStrokePath(ctx);
+        }
+
         // Bottom Separator
         if bottomVisible {
             bottomColor.setStroke()
-            CGContextSetLineWidth(ctx, bottomHeight * scale);
+            CGContextSetLineWidth(ctx, bottomHeightInPixels / scale);
             CGContextMoveToPoint(ctx, bottomInsets.left, bounds.height)
             CGContextAddLineToPoint(ctx, bounds.maxX - bottomInsets.right, bounds.height)
             CGContextStrokePath(ctx);
