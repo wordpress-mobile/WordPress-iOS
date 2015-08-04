@@ -335,7 +335,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     NSString *path;
     if (post.isWPCom) {
-        path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
+        path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
     } else {
         path = [NSString stringWithFormat:@"%@read/feed/%@/posts/", WordPressRestApiEndpointURL, post.siteID];
     }
