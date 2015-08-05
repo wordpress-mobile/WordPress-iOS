@@ -85,13 +85,8 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
 
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const FormatBarTooltipHorizontalOffsetFromCenter = 75.0;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
-
-static CGFloat const FormatBarAnimationXOffset = 40.0;
-static CGFloat const FormatBarAnimationDuration = 0.3;
-static CGFloat const FormatBarAnimationDelay = 1.0;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
