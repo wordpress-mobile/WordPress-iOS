@@ -31,6 +31,11 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     return self;
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)initializeFacades
 {
     LoginFacade *loginFacade = [LoginFacade new];
@@ -59,6 +64,7 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     [self setupObservationForSignInButtonTitle];
     [self setupObserverationForTheSignInButtonsEnabledState];
     [self setupObserverationForTheToggleSignInButtonsVisibility];
+    [self setupObservationForApplicationDidEnterBackground];
 }
 
 - (LoginFields *)loginFields
@@ -359,6 +365,16 @@ static NSString *const ForgotPasswordRelativeUrl = @"/wp-login.php?action=lostpa
     }] subscribeNext:^(NSNumber *toggleSignInButtonHidden) {
         [self.presenter setToggleSignInButtonHidden:[toggleSignInButtonHidden boolValue]];
     }];
+}
+
+- (void)setupObservationForApplicationDidEnterBackground
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)didEnterBackground:(NSNotification *)notification
+{
+    [self.presenter setPasswordSecureEntry:YES];
 }
 
 - (BOOL)isUrlValid:(NSString *)url
