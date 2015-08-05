@@ -85,12 +85,6 @@ import Foundation
         // Setup Recognizers
         detailsLabel.gestureRecognizers     = [ UITapGestureRecognizer(target: self, action: "detailsWasPressed:") ]
         detailsLabel.userInteractionEnabled = true
-
-        // iPad: Use a bigger image size!
-        if UIDevice.isPad() {
-            gravatarImageView.updateConstraint(.Height, constant: gravatarImageSizePad.width)
-            gravatarImageView.updateConstraint(.Width,  constant: gravatarImageSizePad.height)
-        }
     }
     
 
@@ -155,7 +149,6 @@ import Foundation
     }
     
     // MARK: - Private Constants
-    private let gravatarImageSizePad                = CGSize(width: 37.0, height: 37.0)
     private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
     private let separatorUnapprovedInsets           = UIEdgeInsetsZero
     private let separatorRepliedInsets              = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)

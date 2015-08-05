@@ -1817,4 +1817,14 @@ describe(@"sendVerificationCodeButton visibility", ^{
     
 });
 
+it(@"should secure the password entry when entering the background", ^{
+    OCMExpect([mockViewModelPresenter setPasswordSecureEntry:YES]);
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:UIApplicationDidEnterBackgroundNotification object:nil];
+    
+    OCMVerifyAll(mockViewModelPresenter);
+});
+
+
+
 SpecEnd
