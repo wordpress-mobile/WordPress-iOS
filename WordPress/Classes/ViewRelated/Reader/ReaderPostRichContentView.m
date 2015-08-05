@@ -92,7 +92,7 @@
 - (NSDictionary *)attributesForAttributedStringForTitle
 {
     CGFloat fontSize = [UIDevice isPad] ? 32.0 : 18.0;
-    UIFont *font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
+    UIFont *font = [WPFontManager merriweatherBoldFontOfSize:fontSize];
 
     CGFloat lineHeight = [UIDevice isPad] ? 40.0 : 24.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
