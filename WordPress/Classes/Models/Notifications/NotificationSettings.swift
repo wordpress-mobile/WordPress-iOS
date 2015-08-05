@@ -141,7 +141,7 @@ public class NotificationSettings
     
     // MARK: - Private Properties
     private let blogPreferenceKeys      = ["new_comment", "comment_like", "post_like", "follow", "achievement", "mentions"]
-    private let blogEmailPreferenceKeys = ["new_comment", "comment_like", "post_like", "mentions"]
+    private let blogEmailPreferenceKeys = ["new_comment", "comment_like", "post_like", "follow", "mentions"]
     private let otherPreferenceKeys     = ["comment_like", "comment_reply"]
     private let wpcomPreferenceKeys     = ["marketing", "research", "community"]
     
