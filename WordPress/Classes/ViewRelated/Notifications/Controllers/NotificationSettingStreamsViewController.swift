@@ -62,7 +62,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings?.streams.count ?? emptyRowCount
+        return sortedStreams?.count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -97,7 +97,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        cell.textLabel?.text        = settings!.streams[indexPath.row].kind.description() ?? String()
+        cell.textLabel?.text        = sortedStreams?[indexPath.row].kind.description() ?? String()
         cell.detailTextLabel?.text  = isStreamEnabled(indexPath.row) ? String() : NSLocalizedString("Off", comment: "Disabled")
         cell.accessoryType          = .DisclosureIndicator
         
@@ -116,6 +116,13 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return true
         }
     }
+
+    private var sortedStreams : [NotificationSettings.Stream]? {
+        return settings?.streams.sorted { (lhs: NotificationSettings.Stream, rhs: NotificationSettings.Stream) -> Bool in
+            return lhs.kind.description() > rhs.kind.description()
+        }
+    }
+
     
     
     // MARK: - Private Constants
