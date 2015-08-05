@@ -26,6 +26,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
             tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
         }
         
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
