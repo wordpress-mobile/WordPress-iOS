@@ -86,10 +86,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let stream                  = settings?.streams[indexPath.row]
-        let detailsViewController   = NotificationSettingDetailsViewController()
+        let detailsViewController = NotificationSettingDetailsViewController()
+        detailsViewController.setupWithSettings(settings!, stream: sortedStreams![indexPath.row])
         
-        detailsViewController.setupWithSettings(settings!, stream: stream!)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -109,17 +108,11 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     private func isStreamEnabled(streamIndex: Int) -> Bool {
-        switch settings!.streams[streamIndex].kind {
+        switch sortedStreams![streamIndex].kind {
         case .Device:
             return NotificationsManager.pushNotificationsEnabledInDeviceSettings()
         default:
             return true
-        }
-    }
-
-    private var sortedStreams : [NotificationSettings.Stream]? {
-        return settings?.streams.sorted { (lhs: NotificationSettings.Stream, rhs: NotificationSettings.Stream) -> Bool in
-            return lhs.kind.description() > rhs.kind.description()
         }
     }
 
@@ -132,4 +125,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
+    
+    // MARK: - Private Computed Properties
+    private var sortedStreams   : [NotificationSettings.Stream]? {
+        return settings?.streams.sorted { $0.kind.description() > $1.kind.description() }
+    }
 }
