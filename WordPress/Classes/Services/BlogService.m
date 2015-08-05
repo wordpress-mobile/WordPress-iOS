@@ -318,17 +318,6 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing post formats for blog %@: %@", blog.url, error); }];
     
-    [remote syncConnectionsForBlog:blog
-                           success:[self connectionsHandlerWithBlogObjectID:blogObjectID
-                                                          completionHandler:nil]
-                           failure:^(NSError *error) { DDLogError(@"Failed syncing connections for blog %@: %@", blog.url, error); }];
-    
-    PublicizerService *publicizerService = [[PublicizerService alloc] initWithManagedObjectContext:self.managedObjectContext];
-    [publicizerService syncPublicizersForBlog:blog
-                                   success:nil
-                                   failure:^(NSError *error) { DDLogError(@"Failed syncing publicizers for blog %@: %@", blog.url, error); }];
-    
-
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     [categoryService syncCategoriesForBlog:blog
                                    success:nil
@@ -340,6 +329,18 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                             } failure:^(NSError *error) {
                                 DDLogError(@"Failed checking muti-author status for blog %@: %@", blog.url, error);
                             }];
+    
+    if ([blog supports:BlogFeatureSharing]) {
+        [remote syncConnectionsForBlog:blog
+                               success:[self connectionsHandlerWithBlogObjectID:blogObjectID
+                                                              completionHandler:nil]
+                               failure:^(NSError *error) { DDLogError(@"Failed syncing connections for blog %@: %@", blog.url, error); }];
+        
+        PublicizerService *publicizerService = [[PublicizerService alloc] initWithManagedObjectContext:self.managedObjectContext];
+        [publicizerService syncPublicizersForBlog:blog
+                                          success:nil
+                                          failure:^(NSError *error) { DDLogError(@"Failed syncing publicizers for blog %@: %@", blog.url, error); }];
+    }
 }
 
 - (BOOL)hasVisibleWPComAccounts

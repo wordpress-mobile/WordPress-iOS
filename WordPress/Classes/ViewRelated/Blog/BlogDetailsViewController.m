@@ -38,8 +38,8 @@ const NSInteger BlogDetailsRowStats = 2;
 const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
-const NSInteger BlogDetailsRowEditSite = 0;
-const NSInteger BlogDetailsRowSharing = 1;
+const NSInteger BlogDetailsRowSharing = 0;
+const NSInteger BlogDetailsRowEditSite = 1;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
@@ -58,7 +58,6 @@ NSInteger const BlogDetailHeaderViewVerticalMargin = 18;
 NSInteger const BlogDetailsRowCountForSectionGeneralType = 3;
 NSInteger const BlogDetailsRowCountForSectionPublishType = 3;
 NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
-NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
 
 @interface BlogDetailsViewController () <UIActionSheetDelegate, UIAlertViewDelegate>
 
@@ -75,6 +74,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
  *              the app if not handled properly.
  */
 @property (nonatomic, assign, readwrite, getter=areThemesEnabled) BOOL themesEnabled;
+
+@property (nonatomic, strong) NSArray *configurationRows;
 
 @end
 
@@ -146,6 +147,11 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
         AccountService *acctService = [[AccountService alloc] initWithManagedObjectContext:context];
         [acctService updateUserDetailsForAccount:self.blog.account success:nil failure:nil];
     }
+    
+    if ([self.blog supports:BlogFeatureSharing])
+        self.configurationRows = @[@(BlogDetailsRowSharing), @(BlogDetailsRowEditSite)];
+    else
+        self.configurationRows = @[@(BlogDetailsRowEditSite)];
 
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(handleDataModelChange:)
@@ -247,7 +253,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
     } else if ([self isAppearanceSection:section]) {
         return BlogDetailsRowCountForSectionAppearance;
     } else if ([self isConfigurationSection:section]) {
-        return BlogDetailsRowCountForSectionConfigurationType;
+        return self.configurationRows.count;
     }
 
     return 0;
@@ -297,14 +303,15 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
         cell.textLabel.text = NSLocalizedString(@"Themes", @"Themes option in the blog details");
         cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
     } else if ([self isConfigurationSection:indexPath.section]) {
-        switch (indexPath.row) {
-            case BlogDetailsRowEditSite:
-                cell.textLabel.text = NSLocalizedString(@"Settings", nil);
-                cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
-                break;
+        NSInteger configurationRow = [self.configurationRows[indexPath.row] integerValue];
+        switch (configurationRow) {
             case BlogDetailsRowSharing:
                 cell.textLabel.text = NSLocalizedString(@"Sharing", @"Sharing option in the blog details");
                 cell.imageView.image = [UIImage imageNamed:@"icon-menu-sharing"];
+                break;
+            case BlogDetailsRowEditSite:
+                cell.textLabel.text = NSLocalizedString(@"Settings", nil);
+                cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
                 break;
             default:
                 break;
@@ -328,12 +335,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 2;
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
     if ([self isConfigurationSection:indexPath.section] ) {
-        switch (indexPath.row) {
-            case BlogDetailsRowEditSite:
-                [self showEditSite];
-                break;
+        NSInteger configurationRow = [self.configurationRows[indexPath.row] integerValue];
+        switch (configurationRow) {
             case BlogDetailsRowSharing:
                 [self showSharing];
+                break;
+            case BlogDetailsRowEditSite:
+                [self showEditSite];
                 break;
             default:
                 break;
