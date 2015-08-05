@@ -39,11 +39,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
         tableView.registerClass(SwitchTableViewCell.self, forCellReuseIdentifier: switchIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultIdentifier)
         
-        // iPad Top header
-        if UIDevice.isPad() {
-            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
-        }
-        
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
@@ -82,7 +77,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - Private Helpers
     private func rowsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Row] {
         var rows = [Row]()
-        for key in settings.sortedPreferenceKeys {
+        for key in settings.sortedPreferenceKeys(stream) {
             let name    = settings.localizedDescription(key)
             let value   = stream.preferences?[key] ?? true
             
@@ -151,6 +146,11 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - UITableView Helpers
     private func configureSwitchCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
         let row         = rows[indexPath.row]
+        let sortedKeys  = settings?.sortedPreferenceKeys(stream)
+        let key         = sortedKeys?[indexPath.row]
+        if key == nil {
+            return
+        }
         
         cell.name       = row.name
         cell.isOn       = newValues[row.key] ?? (row.value ?? true)
