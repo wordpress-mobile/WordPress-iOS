@@ -40,7 +40,7 @@
 {
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
-    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:ThemeCoreDataEntityName
+    NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[Theme entityName]
                                                          inManagedObjectContext:self.managedObjectContext];
     
     Theme *theme = [[Theme alloc] initWithEntity:entityDescription
@@ -79,7 +79,7 @@
     Theme *theme = nil;
     
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@""];
-    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:ThemeCoreDataEntityName];
+    NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[Theme entityName]];
     
     fetchRequest.predicate = predicate;
     

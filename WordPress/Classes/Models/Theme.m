@@ -6,8 +6,6 @@
 
 static NSDateFormatter *dateFormatter;
 
-NSString* const ThemeCoreDataEntityName = @"Theme";
-
 @implementation Theme
 
 @dynamic popularityRank;
@@ -58,6 +56,15 @@ NSString* const ThemeCoreDataEntityName = @"Theme";
 
     return theme;
 }
+
+#pragma mark - CoreData helpers
+
++ (NSString *)entityName
+{
+    return NSStringFromClass([self class]);
+}
+
+#pragma mark - Misc
 
 - (BOOL)isCurrentTheme
 {
