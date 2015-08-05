@@ -248,9 +248,9 @@ static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
             case MeSectionAccountNotifications:
-                cell.textLabel.text = NSLocalizedString(@"Notifications", @"");
+                cell.textLabel.text = NSLocalizedString(@"Notification Settings", @"");
                 cell.textLabel.textAlignment = NSTextAlignmentLeft;
-                cell.accessibilityLabel = @"Notifications";
+                cell.accessibilityLabel = @"Notification Settings";
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 break;
         }

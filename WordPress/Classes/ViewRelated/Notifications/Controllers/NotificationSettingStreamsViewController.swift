@@ -36,6 +36,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
             tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
         }
         
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
@@ -73,7 +76,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings?.streams.count ?? emptyRowCount
+        return sortedStreams?.count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -94,7 +97,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         // iOS <8: Display the 'Enable Push Notifications Alert', when needed
         // iOS +8: Go ahead and push the details
         //
-        let stream = settings!.streams[indexPath.row]
+        let stream = sortedStreams![indexPath.row]
         
         if isDisabledDeviceStream(stream) && !UIDevice.isOS8() {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -104,6 +107,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         
         let detailsViewController = NotificationSettingDetailsViewController()
         detailsViewController.setupWithSettings(settings!, stream: stream)
+
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -111,7 +115,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let stream                  = settings!.streams[indexPath.row]
+        let stream                  = sortedStreams![indexPath.row]
         
         cell.textLabel?.text        = stream.kind.description() ?? String()
         cell.detailTextLabel?.text  = isDisabledDeviceStream(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
@@ -141,6 +145,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         let alert = AlertView(title: title, message: message, button: button, completion: nil)
         alert.show()
     }
+
     
     
 
@@ -151,4 +156,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
+    
+    // MARK: - Private Computed Properties
+    private var sortedStreams   : [NotificationSettings.Stream]? {
+        return settings?.streams.sorted { $0.kind.description() > $1.kind.description() }
+    }
 }
