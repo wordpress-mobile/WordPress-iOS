@@ -130,7 +130,7 @@
 
 - (BOOL)isWPComAccount
 {
-    return self.restApi != nil;
+    return _restApi != nil;
 }
 
 @end
