@@ -4,7 +4,7 @@
 #import <UIDeviceIdentifier/UIDeviceHardware.h>
 #import "WordPressAppDelegate.h"
 #import <DDFileLogger.h>
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import <Helpshift/Helpshift.h>
 #import "WPAnalytics.h"
 #import <WordPress-iOS-Shared/WPStyleGuide.h>
@@ -419,9 +419,9 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         return nil;
     }
     
-    WPTableViewSectionFooterView *header = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-    header.title = title;
-    return header;
+    WPTableViewSectionHeaderFooterView *footer = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
+    footer.title = title;
+    return footer;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -432,7 +432,7 @@ typedef NS_ENUM(NSInteger, SettingsSectionFeedbackRows)
         return CGFLOAT_MIN;
     }
     
-    return [WPTableViewSectionFooterView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForFooter:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForFooterInSection:(NSInteger)section

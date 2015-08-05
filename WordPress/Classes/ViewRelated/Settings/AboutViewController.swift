@@ -43,7 +43,7 @@ public class AboutViewController : UITableViewController
         let calendar                = NSCalendar.currentCalendar()
         let year                    = calendar.components(.CalendarUnitYear, fromDate: NSDate()).year
 
-        let footerView              = WPTableViewSectionFooterView()
+        let footerView              = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title            = NSLocalizedString("© \(year) Automattic, Inc.", comment: "About View's Footer Text")
         footerView.titleAlignment   = .Center
         self.footerView             = footerView
@@ -104,7 +104,7 @@ public class AboutViewController : UITableViewController
             return CGFloat.min
         }
         
-        let height = WPTableViewSectionFooterView.heightForTitle(footerView!.title, andWidth: view.frame.width)
+        let height = WPTableViewSectionHeaderFooterView.heightForFooter(footerView!.title, width: view.frame.width)
         return height + footerBottomPadding
     }
 
@@ -199,7 +199,7 @@ public class AboutViewController : UITableViewController
     private let footerBottomPadding = CGFloat(12)
     
     // MARK: - Private Properties
-    private var footerView : WPTableViewSectionFooterView!
+    private var footerView : WPTableViewSectionHeaderFooterView!
     
     private var rows : [[Row]] {
         let appsBlogHostname = NSURL(string: WPAutomatticAppsBlogURL)?.host ?? String()
