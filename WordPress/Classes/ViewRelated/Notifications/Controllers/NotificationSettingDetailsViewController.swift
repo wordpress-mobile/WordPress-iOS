@@ -76,15 +76,15 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title        = titleForStream(stream)
+        headerView.title        = headerText(stream, channel: settings?.channel)
         headerView.titleInsets  = headerTitleInsets
         return headerView
     }
     
     public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title   = titleForStream(stream)
-        let width   = view.frame.width
-        let font    = WPStyleGuide.subtitleFont()
+        let title               = headerText(stream, channel: settings?.channel)
+        let width               = view.frame.width
+        let font                = WPStyleGuide.subtitleFont()
         return WPTableViewSectionHeaderFooterView.heightForText(title, width: width, titleInsets: headerTitleInsets, font: font)
     }
 
@@ -92,16 +92,16 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     // MARK: - UITableView Helpers
     private func configureCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
-        let preferences = stream?.preferences
-        let sortedKeys  = settings?.sortedPreferenceKeys(stream)
-        let key         = sortedKeys?[indexPath.row]
+        let preferences         = stream?.preferences
+        let sortedKeys          = settings?.sortedPreferenceKeys(stream)
+        let key                 = sortedKeys?[indexPath.row]
         if preferences == nil || key == nil {
             return
         }
         
-        cell.name       = settings?.localizedDescription(key!) ?? String()
-        cell.isOn       = preferences?[key!] ?? true
-        cell.onChange   = { [weak self] (newValue: Bool) in
+        cell.name               = settings?.localizedDescription(key!) ?? String()
+        cell.isOn               = preferences?[key!] ?? true
+        cell.onChange           = { [weak self] (newValue: Bool) in
             self?.newValues?[key!] = newValue
         }
     }
@@ -146,11 +146,20 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Private Helpers
-    private func titleForStream(stream: NotificationSettings.Stream?) -> String {
-        if stream == nil {
+    private func headerText(stream: NotificationSettings.Stream?, channel: NotificationSettings.Channel?) -> String {
+        // Failsafe
+        if stream == nil || channel == nil {
             return String()
         }
+
+        // Is it WordPress.com?
+        if channel! == .WordPressCom {
+            return NSLocalizedString("We’ll always send important emails regarding your account, " +
+                "but you can get some fun extras, too!",
+                comment: "Title displayed in the Notification Settings for WordPress.com")
+        }
         
+        // It must be a Blog // Other
         switch stream!.kind {
         case .Device:
             return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
@@ -163,6 +172,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
                 comment: "Title displayed in the Notification Settings for Notifications tab")
         }
     }
+    
     
     
     
