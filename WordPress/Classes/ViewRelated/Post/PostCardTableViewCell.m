@@ -426,7 +426,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = ViewButtonImageInsets;;
+    item.imageInsets = ViewButtonImageInsets;
     [items addObject:item];
 
     if ([self.contentProvider supportsStats]) {
