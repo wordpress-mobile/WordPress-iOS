@@ -336,7 +336,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             return self.pushCell;
         } break;
     }
-    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];;
+    return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
 }
 
 
