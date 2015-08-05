@@ -884,6 +884,11 @@ static NSInteger const LoginVerificationCodeNumberOfLines       = 3;
     self.passwordText.text = passwordText;
 }
 
+- (void)setPasswordSecureEntry:(BOOL)secureTextEntry;
+{
+    [self.passwordText setSecureTextEntry:secureTextEntry];
+}
+
 - (void)setSiteAlpha:(CGFloat)alpha
 {
     self.siteUrlText.alpha = alpha;
