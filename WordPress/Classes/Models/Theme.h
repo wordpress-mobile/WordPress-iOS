@@ -2,8 +2,6 @@
 
 @class Blog;
 
-extern NSString* const ThemeCoreDataEntityName;
-
 @interface Theme : NSManagedObject
 
 @property (nonatomic, retain) NSNumber *popularityRank;
@@ -18,6 +16,15 @@ extern NSString* const ThemeCoreDataEntityName;
 @property (nonatomic, retain) NSString *name;
 @property (nonatomic, retain) NSString *previewUrl;
 @property (nonatomic, retain) Blog *blog;
+
+/**
+ *  @brief      Call this method to know the entity name for objects of this class.
+ *  @details    Returns the same name as the class for this implementation.  If child classes
+ *              have a difference in the CoreData and class name, they should override this method.
+ *
+ *  @returns    The entity name.
+ */
++ (NSString *)entityName;
 
 - (BOOL)isCurrentTheme;
 - (BOOL)isPremium;
