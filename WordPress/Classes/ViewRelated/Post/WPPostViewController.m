@@ -108,7 +108,6 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
-@property (nonatomic, strong) WPTooltip *formatBarToolTip;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
@@ -310,10 +309,6 @@ EditImageDetailsViewControllerDelegate
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -343,9 +338,6 @@ EditImageDetailsViewControllerDelegate
     [self.mediaProgressView removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidShowNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
                                                   object:nil];
 }
 
@@ -957,15 +949,6 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - Instance Methods
-
-- (void)keyboardWillHide:(NSNotification*)aNotification
-{
-    // If the format bar tooltip is still hanging around, let's git rid of it
-    if (self.formatBarToolTip) {
-        [self.formatBarToolTip cancelCurrentTooltip];
-        self.formatBarToolTip = nil;
-    }
-}
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
