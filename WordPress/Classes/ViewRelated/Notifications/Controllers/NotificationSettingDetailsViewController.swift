@@ -146,11 +146,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - UITableView Helpers
     private func configureSwitchCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
         let row         = rows[indexPath.row]
-        let sortedKeys  = settings?.sortedPreferenceKeys(stream)
-        let key         = sortedKeys?[indexPath.row]
-        if key == nil {
-            return
-        }
         
         cell.name       = row.name
         cell.isOn       = newValues[row.key] ?? (row.value ?? true)
