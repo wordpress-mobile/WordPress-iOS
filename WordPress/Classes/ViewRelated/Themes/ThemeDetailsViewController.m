@@ -245,6 +245,10 @@
     [self.activateButton setTitle:@"" forState:UIControlStateNormal];
     [self.activateButton addSubview:loading];
 
+    // Theme activation code was deactivated until this service is replaced by the new version.
+    // This VC is currently not available to our users.
+    //
+    /*
     [self.theme activateThemeWithSuccess:^{
         [WPAnalytics track:WPAnalyticsStatThemesChangedTheme];
         [loading removeFromSuperview];
@@ -256,6 +260,7 @@
         [self.activateButton setTitle:NSLocalizedString(@"Activate", nil) forState:UIControlStateNormal];
         [WPError showNetworkingAlertWithError:error];
     }];
+     */
 }
 
 @end
