@@ -51,6 +51,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, assign) CGFloat dateViewLowerMargin;
 @property (nonatomic, assign) CGFloat statusViewHeight;
 @property (nonatomic, assign) CGFloat statusViewLowerMargin;
+@property (nonatomic, assign) BOOL loadImagesWhenConfigured;
 
 @end
 
@@ -247,6 +248,12 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
 {
+    [self configureCell:contentProvider loadingImages:YES];
+}
+
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider loadingImages:(BOOL)loadImages
+{
+    self.loadImagesWhenConfigured = loadImages;
     self.contentProvider = contentProvider;
 }
 
@@ -264,12 +271,22 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
-    [self.avatarImageView setImageWithURL:[self blavatarURL]
-                         placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
+
+    UIImage *placeholder =[UIImage imageNamed:@"post-blavatar-placeholder"];
+    if (self.loadImagesWhenConfigured) {
+        [self.avatarImageView setImageWithURL:[self blavatarURL]
+                             placeholderImage:placeholder];
+    } else {
+        self.avatarImageView.image = placeholder;
+    }
 }
 
 - (void)configureCardImage
 {
+    if (!self.loadImagesWhenConfigured) {
+        return;
+    }
+
     if (!self.postCardImageView) {
         return;
     }

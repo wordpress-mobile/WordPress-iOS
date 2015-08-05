@@ -43,11 +43,6 @@ public class NotificationSettingsViewController : UIViewController
         tableView.registerClass(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
         
-        // iPad Top header
-        if UIDevice.isPad() {
-            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
-        }
-
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
@@ -178,9 +173,25 @@ public class NotificationSettingsViewController : UIViewController
         }
     }
     
+    public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let title = titleForHeaderInSection(section)
+        if isSectionEmpty(section) || title == nil{
+            return nil
+        }
+        
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+        footerView.title    = title!
+        return footerView
+    }
+    
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
-        return CGFloat.min
+        let title = titleForHeaderInSection(section)
+        if isSectionEmpty(section) || title == nil {
+            // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
+            return CGFloat.min
+        }
+        
+        return WPTableViewSectionHeaderFooterView.heightForHeader(title!, width: view.frame.width)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -254,6 +265,10 @@ public class NotificationSettingsViewController : UIViewController
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
+    private func titleForHeaderInSection(section: Int) -> String? {
+        return Section(rawValue: section)!.headerText()
+    }
+
     private func titleForFooterInSection(section: Int) -> String {
         return Section(rawValue: section)!.footerText()
     }
@@ -307,6 +322,20 @@ public class NotificationSettingsViewController : UIViewController
         case Blog           = 0
         case Other          = 1
         case WordPressCom   = 2
+        
+        func headerText() -> String? {
+            switch self {
+            case .Blog:
+                return NSLocalizedString("Your Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .Other:
+                return NSLocalizedString("Comments on Other Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .WordPressCom:
+                return NSLocalizedString("WordPress.com Updates",
+                    comment: "Displayed in the Notification Settings View")
+            }
+        }
         
         func footerText() -> String {
             switch self {
