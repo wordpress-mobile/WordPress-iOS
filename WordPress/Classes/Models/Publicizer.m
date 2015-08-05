@@ -1,11 +1,12 @@
-#import "Publicize.h"
+#import "Publicizer.h"
 
-@implementation Publicize
+@implementation Publicizer
 
 @dynamic service;
 @dynamic label;
 @dynamic detail;
 @dynamic icon;
 @dynamic connect;
+@dynamic blog;
 
 @end

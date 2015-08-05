@@ -139,6 +139,9 @@
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
             <userInfo/>
         </relationship>
+        <relationship name="publicizers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Publicizer" inverseName="blog" inverseEntity="Publicizer">
+            <userInfo/>
+        </relationship>
         <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
         <userInfo/>
     </entity>
@@ -322,7 +325,7 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Publicize" representedClassName="Publicize">
+    <entity name="Publicizer" representedClassName="Publicize">
         <attribute name="connect" attributeType="String">
             <userInfo/>
         </attribute>
@@ -338,6 +341,7 @@
         <attribute name="service" attributeType="String">
             <userInfo/>
         </attribute>
+        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="publicizers" inverseEntity="Blog" syncable="YES"/>
         <userInfo/>
     </entity>
     <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
@@ -428,7 +432,7 @@
         <element name="AbstractPost" positionX="0" positionY="0" width="128" height="135"/>
         <element name="Account" positionX="0" positionY="0" width="128" height="210"/>
         <element name="BasePost" positionX="0" positionY="0" width="128" height="300"/>
-        <element name="Blog" positionX="0" positionY="0" width="128" height="540"/>
+        <element name="Blog" positionX="0" positionY="0" width="128" height="555"/>
         <element name="Category" positionX="0" positionY="0" width="128" height="120"/>
         <element name="Comment" positionX="0" positionY="0" width="128" height="343"/>
         <element name="Media" positionX="0" positionY="0" width="128" height="375"/>
@@ -436,11 +440,11 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
+        <element name="Publicizer" positionX="9" positionY="153" width="128" height="135"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
         <element name="SourcePostAttribution" positionX="9" positionY="153" width="128" height="225"/>
         <element name="Theme" positionX="9" positionY="153" width="128" height="225"/>
-        <element name="Publicize" positionX="9" positionY="153" width="128" height="120"/>
     </elements>
 </model>

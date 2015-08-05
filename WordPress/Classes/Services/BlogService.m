@@ -20,6 +20,7 @@
 #import "NSString+XMLExtensions.h"
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
+#import "PublicizerService.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -321,6 +322,11 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            success:[self connectionsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:nil]
                            failure:^(NSError *error) { DDLogError(@"Failed syncing connections for blog %@: %@", blog.url, error); }];
+    
+    PublicizerService *publicizerService = [[PublicizerService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    [publicizerService syncPublicizersForBlog:blog
+                                   success:nil
+                                   failure:^(NSError *error) { DDLogError(@"Failed syncing publicizers for blog %@: %@", blog.url, error); }];
     
 
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];

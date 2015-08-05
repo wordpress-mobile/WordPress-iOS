@@ -2,6 +2,7 @@
 #import "Blog.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderView.h"
+#import "Publicizer.h"
 
 NS_ENUM(NSInteger, SharingSection) {
     SharingPublicize = 0,
@@ -42,8 +43,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
 
-    for (NSDictionary *connection in self.blog.connections) {
-        NSString *label = connection[@"label"];
+    for (Publicizer *service in self.blog.publicizers) {
+        NSString *label = service.label;
         [self.publicizeServices addObject:label];
     }
 }

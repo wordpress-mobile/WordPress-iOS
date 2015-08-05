@@ -1,7 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <CoreData/CoreData.h>
 
-@interface Publicize : NSManagedObject
+@interface RemotePublicizer : NSObject
 
 @property (nonatomic, strong) NSString *service;
 @property (nonatomic, strong) NSString *label;
