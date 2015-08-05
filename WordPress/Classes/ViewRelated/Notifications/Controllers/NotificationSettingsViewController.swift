@@ -174,27 +174,29 @@ public class NotificationSettingsViewController : UIViewController
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let title = titleForHeaderInSection(section)
-        if isSectionEmpty(section) || title == nil{
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
             return nil
         }
         
+        let title           = titleForHeaderInSection(section)
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        footerView.title    = title!
+        footerView.title    = title
         return footerView
     }
     
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title = titleForHeaderInSection(section)
-        if isSectionEmpty(section) || title == nil {
-            // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
             return CGFloat.min
         }
         
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title!, width: view.frame.width)
+        let title = titleForHeaderInSection(section)
+        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Hide when the section is empty!
         if isSectionEmpty(section) {
             return nil
         }
@@ -205,6 +207,7 @@ public class NotificationSettingsViewController : UIViewController
     }
     
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Hide when the section is empty!
         if isSectionEmpty(section) {
             return CGFloat.min
         }
@@ -265,7 +268,7 @@ public class NotificationSettingsViewController : UIViewController
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
-    private func titleForHeaderInSection(section: Int) -> String? {
+    private func titleForHeaderInSection(section: Int) -> String {
         return Section(rawValue: section)!.headerText()
     }
 
@@ -323,7 +326,7 @@ public class NotificationSettingsViewController : UIViewController
         case Other          = 1
         case WordPressCom   = 2
         
-        func headerText() -> String? {
+        func headerText() -> String {
             switch self {
             case .Blog:
                 return NSLocalizedString("Your Sites",

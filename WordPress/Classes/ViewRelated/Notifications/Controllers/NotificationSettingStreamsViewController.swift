@@ -50,16 +50,20 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Public Helpers
     public func setupWithSettings(settings: NotificationSettings) {
-        self.settings = settings
-        
+        // Title
         switch settings.channel {
         case let .Blog(blogId):
             title = settings.blog?.blogName ?? settings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
+            // Note: WordPress.com is not expected here!
             break
         }
+        
+        // Structures
+        self.settings       = settings
+        self.sortedStreams  = settings.streams.sorted { $0.kind.description() > $1.kind.description() }
         
         tableView.reloadData()
     }
@@ -156,9 +160,5 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
-    
-    // MARK: - Private Computed Properties
-    private var sortedStreams   : [NotificationSettings.Stream]? {
-        return settings?.streams.sorted { $0.kind.description() > $1.kind.description() }
-    }
+    private var sortedStreams   : [NotificationSettings.Stream]?
 }
