@@ -140,7 +140,7 @@ public class NotificationSettings
     
     // MARK: - Private Properties
     private let blogPreferenceKeys  = ["new_comment", "comment_like", "post_like", "follow", "achievement", "mentions"]
-    private let otherPreferenceKeys = ["comment_like", "comment_reply"]
+    private let otherPreferenceKeys = ["comment_reply", "comment_like"]
     private let wpcomPreferenceKeys = ["news", "recommendation", "promotion", "digest"]
     
     // MARK: - Localized Setting Descriptions
@@ -150,7 +150,7 @@ public class NotificationSettings
         "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Notifications Settings"),
         "follow"            : NSLocalizedString("Site follows",             comment: "Notifications Settings"),
         "achievement"       : NSLocalizedString("Site achievements",        comment: "Notifications Settings"),
-        "mentions"          : NSLocalizedString("Mentions",                 comment: "Notifications Settings"),
+        "mentions"          : NSLocalizedString("Username Mentions",        comment: "Notifications Settings"),
         "comment_reply"     : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
         "news"              : NSLocalizedString("News",                     comment: "Notifications Settings"),
         "recommendation"    : NSLocalizedString("Recomendations",           comment: "Notifications Settings"),
