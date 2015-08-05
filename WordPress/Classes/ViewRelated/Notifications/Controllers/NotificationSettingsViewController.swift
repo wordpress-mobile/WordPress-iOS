@@ -326,9 +326,14 @@ public class NotificationSettingsViewController : UIViewController
         func headerText() -> String? {
             switch self {
             case .Blog:
-                return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
-            default:
-                return nil
+                return NSLocalizedString("Your Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .Other:
+                return NSLocalizedString("Comments on Other Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .WordPressCom:
+                return NSLocalizedString("WordPress.com Updates",
+                    comment: "Displayed in the Notification Settings View")
             }
         }
         
