@@ -7,6 +7,7 @@
 @dynamic detail;
 @dynamic icon;
 @dynamic connect;
+@dynamic order;
 @dynamic blog;
 
 @end

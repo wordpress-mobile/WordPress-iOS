@@ -9,6 +9,7 @@
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) NSString *connect;
+@property (nonatomic, strong) NSNumber *order;
 @property (nonatomic, strong) Blog *blog;
 
 @end

@@ -18,7 +18,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 @property (nonatomic, strong, readonly) Blog *blog;
 
-@property (nonatomic, strong) NSMutableArray *publicizeServices;
+@property (nonatomic, strong) NSArray *publicizeServices;
 
 @end
 
@@ -43,10 +43,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
 
-    for (Publicizer *service in self.blog.publicizers) {
-        NSString *label = service.label;
-        [self.publicizeServices addObject:label];
-    }
+    self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,11 +90,12 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PublicizeCellIdentifier forIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
- 
+
     switch (indexPath.section) {
-        case SharingPublicize:
-            cell.textLabel.text = self.publicizeServices[indexPath.row];
-            break;
+        case SharingPublicize: {
+            Publicizer *publicizer = self.publicizeServices[indexPath.row];
+            cell.textLabel.text = publicizer.label;
+            } break;
         default:
             break;
     }

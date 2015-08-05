@@ -12,7 +12,9 @@
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
-                  success([self remotePublicizersWithJSONDictionary:responseObject[@"services"]]);
+                  NSString *rawJSON = operation.responseString;
+                  NSArray *publicizers = [self remotePublicizersWithJSONDictionary:responseObject[@"services"] fromRawJSON:rawJSON];
+                  success(publicizers);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -21,16 +23,21 @@
           }];
 }
 
-- (NSArray *)remotePublicizersWithJSONDictionary:(NSDictionary *)jsonDictionary
+- (NSArray *)remotePublicizersWithJSONDictionary:(NSDictionary *)jsonDictionary fromRawJSON:(NSString *)rawJSON
 {
     NSMutableArray *publicizers = [NSMutableArray arrayWithCapacity:jsonDictionary.count];
     for (NSString *key in jsonDictionary) {
-        [publicizers addObject:[self remotePublicizer:key withJSONDictionary:jsonDictionary[key]]];
+        // Presentation order is the JSON dictionary key order
+        NSInteger location = [rawJSON rangeOfString:key].location;
+        [publicizers addObject:[self remotePublicizer:key withJSONDictionary:jsonDictionary[key] andLocation:location]];
     }
-    return [NSArray arrayWithArray:publicizers];
+    NSArray *sortedArray = [publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"location" ascending:TRUE]]];
+    return sortedArray;
 }
 
-- (RemotePublicizer *)remotePublicizer:(NSString *)service withJSONDictionary:(NSDictionary *)jsonPublicizer
+- (RemotePublicizer *)remotePublicizer:(NSString *)service
+                    withJSONDictionary:(NSDictionary *)jsonPublicizer
+                        andLocation:(NSInteger)location
 {
     RemotePublicizer *publicizer = [RemotePublicizer new];
     publicizer.service = service;
@@ -38,6 +45,7 @@
     publicizer.detail = jsonPublicizer[@"description"];
     publicizer.icon = jsonPublicizer[@"icon"];
     publicizer.connect = jsonPublicizer[@"connect"];
+    publicizer.location = @(location);
     return publicizer;
 }
 

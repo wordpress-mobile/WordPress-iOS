@@ -62,6 +62,7 @@
         }
     }
 
+    int order = 0;
     for (RemotePublicizer *remotePublicizer in publicizers) {
         Publicizer *publicizer = [self findWithBlogObjectID:blog.objectID andService:remotePublicizer.service];
         if (!publicizer) {
@@ -72,6 +73,7 @@
         publicizer.detail = remotePublicizer.detail;
         publicizer.icon = remotePublicizer.icon;
         publicizer.connect = remotePublicizer.connect;
+        publicizer.order = @(order++);
     }
     
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];

@@ -7,5 +7,6 @@
 @property (nonatomic, strong) NSString *detail;
 @property (nonatomic, strong) NSString *icon;
 @property (nonatomic, strong) NSString *connect;
+@property (nonatomic, assign) NSNumber *location;
 
 @end
