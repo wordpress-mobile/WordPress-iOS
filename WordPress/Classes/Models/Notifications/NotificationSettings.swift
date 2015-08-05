@@ -52,10 +52,11 @@ public class NotificationSettings
     /**
     *  @details Returns an array of the sorted Preference Keys
     */
-    public var sortedPreferenceKeys : [String] {
+    public func sortedPreferenceKeys(stream: Stream?) -> [String] {
         switch channel {
         case let .Blog(blogId):
-            return blogPreferenceKeys
+            // Email Streams require a special treatment
+            return stream?.kind == .Email ? blogEmailPreferenceKeys : blogPreferenceKeys
         case .Other:
             return otherPreferenceKeys
         case .WordPressCom:
@@ -139,9 +140,10 @@ public class NotificationSettings
     }
     
     // MARK: - Private Properties
-    private let blogPreferenceKeys  = ["new_comment", "comment_like", "post_like", "follow", "achievement", "mentions"]
-    private let otherPreferenceKeys = ["comment_reply", "comment_like"]
-    private let wpcomPreferenceKeys = ["news", "recommendation", "promotion", "digest"]
+    private let blogPreferenceKeys      = ["new_comment", "comment_like", "post_like", "follow", "achievement", "mentions"]
+    private let blogEmailPreferenceKeys = ["new_comment", "comment_like", "post_like", "mentions"]
+    private let otherPreferenceKeys     = ["comment_like", "comment_reply"]
+    private let wpcomPreferenceKeys     = ["news", "recommendation", "promotion", "digest"]
     
     // MARK: - Localized Setting Descriptions
     private let localizedDescriptionMap = [
