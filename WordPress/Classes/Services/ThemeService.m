@@ -236,13 +236,6 @@
     
     Theme* theme = [self findOrCreateThemeWithId:remoteTheme.themeId];
     
-    /* MISSING PROPS
-    theme.costCurrency = remoteTheme.costCurrency;
-    theme.costDisplay = remoteTheme.costDisplay;
-    theme.costNumber = remoteTheme.costNumber;
-    theme.desc = remoteTheme.desc;
-    theme.downloadUrl = remoteTheme.downloadUrl;
-     */
     theme.launchDate = remoteTheme.launchDate;
     theme.name = remoteTheme.name;
     theme.popularityRank = remoteTheme.popularityRank;
