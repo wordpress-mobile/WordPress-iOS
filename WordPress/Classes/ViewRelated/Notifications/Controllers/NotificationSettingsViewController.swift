@@ -43,11 +43,6 @@ public class NotificationSettingsViewController : UIViewController
         tableView.registerClass(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
         
-        // iPad Top header
-        if UIDevice.isPad() {
-            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
-        }
-
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
