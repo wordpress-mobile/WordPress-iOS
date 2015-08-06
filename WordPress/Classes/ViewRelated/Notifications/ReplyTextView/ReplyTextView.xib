@@ -7,6 +7,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReplyTextView" customModule="WordPress">
             <connections>
+                <outlet property="bezierView" destination="KQI-Ok-M85" id="92e-Ha-vja"/>
                 <outlet property="containerView" destination="iN0-l3-epB" id="PxG-zK-Meq"/>
                 <outlet property="layoutView" destination="TqK-rp-BlK" id="QTH-iw-Viv"/>
                 <outlet property="placeholderLabel" destination="Omp-7E-YTH" id="Qqp-Aa-Yqy"/>
@@ -17,7 +18,7 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="Container View">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TqK-rp-BlK" userLabel="Layout View">
@@ -28,7 +29,7 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
-                            <rect key="frame" x="18" y="11" width="237" height="20.5"/>
+                            <rect key="frame" x="18" y="11" width="237" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -39,7 +40,7 @@
                             </variation>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pd-vE-u9b">
-                            <rect key="frame" x="18" y="12" width="237" height="19.5"/>
+                            <rect key="frame" x="18" y="12" width="237" height="20"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
