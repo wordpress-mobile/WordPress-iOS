@@ -1,6 +1,5 @@
 #import "ServiceRemoteREST.h"
 #import "WordPressComApi.h"
-#import "WPApiVersionConstants.h"
 
 @interface ServiceRemoteREST ()
 @end
@@ -20,10 +19,9 @@
 
 #pragma mark - Request URL construction
 
-- (NSString *)requestUrlForApiVersion:(NSString *)apiVersion
+- (NSString *)requestUrlForApiVersion:(ServiceRemoteRESTApiVersion)apiVersion
                           resourceUrl:(NSString *)resourceUrl
 {
-    NSParameterAssert([apiVersion isKindOfClass:[NSString class]]);
     NSParameterAssert([resourceUrl isKindOfClass:[NSString class]]);
     
     return [NSString stringWithFormat:@"%@/%@", apiVersion, resourceUrl];
@@ -33,7 +31,8 @@
 {
     NSParameterAssert([resourceUrl isKindOfClass:[NSString class]]);
     
-    return [self requestUrlForApiVersion:WPApiVersionDefault resourceUrl:resourceUrl];
+    return [self requestUrlForApiVersion:ServiceRemoteRESTApiVersionDefault
+                             resourceUrl:resourceUrl];
 }
 
 @end
