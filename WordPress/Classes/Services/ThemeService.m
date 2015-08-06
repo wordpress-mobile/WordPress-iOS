@@ -43,8 +43,12 @@
     NSEntityDescription *entityDescription = [NSEntityDescription entityForName:[Theme entityName]
                                                          inManagedObjectContext:self.managedObjectContext];
     
-    Theme *theme = [[Theme alloc] initWithEntity:entityDescription
-                  insertIntoManagedObjectContext:self.managedObjectContext];
+    __block Theme *theme = nil;
+    
+    [self.managedObjectContext performBlockAndWait:^{
+        theme = [[Theme alloc] initWithEntity:entityDescription
+               insertIntoManagedObjectContext:self.managedObjectContext];
+    }];
     
     return theme;
 }
