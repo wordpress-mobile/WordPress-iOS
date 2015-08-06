@@ -90,7 +90,7 @@
     NSError *error = nil;
     NSArray *results = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
     
-    if (results) {
+    if (results.count > 0) {
         theme = (Theme *)[results firstObject];
         NSAssert([theme isKindOfClass:[Theme class]],
                  @"Expected a Theme object.");
