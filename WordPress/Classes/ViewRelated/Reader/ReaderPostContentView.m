@@ -8,6 +8,7 @@
 @property (nonatomic, strong) ReaderPost *post;
 @property (nonatomic, strong) UIButton *commentButton;
 @property (nonatomic, strong) UIButton *likeButton;
+@property (nonatomic, weak) UITapGestureRecognizer *discoverTapRecognizer;
 
 @end
 
@@ -168,6 +169,21 @@
     [self addSubview:self.attributionView];
 }
 
+- (void)buildDiscoverAttributionView
+{
+    [super buildDiscoverAttributionView];
+
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapDiscoverAttribution:)];
+    [self.discoverPostAttributionView addGestureRecognizer:tgr];
+    self.discoverTapRecognizer = tgr;
+}
+
+- (void)configureDiscoverAttributionView
+{
+    [super configureDiscoverAttributionView];
+    self.discoverTapRecognizer.enabled = ([self.contentProvider sourceAttributionStyle] == SourceAttributionStyleSite);
+}
+
 
 #pragma mark - Action Methods
 
@@ -182,6 +198,13 @@
 {
     if ([self.delegate respondsToSelector:@selector(postView:didReceiveLikeAction:)]) {
         [self.delegate postView:self didReceiveLikeAction:sender];
+    }
+}
+
+- (void)didTapDiscoverAttribution:(UITapGestureRecognizer *)gestureRecognizer
+{
+    if ([self.delegate respondsToSelector:@selector(postView:didTapDiscoverAttribution:)]) {
+        [self.delegate postView:self didTapDiscoverAttribution:self.discoverPostAttributionView];
     }
 }
 

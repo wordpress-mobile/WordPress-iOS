@@ -96,9 +96,9 @@ extension WPStyleGuide
         public static let badgeQuotedStyle          = blockQuotedStyle
         
         //  Blocks
-        public static let contentBlockRegularFont   = WPFontManager.merriweatherLightFontOfSize(blockFontSize)
-        public static let contentBlockBoldFont      = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
-        public static let contentBlockItalicFont    = WPFontManager.merriweatherLightItalicFontOfSize(blockFontSize)
+        public static let contentBlockRegularFont   = WPFontManager.merriweatherRegularFontOfSize(blockFontSize)
+        public static let contentBlockBoldFont      = WPFontManager.merriweatherBoldFontOfSize(blockFontSize)
+        public static let contentBlockItalicFont    = WPFontManager.merriweatherItalicFontOfSize(blockFontSize)
         public static let blockRegularFont          = WPFontManager.openSansRegularFontOfSize(blockFontSize)
         public static let blockBoldFont             = WPFontManager.openSansSemiBoldFontOfSize(blockFontSize)
 
