@@ -69,6 +69,7 @@ import Foundation
     private var wordCountBottomConstraintConstant: CGFloat = 0.0
 
     private var didPreserveStartingConstraintConstants = false
+    private var loadMediaWhenConfigured = true
 
     private let summaryMaxNumberOfLines = 3
 
@@ -217,7 +218,6 @@ import Foundation
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
 
-
         WPStyleGuide.applyReaderCardSiteButtonActiveStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
@@ -230,6 +230,11 @@ import Foundation
     }
 
     public func configureCell(contentProvider:ReaderPostContentProvider) {
+        configureCell(contentProvider, loadingMedia: true)
+    }
+
+    public func configureCell(contentProvider:ReaderPostContentProvider, loadingMedia:Bool) {
+        loadMediaWhenConfigured = loadingMedia
         self.contentProvider = contentProvider
 
         if !didPreserveStartingConstraintConstants {
@@ -249,8 +254,13 @@ import Foundation
     }
 
     private func configureHeader() {
+        // Always reset
+        avatarImageView.image = nil
+
         let placeholder = UIImage(named: "post-blavatar-placeholder")
-        if let url = contentProvider?.avatarURLForDisplay() {
+
+        if loadMediaWhenConfigured && contentProvider?.avatarURLForDisplay() != nil {
+            let url = contentProvider?.avatarURLForDisplay()
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
@@ -273,22 +283,23 @@ import Foundation
         // momentarily visible.
         featuredImageView.image = nil
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
-            var url = featuredImageURL
-            if !(contentProvider!.isPrivate()) {
-                let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
-                url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+            if loadMediaWhenConfigured {
+                var url = featuredImageURL
+                if !(contentProvider!.isPrivate()) {
+                    let size = CGSize(width:featuredMediaView.frame.width, height:featuredMediaHeightConstraintConstant)
+                    url = PhotonImageURLHelper.photonURLWithSize(size, forImageURL: url)
+                    featuredImageView.setImageWithURL(url, placeholderImage:nil)
 
-            } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
-                // private wpcom image needs special handling. 
-                let request = requestForURL(url)
-                featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
+                } else if (url.host != nil) && url.host!.hasSuffix("wordpress.com") {
+                    // private wpcom image needs special handling. 
+                    let request = requestForURL(url)
+                    featuredImageView.setImageWithURLRequest(request, placeholderImage: nil, success: nil, failure: nil)
 
-            } else {
-                // private but not a wpcom hosted image
-                featuredImageView.setImageWithURL(url, placeholderImage:nil)
+                } else {
+                    // private but not a wpcom hosted image
+                    featuredImageView.setImageWithURL(url, placeholderImage:nil)
+                }
             }
-
             featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
             featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
