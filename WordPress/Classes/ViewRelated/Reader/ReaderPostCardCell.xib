@@ -96,9 +96,6 @@
                                             <constraint firstItem="vL4-BG-nfJ" firstAttribute="top" secondItem="FV8-lg-7ZL" secondAttribute="top" id="9yT-Bl-Qlp"/>
                                             <constraint firstAttribute="trailing" secondItem="vL4-BG-nfJ" secondAttribute="trailing" id="Q1Y-zK-ZaE"/>
                                             <constraint firstAttribute="height" constant="196" id="Uc8-KW-ShJ">
-                                                <variation key="widthClass=regular" constant="226"/>
-                                                <variation key="heightClass=compact-widthClass=compact" constant="196"/>
-                                                <variation key="heightClass=regular-widthClass=compact" constant="196"/>
                                                 <variation key="heightClass=regular-widthClass=regular" constant="226"/>
                                             </constraint>
                                             <constraint firstAttribute="bottom" secondItem="vL4-BG-nfJ" secondAttribute="bottom" id="rFK-Hl-qfe"/>
