@@ -1,7 +1,7 @@
 #import "SettingsMultiTextViewController.h"
 #import "WPStyleGuide.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionFooterView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 
 static CGFloat const HorizontalMargin = 10.0f;
 
@@ -84,7 +84,7 @@ static CGFloat const HorizontalMargin = 10.0f;
     if (_hintView) {
         return _hintView;
     }
-    WPTableViewSectionFooterView *footerView = [[WPTableViewSectionFooterView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *footerView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
     [footerView setTitle:_hint];
     _hintView = footerView;
     return _hintView;
