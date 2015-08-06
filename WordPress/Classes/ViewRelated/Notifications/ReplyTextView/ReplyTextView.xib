@@ -64,7 +64,6 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="4GJ-tF-yMt"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Cfe-Jc-SMC"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="uPq-oF-Jld"/>
                             </constraints>
                             <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <state key="normal" title="Button">
@@ -83,21 +82,16 @@
                     <constraints>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="0Ih-PG-tLq"/>
                         <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" priority="750" constant="12" id="1DJ-ch-NcS"/>
-                        <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="2KV-ES-gcA"/>
                         <constraint firstAttribute="bottom" secondItem="8Wq-XP-O0P" secondAttribute="bottom" id="5UL-cM-3Kq"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="12" id="6Y8-31-mYZ"/>
                         <constraint firstAttribute="trailing" secondItem="5G8-Al-JKt" secondAttribute="trailing" constant="2" id="9Oi-SR-O6o"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="Omp-7E-YTH" secondAttribute="top" constant="1" id="CBn-np-VwC"/>
                         <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="2Pd-vE-u9b" secondAttribute="trailing" constant="8" id="E7J-mE-cKb"/>
-                        <constraint firstAttribute="trailing" secondItem="KQI-Ok-M85" secondAttribute="trailing" constant="60" id="E8r-Hj-w7u"/>
                         <constraint firstAttribute="bottom" secondItem="5G8-Al-JKt" secondAttribute="bottom" constant="7" id="HE4-pe-BCj"/>
                         <constraint firstItem="8Wq-XP-O0P" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="Irf-sQ-cYr"/>
                         <constraint firstItem="8Wq-XP-O0P" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="LVW-gM-B5O"/>
                         <constraint firstItem="iLb-5R-8fU" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="N7i-a4-ZTP"/>
-                        <constraint firstItem="iLb-5R-8fU" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="PfI-iR-tht"/>
-                        <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="Qgx-y5-6jT"/>
                         <constraint firstItem="iLb-5R-8fU" firstAttribute="width" secondItem="KQI-Ok-M85" secondAttribute="width" id="QvG-8U-05N"/>
-                        <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="8Wq-XP-O0P" secondAttribute="trailing" id="UN5-sS-vIV"/>
                         <constraint firstAttribute="bottom" secondItem="KQI-Ok-M85" secondAttribute="bottom" id="VXT-En-PsR"/>
                         <constraint firstItem="iLb-5R-8fU" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="WVp-gN-G14"/>
                         <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="aMa-fa-LTO"/>
@@ -113,11 +107,6 @@
                     <variation key="default">
                         <mask key="constraints">
                             <exclude reference="pRT-gJ-Uu6"/>
-                            <exclude reference="2KV-ES-gcA"/>
-                            <exclude reference="E8r-Hj-w7u"/>
-                            <exclude reference="Qgx-y5-6jT"/>
-                            <exclude reference="PfI-iR-tht"/>
-                            <exclude reference="UN5-sS-vIV"/>
                         </mask>
                     </variation>
                     <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
