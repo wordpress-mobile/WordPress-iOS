@@ -97,7 +97,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController()
+        let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
         detailsViewController.setupWithSettings(settings!, stream: sortedStreams![indexPath.row])
         
         navigationController?.pushViewController(detailsViewController, animated: true)
