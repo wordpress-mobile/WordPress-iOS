@@ -57,7 +57,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
                                             ABXFeedbackViewControllerDelegate, WPNoResultsViewDelegate>
 @property (nonatomic, strong) WPTableViewHandler    *tableViewHandler;
 @property (nonatomic, strong) WPNoResultsView       *noResultsView;
-@property (nonatomic, assign) BOOL                  trackedViewDisplay;
 @property (nonatomic, strong) NSString              *pushNotificationID;
 @property (nonatomic, strong) NSDate                *pushNotificationDate;
 @property (nonatomic, strong) NSDate                *lastReloadDate;
@@ -166,7 +165,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     
     // Refresh the UI
     [self hookApplicationStateNotes];
-    [self trackAppearedIfNeeded];
+    [self trackAppeared];
     [self updateLastSeenTime];
     [self resetApplicationBadge];
     [self setupNotificationsBucketDelegate];
@@ -501,14 +500,9 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     return indexPath.row == (sectionInfo.numberOfObjects - 1);
 }
 
-- (void)trackAppearedIfNeeded
+- (void)trackAppeared
 {
-    if (self.trackedViewDisplay) {
-        return;
-    }
-    
     [WPAnalytics track:WPAnalyticsStatOpenedNotificationsList];
-    self.trackedViewDisplay = YES;
 }
 
 
@@ -604,7 +598,7 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 {
     id <NSFetchedResultsSectionInfo> sectionInfo = [self.tableViewHandler.resultsController.sections objectAtIndex:section];
     
-    NoteTableHeaderView *headerView = [[NoteTableHeaderView alloc] initWithWidth:CGRectGetWidth(tableView.bounds)];
+    NoteTableHeaderView *headerView = [NoteTableHeaderView new];
     headerView.title                = [Notification descriptionForSectionIdentifier:sectionInfo.name];
     headerView.separatorColor       = self.tableView.separatorColor;
     

@@ -1,7 +1,7 @@
 #import "SharingViewController.h"
 #import "Blog.h"
 #import "WPTableViewCell.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "Publicizer.h"
 
 NS_ENUM(NSInteger, SharingSection) {
@@ -71,7 +71,7 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
     if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+        WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
         header.title = title;
         return header;
     }
