@@ -22,7 +22,7 @@ public class ReplyBezierView : UIView
             setNeedsDisplay()
         }
     }
-    public var insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8) {
+    public var insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }
@@ -54,7 +54,7 @@ public class ReplyBezierView : UIView
         bezierRect.size.width   -= insets.left + insets.right
         let bezier              = UIBezierPath(roundedRect: bezierRect, cornerRadius: bezierRadius)
         let outer               = UIBezierPath(rect: bounds)
-        
+
         bezierColor.set()
         bezier.stroke()
         
