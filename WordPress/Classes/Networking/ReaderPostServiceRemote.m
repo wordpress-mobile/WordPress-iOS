@@ -56,7 +56,9 @@
           failure:(void (^)(NSError *error))failure {
 
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/?meta=site", siteID, postID];
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
            parameters:nil
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (!success) {
@@ -79,7 +81,9 @@
          failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/new", siteID, postID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -96,7 +100,9 @@
            failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/likes/mine/delete", siteID, postID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -112,7 +118,9 @@
            failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/new", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -126,7 +134,9 @@
 - (void)unfollowSite:(NSUInteger)siteID success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%d/follows/mine/delete", siteID];
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -140,8 +150,11 @@
 - (void)followSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine/new";
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -155,8 +168,11 @@
 - (void)unfollowSiteAtURL:(NSString *)siteURL success:(void (^)())success failure:(void(^)(NSError *error))failure
 {
     NSString *path = @"read/following/mine/delete";
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *params = @{@"url": siteURL};
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    
+    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             success();
         }
@@ -181,7 +197,9 @@
     }
 
     NSString *path = [NSString stringWithFormat:@"sites/%d/posts/%d/reblogs/new", siteID, postID];
-    [self.api POST:path parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl parameters:params success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             BOOL isReblogged = [[dict numberForKey:@"is_reblogged"] boolValue];
@@ -208,7 +226,10 @@
                            success:(void (^)(NSArray *posts))success
                            failure:(void (^)(NSError *))failure
 {
-    [self.api GET:[endpoint absoluteString]
+    NSString *path = [endpoint absoluteString];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
            parameters:params
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (!success) {

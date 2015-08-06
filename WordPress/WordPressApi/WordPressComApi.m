@@ -7,7 +7,7 @@
 #import "NotificationsManager.h"
 #import "WPUserAgent.h"
 
-static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/v1.1/";
+static NSString *const WordPressComApiClientEndpointURL = @"https://public-api.wordpress.com/rest/";
 static NSString *const WordPressComApiOauthBaseUrl = @"https://public-api.wordpress.com/oauth2";
 NSString *const WordPressComApiNotificationFields = @"id,type,unread,body,subject,timestamp,meta";
 static NSString *const WordPressComApiLoginUrl = @"https://wordpress.com/wp-login.php";
