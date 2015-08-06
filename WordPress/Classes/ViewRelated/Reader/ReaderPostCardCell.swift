@@ -112,7 +112,13 @@ import Foundation
         if didPreserveStartingConstraintConstants {
             return
         }
-
+        // When awakeFromNib is called, constraint constants have the default values for
+        // any w, any h. The constant values for the correct size class are not applied until
+        // the view is first moved to its superview. When this happens, it will override any
+        // value that has been assigned in the interrum.
+        // Preserve starting constraint constants once the view has been added to a window
+        // (thus getting a layout pass) and flag that they've been preserved. Then configure
+        // the cell if needed.
         preserveStartingConstraintConstants()
         if contentProvider != nil {
             configureCell(contentProvider!)
