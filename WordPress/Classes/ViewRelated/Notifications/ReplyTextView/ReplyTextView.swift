@@ -237,19 +237,6 @@ import Foundation
         // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
-        
-        // iPhone's Width knows No Limits
-        if UIDevice.isPad() {
-            let maxWidthConstraint = NSLayoutConstraint(item: self,
-                                        attribute:  .Width,
-                                        relatedBy:  .LessThanOrEqual,
-                                        toItem:     nil,
-                                        attribute:  .NotAnAttribute,
-                                        multiplier: 1,
-                                        constant:   WPTableViewFixedWidth)
-
-            addConstraint(maxWidthConstraint)
-        }
     }
     
     
