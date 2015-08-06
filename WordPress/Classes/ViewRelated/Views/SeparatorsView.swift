@@ -126,5 +126,8 @@ public class SeparatorsView : UIView
     
     private func setupView() {
         backgroundColor = UIColor.clearColor()
+        
+        // Make sure this is re-drawn if the bounds change!
+        layer.needsDisplayOnBoundsChange = true
     }
 }
