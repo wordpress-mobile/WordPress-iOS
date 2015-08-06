@@ -152,7 +152,7 @@ public class NotificationSettings
         "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Notifications Settings"),
         "follow"            : NSLocalizedString("Site follows",             comment: "Notifications Settings"),
         "achievement"       : NSLocalizedString("Site achievements",        comment: "Notifications Settings"),
-        "mentions"          : NSLocalizedString("Username Mentions",        comment: "Notifications Settings"),
+        "mentions"          : NSLocalizedString("Username mentions",        comment: "Notifications Settings"),
         "comment_reply"     : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
         "marketing"         : NSLocalizedString("Suggestions",              comment: "Notifications Settings"),
         "research"          : NSLocalizedString("Research",                 comment: "Notifications Settings"),
