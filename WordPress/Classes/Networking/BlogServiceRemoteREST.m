@@ -63,9 +63,9 @@
     [self.api GET:path
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSDictionary *formats = [self mapPostFormatsFromResponse:responseObject[@"formats"]];
+              NSDictionary *formats = [responseObject dictionaryForKey:@"formats"];
               if (success) {
-                  success(formats);
+                  success(formats ?: @{});
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -85,9 +85,9 @@
     [self.api GET:path
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
-              NSArray *connections = [self mapConnectionsFromResponse:responseObject[@"connections"]];
+              NSArray *connections = [responseObject arrayForKey:@"connections"];
               if (success) {
-                  success(connections);
+                  success(connections ?: @[]);
               }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
@@ -219,24 +219,6 @@
     }];
 
     return [NSDictionary dictionaryWithDictionary:valueOptions ];
-}
-
-- (NSDictionary *)mapPostFormatsFromResponse:(id)response
-{
-    if ([response isKindOfClass:[NSDictionary class]]) {
-        return response;
-    } else {
-        return @{};
-    }
-}
-
-- (NSArray *)mapConnectionsFromResponse:(id)response
-{
-    if ([response isKindOfClass:[NSArray class]]) {
-        return response;
-    } else {
-        return @[];
-    }
 }
 
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
