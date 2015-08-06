@@ -13,31 +13,43 @@ import Foundation
 {
     // MARK: - Properties
 
+    // Wrapper views
     @IBOutlet private weak var innerContentView: UIView!
     @IBOutlet private weak var cardContentView: UIView!
     @IBOutlet private weak var cardBorderView: UIView!
+
+    // Header realated Views
     @IBOutlet private weak var headerView: UIView!
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var blogNameButton: UIButton!
     @IBOutlet private weak var bylineLabel: UILabel!
     @IBOutlet private weak var menuButton: UIButton!
 
+    // Card views
     @IBOutlet private weak var featuredMediaView: UIView!
     @IBOutlet private weak var featuredImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var summaryLabel: UILabel!
-    @IBOutlet private weak var tagLabel: UILabel!
+    @IBOutlet private weak var tagButton: UIButton!
+    @IBOutlet private weak var wordCountLabel: UILabel!
+    @IBOutlet private weak var attributionView: UIView!
 
+    // Action buttons
     @IBOutlet private weak var actionButtonRight: UIButton!
     @IBOutlet private weak var actionButtonCenter: UIButton!
     @IBOutlet private weak var actionButtonLeft: UIButton!
     @IBOutlet private weak var actionButtonFlushLeft: UIButton!
 
+    // Layout Constraints
     @IBOutlet private weak var featuredMediaHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var featuredMediaBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var titleLabelBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var summaryLabelBottomConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var tagLabelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var attributionHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var attributionBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var tagButtonHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var tagButtonBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var wordCountBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var actionButtonViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var cardContentBottomConstraint: NSLayoutConstraint!
@@ -50,7 +62,13 @@ import Foundation
     private var featuredMediaBottomConstraintConstant: CGFloat = 0.0
     private var titleLabelBottomConstraintConstant: CGFloat = 0.0
     private var summaryLabelBottomConstraintConstant: CGFloat = 0.0
-    private var tagLabelBottomConstraintConstant: CGFloat = 0.0
+    private var attributionHeightConstraintConstant: CGFloat = 0.0
+    private var attributionBottomConstraintConstant: CGFloat = 0.0
+    private var tagButtonHeightConstraintConstant: CGFloat = 0.0
+    private var tagButtonBottomConstraintConstant: CGFloat = 0.0
+    private var wordCountBottomConstraintConstant: CGFloat = 0.0
+
+    private var didPreserveStartingConstraintConstants = false
 
     private let summaryMaxNumberOfLines = 3
 
@@ -84,13 +102,21 @@ import Foundation
 
     public override func awakeFromNib() {
         super.awakeFromNib()
-        featuredMediaHeightConstraintConstant = featuredMediaHeightConstraint.constant
-        featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
-        titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
-        summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
-        tagLabelBottomConstraintConstant = tagLabelBottomConstraint.constant
+
         applyStyles()
         createAvatarTapGestureRecognizer()
+    }
+
+    public override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        if didPreserveStartingConstraintConstants {
+            return
+        }
+
+        preserveStartingConstraintConstants()
+        if contentProvider != nil {
+            configureCell(contentProvider!)
+        }
     }
 
     /**
@@ -124,8 +150,16 @@ import Foundation
         height += summaryLabel.sizeThatFits(innerSize).height
         height += summaryLabelBottomConstraint.constant
 
-        height += tagLabel.sizeThatFits(innerSize).height
-        height += tagLabelBottomConstraint.constant
+        height += attributionHeightConstraint.constant
+        height += attributionBottomConstraint.constant
+
+        if !UIDevice.isPad() {
+            height += tagButtonHeightConstraint.constant
+            height += tagButtonBottomConstraint.constant
+
+            height += wordCountLabel.sizeThatFits(innerSize).height
+            height += wordCountBottomConstraint.constant
+        }
 
         height += actionButtonViewHeightConstraint.constant
         height += actionButtonViewBottomConstraint.constant
@@ -152,6 +186,19 @@ import Foundation
 
     // MARK: - Configuration
 
+    private func preserveStartingConstraintConstants() {
+        featuredMediaHeightConstraintConstant = featuredMediaHeightConstraint.constant
+        featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
+        titleLabelBottomConstraintConstant = titleLabelBottomConstraint.constant
+        summaryLabelBottomConstraintConstant = summaryLabelBottomConstraint.constant
+        attributionBottomConstraintConstant = attributionBottomConstraint.constant
+        tagButtonHeightConstraintConstant = tagButtonHeightConstraint.constant
+        tagButtonBottomConstraintConstant = tagButtonBottomConstraint.constant
+        wordCountBottomConstraintConstant = wordCountBottomConstraint.constant
+
+        didPreserveStartingConstraintConstants = true
+    }
+
     private func createAvatarTapGestureRecognizer() {
         let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
         avatarImageView.addGestureRecognizer(tgr)
@@ -163,6 +210,7 @@ import Foundation
     private func applyStyles() {
         backgroundColor = WPStyleGuide.greyLighten30()
         cardBorderView.backgroundColor = WPStyleGuide.readerCardCellBorderColor()
+
 
         WPStyleGuide.applyReaderCardSiteButtonActiveStyle(blogNameButton)
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
@@ -178,11 +226,17 @@ import Foundation
     public func configureCell(contentProvider:ReaderPostContentProvider) {
         self.contentProvider = contentProvider
 
+        if !didPreserveStartingConstraintConstants {
+            return
+        }
+
         configureHeader()
         configureCardImage()
         configureTitle()
         configureSummary()
-        configureTagAndWordCount()
+        configureAttribution()
+        configureTag()
+        configureWordCount()
         configureActionButtons()
 
         setNeedsUpdateConstraints()
@@ -285,9 +339,36 @@ import Foundation
         summaryLabel.lineBreakMode = .ByTruncatingTail
     }
 
-    private func configureTagAndWordCount() {
-        tagLabel.text = ""
-        tagLabelBottomConstraint.constant = 0.0
+    private func configureAttribution() {
+        attributionHeightConstraint.constant = 0.0
+        attributionBottomConstraint.constant = 0.0
+    }
+
+    private func configureTag() {
+        tagButton.setTitle("", forState: .Normal)
+        if !UIDevice.isPad() {
+            tagButtonHeightConstraint.constant = 0.0
+        }
+        tagButtonBottomConstraint.constant = 0.0
+    }
+
+    private func configureWordCount() {
+        wordCountLabel.text = nil
+        wordCountBottomConstraint.constant = 0.0
+    }
+
+    private func attributedTextForWordCount(wordCount:Int?, readingTime:String?) -> NSAttributedString {
+        var attrStr = NSMutableAttributedString()
+
+        if let theWordCount = wordCount {
+
+        }
+
+        if let theReadingTime = readingTime {
+
+        }
+
+        return attrStr
     }
 
     private func configureActionButtons() {
