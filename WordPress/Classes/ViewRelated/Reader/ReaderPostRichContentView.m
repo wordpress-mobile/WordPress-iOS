@@ -126,11 +126,4 @@
     }
 }
 
-- (void)didTapDiscoverAttribution:(UITapGestureRecognizer *)gestureRecognizer
-{
-    if ([self.delegate respondsToSelector:@selector(postView:didTapDiscoverAttribution:)]) {
-        [self.delegate postView:self didTapDiscoverAttribution:self.discoverPostAttributionView];
-    }
-}
-
 @end
