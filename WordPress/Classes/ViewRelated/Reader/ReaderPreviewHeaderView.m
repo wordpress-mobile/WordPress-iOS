@@ -35,7 +35,7 @@ static const CGFloat LabelHorizontalMargin = 8.0;
     self.label.translatesAutoresizingMaskIntoConstraints = NO;
     self.label.numberOfLines = 0;
     self.label.backgroundColor = [UIColor clearColor];
-    self.label.font = [WPFontManager openSansRegularFontOfSize:14.0];
+    self.label.font = [WPFontManager merriweatherItalicFontOfSize:14.0];
     self.label.textColor = [WPStyleGuide littleEddieGrey];
     self.label.textAlignment = NSTextAlignmentCenter;
 

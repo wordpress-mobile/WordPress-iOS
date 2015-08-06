@@ -92,7 +92,7 @@
 - (NSDictionary *)attributesForAttributedStringForTitle
 {
     CGFloat fontSize = [UIDevice isPad] ? 32.0 : 18.0;
-    UIFont *font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
+    UIFont *font = [WPFontManager merriweatherBoldFontOfSize:fontSize];
 
     CGFloat lineHeight = [UIDevice isPad] ? 40.0 : 24.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];
@@ -123,13 +123,6 @@
 {
     if ([self.delegate respondsToSelector:@selector(richTextViewDidLoadMediaBatch:)]) {
         [self.delegate richTextViewDidLoadMediaBatch:richTextView];
-    }
-}
-
-- (void)didTapDiscoverAttribution:(UITapGestureRecognizer *)gestureRecognizer
-{
-    if ([self.delegate respondsToSelector:@selector(postView:didTapDiscoverAttribution:)]) {
-        [self.delegate postView:self didTapDiscoverAttribution:self.discoverPostAttributionView];
     }
 }
 
