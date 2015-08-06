@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NoteSeparatorsView : UIView
+public class SeparatorsView : UIView
 {
     // MARK: - Public Properties
     public var leftVisible = false {
