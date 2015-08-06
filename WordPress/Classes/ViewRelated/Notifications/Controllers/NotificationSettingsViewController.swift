@@ -203,6 +203,7 @@ public class NotificationSettingsViewController : UIViewController
         
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title    = titleForFooterInSection(section)
+        
         return footerView
     }
     
@@ -213,7 +214,10 @@ public class NotificationSettingsViewController : UIViewController
         }
         
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+        let padding = paddingForFooterInSection(section)
+        let height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+
+        return height + padding
     }
     
 
@@ -274,6 +278,10 @@ public class NotificationSettingsViewController : UIViewController
 
     private func titleForFooterInSection(section: Int) -> String {
         return Section(rawValue: section)!.footerText()
+    }
+    
+    private func paddingForFooterInSection(section: Int) -> CGFloat {
+        return Section(rawValue: section)?.footerPadding() ?? CGFloat(0)
     }
     
     
@@ -351,6 +359,15 @@ public class NotificationSettingsViewController : UIViewController
             case .WordPressCom:
                 return NSLocalizedString("Decide what emails you get from us regarding your account.",
                     comment: "WordPress.com Notification Settings")
+            }
+        }
+        
+        func footerPadding() -> CGFloat {
+            switch self {
+            case .WordPressCom:
+                return CGFloat(40)
+            default:
+                return CGFloat(0)
             }
         }
     }
