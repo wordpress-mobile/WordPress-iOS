@@ -26,6 +26,8 @@ static const NSInteger NumberOfCommentsToSync = 100;
                    failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments", blog.dotComID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSMutableDictionary *parameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                  @"status": @"all",
                                  @"context": @"edit",
@@ -34,7 +36,8 @@ static const NSInteger NumberOfCommentsToSync = 100;
     if (options) {
         [parameters addEntriesFromDictionary:options];
     }
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -61,11 +64,14 @@ static const NSInteger NumberOfCommentsToSync = 100;
     } else {
         path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", blog.dotComID, comment.postID];
     }
+    
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
                                  @"content": comment.content,
                                  @"context": @"edit",
                                  };
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                // TODO: validate response
@@ -86,11 +92,13 @@ static const NSInteger NumberOfCommentsToSync = 100;
               failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
                                  @"content": comment.content,
                                  @"context": @"edit",
                                  };
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                // TODO: validate response
@@ -111,11 +119,13 @@ static const NSInteger NumberOfCommentsToSync = 100;
                 failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", blog.dotComID, comment.commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
                                  @"status": [self remoteStatusWithStatus:comment.status],
                                  @"context": @"edit",
                                  };
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                // TODO: validate response
@@ -136,7 +146,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
              failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", blog.dotComID, comment.commentID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -160,8 +172,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
                                 failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies?order=ASC&hierarchical=1&page=%d&number=%d", siteID, postID, page, number];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (success) {
             NSDictionary *dict = (NSDictionary *)responseObject;
             NSArray *comments = [self remoteCommentsFromJSONArray:[dict arrayForKey:@"comments"]];
@@ -184,11 +197,13 @@ static const NSInteger NumberOfCommentsToSync = 100;
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
         @"content": content,
         @"context": @"edit",
     };
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -208,8 +223,11 @@ static const NSInteger NumberOfCommentsToSync = 100;
                   failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/replies/new", siteID, postID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{@"content": content};
-    [self.api POST:path
+    
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -231,11 +249,13 @@ static const NSInteger NumberOfCommentsToSync = 100;
                      failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/replies/new", siteID, commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
         @"content": content,
         @"context": @"edit",
     };
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -257,12 +277,14 @@ static const NSInteger NumberOfCommentsToSync = 100;
                       failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@", siteID, commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
         @"status"   : status,
         @"context"  : @"edit",
     };
     
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -281,7 +303,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
                    failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/delete", siteID, commentID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -300,8 +324,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
                   failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/new", siteID, commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
     
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -320,8 +345,9 @@ static const NSInteger NumberOfCommentsToSync = 100;
                     failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/comments/%@/likes/mine/delete", siteID, commentID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
     
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {

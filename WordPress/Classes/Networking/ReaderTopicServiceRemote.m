@@ -27,8 +27,9 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"%@read/menu", WordPressComReaderEndpointURL];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
         if (!success) {
             return;
         }
@@ -73,8 +74,9 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                       failure:(void (^)(NSError *error))failure
 {
     NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         if (!success) {
             return;
         }
@@ -94,8 +96,9 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 {
     topicName = [self sanitizeTopicNameForAPI:topicName];
     NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
 
-    [self.api POST:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
@@ -114,8 +117,9 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                            failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@", siteID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
 
-    [self.api GET:path parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
             return;
         }
