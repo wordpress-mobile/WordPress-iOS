@@ -233,6 +233,10 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
+        bezierView.outerColor           = WPStyleGuide.Reply.backgroundColor
+        
+        // Bezier
+        bezierView.bezierColor          = WPStyleGuide.Reply.separatorColor
         
         // Separators
         separatorsView.topColor         = WPStyleGuide.Reply.separatorColor
@@ -299,6 +303,7 @@ import Foundation
     @IBOutlet private var textView:             UITextView!
     @IBOutlet private var placeholderLabel:     UILabel!
     @IBOutlet private var replyButton:          UIButton!
+    @IBOutlet private var bezierView:           ReplyBezierView!
     @IBOutlet private var separatorsView:       SeparatorsView!
     @IBOutlet private var layoutView:           UIView!
     @IBOutlet private var containerView:        UIView!
