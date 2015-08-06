@@ -325,7 +325,7 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Publicizer" representedClassName="Publicize">
+    <entity name="Publicizer" representedClassName="Publicizer">
         <attribute name="connect" attributeType="String">
             <userInfo/>
         </attribute>
