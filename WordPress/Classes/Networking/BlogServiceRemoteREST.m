@@ -13,8 +13,11 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSDictionary *parameters = @{@"authors_only":@(YES)};
+    
     NSString *path = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -37,7 +40,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForOptionsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *response = (NSDictionary *)responseObject;
@@ -60,7 +65,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForPostFormatsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               NSDictionary *formats = [self mapPostFormatsFromResponse:responseObject[@"formats"]];
@@ -82,7 +89,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForSettingsWithBlog:blog];
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (![responseObject isKindOfClass:[NSDictionary class]]){
@@ -111,7 +120,9 @@
                                   @"blogdescription" : blog.blogTagline
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (![responseObject isKindOfClass:[NSDictionary class]]) {

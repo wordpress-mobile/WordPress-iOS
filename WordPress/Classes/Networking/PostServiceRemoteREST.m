@@ -18,8 +18,11 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{ @"context": @"edit" };
-    [self.api GET:path
+    
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -50,6 +53,8 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
                                  @"context": @"edit",
@@ -61,7 +66,7 @@
         [mutableParameters addEntriesFromDictionary:options];
         parameters = [NSDictionary dictionaryWithDictionary:mutableParameters];
     }
-    [self.api GET:path
+    [self.api GET:requestUrl
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -83,9 +88,11 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -108,9 +115,11 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
-    [self.api POST:path
+    [self.api POST:requestUrl
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -134,7 +143,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                if (success) {
@@ -157,7 +168,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];
@@ -181,7 +194,9 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
-    [self.api POST:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    
+    [self.api POST:requestUrl
         parameters:nil
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                RemotePost *post = [self remotePostFromJSONDictionary:responseObject];

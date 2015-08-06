@@ -89,6 +89,7 @@
 		59E2AAE31B2096BF0051DC06 /* ServiceRemoteREST.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */; };
 		59E2AAE81B20E3EA0051DC06 /* ServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */; };
 		59E2AAEC1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */; };
+		59F3B7A61B72466C00890496 /* WPApiVersionConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 59F3B7A51B72466C00890496 /* WPApiVersionConstants.m */; };
 		5D000DDE1AC076C000A7BAF9 /* PostCardActionBar.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */; };
 		5D000DE11AC0879600A7BAF9 /* PostCardActionBarItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D000DE01AC0879600A7BAF9 /* PostCardActionBarItem.m */; };
 		5D028F061B3468A000474113 /* OriginalAttributionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D028F051B3468A000474113 /* OriginalAttributionView.xib */; };
@@ -725,6 +726,8 @@
 		59E2AAE21B2096BF0051DC06 /* ServiceRemoteREST.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteREST.m; sourceTree = "<group>"; };
 		59E2AAE71B20E3EA0051DC06 /* ServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ServiceRemoteRESTTests.m; sourceTree = "<group>"; };
 		59E2AAEB1B20E5CE0051DC06 /* PostServiceRemoteRESTTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostServiceRemoteRESTTests.m; sourceTree = "<group>"; };
+		59F3B7A41B72466C00890496 /* WPApiVersionConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPApiVersionConstants.h; sourceTree = "<group>"; };
+		59F3B7A51B72466C00890496 /* WPApiVersionConstants.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPApiVersionConstants.m; sourceTree = "<group>"; };
 		5D000DDC1AC076C000A7BAF9 /* PostCardActionBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBar.h; sourceTree = "<group>"; };
 		5D000DDD1AC076C000A7BAF9 /* PostCardActionBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostCardActionBar.m; sourceTree = "<group>"; };
 		5D000DDF1AC0879600A7BAF9 /* PostCardActionBarItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostCardActionBarItem.h; sourceTree = "<group>"; };
@@ -2539,6 +2542,8 @@
 				B5FD4520199D0C9A00286FBB /* WordPress-Bridging-Header.h */,
 				1D3623240D0F684500981E51 /* WordPressAppDelegate.h */,
 				1D3623250D0F684500981E51 /* WordPressAppDelegate.m */,
+				59F3B7A41B72466C00890496 /* WPApiVersionConstants.h */,
+				59F3B7A51B72466C00890496 /* WPApiVersionConstants.m */,
 				591A428D1A6DC6F2003807A6 /* WPGUIConstants.h */,
 				591A428E1A6DC6F2003807A6 /* WPGUIConstants.m */,
 			);
@@ -4055,6 +4060,7 @@
 				E1D04D7E19374CFE002FADD7 /* BlogServiceRemoteXMLRPC.m in Sources */,
 				E1249B4B1940AECC0035E895 /* CommentServiceRemoteREST.m in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
+				59F3B7A61B72466C00890496 /* WPApiVersionConstants.m in Sources */,
 				37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */,
 				852416CF1A12EBDD0030700C /* AppRatingUtility.m in Sources */,
 				B5CC05F91962186D00975CAC /* Meta.m in Sources */,

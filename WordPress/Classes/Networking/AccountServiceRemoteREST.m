@@ -16,7 +16,9 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 - (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
 {
-    [self.api GET:@"me/sites"
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:@"me/sites"];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
               if (success) {
@@ -39,8 +41,9 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
     //
     NSParameterAssert([account isKindOfClass:[WPAccount class]]);
     
-    NSString *path = @"me";
-    [self.api GET:path
+    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:@"me"];
+    
+    [self.api GET:requestUrl
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
               if (!success) {
