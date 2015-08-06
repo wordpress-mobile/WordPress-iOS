@@ -297,9 +297,9 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewDefaultPadding:         CGFloat         = 12
-    private let textViewMaxHeight:              CGFloat         = 82   // Fits 3 lines onscreen
-    private let textViewMinHeight:              CGFloat         = 44
+    private let textViewDefaultPadding  = CGFloat(12)
+    private let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
+    private let textViewMinHeight       = CGFloat(44)
     
     // MARK: - Private Properties
     private var bundle:                         NSArray?
