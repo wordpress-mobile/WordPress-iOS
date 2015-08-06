@@ -25,11 +25,11 @@
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLb-5R-8fU" userLabel="Background">
-                            <rect key="frame" x="0.0" y="0.0" width="263" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="253" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
-                            <rect key="frame" x="18" y="11" width="237" height="21"/>
+                            <rect key="frame" x="18" y="11" width="227" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -40,7 +40,7 @@
                             </variation>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pd-vE-u9b">
-                            <rect key="frame" x="18" y="12" width="237" height="20"/>
+                            <rect key="frame" x="18" y="12" width="227" height="20"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -49,7 +49,7 @@
                             </variation>
                         </textView>
                         <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQI-Ok-M85" userLabel="Bezier" customClass="ReplyBezierView" customModule="WordPress">
-                            <rect key="frame" x="0.0" y="0.0" width="263" height="44"/>
+                            <rect key="frame" x="0.0" y="0.0" width="253" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
@@ -60,12 +60,13 @@
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5G8-Al-JKt" userLabel="Reply Button">
-                            <rect key="frame" x="263" y="7" width="55" height="30"/>
+                            <rect key="frame" x="253" y="7" width="65" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="4GJ-tF-yMt"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Cfe-Jc-SMC"/>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="uPq-oF-Jld"/>
                             </constraints>
+                            <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <state key="normal" title="Button">
                                 <color key="titleColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
