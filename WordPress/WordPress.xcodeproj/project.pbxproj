@@ -3839,7 +3839,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n touch Info.plist\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" > InfoPlist.h\n else\n echo \"\" > InfoPlist.h\n echo \"warning: Crashytics API Key not found\"\n fi\n";
+			shellScript = "[ -f ~/.wpcom_app_credentials ] && source ~/.wpcom_app_credentials\n touch Info.plist\n if [ \"x$CRASHLYTICS_API_KEY\" != \"x\" ]; then\n echo \"#define FABRIC_API_KEY $CRASHLYTICS_API_KEY\" > InfoPlist.h\n else\n echo \"\" > InfoPlist.h\n echo \"warning: Crashytics API Key not found\"\n fi\n \n # grabbing version number from plist.\n \n COMERCIAL_VERSION=`/usr/libexec/PlistBuddy -c \"Print CFBundleShortVersionString\" WordPress-Internal-Info.plist`\n \n # grabbing number of commit in developer to create a version number\n \n BUILD_VERSION=`date -u \"+%Y%m%d%H%M%S\"`\n\necho \"#define BUILD_VERSION $COMERCIAL_VERSION.$BUILD_VERSION\" >> InfoPlist.h";
 			showEnvVarsInLog = 0;
 		};
 		FFF87E8219F1B6CF00206205 /* Gen Test Credentials */ = {
