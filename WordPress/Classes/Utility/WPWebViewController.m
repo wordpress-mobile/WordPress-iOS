@@ -260,7 +260,14 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     if (_url == theURL) {
         return;
     }
-    
+
+    // If the URL has no scheme defined, default to http.
+    if (![theURL.scheme hasPrefix:@"http"]) {
+        NSURLComponents *components = [NSURLComponents componentsWithURL:theURL resolvingAgainstBaseURL:NO];
+        components.scheme = @"http";
+        theURL = [components URL];
+    }
+
     _url = theURL;
     
     // Prevent double load in viewDidLoad Method
