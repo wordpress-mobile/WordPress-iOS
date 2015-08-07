@@ -18,6 +18,13 @@ public class NotificationSettingStreamsViewController : UITableViewController
         setupTableView()
     }
     
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+        tableView.deselectSelectedRowWithAnimation(true)
+    }
+    
     
     
     // MARK: - Setup Helpers
@@ -109,7 +116,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController()
+        let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
         detailsViewController.setupWithSettings(settings!, stream: stream)
 
         navigationController?.pushViewController(detailsViewController, animated: true)
