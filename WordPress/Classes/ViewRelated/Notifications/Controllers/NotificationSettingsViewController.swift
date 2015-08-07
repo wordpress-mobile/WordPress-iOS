@@ -45,11 +45,6 @@ public class NotificationSettingsViewController : UIViewController
         tableView.registerClass(WPBlogTableViewCell.self, forCellReuseIdentifier: blogReuseIdentifier)
         tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultReuseIdentifier)
         
-        // iPad Top header
-        if UIDevice.isPad() {
-            tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
-        }
-
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
@@ -180,28 +175,51 @@ public class NotificationSettingsViewController : UIViewController
         }
     }
     
+    public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
+            return nil
+        }
+        
+        let title           = titleForHeaderInSection(section)
+        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
+        footerView.title    = title
+        return footerView
+    }
+    
     public func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // Hack: get rid of the extra top spacing that Grouped UITableView's get, on top
-        return CGFloat.min
+        // Hide when the section is empty!
+        if isSectionEmpty(section) {
+            return CGFloat.min
+        }
+        
+        let title = titleForHeaderInSection(section)
+        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        // Hide when the section is empty!
         if isSectionEmpty(section) {
             return nil
         }
         
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title    = titleForFooterInSection(section)
+        
         return footerView
     }
     
     public func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        // Hide when the section is empty!
         if isSectionEmpty(section) {
             return CGFloat.min
         }
         
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+        let padding = paddingForFooterInSection(section)
+        let height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+
+        return height + padding
     }
     
 
@@ -256,8 +274,16 @@ public class NotificationSettingsViewController : UIViewController
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
+    private func titleForHeaderInSection(section: Int) -> String {
+        return Section(rawValue: section)!.headerText()
+    }
+
     private func titleForFooterInSection(section: Int) -> String {
         return Section(rawValue: section)!.footerText()
+    }
+    
+    private func paddingForFooterInSection(section: Int) -> CGFloat {
+        return Section(rawValue: section)?.footerPadding() ?? CGFloat(0)
     }
     
     
@@ -291,12 +317,12 @@ public class NotificationSettingsViewController : UIViewController
         switch settings.channel {
         case .WordPressCom:
             // WordPress.com Row will push the SettingDetails ViewController, directly
-            let detailsViewController = NotificationSettingDetailsViewController()
+            let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
             detailsViewController.setupWithSettings(settings, stream: settings.streams.first!)
             navigationController?.pushViewController(detailsViewController, animated: true)
         default:
             // Our Sites + 3rd Party Sites rows will push the Streams View
-            let streamsViewController = NotificationSettingStreamsViewController()
+            let streamsViewController = NotificationSettingStreamsViewController(style: .Grouped)
             streamsViewController.setupWithSettings(settings)
             navigationController?.pushViewController(streamsViewController, animated: true)
         }
@@ -309,6 +335,20 @@ public class NotificationSettingsViewController : UIViewController
         case Blog           = 0
         case Other          = 1
         case WordPressCom   = 2
+        
+        func headerText() -> String {
+            switch self {
+            case .Blog:
+                return NSLocalizedString("Your Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .Other:
+                return NSLocalizedString("Comments on Other Sites",
+                    comment: "Displayed in the Notification Settings View")
+            case .WordPressCom:
+                return NSLocalizedString("WordPress.com Updates",
+                    comment: "Displayed in the Notification Settings View")
+            }
+        }
         
         func footerText() -> String {
             switch self {
@@ -323,6 +363,19 @@ public class NotificationSettingsViewController : UIViewController
                     comment: "WordPress.com Notification Settings")
             }
         }
+        
+        func footerPadding() -> CGFloat {
+            switch self {
+            case .WordPressCom:
+                return UIDevice.isPad() ? Section.paddingWordPress : Section.paddingZero
+            default:
+                return Section.paddingZero
+            }
+        }
+        
+        // MARK: - Private Constants
+        private static let paddingZero = CGFloat(0)
+        private static let paddingWordPress = CGFloat(40)
     }
     
     

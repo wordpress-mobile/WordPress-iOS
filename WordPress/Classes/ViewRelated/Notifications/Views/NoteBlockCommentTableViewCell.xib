@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -17,15 +17,21 @@
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                         <rect key="frame" x="12" y="12" width="32" height="32"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="32" id="Sje-MT-U6A"/>
-                            <constraint firstAttribute="width" constant="32" id="irJ-0r-By6"/>
+                            <constraint firstAttribute="height" constant="32" id="Sje-MT-U6A">
+                                <variation key="heightClass=regular-widthClass=regular" constant="37"/>
+                            </constraint>
+                            <constraint firstAttribute="width" constant="32" id="irJ-0r-By6">
+                                <variation key="heightClass=regular-widthClass=regular" constant="37"/>
+                            </constraint>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J2Y-Yo-5I1">
                         <rect key="frame" x="54" y="8" width="24" height="18"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="188" id="nPH-Us-pyd"/>
-                            <constraint firstAttribute="height" constant="18" id="uUO-Vw-CUK"/>
+                            <constraint firstAttribute="height" constant="18" id="uUO-Vw-CUK">
+                                <variation key="heightClass=regular-widthClass=regular" constant="20"/>
+                            </constraint>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -39,7 +45,9 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="1000" verticalCompressionResistancePriority="749" text="Details" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0nV-U0-dRc">
                         <rect key="frame" x="54" y="26" width="38" height="18"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="18" id="q8Z-Ct-DNF"/>
+                            <constraint firstAttribute="height" constant="18" id="q8Z-Ct-DNF">
+                                <variation key="heightClass=regular-widthClass=regular" constant="21"/>
+                            </constraint>
                         </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
