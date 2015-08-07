@@ -17,7 +17,7 @@
 #import "WPAccount.h"
 #import "LoginViewController.h"
 #import <WordPress-iOS-Shared/WPTableViewCell.h>
-#import <WordPress-iOS-Shared/WPTableViewSectionHeaderView.h>
+#import <WordPress-iOS-Shared/WPTableViewSectionHeaderFooterView.h>
 #import "HelpshiftUtils.h"
 
 #import "WordPress-Swift.h"
@@ -50,8 +50,6 @@ typedef NS_ENUM(NSInteger, MeSectionWpCom) {
 
 static NSString *const WPMeRestorationID = @"WPMeRestorationID";
 static NSString *const MVCCellReuseIdentifier = @"MVCCellReuseIdentifier";
-
-static CGFloat const MVCTableViewRowHeight = 50.0;
 
 @interface MeViewController () <UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate, UIActionSheetDelegate>
 
@@ -120,7 +118,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
-    self.tableView.rowHeight = MVCTableViewRowHeight;
+    self.tableView.rowHeight = WPTableViewDefaultRowHeight;
     self.tableView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:MVCCellReuseIdentifier];
     [self.view addSubview:self.tableView];
@@ -286,7 +284,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
     return header;
 }
@@ -298,7 +296,7 @@ static CGFloat const MVCTableViewRowHeight = 50.0;
         return CGFLOAT_MIN;
     }
     
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (NSString *)titleForHeaderInSection:(NSInteger)section
