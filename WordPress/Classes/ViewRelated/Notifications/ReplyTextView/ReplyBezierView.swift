@@ -7,27 +7,22 @@ import Foundation
 public class ReplyBezierView : UIView
 {
     
-    public var fieldBackgroundColor: UIColor = WPStyleGuide.Reply.backgroundColor {
+    public var outerColor: UIColor = WPStyleGuide.Reply.backgroundColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var separatorColor: UIColor = WPStyleGuide.Reply.separatorColor {
+    public var bezierColor: UIColor = WPStyleGuide.Reply.separatorColor {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var topLineHeight: CGFloat = 1 {
+    public var bezierRadius: CGFloat = 5 {
         didSet {
             setNeedsDisplay()
         }
     }
-    public var cornerRadius: CGFloat = 5 {
-        didSet {
-            setNeedsDisplay()
-        }
-    }
-    public var insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 54) {
+    public var insets: UIEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 1) {
         didSet {
             setNeedsDisplay()
         }
@@ -52,28 +47,21 @@ public class ReplyBezierView : UIView
     // MARK: - View Methods
     public override func drawRect(rect: CGRect) {
         // Draw the background, while clipping a rounded rect with the given insets
-        var bezierRect                      = bounds
-        bezierRect.origin.x                 += insets.left
-        bezierRect.origin.y                 += insets.top
-        bezierRect.size.height              -= insets.top + insets.bottom
-        bezierRect.size.width               -= insets.left + insets.right
-        let bezier                          = UIBezierPath(roundedRect: bezierRect, cornerRadius: cornerRadius)
-        let outer                           = UIBezierPath(rect: bounds)
-        
-        separatorColor.set()
+        var bezierRect          = bounds
+        bezierRect.origin.x     += insets.left
+        bezierRect.origin.y     += insets.top
+        bezierRect.size.height  -= insets.top + insets.bottom
+        bezierRect.size.width   -= insets.left + insets.right
+        let bezier              = UIBezierPath(roundedRect: bezierRect, cornerRadius: bezierRadius)
+        let outer               = UIBezierPath(rect: bounds)
+
+        bezierColor.set()
         bezier.stroke()
         
-        fieldBackgroundColor.set()
+        outerColor.set()
         bezier.appendPath(outer)
         bezier.usesEvenOddFillRule = true
         bezier.fill()
-        
-        // Draw the top separator line
-        separatorColor.set()
-        
-        let topHeightInPixels = topLineHeight / UIScreen.mainScreen().scale
-        let topLineFrame = CGRect(x: 0, y: 0, width: bounds.width, height: topHeightInPixels)
-        UIRectFill(topLineFrame)
     }
 }
 
