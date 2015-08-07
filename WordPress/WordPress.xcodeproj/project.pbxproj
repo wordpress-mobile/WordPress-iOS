@@ -365,6 +365,7 @@
 		B558541419631A1000FAF6C3 /* Notifications.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B558541019631A1000FAF6C3 /* Notifications.storyboard */; };
 		B5683DB81B6C03810043447C /* NoteTableHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */; };
 		B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */; };
+		B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */; };
 		B57B99D519A2C20200506504 /* NoteTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */; };
 		B57B99DE19A2DBF200506504 /* NSObject+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */; };
 		B580E4791AEA91000091A094 /* UIViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B580E4781AEA91000091A094 /* UIViewController+Helpers.swift */; };
@@ -391,7 +392,6 @@
 		B5B410B61B1772B000CFCF8D /* NavigationTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */; };
 		B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3019AFB68800B4E29B /* WPStyleGuide+Reply.swift */; };
 		B5B56D3319AFB68800B4E29B /* WPStyleGuide+Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */; };
-		B5C66B6E1ACEE0B500F68370 /* NoteSeparatorsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */; };
 		B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */; };
 		B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */; };
 		B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */; };
@@ -1249,6 +1249,7 @@
 		B558541019631A1000FAF6C3 /* Notifications.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Notifications.storyboard; sourceTree = "<group>"; };
 		B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteTableHeaderView.xib; sourceTree = "<group>"; };
 		B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteBlockActionsTableViewCell.swift; sourceTree = "<group>"; };
+		B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SeparatorsView.swift; sourceTree = "<group>"; };
 		B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteTableHeaderView.swift; sourceTree = "<group>"; };
 		B57B99DC19A2DBF200506504 /* NSObject+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Helpers.h"; sourceTree = "<group>"; };
 		B57B99DD19A2DBF200506504 /* NSObject+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Helpers.m"; sourceTree = "<group>"; };
@@ -1279,7 +1280,6 @@
 		B5B56D3119AFB68800B4E29B /* WPStyleGuide+Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Notifications.swift"; sourceTree = "<group>"; };
 		B5B63F3F19621A9F001601C3 /* WordPress 19.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 19.xcdatamodel"; sourceTree = "<group>"; };
 		B5B9C08F1A38A23A00B5B85F /* Notification+Internals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Notification+Internals.h"; sourceTree = "<group>"; };
-		B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoteSeparatorsView.swift; sourceTree = "<group>"; };
 		B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockTextTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockActionsTableViewCell.xib; sourceTree = "<group>"; };
@@ -1710,6 +1710,7 @@
 				C58349C31806F95100B64089 /* IOS7CorrectedTextView.h */,
 				C58349C41806F95100B64089 /* IOS7CorrectedTextView.m */,
 				B5B410B51B1772B000CFCF8D /* NavigationTitleView.swift */,
+				B57B92BC1B73B08100DFF00B /* SeparatorsView.swift */,
 				37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */,
 				37022D901981BF9200F322B7 /* VerticallyStackedButton.m */,
 				E240859A183D82AE002EB0EF /* WPAnimatedBox.h */,
@@ -2914,7 +2915,6 @@
 			isa = PBXGroup;
 			children = (
 				B57B99D419A2C20200506504 /* NoteTableHeaderView.swift */,
-				B5C66B6D1ACEE0B500F68370 /* NoteSeparatorsView.swift */,
 				B5683DB71B6C03810043447C /* NoteTableHeaderView.xib */,
 				B52C4C7E199D74AE009FD823 /* NoteTableViewCell.swift */,
 				B5E23BDE19AD0D00000D6879 /* NoteTableViewCell.xib */,
@@ -3906,7 +3906,6 @@
 				5D1D9C51198837D0009D13B7 /* RemoteReaderSite.m in Sources */,
 				5D1D9C52198837D0009D13B7 /* RemoteReaderTopic.m in Sources */,
 				C545E0A21811B9880020844C /* ContextManager.m in Sources */,
-				B5C66B6E1ACEE0B500F68370 /* NoteSeparatorsView.swift in Sources */,
 				B5F015CB195DFD7600F6ECF2 /* WordPressActivity.m in Sources */,
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				5D1D33CF1AE56250000DE623 /* RemoteUser.m in Sources */,
@@ -4037,6 +4036,7 @@
 				5D17F0BE1A1D4C5F0087CCB8 /* PrivateSiteURLProtocol.m in Sources */,
 				937D9A0F19F83812007B9D5F /* WordPress-22-23.xcmappingmodel in Sources */,
 				B587798619B799EB00E57C5A /* Notification+Interface.swift in Sources */,
+				B57B92BD1B73B08100DFF00B /* SeparatorsView.swift in Sources */,
 				462F4E0A18369F0B0028D2F8 /* BlogDetailsViewController.m in Sources */,
 				74F313EF1A9B97A200AA8B45 /* WPTooltip.m in Sources */,
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
