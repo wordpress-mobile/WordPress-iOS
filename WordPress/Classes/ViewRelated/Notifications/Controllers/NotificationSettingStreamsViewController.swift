@@ -20,11 +20,14 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     public override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Manually deselect the selected row. This is required due to a bug in iOS7 / iOS8
+        tableView.deselectSelectedRowWithAnimation(true)
         WPAnalytics.track(.OpenedNotificationSettingStreams)
     }
-    
-    
 
+
+    
     // MARK: - Setup Helpers
     private func setupNotifications() {
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
@@ -41,6 +44,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
             tableView.tableHeaderView = UIView(frame: WPTableHeaderPadFrame)
         }
         
+        // Empty Back Button
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: String(), style: .Plain, target: nil, action: nil)
+        
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
         
@@ -52,16 +58,20 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Public Helpers
     public func setupWithSettings(settings: NotificationSettings) {
-        self.settings = settings
-        
+        // Title
         switch settings.channel {
         case let .Blog(blogId):
             title = settings.blog?.blogName ?? settings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
+            // Note: WordPress.com is not expected here!
             break
         }
+        
+        // Structures
+        self.settings       = settings
+        self.sortedStreams  = settings.streams.sorted { $0.kind.description() > $1.kind.description() }
         
         tableView.reloadData()
     }
@@ -78,7 +88,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settings?.streams.count ?? emptyRowCount
+        return sortedStreams?.count ?? emptyRowCount
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -99,7 +109,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         // iOS <8: Display the 'Enable Push Notifications Alert', when needed
         // iOS +8: Go ahead and push the details
         //
-        let stream = settings!.streams[indexPath.row]
+        let stream = sortedStreams![indexPath.row]
         
         if isDisabledDeviceStream(stream) && !UIDevice.isOS8() {
             tableView.deselectSelectedRowWithAnimation(true)
@@ -107,8 +117,9 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController()
+        let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
         detailsViewController.setupWithSettings(settings!, stream: stream)
+
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
@@ -116,7 +127,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     // MARK: - Helpers
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let stream                  = settings!.streams[indexPath.row]
+        let stream                  = sortedStreams![indexPath.row]
         
         cell.textLabel?.text        = stream.kind.description() ?? String()
         cell.detailTextLabel?.text  = isDisabledDeviceStream(stream) ? NSLocalizedString("Off", comment: "Disabled") : String()
@@ -146,6 +157,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
         let alert = AlertView(title: title, message: message, button: button, completion: nil)
         alert.show()
     }
+
     
     
 
@@ -156,4 +168,5 @@ public class NotificationSettingStreamsViewController : UITableViewController
 
     // MARK: - Private Properties
     private var settings        : NotificationSettings?
+    private var sortedStreams   : [NotificationSettings.Stream]?
 }
