@@ -28,6 +28,7 @@
 #import "WPNoResultsView.h"
 #import "WPTableImageSource.h"
 #import "WPTabBarController.h"
+#import "WPWebViewController.h"
 #import "BlogService.h"
 
 #import "WPTableViewHandler.h"
@@ -1192,6 +1193,32 @@ NSString * const RPVCDisplayedNativeFriendFinder = @"DisplayedNativeFriendFinder
     ReaderPost *post = [self postFromCellSubview:sender];
     ReaderCommentsViewController *controller = [ReaderCommentsViewController controllerWithPost:post];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)postView:(ReaderPostContentView *)postView didTapDiscoverAttribution:(id)sender
+{
+    ReaderPost *post = [self postFromCellSubview:sender];
+    if (!post.sourceAttribution) {
+        return;
+    }
+    if (post.sourceAttribution.blogID) {
+        ReaderBrowseSiteViewController *controller = [[ReaderBrowseSiteViewController alloc] initWithSiteID:post.sourceAttribution.blogID
+                                                                                                    siteURL:post.sourceAttribution.blogURL
+                                                                                                    isWPcom:YES];
+        [self.navigationController pushViewController:controller animated:YES];
+        return;
+    }
+
+
+    if (![post.sourceAttribution.attributionType isEqualToString:SourcePostAttributionTypeSite]) {
+        return;
+    }
+
+    NSURL *linkURL = [NSURL URLWithString:post.sourceAttribution.blogURL];
+
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:linkURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    [self presentViewController:navController animated:YES completion:nil];
 }
 
 

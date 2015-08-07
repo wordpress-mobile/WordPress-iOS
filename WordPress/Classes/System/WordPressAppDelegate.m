@@ -397,7 +397,13 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
     [[AFNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
     self.userAgent = [[WPUserAgent alloc] init];
     [self setupSingleSignOn];
-    
+
+    // WORKAROUND: Preload the Merriweather regular font to ensure it is not overridden
+    // by any of the Merriweather varients.  Size is arbitrary.
+    // See: https://github.com/wordpress-mobile/WordPress-Shared-iOS/issues/79
+    // Remove this when #79 is resolved.
+    [WPFontManager merriweatherRegularFontOfSize:16.0];
+
     [self customizeAppearance];
     
     // Push notifications

@@ -6,7 +6,7 @@
 #import "AbstractPost.h"
 #import "PostSettingsSelectionViewController.h"
 #import "UIImageView+AFNetworkingExtra.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "WPGUIConstants.h"
 #import "WordPress-Swift.h"
 
@@ -305,9 +305,8 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.view.bounds), 0.0f)];
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
     header.title = [self titleForHeaderInSection:section];
-    header.backgroundColor = self.tableView.backgroundColor;
     return header;
 }
 
@@ -318,7 +317,7 @@ typedef NS_ENUM(NSUInteger, ImageDetailsTextField) {
     }
 
     NSString *title = [self titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
