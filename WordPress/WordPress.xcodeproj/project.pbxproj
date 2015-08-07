@@ -113,6 +113,7 @@
 		5D1EE80215E7AF3E007F1F02 /* JetpackSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D1EE80015E7AF3E007F1F02 /* JetpackSettingsViewController.m */; };
 		5D20A6531982D56600463A91 /* FollowedSitesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D20A6521982D56600463A91 /* FollowedSitesViewController.m */; };
 		5D2415CB1A8842C9009BD444 /* ReaderPreviewHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2415CA1A8842C9009BD444 /* ReaderPreviewHeaderView.m */; };
+		5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */; };
 		5D2BEB4919758102005425F7 /* WPTableImageSourceTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */; };
 		5D2C05561AD2F56200A753FE /* NavBarTitleDropdownButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */; };
 		5D2FB2831AE98C4600F1D4ED /* RestorePostTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D2FB2821AE98C4600F1D4ED /* RestorePostTableViewCell.xib */; };
@@ -774,6 +775,7 @@
 		5D2415C91A8842C9009BD444 /* ReaderPreviewHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReaderPreviewHeaderView.h; sourceTree = "<group>"; };
 		5D2415CA1A8842C9009BD444 /* ReaderPreviewHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderPreviewHeaderView.m; sourceTree = "<group>"; };
 		5D2B043515E83800007E3422 /* SettingsViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewControllerDelegate.h; sourceTree = "<group>"; };
+		5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderCardDiscoverAttributionView.swift; sourceTree = "<group>"; };
 		5D2BEB4819758102005425F7 /* WPTableImageSourceTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableImageSourceTest.m; sourceTree = "<group>"; };
 		5D2C05541AD2F56200A753FE /* NavbarTitleDropdownButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NavbarTitleDropdownButton.h; sourceTree = "<group>"; };
 		5D2C05551AD2F56200A753FE /* NavBarTitleDropdownButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NavBarTitleDropdownButton.m; sourceTree = "<group>"; };
@@ -2109,6 +2111,7 @@
 			children = (
 				5D5A6E911B613CA400DAF819 /* ReaderPostCardCell.swift */,
 				5D5A6E921B613CA400DAF819 /* ReaderPostCardCell.xib */,
+				5D2B30B81B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -2166,6 +2169,15 @@
 				93027BB71758332300483FFD /* SupportViewController.m */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		5D98A1491B6C09730085E904 /* Style */ = {
+			isa = PBXGroup;
+			children = (
+				5D7DEA2819D488DD0032EE77 /* WPStyleGuide+Comments.swift */,
+				5D1181E61B4D6DEB003F3084 /* WPStyleGuide+Reader.swift */,
+			);
+			name = Style;
 			sourceTree = "<group>";
 		};
 		5DA5BF4918E32DDB005F11F9 /* Themes */ = {
@@ -3101,10 +3113,9 @@
 		CCB3A03814C8DD5100D43C3F /* Reader */ = {
 			isa = PBXGroup;
 			children = (
-				5D7DEA2819D488DD0032EE77 /* WPStyleGuide+Comments.swift */,
-				5D1181E61B4D6DEB003F3084 /* WPStyleGuide+Reader.swift */,
 				5D08B8FD19647C0800D5B381 /* Controllers */,
 				5D5A6E901B613C1800DAF819 /* Cards */,
+				5D98A1491B6C09730085E904 /* Style */,
 				5D08B8FC19647C0300D5B381 /* Views */,
 			);
 			path = Reader;
@@ -3897,6 +3908,7 @@
 				5D7DEA2919D488DD0032EE77 /* WPStyleGuide+Comments.swift in Sources */,
 				E1D86E691B2B414300DD2192 /* WordPress-32-33.xcmappingmodel in Sources */,
 				5DB3BA0818D11D8D00F3F3E9 /* PublishDatePickerView.m in Sources */,
+				5D2B30B91B7411C700DA15F3 /* ReaderCardDiscoverAttributionView.swift in Sources */,
 				319D6E7B19E447500013871C /* Suggestion.m in Sources */,
 				594399931B45091000539E21 /* WPAuthTokenIssueSolver.m in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
