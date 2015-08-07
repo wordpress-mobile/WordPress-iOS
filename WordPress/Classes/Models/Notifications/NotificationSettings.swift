@@ -81,7 +81,7 @@ public class NotificationSettings
         func description() -> String {
             switch self {
             case .Blog:
-                return NSLocalizedString("WordPress Blog", comment: "Notification Settings Channel")
+                return NSLocalizedString("WordPress Blog", comment: "Settings for a Wordpress Blog")
             case .Other:
                 return NSLocalizedString("Comments on Other Sites", comment: "Notification Settings Channel")
             case .WordPressCom:
@@ -147,16 +147,16 @@ public class NotificationSettings
     
     // MARK: - Localized Setting Descriptions
     private let localizedDescriptionMap = [
-        "new_comment"       : NSLocalizedString("Comments on my site",      comment: "Notifications Settings"),
-        "comment_like"      : NSLocalizedString("Likes on my comments",     comment: "Notifications Settings"),
-        "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Notifications Settings"),
-        "follow"            : NSLocalizedString("Site follows",             comment: "Notifications Settings"),
-        "achievement"       : NSLocalizedString("Site achievements",        comment: "Notifications Settings"),
-        "mentions"          : NSLocalizedString("Username mentions",        comment: "Notifications Settings"),
-        "comment_reply"     : NSLocalizedString("Replies to your comments", comment: "Notifications Settings"),
-        "marketing"         : NSLocalizedString("Suggestions",              comment: "Notifications Settings"),
-        "research"          : NSLocalizedString("Research",                 comment: "Notifications Settings"),
-        "community"         : NSLocalizedString("Community",                comment: "Notifications Settings")
+        "new_comment"       : NSLocalizedString("Comments on my site",      comment: "Setting: inficates if New Comments will be notified"),
+        "comment_like"      : NSLocalizedString("Likes on my comments",     comment: "Setting: indicates if Comment Likes will be notified"),
+        "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Setting: indicates if Replies to your comments will be notified"),
+        "follow"            : NSLocalizedString("Site follows",             comment: "Setting: indicates if New Follows will be notified"),
+        "achievement"       : NSLocalizedString("Site achievements",        comment: "Setting: indicates if Achievements will be notified"),
+        "mentions"          : NSLocalizedString("Username mentions",        comment: "Setting: indicates if Mentions will be notified"),
+        "comment_reply"     : NSLocalizedString("Replies to your comments", comment: "Setting: indicates if Replies to Comments will be notified"),
+        "marketing"         : NSLocalizedString("Suggestions",              comment: "Setting: WordPress.com Suggestions"),
+        "research"          : NSLocalizedString("Research",                 comment: "Setting: WordPress.com Surveys"),
+        "community"         : NSLocalizedString("Community",                comment: "Setting: WordPress.com Community")
     ]
 }
 

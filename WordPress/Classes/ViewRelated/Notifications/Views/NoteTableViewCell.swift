@@ -282,7 +282,7 @@ import Foundation
 
     // MARK: - Private Properties
     private var gravatarURL : NSURL?
-    private var separatorsView = NoteSeparatorsView()
+    private var separatorsView = SeparatorsView()
     
     // MARK: - IBOutlets
     @IBOutlet private weak var iconImageView:           CircularImageView!

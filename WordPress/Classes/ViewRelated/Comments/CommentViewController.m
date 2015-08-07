@@ -341,7 +341,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.headerDetails = postTitle;
     
     // Setup the Separator
-    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    SeparatorsView *separatorsView = cell.separatorsView;
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
