@@ -13,7 +13,7 @@ extension WPStyleGuide
         let fontSize = originalAttributionFontSize()
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        let lineHeight:CGFloat = Cards.defaultLineHeight
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -31,7 +31,7 @@ extension WPStyleGuide
     }
 
     public class func originalAttributionFontSize() -> CGFloat {
-        return UIDevice.isPad() ? 16.0 : 14.0
+        return Cards.contentFontSize
     }
 
 
@@ -50,10 +50,10 @@ extension WPStyleGuide
     // MARK: - Attributed Text Attributes
 
     public class func readerCardTitleAttributes() -> [NSObject: AnyObject] {
-        let fontSize:CGFloat = UIDevice.isPad() ? 24.0 : 16.0
+        let fontSize = Cards.titleFontSize
         let font = WPFontManager.merriweatherBoldFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = UIDevice.isPad() ? 32.0 : 21.0
+        let lineHeight = Cards.titleLineHeight
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -65,10 +65,10 @@ extension WPStyleGuide
     }
 
     public class func readerCardSummaryAttributes() -> [NSObject: AnyObject] {
-        let fontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        let fontSize = Cards.contentFontSize
         let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        let lineHeight = Cards.defaultLineHeight
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -80,10 +80,10 @@ extension WPStyleGuide
     }
 
     public class func readerCardWordCountAttributes() -> [NSObject: AnyObject] {
-        let fontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        let fontSize = Cards.contentFontSize
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        let lineHeight = Cards.defaultLineHeight
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -99,7 +99,7 @@ extension WPStyleGuide
         let fontSize:CGFloat = UIDevice.isPad() ? 14.0 : 12.0
         let font = WPFontManager.openSansRegularFontOfSize(fontSize)
 
-        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        let lineHeight = Cards.defaultLineHeight
         var paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.minimumLineHeight = lineHeight
         paragraphStyle.maximumLineHeight = lineHeight
@@ -115,14 +115,14 @@ extension WPStyleGuide
     // MARK: - Apply Styles
 
     public class func applyReaderCardSiteButtonActiveStyle(button:UIButton) {
-        let fontSize:CGFloat = 14.0
+        let fontSize = Cards.buttonFontSize
         button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
     }
 
     public class func applyReaderCardSiteButtonInactiveStyle(button:UIButton) {
-        let fontSize:CGFloat = 14.0
+        let fontSize = Cards.buttonFontSize
         button.titleLabel!.font = WPFontManager.openSansRegularFontOfSize(fontSize)
         button.setTitleColor(greyDarken20(), forState: .Normal)
         button.setTitleColor(greyDarken20(), forState: .Highlighted)
@@ -143,17 +143,26 @@ extension WPStyleGuide
     }
 
     public class func applyReaderCardTagButtonStyle(button:UIButton) {
-        let fontSize:CGFloat = 14.0
+        let fontSize = Cards.buttonFontSize
         button.setTitleColor(mediumBlue(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
-        let fontSize:CGFloat = 14.0
+        let fontSize = Cards.buttonFontSize
         button.setTitleColor(grey(), forState: .Normal)
         button.setTitleColor(lightBlue(), forState: .Highlighted)
         button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
+    }
+
+    public struct Cards
+    {
+        public static let defaultLineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        public static let titleFontSize:CGFloat = UIDevice.isPad() ? 24.0 : 16.0
+        public static let titleLineHeight:CGFloat = UIDevice.isPad() ? 32.0 : 21.0
+        public static let contentFontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        public static let buttonFontSize:CGFloat = 14.0
     }
 
 }
