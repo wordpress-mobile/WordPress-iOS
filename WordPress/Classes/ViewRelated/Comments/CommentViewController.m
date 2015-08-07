@@ -341,7 +341,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.headerDetails = postTitle;
     
     // Setup the Separator
-    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    SeparatorsView *separatorsView = cell.separatorsView;
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
@@ -443,7 +443,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (void)openWebViewWithURL:(NSURL *)url
 {
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:url];
+    WPWebViewController *webViewController = [WPWebViewController authenticatedWebViewController:url];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
 }
@@ -501,7 +501,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
+        
+        NSError *error = nil;
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+        
+        if (error) {
+            DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+            return;
+        }
+        
+        [commentService deleteComment:reloadedComment success:nil failure:nil];
 
         // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
@@ -528,7 +537,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService spamComment:weakSelf.comment success:nil failure:nil];
+        
+        NSError *error = nil;
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+        
+        if (error) {
+            DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+            return;
+        }
+        
+        [commentService spamComment:reloadedComment success:nil failure:nil];
     };
 
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",

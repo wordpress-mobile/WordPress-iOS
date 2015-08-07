@@ -263,6 +263,11 @@ NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
     [self refreshNoResultsView];
 }
 
+- (void)deletingSelectedRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self.navigationController popToViewController:self animated:YES];
+}
+
 
 #pragma mark - WPContentSyncHelper Methods
 

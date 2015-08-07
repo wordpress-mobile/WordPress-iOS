@@ -233,23 +233,18 @@ import Foundation
         
         // Background
         layoutView.backgroundColor      = WPStyleGuide.Reply.backgroundColor
-
+        bezierView.outerColor           = WPStyleGuide.Reply.backgroundColor
+        
+        // Bezier
+        bezierView.bezierColor          = WPStyleGuide.Reply.separatorColor
+        
+        // Separators
+        separatorsView.topColor         = WPStyleGuide.Reply.separatorColor
+        separatorsView.topVisible       = true
+        
         // Recognizers
         let recognizer                  = UITapGestureRecognizer(target: self, action: "backgroundWasTapped")
         gestureRecognizers              = [recognizer]
-        
-        // iPhone's Width knows No Limits
-        if UIDevice.isPad() {
-            let maxWidthConstraint = NSLayoutConstraint(item: self,
-                                        attribute:  .Width,
-                                        relatedBy:  .LessThanOrEqual,
-                                        toItem:     nil,
-                                        attribute:  .NotAnAttribute,
-                                        multiplier: 1,
-                                        constant:   WPTableViewFixedWidth)
-
-            addConstraint(maxWidthConstraint)
-        }
     }
     
     
@@ -297,9 +292,9 @@ import Foundation
     
     
     // MARK: - Constants
-    private let textViewDefaultPadding:         CGFloat         = 12
-    private let textViewMaxHeight:              CGFloat         = 82   // Fits 3 lines onscreen
-    private let textViewMinHeight:              CGFloat         = 44
+    private let textViewDefaultPadding  = CGFloat(12)
+    private let textViewMaxHeight       = CGFloat(82)   // Fits 3 lines onscreen
+    private let textViewMinHeight       = CGFloat(44)
     
     // MARK: - Private Properties
     private var bundle:                         NSArray?
@@ -308,6 +303,8 @@ import Foundation
     @IBOutlet private var textView:             UITextView!
     @IBOutlet private var placeholderLabel:     UILabel!
     @IBOutlet private var replyButton:          UIButton!
+    @IBOutlet private var bezierView:           ReplyBezierView!
+    @IBOutlet private var separatorsView:       SeparatorsView!
     @IBOutlet private var layoutView:           UIView!
     @IBOutlet private var containerView:        UIView!
 }

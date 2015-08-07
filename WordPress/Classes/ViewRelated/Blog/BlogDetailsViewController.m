@@ -23,13 +23,14 @@
 #import "ContextManager.h"
 #import "AccountService.h"
 #import "BlogService.h"
-#import "WPTableViewSectionHeaderView.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 #import "BlogDetailHeaderView.h"
 #import "ReachabilityUtils.h"
 #import "WPAccount.h"
 #import "PostListViewController.h"
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
+#import "WPGUIConstants.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -377,24 +378,25 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 48;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    return [WPTableViewSectionHeaderView heightForTitle:title andWidth:CGRectGetWidth(self.view.bounds)];
+    return [WPTableViewSectionHeaderFooterView heightForHeader:title width:CGRectGetWidth(self.view.bounds)];
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     NSString *title = [self tableView:self.tableView titleForHeaderInSection:section];
-    if (title.length > 0) {
-        WPTableViewSectionHeaderView *header = [[WPTableViewSectionHeaderView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 0)];
-        header.title = title;
-        return header;
+    if (title.length == 0) {
+        return nil;
     }
-    return nil;
+    
+    WPTableViewSectionHeaderFooterView *header = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleHeader];
+    header.title = title;
+    return header;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
