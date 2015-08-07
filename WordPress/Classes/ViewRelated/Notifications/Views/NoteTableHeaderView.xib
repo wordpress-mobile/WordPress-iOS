@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="700" height="26"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Ni-9e0" userLabel="LayoutView" customClass="NoteSeparatorsView" customModule="WordPress" customModuleProvider="target">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AjL-Ni-9e0" userLabel="LayoutView" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
                     <rect key="frame" x="0.0" y="0.0" width="700" height="26"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="imt-VI-wdh" userLabel="Icon">
@@ -34,7 +34,7 @@
                                 <constraint firstAttribute="height" constant="16" id="YxS-jB-T4A"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <size key="shadowOffset" width="0.0" height="0.0"/>
                             <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
