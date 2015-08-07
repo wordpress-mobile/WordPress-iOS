@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class NoteSeparatorsView : UIView
+public class SeparatorsView : UIView
 {
     // MARK: - Public Properties
     public var leftVisible = false {
@@ -126,5 +126,8 @@ public class NoteSeparatorsView : UIView
     
     private func setupView() {
         backgroundColor = UIColor.clearColor()
+        
+        // Make sure this is re-drawn if the bounds change!
+        layer.needsDisplayOnBoundsChange = true
     }
 }

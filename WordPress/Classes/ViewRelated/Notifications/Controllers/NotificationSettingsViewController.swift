@@ -203,6 +203,7 @@ public class NotificationSettingsViewController : UIViewController
         
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
         footerView.title    = titleForFooterInSection(section)
+        
         return footerView
     }
     
@@ -213,7 +214,10 @@ public class NotificationSettingsViewController : UIViewController
         }
         
         let title = titleForFooterInSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+        let padding = paddingForFooterInSection(section)
+        let height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+
+        return height + padding
     }
     
 
@@ -276,6 +280,10 @@ public class NotificationSettingsViewController : UIViewController
         return Section(rawValue: section)!.footerText()
     }
     
+    private func paddingForFooterInSection(section: Int) -> CGFloat {
+        return Section(rawValue: section)?.footerPadding() ?? CGFloat(0)
+    }
+    
     
     
     // MARK: - Load More Helpers
@@ -307,12 +315,12 @@ public class NotificationSettingsViewController : UIViewController
         switch settings.channel {
         case .WordPressCom:
             // WordPress.com Row will push the SettingDetails ViewController, directly
-            let detailsViewController = NotificationSettingDetailsViewController()
+            let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
             detailsViewController.setupWithSettings(settings, stream: settings.streams.first!)
             navigationController?.pushViewController(detailsViewController, animated: true)
         default:
             // Our Sites + 3rd Party Sites rows will push the Streams View
-            let streamsViewController = NotificationSettingStreamsViewController()
+            let streamsViewController = NotificationSettingStreamsViewController(style: .Grouped)
             streamsViewController.setupWithSettings(settings)
             navigationController?.pushViewController(streamsViewController, animated: true)
         }
@@ -353,6 +361,19 @@ public class NotificationSettingsViewController : UIViewController
                     comment: "WordPress.com Notification Settings")
             }
         }
+        
+        func footerPadding() -> CGFloat {
+            switch self {
+            case .WordPressCom:
+                return UIDevice.isPad() ? Section.paddingWordPress : Section.paddingZero
+            default:
+                return Section.paddingZero
+            }
+        }
+        
+        // MARK: - Private Constants
+        private static let paddingZero = CGFloat(0)
+        private static let paddingWordPress = CGFloat(40)
     }
     
     
