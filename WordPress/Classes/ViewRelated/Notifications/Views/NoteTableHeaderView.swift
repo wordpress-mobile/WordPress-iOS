@@ -86,7 +86,7 @@ import Foundation
     
     // MARK: - Outlets
     @IBOutlet private var contentView:        UIView!
-    @IBOutlet private var layoutView:         NoteSeparatorsView!
+    @IBOutlet private var layoutView:         SeparatorsView!
     @IBOutlet private var imageView:          UIImageView!
     @IBOutlet private var titleLabel:         UILabel!
 }
