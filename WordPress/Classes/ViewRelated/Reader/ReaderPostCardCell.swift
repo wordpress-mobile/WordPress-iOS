@@ -6,6 +6,7 @@ import Foundation
     func readerCell(cell: ReaderPostCardCell, commentActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, likeActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
+    func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
 }
 
@@ -230,6 +231,7 @@ import Foundation
         WPStyleGuide.applyReaderCardBylineLabelStyle(bylineLabel)
         WPStyleGuide.applyReaderCardTitleLabelStyle(titleLabel)
         WPStyleGuide.applyReaderCardSummaryLabelStyle(summaryLabel)
+        WPStyleGuide.applyReaderCardTagButtonStyle(tagButton)
 
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonCenter)
         WPStyleGuide.applyReaderCardActionButtonStyle(actionButtonFlushLeft)
@@ -377,27 +379,49 @@ import Foundation
     }
 
     private func configureTag() {
-        tagButton.setTitle("", forState: .Normal)
+        // NOTE: stubbed implementation until we start storing the tag in core data.
+        // var title = "#ReaderTag"
+        // tagButton.setTitle(title, forState: .Normal)
+        // tagButton.setTitle(title, forState: .Highlighted)
         if !UIDevice.isPad() {
+            // For layout purposes, we always want the default height on the iPad.
             tagButtonHeightConstraint.constant = 0.0
         }
         tagButtonBottomConstraint.constant = 0.0
     }
 
     private func configureWordCount() {
-        wordCountLabel.text = nil
-        wordCountBottomConstraint.constant = 0.0
+        // NOTE: stubbed implementation until we start storing the word count and reading time in core data
+        // wordCountLabel.attributedText = attributedTextForWordCount(100, readingTime: "(~2 min)")
+        wordCountLabel.attributedText = nil;
+        if wordCountLabel.attributedText == nil {
+            wordCountBottomConstraint.constant = 0.0
+        } else {
+            wordCountBottomConstraint.constant = wordCountBottomConstraintConstant
+        }
     }
 
-    private func attributedTextForWordCount(wordCount:Int?, readingTime:String?) -> NSAttributedString {
+    private func attributedTextForWordCount(wordCount:Int?, readingTime:String?) -> NSAttributedString? {
+        if wordCount == nil && readingTime == nil {
+            return nil
+        }
+
         var attrStr = NSMutableAttributedString()
 
         if let theWordCount = wordCount {
+            var wordsStr = NSLocalizedString("words",
+                                            comment: "Part of a label letting the user know how any words are in a post. For example: '300 words'")
 
+            var countStr = String(format: "%d %@ ", theWordCount, wordsStr)
+            var attributes = WPStyleGuide.readerCardWordCountAttributes()
+            var attrWordCount = NSAttributedString(string: countStr, attributes: attributes)
+            attrStr.appendAttributedString(attrWordCount)
         }
 
         if let theReadingTime = readingTime {
-
+            var attributes = WPStyleGuide.readerCardReadingTimeAttributes()
+            var attrReadingTime = NSAttributedString(string: theReadingTime, attributes: attributes)
+            attrStr.appendAttributedString(attrReadingTime)
         }
 
         return attrStr
@@ -519,6 +543,13 @@ import Foundation
 
     @IBAction func didTapMenuButton(sender: UIButton) {
         delegate?.readerCell(self, menuActionForProvider: contentProvider!, fromView: sender)
+    }
+
+    @IBAction func didTapTagButton(sender: UIButton) {
+        if contentProvider == nil {
+            return
+        }
+        delegate?.readerCell(self, tagActionForProvider: contentProvider!)
     }
 
     @IBAction func didTapActionButton(sender: UIButton) {
