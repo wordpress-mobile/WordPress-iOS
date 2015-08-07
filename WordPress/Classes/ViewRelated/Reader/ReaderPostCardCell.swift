@@ -59,14 +59,14 @@ import Foundation
     public weak var delegate: ReaderPostCellDelegate?
     public weak var contentProvider: ReaderPostContentProvider?
 
-    private var featuredMediaHeightConstraintConstant: CGFloat = 0.0
-    private var featuredMediaBottomConstraintConstant: CGFloat = 0.0
-    private var titleLabelBottomConstraintConstant: CGFloat = 0.0
-    private var summaryLabelBottomConstraintConstant: CGFloat = 0.0
-    private var attributionBottomConstraintConstant: CGFloat = 0.0
-    private var tagButtonHeightConstraintConstant: CGFloat = 0.0
-    private var tagButtonBottomConstraintConstant: CGFloat = 0.0
-    private var wordCountBottomConstraintConstant: CGFloat = 0.0
+    private var featuredMediaHeightConstraintConstant = CGFloat(0.0)
+    private var featuredMediaBottomConstraintConstant = CGFloat(0.0)
+    private var titleLabelBottomConstraintConstant = CGFloat(0.0)
+    private var summaryLabelBottomConstraintConstant = CGFloat(0.0)
+    private var attributionBottomConstraintConstant = CGFloat(0.0)
+    private var tagButtonHeightConstraintConstant = CGFloat(0.0)
+    private var tagButtonBottomConstraintConstant = CGFloat(0.0)
+    private var wordCountBottomConstraintConstant = CGFloat(0.0)
 
     private var didPreserveStartingConstraintConstants = false
     private var loadMediaWhenConfigured = true
