@@ -66,7 +66,7 @@ extension WPStyleGuide
 
     public class func readerCardSummaryAttributes() -> [NSObject: AnyObject] {
         let fontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
-        let font = WPFontManager.merriweatherLightFontOfSize(fontSize)
+        let font = WPFontManager.merriweatherRegularFontOfSize(fontSize)
 
         let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
         var paragraphStyle = NSMutableParagraphStyle()
@@ -76,6 +76,38 @@ extension WPStyleGuide
         return [
             NSParagraphStyleAttributeName: paragraphStyle,
             NSFontAttributeName: font
+        ]
+    }
+
+    public class func readerCardWordCountAttributes() -> [NSObject: AnyObject] {
+        let fontSize:CGFloat = UIDevice.isPad() ? 16.0 : 14.0
+        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+
+        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: greyLighten10()
+        ]
+    }
+
+    public class func readerCardReadingTimeAttributes() -> [NSObject: AnyObject] {
+        let fontSize:CGFloat = UIDevice.isPad() ? 14.0 : 12.0
+        let font = WPFontManager.openSansRegularFontOfSize(fontSize)
+
+        let lineHeight:CGFloat = UIDevice.isPad() ? 24.0 : 21.0
+        var paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.minimumLineHeight = lineHeight
+        paragraphStyle.maximumLineHeight = lineHeight
+
+        return [
+            NSParagraphStyleAttributeName: paragraphStyle,
+            NSFontAttributeName: font,
+            NSForegroundColorAttributeName: greyLighten10()
         ]
     }
 
@@ -108,6 +140,13 @@ extension WPStyleGuide
 
     public class func applyReaderCardSummaryLabelStyle(label:UILabel) {
         label.textColor = darkGrey()
+    }
+
+    public class func applyReaderCardTagButtonStyle(button:UIButton) {
+        let fontSize:CGFloat = 14.0
+        button.setTitleColor(mediumBlue(), forState: .Normal)
+        button.setTitleColor(lightBlue(), forState: .Highlighted)
+        button.titleLabel?.font = WPFontManager.openSansRegularFontOfSize(fontSize)
     }
 
     public class func applyReaderCardActionButtonStyle(button:UIButton) {
