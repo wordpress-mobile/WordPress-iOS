@@ -74,20 +74,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return cell
     }
     
-    public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title        = headerText(stream, channel: settings?.channel)
-        headerView.titleInsets  = headerTitleInsets
-        return headerView
-    }
-    
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title               = headerText(stream, channel: settings?.channel)
-        let width               = view.frame.width
-        let font                = WPStyleGuide.subtitleFont()
-        return WPTableViewSectionHeaderFooterView.heightForText(title, width: width, titleInsets: headerTitleInsets, font: font)
-    }
-
     
     
     // MARK: - UITableView Helpers
@@ -145,40 +131,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     
-    // MARK: - Private Helpers
-    private func headerText(stream: NotificationSettings.Stream?, channel: NotificationSettings.Channel?) -> String {
-        // Failsafe
-        if stream == nil || channel == nil {
-            return String()
-        }
-
-        // Is it WordPress.com?
-        if channel! == .WordPressCom {
-            return NSLocalizedString("We’ll always send important emails regarding your account, " +
-                "but you can get some fun extras, too!",
-                comment: "Title displayed in the Notification Settings for WordPress.com")
-        }
-        
-        // It must be a Blog // Other
-        switch stream!.kind {
-        case .Device:
-            return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
-                comment: "Title displayed in the Notification Settings for Devices")
-        case .Email:
-            return NSLocalizedString("Settings for notifications that are sent to the email tied to your account.",
-                comment: "Title displayed in the Notification Settings for Email")
-        case .Timeline:
-            return NSLocalizedString("Settings for notifications that appear in the Notifications tab.",
-                comment: "Title displayed in the Notification Settings for Notifications tab")
-        }
-    }
-    
-    
-    
-    
     // MARK: - Private Constants
     private let reuseIdentifier     = SwitchTableViewCell.classNameWithoutNamespaces()
-    private let headerTitleInsets   = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
     private let emptyRowCount       = 0
     private let sectionCount        = 1
     
