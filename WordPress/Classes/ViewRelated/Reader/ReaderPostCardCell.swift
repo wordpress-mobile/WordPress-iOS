@@ -32,7 +32,7 @@ import Foundation
     @IBOutlet private weak var summaryLabel: UILabel!
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var wordCountLabel: UILabel!
-    @IBOutlet private weak var attributionView: UIView!
+    @IBOutlet private weak var attributionView: ReaderCardDiscoverAttributionView!
 
     // Action buttons
     @IBOutlet private weak var actionButtonRight: UIButton!
@@ -62,7 +62,6 @@ import Foundation
     private var featuredMediaBottomConstraintConstant: CGFloat = 0.0
     private var titleLabelBottomConstraintConstant: CGFloat = 0.0
     private var summaryLabelBottomConstraintConstant: CGFloat = 0.0
-    private var attributionHeightConstraintConstant: CGFloat = 0.0
     private var attributionBottomConstraintConstant: CGFloat = 0.0
     private var tagButtonHeightConstraintConstant: CGFloat = 0.0
     private var tagButtonBottomConstraintConstant: CGFloat = 0.0
@@ -72,6 +71,7 @@ import Foundation
     private var loadMediaWhenConfigured = true
 
     private let summaryMaxNumberOfLines = 3
+    private let maxAttributionViewHeight: CGFloat = 200.0 // 200 is an arbitrary height, but should be a sufficiently high number.
 
 
     // MARK: - Accessors
@@ -157,9 +157,17 @@ import Foundation
         height += summaryLabel.sizeThatFits(innerSize).height
         height += summaryLabelBottomConstraint.constant
 
-        height += attributionHeightConstraint.constant
+        // The attribution view's height constraint is to be less than or equal
+        // to the constant. Skip the math when the constant is zero, but use
+        // the height returned from sizeThatFits otherwise.
+        if attributionHeightConstraint.constant > 0 {
+            height += attributionView.sizeThatFits(innerSize).height
+        }
         height += attributionBottomConstraint.constant
 
+        // On the iPad, the tag and word count views are horizontal,
+        // aligned with the action buttons. Only add their heights
+        // for the iPhone.
         if !UIDevice.isPad() {
             height += tagButtonHeightConstraint.constant
             height += tagButtonBottomConstraint.constant
@@ -257,10 +265,10 @@ import Foundation
         // Always reset
         avatarImageView.image = nil
 
-        let placeholder = UIImage(named: "post-blavatar-placeholder")
+        var placeholder = UIImage(named: "post-blavatar-placeholder")
 
         if loadMediaWhenConfigured && contentProvider?.avatarURLForDisplay() != nil {
-            let url = contentProvider?.avatarURLForDisplay()
+            var url = contentProvider?.avatarURLForDisplay()
             avatarImageView.setImageWithURL(url, placeholderImage: placeholder)
         } else {
             avatarImageView.image = placeholder
@@ -357,8 +365,15 @@ import Foundation
     }
 
     private func configureAttribution() {
-        attributionHeightConstraint.constant = 0.0
-        attributionBottomConstraint.constant = 0.0
+        if contentProvider == nil || contentProvider?.sourceAttributionStyle() == SourceAttributionStyle.None {
+            attributionHeightConstraint.constant = 0.0
+            attributionBottomConstraint.constant = 0.0
+            attributionView.configureView(nil)
+        } else {
+            attributionView.configureView(contentProvider)
+            attributionBottomConstraint.constant = attributionBottomConstraintConstant
+            attributionHeightConstraint.constant = maxAttributionViewHeight
+        }
     }
 
     private func configureTag() {
@@ -451,8 +466,8 @@ import Foundation
         let title = contentProvider!.isLiked() ? likedStr : likeStr
 
         let imageName = contentProvider!.isLiked() ? "icon-reader-liked" : "icon-reader-like"
-        let image = UIImage(named: imageName)
-        let highlightImage = UIImage(named: "icon-reader-like-highlight")
+        var image = UIImage(named: imageName)
+        var highlightImage = UIImage(named: "icon-reader-like-highlight")
 
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
@@ -460,16 +475,16 @@ import Foundation
     private func configureCommentActionButton(button: UIButton) {
         button.tag = CardAction.Comment.rawValue
         let title = contentProvider?.commentCount().stringValue
-        let image = UIImage(named: "icon-reader-comment")
-        let highlightImage = UIImage(named: "icon-reader-comment-highlight")
+        var image = UIImage(named: "icon-reader-comment")
+        var highlightImage = UIImage(named: "icon-reader-comment-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 
     private func configureVisitActionButton(button: UIButton) {
         button.tag = CardAction.Visit.rawValue
         let title = NSLocalizedString("Visit", comment: "Text for the 'visit' button. Tapping takes the user to the web page for a post being viewed in the reader.")
-        let image = UIImage(named: "icon-reader-visit")
-        let highlightImage = UIImage(named: "icon-reader-visit-highlight")
+        var image = UIImage(named: "icon-reader-visit")
+        var highlightImage = UIImage(named: "icon-reader-visit-highlight")
         configureActionButton(button, title: title, image: image, highlightedImage: highlightImage)
     }
 
