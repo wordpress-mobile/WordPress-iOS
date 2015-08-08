@@ -3,7 +3,7 @@ import Foundation
 @objc public class ReaderCardDiscoverAttributionView: UIView
 {
     @IBOutlet private weak var imageView: CircularImageView!
-    @IBOutlet private weak var richTextView: RichTextView!
+    @IBOutlet private(set) public weak var richTextView: RichTextView!
 
     private let gravatarImageName = "gravatar-reader"
     private let blavatarImageName = "post-blavatar-placeholder"
@@ -48,7 +48,6 @@ import Foundation
     }
 
     private func configurePostAttribution(contentProvider: ReaderPostContentProvider) {
-
         var url = contentProvider.sourceAvatarURLForDisplay()
         var placeholder = UIImage(named: gravatarImageName)
         imageView.setImageWithURL(url, placeholderImage: placeholder)
@@ -87,11 +86,18 @@ import Foundation
         imageView.setImageWithURL(url, placeholderImage: placeholder)
         imageView.shouldRoundCorners = false
 
+        let blogName = contentProvider.sourceBlogNameForDisplay()
         let pattern = NSLocalizedString("Visit %@", comment:"A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name.")
-        let str = String(format: pattern, contentProvider.sourceBlogNameForDisplay())
+        let str = String(format: pattern, blogName)
 
-        let attributes = WPStyleGuide.originalAttributionParagraphAttributes()
-        richTextView.attributedText = NSAttributedString(string: str, attributes: attributes);
+        let attributes = WPStyleGuide.siteAttributionParagraphAttributes()
+        let attributedString = NSMutableAttributedString(string: str, attributes: attributes)
+        let range = (str as NSString).rangeOfString(blogName)
+        let font = WPFontManager.openSansItalicFontOfSize(WPStyleGuide.originalAttributionFontSize());
+        attributedString.addAttribute(NSFontAttributeName, value: font, range: range)
+        attributedString.addAttribute(NSLinkAttributeName, value: "http://wordpress.com/", range: NSMakeRange(0, count(str)))
+
+        richTextView.attributedText = attributedString
     }
 
 }

@@ -8,9 +8,10 @@ import Foundation
     func readerCell(cell: ReaderPostCardCell, visitActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, tagActionForProvider provider: ReaderPostContentProvider)
     func readerCell(cell: ReaderPostCardCell, menuActionForProvider provider: ReaderPostContentProvider, fromView sender: UIView)
+    func readerCell(cell: ReaderPostCardCell, attributionActionForProvider provider: ReaderPostContentProvider)
 }
 
-@objc public class ReaderPostCardCell: UITableViewCell
+@objc public class ReaderPostCardCell: UITableViewCell, RichTextViewDelegate
 {
     // MARK: - Properties
 
@@ -107,6 +108,7 @@ import Foundation
 
         applyStyles()
         createAvatarTapGestureRecognizer()
+        setupAttributionView()
     }
 
     public override func didMoveToSuperview() {
@@ -202,6 +204,13 @@ import Foundation
 
     // MARK: - Configuration
 
+    private func setupAttributionView() {
+        attributionView.richTextView.delegate = self
+        attributionView.richTextView.userInteractionEnabled = true
+        attributionView.richTextView.selectable = true
+        attributionView.richTextView.editable = false
+    }
+
     private func preserveStartingConstraintConstants() {
         featuredMediaHeightConstraintConstant = featuredMediaHeightConstraint.constant
         featuredMediaBottomConstraintConstant = featuredMediaBottomConstraint.constant
@@ -219,6 +228,7 @@ import Foundation
         let tgr = UITapGestureRecognizer(target: self, action: Selector("didTapHeaderAvatar:"))
         avatarImageView.addGestureRecognizer(tgr)
     }
+
 
     /**
         Applies the default styles to the cell's subviews
@@ -534,7 +544,9 @@ import Foundation
     // MARK: - Actions
 
     func didTapHeaderAvatar(gesture: UITapGestureRecognizer) {
-        notifyDelegateHeaderWasTapped()
+        if gesture.state == .Ended {
+            notifyDelegateHeaderWasTapped()
+        }
     }
 
     @IBAction func didTapBlogNameButton(sender: UIButton) {
@@ -566,6 +578,14 @@ import Foundation
         case .Visit :
             delegate?.readerCell(self, visitActionForProvider: contentProvider!)
         }
+    }
+
+
+    // MARK: - RichTextView Delegate Methods
+
+    public func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+        delegate?.readerCell(self, attributionActionForProvider: contentProvider!)
+        return false
     }
 
 
