@@ -24,10 +24,10 @@ extension WPStyleGuide
         ]
     }
 
-    public class func siteAttributionParagraphAttributes() -> NSDictionary {
+    public class func siteAttributionParagraphAttributes() -> [NSObject: AnyObject] {
         let attributes = NSMutableDictionary(dictionary: originalAttributionParagraphAttributes())
         attributes.setValue(mediumBlue(), forKey: NSForegroundColorAttributeName)
-        return attributes
+        return attributes as [NSObject: AnyObject]
     }
 
     public class func originalAttributionFontSize() -> CGFloat {
