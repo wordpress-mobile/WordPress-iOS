@@ -60,7 +60,6 @@
 		31F4F6671A1385BE00196A98 /* MeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 31F4F6661A1385BE00196A98 /* MeViewController.m */; };
 		37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 37022D901981BF9200F322B7 /* VerticallyStackedButton.m */; };
 		374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 374CB16115B93C0800DD0EBC /* AudioToolbox.framework */; };
-		375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */; };
 		37B7924D16768FCC0021B3A4 /* NotificationSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */; };
 		37EAAF4D1A11799A006D6306 /* CircularImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37EAAF4C1A11799A006D6306 /* CircularImageView.swift */; };
 		4253506E2DDC92882C721F55 /* libPods-UITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 369D8993FF42F0A2D183A062 /* libPods-UITests.a */; };
@@ -678,8 +677,6 @@
 		37022D8F1981BF9200F322B7 /* VerticallyStackedButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VerticallyStackedButton.h; sourceTree = "<group>"; };
 		37022D901981BF9200F322B7 /* VerticallyStackedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VerticallyStackedButton.m; sourceTree = "<group>"; };
 		374CB16115B93C0800DD0EBC /* AudioToolbox.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
-		375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BlogsTableViewCell.h; sourceTree = "<group>"; };
-		375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BlogsTableViewCell.m; sourceTree = "<group>"; };
 		37B7924B16768FCB0021B3A4 /* NotificationSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationSettingsViewController.h; sourceTree = "<group>"; };
 		37B7924C16768FCB0021B3A4 /* NotificationSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationSettingsViewController.m; sourceTree = "<group>"; };
 		37EAAF4C1A11799A006D6306 /* CircularImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircularImageView.swift; sourceTree = "<group>"; };
@@ -2296,8 +2293,6 @@
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
 				30EABE0718A5903400B73A9C /* WPBlogTableViewCell.h */,
 				30EABE0818A5903400B73A9C /* WPBlogTableViewCell.m */,
-				375D090B133B94C3000CC9CD /* BlogsTableViewCell.h */,
-				375D090C133B94C3000CC9CD /* BlogsTableViewCell.m */,
 				5D839AA6187F0D6B00811F4A /* PostFeaturedImageCell.h */,
 				5D839AA7187F0D6B00811F4A /* PostFeaturedImageCell.m */,
 				5D839AA9187F0D8000811F4A /* PostGeolocationCell.h */,
@@ -3992,7 +3987,6 @@
 				E1B4A9E112FC8B1000EB3F67 /* EGORefreshTableHeaderView.m in Sources */,
 				5DA3EE12192508F700294E0B /* WPImageOptimizer.m in Sources */,
 				E1D458691309589C00BF0235 /* Coordinate.m in Sources */,
-				375D090D133B94C3000CC9CD /* BlogsTableViewCell.m in Sources */,
 				5DA5BF4618E32DCF005F11F9 /* ThemeBrowserViewController.m in Sources */,
 				E10A2E9B134E8AD3007643F9 /* PostAnnotation.m in Sources */,
 				FFB7B8201A0012E80032E723 /* WordPressComApiCredentials.m in Sources */,
