@@ -213,7 +213,6 @@
 		5DF7F7781B223916003A05C8 /* PostToPost30To31.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF7F7771B223916003A05C8 /* PostToPost30To31.m */; };
 		5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */; };
 		5DF94E2B1962B97D00359241 /* CommentsTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E261962B97D00359241 /* CommentsTableViewCell.m */; };
-		5DF94E2D1962B97D00359241 /* NewPostTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */; };
 		5DF94E301962B99C00359241 /* PostSettingsSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */; };
 		5DF94E461962BAA700359241 /* WPRichTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E3F1962BAA700359241 /* WPRichTextView.m */; };
 		5DF94E501962BAEB00359241 /* ReaderPostAttributionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DF94E491962BAEB00359241 /* ReaderPostAttributionView.m */; };
@@ -962,8 +961,6 @@
 		5DF8D26019E82B1000A2CD95 /* ReaderCommentsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReaderCommentsViewController.m; sourceTree = "<group>"; };
 		5DF94E251962B97D00359241 /* CommentsTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentsTableViewCell.h; sourceTree = "<group>"; };
 		5DF94E261962B97D00359241 /* CommentsTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentsTableViewCell.m; sourceTree = "<group>"; };
-		5DF94E291962B97D00359241 /* NewPostTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewPostTableViewCell.h; sourceTree = "<group>"; };
-		5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewPostTableViewCell.m; sourceTree = "<group>"; };
 		5DF94E2E1962B99C00359241 /* PostSettingsSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostSettingsSelectionViewController.h; sourceTree = "<group>"; usesTabs = 0; };
 		5DF94E2F1962B99C00359241 /* PostSettingsSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostSettingsSelectionViewController.m; sourceTree = "<group>"; usesTabs = 0; };
 		5DF94E3E1962BAA700359241 /* WPRichTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPRichTextView.h; sourceTree = "<group>"; };
@@ -2284,8 +2281,6 @@
 			children = (
 				5DF94E251962B97D00359241 /* CommentsTableViewCell.h */,
 				5DF94E261962B97D00359241 /* CommentsTableViewCell.m */,
-				5DF94E291962B97D00359241 /* NewPostTableViewCell.h */,
-				5DF94E2A1962B97D00359241 /* NewPostTableViewCell.m */,
 				E23EEC5C185A72C100F4DE2A /* WPContentCell.h */,
 				E23EEC5D185A72C100F4DE2A /* WPContentCell.m */,
 				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
@@ -4008,7 +4003,6 @@
 				B57AF5FA1ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift in Sources */,
 				85DA8C4418F3F29A0074C8A4 /* WPAnalyticsTrackerWPCom.m in Sources */,
 				B55853FC19630E7900FAF6C3 /* Notification.m in Sources */,
-				5DF94E2D1962B97D00359241 /* NewPostTableViewCell.m in Sources */,
 				5DF94E501962BAEB00359241 /* ReaderPostAttributionView.m in Sources */,
 				93C1147F18EC5DD500DAC95C /* AccountService.m in Sources */,
 				FF945F701B28242300FB8AC4 /* MediaLibraryPickerDataSource.m in Sources */,
