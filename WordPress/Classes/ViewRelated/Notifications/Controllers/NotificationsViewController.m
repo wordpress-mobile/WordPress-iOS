@@ -203,7 +203,6 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     }
     
     if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
-        self.tableView.tableHeaderView = nil;
         // Rating View is already visible, don't bother to do anything
         return;
     }
