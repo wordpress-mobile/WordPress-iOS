@@ -30,6 +30,10 @@ const NSInteger PostServiceNumberToFetch = 40;
     Post *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass([Post class]) inManagedObjectContext:self.managedObjectContext];
     post.blog = blog;
     post.remoteStatus = AbstractPostRemoteStatusSync;
+    PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
+    PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.defaultCategory];
+    [post.categories addObject:category];
+    post.postFormat = blog.defaultPostFormat;
     return post;
 }
 
