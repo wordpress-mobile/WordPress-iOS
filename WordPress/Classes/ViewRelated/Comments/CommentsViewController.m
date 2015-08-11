@@ -13,14 +13,14 @@
 #import "ContextManager.h"
 
 
-CGFloat const CommentsStandardOffset                    = 16.0;
-CGFloat const CommentsSectionHeaderHeight               = 24.0;
-CGFloat const CommentsDefaultCellHeight                 = 44.0;
-CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
-CGFloat const CommentsActivityFooterHeight              = 50.0;
-NSInteger const CommentsRefreshRowPadding               = 4;
-NSInteger const CommentsFetchBatchSize                  = 10;
-NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
+static CGFloat const CommentsStandardOffset                    = 16.0;
+static CGFloat const CommentsSectionHeaderHeight               = 24.0;
+static CGFloat const CommentsDefaultCellHeight                 = 44.0;
+static CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
+static CGFloat const CommentsActivityFooterHeight              = 50.0;
+static NSInteger const CommentsRefreshRowPadding               = 4;
+static NSInteger const CommentsFetchBatchSize                  = 10;
+static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 
 
 
