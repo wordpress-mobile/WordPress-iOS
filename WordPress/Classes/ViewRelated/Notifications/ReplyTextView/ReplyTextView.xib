@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6246"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ReplyTextView" customModule="WordPress">
             <connections>
+                <outlet property="bezierView" destination="KQI-Ok-M85" id="92e-Ha-vja"/>
                 <outlet property="containerView" destination="iN0-l3-epB" id="PxG-zK-Meq"/>
                 <outlet property="layoutView" destination="TqK-rp-BlK" id="QTH-iw-Viv"/>
                 <outlet property="placeholderLabel" destination="Omp-7E-YTH" id="Qqp-Aa-Yqy"/>
                 <outlet property="replyButton" destination="5G8-Al-JKt" id="VGx-mg-xgv"/>
+                <outlet property="separatorsView" destination="8Wq-XP-O0P" id="8s8-Ut-Jmt"/>
                 <outlet property="textView" destination="2Pd-vE-u9b" id="wmd-19-U9S"/>
             </connections>
         </placeholder>
@@ -22,40 +24,55 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TqK-rp-BlK" userLabel="Layout View">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MBe-41-STV" userLabel="Background View">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iLb-5R-8fU" userLabel="Background">
+                            <rect key="frame" x="0.0" y="0.0" width="253" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Placeholder" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Omp-7E-YTH" userLabel="Placeholder">
-                            <rect key="frame" x="18" y="11" width="242" height="20.5"/>
+                            <rect key="frame" x="18" y="11" width="227" height="21"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <size key="shadowOffset" width="-1" height="-1"/>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="18" y="11" width="517" height="776.5"/>
+                            </variation>
                         </label>
                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="249" bounces="NO" showsHorizontalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Pd-vE-u9b">
-                            <rect key="frame" x="18" y="12" width="242" height="19.5"/>
+                            <rect key="frame" x="18" y="12" width="227" height="20"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="18" y="12" width="517" height="775.5"/>
+                            </variation>
                         </textView>
-                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQI-Ok-M85" userLabel="Bezier View" customClass="ReplyBezierView" customModule="WordPress">
-                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KQI-Ok-M85" userLabel="Bezier" customClass="ReplyBezierView" customModule="WordPress">
+                            <rect key="frame" x="0.0" y="0.0" width="253" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="800"/>
+                            </variation>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5G8-Al-JKt" userLabel="Reply Button">
-                            <rect key="frame" x="268" y="7" width="50" height="30"/>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8Wq-XP-O0P" userLabel="Separators" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="252" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5G8-Al-JKt" userLabel="Reply Button">
+                            <rect key="frame" x="253" y="7" width="65" height="30"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="4GJ-tF-yMt"/>
                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="Cfe-Jc-SMC"/>
-                                <constraint firstAttribute="width" constant="50" id="fkW-kz-gg3"/>
-                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="uPq-oF-Jld"/>
                             </constraints>
+                            <inset key="contentEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                             <state key="normal" title="Button">
                                 <color key="titleColor" name="alternateSelectedControlColor" catalog="System" colorSpace="catalog"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                                <rect key="frame" x="543" y="763" width="55" height="30"/>
+                            </variation>
                             <connections>
                                 <action selector="btnReplyPressed" destination="-1" eventType="touchUpInside" id="2dK-bD-0WW"/>
                             </connections>
@@ -65,41 +82,58 @@
                     <constraints>
                         <constraint firstItem="KQI-Ok-M85" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="0Ih-PG-tLq"/>
                         <constraint firstAttribute="bottom" secondItem="2Pd-vE-u9b" secondAttribute="bottom" priority="750" constant="12" id="1DJ-ch-NcS"/>
-                        <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="2KV-ES-gcA"/>
+                        <constraint firstAttribute="bottom" secondItem="8Wq-XP-O0P" secondAttribute="bottom" id="5UL-cM-3Kq"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" constant="12" id="6Y8-31-mYZ"/>
                         <constraint firstAttribute="trailing" secondItem="5G8-Al-JKt" secondAttribute="trailing" constant="2" id="9Oi-SR-O6o"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="top" secondItem="Omp-7E-YTH" secondAttribute="top" constant="1" id="CBn-np-VwC"/>
                         <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="2Pd-vE-u9b" secondAttribute="trailing" constant="8" id="E7J-mE-cKb"/>
-                        <constraint firstAttribute="trailing" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="E8r-Hj-w7u"/>
-                        <constraint firstItem="MBe-41-STV" firstAttribute="leading" secondItem="KQI-Ok-M85" secondAttribute="leading" id="FIs-sA-rSR"/>
                         <constraint firstAttribute="bottom" secondItem="5G8-Al-JKt" secondAttribute="bottom" constant="7" id="HE4-pe-BCj"/>
-                        <constraint firstItem="MBe-41-STV" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="Lg5-u8-sk7"/>
+                        <constraint firstItem="8Wq-XP-O0P" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="Irf-sQ-cYr"/>
+                        <constraint firstItem="8Wq-XP-O0P" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="LVW-gM-B5O"/>
+                        <constraint firstItem="iLb-5R-8fU" firstAttribute="height" secondItem="KQI-Ok-M85" secondAttribute="height" id="N7i-a4-ZTP"/>
+                        <constraint firstItem="iLb-5R-8fU" firstAttribute="width" secondItem="KQI-Ok-M85" secondAttribute="width" id="QvG-8U-05N"/>
                         <constraint firstAttribute="bottom" secondItem="KQI-Ok-M85" secondAttribute="bottom" id="VXT-En-PsR"/>
+                        <constraint firstItem="iLb-5R-8fU" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" id="WVp-gN-G14"/>
+                        <constraint firstItem="5G8-Al-JKt" firstAttribute="leading" secondItem="KQI-Ok-M85" secondAttribute="trailing" id="aMa-fa-LTO"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="bottom" secondItem="Omp-7E-YTH" secondAttribute="bottom" id="i0S-Xb-R2C"/>
                         <constraint firstItem="Omp-7E-YTH" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="iDQ-BD-29L"/>
+                        <constraint firstItem="iLb-5R-8fU" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="lKe-9q-Rex"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="trailing" secondItem="Omp-7E-YTH" secondAttribute="trailing" id="n9o-dn-6dN"/>
-                        <constraint firstItem="MBe-41-STV" firstAttribute="width" secondItem="KQI-Ok-M85" secondAttribute="width" id="o6E-4w-wrA"/>
-                        <constraint firstItem="MBe-41-STV" firstAttribute="top" secondItem="KQI-Ok-M85" secondAttribute="top" id="p0A-H1-47p"/>
+                        <constraint firstAttribute="width" constant="600" id="pRT-gJ-Uu6"/>
+                        <constraint firstAttribute="trailing" secondItem="8Wq-XP-O0P" secondAttribute="trailing" id="qzi-56-gkJ"/>
+                        <constraint firstItem="KQI-Ok-M85" firstAttribute="top" secondItem="TqK-rp-BlK" secondAttribute="top" id="tJm-7B-RrG"/>
                         <constraint firstItem="2Pd-vE-u9b" firstAttribute="leading" secondItem="TqK-rp-BlK" secondAttribute="leading" constant="18" id="xc0-s9-sIf"/>
                     </constraints>
+                    <variation key="default">
+                        <mask key="constraints">
+                            <exclude reference="pRT-gJ-Uu6"/>
+                        </mask>
+                    </variation>
+                    <variation key="heightClass=regular-widthClass=regular" misplaced="YES">
+                        <rect key="frame" x="100" y="0.0" width="600" height="800"/>
+                        <mask key="constraints">
+                            <include reference="pRT-gJ-Uu6"/>
+                        </mask>
+                    </variation>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstAttribute="trailing" secondItem="TqK-rp-BlK" secondAttribute="trailing" priority="750" id="4zS-T4-weD"/>
+                <constraint firstItem="TqK-rp-BlK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="5eb-Ho-RGt"/>
                 <constraint firstAttribute="centerX" secondItem="TqK-rp-BlK" secondAttribute="centerX" id="DsX-6r-SXk"/>
                 <constraint firstItem="TqK-rp-BlK" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="KHD-Fd-6hY"/>
-                <constraint firstItem="TqK-rp-BlK" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" priority="750" id="TGB-NM-6np"/>
                 <constraint firstAttribute="bottom" secondItem="TqK-rp-BlK" secondAttribute="bottom" id="qdJ-eR-LbX"/>
+                <constraint firstAttribute="trailing" secondItem="TqK-rp-BlK" secondAttribute="trailing" id="rrp-ud-MJq"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <variation key="heightClass=regular-widthClass=regular">
+                <mask key="constraints">
+                    <exclude reference="5eb-Ho-RGt"/>
+                    <exclude reference="rrp-ud-MJq"/>
+                </mask>
+            </variation>
             <point key="canvasLocation" x="-42" y="773"/>
         </view>
     </objects>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4"/>
-    </simulatedMetricsContainer>
 </document>
