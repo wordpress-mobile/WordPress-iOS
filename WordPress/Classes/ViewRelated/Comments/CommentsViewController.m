@@ -1,5 +1,4 @@
 #import "CommentsViewController.h"
-#import "CommentsTableViewCell.h"
 #import "CommentViewController.h"
 #import "CommentService.h"
 #import "Comment.h"
@@ -13,8 +12,6 @@
 #import "ContextManager.h"
 
 
-static CGFloat const CommentsStandardOffset                    = 16.0;
-static CGFloat const CommentsSectionHeaderHeight               = 24.0;
 static CGFloat const CommentsDefaultCellHeight                 = 44.0;
 static CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
 static CGFloat const CommentsActivityFooterHeight              = 50.0;
@@ -127,9 +124,10 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
     self.tableView.accessibilityIdentifier  = @"Comments Table";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     
-    // Register the cells!
-    Class cellClass = [CommentsTableViewCell class];
-    [self.tableView registerClass:cellClass forCellReuseIdentifier:NSStringFromClass(cellClass)];
+    // Register the cells
+    NSString *nibName   = [CommentsTableViewCell classNameWithoutNamespaces];
+    UINib *nibInstance  = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:nibName];
 }
 
 - (void)configureTableViewFooter
@@ -171,12 +169,12 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    return [CommentsTableViewCell rowHeightForContentProvider:comment andWidth:WPTableViewFixedWidth];
+    return 70;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *reuseIdentifier = NSStringFromClass([CommentsTableViewCell class]);
+    NSString *reuseIdentifier = [CommentsTableViewCell classNameWithoutNamespaces];
     CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
     NSAssert([cell isKindOfClass:[CommentsTableViewCell class]], nil);
     
@@ -244,8 +242,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
 
 - (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    cell.contentProvider = comment;
+    Comment *comment    = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    
+    cell.author         = comment.authorForDisplay;
+    cell.postTitle      = comment.postTitle;
+    cell.content        = comment.content;
+    cell.timestamp      = [comment.dateCreated shortString];
+        
+    if (comment.avatarURLForDisplay) {
+        [cell downloadGravatarWithURL:comment.avatarURLForDisplay];
+    } else {
+        [cell downloadGravatarWithGravatarEmail:comment.gravatarEmailForDisplay];
+    }
 }
 
 - (NSString *)sectionNameKeyPath
