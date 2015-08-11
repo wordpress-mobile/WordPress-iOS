@@ -72,11 +72,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
 
     public func reloadTable() {
-        self.rows                 = rowsForSettings(settings!, stream: stream!)
-        tableView.tableFooterView = isDeviceStreamDisabled() ? disabledDeviceStreamFooter() : UIView()
+        self.rows = rowsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
-    
+
     
 
     // MARK: - Private Helpers
@@ -124,6 +123,25 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return cell
     }
     
+    public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if !isDeviceStreamDisabled() {
+            return CGFloat.min
+        }
+        
+        return WPTableViewSectionHeaderFooterView.heightForFooter(disabledDeviceFooterText(), width: view.bounds.width)
+    }
+    
+    public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        if !isDeviceStreamDisabled() {
+            return nil
+        }
+        
+        let footerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+        footerView.title        = disabledDeviceFooterText()
+        return footerView
+    }
+    
+    
     public override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectSelectedRowWithAnimation(true)
         
@@ -132,20 +150,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
         }
     }
     
-    public override func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        headerView.title        = headerText(stream, channel: settings?.channel)
-        headerView.titleInsets  = headerTitleInsets
-        return headerView
-    }
-    
-    public override func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        let title               = headerText(stream, channel: settings?.channel)
-        let width               = view.frame.width
-        let font                = WPStyleGuide.subtitleFont()
-        return WPTableViewSectionHeaderFooterView.heightForText(title, width: width, titleInsets: headerTitleInsets, font: font)
-    }
-
     
     
     // MARK: - UITableView Helpers
@@ -166,13 +170,10 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return stream?.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-    private func disabledDeviceStreamFooter() -> UIView {
-        let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title    = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
-                                                "Toggle \"Allow Notifications\" to turn them back on.",
-                                                comment: "Suggests to enable Push Notification Settings in Settings.app")
-        
-        return footerView
+    private func disabledDeviceFooterText() -> String {
+        return NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
+            "Toggle \"Allow Notifications\" to turn them back on.",
+            comment: "Suggests to enable Push Notification Settings in Settings.app")
     }
 
     private func openApplicationSettings() {
@@ -236,34 +237,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
             self.name   = name
             self.key    = key
             self.value  = value
-        }
-    }
-    
-    // MARK: - Private Helpers
-    private func headerText(stream: NotificationSettings.Stream?, channel: NotificationSettings.Channel?) -> String {
-        // Failsafe
-        if stream == nil || channel == nil {
-            return String()
-        }
-
-        // Is it WordPress.com?
-        if channel! == .WordPressCom {
-            return NSLocalizedString("We’ll always send important emails regarding your account, " +
-                "but you can get some fun extras, too!",
-                comment: "Title displayed in the Notification Settings for WordPress.com")
-        }
-        
-        // It must be a Blog // Other
-        switch stream!.kind {
-        case .Device:
-            return NSLocalizedString("Settings for push notifications that appear on your mobile device.",
-                comment: "Title displayed in the Notification Settings for Devices")
-        case .Email:
-            return NSLocalizedString("Settings for notifications that are sent to the email tied to your account.",
-                comment: "Title displayed in the Notification Settings for Email")
-        case .Timeline:
-            return NSLocalizedString("Settings for notifications that appear in the Notifications tab.",
-                comment: "Title displayed in the Notification Settings for Notifications tab")
         }
     }
 
