@@ -72,7 +72,9 @@ public class NotificationSettingsViewController : UIViewController
     
     private func groupSettings(settings: [NotificationSettings]) -> [[NotificationSettings]] {
         // Find the Default Blog ID
-        let primaryBlogId   = defaultWordPressComAccount()?.defaultBlog?.blogID as? Int
+        let service         = AccountService(managedObjectContext: ContextManager.sharedInstance().mainContext)
+        let defaultAccount  = service.defaultWordPressComAccount()
+        let primaryBlogId   = defaultAccount?.defaultBlog?.blogID as? Int
         
         // Proceed Grouping
         var blogSettings    = [NotificationSettings]()
@@ -120,23 +122,10 @@ public class NotificationSettingsViewController : UIViewController
                 }
                 
                 self.reloadSettings()
-        })
+            })
     }
     
     
-    
-    // MARK: - Helpers
-    private func defaultWordPressComAccount() -> WPAccount? {
-        let context = ContextManager.sharedInstance().mainContext
-        let service = AccountService(managedObjectContext: context)
-        
-        return service.defaultWordPressComAccount()
-    }
-    
-    private func isSectionEmpty(sectionIndex: Int) -> Bool {
-        return groupedSettings?[sectionIndex].count == 0
-    }
-
     
 
     // MARK: - UITableView Datasource Methods
@@ -145,10 +134,6 @@ public class NotificationSettingsViewController : UIViewController
     }
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if groupedSettings == nil {
-            return emptyCount
-        }
-
         switch Section(rawValue: section)! {
         case .Blog where displaysLoadMoreRow():
             return loadMoreRowCount
@@ -171,7 +156,7 @@ public class NotificationSettingsViewController : UIViewController
         case let .Blog(blogId) where !isLoadMoreRow(indexPath):
             return blogRowHeight
         default:
-            return defaultRowHeight
+            return WPTableViewDefaultRowHeight
         }
     }
     
@@ -181,9 +166,9 @@ public class NotificationSettingsViewController : UIViewController
             return nil
         }
         
-        let title           = titleForHeaderInSection(section)
+        let theSection      = Section(rawValue: section)!
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Header)
-        footerView.title    = title
+        footerView.title    = theSection.headerText()
         return footerView
     }
     
@@ -193,8 +178,9 @@ public class NotificationSettingsViewController : UIViewController
             return CGFloat.min
         }
         
-        let title = titleForHeaderInSection(section)
-        return WPTableViewSectionHeaderFooterView.heightForHeader(title, width: view.frame.width)
+        let theSection      = Section(rawValue: section)!
+        let width           = view.frame.width
+        return WPTableViewSectionHeaderFooterView.heightForHeader(theSection.headerText(), width: width)
     }
     
     public func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
@@ -203,8 +189,9 @@ public class NotificationSettingsViewController : UIViewController
             return nil
         }
         
+        let theSection      = Section(rawValue: section)!
         let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title    = titleForFooterInSection(section)
+        footerView.title    = theSection.footerText()
         
         return footerView
     }
@@ -215,9 +202,9 @@ public class NotificationSettingsViewController : UIViewController
             return CGFloat.min
         }
         
-        let title = titleForFooterInSection(section)
-        let padding = paddingForFooterInSection(section)
-        let height = WPTableViewSectionHeaderFooterView.heightForFooter(title, width: view.frame.width)
+        let section         = Section(rawValue: section)!
+        let padding         = section.footerPadding()
+        let height          = WPTableViewSectionHeaderFooterView.heightForFooter(section.footerText(), width: view.frame.width)
 
         return height + padding
     }
@@ -274,16 +261,8 @@ public class NotificationSettingsViewController : UIViewController
         return groupedSettings?[indexPath.section][indexPath.row]
     }
     
-    private func titleForHeaderInSection(section: Int) -> String {
-        return Section(rawValue: section)!.headerText()
-    }
-
-    private func titleForFooterInSection(section: Int) -> String {
-        return Section(rawValue: section)!.footerText()
-    }
-    
-    private func paddingForFooterInSection(section: Int) -> CGFloat {
-        return Section(rawValue: section)?.footerPadding() ?? CGFloat(0)
+    private func isSectionEmpty(sectionIndex: Int) -> Bool {
+        return groupedSettings == nil || groupedSettings?[sectionIndex].count == 0
     }
     
     
@@ -359,8 +338,9 @@ public class NotificationSettingsViewController : UIViewController
                 return NSLocalizedString("Notification settings for your comments on other sites.",
                     comment: "3rd Party Site Notification Settings")
             case .WordPressCom:
-                return NSLocalizedString("Decide what emails you get from us regarding your account.",
-                    comment: "WordPress.com Notification Settings")
+                return NSLocalizedString("We’ll always send important emails regarding your account, " +
+                    "but you can get some fun extras, too!",
+                    comment: "Title displayed in the Notification Settings for WordPress.com")
             }
         }
         
@@ -374,9 +354,10 @@ public class NotificationSettingsViewController : UIViewController
         }
         
         // MARK: - Private Constants
-        private static let paddingZero = CGFloat(0)
+        private static let paddingZero      = CGFloat(0)
         private static let paddingWordPress = CGFloat(40)
     }
+    
     
     
     // MARK: - Private Outlets
@@ -388,7 +369,6 @@ public class NotificationSettingsViewController : UIViewController
     private let blogRowHeight                   = CGFloat(54.0)
     
     private let defaultReuseIdentifier          = WPTableViewCell.classNameWithoutNamespaces()
-    private let defaultRowHeight                = CGFloat(44.0)
     
     private let emptyCount                      = 0
     private let loadMoreRowIndex                = 3
