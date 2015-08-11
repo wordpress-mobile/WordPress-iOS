@@ -15,6 +15,10 @@ extension WPStyleGuide
         public static let titleRegularStyle         = [ NSParagraphStyleAttributeName:  titleParagraph,
                                                         NSFontAttributeName:            titleRegularFont,
                                                         NSForegroundColorAttributeName: titleTextColor ]
+
+        public static let titleBoldStyle            = [ NSParagraphStyleAttributeName:  titleParagraph,
+                                                        NSFontAttributeName:            titleBoldFont,
+                                                        NSForegroundColorAttributeName: titleTextColor ]
         
         public static let timestampFont             = WPStyleGuide.subtitleFont()
         public static let timestampColor            = WPStyleGuide.allTAllShadeGrey()
