@@ -14,4 +14,12 @@ typedef NS_ENUM(NSUInteger, SourceAttributionStyle) {
 - (NSURL *)sourceAvatarURLForDisplay;
 - (NSString *)sourceBlogNameForDisplay;
 - (NSURL *)sourceBlogURLForDisplay;
+
+- (NSNumber *)commentCount;
+- (NSNumber *)likeCount;
+- (BOOL)commentsOpen;
+- (BOOL)isLikesEnabled;
+- (BOOL)isPrivate;
+- (BOOL)isLiked;
+
 @end
