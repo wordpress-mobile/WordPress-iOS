@@ -147,7 +147,7 @@ public class NotificationSettings
     
     // MARK: - Localized Setting Descriptions
     private let localizedDescriptionMap = [
-        "new_comment"       : NSLocalizedString("Comments on my site",      comment: "Setting: inficates if New Comments will be notified"),
+        "new_comment"       : NSLocalizedString("Comments on my site",      comment: "Setting: indicates if New Comments will be notified"),
         "comment_like"      : NSLocalizedString("Likes on my comments",     comment: "Setting: indicates if Comment Likes will be notified"),
         "post_like"         : NSLocalizedString("Likes on my posts",        comment: "Setting: indicates if Replies to your comments will be notified"),
         "follow"            : NSLocalizedString("Site follows",             comment: "Setting: indicates if New Follows will be notified"),
