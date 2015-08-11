@@ -50,6 +50,11 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
 */
 + (NSString *)registeredPushNotificationsToken;
 
+/**
+ Retrieves and returns the current Device ID
+ */
++ (NSString *)registeredPushNotificationsDeviceId;
+
 
 ///----------------------------
 /// @name Notification Handling
