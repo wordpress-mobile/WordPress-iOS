@@ -74,6 +74,7 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     }
 }
 
+
 #pragma mark - Device token registration
 
 + (void)registerDeviceToken:(NSData *)deviceToken
@@ -160,14 +161,29 @@ static NSString *const NotificationActionCommentApprove             = @"COMMENT_
     }
 }
 
-+ (BOOL)deviceRegisteredForPushNotifications
++ (BOOL)pushNotificationsEnabledInDeviceSettings
 {
-    return [self registeredPushNotificationsToken] != nil;
+    // TODO: I must insist. Let's refactor this entire class please, in another issue!. JLP. Jul.15.2015
+    UIApplication *application = [UIApplication sharedApplication];
+    
+    // iOS 8+
+    if ([application respondsToSelector:@selector(currentUserNotificationSettings)]) {
+        return application.currentUserNotificationSettings.types != UIUserNotificationTypeNone;
+    }
+    
+    // iOS 7
+    return application.enabledRemoteNotificationTypes != UIRemoteNotificationTypeNone;
 }
 
 + (NSString *)registeredPushNotificationsToken
 {
     return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceToken];
+}
+
++ (NSString *)registeredPushNotificationsDeviceId
+{
+    // TODO: Refactor this entire class please!. JLP. Jun.24.2015
+    return [[NSUserDefaults standardUserDefaults] objectForKey:NotificationsDeviceIdKey];
 }
 
 
