@@ -70,9 +70,7 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 
 - (NSString *)authorString
 {
-    if ([self.blogName length] > 0) {
-        return self.blogName;
-    } else if ([self.authorDisplayName length] > 0) {
+    if ([self.authorDisplayName length] > 0) {
         return self.authorDisplayName;
     }
 
@@ -149,6 +147,11 @@ NSString * const ReaderPostStoredCommentTextKey = @"comment";
 }
 
 #pragma mark - WPContentViewProvider protocol
+
+- (NSString *)blogNameForDisplay
+{
+    return self.blogName;
+}
 
 - (NSString *)titleForDisplay
 {
