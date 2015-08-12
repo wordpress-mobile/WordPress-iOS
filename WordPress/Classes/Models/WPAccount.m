@@ -115,10 +115,17 @@
 
 - (WordPressComApi *)restApi
 {
-    if (!_restApi) {
+    if (!_restApi && self.authToken.length > 0) {
         _restApi = [[WordPressComApi alloc] initWithOAuthToken:self.authToken];
     }
     return _restApi;
+}
+
+#pragma mark - WordPress.com support methods
+
+- (BOOL)isWPComAccount
+{
+    return self.restApi != nil;
 }
 
 @end
