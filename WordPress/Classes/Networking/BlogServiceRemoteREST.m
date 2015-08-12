@@ -108,7 +108,9 @@
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSDictionary *parameters = @{ @"blogname" : blog.blogName,
-                                  @"blogdescription" : blog.blogTagline
+                                  @"blogdescription" : blog.blogTagline,
+                                  @"default_category" : blog.defaultCategory,
+                                  @"default_post_format" : blog.defaultPostFormat
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     [self.api POST:path
