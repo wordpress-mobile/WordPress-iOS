@@ -19,6 +19,10 @@
 /**
  Indicates whether this service is currently connected to its blog
  */
-@property (nonatomic, assign, readonly) BOOL isConnected;
+@property (nonatomic, readonly) BOOL isConnected;
+/**
+ ID of connection, or 0 if none
+ */
+@property (nonatomic, readonly) NSInteger connectionID;
 
 @end

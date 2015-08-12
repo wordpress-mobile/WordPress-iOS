@@ -2,6 +2,7 @@
 #import <WordPressComApi.h>
 #import "Blog.h"
 #import "RemoteBlogSettings.h"
+#import "Publicizer.h"
 
 @implementation BlogServiceRemoteREST
 
@@ -96,6 +97,34 @@
           }];
 }
 
+- (void)connectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
+    NSParameterAssert(service.blog.dotComID != nil);
+    
+#warning implement connectPublicizer
+    failure(nil);
+}
+
+- (void)disconnectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
+    NSParameterAssert(service.blog.dotComID != nil);
+    
+    NSString *path = [self pathForDisconnectionWithPublicizer:service];
+    [self.api POST:path
+        parameters:nil
+           success:^(AFHTTPRequestOperation *operation, id responseObject) {
+               [self syncConnectionsForBlog:service.blog
+                                    success:success
+                                    failure:failure];
+           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+               if (failure) {
+                   failure(error);
+               }
+           }];
+}
+
 - (void)syncSettingsForBlog:(Blog *)blog
                     success:(SettingsHandler)success
                     failure:(void (^)(NSError *error))failure
@@ -173,6 +202,11 @@
 - (NSString *)pathForConnectionsWithBlog:(Blog *)blog
 {
     return [NSString stringWithFormat:@"sites/%@/connections", blog.dotComID];
+}
+
+- (NSString *)pathForDisconnectionWithPublicizer:(Publicizer *)service
+{
+    return [NSString stringWithFormat:@"sites/%@/connections/%d/delete", service.blog.dotComID, service.connectionID];
 }
 
 - (NSString *)pathForSettingsWithBlog:(Blog *)blog

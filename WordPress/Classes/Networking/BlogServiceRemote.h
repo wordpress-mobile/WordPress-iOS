@@ -1,6 +1,7 @@
 #import <Foundation/Foundation.h>
 @class RemoteBlogSettings;
 @class Blog;
+@class Publicizer;
 
 typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
@@ -54,6 +55,28 @@ typedef void (^SuccessHandler)();
 - (void)syncConnectionsForBlog:(Blog *)blog
                        success:(ConnectionsHandler)success
                        failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Connect a blog's 3rd party (Publicize) connection
+ *
+ *  @param      service     The service to connect.  Cannot be nil.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)connectPublicizer:(Publicizer *)service
+                  success:(ConnectionsHandler)success
+                  failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Disconnect a blog's 3rd party (Publicize) connection
+ *
+ *  @param      service     The service to disconnect.  Cannot be nil.
+ *  @param      success     The block that will be executed on success.  Can be nil.
+ *  @param      failure     The block that will be executed on failure.  Can be nil.
+ */
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(ConnectionsHandler)success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  @brief      Synchronizes a blog's settings.

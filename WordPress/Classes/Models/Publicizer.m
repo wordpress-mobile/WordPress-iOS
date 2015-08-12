@@ -12,12 +12,18 @@
 
 - (BOOL)isConnected
 {
+    return self.connectionID > 0;
+}
+
+- (NSInteger)connectionID
+{
     for (NSDictionary *connection in self.blog.connections) {
         if ([connection[@"service"] isEqualToString:self.service]) {
-            return true;
+            NSInteger connectionID = [connection[@"conn_ID"] integerValue];
+            return connectionID;
         }
     }
-    return false;
+    return 0;
 }
 
 @end

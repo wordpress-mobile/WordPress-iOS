@@ -1,8 +1,10 @@
 #import "SharingViewController.h"
 #import "Blog.h"
+#import "BlogService.h"
 #import "WPTableViewCell.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "Publicizer.h"
+#import "SVProgressHUD.h"
 
 NS_ENUM(NSInteger, SharingSection) {
     SharingPublicize = 0,
@@ -132,10 +134,19 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     Publicizer *publicizer = self.publicizeServices[indexPath.row];
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     if (publicizer.isConnected) {
-#warning implement disconnection
+        [blogService disconnectPublicizer:publicizer success:^{
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        } failure:^(NSError *error) {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
+        }];
     } else {
-#warning implement connection
+        [blogService connectPublicizer:publicizer success:^{
+            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        } failure:^(NSError *error) {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
+        }];
     }
 }
 

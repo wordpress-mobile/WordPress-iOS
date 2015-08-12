@@ -3,6 +3,7 @@
 #import "Blog.h"
 
 @class WPAccount;
+@class Publicizer;
 
 @interface BlogService : LocalCoreDataService
 
@@ -66,6 +67,28 @@
 - (void)syncConnectionsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
+
+/**
+ *  Connect a Publicizer service
+ *
+ *  @param service  the service to connect
+ *  @param success  a block that is invoked when the connect is sucessfull
+ *  @param failure  a block that in invoked when the connect fails.
+ */
+- (void)connectPublicizer:(Publicizer *)service
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
+
+/**
+ *  Disconnect a Publicizer service
+ *
+ *  @param service  the publicizer to disconnect
+ *  @param success  a block that is invoked when the disconnect is sucessfull
+ *  @param failure  a block that in invoked when the disconnect fails.
+ */
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure;
 
 /**
  *  Sync blog settings from the server

@@ -21,6 +21,7 @@
 #import "TodayExtensionService.h"
 #import "RemoteBlogSettings.h"
 #import "PublicizerService.h"
+#import "Publicizer.h"
 
 NSString *const LastUsedBlogURLDefaultsKey = @"LastUsedBlogURLDefaultsKey";
 NSString *const EditPostViewControllerLastUsedBlogURLOldKey = @"EditPostViewControllerLastUsedBlogURL";
@@ -303,6 +304,30 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            success:[self connectionsHandlerWithBlogObjectID:blog.objectID
                                                           completionHandler:success]
                            failure:failure];
+}
+
+- (void)connectPublicizer:(Publicizer *)service
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = service.blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
+    [remote connectPublicizer:service
+                      success:[self connectionsHandlerWithBlogObjectID:blogObjectID
+                                                          completionHandler:success]
+                      failure:failure];
+}
+
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(void (^)())success
+                     failure:(void (^)(NSError *error))failure
+{
+    NSManagedObjectID *blogObjectID = service.blog.objectID;
+    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
+    [remote disconnectPublicizer:service
+                        success:[self connectionsHandlerWithBlogObjectID:blogObjectID
+                                                     completionHandler:success]
+                        failure:failure];
 }
 
 - (void)syncBlog:(Blog *)blog
