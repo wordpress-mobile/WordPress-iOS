@@ -133,8 +133,8 @@ public class NotificationSettingsViewController : UIViewController
     
     public func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Section(rawValue: section)! {
-        case .Blog where displaysLoadMoreRow():
-            return loadMoreRowCount
+        case .Blog where requiresBlogsPagination:
+            return displayMoreWasAccepted ? rowCountForBlogSection + 1 : loadMoreRowCount
         default:
             return groupedSettings![section].count
         }
@@ -150,12 +150,10 @@ public class NotificationSettingsViewController : UIViewController
     }
     
     public func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        switch settingsForRowAtIndexPath(indexPath)!.channel {
-        case let .Blog(blogId) where !isLoadMoreRow(indexPath):
-            return blogRowHeight
-        default:
-            return WPTableViewDefaultRowHeight
-        }
+        let isBlogSection   = indexPath.section == Section.Blog.rawValue
+        let isNotPagination = !isPaginationRow(indexPath)
+        
+        return isBlogSection && isNotPagination ? blogRowHeight : WPTableViewDefaultRowHeight
     }
     
     public func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -211,8 +209,8 @@ public class NotificationSettingsViewController : UIViewController
     
     // MARK: - UITableView Delegate Methods
     public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        if isLoadMoreRow(indexPath) {
-            displayMoreBlogs()
+        if isPaginationRow(indexPath) {
+            toggleDisplayMoreBlogs()
         } else if let settings = settingsForRowAtIndexPath(indexPath) {
             displayDetailsForSettings(settings)
         } else  {
@@ -225,7 +223,7 @@ public class NotificationSettingsViewController : UIViewController
     // MARK: - UITableView Helpers
     private func reusableIdentifierForIndexPath(indexPath: NSIndexPath) -> String {
         switch Section(rawValue: indexPath.section)! {
-        case .Blog where !isLoadMoreRow(indexPath):
+        case .Blog where !isPaginationRow(indexPath):
             return blogReuseIdentifier
         default:
             return defaultReuseIdentifier
@@ -233,20 +231,25 @@ public class NotificationSettingsViewController : UIViewController
     }
     
     private func configureCell(cell: UITableViewCell, indexPath: NSIndexPath) {
-        let settings = settingsForRowAtIndexPath(indexPath)!
-        
-        switch settings.channel {
-        case let .Blog(blogId) where isLoadMoreRow(indexPath):
-            cell.textLabel?.text            = NSLocalizedString("View all...", comment: "Displays More Rows")
-            cell.textLabel?.textAlignment   = .Center
+        // Pagination Rows don't really have a Settings entity
+        if isPaginationRow(indexPath) {
+            cell.textLabel?.text            = paginationRowDescription(indexPath)
+            cell.textLabel?.textAlignment   = .Left
             cell.accessoryType              = .None
             WPStyleGuide.configureTableViewCell(cell)
+            return
+        }
+        
+        // Proceed rendering the settings
+        let settings = settingsForRowAtIndexPath(indexPath)!
+        switch settings.channel {
         case let .Blog(blogId):
             cell.textLabel?.text            = settings.blog?.blogName ?? settings.channel.description()
             cell.detailTextLabel?.text      = settings.blog?.displayURL ?? String()
             cell.accessoryType              = .DisclosureIndicator
             cell.imageView?.setImageWithSiteIcon(settings.blog?.icon)
             WPStyleGuide.configureTableViewSmallSubtitleCell(cell)
+            
         default:
             cell.textLabel?.text            = settings.channel.description()
             cell.textLabel?.textAlignment   = .Left
@@ -266,21 +269,39 @@ public class NotificationSettingsViewController : UIViewController
     
     
     // MARK: - Load More Helpers
-    private func displaysLoadMoreRow() -> Bool {
-        return groupedSettings?[Section.Blog.rawValue].count > loadMoreRowIndex && !displayMoreWasAccepted
+    private var rowCountForBlogSection : Int {
+        return groupedSettings?[Section.Blog.rawValue].count ?? 0
     }
     
-    private func isLoadMoreRow(indexPath: NSIndexPath) -> Bool {
-        if displaysLoadMoreRow() {
-            return indexPath.section == Section.Blog.rawValue && indexPath.row == loadMoreRowIndex
+    private var requiresBlogsPagination : Bool {
+        return rowCountForBlogSection > loadMoreRowIndex
+    }
+    
+    private func isDisplayMoreRow(path: NSIndexPath) -> Bool {
+        let isDisplayMoreRow = path.section == Section.Blog.rawValue && path.row == loadMoreRowIndex
+        return requiresBlogsPagination && !displayMoreWasAccepted && isDisplayMoreRow
+    }
+    
+    private func isDisplayLessRow(path: NSIndexPath) -> Bool {
+        let isDisplayLessRow = path.section == Section.Blog.rawValue && path.row == rowCountForBlogSection
+        return requiresBlogsPagination && displayMoreWasAccepted && isDisplayLessRow
+    }
+    
+    private func isPaginationRow(path: NSIndexPath) -> Bool {
+        return isDisplayMoreRow(path) || isDisplayLessRow(path)
+    }
+    
+    private func paginationRowDescription(path: NSIndexPath) -> String {
+        if isDisplayMoreRow(path) {
+            return NSLocalizedString("View all...", comment: "Displays More Rows")
         }
         
-        return false
+        return NSLocalizedString("Collapse", comment: "Displays Less Rows")
     }
     
-    private func displayMoreBlogs() {
+    private func toggleDisplayMoreBlogs() {
         // Remember this action!
-        displayMoreWasAccepted = true
+        displayMoreWasAccepted = !displayMoreWasAccepted
         
         // And refresh the section
         let sections = NSIndexSet(index: Section.Blog.rawValue)
