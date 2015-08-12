@@ -83,6 +83,8 @@ public class CommentsTableViewCell : UITableViewCell
         assert(gravatarImageView != nil)
         assert(detailsLabel != nil)
         assert(timestampLabel != nil)
+        assert(detailsLeadingConstraint != nil)
+        assert(detailsTrailingConstraint != nil)
         
         timestampLabel.font = Style.timestampFont
         timestampLabel.textColor = Style.timestampColor
@@ -148,9 +150,9 @@ public class CommentsTableViewCell : UITableViewCell
     private var gravatarURL : NSURL?
     
     // MARK: - IBOutlets
-    @IBOutlet private var gravatarImageView : CircularImageView!
-    @IBOutlet private var detailsLabel      : UILabel!
-    @IBOutlet private var timestampLabel    : UILabel!
-    @IBOutlet private var detailsLeadingConstraint : NSLayoutConstraint!
+    @IBOutlet private var gravatarImageView         : CircularImageView!
+    @IBOutlet private var detailsLabel              : UILabel!
+    @IBOutlet private var timestampLabel            : UILabel!
+    @IBOutlet private var detailsLeadingConstraint  : NSLayoutConstraint!
     @IBOutlet private var detailsTrailingConstraint : NSLayoutConstraint!
 }
