@@ -316,14 +316,11 @@ public class NotificationSettingsViewController : UIViewController
         func headerText() -> String {
             switch self {
             case .Blog:
-                return NSLocalizedString("Your Sites",
-                    comment: "Displayed in the Notification Settings View")
+                return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
             case .Other:
-                return NSLocalizedString("Comments on Other Sites",
-                    comment: "Displayed in the Notification Settings View")
+                return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
             case .WordPressCom:
-                return NSLocalizedString("WordPress.com Updates",
-                    comment: "Displayed in the Notification Settings View")
+                return String()
             }
         }
         
@@ -333,11 +330,10 @@ public class NotificationSettingsViewController : UIViewController
                 return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
                     comment: "Notification Settings for your own blogs")
             case .Other:
-                return NSLocalizedString("Notification settings for your comments on other sites.",
-                    comment: "3rd Party Site Notification Settings")
+                return String()
             case .WordPressCom:
                 return NSLocalizedString("We’ll always send important emails regarding your account, " +
-                    "but you can get some fun extras, too!",
+                    "but you can get some helpful extras, too.",
                     comment: "Title displayed in the Notification Settings for WordPress.com")
             }
         }
