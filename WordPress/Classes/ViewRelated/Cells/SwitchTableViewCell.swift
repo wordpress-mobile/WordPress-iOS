@@ -21,7 +21,7 @@ public class SwitchTableViewCell : WPTableViewCell
         }
     }
     
-    public var isOn : Bool {
+    public var on : Bool {
         get {
             return flipSwitch.on
         }
@@ -49,7 +49,7 @@ public class SwitchTableViewCell : WPTableViewCell
     @IBAction private func rowWasPressed(recognizer: UITapGestureRecognizer) {
         // Manually relay the event, since .ValueChanged doesn't get posted if we toggle the switch
         // programatically
-        flipSwitch.setOn(!isOn, animated: true)
+        flipSwitch.setOn(!on, animated: true)
         switchDidChange(flipSwitch)
     }
     
