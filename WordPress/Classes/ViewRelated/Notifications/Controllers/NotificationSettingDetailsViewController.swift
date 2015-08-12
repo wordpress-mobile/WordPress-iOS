@@ -10,6 +10,19 @@ import Foundation
 
 public class NotificationSettingDetailsViewController : UITableViewController
 {
+    // MARK: - Initializers
+    public convenience init(settings: NotificationSettings) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings, stream: settings.streams.first!)
+    }
+    
+    public convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings, stream: stream)
+    }
+    
+    
+    
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -152,7 +165,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         let row                 = rows[indexPath.row]
         
         cell.name               = row.name
-        cell.isOn               = newValues[row.key] ?? (row.value ?? true)
+        cell.on                 = newValues[row.key] ?? (row.value ?? true)
         cell.onChange           = { [weak self] (newValue: Bool) in
             self?.newValues[row.key] = newValue
         }
