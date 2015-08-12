@@ -88,52 +88,50 @@ public class CommentsTableViewCell : UITableViewCell
         timestampLabel.textColor = Style.timestampColor
     }
     
+    public override func layoutSubviews() {
+        // Calculate the TextView's width, before hitting layoutSubviews!
+        var maxDetailsWidth = bounds.width
+        maxDetailsWidth     -= detailsLeadingConstraint.constant + detailsTrailingConstraint.constant
+        maxDetailsWidth     -= gravatarImageView.frame.maxX
+        detailsLabel.preferredMaxLayoutWidth = maxDetailsWidth
+        
+        super.layoutSubviews()
+    }
+    
     
     
     // MARK: - Private Helpers
     private func refreshDetailsLabel() {
-// TODO: Implement
-        
-//        The code ahead might look odd, but it's a way to retain the formatting
-//        we want and make the string easy to translate
-//        
-//        Note that we use printf modifiers because translators will be used to those
-//        and less likely to break them, but we do the substitutions manually so we
-//        can replace both the placeholders' content and their formatting.
-//
-        
-        let unwrappedContent    = content ?? String()
-        let unwrappedAuthor     = author ?? String()
+        // Unwrap the Fields
+        let unwrappedAuthor     = author    ?? String()
         let unwrappedTitle      = postTitle ?? String()
+        let unwrappedContent    = content   ?? String()
         
-        let title : String
-        if unwrappedContent.isEmpty {
-            title = NSLocalizedString("%1$@ on %2$@", comment: "'AUTHOR on POST TITLE' in a comment list")
-        } else {
+        // Localize the format
+        var title = NSLocalizedString("%1$@ on %2$@", comment: "'AUTHOR on POST TITLE' in a comment list")
+        if !unwrappedContent.isEmpty {
             title = NSLocalizedString("%1$@ on %2$@: %3$@", comment: "'AUTHOR on POST TITLE: COMMENT' in a comment list")
         }
 
-        let attributedDetails   = NSMutableAttributedString(string: title, attributes: Style.titleRegularStyle)
-        let rawString           = attributedDetails.string as NSString
-        let authorRange         = rawString.rangeOfString("%1$@")
-
-        if authorRange.location != NSNotFound {
-            let author = NSAttributedString(string: unwrappedAuthor, attributes: Style.titleBoldStyle)
-            attributedDetails.replaceCharactersInRange(authorRange, withAttributedString: author)
+        // Replace Author + Title + Content
+        let replacementMap = [
+            "%1$@" : NSAttributedString(string: unwrappedAuthor,    attributes: Style.titleBoldStyle),
+            "%2$@" : NSAttributedString(string: unwrappedTitle,     attributes: Style.titleBoldStyle),
+            "%3$@" : NSAttributedString(string: unwrappedContent,   attributes: Style.titleRegularStyle),
+        ]
+        
+        var attributedDetails = NSMutableAttributedString(string: title, attributes: Style.titleRegularStyle)
+        
+        for (key, attributedString) in replacementMap {
+            let range = (attributedDetails.string as NSString).rangeOfString(key)
+            if range.location == NSNotFound {
+                continue
+            }
+            
+            attributedDetails.replaceCharactersInRange(range, withAttributedString: attributedString)
         }
-
         
-//        NSRange postTitleRange = [[attributedTitle string] rangeOfString:@"%2$@"];
-//        if (postTitleRange.location != NSNotFound) {
-//            [attributedTitle replaceCharactersInRange:postTitleRange withAttributedString:[[NSAttributedString alloc] initWithString:postTitle attributes:[[self class] titleAttributesBold]]];
-//        }
-//
-//        NSRange contentRange = [[attributedTitle string] rangeOfString:@"%3$@"];
-//        if (contentRange.location != NSNotFound) {
-//            [attributedTitle replaceCharactersInRange:contentRange withString:content];
-//        }
-
-        
+        // Ready!
         detailsLabel.attributedText = attributedDetails
     }
     
@@ -151,6 +149,8 @@ public class CommentsTableViewCell : UITableViewCell
     
     // MARK: - IBOutlets
     @IBOutlet private var gravatarImageView : CircularImageView!
-    @IBOutlet private var detailsLabel : UILabel!
-    @IBOutlet private var timestampLabel : UILabel!
+    @IBOutlet private var detailsLabel      : UILabel!
+    @IBOutlet private var timestampLabel    : UILabel!
+    @IBOutlet private var detailsLeadingConstraint : NSLayoutConstraint!
+    @IBOutlet private var detailsTrailingConstraint : NSLayoutConstraint!
 }
