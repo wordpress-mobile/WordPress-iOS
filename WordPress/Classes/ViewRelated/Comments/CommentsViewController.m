@@ -306,11 +306,6 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
 }
 
-- (NSString *)sectionNameKeyPath
-{
-    return @"status";
-}
-
 - (NSString *)entityName
 {
     return NSStringFromClass([Comment class]);
