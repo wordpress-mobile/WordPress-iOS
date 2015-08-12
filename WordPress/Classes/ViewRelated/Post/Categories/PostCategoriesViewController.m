@@ -52,6 +52,17 @@
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
     }
     
+    switch (self.selectionMode) {
+        case (CategoriesSelectionModeParent): {
+            self.title = NSLocalizedString(@"Parent Category", @"Title for selecting parent category of a category");
+        } break;
+        case (CategoriesSelectionModePost): {
+            self.title = NSLocalizedString(@"Post Categories", @"Title for selecting categories for a post");
+        } break;
+        case (CategoriesSelectionModeBlogDefault): {
+            self.title = NSLocalizedString(@"Default Category", @"Title for selecting a default category for a post");
+        }
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated
