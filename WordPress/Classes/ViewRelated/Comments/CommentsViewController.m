@@ -19,6 +19,8 @@ static NSInteger const CommentsRefreshRowPadding               = 4;
 static NSInteger const CommentsFetchBatchSize                  = 10;
 static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
 
+static NSString *CommentsReuseIdentifier                        = @"CommentsReuseIdentifier";
+static NSString *CommentsLayoutIdentifier                       = @"CommentsLayoutIdentifier";
 
 
 @interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate>
@@ -127,7 +129,8 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
     // Register the cells
     NSString *nibName   = [CommentsTableViewCell classNameWithoutNamespaces];
     UINib *nibInstance  = [UINib nibWithNibName:nibName bundle:[NSBundle mainBundle]];
-    [self.tableView registerNib:nibInstance forCellReuseIdentifier:nibName];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsLayoutIdentifier];
+    [self.tableView registerNib:nibInstance forCellReuseIdentifier:CommentsReuseIdentifier];
 }
 
 - (void)configureTableViewFooter
@@ -169,13 +172,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    return 70;
+    
+    CommentsTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
+    [self configureCell:tableViewCell comment:comment];
+    
+    CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
+
+    return height;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *reuseIdentifier = [CommentsTableViewCell classNameWithoutNamespaces];
-    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:reuseIdentifier];
+    CommentsTableViewCell *cell = (CommentsTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CommentsReuseIdentifier];
     NSAssert([cell isKindOfClass:[CommentsTableViewCell class]], nil);
     
     [self configureCell:cell atIndexPath:indexPath];
@@ -242,13 +250,25 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 mi
 
 - (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment    = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
+    [self configureCell:cell comment:comment];
+}
+
+- (void)configureCell:(CommentsTableViewCell *)cell comment:(Comment *)comment
+{
+    NSParameterAssert(cell);
+    NSParameterAssert(comment);
     
     cell.author         = comment.authorForDisplay;
-    cell.postTitle      = comment.postTitle;
-    cell.content        = comment.content;
+    cell.postTitle      = comment.titleForDisplay;
+    cell.content        = comment.contentPreviewForDisplay;
     cell.timestamp      = [comment.dateCreated shortString];
-        
+    
+    // Don't download the gravatar, if it's the layout cell!
+    if ([cell.reuseIdentifier isEqualToString:CommentsLayoutIdentifier]) {
+        return;
+    }
+    
     if (comment.avatarURLForDisplay) {
         [cell downloadGravatarWithURL:comment.avatarURLForDisplay];
     } else {
