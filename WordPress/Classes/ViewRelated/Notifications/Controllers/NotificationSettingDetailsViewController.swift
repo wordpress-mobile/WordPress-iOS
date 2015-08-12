@@ -10,6 +10,19 @@ import Foundation
 
 public class NotificationSettingDetailsViewController : UITableViewController
 {
+    // MARK: - Initializers
+    public convenience init(settings: NotificationSettings) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings, stream: settings.streams.first!)
+    }
+    
+    public convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings, stream: stream)
+    }
+    
+    
+    
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
