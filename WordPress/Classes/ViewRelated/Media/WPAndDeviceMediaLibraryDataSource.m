@@ -118,7 +118,7 @@
         return;
     }
     [self.deviceLibraryDataSource unregisterChangeObserver:keys[0]];
-    [self.mediaLibraryDataSource registerChangeObserverBlock:keys[1]];
+    [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
 - (void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock
