@@ -21,6 +21,7 @@
 #import "WPGUIConstants.h"
 #import "PostCategoryService.h"
 #import "PostCategory.h"
+#import "PostCategoriesViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -54,9 +55,8 @@ NS_ENUM(NSInteger, SiteSettinsAlertTag) {
     SiteSettinsAlertTagSiteRemoval = 201,
 };
 
-NSInteger const EditSiteURLMinimumLabelWidth = 30;
-
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate,
+UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
@@ -467,7 +467,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 self.siteTitleCell.detailTextLabel.text = value;
                 if (![value isEqualToString:self.blog.blogName]){
                     self.blog.blogName = value;
-                    [self save:nil];
+                    [self saveSettings];
                 }
             };
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
@@ -483,7 +483,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
                 if (![normalizedTagline isEqualToString:self.blog.blogTagline]){
                     self.blog.blogTagline = normalizedTagline;
-                    [self save:nil];
+                    [self saveSettings];
                 }
             };
             [self.navigationController pushViewController:siteTaglineViewController animated:YES];
@@ -515,6 +515,26 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsWritingDefaultCategory:{
+            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategory];
+
+            PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
+                                                                                                           currentSelection:@[postCategory]
+                                                                                                              selectionMode:CategoriesSelectionModeBlogDefault];
+            postCategoriesViewController.delegate = self;
+            [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+        }break;
+        case SiteSettingsWritingDefaultPostFormat:{
+            //[self.navigationController pushViewController:siteTitleViewController animated:YES];
+        }break;
+
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
@@ -526,7 +546,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionWriting:
-            
+            [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionRemoveSite:{
             [self showRemoveSiteForBlog:self.blog];
@@ -774,20 +794,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 - (void)saveSettings
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    self.blog.blogName = self.siteTitleCell.detailTextLabel.text;
-    self.blog.blogTagline = self.siteTaglineCell.detailTextLabel.text;
-    self.blog.geolocationEnabled = self.geolocationEnabled;
     if ([self.blog hasChanges]) {
         [blogService updateSettingForBlog:self.blog success:^{
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         }];
     }
-}
-
-- (IBAction)save:(UIBarButtonItem *)sender
-{
-    [self saveSettings];
 }
 
 - (IBAction)cancel:(id)sender
@@ -889,6 +901,16 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self confirmRemoveSite];
         }
     }
+}
+
+#pragma mark - PostCategoriesViewControllerDelegate
+
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller
+                   didSelectCategory:(PostCategory *)category
+{
+    self.blog.defaultCategory = category.categoryID;
+    self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
+    [self saveSettings];
 }
 
 @end
