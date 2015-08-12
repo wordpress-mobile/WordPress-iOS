@@ -293,10 +293,10 @@ public class NotificationSettingsViewController : UIViewController
     
     private func paginationRowDescription(path: NSIndexPath) -> String {
         if isDisplayMoreRow(path) {
-            return NSLocalizedString("View all...", comment: "Displays More Rows")
+            return NSLocalizedString("View all…", comment: "Displays More Rows")
         }
         
-        return NSLocalizedString("Collapse", comment: "Displays Less Rows")
+        return NSLocalizedString("View less…", comment: "Displays Less Rows")
     }
     
     private func toggleDisplayMoreBlogs() {
