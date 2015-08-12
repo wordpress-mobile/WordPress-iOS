@@ -68,6 +68,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self refreshNoResultsView];
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.tableViewHandler clearCachedRowHeights];
+}
+
 
 #pragma mark - Configuration
 
