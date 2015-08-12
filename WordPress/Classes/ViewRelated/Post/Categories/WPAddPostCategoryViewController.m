@@ -14,7 +14,7 @@
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
-@property (nonatomic, strong) Post *post;
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) UITextField *createCatNameField;
 @property (nonatomic, strong) UITextField *parentCatNameField;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
@@ -23,18 +23,17 @@
 
 @implementation WPAddPostCategoryViewController
 
-- (instancetype)initWithPost:(Post *)post
+- (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.post = post;
+        _blog = blog;
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
     [super viewDidLoad];
 
     self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
@@ -49,14 +48,7 @@
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-}
-
-#pragma mark -
-#pragma mark Instance Methods
+#pragma mark - Instance Methods
 
 - (void)clearUI
 {
@@ -80,7 +72,6 @@
 
 - (void)dismiss
 {
-    DDLogMethod();
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -99,7 +90,7 @@
         return;
     }
 
-    PostCategory *category = [categoryService findWithBlogObjectID:self.post.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
+    PostCategory *category = [categoryService findWithBlogObjectID:self.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
     if (category) {
         // If there's an existing category with that name and parent, let's use that
         [self dismissWithCategory:category];
@@ -110,19 +101,18 @@
 
     [categoryService createCategoryWithName:catName
                      parentCategoryObjectID:self.parentCategory.objectID
-                            forBlogObjectID:self.post.blog.objectID
+                            forBlogObjectID:self.blog.objectID
                                     success:^(PostCategory *category) {
                                         [self removeProgressIndicator];
                                         [self dismissWithCategory:category];
                                     } failure:^(NSError *error) {
-                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                         [self removeProgressIndicator];
 
                                         if ([error code] == 403) {
                                             [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 
                                             // bad login/pass combination
-                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.post.blog];
+                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
                                             [self.navigationController pushViewController:editSiteViewController animated:YES];
 
                                         } else {
@@ -134,8 +124,9 @@
 - (void)dismissWithCategory:(PostCategory *)category
 {
     // Add the newly created category to the post
-    [self.post.categories addObject:category];
-    [self.post save];
+    if ([self.delegate respondsToSelector:@selector(addPostCategoryViewController:didAddCategory:)]) {
+        [self.delegate addPostCategoryViewController:self didAddCategory:category];
+    }
 
     // Cleanup and dismiss
     [self clearUI];
@@ -146,7 +137,7 @@
 
 - (void)showParentCategorySelector
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog currentSelection:nil selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
