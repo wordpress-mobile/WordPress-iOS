@@ -116,8 +116,9 @@
     
     NSOperation *operation = [remote getActiveThemeForBlogId:[blog dotComID]
                                                      success:^(RemoteTheme *remoteTheme) {
+                                                         Theme *theme = [self themeFromRemoteTheme:remoteTheme];
+                                                         
                                                          if (success) {
-                                                             Theme *theme = [self themeFromRemoteTheme:remoteTheme];
                                                              success(theme);
                                                          }
                                                      } failure:failure];
@@ -137,8 +138,9 @@
     
     NSOperation *operation = [remote getPurchasedThemesForBlogId:[blog dotComID]
                                                          success:^(NSArray *remoteThemes) {
+                                                             NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
+                                                             
                                                              if (success) {
-                                                                 NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
                                                                  success(themes);
                                                              }
                                                          } failure:failure];
@@ -159,8 +161,9 @@
     
     NSOperation *operation = [remote getThemeId:themeId
                                         success:^(RemoteTheme *remoteTheme) {
+                                            Theme *theme = [self themeFromRemoteTheme:remoteTheme];
+                                            
                                             if (success) {
-                                                Theme *theme = [self themeFromRemoteTheme:remoteTheme];
                                                 success(theme);
                                             }
                                         } failure:failure];
@@ -179,8 +182,9 @@
     ThemeServiceRemote *remote = [[ThemeServiceRemote alloc] initWithApi:account.restApi];
     
     NSOperation *operation = [remote getThemes:^(NSArray *remoteThemes) {
+        NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
+        
         if (success) {
-            NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
             success(themes);
         }
     } failure:failure];
@@ -200,8 +204,9 @@
     
     NSOperation *operation = [remote getThemesForBlogId:[blog dotComID]
                                                 success:^(NSArray *remoteThemes) {
+                                                    NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
+                                                    
                                                     if (success) {
-                                                        NSArray *themes = [self themesFromRemoteThemes:remoteThemes];
                                                         success(themes);
                                                     }
                                                 } failure:failure];
@@ -234,6 +239,15 @@
 
 #pragma mark - Parsing the dictionary replies
 
+/**
+ *  @brief      Updates our local theme matching the specified remote theme.
+ *  @details    If the local theme does not exist, it is created.
+ *
+ *  @param      remoteTheme     The remote theme containing the data to update locally.
+ *                              Cannot be nil.
+ *
+ *  @returns    The updated and matching local theme.
+ */
 - (Theme *)themeFromRemoteTheme:(RemoteTheme *)remoteTheme
 {
     NSParameterAssert([remoteTheme isKindOfClass:[RemoteTheme class]]);
@@ -253,6 +267,16 @@
     return theme;
 }
 
+
+/**
+ *  @brief      Updates our local themes matching the specified remote themes.
+ *  @details    If the local themes do not exist, they are created.
+ *
+ *  @param      remoteThemes    An array with the remote themes containing the data to update
+ *                              locally.  Cannot be nil.
+ *
+ *  @returns    An array with the updated and matching local themes.
+ */
 - (NSArray *)themesFromRemoteThemes:(NSArray *)remoteThemes
 {
     NSParameterAssert([remoteThemes isKindOfClass:[NSArray class]]);
