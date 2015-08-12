@@ -30,14 +30,14 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="reader-postaction-time" translatesAutoresizingMaskIntoConstraints="NO" id="rcg-tb-060">
-                                <rect key="frame" x="68" y="28" width="16" height="16"/>
+                                <rect key="frame" x="68" y="30.5" width="16" height="16"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="16" id="YZR-zM-ndp"/>
                                     <constraint firstAttribute="height" constant="16" id="xwF-CO-6ZI"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Timestamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bDl-id-9M7">
-                                <rect key="frame" x="88" y="24" width="85.5" height="20.5"/>
+                                <rect key="frame" x="88" y="28.5" width="85.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -46,13 +46,13 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="AUn-YX-qnu" secondAttribute="top" constant="12" id="8ks-PZ-pXh"/>
-                            <constraint firstItem="bDl-id-9M7" firstAttribute="centerY" secondItem="rcg-tb-060" secondAttribute="centerY" constant="-1" id="DOj-EN-RRl"/>
+                            <constraint firstItem="bDl-id-9M7" firstAttribute="centerY" secondItem="rcg-tb-060" secondAttribute="centerY" id="DOj-EN-RRl"/>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="AUn-YX-qnu" secondAttribute="leading" constant="12" id="DbB-wE-25b"/>
                             <constraint firstItem="Wrp-Wr-ZBq" firstAttribute="leading" secondItem="0Gm-n3-CNm" secondAttribute="trailing" constant="10" id="IXJ-3i-CFq"/>
-                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bDl-id-9M7" secondAttribute="bottom" constant="12" id="PVc-g0-lrn"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bDl-id-9M7" secondAttribute="bottom" constant="9" id="PVc-g0-lrn"/>
                             <constraint firstAttribute="trailing" secondItem="Wrp-Wr-ZBq" secondAttribute="trailing" constant="12" id="WyT-D4-F81"/>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="top" constant="4" id="Xqq-1P-og4"/>
-                            <constraint firstItem="rcg-tb-060" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="bottom" id="Zbd-5G-fWz"/>
+                            <constraint firstItem="rcg-tb-060" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="bottom" constant="2" id="Zbd-5G-fWz"/>
                             <constraint firstItem="bDl-id-9M7" firstAttribute="leading" secondItem="rcg-tb-060" secondAttribute="trailing" constant="4" id="eSq-C3-JsX"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0Gm-n3-CNm" secondAttribute="bottom" priority="750" constant="12" id="mv0-17-x7y"/>
                             <constraint firstItem="rcg-tb-060" firstAttribute="leading" secondItem="Wrp-Wr-ZBq" secondAttribute="leading" id="xOk-Yf-b3f"/>
