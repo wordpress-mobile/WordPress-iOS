@@ -42,7 +42,7 @@
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
 
     // Show the add category button if we're selecting categories for a post.
-    if (self.selectionMode == CategoriesSelectionModePost ) {
+    if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
         UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
         CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
         [button setImage:image forState:UIControlStateNormal];
