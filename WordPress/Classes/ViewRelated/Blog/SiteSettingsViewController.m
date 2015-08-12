@@ -22,6 +22,7 @@
 #import "PostCategoryService.h"
 #import "PostCategory.h"
 #import "PostCategoriesViewController.h"
+#import "PostSettingsSelectionViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
@@ -515,6 +516,35 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     }
 }
 
+- (void)showPostFormatSelector
+{
+    NSArray *titles = self.blog.sortedPostFormatNames;
+    NSArray *formats = self.blog.sortedPostFormats;
+    if (titles.count == 0 || self.blog.defaultPostFormatText == nil) {
+        return;
+    }
+    
+    NSDictionary *postFormatsDict = @{
+                                      @"DefaultValue"   : [titles firstObject],
+                                      @"Title"          : NSLocalizedString(@"Default Post Format", @"Title for screen to select a default post format for a blog"),
+                                      @"Titles"         : titles,
+                                      @"Values"         : formats,
+                                      @"CurrentValue"   : self.blog.defaultPostFormat
+                                      };
+    
+    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    __weak __typeof__(self) weakSelf = self;
+    vc.onItemSelected = ^(NSString *status) {
+        // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
+        if ([status isKindOfClass:[NSString class]]) {
+            weakSelf.blog.defaultPostFormat = status;
+            [weakSelf saveSettings];
+        }
+    };
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 - (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
 {
     switch (row) {
@@ -529,7 +559,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             [self.navigationController pushViewController:postCategoriesViewController animated:YES];
         }break;
         case SiteSettingsWritingDefaultPostFormat:{
-            //[self.navigationController pushViewController:siteTitleViewController animated:YES];
+            [self showPostFormatSelector];
         }break;
 
     }
