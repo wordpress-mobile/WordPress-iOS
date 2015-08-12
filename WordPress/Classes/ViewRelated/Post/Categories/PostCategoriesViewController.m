@@ -220,9 +220,17 @@
 
 - (void)addPostCategoryViewController:(WPAddPostCategoryViewController *)controller didAddCategory:(PostCategory *)category
 {
-    [self.selectedCategories addObject:category];
-    if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
-        [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+    if (self.selectionMode == CategoriesSelectionModeBlogDefault) {
+        [self.selectedCategories removeAllObjects];
+        [self.selectedCategories addObject:category];
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
+            [self.delegate postCategoriesViewController:self didSelectCategory:category];
+        }
+    } else {
+        [self.selectedCategories addObject:category];
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+            [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+        }
     }
 }
 
