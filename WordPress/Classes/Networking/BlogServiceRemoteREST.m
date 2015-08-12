@@ -217,7 +217,11 @@
     } else {
         remoteSettings.defaultCategory = @(1);
     }
-    remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
+    if ([json[@"settings"][@"default_post_format"] isEqualToString:@"0"]) {
+        remoteSettings.defaultPostFormat = @"standard";
+    } else {
+        remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
+    }
     
     return remoteSettings;
 }
