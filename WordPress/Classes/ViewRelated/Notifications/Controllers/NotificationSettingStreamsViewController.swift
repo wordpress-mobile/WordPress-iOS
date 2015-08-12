@@ -11,6 +11,14 @@ import Foundation
 
 public class NotificationSettingStreamsViewController : UITableViewController
 {
+    // MARK: - Initializers
+    public convenience init(settings: NotificationSettings) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings)
+    }
+
+
+    
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,11 +59,11 @@ public class NotificationSettingStreamsViewController : UITableViewController
     
     
     // MARK: - Public Helpers
-    public func setupWithSettings(settings: NotificationSettings) {
+    public func setupWithSettings(streamSettings: NotificationSettings) {
         // Title
-        switch settings.channel {
+        switch streamSettings.channel {
         case let .Blog(blogId):
-            title = settings.blog?.blogName ?? settings.channel.description()
+            title = streamSettings.blog?.blogName ?? streamSettings.channel.description()
         case .Other:
             title = NSLocalizedString("Other Sites", comment: "Other Notifications Streams Title")
         default:
@@ -64,8 +72,8 @@ public class NotificationSettingStreamsViewController : UITableViewController
         }
         
         // Structures
-        self.settings       = settings
-        self.sortedStreams  = settings.streams.sorted { $0.kind.description() > $1.kind.description() }
+        settings       = streamSettings
+        sortedStreams  = streamSettings.streams.sorted { $0.kind.description() > $1.kind.description() }
         
         tableView.reloadData()
     }
@@ -123,8 +131,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
-        detailsViewController.setupWithSettings(settings!, stream: stream)
+        let detailsViewController = NotificationSettingDetailsViewController(settings: settings!, stream: stream)
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     
