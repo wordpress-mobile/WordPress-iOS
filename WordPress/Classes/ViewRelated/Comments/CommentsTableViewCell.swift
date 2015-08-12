@@ -1,7 +1,7 @@
 import Foundation
 
 
-public class CommentsTableViewCell : UITableViewCell
+public class CommentsTableViewCell : WPTableViewCell
 {
     // MARK: - Public Properties
     public var author : String? {
