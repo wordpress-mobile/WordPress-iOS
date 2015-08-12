@@ -35,7 +35,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.navigationItem.title = NSLocalizedString(@"Sharing", @"Title for blog detail sharing screen.");
@@ -46,14 +47,16 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return SharingSectionCount;
 }
 
@@ -78,7 +81,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     return nil;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     switch (section) {
         case SharingPublicize:
             return self.publicizeServices.count;
@@ -87,7 +91,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:PublicizeCellIdentifier forIndexPath:indexPath];
     [WPStyleGuide configureTableViewCell:cell];
 
@@ -95,7 +100,14 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
         case SharingPublicize: {
             Publicizer *publicizer = self.publicizeServices[indexPath.row];
             cell.textLabel.text = publicizer.label;
-            } break;
+
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeSystem];
+            [button addTarget:self action:@selector(cellButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            NSString *title = publicizer.isConnected ? NSLocalizedString(@"Disconnect", @"Button title to disconnect a Publicize service") : NSLocalizedString(@"Connect", @"Button title to connect a Publicize service");
+            [button setTitle:title forState:UIControlStateNormal];
+            [button sizeToFit];
+            cell.accessoryView = button;
+        } break;
         default:
             break;
     }
@@ -103,11 +115,28 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
     return cell;
 }
 
+- (void)cellButtonTapped:(UIButton *)sender
+{
+    UITableViewCell *tappedCell = (UITableViewCell *)[sender superview];
+    NSIndexPath *tappedPath = [self.tableView indexPathForCell:tappedCell];
+    [self tableView:self.tableView accessoryButtonTappedForRowWithIndexPath:tappedPath];
+}
+
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    Publicizer *publicizer = self.publicizeServices[indexPath.row];
+    if (publicizer.isConnected) {
+#warning implement disconnection
+    } else {
+#warning implement connection
+    }
 }
 
 @end
