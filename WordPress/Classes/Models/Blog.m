@@ -238,20 +238,31 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray *)sortedPostFormats
+{
+    if ([self.postFormats count] == 0) {
+        return @[];
+    }
+    NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
+ 
+    if (self.postFormats[@"standard"]) {
+        [sortedFormats addObject:@"standard"];
+    }
+    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![key isEqual:@"standard"]) {
+            [sortedFormats addObject:key];
+        }
+    }];
+
+    return [NSArray arrayWithArray:sortedFormats];
+}
+
 - (NSArray *)sortedPostFormatNames
 {
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
 
-    if ([self.postFormats count] != 0) {
-        id standardPostFormat = [self.postFormats objectForKey:@"standard"];
-        if (standardPostFormat) {
-            [sortedNames addObject:standardPostFormat];
-        }
-        [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if (![key isEqual:@"standard"]) {
-                [sortedNames addObject:obj];
-            }
-        }];
+    for (NSString *key in self.sortedPostFormats) {
+        [sortedNames addObject:self.postFormats[key]];
     }
 
     return [NSArray arrayWithArray:sortedNames];
