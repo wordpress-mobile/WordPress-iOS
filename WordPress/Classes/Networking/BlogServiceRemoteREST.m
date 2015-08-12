@@ -212,7 +212,7 @@
     remoteSettings.name = [json stringForKey:@"name"];
     remoteSettings.desc = [json stringForKey:@"description"];
     
-    if (json[@"settings.default_category"]) {
+    if (json[@"settings"][@"default_category"]) {
         remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
     } else {
         remoteSettings.defaultCategory = @(1);
