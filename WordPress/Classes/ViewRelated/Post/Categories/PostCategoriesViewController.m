@@ -43,13 +43,11 @@
 
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
+                                                                               style:UIBarButtonItemStylePlain
+                                                                              target:self
+                                                                              action:@selector(showAddNewCategory)];
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
     }
     
     switch (self.selectionMode) {
