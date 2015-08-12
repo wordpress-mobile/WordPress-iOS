@@ -57,6 +57,15 @@ static NSDateFormatter *dateFormatter;
     return theme;
 }
 
+#pragma mark - CoreData helpers
+
++ (NSString *)entityName
+{
+    return NSStringFromClass([self class]);
+}
+
+#pragma mark - Misc
+
 - (BOOL)isCurrentTheme
 {
     return [self.blog.currentThemeId isEqualToString:self.themeId];
