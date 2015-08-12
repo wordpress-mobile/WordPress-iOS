@@ -7,9 +7,9 @@
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
-@interface PostCategoriesViewController ()
+@interface PostCategoriesViewController () <WPAddPostCategoryViewControllerDelegate>
 
-@property (nonatomic, strong) Post *post;
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
 @property (nonatomic, strong) NSMutableArray *selectedCategories;
 @property (nonatomic, strong) NSArray *originalSelection;
@@ -20,12 +20,15 @@
 
 @implementation PostCategoriesViewController
 
-- (instancetype)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+- (instancetype)initWithBlog:(Blog *)blog
+            currentSelection:(NSArray *)originalSelection
+               selectionMode:(CategoriesSelectionMode)selectionMode
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        self.selectionMode = selectionMode;
-        self.post = post;
+        _selectionMode = selectionMode;
+        _blog = blog;
+        _originalSelection = originalSelection;
     }
     return self;
 }
@@ -48,6 +51,7 @@
 
         [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
     }
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,21 +59,6 @@
     [super viewWillAppear:animated];
 
     [self configureCategories];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    // Save changes.
-    self.post.categories = [NSMutableSet setWithArray:self.selectedCategories];
-    [self.post save];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
 #pragma mark - Instance Methods
@@ -81,20 +70,21 @@
 
 - (void)showAddNewCategory
 {
-    DDLogMethod();
-    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithPost:self.post];
+    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithBlog:self.blog];
+    addCategoryViewController.delegate = self;
     [self.navigationController pushViewController:addCategoryViewController animated:YES];
 }
 
 - (void)configureCategories
 {
-    self.selectedCategories = [NSMutableArray arrayWithArray:[self.post.categories allObjects]];
-    self.originalSelection = [self.selectedCategories copy];
+    if (!self.selectedCategories) {
+        self.selectedCategories = [self.originalSelection mutableCopy];
+    }
     self.categoryIndentationDict = [NSMutableDictionary dictionary];
 
     // Get sorted categories by parent/child relationship
     WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
-    [tree getChildrenFromObjects:[self.post.blog sortedCategories]];
+    [tree getChildrenFromObjects:[self.blog sortedCategories]];
     self.categories = [tree getAllObjects];
 
     // Get the indentation level of each category.
@@ -165,7 +155,7 @@
     [WPStyleGuide configureTableViewCell:cell];
 
     // Only show checkmarks if we're selecting for a post.
-    if (self.selectionMode == CategoriesSelectionModePost) {
+    if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
         if ([self.selectedCategories containsObject:category]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
@@ -181,23 +171,47 @@
     [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
 
     PostCategory *category = self.categories[indexPath.row];
+    switch (self.selectionMode) {
+        case (CategoriesSelectionModeParent): {
+            // If we're choosing a parent category then we're done.
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
+                [self.delegate postCategoriesViewController:self didSelectCategory:category];
+            }
 
-    // If we're choosing a parent category then we're done.
-    if (self.selectionMode == CategoriesSelectionModeParent) {
-        if ([self.delegate respondsToSelector:@selector(postCategoriesViewControllerdidSelectCategory:)]) {
-            [self.delegate postCategoriesViewController:self didSelectCategory:category];
+            [self.navigationController popViewControllerAnimated:YES];
+            return;
+        } break;
+        case (CategoriesSelectionModePost): {
+            if ([self.selectedCategories containsObject:category]) {
+                [self.selectedCategories removeObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+            } else {
+                [self.selectedCategories addObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+                [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+            }
+        } break;
+        case (CategoriesSelectionModeBlogDefault): {
+            [self.selectedCategories removeAllObjects];
+            [self.selectedCategories addObject:category];
+            [self.tableView reloadData];
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
+                [self.delegate postCategoriesViewController:self didSelectCategory:category];
+            }
         }
-
-        [self.navigationController popViewControllerAnimated:YES];
-        return;
     }
+}
 
-    if ([self.selectedCategories containsObject:category]) {
-        [self.selectedCategories removeObject:category];
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
-    } else {
-        [self.selectedCategories addObject:category];
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+#pragma mark - WPAddPostCategoryViewControllerDelegate
+
+- (void)addPostCategoryViewController:(WPAddPostCategoryViewController *)controller didAddCategory:(PostCategory *)category
+{
+    [self.selectedCategories addObject:category];
+    if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+        [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
     }
 }
 
