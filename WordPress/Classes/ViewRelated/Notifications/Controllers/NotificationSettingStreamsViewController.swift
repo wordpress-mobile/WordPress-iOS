@@ -11,6 +11,14 @@ import Foundation
 
 public class NotificationSettingStreamsViewController : UITableViewController
 {
+    // MARK: - Initializers
+    public convenience init(settings: NotificationSettings) {
+        self.init(style: .Grouped)
+        setupWithSettings(settings)
+    }
+
+
+    
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,9 +114,7 @@ public class NotificationSettingStreamsViewController : UITableViewController
             return
         }
         
-        let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
-        detailsViewController.setupWithSettings(settings!, stream: stream)
-        
+        let detailsViewController = NotificationSettingDetailsViewController(settings: settings!, stream: stream)        
         navigationController?.pushViewController(detailsViewController, animated: true)
     }
     

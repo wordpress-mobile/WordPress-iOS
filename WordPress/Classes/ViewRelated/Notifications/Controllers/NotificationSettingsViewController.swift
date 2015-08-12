@@ -294,13 +294,11 @@ public class NotificationSettingsViewController : UIViewController
         switch settings.channel {
         case .WordPressCom:
             // WordPress.com Row will push the SettingDetails ViewController, directly
-            let detailsViewController = NotificationSettingDetailsViewController(style: .Grouped)
-            detailsViewController.setupWithSettings(settings, stream: settings.streams.first!)
+            let detailsViewController = NotificationSettingDetailsViewController(settings: settings)
             navigationController?.pushViewController(detailsViewController, animated: true)
         default:
             // Our Sites + 3rd Party Sites rows will push the Streams View
-            let streamsViewController = NotificationSettingStreamsViewController(style: .Grouped)
-            streamsViewController.setupWithSettings(settings)
+            let streamsViewController = NotificationSettingStreamsViewController(settings: settings)
             navigationController?.pushViewController(streamsViewController, animated: true)
         }
     }
