@@ -83,7 +83,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) NSString       *password;
 
 // Readonly Properties
-@property (nonatomic,   weak,  readonly) NSArray        *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormats;
 @property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
 @property (nonatomic,   weak,  readonly) NSString       *version;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
