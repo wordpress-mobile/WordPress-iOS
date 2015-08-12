@@ -124,22 +124,6 @@ static NSString *const SearchHeaderIdentifier = @"search_header";
 
 - (void)syncThemesAndCurrentTheme
 {
-    // Theme fetching code was deactivated until this service is replaced by the new version.
-    // This VC is currently not available to our users.
-    //
-    /*
-    void (^failureBlock)(NSError *) = ^(NSError *error) {
-        [WPError showNetworkingAlertWithError:error];
-        [_refreshHeaderView endRefreshing];
-    };
-    [Theme fetchAndInsertThemesForBlog:self.blog success:^{
-        [Theme fetchCurrentThemeForBlog:self.blog success:^{
-            [self currentThemeForBlog];
-            [self.collectionView reloadData];
-            [_refreshHeaderView endRefreshing];
-        } failure:failureBlock];
-    } failure:failureBlock];
-     */
 }
 
 - (void)toggleNoThemesView:(BOOL)show
