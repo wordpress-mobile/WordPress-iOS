@@ -27,8 +27,9 @@ extension WPStyleGuide
         
         // MARK: - Private Properties Properties
         //
-        private static let titleRegularFont         = WPFontManager.openSansRegularFontOfSize(14)
-        private static let titleBoldFont            = WPFontManager.openSansBoldFontOfSize(14)
+        private static let titleFontSize            = CGFloat(14)
+        private static let titleRegularFont         = WPFontManager.openSansRegularFontOfSize(titleFontSize)
+        private static let titleBoldFont            = WPFontManager.openSansSemiBoldFontOfSize(titleFontSize)
         
         private static let titleTextColor           = WPStyleGuide.littleEddieGrey()
         private static let titleLineSize            = CGFloat(18)
