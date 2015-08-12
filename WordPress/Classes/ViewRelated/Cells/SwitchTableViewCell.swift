@@ -82,5 +82,5 @@ public class SwitchTableViewCell : WPTableViewCell
     private let tapGestureRecognizer = UITapGestureRecognizer()
     
     // MARK: - Private Outlets
-    @IBOutlet private var flipSwitch : UISwitch!
+    private var flipSwitch : UISwitch!
 }
