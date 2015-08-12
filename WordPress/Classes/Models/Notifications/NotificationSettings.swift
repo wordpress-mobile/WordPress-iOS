@@ -165,7 +165,7 @@ public class NotificationSettings
             postLiked        : NSLocalizedString("Likes on my posts",        comment: "Setting: indicates if Replies to your comments will be notified"),
             follower         : NSLocalizedString("Site follows",             comment: "Setting: indicates if New Follows will be notified"),
             achievement      : NSLocalizedString("Site achievements",        comment: "Setting: indicates if Achievements will be notified"),
-            mention          : NSLocalizedString("Username Mentions",        comment: "Setting: indicates if Mentions will be notified"),
+            mention          : NSLocalizedString("Username mentions",        comment: "Setting: indicates if Mentions will be notified"),
             commentReplied   : NSLocalizedString("Replies to your comments", comment: "Setting: indicates if Replies to Comments will be notified"),
             marketing        : NSLocalizedString("Suggestions",              comment: "Setting: WordPress.com Suggestions"),
             research         : NSLocalizedString("Research",                 comment: "Setting: WordPress.com Surveys"),
