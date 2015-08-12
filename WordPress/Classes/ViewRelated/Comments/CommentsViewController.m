@@ -12,12 +12,11 @@
 #import "ContextManager.h"
 
 
-static CGFloat const CommentsDefaultCellHeight                 = 44.0;
-static CGRect const CommentsActivityFooterFrame                = {0.0, 0.0, 30.0, 30.0};
-static CGFloat const CommentsActivityFooterHeight              = 50.0;
-static NSInteger const CommentsRefreshRowPadding               = 4;
-static NSInteger const CommentsFetchBatchSize                  = 10;
-static NSTimeInterval const CommentsRefreshTimeoutInSeconds    = 60 * 5; // 5 minutes
+static CGRect const CommentsActivityFooterFrame                 = {0.0, 0.0, 30.0, 30.0};
+static CGFloat const CommentsActivityFooterHeight               = 50.0;
+static NSInteger const CommentsRefreshRowPadding                = 4;
+static NSInteger const CommentsFetchBatchSize                   = 10;
+static NSTimeInterval const CommentsRefreshTimeoutInSeconds     = 60 * 5; // 5 minutes
 
 static NSString *CommentsReuseIdentifier                        = @"CommentsReuseIdentifier";
 static NSString *CommentsLayoutIdentifier                       = @"CommentsLayoutIdentifier";
@@ -196,7 +195,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 {
     // Note:
     // Without an estimated height, UITableView will have an erratic behavior
-    return CommentsDefaultCellHeight;
+    return WPTableViewDefaultRowHeight;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
