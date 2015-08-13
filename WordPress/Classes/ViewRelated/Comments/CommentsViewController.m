@@ -289,6 +289,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     NSParameterAssert(comment);
     
     cell.author         = comment.authorForDisplay;
+    cell.approved       = [comment.status isEqualToString:CommentStatusApproved];
     cell.postTitle      = comment.titleForDisplay;
     cell.content        = comment.contentPreviewForDisplay;
     cell.timestamp      = [comment.dateCreated shortString];
