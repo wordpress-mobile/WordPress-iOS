@@ -20,7 +20,7 @@ pod 'NSLogger-CocoaLumberjack-connector', :git => 'https://github.com/steipete/N
 pod 'google-plus-ios-sdk', '~>1.5'
 pod 'CrashlyticsLumberjack', '2.0.1-beta'
 pod 'HockeySDK', '~>3.6.0'
-pod 'Helpshift', '~>4.10.0'
+pod 'Helpshift', '~>4.12.0'
 pod 'Lookback', '0.9.2', :configurations => ['Release-Internal']
 pod 'MRProgress', '~>0.7.0'
 
