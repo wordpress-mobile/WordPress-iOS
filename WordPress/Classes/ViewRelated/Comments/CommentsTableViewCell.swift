@@ -6,39 +6,30 @@ public class CommentsTableViewCell : WPTableViewCell
     // MARK: - Public Properties
     public var author : String? {
         didSet {
-            if author != oldValue {
-                refreshDetailsLabel()
-            }
+            refreshDetailsLabel()
         }
     }
     public var postTitle : String? {
         didSet {
-            postTitle = postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
-
-            if postTitle != oldValue {
-                refreshDetailsLabel()
-            }
+            refreshDetailsLabel()
         }
     }
     public var content : String? {
         didSet {
-            if content != oldValue {
-                refreshDetailsLabel()
-            }
+            refreshDetailsLabel()
         }
     }
     public var timestamp : String? {
-        get {
-            return timestampLabel?.text
-        }
-        set {
-            timestampLabel?.text = newValue
+        didSet {
+            refreshTimestampLabel()
         }
     }
     public var approved : Bool = false {
         didSet {
             refreshDetailsLabel()
+            refreshTimestampLabel()
             refreshBackground()
+            refreshImages()
         }
     }
     
@@ -50,8 +41,10 @@ public class CommentsTableViewCell : WPTableViewCell
             return
         }
         
+        let placeholderImage = Style.gravatarPlaceholderImage(isApproved: approved)
+
         if url == nil {
-            gravatarImageView.image = Style.gravatarPlaceholderImage
+            gravatarImageView.image = placeholderImage
             return
         }
         
@@ -59,7 +52,7 @@ public class CommentsTableViewCell : WPTableViewCell
         let scaledURL   = url!.patchGravatarUrlWithSize(size)
         
         gravatarImageView.downloadImage(scaledURL,
-            placeholderImage    : Style.gravatarPlaceholderImage,
+            placeholderImage    : placeholderImage,
             success             :   { (image: UIImage) in
                                         self.gravatarImageView.displayImageWithFadeInAnimation(image)
                                     },
@@ -71,7 +64,8 @@ public class CommentsTableViewCell : WPTableViewCell
     public func downloadGravatarWithGravatarEmail(email: String?) {
         // TODO: For consistency / clarity, let's rename UIImageView+Gravatar helpers in another PR.
         // This helper downloads an image, and it's not simply assigning it!
-        gravatarImageView.setImageWithGravatarEmail(email)
+        let fallbackImage = Style.gravatarPlaceholderImage(isApproved: approved)
+        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: fallbackImage)
     }
     
     
@@ -80,14 +74,13 @@ public class CommentsTableViewCell : WPTableViewCell
     public override func awakeFromNib() {
         super.awakeFromNib()
         
+        assert(layoutView != nil)
         assert(gravatarImageView != nil)
         assert(detailsLabel != nil)
+        assert(timestampImageView != nil)
         assert(timestampLabel != nil)
         assert(detailsLeadingConstraint != nil)
         assert(detailsTrailingConstraint != nil)
-        
-        timestampLabel.font = Style.timestampFont
-        timestampLabel.textColor = Style.timestampColor
     }
     
     public override func layoutSubviews() {
@@ -100,29 +93,68 @@ public class CommentsTableViewCell : WPTableViewCell
         super.layoutSubviews()
     }
     
+    public override func setSelected(selected: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setSelected(selected, animated: animated)
+        refreshBackground()
+    }
+    
+    public override func setHighlighted(highlighted: Bool, animated: Bool) {
+        // Note: this is required, since the cell unhighlight mechanism will reset the new background color
+        super.setHighlighted(highlighted, animated: animated)
+        refreshBackground()
+    }
+    
     
     
     // MARK: - Private Helpers
     private func refreshDetailsLabel() {
-        // Unwrap the Fields
-        let unwrappedAuthor     = author    ?? String()
-        let unwrappedTitle      = postTitle ?? String()
-        let unwrappedContent    = content   ?? String()
+        detailsLabel.attributedText = attributedDetailsText(approved)
+    }
+    
+    private func refreshTimestampLabel() {
+        let style               = Style.timestampStyle(isApproved: approved)
+        let unwrappedTimestamp  = timestamp ?? String()
+        timestampLabel?.attributedText = NSAttributedString(string: unwrappedTimestamp, attributes: style)
+    }
+    
+    private func refreshBackground() {
+        backgroundColor = Style.backgroundColor(isApproved: approved)
+    }
+    
+    private func refreshImages() {
+        timestampImageView.image = Style.timestampImage(isApproved: approved)
+    }
+    
+    
+    // MARK: - Details Helpers
+    private func attributedDetailsText(isApproved: Bool) -> NSAttributedString {
+        // Unwrap
+        let unwrappedAuthor     = author ?? String()
+        let unwrappedTitle      = postTitle ?? NSLocalizedString("(No Title)", comment: "Empty Post Title")
+        let unwrappedContent    = content ?? String()
+        
+        // Styles
+        let detailsBoldStyle    = Style.detailsBoldStyle(isApproved: isApproved)
+        let detailsItalicsStyle = Style.detailsItalicsStyle(isApproved: isApproved)
+        let detailsRegularStyle = Style.detailsRegularStyle(isApproved: isApproved)
+        let regularRedStyle     = Style.detailsRegularRedStyle(isApproved: isApproved)
         
         // Localize the format
-        var title = NSLocalizedString("%1$@ on %2$@", comment: "'AUTHOR on POST TITLE' in a comment list")
-        if !unwrappedContent.isEmpty {
-            title = NSLocalizedString("%1$@ on %2$@: %3$@", comment: "'AUTHOR on POST TITLE: COMMENT' in a comment list")
+        var details = NSLocalizedString("%1$@ on %2$@: %3$@", comment: "'AUTHOR on POST TITLE: COMMENT' in a comment list")
+        if unwrappedContent.isEmpty {
+            details = NSLocalizedString("%1$@ on %2$@", comment: "'AUTHOR on POST TITLE' in a comment list")
         }
-
-        // Replace Author + Title + Content
-        let replacementMap = [
-            "%1$@" : NSAttributedString(string: unwrappedAuthor,    attributes: Style.titleBoldStyle),
-            "%2$@" : NSAttributedString(string: unwrappedTitle,     attributes: Style.titleBoldStyle),
-            "%3$@" : NSAttributedString(string: unwrappedContent,   attributes: Style.titleRegularStyle),
+        
+        // Arrange the Replacement Map
+        let replacementMap  = [
+            "%1$@" : NSAttributedString(string: unwrappedAuthor,    attributes: detailsBoldStyle),
+            "%2$@" : NSAttributedString(string: unwrappedTitle,     attributes: detailsItalicsStyle),
+            "%3$@" : NSAttributedString(string: unwrappedContent,   attributes: detailsRegularStyle)
         ]
         
-        var attributedDetails = NSMutableAttributedString(string: title, attributes: Style.titleRegularStyle)
+        // Replace Author + Title + Content
+        var attributedDetails = NSMutableAttributedString(string: details, attributes: regularRedStyle)
         
         for (key, attributedString) in replacementMap {
             let range = (attributedDetails.string as NSString).rangeOfString(key)
@@ -133,12 +165,7 @@ public class CommentsTableViewCell : WPTableViewCell
             attributedDetails.replaceCharactersInRange(range, withAttributedString: attributedString)
         }
         
-        // Ready!
-        detailsLabel.attributedText = attributedDetails
-    }
-    
-    private func refreshBackground() {
-// TODO: Implement
+        return attributedDetails
     }
     
     
