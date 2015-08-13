@@ -523,13 +523,16 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     if (titles.count == 0 || self.blog.defaultPostFormatText == nil) {
         return;
     }
-    
+    NSString *currentDefaultPostFormat = self.blog.defaultPostFormat;
+    if (!currentDefaultPostFormat) {
+        currentDefaultPostFormat = formats[0];
+    }
     NSDictionary *postFormatsDict = @{
                                       @"DefaultValue"   : [titles firstObject],
                                       @"Title"          : NSLocalizedString(@"Default Post Format", @"Title for screen to select a default post format for a blog"),
                                       @"Titles"         : titles,
                                       @"Values"         : formats,
-                                      @"CurrentValue"   : self.blog.defaultPostFormat
+                                      @"CurrentValue"   : currentDefaultPostFormat
                                       };
     
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
@@ -550,7 +553,11 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategory];
+            NSNumber *defaultCategoryID = self.blog.defaultCategory;
+            if (!defaultCategoryID) {
+                defaultCategoryID = @(1);
+            }
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
 
             PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
                                                                                                            currentSelection:@[postCategory]
