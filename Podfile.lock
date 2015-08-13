@@ -22,8 +22,8 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - AMPopTip (0.9.11)
-  - Automattic-Tracks-iOS (0.0.5):
-    - CocoaLumberjack (~> 2.0)
+  - Automattic-Tracks-iOS (0.0.6):
+    - CocoaLumberjack (= 2.0.0)
     - UIDeviceIdentifier (~> 0.4)
   - CocoaLumberjack (2.0.0):
     - CocoaLumberjack/Default (= 2.0.0)
@@ -146,7 +146,7 @@ PODS:
   - WordPressApi (0.3.4):
     - AFNetworking (~> 2.5.1)
     - wpxmlrpc (~> 0.7)
-  - WordPressCom-Analytics-iOS (0.0.35)
+  - WordPressCom-Analytics-iOS (0.0.36)
   - WordPressCom-Stats-iOS (0.4.5):
     - AFNetworking (~> 2.5)
     - CocoaLumberjack (= 2.0.0)
@@ -161,7 +161,7 @@ DEPENDENCIES:
   - AFNetworking (~> 2.5.3)
   - AMPopTip (~> 0.7)
   - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`,
-    tag `0.0.5`)
+    tag `0.0.6`)
   - CocoaLumberjack (= 2.0.0)
   - CrashlyticsLumberjack (= 2.0.1-beta)
   - DTCoreText (= 1.6.13)
@@ -194,10 +194,10 @@ DEPENDENCIES:
   - WordPress-AppbotX (from `https://github.com/wordpress-mobile/appbotx.git`, commit
     `303b8068530389ea87afde38b77466d685fe3210`)
   - WordPress-iOS-Editor (from `https://github.com/wordpress-mobile/WordPress-Editor-iOS.git`,
-    commit `bbe94942eb83296abd92694361e439419650312d`)
+    commit `1b614724fbc005be4346c7870498658c8b537267`)
   - WordPress-iOS-Shared (= 0.4.2)
   - WordPressApi (~> 0.3.4)
-  - WordPressCom-Analytics-iOS (= 0.0.35)
+  - WordPressCom-Analytics-iOS (= 0.0.36)
   - WordPressCom-Stats-iOS (= 0.4.5)
   - WPMediaPicker (~> 0.5.0)
   - wpxmlrpc (~> 0.8)
@@ -205,7 +205,7 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.5
+    :tag: 0.0.6
   EmailChecker:
     :podspec: https://raw.github.com/wordpress-mobile/EmailChecker/develop/ios/EmailChecker.podspec
   MGImageUtilities:
@@ -221,13 +221,13 @@ EXTERNAL SOURCES:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: bbe94942eb83296abd92694361e439419650312d
+    :commit: 1b614724fbc005be4346c7870498658c8b537267
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 CHECKOUT OPTIONS:
   Automattic-Tracks-iOS:
     :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
-    :tag: 0.0.5
+    :tag: 0.0.6
   MGImageUtilities:
     :commit: e946cf3d97eb95372f4fc4478bf2e0099e73f4b0
     :git: git://github.com/wordpress-mobile/MGImageUtilities.git
@@ -241,14 +241,14 @@ CHECKOUT OPTIONS:
     :commit: 303b8068530389ea87afde38b77466d685fe3210
     :git: https://github.com/wordpress-mobile/appbotx.git
   WordPress-iOS-Editor:
-    :commit: bbe94942eb83296abd92694361e439419650312d
+    :commit: 1b614724fbc005be4346c7870498658c8b537267
     :git: https://github.com/wordpress-mobile/WordPress-Editor-iOS.git
 
 SPEC CHECKSUMS:
   1PasswordExtension: 66365c1e1264a83edec6c84c6eb2df41b50a70d3
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   AMPopTip: cd807573e1bbd8f6b1e963a6439f2710dc303c5c
-  Automattic-Tracks-iOS: ab220f67739e830d00dffb2caa4962e19dbde373
+  Automattic-Tracks-iOS: c3eaa627c754ca27bf9b84d0a909c0c32aff18cf
   CocoaLumberjack: a6f77d987d65dc7ba86b0f84db7d0b9084f77bcb
   CrashlyticsLumberjack: 26034b4b6d8b0bf547ea9ba201ff53c6cd50f971
   DTCoreText: d90a4dca8e4f7b0eb18f12a967563b77a75694f0
@@ -283,7 +283,7 @@ SPEC CHECKSUMS:
   WordPress-iOS-Editor: 3ed3f3f1eb226b34542b471a7db41419815bbf28
   WordPress-iOS-Shared: 310e1c872584303a6f28f62e83085cdd44051711
   WordPressApi: 51f1b2a07b0c51bf5527c744a4deed2b4159c69f
-  WordPressCom-Analytics-iOS: a6c71241b39f1e366a6473ce38f2786481f8acd8
+  WordPressCom-Analytics-iOS: a54b61f75be5a43fe32be98c0b286cb18fc2abee
   WordPressCom-Stats-iOS: fae392ee157953d27f247b0303a4d772852aa257
   WPMediaPicker: 0757988f1519c20b92c91f470c41633ac42e3a0e
   wpxmlrpc: 053c9cbed13dcec08515a4ffeb51780f6e858cc7
