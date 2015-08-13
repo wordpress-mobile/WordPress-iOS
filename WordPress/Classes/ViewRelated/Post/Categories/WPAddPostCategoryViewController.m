@@ -10,13 +10,17 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "WPTableViewCell.h"
+#import "WPTextFieldTableViewCell.h"
+
+static const CGFloat HorizontalMargin = 15.0f;
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
 @property (nonatomic, strong) Blog *blog;
-@property (nonatomic, strong) UITextField *createCatNameField;
-@property (nonatomic, strong) UITextField *parentCatNameField;
+@property (nonatomic, strong) UITextField *categoryTextField;
+@property (nonatomic, strong) WPTableViewCell *createCategoryCell;
+@property (nonatomic, strong) WPTableViewCell *parentCategoryCell;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
 
 @end
@@ -52,8 +56,8 @@
 
 - (void)clearUI
 {
-    self.createCatNameField.text = @"";
-    self.parentCatNameField.text = @"";
+    self.categoryTextField.text = @"";
+    self.parentCategoryCell.textLabel.text = @"";
 }
 
 - (void)addProgressIndicator
@@ -79,13 +83,13 @@
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:context];
-    NSString *catName = [self.createCatNameField.text trim];
+    NSString *catName = [self.categoryTextField.text trim];
 
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
-        self.createCatNameField.text = @""; // To clear whitespace that was trimed.
+        self.categoryTextField.text = @""; // To clear whitespace that was trimed.
 
         return;
     }
@@ -158,62 +162,54 @@
 {
     WPTableViewCell *cell;
     if (indexPath.section == 0) {
-        cell = [self cellForNewCategory];
+        cell = self.createCategoryCell;
     } else {
-        cell = [self cellForParentCategory];
+        cell = self.parentCategoryCell;
     }
     return cell;
 }
 
-- (WPTableViewCell *)cellForNewCategory
+- (WPTableViewCell *)createCategoryCell
 {
-    WPTableViewCell *cell;
-
-    static NSString *newCategoryCellIdentifier = @"newCategoryCellIdentifier";
-    cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:newCategoryCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newCategoryCellIdentifier];
-        self.createCatNameField = [[UITextField alloc] initWithFrame:CGRectZero];
-        self.createCatNameField.borderStyle = UITextBorderStyleNone;
-        self.createCatNameField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.createCatNameField.font = [WPStyleGuide regularTextFont];
-        self.createCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
+    if (_createCategoryCell) {
+        return _createCategoryCell;
     }
+    _createCategoryCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    
+    self.categoryTextField = [[UITextField alloc] initWithFrame:CGRectInset(_createCategoryCell.bounds, HorizontalMargin, 0)];
+    self.categoryTextField.clearButtonMode = UITextFieldViewModeAlways;
+    self.categoryTextField.font = [WPStyleGuide tableviewTextFont];
+    self.categoryTextField.textColor = [WPStyleGuide darkGrey];
+    self.categoryTextField.text = @"";
+    self.categoryTextField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
+    self.categoryTextField.returnKeyType = UIReturnKeyDone;
+    self.categoryTextField.keyboardType = UIKeyboardTypeDefault;
+    self.categoryTextField.secureTextEntry = NO;
+    self.categoryTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    CGRect frame = self.createCatNameField.frame;
-    frame.origin.x = 15.0f;
-    frame.size.width = cell.contentView.frame.size.width - 30.0f;
-    frame.size.height = cell.contentView.frame.size.height;
-    self.createCatNameField.frame = frame;
-    [cell.contentView addSubview:self.createCatNameField];
-
-    return cell;
+    [_createCategoryCell.contentView addSubview:self.categoryTextField];
+    
+    return _createCategoryCell;
 }
 
-- (WPTableViewCell *)cellForParentCategory
+- (WPTableViewCell *)parentCategoryCell
 {
-    WPTableViewCell *cell;
-    static NSString *parentCategoryCellIdentifier = @"parentCategoryCellIdentifier";
-    cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:parentCategoryCellIdentifier];
-        cell.textLabel.font = [WPStyleGuide tableviewTextFont];
-        cell.textLabel.textColor = [WPStyleGuide whisperGrey];
-        cell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
-
-        cell.detailTextLabel.font = [WPStyleGuide tableviewTextFont];
+    if (!_parentCategoryCell) {
+        _parentCategoryCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+        _parentCategoryCell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
+        _parentCategoryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [WPStyleGuide configureTableViewCell:_parentCategoryCell];
     }
+    
     NSString *parentCategoryName;
     if (self.parentCategory == nil ) {
         parentCategoryName = NSLocalizedString(@"Optional", @"Placeholder to indicate that filling out the field is optional.");
-        cell.detailTextLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
     } else {
         parentCategoryName = self.parentCategory.categoryName;
-        cell.detailTextLabel.textColor = [WPStyleGuide whisperGrey];
     }
-    cell.detailTextLabel.text = parentCategoryName;
+    _parentCategoryCell.detailTextLabel.text = parentCategoryName;
 
-    return cell;
+    return _parentCategoryCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
