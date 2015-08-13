@@ -7,6 +7,8 @@
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
+static const CGFloat CategoryCellIndentation = 16.0;
+
 @interface PostCategoriesViewController () <WPAddPostCategoryViewControllerDelegate>
 
 @property (nonatomic, strong) Blog *blog;
@@ -151,13 +153,10 @@
 
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
-    cell.indentationLevel = indentationLevel;
-
-    if (indentationLevel == 0) {
-        cell.imageView.image = nil;
-    } else {
-        cell.imageView.image = [UIImage imageNamed:@"category_child.png"];
-    }
+    // HACK: We use zero here, because the the separator inset will do the work we want
+    cell.indentationLevel = 0;
+    cell.indentationWidth = CategoryCellIndentation;
+    cell.separatorInset = UIEdgeInsetsMake(0, (indentationLevel+1) * cell.indentationWidth, 0, 0);
 
     cell.textLabel.text = [category.categoryName stringByDecodingXMLCharacters];
 
