@@ -12,19 +12,16 @@ extension WPStyleGuide
     {
         // MARK: - Public Properties
         //
-        public static let gravatarApprovedImage     = UIImage(named: "gravatar")!
-        public static let gravatarUnapprovedImage   = UIImage(named: "gravatar-unapproved")!
-        
         public static func gravatarPlaceholderImage(isApproved approved: Bool) -> UIImage {
-            return approved ? gravatarApprovedImage : gravatarUnapprovedImage
+            return approved ? gravatarApproved : gravatarUnapproved
         }
         
         public static func separatorsColor(isApproved approved: Bool) -> UIColor {
-            return approved ? WPStyleGuide.readGrey() : alertYellowDark
+            return approved ? WPStyleGuide.readGrey() : WPStyleGuide.alertYellowDark()
         }
         
         public static func detailsRegularStyle(isApproved approved: Bool) -> [String : AnyObject] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : alertYellowDark
+            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertYellowDark()
             
             return  [   NSParagraphStyleAttributeName   : titleParagraph,
                         NSFontAttributeName             : titleRegularFont,
@@ -32,7 +29,7 @@ extension WPStyleGuide
         }
 
         public static func detailsRegularRedStyle(isApproved approved: Bool) -> [String : AnyObject] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : alertRedDarker
+            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
             
             return  [   NSParagraphStyleAttributeName   : titleParagraph,
                         NSFontAttributeName             : titleRegularFont,
@@ -40,7 +37,7 @@ extension WPStyleGuide
         }
 
         public static func detailsItalicsStyle(isApproved approved: Bool) -> [String : AnyObject] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : alertRedDarker
+            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
             
             return  [   NSParagraphStyleAttributeName   : titleParagraph,
                         NSFontAttributeName             : titleItalicsFont,
@@ -48,7 +45,7 @@ extension WPStyleGuide
         }
         
         public static func detailsBoldStyle(isApproved approved: Bool) -> [String : AnyObject] {
-            let color = approved ? WPStyleGuide.littleEddieGrey() : alertRedDarker
+            let color = approved ? WPStyleGuide.littleEddieGrey() : WPStyleGuide.alertRedDarker()
             
             return  [   NSParagraphStyleAttributeName   : titleParagraph,
                         NSFontAttributeName             : titleBoldFont,
@@ -56,31 +53,28 @@ extension WPStyleGuide
         }
         
         public static func timestampStyle(isApproved approved: Bool) -> [String: AnyObject] {
-            let color = approved ? WPStyleGuide.allTAllShadeGrey() : alertYellowDark
+            let color = approved ? WPStyleGuide.allTAllShadeGrey() : WPStyleGuide.alertYellowDark()
             
             return  [   NSFontAttributeName             : timestampFont,
                         NSForegroundColorAttributeName  : color ]
         }
         
         public static func backgroundColor(isApproved approved: Bool) -> UIColor {
-            return approved ? UIColor.whiteColor() : alertYellowLighter
+            return approved ? UIColor.whiteColor() : WPStyleGuide.alertYellowLighter()
         }
         
         public static func timestampImage(isApproved approved: Bool) -> UIImage {
             let timestampImage = UIImage(named: "reader-postaction-time")!
-            return approved ? timestampImage : timestampImage.imageTintedWithColor(alertYellowDark)
+            return approved ? timestampImage : timestampImage.imageTintedWithColor(WPStyleGuide.alertYellowDark())
         }
-        
-        
-        // MARK: - New Colors
-        //
-        public static let alertYellowDark       = UIColor(red: 0xF0/255.0, green: 0xB8/255.0, blue: 0x49/255.0, alpha: 0xFF/255.0)
-        public static let alertYellowLighter    = UIColor(red: 0xFE/255.0, green: 0xF8/255.0, blue: 0xEE/255.0, alpha: 0xFF/255.0)
-        public static let alertRedDarker        = UIColor(red: 0x6D/255.0, green: 0x18/255.0, blue: 0x18/255.0, alpha: 0xFF/255.0)
 
-        
-        // MARK: - Private Properties Properties
+
+
+        // MARK: - Private Properties
         //
+        private static let gravatarApproved     = UIImage(named: "gravatar")!
+        private static let gravatarUnapproved   = UIImage(named: "gravatar-unapproved")!
+        
         private static let timestampFont        = WPStyleGuide.subtitleFont()
         
         private static let titleFontSize        = CGFloat(14)
