@@ -26,8 +26,9 @@ public class CommentsTableViewCell : WPTableViewCell
     }
     public var approved : Bool = false {
         didSet {
-            refreshDetailsLabel()
+            refreshSeparatorsColor()
             refreshTimestampLabel()
+            refreshDetailsLabel()
             refreshBackground()
             refreshImages()
         }
@@ -75,12 +76,16 @@ public class CommentsTableViewCell : WPTableViewCell
         super.awakeFromNib()
         
         assert(layoutView != nil)
+        assert(separatorsView != nil)
         assert(gravatarImageView != nil)
         assert(detailsLabel != nil)
         assert(timestampImageView != nil)
         assert(timestampLabel != nil)
         assert(detailsLeadingConstraint != nil)
         assert(detailsTrailingConstraint != nil)
+        
+        separatorsView.bottomVisible = true
+        separatorsView.bottomInsets = separatorInsets
     }
     
     public override func layoutSubviews() {
@@ -122,9 +127,14 @@ public class CommentsTableViewCell : WPTableViewCell
         backgroundColor = Style.backgroundColor(isApproved: approved)
     }
     
+    private func refreshSeparatorsColor() {
+        separatorsView.bottomColor = Style.separatorsColor(isApproved: approved)
+    }
+    
     private func refreshImages() {
         timestampImageView.image = Style.timestampImage(isApproved: approved)
     }
+    
     
     
     // MARK: - Details Helpers
@@ -173,11 +183,15 @@ public class CommentsTableViewCell : WPTableViewCell
     // MARK: - Aliases
     typealias Style = WPStyleGuide.Comments
     
+    // MARK: - Private Constants
+    private let separatorInsets = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 0.0)
+    
     // MARK: - Private Properties
     private var gravatarURL : NSURL?
     
     // MARK: - IBOutlets
     @IBOutlet private var layoutView                : UIView!
+    @IBOutlet private var separatorsView            : SeparatorsView!
     @IBOutlet private var gravatarImageView         : CircularImageView!
     @IBOutlet private var detailsLabel              : UILabel!
     @IBOutlet private var timestampImageView        : UIImageView!
