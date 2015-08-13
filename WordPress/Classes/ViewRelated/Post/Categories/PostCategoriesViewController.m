@@ -7,6 +7,7 @@
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
+static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
 static const CGFloat CategoryCellIndentation = 16.0;
 
 @interface PostCategoriesViewController () <WPAddPostCategoryViewControllerDelegate>
@@ -41,8 +42,10 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
-
+    // Hide extra cell separators.
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CategoryCellIdentifier];
+    
     // Show the add category button if we're selecting categories for a post.
     if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
         UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
@@ -143,23 +146,15 @@ static const CGFloat CategoryCellIndentation = 16.0;
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *categoryCell = @"categoryCell";
-    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:categoryCell];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:categoryCell];
-    }
-
+    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CategoryCellIdentifier forIndexPath:indexPath];
     PostCategory *category = self.categories[indexPath.row];
-
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
     // HACK: We use zero here, because the the separator inset will do the work we want
     cell.indentationLevel = 0;
     cell.indentationWidth = CategoryCellIndentation;
     cell.separatorInset = UIEdgeInsetsMake(0, (indentationLevel+1) * cell.indentationWidth, 0, 0);
-
     cell.textLabel.text = [category.categoryName stringByDecodingXMLCharacters];
-
     [WPStyleGuide configureTableViewCell:cell];
 
     // Only show checkmarks if we're selecting for a post.
