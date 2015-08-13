@@ -16,6 +16,10 @@
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-YX-qnu" userLabel="Layout View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                         <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kcl-X2-f1f" customClass="SeparatorsView" customModule="WordPress" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                                 <rect key="frame" x="12" y="12" width="46" height="46"/>
                                 <constraints>
@@ -46,14 +50,18 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="AUn-YX-qnu" secondAttribute="top" constant="12" id="8ks-PZ-pXh"/>
+                            <constraint firstAttribute="trailing" secondItem="Kcl-X2-f1f" secondAttribute="trailing" id="AHC-y2-kH6"/>
                             <constraint firstItem="bDl-id-9M7" firstAttribute="centerY" secondItem="rcg-tb-060" secondAttribute="centerY" id="DOj-EN-RRl"/>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="leading" secondItem="AUn-YX-qnu" secondAttribute="leading" constant="12" id="DbB-wE-25b"/>
                             <constraint firstItem="Wrp-Wr-ZBq" firstAttribute="leading" secondItem="0Gm-n3-CNm" secondAttribute="trailing" constant="10" id="IXJ-3i-CFq"/>
+                            <constraint firstItem="Kcl-X2-f1f" firstAttribute="leading" secondItem="AUn-YX-qnu" secondAttribute="leading" id="KvL-C9-BsK"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="bDl-id-9M7" secondAttribute="bottom" priority="750" constant="9" id="PVc-g0-lrn"/>
+                            <constraint firstAttribute="bottom" secondItem="Kcl-X2-f1f" secondAttribute="bottom" id="QxH-g8-9jc"/>
                             <constraint firstAttribute="trailing" secondItem="Wrp-Wr-ZBq" secondAttribute="trailing" priority="750" constant="12" id="WyT-D4-F81"/>
                             <constraint firstItem="0Gm-n3-CNm" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="top" constant="4" id="Xqq-1P-og4"/>
                             <constraint firstItem="rcg-tb-060" firstAttribute="top" secondItem="Wrp-Wr-ZBq" secondAttribute="bottom" constant="2" id="Zbd-5G-fWz"/>
                             <constraint firstItem="bDl-id-9M7" firstAttribute="leading" secondItem="rcg-tb-060" secondAttribute="trailing" constant="4" id="eSq-C3-JsX"/>
+                            <constraint firstItem="Kcl-X2-f1f" firstAttribute="top" secondItem="AUn-YX-qnu" secondAttribute="top" id="gJO-Or-Auf"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="0Gm-n3-CNm" secondAttribute="bottom" priority="750" constant="12" id="mv0-17-x7y"/>
                             <constraint firstItem="rcg-tb-060" firstAttribute="leading" secondItem="Wrp-Wr-ZBq" secondAttribute="leading" id="xOk-Yf-b3f"/>
                         </constraints>
@@ -73,6 +81,7 @@
                 <outlet property="detailsTrailingConstraint" destination="WyT-D4-F81" id="gj6-SS-oua"/>
                 <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
                 <outlet property="layoutView" destination="AUn-YX-qnu" id="gcz-64-y5u"/>
+                <outlet property="separatorsView" destination="Kcl-X2-f1f" id="UCV-vD-QcQ"/>
                 <outlet property="timestampImageView" destination="rcg-tb-060" id="cp9-u0-P57"/>
                 <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
             </connections>

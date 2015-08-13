@@ -19,6 +19,10 @@ extension WPStyleGuide
             return approved ? gravatarApprovedImage : gravatarUnapprovedImage
         }
         
+        public static func separatorsColor(isApproved approved: Bool) -> UIColor {
+            return approved ? WPStyleGuide.readGrey() : alertYellowDark
+        }
+        
         public static func detailsRegularStyle(isApproved approved: Bool) -> [String : AnyObject] {
             let color = approved ? WPStyleGuide.littleEddieGrey() : alertYellowDark
             
