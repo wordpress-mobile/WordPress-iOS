@@ -9,12 +9,14 @@
 @end
 
 static NSInteger regcount = 0;
+static NSString const * mutex = @"PrivateSiteURLProtocol-Mutex";
+static NSString *cachedToken;
 
 @implementation PrivateSiteURLProtocol
 
 + (void)registerPrivateSiteURLProtocol
 {
-    @synchronized(self) {
+    @synchronized(mutex) {
         if (regcount == 0) {
             [NSURLProtocol registerClass:[self class]];
         }
@@ -24,7 +26,8 @@ static NSInteger regcount = 0;
 
 + (void)unregisterPrivateSiteURLProtocol
 {
-    @synchronized(self) {
+    @synchronized(mutex) {
+        cachedToken = nil;
         regcount--;
         if (regcount == 0) {
             [NSURLProtocol unregisterClass:[self class]];
@@ -33,13 +36,18 @@ static NSInteger regcount = 0;
 }
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request
-{
-    NSString *token = [self bearerToken];
+{    
     NSString *authHeader = [request.allHTTPHeaderFields stringForKey:@"Authorization"];
-    if (token && (!authHeader || [authHeader rangeOfString:@"Bearer"].location == NSNotFound) && [self requestGoesToWPComSite:request]) {
-        return YES;
+    if (authHeader && [authHeader rangeOfString:@"Bearer"].location != NSNotFound){
+        return NO;
     }
-    return NO;
+    if (![self requestGoesToWPComSite:request]){
+        return NO;
+    }
+    if (![self bearerToken]) {
+        return NO;
+    }
+    return YES;
 }
 
 + (NSURLRequest *)canonicalRequestForRequest:(NSURLRequest *)request
@@ -49,6 +57,9 @@ static NSInteger regcount = 0;
 
 + (NSString *)bearerToken
 {
+    if (cachedToken) {
+        return cachedToken;
+    }
     // Thread Safety: Make sure we're running on the Main Thread
     if ([NSThread isMainThread]) {
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
@@ -64,8 +75,8 @@ static NSInteger regcount = 0;
     [derived performBlockAndWait:^{
         authToken = service.defaultWordPressComAccount.authToken;
     }];
-    
-    return authToken;
+    cachedToken = authToken;
+    return cachedToken;
 }
 
 + (BOOL)requestGoesToWPComSite:(NSURLRequest *)request
