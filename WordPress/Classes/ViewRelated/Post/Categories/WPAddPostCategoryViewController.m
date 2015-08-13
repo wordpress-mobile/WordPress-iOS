@@ -47,8 +47,11 @@ static const CGFloat HorizontalMargin = 15.0f;
                                                            style:[WPStyleGuide barButtonStyleForDone]
                                                           target:self
                                                           action:@selector(saveAddCategory:)];
+    
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self action:@selector(dismiss:)];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
@@ -74,9 +77,9 @@ static const CGFloat HorizontalMargin = 15.0f;
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 }
 
-- (void)dismiss
+- (IBAction)dismiss:(id)sender
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)saveAddCategory:(id)sender
@@ -134,7 +137,7 @@ static const CGFloat HorizontalMargin = 15.0f;
 
     // Cleanup and dismiss
     [self clearUI];
-    [self dismiss];
+    [self dismiss:nil];
 }
 
 #pragma mark - functional methods
