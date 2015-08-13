@@ -85,13 +85,8 @@ NS_ENUM(NSUInteger, WPPostViewControllerActionSheet) {
 
 static CGFloat const SpacingBetweeenNavbarButtons = 40.0f;
 static CGFloat const RightSpacingOnExitNavbarButton = 5.0f;
-static CGFloat const FormatBarTooltipHorizontalOffsetFromCenter = 75.0;
 static NSDictionary *DisabledButtonBarStyle;
 static NSDictionary *EnabledButtonBarStyle;
-
-static CGFloat const FormatBarAnimationXOffset = 40.0;
-static CGFloat const FormatBarAnimationDuration = 0.3;
-static CGFloat const FormatBarAnimationDelay = 1.0;
 
 static void *ProgressObserverContext = &ProgressObserverContext;
 
@@ -113,7 +108,6 @@ EditImageDetailsViewControllerDelegate
 @property (nonatomic, strong) UIButton *blogPickerButton;
 @property (nonatomic, strong) UIBarButtonItem *uploadStatusButton;
 @property (nonatomic, strong) UIPopoverController *blogSelectorPopover;
-@property (nonatomic, strong) WPTooltip *formatBarToolTip;
 @property (nonatomic) BOOL dismissingBlogPicker;
 @property (nonatomic) CGPoint scrollOffsetRestorePoint;
 @property (nonatomic) BOOL isOpenedDirectlyForEditing;
@@ -315,10 +309,6 @@ EditImageDetailsViewControllerDelegate
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -348,9 +338,6 @@ EditImageDetailsViewControllerDelegate
     [self.mediaProgressView removeFromSuperview];
     [[NSNotificationCenter defaultCenter] removeObserver:self
                                                     name:UIKeyboardDidShowNotification
-                                                  object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:UIKeyboardWillHideNotification
                                                   object:nil];
 }
 
@@ -642,69 +629,6 @@ EditImageDetailsViewControllerDelegate
         });
         [self setEditButtonOnboardingShown:YES];
     }
-}
-
-/**
- *	@brief      Sets the format bar tooltip's displayed/not displayed state
- *	@details    Sets a flag in NSUserDefaults designating that the format bar's
- *              tooltip was displayed already.
- *
- *	@param      BOOL    YES if the format bar tooltip was shown
- */
-- (void)setFormatBarOnboardingShown:(BOOL)wasShown
-{
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setBool:wasShown forKey:FormatBarOnboardingWasShown];
-    [defaults synchronize];
-}
-
-/**
- *	@brief      Was the format bar tooltip already displayed?
- *	@details    Returns YES if the format bar tooltip was already displayed to the
- *              user, otherwise NO.
- */
-- (BOOL)wasFormatBarOnboardingShown
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:FormatBarOnboardingWasShown];
-}
-
-/**
- *	@brief      Displays the tooltop for the formatbar
- *	@details    This method triggers the display of the format bar tooltip only if the 
- *              current device is NOT an iPad and the current orientation is not landscape 
- *              and it was NOT shown already.
- */
-- (void)showFormatBarOnboarding
-{
-    BOOL isLandscape = UIDeviceOrientationIsLandscape(self.interfaceOrientation);
-    if (!IS_IPAD && !isLandscape && !self.wasFormatBarOnboardingShown) {
-        __weak __typeof__(self) weakSelf = self;
-        NSString *tooltipText = NSLocalizedString(@"Slide for more options", @"Tooltip that lets a user know they can slide the formatting toolbar horizontally. Tooltip is displayed when the user is editing a page or post.");
-        dispatch_async(dispatch_get_main_queue(), ^{
-            CGRect updatedRect = CGRectOffset(weakSelf.keyboardRect, FormatBarTooltipHorizontalOffsetFromCenter, 0.0);
-            weakSelf.formatBarToolTip = [WPTooltip displayTooltipInView:weakSelf.view fromFrame:updatedRect withText:tooltipText direction:WPTooltipDirectionUp];
-            [weakSelf animateFormatBar];
-        });
-        [self setFormatBarOnboardingShown:YES];
-    }
-}
-
-/**
- *	@brief      Animates the horizontal scrolling of the format bar
- *	@details    This method triggers the format bar's horizontal scroll animation
- *              which is used during onboarding.
- */
-- (void)animateFormatBar
-{
-    CGPoint offset = self.toolbarView.toolbarScroll.contentOffset;
-    CGPoint newOffset = CGPointMake(offset.x + FormatBarAnimationXOffset, offset.y);
-    
-    __weak __typeof__(self) weakSelf = self;
-    [UIView animateWithDuration:FormatBarAnimationDuration delay:FormatBarAnimationDelay options:UIViewAnimationOptionCurveEaseOut | UIViewAnimationOptionAutoreverse animations:^{
-        [weakSelf.toolbarView.toolbarScroll setContentOffset:newOffset animated: NO];
-    } completion:^(BOOL finished) {
-        [weakSelf.toolbarView.toolbarScroll setContentOffset:offset animated:NO];
-    }];
 }
 
 #pragma mark - Actions
@@ -1025,15 +949,6 @@ EditImageDetailsViewControllerDelegate
 }
 
 #pragma mark - Instance Methods
-
-- (void)keyboardWillHide:(NSNotification*)aNotification
-{
-    // If the format bar tooltip is still hanging around, let's git rid of it
-    if (self.formatBarToolTip) {
-        [self.formatBarToolTip cancelCurrentTooltip];
-        self.formatBarToolTip = nil;
-    }
-}
 
 - (void)keyboardWasShown:(NSNotification*)aNotification
 {
@@ -1643,23 +1558,12 @@ EditImageDetailsViewControllerDelegate
     }
     
     if ([buttonTitle isEqualToString:NSLocalizedString(@"Post", nil)]) {
+        properties[WPAnalyticsStatEditorPublishedPostPropertyCategory] = @([self.post hasCategories]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyPhoto] = @([self.post hasPhoto]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyTag] = @([self.post hasTags]);
+        properties[WPAnalyticsStatEditorPublishedPostPropertyVideo] = @([self.post hasVideo]);
+        
         [WPAnalytics track:WPAnalyticsStatEditorPublishedPost withProperties:properties];
-        
-        if ([self.post hasPhoto]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithPhoto];
-        }
-        
-        if ([self.post hasVideo]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithVideo];
-        }
-        
-        if ([self.post hasCategories]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithCategories];
-        }
-        
-        if ([self.post hasTags]) {
-            [WPAnalytics track:WPAnalyticsStatPublishedPostWithTags];
-        }
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Schedule", nil)]) {
         [WPAnalytics track:WPAnalyticsStatEditorScheduledPost withProperties:properties];
     } else if ([buttonTitle isEqualToString:NSLocalizedString(@"Save", nil)]) {
@@ -2170,13 +2074,6 @@ EditImageDetailsViewControllerDelegate
 - (void)editorDidFinishLoadingDOM:(WPEditorViewController *)editorController
 {
     [self refreshUIForCurrentPost];
-}
-
-- (void)editorFormatBarStatusChanged:(WPEditorViewController *)editorController enabled:(BOOL)isEnabled
-{
-    if (isEnabled) {
-        [self showFormatBarOnboarding];
-    }
 }
 
 - (void)editorViewController:(WPEditorViewController *)editorViewController imageReplaced:(NSString *)imageId
