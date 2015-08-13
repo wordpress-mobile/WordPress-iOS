@@ -30,11 +30,3 @@
 - (BOOL)isPremium;
 
 @end
-
-@interface Theme (WordPressComApi)
-
-+ (void)fetchAndInsertThemesForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-+ (void)fetchCurrentThemeForBlog:(Blog *)blog success:(void (^)())success failure:(void (^)(NSError *error))failure;
-- (void)activateThemeWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
-@end
