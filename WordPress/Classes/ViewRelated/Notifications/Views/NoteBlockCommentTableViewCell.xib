@@ -14,7 +14,7 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="84"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="B30-uC-0a3" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
                         <rect key="frame" x="12" y="12" width="32" height="32"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="32" id="Sje-MT-U6A">
@@ -53,11 +53,11 @@
                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-sb-b7a" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
+                    <view contentMode="scaleToFill" verticalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="rgQ-sb-b7a" userLabel="RichTextView" customClass="RichTextView" customModule="WordPress">
                         <rect key="frame" x="12" y="49" width="296" height="32"/>
                         <color key="backgroundColor" red="0.9215686917" green="0.93333339689999995" blue="0.94901967050000002" alpha="1" colorSpace="deviceRGB"/>
                         <constraints>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" priority="250" constant="28" id="HVC-nW-KvN"/>
+                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="HVC-nW-KvN"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -69,7 +69,7 @@
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="J2Y-Yo-5I1" secondAttribute="trailing" constant="12" id="LXd-FQ-8Ae"/>
                     <constraint firstItem="rgQ-sb-b7a" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leading" constant="12" id="QTB-tP-wi2"/>
                     <constraint firstItem="0nV-U0-dRc" firstAttribute="top" secondItem="J2Y-Yo-5I1" secondAttribute="bottom" id="Uin-gr-pfZ"/>
-                    <constraint firstAttribute="bottom" secondItem="rgQ-sb-b7a" secondAttribute="bottom" constant="8" id="VBO-oK-bJU"/>
+                    <constraint firstAttribute="bottom" secondItem="rgQ-sb-b7a" secondAttribute="bottom" priority="750" constant="8" id="VBO-oK-bJU"/>
                     <constraint firstAttribute="trailing" secondItem="rgQ-sb-b7a" secondAttribute="trailing" constant="12" id="daK-C6-Tws"/>
                     <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="0nV-U0-dRc" secondAttribute="trailing" constant="12" id="m06-h3-RyG"/>
                     <constraint firstItem="B30-uC-0a3" firstAttribute="leading" secondItem="GbU-dc-vAM" secondAttribute="leading" constant="12" id="pGd-sN-jcQ"/>
