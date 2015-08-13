@@ -86,7 +86,9 @@ static const CGFloat CategoryCellIndentation = 16.0;
 {
     WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithBlog:self.blog];
     addCategoryViewController.delegate = self;
-    [self.navigationController pushViewController:addCategoryViewController animated:YES];
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:addCategoryViewController]
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)configureCategories
