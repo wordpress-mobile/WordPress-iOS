@@ -201,10 +201,8 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    
     CommentsTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
-    [self configureCell:tableViewCell comment:comment];
+    [self configureCell:tableViewCell atIndexPath:indexPath];
     
     CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 
@@ -280,14 +278,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureCell:(CommentsTableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
-    Comment *comment = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
-    [self configureCell:cell comment:comment];
-}
-
-- (void)configureCell:(CommentsTableViewCell *)cell comment:(Comment *)comment
-{
     NSParameterAssert(cell);
-    NSParameterAssert(comment);
+    NSParameterAssert(indexPath);
+    
+    Comment *comment    = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     
     cell.author         = comment.authorForDisplay;
     cell.approved       = [comment.status isEqualToString:CommentStatusApproved];
