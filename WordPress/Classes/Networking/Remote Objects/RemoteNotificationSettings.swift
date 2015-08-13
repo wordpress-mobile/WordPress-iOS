@@ -4,7 +4,7 @@ import Foundation
 /**
 *  @class           RemoteNotificationSettings
 *  @brief           The goal of this class is to parse Notification Settings data from the backend, and structure it
-*                   in a meaninful way. Notification Settings come in three different flavors:
+*                   in a meaningful way. Notification Settings come in three different flavors:
 *                   
 *                   -   "Our Own" Blog Settings
 *                   -   "Third Party" Site Settings
