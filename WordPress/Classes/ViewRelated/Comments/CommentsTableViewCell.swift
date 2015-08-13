@@ -35,7 +35,7 @@ public class CommentsTableViewCell : WPTableViewCell
             timestampLabel?.text = newValue
         }
     }
-    public var isApproved : Bool = false {
+    public var approved : Bool = false {
         didSet {
             refreshDetailsLabel()
             refreshBackground()
@@ -150,8 +150,10 @@ public class CommentsTableViewCell : WPTableViewCell
     private var gravatarURL : NSURL?
     
     // MARK: - IBOutlets
+    @IBOutlet private var layoutView                : UIView!
     @IBOutlet private var gravatarImageView         : CircularImageView!
     @IBOutlet private var detailsLabel              : UILabel!
+    @IBOutlet private var timestampImageView        : UIImageView!
     @IBOutlet private var timestampLabel            : UILabel!
     @IBOutlet private var detailsLeadingConstraint  : NSLayoutConstraint!
     @IBOutlet private var detailsTrailingConstraint : NSLayoutConstraint!
