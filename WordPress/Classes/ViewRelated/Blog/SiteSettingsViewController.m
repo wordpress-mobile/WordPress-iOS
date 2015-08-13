@@ -528,11 +528,11 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         currentDefaultPostFormat = formats[0];
     }
     NSDictionary *postFormatsDict = @{
-                                      @"DefaultValue"   : [titles firstObject],
-                                      @"Title"          : NSLocalizedString(@"Default Post Format", @"Title for screen to select a default post format for a blog"),
-                                      @"Titles"         : titles,
-                                      @"Values"         : formats,
-                                      @"CurrentValue"   : currentDefaultPostFormat
+                                      SettingsSelectionDefaultValueKey   : [formats firstObject],
+                                      SettingsSelectionTitleKey          : NSLocalizedString(@"Default Post Format", @"Title for screen to select a default post format for a blog"),
+                                      SettingsSelectionTitlesKey         : titles,
+                                      SettingsSelectionValuesKey         : formats,
+                                      SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
                                       };
     
     PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
