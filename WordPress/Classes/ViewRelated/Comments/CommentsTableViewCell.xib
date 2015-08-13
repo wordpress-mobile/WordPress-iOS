@@ -13,7 +13,7 @@
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Upg-EE-wRd" id="p6H-P7-J7f">
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-YX-qnu">
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AUn-YX-qnu" userLabel="Layout View">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gravatar" translatesAutoresizingMaskIntoConstraints="NO" id="0Gm-n3-CNm" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
@@ -72,6 +72,8 @@
                 <outlet property="detailsLeadingConstraint" destination="IXJ-3i-CFq" id="1Th-ch-Nx7"/>
                 <outlet property="detailsTrailingConstraint" destination="WyT-D4-F81" id="gj6-SS-oua"/>
                 <outlet property="gravatarImageView" destination="0Gm-n3-CNm" id="GXM-xm-h6r"/>
+                <outlet property="layoutView" destination="AUn-YX-qnu" id="gcz-64-y5u"/>
+                <outlet property="timestampImageView" destination="rcg-tb-060" id="cp9-u0-P57"/>
                 <outlet property="timestampLabel" destination="bDl-id-9M7" id="sk9-hl-b6r"/>
             </connections>
         </tableViewCell>
