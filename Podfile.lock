@@ -70,7 +70,7 @@ PODS:
   - FormatterKit/URLRequestFormatter (1.8.0)
   - Google-Diff-Match-Patch (0.0.1)
   - google-plus-ios-sdk (1.7.1)
-  - Helpshift (4.10.2)
+  - Helpshift (4.12.1)
   - HockeySDK (3.6.4)
   - KIF/IdentifierTests (3.2.3):
     - KIF/XCTest
@@ -169,7 +169,7 @@ DEPENDENCIES:
   - Expecta (= 0.3.2)
   - FormatterKit (~> 1.8.0)
   - google-plus-ios-sdk (~> 1.5)
-  - Helpshift (~> 4.10.0)
+  - Helpshift (~> 4.12.0)
   - HockeySDK (~> 3.6.0)
   - KIF/IdentifierTests (~> 3.1)
   - Lookback (= 0.9.2)
@@ -258,7 +258,7 @@ SPEC CHECKSUMS:
   FormatterKit: bddde83e054edf9d9ee14f9de3b3a5103db256f4
   Google-Diff-Match-Patch: d8d1a2cc3ca2382f4855f0bf05821b91250927ee
   google-plus-ios-sdk: 47adbe03ea904bdb7aa1c0eca282a23c4686e1bc
-  Helpshift: 9c84a5e4ffd881c7e7eb395c2afc8d6a46eb2187
+  Helpshift: e43854438c490815aeade41ba29423096f94852c
   HockeySDK: c07cdd580296737edcd0963e292c19885a53f563
   KIF: a94bffe9c97e449e44f8fa481c53243d21309e1e
   Lookback: 00e39f8f1e89ca1bc3fe66afbe033386558381a3
