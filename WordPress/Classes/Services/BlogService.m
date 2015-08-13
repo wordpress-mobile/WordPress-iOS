@@ -225,8 +225,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                         success:^(RemoteBlogSettings *settings) {
                             blog.blogName = settings.name;
                             blog.blogTagline = settings.desc;
-                            blog.defaultCategory = settings.defaultCategory;
-                            blog.defaultPostFormat = settings.defaultPostFormat;
+                            if (settings.defaultCategory) {
+                                blog.defaultCategory = settings.defaultCategory;
+                            }
+                            if (settings.defaultPostFormat) {
+                                blog.defaultPostFormat = settings.defaultPostFormat;
+                            }
                             [self.managedObjectContext save:nil];
                             if (success) {
                                 success();
