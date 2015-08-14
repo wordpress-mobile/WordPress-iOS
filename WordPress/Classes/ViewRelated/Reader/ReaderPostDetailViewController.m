@@ -353,7 +353,7 @@ NSString * const ReaderPixelStatReferrer = @"https://wordpress.com/";
 - (void)fetchFeaturedImage
 {
     if (!self.featuredImageSource) {
-        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));;
+        CGFloat maxWidth = IS_IPAD ? WPTableViewFixedWidth : MAX(CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds));
         CGFloat maxHeight = maxWidth * WPContentViewMaxImageHeightPercentage;
         self.featuredImageSource = [[WPTableImageSource alloc] initWithMaxSize:CGSizeMake(maxWidth, maxHeight)];
         self.featuredImageSource.delegate = self;
