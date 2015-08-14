@@ -1,12 +1,10 @@
 #import "UIImageView+Gravatar.h"
 #import "UIImageView+AFNetworking.h"
 #import "NSString+Helpers.h"
+#import "Constants.h"
 
 NSInteger const BlavatarDefaultSize = 40;
 NSInteger const GravatarDefaultSize = 80;
-
-NSString *const BlavatarBaseUrl = @"http://gravatar.com/blavatar";
-NSString *const GravatarBaseUrl = @"http://gravatar.com/avatar";
 
 NSString *const BlavatarDefault = @"blavatar-default";
 NSString *const GravatarDefault = @"gravatar.png";
@@ -79,7 +77,7 @@ NSString *const GravatarRatingX = @"x";
     if (!rating) {
         rating = GravatarRatingG;
     }
-    NSString *gravatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d&r=%@", GravatarBaseUrl, [email md5], size, rating];
+    NSString *gravatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d&r=%@", WPGravatarBaseURL, [email md5], size, rating];
     return [NSURL URLWithString:gravatarUrl];
 }
 
@@ -98,7 +96,7 @@ NSString *const GravatarRatingX = @"x";
 
 - (NSURL *)blavatarURLForHost:(NSString *)host withSize:(NSInteger)size
 {
-    NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", BlavatarBaseUrl, [host md5], size];
+    NSString *blavatarUrl = [NSString stringWithFormat:@"%@/%@?d=404&s=%d", WPBlavatarBaseURL, [host md5], size];
     return [NSURL URLWithString:blavatarUrl];
 }
 
