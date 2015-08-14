@@ -71,8 +71,8 @@ import Foundation
     }
 
     public func downloadGravatarWithGravatarEmail(email: String?) {
-        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
-        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: placeholderImage)
+        let fallbackImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: fallbackImage)
     }
     
 
@@ -106,17 +106,21 @@ import Foundation
     // MARK: - Approval Color Helpers
     public override func refreshSeparators() {
         // Left Separator
-        separatorsView.leftVisible          = !isApproved
-        separatorsView.leftColor            = Style.blockUnapprovedSideColor
+        separatorsView.leftVisible = !isApproved
+        separatorsView.leftColor = Style.blockUnapprovedSideColor
         
         // Bottom Separator
-        var bottomInsets                    = separatorUnapprovedInsets
+        var bottomInsets = separatorUnapprovedInsets
         if isApproved {
-            bottomInsets                    = hasReply ? separatorRepliedInsets : separatorApprovedInsets
+            bottomInsets = hasReply ? separatorRepliedInsets : separatorApprovedInsets
         }
         
-        separatorsView.bottomVisible        = true
-        separatorsView.bottomInsets         = bottomInsets
+        separatorsView.bottomVisible = true
+        separatorsView.bottomInsets = bottomInsets
+        separatorsView.bottomColor = Style.blockSeparatorColorForComment(isApproved: isApproved)
+        
+        // Background
+        separatorsView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
     }
 
     private func refreshDetails() {
@@ -129,17 +133,11 @@ import Foundation
     }
 
     private func refreshApprovalColors() {
-        // Separators
-        separatorsView.bottomColor  = Style.blockSeparatorColorForComment(isApproved: isApproved)
-        
-        // Background
-        contentView.backgroundColor = Style.blockBackgroundColorForComment(isApproved: isApproved)
-        
         // Refresh Colors
         titleLabel.textColor        = Style.blockTitleColorForComment(isApproved: isApproved)
         detailsLabel.textColor      = Style.blockDetailsColorForComment(isApproved: isApproved)
-        super.linkColor             = Style.blockLinkColorForComment(isApproved: isApproved)
-        super.attributedText        = isApproved ? attributedCommentText : attributedCommentUnapprovedText
+        linkColor                   = Style.blockLinkColorForComment(isApproved: isApproved)
+        attributedText              = isApproved ? attributedCommentText : attributedCommentUnapprovedText
     }
     
     private var attributedCommentUnapprovedText : NSAttributedString? {
