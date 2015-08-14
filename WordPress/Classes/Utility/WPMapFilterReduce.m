@@ -2,7 +2,7 @@
 
 @implementation NSArray (WPMapFilterReduce)
 
-- (instancetype)wp_map:(id (^)(id obj))mapBlock
+- (instancetype)wp_map:(WPMapBlock)mapBlock
 {
     NSMutableArray *results = [NSMutableArray arrayWithCapacity:self.count];
     for (id obj in self) {
@@ -14,7 +14,7 @@
     return [[self class] arrayWithArray:results];
 }
 
-- (instancetype)wp_filter:(BOOL (^)(id obj))filterBlock
+- (instancetype)wp_filter:(WPFilterBlock)filterBlock
 {
     NSMutableArray *results = [NSMutableArray arrayWithCapacity:self.count];
     for (id obj in self) {
@@ -25,7 +25,7 @@
     return [[self class] arrayWithArray:results];
 }
 
-- (id)wp_reduce:(id (^)(id accumulator, id obj))reduceBlock withInitialValue:(id)initial
+- (id)wp_reduce:(WPReduceBlock)reduceBlock withInitialValue:(id)initial
 {
     id accumulator = initial;
     for (id obj in self) {
