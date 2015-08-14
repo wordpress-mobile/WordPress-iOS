@@ -26,6 +26,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) WPNoResultsView           *noResultsView;
+@property (nonatomic, strong) CommentsTableViewCell     *layoutCell;
 @property (nonatomic, strong) UIActivityIndicatorView   *footerActivityIndicator;
 @property (nonatomic, strong) UIView                    *footerView;
 @end
@@ -52,6 +53,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     [self configureTableView];
     [self configureTableViewFooter];
     [self configureTableViewHandler];
+    [self configureTableViewLayoutCell];
     
     [self refreshAndSyncIfNeeded];
 }
@@ -69,6 +71,7 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
     [self.tableViewHandler clearCachedRowHeights];
 }
 
@@ -151,6 +154,11 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     }
 }
 
+- (void)configureTableViewLayoutCell
+{
+    self.layoutCell = [self.tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
+}
+
 - (void)configureTableViewHandler
 {
     WPTableViewHandler *tableViewHandler    = [[WPTableViewHandler alloc] initWithTableView:self.tableView];
@@ -201,12 +209,10 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CommentsTableViewCell *tableViewCell = [tableView dequeueReusableCellWithIdentifier:CommentsLayoutIdentifier];
-    [self configureCell:tableViewCell atIndexPath:indexPath];
+    NSParameterAssert(self.layoutCell);
+    [self configureCell:self.layoutCell atIndexPath:indexPath];
     
-    CGFloat height = [tableViewCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
-
-    return height;
+    return [self.layoutCell layoutHeightWithWidth:CGRectGetWidth(self.tableView.bounds)];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

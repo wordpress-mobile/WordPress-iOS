@@ -83,8 +83,9 @@ extension WPStyleGuide
         private static let titleItalicsFont     = WPFontManager.openSansItalicFontOfSize(titleFontSize)
         
         private static let titleLineSize        = CGFloat(18)
-        private static let titleParagraph       = NSMutableParagraphStyle(
-            minLineHeight: titleLineSize, maxLineHeight: titleLineSize, lineBreakMode: .ByWordWrapping, alignment: .Left
-        )
+        private static let titleParagraph       = NSMutableParagraphStyle(minLineHeight: titleLineSize,
+                                                    maxLineHeight:  titleLineSize,
+                                                    lineBreakMode:  .ByWordWrapping,
+                                                    alignment:      .Left)
     }
 }
