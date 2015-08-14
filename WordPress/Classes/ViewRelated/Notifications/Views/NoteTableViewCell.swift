@@ -85,7 +85,15 @@ import Foundation
             return
         }
 
-        let placeholderImage = WPStyleGuide.Notifications.gravatarGrayImage
+        // Note:
+        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
+        // Let's intercept that scenario, and prevent a redundant download.
+        //
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: !unapproved)
+        if url?.isUnknownGravatarUrl() == true {
+            iconImageView.image     = placeholderImage
+            return
+        }
         
         // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
