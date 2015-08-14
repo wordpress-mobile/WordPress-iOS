@@ -15,6 +15,9 @@ extern NSString *const WPGithubMainURL;
 extern NSString *const WPTwitterWordPressHandle;
 extern NSString *const WPTwitterWordPressMobileURL;
 
+extern NSString *const WPBlavatarBaseURL;
+extern NSString *const WPGravatarBaseURL;
+
 extern NSString *const WPNotificationsBucketName;
 
 extern NSString *const WPAppGroupName;
