@@ -26,8 +26,8 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 - (void)fetchReaderMenuWithSuccess:(void (^)(NSArray *topics))success failure:(void (^)(NSError *error))failure
 {
     NSString *path = @"read/menu";
-    NSString *requestUrl = [self requestUrlForApiVersion:ServiceRemoteRESTApiVersion_1_2
-                                             resourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_2];
 
     [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
         if (!success) {
@@ -74,7 +74,8 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                       failure:(void (^)(NSError *error))failure
 {
     NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/delete", slug];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
     [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, NSDictionary *responseObject) {
         if (!success) {
@@ -96,7 +97,8 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
 {
     topicName = [self sanitizeTopicNameForAPI:topicName];
     NSString *path =[NSString stringWithFormat:@"read/tags/%@/mine/new", topicName];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
     [self.api POST:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {
@@ -117,7 +119,8 @@ static NSString * const SiteDictionaryFollowingKey = @"is_following";
                            failure:(void (^)(NSError *error))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@", siteID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
 
     [self.api GET:requestUrl parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
         if (!success) {

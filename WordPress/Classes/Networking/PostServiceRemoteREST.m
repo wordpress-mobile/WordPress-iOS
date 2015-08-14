@@ -18,7 +18,8 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@", blog.dotComID, postID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{ @"context": @"edit" };
     
@@ -53,7 +54,8 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{
                                  @"status": @"any,trash",
@@ -88,7 +90,8 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/new?context=edit", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
@@ -115,7 +118,8 @@
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@?context=edit", blog.dotComID, post.postID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary *parameters = [self parametersWithRemotePost:post];
 
@@ -143,7 +147,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
         parameters:nil
@@ -168,7 +173,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/delete", blog.dotComID, post.postID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
         parameters:nil
@@ -194,7 +200,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/posts/%@/restore", blog.dotComID, post.postID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
         parameters:nil

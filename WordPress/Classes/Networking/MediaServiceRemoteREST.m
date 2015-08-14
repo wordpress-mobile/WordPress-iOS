@@ -14,7 +14,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                failure:(void (^)(NSError *error))failure
 {
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/%@", blog.dotComID, mediaID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:apiPath];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary * parameters = @{};
     
@@ -55,7 +56,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
         parameters[@"page_handle"] = pageHandle;
     }
     
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:[NSDictionary dictionaryWithDictionary:parameters]
@@ -89,7 +91,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
                             failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/media", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary *parameters = @{ @"number" : @1 };
     
@@ -121,7 +124,8 @@ const NSInteger WPRestErrorCodeMediaNew = 10;
     NSString *filename = media.file;
 
     NSString *apiPath = [NSString stringWithFormat:@"sites/%@/media/new", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:apiPath];
+    NSString *requestUrl = [self pathForEndpoint:apiPath
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSMutableURLRequest *request = [self.api.requestSerializer multipartFormRequestWithMethod:@"POST"
                                                                                     URLString:[[NSURL URLWithString:requestUrl relativeToURL:self.api.baseURL] absoluteString]
