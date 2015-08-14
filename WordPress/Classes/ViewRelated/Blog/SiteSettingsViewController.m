@@ -558,9 +558,12 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 defaultCategoryID = @(1);
             }
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
-
+            NSArray *currentSelection = @[];
+            if (postCategory){
+                currentSelection = @[postCategory];
+            }
             PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
-                                                                                                           currentSelection:@[postCategory]
+                                                                                                           currentSelection:currentSelection
                                                                                                               selectionMode:CategoriesSelectionModeBlogDefault];
             postCategoriesViewController.delegate = self;
             [self.navigationController pushViewController:postCategoriesViewController animated:YES];

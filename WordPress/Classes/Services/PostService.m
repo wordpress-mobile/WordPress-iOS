@@ -32,7 +32,9 @@ const NSInteger PostServiceNumberToFetch = 40;
     post.remoteStatus = AbstractPostRemoteStatusSync;
     PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:self.managedObjectContext];
     PostCategory *category = [postCategoryService findWithBlogObjectID:blog.objectID andCategoryID:blog.defaultCategory];
-    [post.categories addObject:category];
+    if (category) {
+        [post.categories addObject:category];
+    }
     post.postFormat = blog.defaultPostFormat;
     return post;
 }
