@@ -227,9 +227,8 @@
                            failure:(void (^)(NSError *))failure
 {
     NSString *path = [endpoint absoluteString];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
     
-    [self.api GET:requestUrl
+    [self.api GET:path
            parameters:params
               success:^(AFHTTPRequestOperation *operation, id responseObject) {
                   if (!success) {
