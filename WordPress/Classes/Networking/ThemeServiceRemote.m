@@ -18,7 +18,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
@@ -43,7 +44,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/purchased", blogId];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
@@ -69,7 +71,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([themeId isKindOfClass:[NSString class]]);
     
     NSString *path = [NSString stringWithFormat:@"themes/%@", themeId];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
@@ -91,7 +94,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                    failure:(ThemeServiceRemoteFailureBlock)failure
 {
     static NSString* const path = @"themes";
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
@@ -117,7 +121,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
@@ -147,7 +152,8 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
     
     NSString* const path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSDictionary* parameters = @{@"theme": themeId};
     

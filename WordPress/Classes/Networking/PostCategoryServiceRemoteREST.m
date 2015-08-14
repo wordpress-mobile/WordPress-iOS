@@ -10,7 +10,8 @@
                      failure:(void (^)(NSError *))failure
 {
     NSString *path = [NSString stringWithFormat:@"sites/%@/categories?context=edit", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:nil
@@ -32,7 +33,8 @@
 {
     NSParameterAssert(category.name.length > 0);
     NSString *path = [NSString stringWithFormat:@"sites/%@/categories/new?context=edit", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     NSMutableDictionary *parameters = [NSMutableDictionary dictionary];
     parameters[@"name"] = category.name;
