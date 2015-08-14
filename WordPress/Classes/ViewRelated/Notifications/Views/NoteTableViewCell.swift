@@ -85,7 +85,7 @@ import Foundation
             return
         }
 
-        let placeholderImage = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        let placeholderImage = WPStyleGuide.Notifications.gravatarGrayImage
         
         // Scale down Gravatar images: faster downloads!
         if let unrawppedURL = url {
@@ -107,7 +107,7 @@ import Foundation
 
         contentView.autoresizingMask    = .FlexibleHeight | .FlexibleWidth
 
-        iconImageView.image             = WPStyleGuide.Notifications.gravatarPlaceholderImage
+        iconImageView.image             = WPStyleGuide.Notifications.gravatarGrayImage
 
         noticonContainerView.layer.cornerRadius = noticonContainerView.frame.size.width / 2
 
