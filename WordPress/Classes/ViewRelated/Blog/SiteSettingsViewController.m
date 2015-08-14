@@ -179,7 +179,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             } else {
                 return SiteSettingsGeneralCount-1;
             }
-        } break;
+        }
+        break;
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
         break;
@@ -225,7 +226,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 [self.usernameTextCell setTextValue:NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username")];
             }
             return self.usernameTextCell;
-        } break;
+        }
+        break;
         case SiteSettingsAccountPassword: {
             if (self.blog.password) {
                 [self.passwordTextCell setTextValue:@"••••••••"];
@@ -233,7 +235,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 [self.passwordTextCell setTextValue:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")];
             }
             return self.passwordTextCell;
-        } break;
+        }
+        break;
     }
     return nil;
 }
@@ -283,17 +286,20 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
             geotaggingSwitch.on = self.geolocationEnabled;
             return self.geotaggingCell;
-        }break;
+        }
+        break;
         case (SiteSettingsWritingDefaultCategory):{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategory];
             [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
             return self.defaultCategoryCell;
-        }break;
+        }
+        break;
         case (SiteSettingsWritingDefaultPostFormat):{
             [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
             return self.defaultPostFormatCell;
-        }break;
+        }
+        break;
 
     }
     return nil;
@@ -567,10 +573,12 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                                                                                                               selectionMode:CategoriesSelectionModeBlogDefault];
             postCategoriesViewController.delegate = self;
             [self.navigationController pushViewController:postCategoriesViewController animated:YES];
-        }break;
+        }
+        break;
         case SiteSettingsWritingDefaultPostFormat:{
             [self showPostFormatSelector];
-        }break;
+        }
+        break;
 
     }
 }
