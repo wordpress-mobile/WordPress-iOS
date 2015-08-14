@@ -279,7 +279,7 @@ static NSString *CommentLayoutCellIdentifier = @"CommentLayoutCellIdentifier";
                                                                             views:views]];
 
     self.postHeaderView = headerView;
-    self.postHeaderWrapper = headerWrapper;;
+    self.postHeaderWrapper = headerWrapper;
     [self.view addSubview:self.postHeaderWrapper];
 }
 

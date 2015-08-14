@@ -23,7 +23,7 @@
 
 - (void)initializeServices
 {
-    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];;
+    _wordpressComOAuthClientFacade = [WordPressComOAuthClientFacade new];
     _wordpressXMLRPCAPIFacade = [WordPressXMLRPCAPIFacade new];
 }
 
