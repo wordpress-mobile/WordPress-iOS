@@ -15,7 +15,8 @@
     NSDictionary *parameters = @{@"authors_only":@(YES)};
     
     NSString *path = [NSString stringWithFormat:@"sites/%@/users", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:parameters
@@ -40,7 +41,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForOptionsWithBlog:blog];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:nil
@@ -65,7 +67,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForPostFormatsWithBlog:blog];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:nil
@@ -89,7 +92,8 @@
     NSParameterAssert(blog.dotComID != nil);
     
     NSString *path = [self pathForSettingsWithBlog:blog];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api GET:requestUrl
        parameters:nil
@@ -120,7 +124,8 @@
                                   @"blogdescription" : blog.blogTagline
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
-    NSString *requestUrl = [self requestUrlForDefaultApiVersionAndResourceUrl:path];
+    NSString *requestUrl = [self pathForEndpoint:path
+                                     withVersion:ServiceRemoteRESTApiVersion_1_1];
     
     [self.api POST:requestUrl
         parameters:parameters

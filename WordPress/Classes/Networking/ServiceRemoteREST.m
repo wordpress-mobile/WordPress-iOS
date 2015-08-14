@@ -46,22 +46,14 @@ static NSString* const ServiceRemoteRESTApiVersionString_1_2 = @"v1.2";
 
 #pragma mark - Request URL construction
 
-- (NSString *)requestUrlForApiVersion:(ServiceRemoteRESTApiVersion)apiVersion
-                          resourceUrl:(NSString *)resourceUrl
+- (NSString *)pathForEndpoint:(NSString *)resourceUrl
+                  withVersion:(ServiceRemoteRESTApiVersion)apiVersion
 {
     NSParameterAssert([resourceUrl isKindOfClass:[NSString class]]);
     
     NSString *apiVersionString = [self apiVersionStringWithEnumValue:apiVersion];
     
     return [NSString stringWithFormat:@"%@/%@", apiVersionString, resourceUrl];
-}
-
-- (NSString *)requestUrlForDefaultApiVersionAndResourceUrl:(NSString *)resourceUrl
-{
-    NSParameterAssert([resourceUrl isKindOfClass:[NSString class]]);
-    
-    return [self requestUrlForApiVersion:ServiceRemoteRESTApiVersionDefault
-                             resourceUrl:resourceUrl];
 }
 
 @end
