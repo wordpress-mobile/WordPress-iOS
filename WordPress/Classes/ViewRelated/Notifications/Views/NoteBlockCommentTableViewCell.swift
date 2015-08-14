@@ -60,12 +60,23 @@ import Foundation
             return
         }
         
-        let success = { (image: UIImage) in
-            self.gravatarImageView.displayImageWithFadeInAnimation(image)
+        // Note:
+        // The backend might return the URL for "unknown@gravatar.com", which may render the placeholder.
+        // Let's intercept that scenario, and prevent a redundant download.
+        //
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+        if url?.isUnknownGravatarUrl() == true {
+            gravatarImageView.image = placeholderImage
+            return
         }
         
-        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
-        gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
+        // Proceed with the real download
+        gravatarImageView.downloadImage(url,
+            placeholderImage    : placeholderImage,
+            success             : { (image: UIImage) in
+                                        self.gravatarImageView.displayImageWithFadeInAnimation(image)
+                                  },
+            failure             : nil)
         
         gravatarURL = url
     }
