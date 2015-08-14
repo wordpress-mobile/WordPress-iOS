@@ -52,6 +52,7 @@ import Foundation
         }
     }
     
+    
 
     // MARK: - Public Methods
     public func downloadGravatarWithURL(url: NSURL?) {
@@ -74,6 +75,7 @@ import Foundation
     }
     
 
+    
     // MARK: - View Methods
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -88,7 +90,8 @@ import Foundation
     }
     
 
-    // MARK: - Separator Helpers
+    
+    // MARK: - Approval Color Helpers
     public override func refreshSeparators() {
         // Left Separator
         separatorsView.leftVisible          = !isApproved
@@ -104,7 +107,6 @@ import Foundation
         separatorsView.bottomInsets         = bottomInsets
     }
 
-    // MARK: - Private Methods
     private func refreshDetails() {
         var details = timestamp ?? String()
         if let unwrappedSite = site {
@@ -141,12 +143,20 @@ import Foundation
         return unwrappedMutableString
     }
 
+    
+    
+    
     // MARK: - Event Handlers
     @IBAction public func detailsWasPressed(sender: AnyObject) {
         if let handler = onDetailsClick {
             handler(sender: sender)
         }
     }
+
+
+
+    // MARK: - Aliases
+    typealias Style = WPStyleGuide.Notifications
     
     // MARK: - Private Constants
     private let separatorApprovedInsets             = UIEdgeInsets(top: 0.0, left: 12.0, bottom: 0.0, right: 12.0)
@@ -155,9 +165,6 @@ import Foundation
     
     // MARK: - Private Properties
     private var gravatarURL                         : NSURL?
-
-    // MARK: - Aliases
-    typealias Style                                 = WPStyleGuide.Notifications
 
     // MARK: - IBOutlets
     @IBOutlet private weak var actionsView          : UIView!
