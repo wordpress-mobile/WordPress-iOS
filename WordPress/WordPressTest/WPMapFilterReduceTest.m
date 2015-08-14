@@ -25,6 +25,18 @@
     XCTAssertEqualObjects(expected, result);
 }
 
+- (void)testMapDoesntCrashWithNilValues {
+    NSArray *test = @[ @1, @2, @10 ];
+    NSArray *result = [test wp_map:^id(NSNumber *obj) {
+        if ([obj integerValue] > 5) {
+            return nil;
+        }
+        return @( [obj integerValue] * 10 );
+    }];
+    NSArray *expected = @[ @10, @20 ];
+    XCTAssertEqualObjects(expected, result);
+}
+
 - (void)testMapPerformance {
     NSMutableArray *testArray = [NSMutableArray arrayWithCapacity:1000];
     for (int i = 0; i < 10000; i++) {
