@@ -122,7 +122,7 @@
                    }
                }
                NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
-               if ([jsonDictionary[@"updated"] count] == 0) {
+               if (!jsonDictionary[@"updated"]) {
                    if (failure) {
                        failure(nil);
                    }
