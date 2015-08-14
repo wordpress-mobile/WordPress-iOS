@@ -64,14 +64,15 @@ import Foundation
             self.gravatarImageView.displayImageWithFadeInAnimation(image)
         }
         
-        let placeholderImage = Style.gravatarPlaceholderImage
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
         gravatarImageView.downloadImage(url, placeholderImage: placeholderImage, success: success, failure: nil)
         
         gravatarURL = url
     }
 
     public func downloadGravatarWithGravatarEmail(email: String?) {
-        gravatarImageView.setImageWithGravatarEmail(email)
+        let placeholderImage = Style.blockGravatarPlaceholderImage(isApproved: isApproved)
+        gravatarImageView.setImageWithGravatarEmail(email, fallbackImage: placeholderImage)
     }
     
 
