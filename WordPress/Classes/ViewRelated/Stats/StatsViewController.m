@@ -25,10 +25,12 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 
 @implementation StatsViewController
 
-- (id)init
+- (instancetype)init
 {
     self = [super init];
     if (self) {
+        self.restorationClass = [self class];
+        self.restorationIdentifier = NSStringFromClass([self class]);
     }
     return self;
 }
