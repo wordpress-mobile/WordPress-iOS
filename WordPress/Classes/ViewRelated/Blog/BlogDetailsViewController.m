@@ -345,25 +345,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 break;
         }
     }
-
-    // Check if the controller is already on the screen
-    if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
-        if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
-            [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
-        }
-        [self.navigationController popToRootViewControllerAnimated:NO];
-
-        return;
-    }
-
-    UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
-    viewController.restorationIdentifier = NSStringFromClass(controllerClass);
-    viewController.restorationClass = controllerClass;
-    if ([viewController respondsToSelector:@selector(setBlog:)]) {
-        [viewController performSelector:@selector(setBlog:) withObject:self.blog];
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
