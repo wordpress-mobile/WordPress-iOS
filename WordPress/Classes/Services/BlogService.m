@@ -655,9 +655,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                                            error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:@"standard"]) {
+                if (![formats objectForKey:PostFormatStandard]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[PostFormatStandard] = NSLocalizedString(@"Standard", @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;
