@@ -270,15 +270,15 @@ static NSInteger const ImageSizeLargeHeight = 480;
 
 - (NSString *)defaultPostFormatText
 {
-    return [self postFormatTextForCode:self.defaultPostFormat];
+    return [self postFormatTextFromSlug:self.defaultPostFormat];
 }
 
-- (NSString *)postFormatTextForCode:(NSString *)postFormatCode
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
 {
     NSDictionary *allFormats = self.postFormats;
-    NSString *formatText = postFormatCode;
-    if (postFormatCode && allFormats[postFormatCode]) {
-        formatText = allFormats[postFormatCode];
+    NSString *formatText = postFormatSlug;
+    if (postFormatSlug && allFormats[postFormatSlug]) {
+        formatText = allFormats[postFormatSlug];
     }
     // Default to standard if no name is found
     if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[@"standard"]) {
