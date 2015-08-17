@@ -546,8 +546,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     vc.onItemSelected = ^(NSString *status) {
         // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
         if ([status isKindOfClass:[NSString class]]) {
-            weakSelf.blog.defaultPostFormat = status;
-            [weakSelf saveSettings];
+            if (weakSelf.blog.defaultPostFormat != status) {
+                weakSelf.blog.defaultPostFormat = status;
+                [weakSelf saveSettings];
+            }
         }
     };
     

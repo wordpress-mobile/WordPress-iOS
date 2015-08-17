@@ -171,9 +171,12 @@ static const CGFloat CategoryCellIndentation = 16.0;
     return cell;
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    NSIndexPath *currentSelectedIndexPath = [tableView indexPathForSelectedRow];
+
+    [tableView deselectRowAtIndexPath:currentSelectedIndexPath animated:YES];
 
     PostCategory *category = self.categories[indexPath.row];
     switch (self.selectionMode) {
@@ -200,6 +203,9 @@ static const CGFloat CategoryCellIndentation = 16.0;
             }
         } break;
         case (CategoriesSelectionModeBlogDefault): {
+            if ([self.selectedCategories containsObject:category]){
+                return;
+            }
             [self.selectedCategories removeAllObjects];
             [self.selectedCategories addObject:category];
             [self.tableView reloadData];
