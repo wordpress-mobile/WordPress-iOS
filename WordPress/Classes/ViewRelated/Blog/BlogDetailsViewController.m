@@ -189,7 +189,7 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:nil
                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:1.f
+                                                                 multiplier:1.0
                                                                    constant:headerWidth]];
         // Center the headerView inside the wrapper
         [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
@@ -197,14 +197,8 @@ NSInteger const BlogDetailsRowCountForSectionAppearance = 1;
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:headerWrapper
                                                                   attribute:NSLayoutAttributeCenterX
-                                                                 multiplier:1.f
-                                                                   constant:0.f]];
-        // Then, horizontally constrain the headerWrapper
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[headerWrapper]-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
-        
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
     } else {
         // Pin the headerWrapper to its superview AND wrap the headerView in horizontal margins
         [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"

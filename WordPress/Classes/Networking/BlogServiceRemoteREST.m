@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
 #import "Blog.h"
+#import "PostCategory.h"
 #import "RemoteBlogSettings.h"
 #import "Publicizer.h"
 
@@ -159,7 +160,9 @@
 {
     NSParameterAssert([blog isKindOfClass:[Blog class]]);
     NSDictionary *parameters = @{ @"blogname" : blog.blogName,
-                                  @"blogdescription" : blog.blogTagline
+                                  @"blogdescription" : blog.blogTagline,
+                                  @"default_category" : blog.defaultCategoryID,
+                                  @"default_post_format" : blog.defaultPostFormat
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     [self.api POST:path
@@ -171,7 +174,7 @@
                    }
                }
                NSDictionary *jsonDictionary = (NSDictionary *)responseObject;
-               if ([jsonDictionary[@"updated"] count] == 0) {
+               if (!jsonDictionary[@"updated"]) {
                    if (failure) {
                        failure(nil);
                    }
@@ -261,6 +264,17 @@
     
     remoteSettings.name = [json stringForKey:@"name"];
     remoteSettings.desc = [json stringForKey:@"description"];
+    
+    if (json[@"settings"][@"default_category"]) {
+        remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
+    } else {
+        remoteSettings.defaultCategory = @(PostCategoryUncategorized);
+    }
+    if ([json[@"settings"][@"default_post_format"] isEqualToString:@"0"]) {
+        remoteSettings.defaultPostFormat = PostFormatStandard;
+    } else {
+        remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
+    }
     
     return remoteSettings;
 }

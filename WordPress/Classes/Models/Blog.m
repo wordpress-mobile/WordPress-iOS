@@ -17,6 +17,8 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
+NSString * const PostFormatStandard = @"standard";
+
 @interface Blog ()
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
@@ -57,6 +59,9 @@ static NSInteger const ImageSizeLargeHeight = 480;
 @dynamic isHostedAtWPcom;
 @dynamic icon;
 @dynamic username;
+@dynamic defaultCategoryID;
+@dynamic defaultPostFormat;
+
 @synthesize api = _api;
 @synthesize isSyncingPosts;
 @synthesize isSyncingPages;
@@ -237,23 +242,53 @@ static NSInteger const ImageSizeLargeHeight = 480;
     return [[self.categories allObjects] sortedArrayUsingDescriptors:sortDescriptors];
 }
 
+- (NSArray *)sortedPostFormats
+{
+    if ([self.postFormats count] == 0) {
+        return @[];
+    }
+    NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
+ 
+    if (self.postFormats[PostFormatStandard]) {
+        [sortedFormats addObject:PostFormatStandard];
+    }
+    [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (![key isEqual:PostFormatStandard]) {
+            [sortedFormats addObject:key];
+        }
+    }];
+
+    return [NSArray arrayWithArray:sortedFormats];
+}
+
 - (NSArray *)sortedPostFormatNames
 {
     NSMutableArray *sortedNames = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
 
-    if ([self.postFormats count] != 0) {
-        id standardPostFormat = [self.postFormats objectForKey:@"standard"];
-        if (standardPostFormat) {
-            [sortedNames addObject:standardPostFormat];
-        }
-        [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-            if (![key isEqual:@"standard"]) {
-                [sortedNames addObject:obj];
-            }
-        }];
+    for (NSString *key in self.sortedPostFormats) {
+        [sortedNames addObject:self.postFormats[key]];
     }
 
     return [NSArray arrayWithArray:sortedNames];
+}
+
+- (NSString *)defaultPostFormatText
+{
+    return [self postFormatTextFromSlug:self.defaultPostFormat];
+}
+
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug
+{
+    NSDictionary *allFormats = self.postFormats;
+    NSString *formatText = postFormatSlug;
+    if (postFormatSlug && allFormats[postFormatSlug]) {
+        formatText = allFormats[postFormatSlug];
+    }
+    // Default to standard if no name is found
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[PostFormatStandard]) {
+        formatText = allFormats[PostFormatStandard];
+    }
+    return formatText;
 }
 
 // WP.COM private blog.

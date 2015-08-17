@@ -334,7 +334,7 @@ static NSInteger const JetpackVerificationCodeNumberOfLines = 2;
     self.passwordTextField.hidden           = !hasJetpack;
     self.multifactorTextField.hidden        = !hasJetpack;
     self.signInButton.hidden                = !hasJetpack;
-    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;;
+    self.sendVerificationCodeButton.hidden  = !self.shouldDisplayMultifactor || self.authenticating;
     self.installJetpackButton.hidden        = hasJetpack;
     self.moreInformationButton.hidden       = hasJetpack;
     

@@ -341,7 +341,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.headerDetails = postTitle;
     
     // Setup the Separator
-    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    SeparatorsView *separatorsView = cell.separatorsView;
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
@@ -772,7 +772,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)reloadData
 {
     // If we don't have the associated post, let's hide the Header
-    BOOL shouldShowHeader       = self.comment.post != nil;;
+    BOOL shouldShowHeader       = self.comment.post != nil;
 
     // Number of Rows:
     // NOTE: If the post wasn't retrieved yet, we'll need to hide the Header.

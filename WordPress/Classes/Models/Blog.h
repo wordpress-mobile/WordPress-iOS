@@ -8,6 +8,8 @@
 @class WPAccount;
 @class WordPressComApi;
 
+extern NSString * const PostFormatStandard;
+
 typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog be removed?
     BlogFeatureRemovable,
@@ -70,6 +72,9 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
+@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
+@property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
+
 /**
  Flags whether the current user is an admin on the blog.
  
@@ -87,7 +92,8 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) NSString       *password;
 
 // Readonly Properties
-@property (nonatomic,   weak,  readonly) NSArray        *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormatNames;
+@property (nonatomic,   weak,  readonly) NSArray *sortedPostFormats;
 @property (nonatomic, strong,  readonly) WPXMLRPCClient *api;
 @property (nonatomic,   weak,  readonly) NSString       *version;
 @property (nonatomic, strong,  readonly) NSString       *authToken;
@@ -117,6 +123,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 // wp.koke.me
 @property (weak, readonly) NSString *hostname;
 
+@property (weak, readonly) NSString *defaultPostFormatText;
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
@@ -130,6 +137,14 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 - (NSDictionary *) getImageResizeDimensions;
 - (BOOL)supportsFeaturedImages;
 - (BOOL)supports:(BlogFeature)feature;
+/**
+ *  Returnst the text description for a post format code
+ *
+ *  @param postFormatCode of the post format you want to display
+ *
+ *  @return a string with the post format description and if no description was found the postFormatCode sent.
+ */
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  
