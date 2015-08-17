@@ -615,6 +615,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     // Use a performBlock here so the work to merge does not block the main thread.
     [self.managedObjectContext performBlock:^{
 
+        if (self.managedObjectContext.parentContext == [[ContextManager sharedInstance] mainContext]) {
+            // Its possible the ReaderTopic was deleted the parent main context.
+            // If so, and we merge and save, it will cause a crash.
+            // Reset the context so it will be current with its parent context.
+            [self.managedObjectContext reset];
+        }
+
         NSError *error;
         ReaderTopic *readerTopic = (ReaderTopic *)[self.managedObjectContext existingObjectWithID:topicObjectID error:&error];
         if (error || !readerTopic) {
