@@ -17,6 +17,8 @@ static NSInteger const ImageSizeMediumHeight = 360;
 static NSInteger const ImageSizeLargeWidth = 640;
 static NSInteger const ImageSizeLargeHeight = 480;
 
+NSString * const PostFormatStandard = @"standard";
+
 @interface Blog ()
 @property (nonatomic, strong, readwrite) WPXMLRPCClient *api;
 @property (nonatomic, strong, readwrite) JetpackState *jetpack;
@@ -245,11 +247,11 @@ static NSInteger const ImageSizeLargeHeight = 480;
     }
     NSMutableArray *sortedFormats = [NSMutableArray arrayWithCapacity:[self.postFormats count]];
  
-    if (self.postFormats[@"standard"]) {
-        [sortedFormats addObject:@"standard"];
+    if (self.postFormats[PostFormatStandard]) {
+        [sortedFormats addObject:PostFormatStandard];
     }
     [self.postFormats enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        if (![key isEqual:@"standard"]) {
+        if (![key isEqual:PostFormatStandard]) {
             [sortedFormats addObject:key];
         }
     }];
@@ -281,8 +283,8 @@ static NSInteger const ImageSizeLargeHeight = 480;
         formatText = allFormats[postFormatSlug];
     }
     // Default to standard if no name is found
-    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[@"standard"]) {
-        formatText = allFormats[@"standard"];
+    if ((formatText == nil || [formatText isEqualToString:@""]) && allFormats[PostFormatStandard]) {
+        formatText = allFormats[PostFormatStandard];
     }
     return formatText;
 }
