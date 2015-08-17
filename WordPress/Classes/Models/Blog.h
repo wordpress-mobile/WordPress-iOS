@@ -135,7 +135,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
  *
  *  @return a string with the post format description and if no description was found the postFormatCode sent.
  */
-- (NSString *)postFormatTextForCode:(NSString *)postFormatCode;
+- (NSString *)postFormatTextFromSlug:(NSString *)postFormatSlug;
 /**
  Returns a human readable description for logging
  
