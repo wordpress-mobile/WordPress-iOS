@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -78,7 +78,7 @@
         </attribute>
         <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="defaultCategory" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
+        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
         <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>

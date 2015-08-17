@@ -226,7 +226,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                             blog.blogName = settings.name;
                             blog.blogTagline = settings.desc;
                             if (settings.defaultCategory) {
-                                blog.defaultCategory = settings.defaultCategory;
+                                blog.defaultCategoryID = settings.defaultCategory;
                             }
                             if (settings.defaultPostFormat) {
                                 blog.defaultPostFormat = settings.defaultPostFormat;

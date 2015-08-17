@@ -63,7 +63,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, assign, readwrite) BOOL isMultiAuthor;
 @property (nonatomic, assign, readwrite) BOOL isHostedAtWPcom;
 @property (nonatomic, strong, readwrite) NSString *icon;
-@property (nonatomic, strong, readwrite) NSNumber *defaultCategory;
+@property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
 
 /**
