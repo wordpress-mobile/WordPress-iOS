@@ -49,7 +49,7 @@ static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCell
 
 @interface PostSettingsViewController () <UITextFieldDelegate, WPTableImageSourceDelegate, WPPickerViewDelegate,
 UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
+UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) AbstractPost *apost;
 @property (nonatomic, strong) UITextField *passwordTextField;
@@ -907,7 +907,10 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 
 - (void)showCategoriesSelection
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:[self post] selectionMode:CategoriesSelectionModePost];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
+                                                                                 currentSelection:[self.post.categories allObjects]
+                                                                                    selectionMode:CategoriesSelectionModePost];
+    controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
@@ -1156,6 +1159,15 @@ UIPopoverControllerDelegate, WPMediaPickerViewControllerDelegate>
 {
     // Do not hide the status bar on iPad
     return self.shouldHideStatusBar && !IS_IPAD;
+}
+
+#pragma mark - PostCategoriesViewControllerDelegate
+
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories
+{
+    // Save changes.
+    self.post.categories = [categories mutableCopy];
+    [self.post save];
 }
 
 @end

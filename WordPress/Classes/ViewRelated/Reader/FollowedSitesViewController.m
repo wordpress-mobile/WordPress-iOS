@@ -151,7 +151,7 @@ static CGFloat const FollowSitesRowHeight = 54.0;
 
     ReaderSite *site = [self.tableViewHandler.resultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = [site nameForDisplay];
-    cell.detailTextLabel.text = [site pathForDisplay];;
+    cell.detailTextLabel.text = [site pathForDisplay];
     if (site.icon) {
         cell.imageView.backgroundColor = nil;
         [cell.imageView setImageWithSiteIcon:site.icon placeholderImage:defaultImage];

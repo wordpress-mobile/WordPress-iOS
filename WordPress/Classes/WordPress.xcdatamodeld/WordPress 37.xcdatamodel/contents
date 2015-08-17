@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14E46" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="7701" systemVersion="14F27" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
     <entity name="AbstractPost" representedClassName="AbstractPost" isAbstract="YES" parentEntity="BasePost">
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" syncable="YES"/>
@@ -77,10 +77,9 @@
             <userInfo/>
         </attribute>
         <attribute name="blogTagline" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="connections" optional="YES" attributeType="Transformable">
-            <userInfo/>
-        </attribute>
         <attribute name="currentThemeId" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="defaultCategoryID" optional="YES" attributeType="Integer 32" defaultValueString="1" syncable="YES"/>
+        <attribute name="defaultPostFormat" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="geolocationEnabled" attributeType="Boolean" defaultValueString="NO">
             <userInfo/>
         </attribute>
@@ -137,9 +136,6 @@
             <userInfo/>
         </relationship>
         <relationship name="posts" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="AbstractPost" inverseName="blog" inverseEntity="AbstractPost" indexed="YES">
-            <userInfo/>
-        </relationship>
-        <relationship name="publicizers" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Publicizer" inverseName="blog" inverseEntity="Publicizer">
             <userInfo/>
         </relationship>
         <relationship name="themes" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Theme" inverseName="blog" inverseEntity="Theme" syncable="YES"/>
@@ -325,26 +321,6 @@
         </relationship>
         <userInfo/>
     </entity>
-    <entity name="Publicizer" representedClassName="Publicizer">
-        <attribute name="connect" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="detail" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="icon" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="label" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <attribute name="order" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <attribute name="service" attributeType="String">
-            <userInfo/>
-        </attribute>
-        <relationship name="blog" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Blog" inverseName="publicizers" inverseEntity="Blog" syncable="YES"/>
-        <userInfo/>
-    </entity>
     <entity name="ReaderPost" representedClassName="ReaderPost" parentEntity="BasePost" syncable="YES">
         <attribute name="authorDisplayName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="authorEmail" optional="YES" attributeType="String" syncable="YES"/>
@@ -441,7 +417,6 @@
         <element name="Notification" positionX="18" positionY="162" width="128" height="255"/>
         <element name="Page" positionX="0" positionY="0" width="128" height="60"/>
         <element name="Post" positionX="0" positionY="0" width="128" height="180"/>
-        <element name="Publicizer" positionX="9" positionY="153" width="128" height="150"/>
         <element name="ReaderPost" positionX="0" positionY="0" width="128" height="480"/>
         <element name="ReaderSite" positionX="9" positionY="153" width="128" height="163"/>
         <element name="ReaderTopic" positionX="18" positionY="162" width="128" height="225"/>
