@@ -312,13 +312,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if ([self isConfigurationSection:indexPath.section] && indexPath.row == BlogDetailsRowEditSite) {
-        SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-        [self.navigationController pushViewController:editSiteViewController animated:YES];
-    }
-
-    Class controllerClass;
-    if ([self isGeneralSection:indexPath.section]) {
+    if ([self isConfigurationSection:indexPath.section]) {
+        switch (indexPath.row) {
+            case BlogDetailsRowEditSite:
+                [self showSettingsForBlog:self.blog];
+                break;
+        }
+    } else if ([self isGeneralSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
@@ -327,8 +327,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 [self showViewAdminForBlog:self.blog];
                 break;
             case BlogDetailsRowStats:
-                [WPAnalytics track:WPAnalyticsStatStatsAccessed];
-                controllerClass =  [StatsViewController class];
+                [self showStatsForBlog:self.blog];
                 break;
             default:
                 break;
@@ -336,16 +335,13 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     } else if ([self isPublishSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
-                [self showPostList];
+                [self showPostListForBlog:self.blog];
                 return;
             case BlogDetailsRowPages:
-                [self showPageList];
+                [self showPageListForBlog:self.blog];
                 return;
             case BlogDetailsRowComments:
-                [WPAnalytics track:WPAnalyticsStatOpenedComments];
-                controllerClass = [CommentsViewController class];
-                break;
-            default:
+                [self showCommentsForBlog:self.blog];
                 break;
         }
     }
@@ -437,6 +433,14 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 #pragma mark - Private methods
 
+- (void)showCommentsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedComments];
+    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    controller.blog = blog;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)showPostListForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedPosts];
@@ -449,6 +453,21 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     [WPAnalytics track:WPAnalyticsStatOpenedPages];
     PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showSettingsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
+    SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showStatsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatStatsAccessed];
+    StatsViewController *statsView = [StatsViewController new];
+    statsView.blog = blog;
+    [self.navigationController pushViewController:statsView animated:YES];
 }
 
 - (void)showViewSiteForBlog:(Blog *)blog
@@ -480,6 +499,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
+
 
 #pragma mark - Notification handlers
 
