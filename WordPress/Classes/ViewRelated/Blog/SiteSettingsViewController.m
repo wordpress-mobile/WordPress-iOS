@@ -290,7 +290,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         break;
         case (SiteSettingsWritingDefaultCategory):{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategory];
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategoryID];
             [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
             return self.defaultCategoryCell;
         }
@@ -559,7 +559,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     switch (row) {
         case SiteSettingsWritingDefaultCategory:{
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
-            NSNumber *defaultCategoryID = self.blog.defaultCategory;
+            NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
             if (!defaultCategoryID) {
                 defaultCategoryID = @(1);
             }
@@ -956,7 +956,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller
                    didSelectCategory:(PostCategory *)category
 {
-    self.blog.defaultCategory = category.categoryID;
+    self.blog.defaultCategoryID = category.categoryID;
     self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
     [self saveSettings];
 }
