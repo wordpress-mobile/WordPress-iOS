@@ -72,15 +72,7 @@
 
 - (NSString *)postFormatText
 {
-    NSDictionary *allFormats = self.blog.postFormats;
-    NSString *formatText = self.postFormat;
-    if ([allFormats objectForKey:self.postFormat]) {
-        formatText = [allFormats objectForKey:self.postFormat];
-    }
-    if ((formatText == nil || [formatText isEqualToString:@""]) && [allFormats objectForKey:@"standard"]) {
-        formatText = [allFormats objectForKey:@"standard"];
-    }
-    return formatText;
+    return [self.blog postFormatTextFromSlug:self.postFormat];
 }
 
 - (void)setPostFormatText:(NSString *)postFormatText
