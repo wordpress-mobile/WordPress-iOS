@@ -437,15 +437,17 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 #pragma mark - Private methods
 
-- (void)showPostList {
+- (void)showPostListForBlog:(Blog *)blog
+{
     [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-    UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+    PostListViewController *controller = [PostListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showPageList {
+- (void)showPageListForBlog:(Blog *)blog
+{
     [WPAnalytics track:WPAnalyticsStatOpenedPages];
-    UIViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
