@@ -41,6 +41,16 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     _tableViewHandler.delegate = nil;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.restorationClass = [self class];
+        self.restorationIdentifier = NSStringFromClass([self class]);
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
