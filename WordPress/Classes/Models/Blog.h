@@ -8,6 +8,8 @@
 @class WPAccount;
 @class WordPressComApi;
 
+extern NSString * const PostFormatStandard;
+
 typedef NS_ENUM(NSUInteger, BlogFeature) {
     /// Can the blog be removed?
     BlogFeatureRemovable,

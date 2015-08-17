@@ -561,7 +561,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
             NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
             if (!defaultCategoryID) {
-                defaultCategoryID = @(1);
+                defaultCategoryID = @(PostCategoryUncategorized);
             }
             PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
             NSArray *currentSelection = @[];

@@ -1,6 +1,7 @@
 #import "BlogServiceRemoteREST.h"
 #import <WordPressComApi.h>
 #import "Blog.h"
+#import "PostCategory.h"
 #import "RemoteBlogSettings.h"
 
 @implementation BlogServiceRemoteREST
@@ -215,10 +216,10 @@
     if (json[@"settings"][@"default_category"]) {
         remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
     } else {
-        remoteSettings.defaultCategory = @(1);
+        remoteSettings.defaultCategory = @(PostCategoryUncategorized);
     }
     if ([json[@"settings"][@"default_post_format"] isEqualToString:@"0"]) {
-        remoteSettings.defaultPostFormat = @"standard";
+        remoteSettings.defaultPostFormat = PostFormatStandard;
     } else {
         remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
     }
