@@ -72,7 +72,7 @@
 
 - (NSString *)postFormatText
 {
-    return [self.blog postFormatTextForCode:self.postFormat];
+    return [self.blog postFormatTextFromSlug:self.postFormat];
 }
 
 - (void)setPostFormatText:(NSString *)postFormatText
