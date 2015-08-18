@@ -98,16 +98,78 @@
           }];
 }
 
-- (void)connectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+- (void)connectPublicizer:(Publicizer *)service
+                  success:(ConnectionsHandler)success
+                  failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
     NSParameterAssert(service.blog.dotComID != nil);
     
-#warning implement connectPublicizer
-    failure(nil);
+    NSString *path = @"me/keyring-connections";
+    [self.api GET:path
+       parameters:nil
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              NSArray *keyrings = [responseObject arrayForKey:@"connections"];
+              for (NSDictionary *keyring in keyrings) {
+                  if ([keyring[@"service"] isEqualToString:service.service]) {
+                      [self connectPublicizer:service
+                                  withKeyring:keyring
+                                      success:success
+                                      failure:failure];
+                      return;
+                  }
+              }
+              
+              [self connectKeyring:service
+                           success:success
+                           failure:failure];
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
 }
 
-- (void)disconnectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+- (void)connectKeyring:(Publicizer *)service
+               success:(ConnectionsHandler)success
+               failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
+    NSParameterAssert(service.blog.dotComID != nil);
+    
+#warning implement getting keyring
+    NSLog(@"need keyring: %@", service.service);
+    if (failure) {
+        failure(nil);
+    }
+}
+
+- (void)connectPublicizer:(Publicizer *)service
+              withKeyring:(NSDictionary *)keyring
+                  success:(ConnectionsHandler)success
+                  failure:(void (^)(NSError *))failure
+{
+    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
+    NSParameterAssert(service.blog.dotComID != nil);
+    
+    NSString *path = [self pathForConnectionWithPublicizer:service];
+    NSDictionary *parameters = @{ @"keyring_connection_ID" : keyring[@"ID"] };
+    [self.api POST:path
+       parameters:parameters
+          success:^(AFHTTPRequestOperation *operation, id responseObject) {
+              [self syncConnectionsForBlog:service.blog
+                                   success:success
+                                   failure:failure];
+          } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+              if (failure) {
+                  failure(error);
+              }
+          }];
+}
+
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(ConnectionsHandler)success
+                     failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
     NSParameterAssert(service.blog.dotComID != nil);
@@ -204,7 +266,13 @@
 
 - (NSString *)pathForConnectionsWithBlog:(Blog *)blog
 {
+    // Also note /publicize-connections specific call
     return [NSString stringWithFormat:@"sites/%@/connections", blog.dotComID];
+}
+
+- (NSString *)pathForConnectionWithPublicizer:(Publicizer *)service
+{
+    return [NSString stringWithFormat:@"sites/%@/publicize-connections/new", service.blog.dotComID];
 }
 
 - (NSString *)pathForDisconnectionWithPublicizer:(Publicizer *)service
