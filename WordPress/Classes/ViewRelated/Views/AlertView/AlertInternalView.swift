@@ -17,13 +17,11 @@ public class AlertInternalView : UIView
     public override func awakeFromNib() {
          super.awakeFromNib()
         
-        // Check the Outlets
         assert(backgroundView   != nil)
         assert(alertView        != nil)
         assert(titleLabel       != nil)
         assert(descriptionLabel != nil)
 
-        // Setup please!
         alertView.layer.cornerRadius = cornerRadius
         titleLabel.font = Styles.titleRegularFont
         descriptionLabel.font = Styles.detailsRegularFont
@@ -41,7 +39,6 @@ public class AlertInternalView : UIView
     *  @param       sender      The button that was pressed.
     */
     @IBAction private func buttonWasPressed(sender: AnyObject!) {
-        // Note: Cleanup after calling the target closure
         onClick?()
         onClick = nil
     }
