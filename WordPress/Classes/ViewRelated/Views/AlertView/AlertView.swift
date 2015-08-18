@@ -22,13 +22,9 @@ public class AlertView : NSObject
     public init(title: String, message: String, button: String, completion: Completion?) {
         super.init()
         
-        // Load the nib
         NSBundle.mainBundle().loadNibNamed(AlertView.classNameWithoutNamespaces(), owner: self, options: nil)
         
-        // Check the Outlets
         assert(internalView != nil)
-
-        // Done!
         internalView.titleLabel.text = title
         internalView.descriptionLabel.attributedText = applyMessageStyles(message)
     }
