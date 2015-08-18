@@ -2,13 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "scale" : "1x",
-      "filename" : "category_child.png"
+      "scale" : "1x"
     },
     {
       "idiom" : "universal",
       "scale" : "2x",
-      "filename" : "category_child@2x.png"
+      "filename" : "gravatar-unapproved@2x.png"
     },
     {
       "idiom" : "universal",

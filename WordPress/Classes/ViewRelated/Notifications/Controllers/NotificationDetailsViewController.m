@@ -669,12 +669,13 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     // Merge the Attachments with their ranges: [NSRange: UIImage]
     NSDictionary *mediaMap          = [self.mediaDownloader imagesForUrls:commentBlock.imageUrls];
     NSDictionary *mediaRanges       = [commentBlock buildRangesToImagesMap:mediaMap];
+    NSAttributedString *text        = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
     
     // Setup the cell
     cell.name                       = userBlock.text;
     cell.timestamp                  = [self.note.timestampAsDate shortString];
     cell.site                       = userBlock.metaTitlesHome ?: userBlock.metaLinksHome.hostname;
-    cell.attributedCommentText      = [commentBlock.attributedRichText stringByEmbeddingImageAttachments:mediaRanges];
+    cell.attributedCommentText      = [text trimTrailingNewlines];
     cell.isApproved                 = [commentBlock isCommentApproved];
     cell.hasReply                   = self.note.hasReply;
     
