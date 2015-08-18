@@ -29,7 +29,12 @@ public class NotificationSettingDetailsViewController : UITableViewController
         setupNotifications()
         setupTableView()
     }
-
+    
+    public override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        WPAnalytics.track(.OpenedNotificationSettingDetails)
+    }
+    
     public override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         saveSettingsIfNeeded()
@@ -207,8 +212,11 @@ public class NotificationSettingDetailsViewController : UITableViewController
         service.updateSettings(settings!,
             stream              : stream!,
             newValues           : newValues,
-            success             : nil,
+            success             : {
+                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : true])
+            },
             failure             : { (error: NSError!) in
+                WPAnalytics.track(.NotificationsSettingsUpdated, withProperties: ["success" : false])
                 self.handleUpdateError()
             })
     }
