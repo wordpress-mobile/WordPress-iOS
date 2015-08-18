@@ -37,6 +37,7 @@ static NSString* const ServiceRemoteRESTApiVersionString_1_2 = @"v1.2";
             break;
             
         default:
+            NSAssert(NO, @"This should never by executed");
             result = ServiceRemoteRESTApiVersionStringInvalid;
             break;
     }
