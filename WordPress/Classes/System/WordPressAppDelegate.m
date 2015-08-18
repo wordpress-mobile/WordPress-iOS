@@ -194,6 +194,7 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
+    DDLogInfo(@"Application launched with URL: %@", url);
     BOOL returnValue = NO;
 
     if ([[BITHockeyManager sharedHockeyManager].authenticator handleOpenURL:url
@@ -216,7 +217,6 @@ static NSString * const MustShowWhatsNewPopup                   = @"MustShowWhat
 
     if ([url isKindOfClass:[NSURL class]] && [[url absoluteString] hasPrefix:WPCOM_SCHEME]) {
         NSString *URLString = [url absoluteString];
-        DDLogInfo(@"Application launched with URL: %@", URLString);
 
         if ([URLString rangeOfString:@"newpost"].length) {
             returnValue = [self handleNewPostRequestWithURL:url];
