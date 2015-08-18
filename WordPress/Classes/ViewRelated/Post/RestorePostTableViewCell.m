@@ -65,6 +65,11 @@
     self.contentProvider = contentProvider;
 }
 
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider loadingImages:(BOOL)loadMedia
+{
+    [self configureCell:contentProvider];
+}
+
 
 #pragma mark - Actions
 
