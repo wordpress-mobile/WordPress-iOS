@@ -317,6 +317,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
             case BlogDetailsRowEditSite:
                 [self showSettingsForBlog:self.blog];
                 break;
+            default:
+                NSAssert(false, @"Row Handling not implemented");
+                break;
         }
     } else if ([self isGeneralSection:indexPath.section]) {
         switch (indexPath.row) {
@@ -330,6 +333,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 [self showStatsForBlog:self.blog];
                 break;
             default:
+                NSAssert(false, @"Row Handling not implemented");
                 break;
         }
     } else if ([self isPublishSection:indexPath.section]) {
@@ -342,6 +346,9 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 return;
             case BlogDetailsRowComments:
                 [self showCommentsForBlog:self.blog];
+                break;
+            default:
+                NSAssert(false, @"Row Handling not implemented");
                 break;
         }
     }
