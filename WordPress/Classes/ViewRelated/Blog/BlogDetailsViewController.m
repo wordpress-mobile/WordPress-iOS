@@ -246,16 +246,16 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     NSInteger realSection = [self.tableSections[section] integerValue];
     switch (realSection) {
-        case (TableViewSectionGeneralType):
+        case TableViewSectionGeneralType:
             return BlogDetailsRowCountForSectionGeneralType;
             break;
-        case (TableViewSectionPublishType):
+        case TableViewSectionPublishType:
             return BlogDetailsRowCountForSectionPublishType;
             break;
-        case (TableViewSectionAppearance):
+        case TableViewSectionAppearance:
             return BlogDetailsRowCountForSectionAppearance;
             break;
-        case(TableViewSectionConfigurationType):
+        case TableViewSectionConfigurationType:
             return BlogDetailsRowCountForSectionConfigurationType;
             break;
     }
@@ -267,7 +267,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     NSInteger section = [self.tableSections[indexPath.section] integerValue];
     switch (section) {
-        case (TableViewSectionGeneralType):
+        case TableViewSectionGeneralType:
             switch (indexPath.row) {
                 case BlogDetailsRowViewSite:
                     cell.textLabel.text = NSLocalizedString(@"View Site", nil);
@@ -285,7 +285,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                     break;
             }
             break;
-        case (TableViewSectionPublishType):
+        case TableViewSectionPublishType:
             switch (indexPath.row) {
                 case BlogDetailsRowBlogPosts:
                     cell.textLabel.text = NSLocalizedString(@"Blog Posts", nil);
@@ -307,11 +307,11 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                     break;
             }
             break;
-        case (TableViewSectionAppearance):
+        case TableViewSectionAppearance:
             cell.textLabel.text = NSLocalizedString(@"Themes", @"Themes option in the blog details");
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-theme"];
             break;
-        case(TableViewSectionConfigurationType):
+        case TableViewSectionConfigurationType:
             cell.textLabel.text = NSLocalizedString(@"Settings", nil);
             cell.imageView.image = [UIImage imageNamed:@"icon-menu-settings"];
             break;
@@ -335,7 +335,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     Class controllerClass = nil;
     NSInteger section = [self.tableSections[indexPath.section] integerValue];
     switch (section) {
-        case (TableViewSectionGeneralType):
+        case TableViewSectionGeneralType:
             switch (indexPath.row) {
                 case BlogDetailsRowViewSite:
                     [self showViewSiteForBlog:self.blog];
@@ -351,7 +351,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                     break;
             }
             break;
-        case (TableViewSectionPublishType):
+        case TableViewSectionPublishType:
             switch (indexPath.row) {
                 case BlogDetailsRowBlogPosts:
                     [self showPostList];
@@ -367,10 +367,10 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                     break;
             }
         break;
-        case (TableViewSectionAppearance):
+        case TableViewSectionAppearance:
             
             break;
-        case(TableViewSectionConfigurationType):{
+        case TableViewSectionConfigurationType: {
             SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
             [self.navigationController pushViewController:editSiteViewController animated:YES];
         }
@@ -425,18 +425,18 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     NSString *headingTitle = nil;
     NSInteger realSection = [self.tableSections[section] integerValue];
     switch (realSection) {
-        case (TableViewSectionGeneralType):
+        case TableViewSectionGeneralType:
             // no header here
         break;
-        case (TableViewSectionPublishType):
+        case TableViewSectionPublishType:
             headingTitle = NSLocalizedString(@"Publish", @"Section title for the publish table section in the blog details screen");
         break;
-        case (TableViewSectionAppearance):
+        case TableViewSectionAppearance:
             headingTitle = NSLocalizedString(@"Appearance",
                                              @"Section title for the appearance table section in the" \
                                              " blog details screen.");
         break;
-        case(TableViewSectionConfigurationType):
+        case TableViewSectionConfigurationType:
             headingTitle = NSLocalizedString(@"Configuration", @"Section title for the configuration table section in the blog details screen");
         break;
     }
