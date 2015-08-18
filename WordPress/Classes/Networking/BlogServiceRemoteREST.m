@@ -180,7 +180,9 @@
 
         for (NSString *key in optionsDirectMapKeys) {
             NSString *sourceKeyPath = [NSString stringWithFormat:@"options.%@", key];
-            options[key] = [response valueForKeyPath:sourceKeyPath];
+            if ([response valueForKeyPath:sourceKeyPath] != nil) {
+                options[key] = [response valueForKeyPath:sourceKeyPath];
+            }
         }
     } else {
         //valid default values
