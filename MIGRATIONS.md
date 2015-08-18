@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 37 (@sergioestevao 2015-08-01)
+
+Changes to the data model:
+
+- `Blog` added a new number attribute called `defaultCategoryID` to store the default category id for new posts on the site
+- `Blog` added a new string attribute called `defaultPostFormat` to store the default post format for new posts on the site
+
 ## WordPress 36 (@sergioestevao 2015-07-08)
 
 Changes to the data model:

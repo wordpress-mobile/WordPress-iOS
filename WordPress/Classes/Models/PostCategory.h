@@ -2,6 +2,8 @@
 #import "Blog.h"
 #import "WordPressAppDelegate.h"
 
+extern const NSInteger PostCategoryUncategorized;
+
 @interface PostCategory : NSManagedObject
 
 @property (nonatomic, strong) NSNumber *categoryID;
