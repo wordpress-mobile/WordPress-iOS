@@ -85,18 +85,4 @@ extern NSString *const NotificationsManagerDidUnregisterDeviceToken;
  */
 + (void)handleActionWithIdentifier:(NSString *)identifier forRemoteNotification:(NSDictionary *)remoteNotification;
 
-///--------------------------------------
-/// @name WordPress.com Notifications API
-///--------------------------------------
-
-/**
- Sends the current settings to WordPress.com
- */
-+ (void)saveNotificationSettings;
-
-/**
- Fetch the current WordPress.com settings
- */
-+ (void)fetchNotificationSettingsWithSuccess:(void (^)())success failure:(void (^)(NSError *error))failure;
-
 @end
