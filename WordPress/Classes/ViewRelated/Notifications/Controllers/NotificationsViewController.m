@@ -194,28 +194,34 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
 
 - (void)showRatingViewIfApplicable
 {
-    if ([AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
-        if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
-            // Rating View is already visible, don't bother to do anything
-            return;
-        }
-        
-        ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
-        UIFont *appRatingFont = [WPFontManager openSansRegularFontOfSize:15.0];
-        appRatingView.label.font = appRatingFont;
-        appRatingView.leftButton.titleLabel.font = appRatingFont;
-        appRatingView.rightButton.titleLabel.font = appRatingFont;
-        appRatingView.delegate = self;
-        appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
-        appRatingView.alpha = 0.0;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
-                self.tableView.tableHeaderView = appRatingView;
-                self.tableView.tableHeaderView.alpha = 1.0;
-            } completion:nil];
-        });
-        [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
+    if (![AppRatingUtility shouldPromptForAppReviewForSection:@"notifications"]) {
+        return;
     }
+    
+    if ([self.tableView.tableHeaderView isKindOfClass:[ABXPromptView class]]) {
+        // Rating View is already visible, don't bother to do anything
+        return;
+    }
+    
+    ABXPromptView *appRatingView = [[ABXPromptView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), 100.0)];
+    UIFont *appRatingFont = [WPFontManager openSansRegularFontOfSize:15.0];
+    appRatingView.label.font = appRatingFont;
+    appRatingView.leftButton.titleLabel.font = appRatingFont;
+    appRatingView.rightButton.titleLabel.font = appRatingFont;
+    appRatingView.delegate = self;
+    appRatingView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
+    appRatingView.alpha = 0.0;
+    [appRatingView layoutIfNeeded];
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [UIView animateWithDuration:0.5 delay:0.0 options:UIViewAnimationCurveEaseIn animations:^{
+            self.tableView.tableHeaderView = appRatingView;
+            self.tableView.tableHeaderView.alpha = 1.0;
+            [self.view layoutIfNeeded];
+        } completion:nil];
+    });
+    
+    [WPAnalytics track:WPAnalyticsStatAppReviewsSawPrompt];
 }
 
 - (void)hideRatingView

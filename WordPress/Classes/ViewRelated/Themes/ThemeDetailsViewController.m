@@ -244,18 +244,6 @@
     loading.center = CGPointMake(self.activateButton.bounds.size.width/2, self.activateButton.bounds.size.height/2);
     [self.activateButton setTitle:@"" forState:UIControlStateNormal];
     [self.activateButton addSubview:loading];
-
-    [self.theme activateThemeWithSuccess:^{
-        [WPAnalytics track:WPAnalyticsStatThemesChangedTheme];
-        [loading removeFromSuperview];
-        [UIView animateWithDuration:0.3 delay:0.2 options:UIViewAnimationOptionBeginFromCurrentState animations:^{
-            [self showViewSite];
-        } completion:nil];
-    } failure:^(NSError *error) {
-        [loading removeFromSuperview];
-        [self.activateButton setTitle:NSLocalizedString(@"Activate", nil) forState:UIControlStateNormal];
-        [WPError showNetworkingAlertWithError:error];
-    }];
 }
 
 @end
