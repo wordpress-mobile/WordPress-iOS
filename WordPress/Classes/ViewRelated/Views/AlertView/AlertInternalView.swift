@@ -1,4 +1,4 @@
-import Foundation
+ import Foundation
 
 
 /**
@@ -24,14 +24,14 @@ public class AlertInternalView : UIView
         assert(descriptionLabel != nil)
 
         // Setup please!
-        alertView.layer.cornerRadius    = cornerRadius
-        titleLabel.font                 = Styles.titleRegularFont
-        descriptionLabel.font           = Styles.detailsRegularFont
+        alertView.layer.cornerRadius = cornerRadius
+        titleLabel.font = Styles.titleRegularFont
+        descriptionLabel.font = Styles.detailsRegularFont
 
-        titleLabel.textColor            = Styles.titleColor
-        descriptionLabel.textColor      = Styles.detailsColor
+        titleLabel.textColor = Styles.titleColor
+        descriptionLabel.textColor = Styles.detailsColor
 
-        dismissButton.titleLabel?.font  = Styles.buttonFont
+        dismissButton.titleLabel?.font = Styles.buttonFont
     }
     
     
