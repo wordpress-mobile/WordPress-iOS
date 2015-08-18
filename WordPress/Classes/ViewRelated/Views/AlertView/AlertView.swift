@@ -26,7 +26,9 @@ public class AlertView : NSObject
         
         assert(internalView != nil)
         internalView.titleLabel.text = title
-        internalView.descriptionLabel.attributedText = applyMessageStyles(message)
+        
+        let attributedMessage = NSMutableAttributedString(string: message, attributes: Style.detailsRegularAttributes)
+        internalView.descriptionLabel.attributedText = removeBoldMarkers(applyBoldStyles(attributedMessage))
     }
     
     
@@ -84,25 +86,30 @@ public class AlertView : NSObject
     
     
     /**
-    *  @details     Apples Bold Style over all of the text surrounded by **double stars** (and removes the markers!).
+    *  @details     Apples Bold Style over all of the text surrounded by **double stars**.
     *  @param       message     The Message that should be stylized.
     *  @returns                 The Message with Bold Substrings styled.
     */
-    private func applyMessageStyles(message: String) -> NSAttributedString {
-        let attributedMessage = NSMutableAttributedString(string: message, attributes: Style.detailsRegularAttributes)
-        
-        // Apply Bold Styles
+    private func applyBoldStyles(message: NSMutableAttributedString) -> NSMutableAttributedString {
         let boldPattern = "(\\*{1,2}).+?\\1"
-        attributedMessage.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes)
-        
-        // Replace the Bold Markers
-        let range = NSRange(location: 0, length: attributedMessage.length)
-        attributedMessage.mutableString.replaceOccurrencesOfString("**",
+        message.applyStylesToMatchesWithPattern(boldPattern, styles: Style.detailsBoldAttributes)
+        return message
+    }
+
+    
+    
+    /**
+    *  @details     Removes the Bold Markers from an Attributed String.
+    *  @param       message     The Message that should be stylized.
+    *  @returns                 The Message without the **bold** markers.
+    */
+    private func removeBoldMarkers(message: NSMutableAttributedString) -> NSMutableAttributedString {
+        let range = NSRange(location: 0, length: message.length)
+        message.mutableString.replaceOccurrencesOfString("**",
             withString  : "",
             options     : .CaseInsensitiveSearch,
             range       : range)
-        
-        return attributedMessage
+        return message
     }
     
     
