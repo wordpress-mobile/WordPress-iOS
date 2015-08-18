@@ -54,7 +54,21 @@ const NSTimeInterval SearchBarAnimationDuration = 0.2; // seconds
     self.searchBar.barStyle = UIBarStyleBlack;
     self.searchBar.barTintColor = [WPStyleGuide wordPressBlue];
     self.searchBar.showsCancelButton = YES;
-    self.searchBar.returnKeyType = UIReturnKeyDone;
+    
+    // IMPORTANT: Without this the app crashes for iOS < 7.1.  Not needed for iOS >= 7.1.
+    // This is not very well documented but basically UISearchBar didn't conform to protocol
+    // UITextInputTraits until 7.1, which is the reason why this is crashing.
+    //
+    // A hackish alternative is available for earlier versions of iOS although I don't think this
+    // is worth the effort as we'll be dropping support soon (plus hackish solutions are bad):
+    // http://stackoverflow.com/questions/20065487/uitextinputtraits-is-not-working-in-ios7
+    //
+    // This means the return button will read "Search" for iOS < 7.1 instead of "Done".  No biggie.
+    //
+    if ([self.searchBar respondsToSelector:@selector(setReturnKeyType:)]) {
+        self.searchBar.returnKeyType = UIReturnKeyDone;
+    }
+    
     [self.searchBar setImage:[UIImage imageNamed:@"icon-clear-textfield"] forSearchBarIcon:UISearchBarIconClear state:UIControlStateNormal];
     [self.searchBar setImage:[UIImage imageNamed:@"icon-post-list-search"] forSearchBarIcon:UISearchBarIconSearch state:UIControlStateNormal];
     

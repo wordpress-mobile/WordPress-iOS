@@ -10,58 +10,57 @@
 #import "ContextManager.h"
 #import "BlogService.h"
 #import "WPTableViewCell.h"
+#import "WPTextFieldTableViewCell.h"
+
+static const CGFloat HorizontalMargin = 15.0f;
 
 @interface WPAddPostCategoryViewController ()<PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) PostCategory *parentCategory;
-@property (nonatomic, strong) Post *post;
-@property (nonatomic, strong) UITextField *createCatNameField;
-@property (nonatomic, strong) UITextField *parentCatNameField;
+@property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) UITextField *categoryTextField;
+@property (nonatomic, strong) WPTableViewCell *createCategoryCell;
+@property (nonatomic, strong) WPTableViewCell *parentCategoryCell;
 @property (nonatomic, strong) UIBarButtonItem *saveButtonItem;
 
 @end
 
 @implementation WPAddPostCategoryViewController
 
-- (instancetype)initWithPost:(Post *)post
+- (instancetype)initWithBlog:(Blog *)blog
 {
     self = [super initWithStyle:UITableViewStyleGrouped];
     if (self) {
-        self.post = post;
+        _blog = blog;
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    DDLogMethod();
     [super viewDidLoad];
 
-    self.title = NSLocalizedString(@"Add Category", @"The title on the add category screen");
+    self.title = NSLocalizedString(@"Add a Category", @"The title on the add category screen");
     self.tableView.sectionFooterHeight = 0.0f;
 
     self.saveButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Save", @"Save button label (saving content, ex: Post, Page, Comment, Category).")
                                                            style:[WPStyleGuide barButtonStyleForDone]
                                                           target:self
                                                           action:@selector(saveAddCategory:)];
+    
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+                                                                                          target:self action:@selector(dismiss:)];
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
 }
 
-- (void)didReceiveMemoryWarning
-{
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
-}
-
-#pragma mark -
-#pragma mark Instance Methods
+#pragma mark - Instance Methods
 
 - (void)clearUI
 {
-    self.createCatNameField.text = @"";
-    self.parentCatNameField.text = @"";
+    self.categoryTextField.text = @"";
+    self.parentCategoryCell.textLabel.text = @"";
 }
 
 - (void)addProgressIndicator
@@ -78,28 +77,27 @@
     self.navigationItem.rightBarButtonItem = self.saveButtonItem;
 }
 
-- (void)dismiss
+- (IBAction)dismiss:(id)sender
 {
-    DDLogMethod();
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)saveAddCategory:(id)sender
 {
     NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
     PostCategoryService *categoryService = [[PostCategoryService alloc] initWithManagedObjectContext:context];
-    NSString *catName = [self.createCatNameField.text trim];
+    NSString *catName = [self.categoryTextField.text trim];
 
     if (!catName ||[catName length] == 0) {
         NSString *title = NSLocalizedString(@"Category title missing.", @"Error popup title to indicate that there was no category title filled in.");
         NSString *message = NSLocalizedString(@"Title for a category is mandatory.", @"Error popup message to indicate that there was no category title filled in.");
         [WPError showAlertWithTitle:title message:message withSupportButton:NO];
-        self.createCatNameField.text = @""; // To clear whitespace that was trimed.
+        self.categoryTextField.text = @""; // To clear whitespace that was trimed.
 
         return;
     }
 
-    PostCategory *category = [categoryService findWithBlogObjectID:self.post.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
+    PostCategory *category = [categoryService findWithBlogObjectID:self.blog.objectID parentID:self.parentCategory.categoryID andName:catName];
     if (category) {
         // If there's an existing category with that name and parent, let's use that
         [self dismissWithCategory:category];
@@ -110,19 +108,18 @@
 
     [categoryService createCategoryWithName:catName
                      parentCategoryObjectID:self.parentCategory.objectID
-                            forBlogObjectID:self.post.blog.objectID
+                            forBlogObjectID:self.blog.objectID
                                     success:^(PostCategory *category) {
                                         [self removeProgressIndicator];
                                         [self dismissWithCategory:category];
                                     } failure:^(NSError *error) {
-                                        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                                         [self removeProgressIndicator];
 
                                         if ([error code] == 403) {
                                             [WPError showAlertWithTitle:NSLocalizedString(@"Couldn't Connect", @"") message:NSLocalizedString(@"The username or password stored in the app may be out of date. Please re-enter your password in the settings and try again.", @"") withSupportButton:NO];
 
                                             // bad login/pass combination
-                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.post.blog];
+                                            SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
                                             [self.navigationController pushViewController:editSiteViewController animated:YES];
 
                                         } else {
@@ -134,19 +131,20 @@
 - (void)dismissWithCategory:(PostCategory *)category
 {
     // Add the newly created category to the post
-    [self.post.categories addObject:category];
-    [self.post save];
+    if ([self.delegate respondsToSelector:@selector(addPostCategoryViewController:didAddCategory:)]) {
+        [self.delegate addPostCategoryViewController:self didAddCategory:category];
+    }
 
     // Cleanup and dismiss
     [self clearUI];
-    [self dismiss];
+    [self dismiss:nil];
 }
 
 #pragma mark - functional methods
 
 - (void)showParentCategorySelector
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithPost:self.post selectionMode:CategoriesSelectionModeParent];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog currentSelection:nil selectionMode:CategoriesSelectionModeParent];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -167,62 +165,54 @@
 {
     WPTableViewCell *cell;
     if (indexPath.section == 0) {
-        cell = [self cellForNewCategory];
+        cell = self.createCategoryCell;
     } else {
-        cell = [self cellForParentCategory];
+        cell = self.parentCategoryCell;
     }
     return cell;
 }
 
-- (WPTableViewCell *)cellForNewCategory
+- (WPTableViewCell *)createCategoryCell
 {
-    WPTableViewCell *cell;
-
-    static NSString *newCategoryCellIdentifier = @"newCategoryCellIdentifier";
-    cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:newCategoryCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:newCategoryCellIdentifier];
-        self.createCatNameField = [[UITextField alloc] initWithFrame:CGRectZero];
-        self.createCatNameField.borderStyle = UITextBorderStyleNone;
-        self.createCatNameField.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.createCatNameField.font = [WPStyleGuide regularTextFont];
-        self.createCatNameField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");
+    if (_createCategoryCell) {
+        return _createCategoryCell;
     }
+    _createCategoryCell = [[WPTextFieldTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    
+    self.categoryTextField = [[UITextField alloc] initWithFrame:CGRectInset(_createCategoryCell.bounds, HorizontalMargin, 0)];
+    self.categoryTextField.clearButtonMode = UITextFieldViewModeAlways;
+    self.categoryTextField.font = [WPStyleGuide tableviewTextFont];
+    self.categoryTextField.textColor = [WPStyleGuide darkGrey];
+    self.categoryTextField.text = @"";
+    self.categoryTextField.placeholder = NSLocalizedString(@"Title", @"Title of the new Category being created.");;
+    self.categoryTextField.returnKeyType = UIReturnKeyDone;
+    self.categoryTextField.keyboardType = UIKeyboardTypeDefault;
+    self.categoryTextField.secureTextEntry = NO;
+    self.categoryTextField.autoresizingMask = UIViewAutoresizingFlexibleWidth;
 
-    CGRect frame = self.createCatNameField.frame;
-    frame.origin.x = 15.0f;
-    frame.size.width = cell.contentView.frame.size.width - 30.0f;
-    frame.size.height = cell.contentView.frame.size.height;
-    self.createCatNameField.frame = frame;
-    [cell.contentView addSubview:self.createCatNameField];
-
-    return cell;
+    [_createCategoryCell.contentView addSubview:self.categoryTextField];
+    
+    return _createCategoryCell;
 }
 
-- (WPTableViewCell *)cellForParentCategory
+- (WPTableViewCell *)parentCategoryCell
 {
-    WPTableViewCell *cell;
-    static NSString *parentCategoryCellIdentifier = @"parentCategoryCellIdentifier";
-    cell = (WPTableViewCell *)[self.tableView dequeueReusableCellWithIdentifier:parentCategoryCellIdentifier];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:parentCategoryCellIdentifier];
-        cell.textLabel.font = [WPStyleGuide tableviewTextFont];
-        cell.textLabel.textColor = [WPStyleGuide whisperGrey];
-        cell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
-
-        cell.detailTextLabel.font = [WPStyleGuide tableviewTextFont];
+    if (!_parentCategoryCell) {
+        _parentCategoryCell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:nil];
+        _parentCategoryCell.textLabel.text = NSLocalizedString(@"Parent Category", @"Placeholder to set a parent category for a new category.");
+        _parentCategoryCell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        [WPStyleGuide configureTableViewCell:_parentCategoryCell];
     }
+    
     NSString *parentCategoryName;
     if (self.parentCategory == nil ) {
         parentCategoryName = NSLocalizedString(@"Optional", @"Placeholder to indicate that filling out the field is optional.");
-        cell.detailTextLabel.textColor = [WPStyleGuide textFieldPlaceholderGrey];
     } else {
         parentCategoryName = self.parentCategory.categoryName;
-        cell.detailTextLabel.textColor = [WPStyleGuide whisperGrey];
     }
-    cell.detailTextLabel.text = parentCategoryName;
+    _parentCategoryCell.detailTextLabel.text = parentCategoryName;
 
-    return cell;
+    return _parentCategoryCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
