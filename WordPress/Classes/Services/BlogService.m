@@ -225,6 +225,12 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                         success:^(RemoteBlogSettings *settings) {
                             blog.blogName = settings.name;
                             blog.blogTagline = settings.desc;
+                            if (settings.defaultCategory) {
+                                blog.defaultCategoryID = settings.defaultCategory;
+                            }
+                            if (settings.defaultPostFormat) {
+                                blog.defaultPostFormat = settings.defaultPostFormat;
+                            }
                             [self.managedObjectContext save:nil];
                             if (success) {
                                 success();
@@ -664,9 +670,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                                                                            error:nil];
             if (blog) {
                 NSDictionary *formats = postFormats;
-                if (![formats objectForKey:@"standard"]) {
+                if (![formats objectForKey:PostFormatStandard]) {
                     NSMutableDictionary *mutablePostFormats = [formats mutableCopy];
-                    mutablePostFormats[@"standard"] = NSLocalizedString(@"Standard", @"Standard post format label");
+                    mutablePostFormats[PostFormatStandard] = NSLocalizedString(@"Standard", @"Standard post format label");
                     formats = [NSDictionary dictionaryWithDictionary:mutablePostFormats];
                 }
                 blog.postFormats = formats;

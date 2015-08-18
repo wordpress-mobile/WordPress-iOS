@@ -155,8 +155,8 @@
             }
             
             // Standard isn't included in the list of supported formats? Maybe it will be one day?
-            if (![supportedKeys containsObject:@"standard"]) {
-                [supportedKeys addObject:@"standard"];
+            if (![supportedKeys containsObject:PostFormatStandard]) {
+                [supportedKeys addObject:PostFormatStandard];
             }
 
             NSDictionary *allFormats = [postFormats objectForKey:@"all"];
