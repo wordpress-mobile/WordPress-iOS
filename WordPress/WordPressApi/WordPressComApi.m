@@ -143,6 +143,96 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     return operation;
 }
 
+#pragma mark - Only for debugging purposes
+// The methods in this section are al temporary and should be removed
+
+#if !defined(NS_BLOCK_ASSERTIONS)
+- (void)assertApiVersion:(NSString *)URLString
+{
+    NSAssert([URLString rangeOfString:@"v1.1"].length > 0
+             || [URLString rangeOfString:@"v1.2"].length > 0,
+             @"");
+}
+
+- (AFHTTPRequestOperation *)DELETE:(NSString *)URLString
+                        parameters:(id)parameters
+                           success:(void (^)(AFHTTPRequestOperation *, id))success
+                           failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super DELETE:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)GET:(NSString *)URLString
+                     parameters:(id)parameters
+                        success:(void (^)(AFHTTPRequestOperation *, id))success
+                        failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super GET:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)HEAD:(NSString *)URLString
+                      parameters:(id)parameters
+                         success:(void (^)(AFHTTPRequestOperation *))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super HEAD:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)PATCH:(NSString *)URLString
+                       parameters:(id)parameters
+                          success:(void (^)(AFHTTPRequestOperation *, id))success
+                          failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super PATCH:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+                         success:(void (^)(AFHTTPRequestOperation *, id))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super POST:URLString parameters:parameters success:success failure:failure];
+}
+
+- (AFHTTPRequestOperation *)POST:(NSString *)URLString
+                      parameters:(id)parameters
+       constructingBodyWithBlock:(void (^)(id<AFMultipartFormData>))block
+                         success:(void (^)(AFHTTPRequestOperation *, id))success
+                         failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super POST:URLString
+            parameters:parameters
+constructingBodyWithBlock:block
+               success:success
+               failure:failure];
+}
+
+- (AFHTTPRequestOperation *)PUT:(NSString *)URLString
+                     parameters:(id)parameters
+                        success:(void (^)(AFHTTPRequestOperation *, id))success
+                        failure:(void (^)(AFHTTPRequestOperation *, NSError *))failure
+{
+    [self assertApiVersion:URLString];
+    
+    return [super PUT:URLString parameters:parameters success:success failure:failure];
+}
+
+#endif
+
+#pragma mark - Misc
+
 + (WordPressComApi *)anonymousApi {
     static WordPressComApi *_anonymousApi = nil;
     static dispatch_once_t oncePredicate;
