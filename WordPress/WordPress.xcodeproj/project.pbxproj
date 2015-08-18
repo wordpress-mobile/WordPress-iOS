@@ -2342,10 +2342,6 @@
 			isa = PBXGroup;
 			children = (
 				B56A70171B5040B9001D5815 /* SwitchTableViewCell.swift */,
-				5DF94E251962B97D00359241 /* CommentsTableViewCell.h */,
-				5DF94E261962B97D00359241 /* CommentsTableViewCell.m */,
-				E23EEC5C185A72C100F4DE2A /* WPContentCell.h */,
-				E23EEC5D185A72C100F4DE2A /* WPContentCell.m */,
 				5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */,
 				8370D10811FA499A009D650F /* WPTableViewActivityCell.h */,
 				8370D10911FA499A009D650F /* WPTableViewActivityCell.m */,
