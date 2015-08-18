@@ -291,7 +291,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

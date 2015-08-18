@@ -41,6 +41,16 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     _tableViewHandler.delegate = nil;
 }
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.restorationClass = [self class];
+        self.restorationIdentifier = NSStringFromClass([self class]);
+    }
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -143,15 +153,12 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 - (void)configureTableViewFooter
 {
-    // iPad Fix: contentInset breaks tableSectionViews
-    if (UIDevice.isPad) {
-        self.tableView.tableHeaderView      = [[UIView alloc] initWithFrame:WPTableHeaderPadFrame];
-        self.tableView.tableFooterView      = [[UIView alloc] initWithFrame:WPTableFooterPadFrame];
-        
-    // iPhone Fix: Hide the cellSeparators, when the table is empty
-    } else {
-        self.tableView.tableFooterView      = [UIView new];
-    }
+    // Notes:
+    //  -   iPhone: Hide the cellSeparators, when the table is empty
+    //  -   iPad: contentInset breaks tableSectionViews
+    CGRect footerFrame = UIDevice.isPad ? WPTableFooterPadFrame : CGRectZero;
+    
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:footerFrame];
 }
 
 - (void)configureTableViewLayoutCell
@@ -170,9 +177,14 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
 
 #pragma mark - UITableViewDelegate Methods
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    return nil;
+    return [UIView new];
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
@@ -180,19 +192,9 @@ static NSString *CommentsLayoutIdentifier                       = @"CommentsLayo
     return nil;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    return [UIView new];
-}
-
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
     return [UIView new];
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
