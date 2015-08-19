@@ -16,7 +16,6 @@
 #import "BlogDetailsViewController.h"
 #import "SiteSettingsViewController.h"
 #import "CommentsViewController.h"
-#import "ThemeBrowserViewController.h"
 #import "StatsViewController.h"
 #import "WPWebViewController.h"
 #import "WPTableViewCell.h"
@@ -31,6 +30,7 @@
 #import "PageListViewController.h"
 #import "WPThemeSettings.h"
 #import "WPGUIConstants.h"
+#import "Wordpress-Swift.h"
 
 const NSInteger BlogDetailsRowViewSite = 0;
 const NSInteger BlogDetailsRowViewAdmin = 1;
@@ -467,10 +467,10 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 - (void)showThemesForBlog:(Blog *)blog
 {
-    ThemeBrowserViewController *browserViewController = [[ThemeBrowserViewController alloc] initWithNibName:@"ThemeBrowserViewController"
-                                                                                                     bundle:nil];
+    ThemeBrowser *themeBrowser = [[ThemeBrowser alloc] init];
+    ThemeBrowserViewController *viewController = [themeBrowser instantiateThemeBrowserViewController];
     
-    [self.navigationController pushViewController:browserViewController
+    [self.navigationController pushViewController:viewController
                                          animated:YES];
 }
 
