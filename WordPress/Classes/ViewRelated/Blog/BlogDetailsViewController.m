@@ -39,6 +39,7 @@ const NSInteger BlogDetailsRowBlogPosts = 0;
 const NSInteger BlogDetailsRowPages = 1;
 const NSInteger BlogDetailsRowComments = 2;
 const NSInteger BlogDetailsRowEditSite = 0;
+const NSInteger BlogDetailsRowThemes = 0;
 
 typedef NS_ENUM(NSInteger, TableSectionContentType) {
     TableViewSectionGeneralType = 0,
@@ -153,9 +154,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
     [self configureBlogDetailHeader];
     [self.headerView setBlog:_blog];
-
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:self.blog.blogName style:UIBarButtonItemStylePlain target:nil action:nil];
-    self.navigationItem.backBarButtonItem = backButton;
 }
 
 - (void)configureBlogDetailHeader
@@ -312,13 +310,22 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if ([self isConfigurationSection:indexPath.section]) {
+    if ([self isAppearanceSection:indexPath.section]) {
+        switch (indexPath.row) {
+            case BlogDetailsRowThemes:
+                [self showThemesForBlog:self.blog];
+                break;
+            default:
+                NSAssert(NO, @"Row Handling not implemented");
+                break;
+        }
+    } else if ([self isConfigurationSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowEditSite:
                 [self showSettingsForBlog:self.blog];
                 break;
             default:
-                NSAssert(false, @"Row Handling not implemented");
+                NSAssert(NO, @"Row Handling not implemented");
                 break;
         }
     } else if ([self isGeneralSection:indexPath.section]) {
@@ -333,7 +340,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 [self showStatsForBlog:self.blog];
                 break;
             default:
-                NSAssert(false, @"Row Handling not implemented");
+                NSAssert(NO, @"Row Handling not implemented");
                 break;
         }
     } else if ([self isPublishSection:indexPath.section]) {
@@ -348,7 +355,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 [self showCommentsForBlog:self.blog];
                 break;
             default:
-                NSAssert(false, @"Row Handling not implemented");
+                NSAssert(NO, @"Row Handling not implemented");
                 break;
         }
     }
@@ -458,6 +465,15 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     [self.navigationController pushViewController:statsView animated:YES];
 }
 
+- (void)showThemesForBlog:(Blog *)blog
+{
+    ThemeBrowserViewController *browserViewController = [[ThemeBrowserViewController alloc] initWithNibName:@"ThemeBrowserViewController"
+                                                                                                     bundle:nil];
+    
+    [self.navigationController pushViewController:browserViewController
+                                         animated:YES];
+}
+
 - (void)showViewSiteForBlog:(Blog *)blog
 {
     [WPAnalytics track:WPAnalyticsStatOpenedViewSite];
@@ -500,7 +516,6 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     
     NSSet *updatedObjects = note.userInfo[NSUpdatedObjectsKey];
     if ([updatedObjects containsObject:self.blog]) {
-        self.navigationItem.backBarButtonItem.title = self.blog.blogName;
         self.navigationItem.title = self.blog.blogName;
         [self.tableView reloadData];
     }
