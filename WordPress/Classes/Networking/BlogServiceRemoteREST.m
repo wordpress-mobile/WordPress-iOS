@@ -98,9 +98,9 @@
           }];
 }
 
-- (void)connectPublicizer:(Publicizer *)service
-                  success:(ConnectionsHandler)success
-                  failure:(void (^)(NSError *))failure
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(AuthorizationHandler)success
+                                failure:(void (^)(NSError *))failure
 {
     NSParameterAssert([service isKindOfClass:[Publicizer class]]);
     NSParameterAssert(service.blog.dotComID != nil);
@@ -112,17 +112,15 @@
               NSArray *keyrings = [responseObject arrayForKey:@"connections"];
               for (NSDictionary *keyring in keyrings) {
                   if ([keyring[@"service"] isEqualToString:service.service]) {
-                      [self connectPublicizer:service
-                                  withKeyring:keyring
-                                      success:success
-                                      failure:failure];
+                      if (success) {
+                          success(keyring);
+                      }
                       return;
                   }
               }
-              
-              [self connectKeyring:service
-                           success:success
-                           failure:failure];
+              if (failure) {
+                  failure(nil);
+              }
           } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
               if (failure) {
                   failure(error);
@@ -130,22 +128,8 @@
           }];
 }
 
-- (void)connectKeyring:(Publicizer *)service
-               success:(ConnectionsHandler)success
-               failure:(void (^)(NSError *))failure
-{
-    NSParameterAssert([service isKindOfClass:[Publicizer class]]);
-    NSParameterAssert(service.blog.dotComID != nil);
-    
-#warning implement getting keyring
-    NSLog(@"need keyring: %@", service.service);
-    if (failure) {
-        failure(nil);
-    }
-}
-
 - (void)connectPublicizer:(Publicizer *)service
-              withKeyring:(NSDictionary *)keyring
+        withAuthorization:(NSDictionary *)authorization
                   success:(ConnectionsHandler)success
                   failure:(void (^)(NSError *))failure
 {
@@ -153,7 +137,7 @@
     NSParameterAssert(service.blog.dotComID != nil);
     
     NSString *path = [self pathForConnectionWithPublicizer:service];
-    NSDictionary *parameters = @{ @"keyring_connection_ID" : keyring[@"ID"] };
+    NSDictionary *parameters = @{ @"keyring_connection_ID" : authorization[@"ID"] };
     [self.api POST:path
        parameters:parameters
           success:^(AFHTTPRequestOperation *operation, id responseObject) {

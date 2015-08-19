@@ -7,6 +7,7 @@ typedef void (^SettingsHandler)(RemoteBlogSettings *settings);
 typedef void (^OptionsHandler)(NSDictionary *options);
 typedef void (^PostFormatsHandler)(NSDictionary *postFormats);
 typedef void (^ConnectionsHandler)(NSArray *connections);
+typedef void (^AuthorizationHandler)(NSDictionary *authorization);
 typedef void (^MultiAuthorCheckHandler)(BOOL isMultiAuthor);
 typedef void (^SuccessHandler)();
 
@@ -57,13 +58,26 @@ typedef void (^SuccessHandler)();
                        failure:(void (^)(NSError *error))failure;
 
 /**
- *  @brief      Connect a blog's 3rd party (Publicize) connection
+ *  @brief      Check authorization for a 3rd party (Publicize) connection
  *
  *  @param      service     The service to connect.  Cannot be nil.
  *  @param      success     The block that will be executed on success.  Can be nil.
  *  @param      failure     The block that will be executed on failure.  Can be nil.
  */
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(AuthorizationHandler)success
+                                failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief      Connect a blog's 3rd party (Publicize) connection
+ *
+ *  @param      service       The service to connect.  Cannot be nil.
+ *  @param      authorization Authorization to connect.  Cannot be nil.
+ *  @param      success       The block that will be executed on success.  Can be nil.
+ *  @param      failure       The block that will be executed on failure.  Can be nil.
+ */
 - (void)connectPublicizer:(Publicizer *)service
+        withAuthorization:(NSDictionary *)token
                   success:(ConnectionsHandler)success
                   failure:(void (^)(NSError *error))failure;
 

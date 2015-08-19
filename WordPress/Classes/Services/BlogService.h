@@ -58,33 +58,46 @@
                        failure:(void (^)(NSError *error))failure;
 
 /**
- *  Sync 3rd party (Publicize) connections from the server
+ *  @brief Sync 3rd party (Publicize) connections from the server
  *
- *  @param blog    the blog from where to read the information from
- *  @param success a block that is invoked when the sync is sucessfull
- *  @param failure a block that in invoked when the sync fails.
+ *  @param blog    The blog from where to read the information from
+ *  @param success The block that will be executed on success.  Can be nil.
+ *  @param failure The block that will be executed on failure.  Can be nil.
  */
 - (void)syncConnectionsForBlog:(Blog *)blog
                        success:(void (^)())success
                        failure:(void (^)(NSError *error))failure;
 
-/**
- *  Connect a Publicizer service
- *
- *  @param service  the service to connect
- *  @param success  a block that is invoked when the connect is sucessfull
- *  @param failure  a block that in invoked when the connect fails.
- */
-- (void)connectPublicizer:(Publicizer *)service
-                     success:(void (^)())success
-                     failure:(void (^)(NSError *error))failure;
 
 /**
- *  Disconnect a Publicizer service
+ *  @brief Check authorization for a 3rd party (Publicize) connection
  *
- *  @param service  the publicizer to disconnect
- *  @param success  a block that is invoked when the disconnect is sucessfull
- *  @param failure  a block that in invoked when the disconnect fails.
+ *  @param service The service to connect.  Cannot be nil.
+ *  @param success The block that will be executed on success.  Can be nil.
+ *  @param failure The block that will be executed on failure.  Can be nil.
+ */
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(void (^)(NSDictionary *))success
+                                failure:(void (^)(NSError *))failure;
+
+/**
+ *  @brief Connect a Publicizer service
+ *
+ *  @param service  The service to connect
+ *  @param success  The block that will be executed on success.  Can be nil.
+ *  @param failure  The block that will be executed on failure.  Can be nil.
+ */
+- (void)connectPublicizer:(Publicizer *)service
+        withAuthorization:(NSDictionary *)authorization
+                  success:(void (^)())success
+                  failure:(void (^)(NSError *error))failure;
+
+/**
+ *  @brief Disconnect a Publicizer service
+ *
+ *  @param service  The publicizer to disconnect
+ *  @param success  The block that will be executed on success.  Can be nil.
+ *  @param failure  The block that will be executed on failure.  Can be nil.
  */
 - (void)disconnectPublicizer:(Publicizer *)service
                      success:(void (^)())success

@@ -312,13 +312,25 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                            failure:failure];
 }
 
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(AuthorizationHandler)success
+                                failure:(void (^)(NSError *))failure
+{
+    id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
+    [remote checkAuthorizationForPublicizer:service
+                      success:success
+                      failure:failure];
+}
+
 - (void)connectPublicizer:(Publicizer *)service
+        withAuthorization:(NSDictionary *)authorization
                   success:(void (^)())success
                   failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *blogObjectID = service.blog.objectID;
     id<BlogServiceRemote> remote = [self remoteForBlog:service.blog];
     [remote connectPublicizer:service
+            withAuthorization:authorization
                       success:[self connectionsHandlerWithBlogObjectID:blogObjectID
                                                           completionHandler:success]
                       failure:failure];

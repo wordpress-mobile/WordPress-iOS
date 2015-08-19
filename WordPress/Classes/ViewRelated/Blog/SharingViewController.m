@@ -5,6 +5,7 @@
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "Publicizer.h"
 #import "SVProgressHUD.h"
+#import "WPWebViewController.h"
 
 NS_ENUM(NSInteger, SharingSection) {
     SharingPublicize = 0,
@@ -45,8 +46,15 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:PublicizeCellIdentifier];
+    
+    [self refreshPublicizers];
 
+}
+
+- (void)refreshPublicizers
+{
     self.publicizeServices = [self.blog.publicizers sortedArrayUsingDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:@"order" ascending:TRUE]]];
+    [self.tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -134,20 +142,52 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 - (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
     Publicizer *publicizer = self.publicizeServices[indexPath.row];
-    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     if (publicizer.isConnected) {
-        [blogService disconnectPublicizer:publicizer success:^{
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        } failure:^(NSError *error) {
-            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
-        }];
+        [self disconnectPublicizer:publicizer];
     } else {
-        [blogService connectPublicizer:publicizer success:^{
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [self connectPublicizer:publicizer interact:YES];
+    }
+}
+
+#pragma mark - Publicizer management
+
+- (void)connectPublicizer:(Publicizer *)publicizer interact:(BOOL)interact
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService checkAuthorizationForPublicizer:publicizer success:^(NSDictionary *authorization) {
+        [blogService connectPublicizer:publicizer
+                     withAuthorization:authorization
+                               success:^(NSDictionary *authorization) {
+            [self refreshPublicizers];
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Connect failed", @"Message to show when Publicize connect failed")];
         }];
-    }
+    } failure:^(NSError *error) {
+        if (error) {
+            [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
+        } else if (interact) {
+            [self authorizePublicizer:publicizer];
+        }
+    }];
+}
+
+- (void)authorizePublicizer:(Publicizer *)publicizer
+{
+    NSURL *authorizeURL = [NSURL URLWithString:publicizer.connect];
+    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:authorizeURL];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
+    navController.modalPresentationStyle = UIModalPresentationFormSheet;
+    [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)disconnectPublicizer:(Publicizer *)publicizer
+{
+    BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
+    [blogService disconnectPublicizer:publicizer success:^{
+        [self refreshPublicizers];
+    } failure:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Disconnect failed", @"Message to show when Publicize disconnect failed")];
+    }];
 }
 
 @end

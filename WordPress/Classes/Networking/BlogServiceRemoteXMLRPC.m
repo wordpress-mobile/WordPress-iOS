@@ -43,19 +43,25 @@
                  }];
 }
 
-- (void)syncOptionsForBlog:(Blog *)blog success:(OptionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncOptionsForBlog:(Blog *)blog
+                   success:(OptionsHandler)success
+                   failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForOptionsWithBlog:blog success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncPostFormatsForBlog:(Blog *)blog success:(PostFormatsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncPostFormatsForBlog:(Blog *)blog
+                       success:(PostFormatsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
     WPXMLRPCRequestOperation *operation = [self operationForPostFormatsWithBlog:blog success:success failure:failure];
     [blog.api enqueueXMLRPCRequestOperation:operation];
 }
 
-- (void)syncConnectionsForBlog:(Blog *)blog success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+- (void)syncConnectionsForBlog:(Blog *)blog
+                       success:(ConnectionsHandler)success
+                       failure:(void (^)(NSError *))failure
 {
     // not currently available
     if (failure) {
@@ -64,7 +70,9 @@
     }
 }
 
-- (void)connectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+- (void)checkAuthorizationForPublicizer:(Publicizer *)service
+                                success:(AuthorizationHandler)success
+                                failure:(void (^)(NSError *))failure
 {
     // not currently available
     if (failure) {
@@ -73,7 +81,21 @@
     }
 }
 
-- (void)disconnectPublicizer:(Publicizer *)service success:(ConnectionsHandler)success failure:(void (^)(NSError *))failure
+- (void)connectPublicizer:(Publicizer *)service
+        withAuthorization:(NSDictionary *)authorization
+                  success:(ConnectionsHandler)success
+                  failure:(void (^)(NSError *))failure
+{
+    // not currently available
+    if (failure) {
+        NSError *error = [NSError errorWithDomain:WPXMLRPCClientErrorDomain code:NSURLErrorBadURL userInfo:nil];
+        failure(error);
+    }
+}
+
+- (void)disconnectPublicizer:(Publicizer *)service
+                     success:(ConnectionsHandler)success
+                     failure:(void (^)(NSError *))failure
 {
     // not currently available
     if (failure) {
