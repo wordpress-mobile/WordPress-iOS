@@ -17,7 +17,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
         pushAuthenticationServiceRemote?.authorizeLogin(token, success: nil, failure: nil)
         
         XCTAssertTrue(mockRemoteApi!.postMethodCalled, "Method was not called")
-        XCTAssertEqual(mockRemoteApi!.URLStringPassedIn!, "me/two-step/push-authentication", "Incorrect URL passed in")
+        XCTAssertEqual(mockRemoteApi!.URLStringPassedIn!, "v1.1/me/two-step/push-authentication", "Incorrect URL passed in")
     }
     
     func testAuthorizeLoginUsesTheCorrectParameters() {
