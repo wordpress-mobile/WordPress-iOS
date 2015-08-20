@@ -7,9 +7,12 @@
 #import "WPTableViewCell.h"
 #import "CustomHighlightButton.h"
 
-@interface PostCategoriesViewController ()
+static NSString * const CategoryCellIdentifier = @"CategoryCellIdentifier";
+static const CGFloat CategoryCellIndentation = 16.0;
 
-@property (nonatomic, strong) Post *post;
+@interface PostCategoriesViewController () <WPAddPostCategoryViewControllerDelegate>
+
+@property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSMutableDictionary *categoryIndentationDict;
 @property (nonatomic, strong) NSMutableArray *selectedCategories;
 @property (nonatomic, strong) NSArray *originalSelection;
@@ -20,12 +23,15 @@
 
 @implementation PostCategoriesViewController
 
-- (instancetype)initWithPost:(Post *)post selectionMode:(CategoriesSelectionMode)selectionMode
+- (instancetype)initWithBlog:(Blog *)blog
+            currentSelection:(NSArray *)originalSelection
+               selectionMode:(CategoriesSelectionMode)selectionMode
 {
     self = [super initWithStyle:UITableViewStylePlain];
     if (self) {
-        self.selectionMode = selectionMode;
-        self.post = post;
+        _selectionMode = selectionMode;
+        _blog = blog;
+        _originalSelection = originalSelection;
     }
     return self;
 }
@@ -36,17 +42,29 @@
 
     self.tableView.accessibilityIdentifier = @"CategoriesList";
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero]; // Hide extra cell separators.
-
+    // Hide extra cell separators.
+    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    [self.tableView registerClass:[WPTableViewCell class] forCellReuseIdentifier:CategoryCellIdentifier];
+    
     // Show the add category button if we're selecting categories for a post.
-    if (self.selectionMode == CategoriesSelectionModePost ) {
-        UIImage *image = [UIImage imageNamed:@"icon-posts-add"];
-        CustomHighlightButton *button = [[CustomHighlightButton alloc] initWithFrame:CGRectMake(0.0, 0.0, image.size.width, image.size.height)];
-        [button setImage:image forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(showAddNewCategory) forControlEvents:UIControlEventTouchUpInside];
-        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
-
-        [WPStyleGuide setRightBarButtonItemWithCorrectSpacing:rightBarButtonItem forNavigationItem:self.navigationItem];
+    if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
+        UIBarButtonItem *rightBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon-post-add"]
+                                                                               style:UIBarButtonItemStylePlain
+                                                                              target:self
+                                                                              action:@selector(showAddNewCategory)];
+        self.navigationItem.rightBarButtonItem = rightBarButtonItem;
+    }
+    
+    switch (self.selectionMode) {
+        case (CategoriesSelectionModeParent): {
+            self.title = NSLocalizedString(@"Parent Category", @"Title for selecting parent category of a category");
+        } break;
+        case (CategoriesSelectionModePost): {
+            self.title = NSLocalizedString(@"Post Categories", @"Title for selecting categories for a post");
+        } break;
+        case (CategoriesSelectionModeBlogDefault): {
+            self.title = NSLocalizedString(@"Default Category", @"Title for selecting a default category for a post");
+        }
     }
 }
 
@@ -55,21 +73,6 @@
     [super viewWillAppear:animated];
 
     [self configureCategories];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    // Save changes.
-    self.post.categories = [NSMutableSet setWithArray:self.selectedCategories];
-    [self.post save];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    DDLogWarn(@"%@ %@", self, NSStringFromSelector(_cmd));
-    [super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview
 }
 
 #pragma mark - Instance Methods
@@ -81,20 +84,23 @@
 
 - (void)showAddNewCategory
 {
-    DDLogMethod();
-    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithPost:self.post];
-    [self.navigationController pushViewController:addCategoryViewController animated:YES];
+    WPAddPostCategoryViewController *addCategoryViewController = [[WPAddPostCategoryViewController alloc] initWithBlog:self.blog];
+    addCategoryViewController.delegate = self;
+    [self presentViewController:[[UINavigationController alloc] initWithRootViewController:addCategoryViewController]
+                       animated:YES
+                     completion:nil];
 }
 
 - (void)configureCategories
 {
-    self.selectedCategories = [NSMutableArray arrayWithArray:[self.post.categories allObjects]];
-    self.originalSelection = [self.selectedCategories copy];
+    if (!self.selectedCategories) {
+        self.selectedCategories = [self.originalSelection mutableCopy];
+    }
     self.categoryIndentationDict = [NSMutableDictionary dictionary];
 
     // Get sorted categories by parent/child relationship
     WPCategoryTree *tree = [[WPCategoryTree alloc] initWithParent:nil];
-    [tree getChildrenFromObjects:[self.post.blog sortedCategories]];
+    [tree getChildrenFromObjects:[self.blog sortedCategories]];
     self.categories = [tree getAllObjects];
 
     // Get the indentation level of each category.
@@ -142,30 +148,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *categoryCell = @"categoryCell";
-    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:categoryCell];
-    if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:categoryCell];
-    }
-
+    WPTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CategoryCellIdentifier forIndexPath:indexPath];
     PostCategory *category = self.categories[indexPath.row];
-
     // Cell indentation
     NSInteger indentationLevel = [[self.categoryIndentationDict objectForKey:[category.categoryID stringValue]] integerValue];
-    cell.indentationLevel = indentationLevel;
-
-    if (indentationLevel == 0) {
-        cell.imageView.image = nil;
-    } else {
-        cell.imageView.image = [UIImage imageNamed:@"category_child.png"];
-    }
-
+    // HACK: We use zero here, because the the separator inset will do the work we want
+    cell.indentationLevel = 0;
+    cell.indentationWidth = CategoryCellIndentation;
+    cell.separatorInset = UIEdgeInsetsMake(0, (indentationLevel+1) * cell.indentationWidth, 0, 0);
     cell.textLabel.text = [category.categoryName stringByDecodingXMLCharacters];
-
     [WPStyleGuide configureTableViewCell:cell];
 
     // Only show checkmarks if we're selecting for a post.
-    if (self.selectionMode == CategoriesSelectionModePost) {
+    if (self.selectionMode == CategoriesSelectionModePost || self.selectionMode == CategoriesSelectionModeBlogDefault) {
         if ([self.selectedCategories containsObject:category]) {
             cell.accessoryType = UITableViewCellAccessoryCheckmark;
         } else {
@@ -176,28 +171,66 @@
     return cell;
 }
 
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [tableView deselectRowAtIndexPath:[tableView indexPathForSelectedRow] animated:YES];
+    NSIndexPath *currentSelectedIndexPath = [tableView indexPathForSelectedRow];
+
+    [tableView deselectRowAtIndexPath:currentSelectedIndexPath animated:YES];
 
     PostCategory *category = self.categories[indexPath.row];
+    switch (self.selectionMode) {
+        case (CategoriesSelectionModeParent): {
+            // If we're choosing a parent category then we're done.
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
+                [self.delegate postCategoriesViewController:self didSelectCategory:category];
+            }
 
-    // If we're choosing a parent category then we're done.
-    if (self.selectionMode == CategoriesSelectionModeParent) {
-        if ([self.delegate respondsToSelector:@selector(postCategoriesViewControllerdidSelectCategory:)]) {
+            [self.navigationController popViewControllerAnimated:YES];
+            return;
+        } break;
+        case (CategoriesSelectionModePost): {
+            if ([self.selectedCategories containsObject:category]) {
+                [self.selectedCategories removeObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
+            } else {
+                [self.selectedCategories addObject:category];
+                [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+                [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+            }
+        } break;
+        case (CategoriesSelectionModeBlogDefault): {
+            if ([self.selectedCategories containsObject:category]){
+                return;
+            }
+            [self.selectedCategories removeAllObjects];
+            [self.selectedCategories addObject:category];
+            [self.tableView reloadData];
+            if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
+                [self.delegate postCategoriesViewController:self didSelectCategory:category];
+            }
+        }
+    }
+}
+
+#pragma mark - WPAddPostCategoryViewControllerDelegate
+
+- (void)addPostCategoryViewController:(WPAddPostCategoryViewController *)controller didAddCategory:(PostCategory *)category
+{
+    if (self.selectionMode == CategoriesSelectionModeBlogDefault) {
+        [self.selectedCategories removeAllObjects];
+        [self.selectedCategories addObject:category];
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didSelectCategory:)]) {
             [self.delegate postCategoriesViewController:self didSelectCategory:category];
         }
-
-        [self.navigationController popViewControllerAnimated:YES];
-        return;
-    }
-
-    if ([self.selectedCategories containsObject:category]) {
-        [self.selectedCategories removeObject:category];
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryNone;
     } else {
         [self.selectedCategories addObject:category];
-        [tableView cellForRowAtIndexPath:indexPath].accessoryType = UITableViewCellAccessoryCheckmark;
+        if ([self.delegate respondsToSelector:@selector(postCategoriesViewController:didUpdateSelectedCategories:)]) {
+            [self.delegate postCategoriesViewController:self didUpdateSelectedCategories:[NSSet setWithArray:self.selectedCategories]];
+        }
     }
 }
 
