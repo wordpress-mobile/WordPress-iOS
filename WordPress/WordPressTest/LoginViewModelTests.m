@@ -1071,7 +1071,7 @@ describe(@"displayRemoteError", ^{
         context(@"the error code isn't 403, 405, a bad url and there is no error message", ^{
             
             beforeEach(^{
-                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];;
+                error = [NSError errorWithDomain:WPXMLRPCFaultErrorDomain code:401 userInfo:@{NSLocalizedDescriptionKey : @"" }];
             });
             
             it(@"should display an overlay with a message about sign in failed", ^{
@@ -1170,7 +1170,7 @@ describe(@"toggleSignInButton visibility", ^{
     it(@"should be hidden during authentication", ^{
         [[mockViewModelPresenter expect] setToggleSignInButtonHidden:YES];
         
-        viewModel.authenticating = YES;;
+        viewModel.authenticating = YES;
         
         [mockViewModelPresenter verify];
     });
