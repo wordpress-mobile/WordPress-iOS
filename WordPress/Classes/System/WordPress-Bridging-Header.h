@@ -23,7 +23,14 @@
 
 #import "PhotonImageURLHelper.h"
 
+#import "ReaderBrowseSiteViewController.h"
+#import "ReaderPost.h"
 #import "ReaderPostContentProvider.h"
+#import "ReaderPostDetailViewController.h"
+#import "ReaderPostService.h"
+#import "ReaderCommentsViewController.h"
+#import "ReaderTopic.h"
+#import "SourcePostAttribution.h"
 
 #import "SuggestionsTableView.h"
 
@@ -33,6 +40,7 @@
 #import "UIImageView+Gravatar.h"
 #import "UIImage+Tint.h"
 
+#import "WordPressAppDelegate.h"
 #import "WordPressComApi.h"
 #import "WPAccount.h"
 #import "WPAnalyticsTrackerWPCom.h"
@@ -42,5 +50,6 @@
 #import "WPFontManager.h"
 #import "WPRichTextView.h"
 #import "WPTableViewCell.h"
+#import "WPTableViewHandler.h"
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "WPWebViewController.h"
