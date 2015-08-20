@@ -84,7 +84,6 @@
 @property (nonatomic, weak) id<WPTableViewHandlerDelegate> delegate;
 @property (nonatomic) BOOL cacheRowHeights;
 @property (nonatomic, readonly) BOOL isScrolling;
-@property (nonatomic) BOOL shouldRefreshTableViewPreservingOffset;
 @property (nonatomic) UITableViewRowAnimation updateRowAnimation;
 @property (nonatomic) UITableViewRowAnimation insertRowAnimation;
 @property (nonatomic) UITableViewRowAnimation deleteRowAnimation;
@@ -96,5 +95,19 @@
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
 - (void)invalidateCachedRowHeightAtIndexPath:(NSIndexPath *)indexPath;
+
+/**
+ A convenience method for clearing cached row heights and reloading the table view.
+ */
+- (void)refreshTableView;
+
+/**
+ Reloads the table, adjusting the table view's content offset so that the currently
+ visible content stays in place.
+ 
+ The caller should update the tableview's content, (i.e. the fetched results)  
+ in the `tableViewHandlerWillRefreshTableViewPreservingOffset:` delegate method.
+ */
+- (void)refreshTableViewPreservingOffset;
 
 @end
