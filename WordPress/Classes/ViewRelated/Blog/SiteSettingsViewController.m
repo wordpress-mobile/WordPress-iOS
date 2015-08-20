@@ -78,17 +78,13 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 @property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 
 @property (nonatomic, strong) Blog *blog;
+@property (nonatomic, strong) NSString *url;
 @property (nonatomic, strong) NSString *authToken;
 @property (nonatomic, strong) NSString *username;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) NSString *url;
-
-@property (nonatomic,   copy) NSString *startingPwd;
-@property (nonatomic,   copy) NSString *startingUser;
-@property (nonatomic,   copy) NSString *startingUrl;
-
 @property (nonatomic, assign) BOOL geolocationEnabled;
 @property (nonatomic, assign) BOOL isSiteDotCom;
+
 @property (nonatomic, assign) BOOL isKeyboardVisible;
 
 @end
@@ -132,10 +128,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     self.authToken = self.blog.authToken;
     self.username = self.blog.usernameForSite;
     self.password = self.blog.password;
-
-    self.startingUser = self.username;
-    self.startingPwd = self.password;
-    self.startingUrl = self.url;
     self.geolocationEnabled = self.blog.geolocationEnabled;
 
     self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
@@ -514,7 +506,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                 if (![value isEqualToString:self.blog.password]) {
                     [self.navigationItem setHidesBackButton:YES animated:YES];
                     self.password = value;
-                    [self validateUrl];
+                    [self validateLoginCredentials];
                 }
             };
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
@@ -686,102 +678,50 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
 
 - (NSString *)getURLToValidate
 {
-    NSString *urlToValidate = self.url;
-
+    NSString *urlToValidate = self.blog.url;
+    
     if (![urlToValidate hasPrefix:@"http"]) {
         urlToValidate = [NSString stringWithFormat:@"http://%@", urlToValidate];
     }
-
+    
     NSError *error = nil;
-
+    
     NSRegularExpression *wplogin = [NSRegularExpression regularExpressionWithPattern:@"/wp-login.php$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *wpadmin = [NSRegularExpression regularExpressionWithPattern:@"/wp-admin/?$" options:NSRegularExpressionCaseInsensitive error:&error];
     NSRegularExpression *trailingslash = [NSRegularExpression regularExpressionWithPattern:@"/?$" options:NSRegularExpressionCaseInsensitive error:&error];
-
+    
     urlToValidate = [wplogin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [wpadmin stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
     urlToValidate = [trailingslash stringByReplacingMatchesInString:urlToValidate options:0 range:NSMakeRange(0, [urlToValidate length]) withTemplate:@""];
-
+    
     return urlToValidate;
 }
 
-- (void)validateXmlprcURL:(NSURL *)xmlRpcURL
+- (void)validateLoginCredentials
 {
+    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
+
+    NSURL *xmlRpcURL = [NSURL URLWithString:self.blog.xmlrpc];
     WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL
                                                                username:self.username
                                                                password:self.password];
-
+    __weak __typeof__(self) weakSelf = self;
     [api getBlogOptionsWithSuccess:^(id options){
-        if ([options objectForKey:@"wordpress.com"] != nil) {
-            self.isSiteDotCom = YES;
-            [self loginForSiteWithXmlRpcUrl:[NSURL URLWithString:@"https://wordpress.com/xmlrpc.php"]];
-        } else {
-            self.isSiteDotCom = NO;
-            [self loginForSiteWithXmlRpcUrl:xmlRpcURL];
-        }
-    } failure:^(NSError *failure){
-        [SVProgressHUD dismiss];
-        [self validationDidFail:failure];
-    }];
-}
-
-- (void)loginForSiteWithXmlRpcUrl:(NSURL *)xmlRpcURL
-{
-    WordPressXMLRPCApi *api = [WordPressXMLRPCApi apiWithXMLRPCEndpoint:xmlRpcURL username:self.usernameTextCell.detailTextLabel.text password:self.password];
-    [api getBlogsWithSuccess:^(NSArray *blogs) {
-        [SVProgressHUD dismiss];
-        [self validationSuccess:[xmlRpcURL absoluteString]];
-    } failure:^(NSError *error) {
-        [SVProgressHUD dismiss];
-        [self validationDidFail:error];
-    }];
-}
-
-- (void)checkURL
-{
-    NSString *urlToValidate = [self getURLToValidate];
-
-    DDLogInfo(@"%@ %@ %@", self, NSStringFromSelector(_cmd), urlToValidate);
-
-    [SVProgressHUD showWithStatus:NSLocalizedString(@"Authenticating", @"") maskType:SVProgressHUDMaskTypeBlack];
-    [WordPressXMLRPCApi guessXMLRPCURLForSite:urlToValidate success:^(NSURL *xmlrpcURL) {
-        [self validateXmlprcURL:xmlrpcURL];
+        __typeof__(self) strongSelf = weakSelf;
+        strongSelf.blog.password = self.password;
+        [strongSelf.blog.managedObjectContext save:nil];
+        [strongSelf.navigationItem setHidesBackButton:NO animated:NO];
     } failure:^(NSError *error){
         [SVProgressHUD dismiss];
-        if ([error.domain isEqual:NSURLErrorDomain] && error.code == NSURLErrorUserCancelledAuthentication) {
-            [self validationDidFail:nil];
-        } else if ([error.domain isEqual:WPXMLRPCErrorDomain] && error.code == WPXMLRPCInvalidInputError) {
-            [self validationDidFail:error];
-        } else if ([error.domain isEqual:WordPressXMLRPCApiErrorDomain]) {
-            [self validationDidFail:error];
-        } else if ([error.domain isEqual:AFURLRequestSerializationErrorDomain] || [error.domain isEqual:AFURLResponseSerializationErrorDomain]) {
-            NSString *str = [NSString stringWithFormat:NSLocalizedString(@"There was a server error communicating with your site:\n%@\nTap 'Need Help?' to view the FAQ.", @""), [error localizedDescription]];
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: str};
-            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadServerResponse userInfo:userInfo];
-            [self validationDidFail:err];
-        } else {
-            NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Unable to find a WordPress site at that URL. Tap 'Need Help?' to view the FAQ.", @"")};
-            NSError *err = [NSError errorWithDomain:@"org.wordpress.iphone" code:NSURLErrorBadURL userInfo:userInfo];
-            [self validationDidFail:err];
-        }
+        [weakSelf loginValidationFailedWithError:error];
     }];
 }
 
-- (void)validationSuccess:(NSString *)xmlrpc
-{
-    self.blog.password = self.password;
-    [self.blog.managedObjectContext save:nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"BlogsRefreshNotification" object:nil];
 
-    [self.navigationItem setHidesBackButton:NO animated:NO];
-
-}
-
-- (void)validationDidFail:(NSError *)error
+- (void)loginValidationFailedWithError:(NSError *)error
 {
     [self.navigationItem setHidesBackButton:NO animated:NO];
-    self.password = self.blog.password;
-    
+    self.password = self.blog.password;    
     if (error) {
         NSString *message;
         if (error.code == 403) {
@@ -790,7 +730,10 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
             message = [error localizedDescription];
         }
         if (error.code == 405) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"") message:message withSupportButton:YES okPressedBlock:^(UIAlertView *alertView) {
+            [WPError showAlertWithTitle:NSLocalizedString(@"Sorry, can't log in", @"")
+                                message:message
+                      withSupportButton:YES
+                         okPressedBlock:^(UIAlertView *alertView) {
                 [self openSiteAdminFromAlert:alertView];
             }];
 
@@ -826,17 +769,6 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
-}
-
-- (void)validateUrl
-{
-    if (self.blog) {
-        // If we are editing an existing blog, use the known XML-RPC URL
-        // We don't allow editing URL on existing blogs, so XML-RPC shouldn't change
-        [self validateXmlprcURL:[NSURL URLWithString:self.blog.xmlrpc]];
-    } else {
-        [self checkURL];
-    }
 }
 
 #pragma mark - Saving methods
