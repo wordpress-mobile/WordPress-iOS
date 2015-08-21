@@ -47,6 +47,14 @@
     return [NSURL URLWithString:[url stringByReplacingOccurrencesOfString:@"http://" withString:@"https://"]];
 }
 
+- (NSURL *)removeGravatarFallback
+{
+    NSURLComponents *components = [NSURLComponents componentsWithURL:self resolvingAgainstBaseURL:NO];
+    components.query            = @"s=256&d=404";
+    
+    return components.URL;
+}
+
 - (NSURL *)patchGravatarUrlWithSize:(CGFloat)size
 {
     NSString *patchedURL        = [self absoluteString];
