@@ -59,6 +59,7 @@ NSString * const PostFormatStandard = @"standard";
 @dynamic username;
 @dynamic defaultCategoryID;
 @dynamic defaultPostFormat;
+@dynamic privacy;
 
 @synthesize api = _api;
 @synthesize isSyncingPosts;
