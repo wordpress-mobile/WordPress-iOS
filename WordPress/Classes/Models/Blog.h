@@ -67,6 +67,7 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 @property (nonatomic, strong, readwrite) NSString *icon;
 @property (nonatomic, strong, readwrite) NSNumber *defaultCategoryID;
 @property (nonatomic, strong, readwrite) NSString *defaultPostFormat;
+@property (nonatomic, strong, readwrite) NSNumber *privacy;
 
 /**
  Flags whether the current user is an admin on the blog.
