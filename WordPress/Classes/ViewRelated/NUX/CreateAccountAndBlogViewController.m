@@ -19,6 +19,7 @@
 #import "WPAccount.h"
 #import "Blog.h"
 #import "WordPressComOAuthClient.h"
+#import "WordPressComServiceRemote.h"
 #import "AccountService.h"
 #import "BlogService.h"
 #import "ContextManager.h"
@@ -769,11 +770,15 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
         };
 
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[WordPressComApi anonymousApi] validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                                 andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                                andLanguageId:languageId
-                                                      success:blogValidationSuccess
-                                                      failure:blogValidationFailure];
+        
+        WordPressComApi *api = [WordPressComApi anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service validateWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                             andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                            andLanguageId:languageId
+                                  success:blogValidationSuccess
+                                  failure:blogValidationFailure];
     }];
 
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
@@ -786,12 +791,15 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
         };
-
-        [[WordPressComApi anonymousApi] createWPComAccountWithEmail:_emailField.text
-                                                        andUsername:_usernameField.text
-                                                        andPassword:_passwordField.text
-                                                            success:createUserSuccess
-                                                            failure:createUserFailure];
+        
+        WordPressComApi *api = [WordPressComApi anonymousApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service createWPComAccountWithEmail:_emailField.text
+                                 andUsername:_usernameField.text
+                                 andPassword:_passwordField.text
+                                     success:createUserSuccess
+                                     failure:createUserFailure];
 
     }];
     WPAsyncBlockOperation *userSignIn = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
@@ -865,12 +873,16 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
         };
 
         NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
-        [[_account restApi] createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
-                                      andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
-                                     andLanguageId:languageId
-                                 andBlogVisibility:WordPressComApiBlogVisibilityPublic
-                                           success:createBlogSuccess
-                                           failure:createBlogFailure];
+        
+        WordPressComApi *api = [_account restApi];
+        WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
+        
+        [service createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
+                           andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
+                          andLanguageId:languageId
+                      andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                                success:createBlogSuccess
+                                failure:createBlogFailure];
     }];
 
     [blogCreation addDependency:userSignIn];
