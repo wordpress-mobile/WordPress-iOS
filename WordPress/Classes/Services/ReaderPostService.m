@@ -34,7 +34,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 @property (nonatomic) NSUInteger backfillBatchNumber;
 @property (nonatomic, strong) NSMutableArray *backfilledRemotePosts;
 @property (nonatomic, strong) NSDate *backfillDate;
-@property (nonatomic) BOOL skippingSave;
 
 @end
 
@@ -52,18 +51,13 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
-    [self fetchPostsForTopic:topic earlierThan:date skippingSave:NO success:success failure:failure];
-}
-
-- (void)fetchPostsForTopic:(ReaderTopic *)topic earlierThan:(NSDate *)date skippingSave:(BOOL)skippingSave success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
-{
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
     [remoteService fetchPostsFromEndpoint:[NSURL URLWithString:topic.path]
                                     count:ReaderPostServiceNumberToSync
                                    before:date
                                   success:^(NSArray *posts) {
-                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID skippingSave:skippingSave callingSuccess:success];
+                                      [self mergePosts:posts earlierThan:date forTopic:topicObjectID callingSuccess:success];
                                   } failure:^(NSError *error) {
                                       if (failure) {
                                           failure(error);
@@ -99,11 +93,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)backfillPostsForTopic:(ReaderTopic *)topic success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
 {
-    [self backfillPostsForTopic:topic skippingSave:NO success:success failure:failure];
-}
-
-- (void)backfillPostsForTopic:(ReaderTopic *)topic skippingSave:(BOOL)skippingSave success:(void (^)(NSInteger count, BOOL hasMore))success failure:(void (^)(NSError *error))failure
-{
     NSManagedObjectID *topicObjectID = topic.objectID;
     ReaderPost *post = [self newestPostForTopic:topicObjectID];
     ReaderPostServiceBackfillState *state = [[ReaderPostServiceBackfillState alloc] init];
@@ -114,7 +103,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
     }
     state.backfillBatchNumber = 0;
     state.backfilledRemotePosts = [NSMutableArray array];
-    state.skippingSave = skippingSave;
 
     [self fetchPostsToBackfillTopic:topicObjectID
                         earlierThan:[NSDate date]
@@ -589,7 +577,7 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
     if (state.backfillBatchNumber > ReaderPostServiceMaxBatchesToBackfill || oldestDate == [state.backfillDate earlierDate:oldestDate]) {
         // our work is done
-        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID skippingSave:state.skippingSave callingSuccess:success];
+        [self mergePosts:state.backfilledRemotePosts earlierThan:[NSDate date] forTopic:topicObjectID callingSuccess:success];
     } else {
         [self fetchPostsToBackfillTopic:topicObjectID earlierThan:oldestDate backfillState:state success:success failure:failure];
     }
@@ -609,7 +597,6 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 - (void)mergePosts:(NSArray *)posts
        earlierThan:(NSDate *)date
           forTopic:(NSManagedObjectID *)topicObjectID
-      skippingSave:(BOOL)skippingSave
     callingSuccess:(void (^)(NSInteger count, BOOL hasMore))success
 {
     // Use a performBlock here so the work to merge does not block the main thread.
@@ -643,16 +630,20 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
         [self deletePostsFromBlockedSites];
         readerTopic.lastSynced = [NSDate date];
 
-        if (!skippingSave) {
-            // performBlockAndWait here so we know our objects are saved before we call success.
-            [self.managedObjectContext performBlockAndWait:^{
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+        // performBlockAndWait here so we know our objects are saved before we call success.
+        [self.managedObjectContext performBlockAndWait:^{
+//            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext withCompletionBlock:^{
+                if (success) {
+                    BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
+                    success(postsCount, hasMore);
+                }
             }];
-        }
-        if (success) {
-            BOOL hasMore = ((postsCount > 0 ) && ([self numberOfPostsForTopic:readerTopic] < ReaderPostServiceMaxPosts));
-            success(postsCount, hasMore);
-        }
+
+        }];
+
     }];
 }
 
