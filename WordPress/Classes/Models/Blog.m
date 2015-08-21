@@ -293,8 +293,33 @@ NSString * const PostFormatStandard = @"standard";
 // WP.COM private blog.
 - (BOOL)isPrivate
 {
-    return (self.isHostedAtWPcom && [[self getOptionValue:@"blog_public"] isEqualToString:@"-1"]);
+    return (self.isHostedAtWPcom && [self.privacy isEqualToNumber:@(BlogPrivacyPrivate)]);
 }
+
+- (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy
+{
+    if (!self.privacy) {
+        return NSLocalizedString(@"Unknow", @"");
+    }
+    switch (privacy) {
+        case BlogPrivacyPrivate:
+            return NSLocalizedString(@"Private", @"");
+            break;
+        case BlogPrivacyHidden:
+            return NSLocalizedString(@"Hidden", @"");
+            break;
+        case BlogPrivacyPublic:
+            return NSLocalizedString(@"Public", @"");
+            break;
+    }
+    return NSLocalizedString(@"Unknow", @"");;
+}
+
+- (NSString *)textForCurrentBlogPrivacy
+{
+    return [self textForBlogPrivacy:[self.privacy integerValue]];
+}
+
 
 - (NSDictionary *)getImageResizeDimensions
 {

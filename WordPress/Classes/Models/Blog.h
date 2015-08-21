@@ -31,6 +31,12 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
     BlogFeaturePushNotifications,
 };
 
+typedef NS_ENUM(NSInteger, BlogPrivacy) {
+    BlogPrivacyPrivate = -1,
+    BlogPrivacyHidden = 0,
+    BlogPrivacyPublic = 1
+};
+
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite) NSNumber *blogID;
@@ -121,6 +127,19 @@ typedef NS_ENUM(NSUInteger, BlogFeature) {
 
 #pragma mark - Blog information
 - (BOOL)isPrivate;
+/**
+ * Returns the text value for a blog privacy
+ *
+ * @param privacy the privacy to translate
+ */
+- (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy;
+/**
+ *  The text description for the current privacy settting set in the blog
+ *
+ *  @return the text description.
+ */
+- (NSString *)textForCurrentBlogPrivacy;
+
 - (NSArray *)sortedCategories;
 - (id)getOptionValue:(NSString *) name;
 - (NSString *)loginUrl;
