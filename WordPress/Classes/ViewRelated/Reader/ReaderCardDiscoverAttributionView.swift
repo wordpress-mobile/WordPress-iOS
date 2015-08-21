@@ -9,6 +9,14 @@ import Foundation
     private let blavatarImageName = "post-blavatar-placeholder"
 
 
+    // MARK: - Lifecycle Methods
+
+    public override func awakeFromNib() {
+        super.awakeFromNib()
+        richTextView.scrollsToTop = false
+    }
+
+
     // MARK: - Accessors
 
     public override func intrinsicContentSize() -> CGSize {
