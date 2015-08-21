@@ -182,11 +182,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
     [self setAuthToken:nil];
 }
 
-- (void)validateWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
-{
-    [self createWPComAccountWithEmail:email andUsername:username andPassword:password validate:YES success:success failure:failure];
-}
-
 - (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure
 {
     [self createWPComAccountWithEmail:email andUsername:username andPassword:password validate:NO success:success failure:failure];
