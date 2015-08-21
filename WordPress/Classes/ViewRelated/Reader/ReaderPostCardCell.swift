@@ -303,6 +303,9 @@ import Foundation
         // momentarily visible.
         featuredImageView.image = nil
         if let featuredImageURL = contentProvider?.featuredImageURLForDisplay?() {
+            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
+            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
+
             if loadMediaWhenConfigured {
                 var url = featuredImageURL
                 if !(contentProvider!.isPrivate()) {
@@ -320,8 +323,6 @@ import Foundation
                     featuredImageView.setImageWithURL(url, placeholderImage:nil)
                 }
             }
-            featuredMediaHeightConstraint.constant = featuredMediaHeightConstraintConstant
-            featuredMediaBottomConstraint.constant = featuredMediaBottomConstraintConstant
 
         } else {
             featuredMediaHeightConstraint.constant = 0.0
