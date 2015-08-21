@@ -741,8 +741,8 @@ static NSString const *NotificationsNetworkStatusKey    = @"network_status";
     cell.onUndelete                 = ^{
         [weakSelf cancelDeletionForNotificationWithID:note.objectID];
     };
-    
-    [cell downloadGravatarWithURL:note.iconURL];
+
+    [cell downloadGravatarWithURL:note.iconURL.removeGravatarFallback];
 }
 
 - (NSString *)sectionNameKeyPath
