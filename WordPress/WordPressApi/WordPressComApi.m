@@ -448,32 +448,6 @@ NSString *const WordPressComApiPushAppId = @"org.wordpress.appstore";
      ];
 }
 
-#pragma mark - Blog Themes
-
-- (void)fetchThemesForBlogId:(NSString *)blogId
-                     success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
-    [self GET:path parameters:nil
-          success:success failure:failure];
-}
-
-- (void)fetchCurrentThemeForBlogId:(NSString *)blogId
-                           success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
-    [self GET:path parameters:nil
-          success:success failure:failure];
-}
-
-- (void)activateThemeForBlogId:(NSString *)blogId themeId:(NSString *)themeId
-                       success:(WordPressComApiRestSuccessResponseBlock)success failure:(WordPressComApiRestSuccessFailureBlock)failure
-{
-    NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
-    [self POST:path parameters:@{@"theme": themeId}
-           success:success failure:failure];
-}
-
 #pragma mark - User Details
 
 - (void)setAuthorizationHeaderWithToken:(NSString *)token {
