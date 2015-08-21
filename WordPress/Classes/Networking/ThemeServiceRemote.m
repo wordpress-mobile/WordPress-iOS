@@ -203,6 +203,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     [self loadCostForTheme:theme fromDictionary:dictionary];
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
     
+
     theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
     theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
     theme.name = [dictionary stringForKey:ThemeNameKey];

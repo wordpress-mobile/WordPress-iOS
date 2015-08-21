@@ -181,7 +181,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:nil
                                                                   attribute:NSLayoutAttributeNotAnAttribute
-                                                                 multiplier:1.f
+                                                                 multiplier:1.0
                                                                    constant:headerWidth]];
         // Center the headerView inside the wrapper
         [headerWrapper addConstraint:[NSLayoutConstraint constraintWithItem:self.headerView
@@ -189,14 +189,8 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                                                                   relatedBy:NSLayoutRelationEqual
                                                                      toItem:headerWrapper
                                                                   attribute:NSLayoutAttributeCenterX
-                                                                 multiplier:1.f
-                                                                   constant:0.f]];
-        // Then, horizontally constrain the headerWrapper
-        [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[headerWrapper]-|"
-                                                                          options:0
-                                                                          metrics:metrics
-                                                                            views:views]];
-        
+                                                                 multiplier:1.0
+                                                                   constant:0.0]];
     } else {
         // Pin the headerWrapper to its superview AND wrap the headerView in horizontal margins
         [headerWrapper addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-(horizontalMargin)-[_headerView]-(horizontalMargin)-|"
@@ -318,13 +312,16 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
 
-    if ([self isConfigurationSection:indexPath.section] && indexPath.row == BlogDetailsRowEditSite) {
-        SiteSettingsViewController *editSiteViewController = [[SiteSettingsViewController alloc] initWithBlog:self.blog];
-        [self.navigationController pushViewController:editSiteViewController animated:YES];
-    }
-
-    Class controllerClass;
-    if ([self isGeneralSection:indexPath.section]) {
+    if ([self isConfigurationSection:indexPath.section]) {
+        switch (indexPath.row) {
+            case BlogDetailsRowEditSite:
+                [self showSettingsForBlog:self.blog];
+                break;
+            default:
+                NSAssert(false, @"Row Handling not implemented");
+                break;
+        }
+    } else if ([self isGeneralSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowViewSite:
                 [self showViewSiteForBlog:self.blog];
@@ -333,47 +330,28 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
                 [self showViewAdminForBlog:self.blog];
                 break;
             case BlogDetailsRowStats:
-                [WPAnalytics track:WPAnalyticsStatStatsAccessed];
-                controllerClass =  [StatsViewController class];
+                [self showStatsForBlog:self.blog];
                 break;
             default:
+                NSAssert(false, @"Row Handling not implemented");
                 break;
         }
     } else if ([self isPublishSection:indexPath.section]) {
         switch (indexPath.row) {
             case BlogDetailsRowBlogPosts:
-                [self showPostList];
+                [self showPostListForBlog:self.blog];
                 return;
             case BlogDetailsRowPages:
-                [self showPageList];
+                [self showPageListForBlog:self.blog];
                 return;
             case BlogDetailsRowComments:
-                [WPAnalytics track:WPAnalyticsStatOpenedComments];
-                controllerClass = [CommentsViewController class];
+                [self showCommentsForBlog:self.blog];
                 break;
             default:
+                NSAssert(false, @"Row Handling not implemented");
                 break;
         }
     }
-
-    // Check if the controller is already on the screen
-    if ([self.navigationController.visibleViewController isMemberOfClass:controllerClass]) {
-        if ([self.navigationController.visibleViewController respondsToSelector:@selector(setBlog:)]) {
-            [self.navigationController.visibleViewController performSelector:@selector(setBlog:) withObject:self.blog];
-        }
-        [self.navigationController popToRootViewControllerAnimated:NO];
-
-        return;
-    }
-
-    UIViewController *viewController = (UIViewController *)[[controllerClass alloc] init];
-    viewController.restorationIdentifier = NSStringFromClass(controllerClass);
-    viewController.restorationClass = controllerClass;
-    if ([viewController respondsToSelector:@selector(setBlog:)]) {
-        [viewController performSelector:@selector(setBlog:) withObject:self.blog];
-        [self.navigationController pushViewController:viewController animated:YES];
-    }
-
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -443,16 +421,41 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
 #pragma mark - Private methods
 
-- (void)showPostList {
-    [WPAnalytics track:WPAnalyticsStatOpenedPosts];
-    UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+- (void)showCommentsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedComments];
+    CommentsViewController *controller = [[CommentsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    controller.blog = blog;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)showPageList {
-    [WPAnalytics track:WPAnalyticsStatOpenedPages];
-    UIViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+- (void)showPostListForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedPosts];
+    PostListViewController *controller = [PostListViewController controllerWithBlog:blog];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showPageListForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedPages];
+    PageListViewController *controller = [PageListViewController controllerWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showSettingsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatOpenedSettings];
+    SiteSettingsViewController *controller = [[SiteSettingsViewController alloc] initWithBlog:blog];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)showStatsForBlog:(Blog *)blog
+{
+    [WPAnalytics track:WPAnalyticsStatStatsAccessed];
+    StatsViewController *statsView = [StatsViewController new];
+    statsView.blog = blog;
+    [self.navigationController pushViewController:statsView animated:YES];
 }
 
 - (void)showViewSiteForBlog:(Blog *)blog
@@ -484,6 +487,7 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
     NSString *dashboardUrl = [blog.xmlrpc stringByReplacingOccurrencesOfString:@"xmlrpc.php" withString:@"wp-admin/"];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:dashboardUrl]];
 }
+
 
 #pragma mark - Notification handlers
 

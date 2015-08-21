@@ -590,7 +590,7 @@ const CGFloat WPContentViewBorderHeight = 1.0;
     }
 
     CGFloat fontSize = [UIDevice isPad] ? 16.0 : 14.0;
-    UIFont *font = [WPFontManager merriweatherLightFontOfSize:fontSize];
+    UIFont *font = [WPFontManager merriweatherRegularFontOfSize:fontSize];
 
     CGFloat lineHeight = [UIDevice isPad] ? 24.0 : 21.0;
     NSMutableParagraphStyle *paragraphStyle = [NSMutableParagraphStyle new];

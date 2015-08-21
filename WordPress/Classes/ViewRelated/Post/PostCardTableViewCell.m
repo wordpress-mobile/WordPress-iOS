@@ -51,6 +51,8 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 @property (nonatomic, assign) CGFloat dateViewLowerMargin;
 @property (nonatomic, assign) CGFloat statusViewHeight;
 @property (nonatomic, assign) CGFloat statusViewLowerMargin;
+@property (nonatomic, assign) BOOL loadImagesWhenConfigured;
+@property (nonatomic, assign) BOOL didPreserveStartingConstraintConstants;
 
 @end
 
@@ -64,14 +66,6 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     [super awakeFromNib];
 
     [self applyStyles];
-
-    self.headerViewHeight = self.headerViewHeightConstraint.constant;
-    self.headerViewLowerMargin = self.headerViewLowerConstraint.constant;
-    self.titleViewLowerMargin = self.titleLowerConstraint.constant;
-    self.snippetViewLowerMargin = self.snippetLowerConstraint.constant;
-    self.dateViewLowerMargin = self.dateViewLowerConstraint.constant;
-    self.statusViewHeight = self.statusHeightConstraint.constant;
-    self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
 }
 
 - (UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event
@@ -83,6 +77,24 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     return [super hitTest:point withEvent:event];
 }
 
+- (void)didMoveToSuperview
+{
+    [super didMoveToSuperview];
+    if (self.didPreserveStartingConstraintConstants) {
+        return;
+    }
+    // When awakeFromNib is called, constraint constants have the default values for
+    // any w, any h. The constant values for the correct size class are not applied until
+    // the view is first moved to its superview. When this happens, it will override any
+    // value that has been assigned in the interrum.
+    // Preserve starting constraint constants once the view has been added to a window
+    // (thus getting a layout pass) and flag that they've been preserved. Then configure
+    // the cell if needed.
+    [self preserveStartingConstraintConstants];
+    if (self.contentProvider) {
+        [self configureCell:self.contentProvider loadingImages:self.loadImagesWhenConfigured];
+    }
+}
 
 #pragma mark - Accessors
 
@@ -146,22 +158,6 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 {
     [super setBackgroundColor:backgroundColor];
     self.innerContentView.backgroundColor = backgroundColor;
-}
-
-- (void)setContentProvider:(id<WPPostContentViewProvider>)contentProvider
-{
-    _contentProvider = contentProvider;
-
-    [self configureHeader];
-    [self configureCardImage];
-    [self configureTitle];
-    [self configureSnippet];
-    [self configureDate];
-    [self configureStatusView];
-    [self configureMetaButtons];
-    [self configureActionBar];
-
-    [self setNeedsUpdateConstraints];
 }
 
 - (id<WPPostContentViewProvider>)providerOrRevision
@@ -230,6 +226,19 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 #pragma mark - Configuration
 
+- (void)preserveStartingConstraintConstants
+{
+    self.headerViewHeight = self.headerViewHeightConstraint.constant;
+    self.headerViewLowerMargin = self.headerViewLowerConstraint.constant;
+    self.titleViewLowerMargin = self.titleLowerConstraint.constant;
+    self.snippetViewLowerMargin = self.snippetLowerConstraint.constant;
+    self.dateViewLowerMargin = self.dateViewLowerConstraint.constant;
+    self.statusViewHeight = self.statusHeightConstraint.constant;
+    self.statusViewLowerMargin = self.statusViewLowerConstraint.constant;
+
+    self.didPreserveStartingConstraintConstants = YES;
+}
+
 - (void)applyStyles
 {
     [WPStyleGuide applyPostCardStyle:self];
@@ -247,7 +256,28 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
 
 - (void)configureCell:(id<WPPostContentViewProvider>)contentProvider
 {
+    [self configureCell:contentProvider loadingImages:YES];
+}
+
+- (void)configureCell:(id<WPPostContentViewProvider>)contentProvider loadingImages:(BOOL)loadImages
+{
+    self.loadImagesWhenConfigured = loadImages;
     self.contentProvider = contentProvider;
+
+    if (!self.didPreserveStartingConstraintConstants) {
+        return;
+    }
+
+    [self configureHeader];
+    [self configureCardImage];
+    [self configureTitle];
+    [self configureSnippet];
+    [self configureDate];
+    [self configureStatusView];
+    [self configureMetaButtons];
+    [self configureActionBar];
+
+    [self setNeedsUpdateConstraints];
 }
 
 - (void)configureHeader
@@ -264,12 +294,22 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     self.headerViewLowerConstraint.constant = self.headerViewLowerMargin;
     self.authorBlogLabel.text = [self.contentProvider blogNameForDisplay];
     self.authorNameLabel.text = [self.contentProvider authorNameForDisplay];
-    [self.avatarImageView setImageWithURL:[self blavatarURL]
-                         placeholderImage:[UIImage imageNamed:@"post-blavatar-placeholder"]];
+
+    UIImage *placeholder =[UIImage imageNamed:@"post-blavatar-placeholder"];
+    if (self.loadImagesWhenConfigured) {
+        [self.avatarImageView setImageWithURL:[self blavatarURL]
+                             placeholderImage:placeholder];
+    } else {
+        self.avatarImageView.image = placeholder;
+    }
 }
 
 - (void)configureCardImage
 {
+    if (!self.loadImagesWhenConfigured) {
+        return;
+    }
+
     if (!self.postCardImageView) {
         return;
     }
@@ -426,7 +466,7 @@ static const UIEdgeInsets ViewButtonImageInsets = {2.0, 0.0, 0.0, 0.0};
     item.callback = ^{
         [weakSelf viewPostAction];
     };
-    item.imageInsets = ViewButtonImageInsets;;
+    item.imageInsets = ViewButtonImageInsets;
     [items addObject:item];
 
     if ([self.contentProvider supportsStats]) {

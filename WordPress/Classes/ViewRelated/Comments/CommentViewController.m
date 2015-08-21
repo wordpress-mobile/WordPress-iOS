@@ -291,7 +291,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return CGFLOAT_MIN;
+    return [UIDevice isPad] ? UITableViewAutomaticDimension : CGFLOAT_MIN;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -341,7 +341,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
     cell.headerDetails = postTitle;
     
     // Setup the Separator
-    NoteSeparatorsView *separatorsView = cell.separatorsView;
+    SeparatorsView *separatorsView = cell.separatorsView;
     separatorsView.bottomVisible = YES;
     
     // Setup the Gravatar if needed
@@ -501,7 +501,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService deleteComment:weakSelf.comment success:nil failure:nil];
+        
+        NSError *error = nil;
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+        
+        if (error) {
+            DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+            return;
+        }
+        
+        [commentService deleteComment:reloadedComment success:nil failure:nil];
 
         // Note: the parent class of CommentsViewController will pop this as a result of NSFetchedResultsChangeDelete
     };
@@ -528,7 +537,16 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 
         NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
         CommentService *commentService = [[CommentService alloc] initWithManagedObjectContext:context];
-        [commentService spamComment:weakSelf.comment success:nil failure:nil];
+        
+        NSError *error = nil;
+        Comment *reloadedComment = (Comment *)[context existingObjectWithID:weakSelf.comment.objectID error:&error];
+        
+        if (error) {
+            DDLogError(@"Comment was deleted while awaiting for alertView confirmation");
+            return;
+        }
+        
+        [commentService spamComment:reloadedComment success:nil failure:nil];
     };
 
     NSString *message = NSLocalizedString(@"Are you sure you want to mark this comment as Spam?",
@@ -754,7 +772,7 @@ typedef NS_ENUM(NSUInteger, CommentsDetailsRow) {
 - (void)reloadData
 {
     // If we don't have the associated post, let's hide the Header
-    BOOL shouldShowHeader       = self.comment.post != nil;;
+    BOOL shouldShowHeader       = self.comment.post != nil;
 
     // Number of Rows:
     // NOTE: If the post wasn't retrieved yet, we'll need to hide the Header.
