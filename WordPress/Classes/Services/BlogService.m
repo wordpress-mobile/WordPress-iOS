@@ -231,6 +231,9 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                             if (settings.defaultPostFormat) {
                                 blog.defaultPostFormat = settings.defaultPostFormat;
                             }
+                            if (settings.privacy) {
+                                blog.privacy = settings.privacy;
+                            }
                             [self.managedObjectContext save:nil];
                             if (success) {
                                 success();
@@ -623,25 +626,26 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
         [self.managedObjectContext performBlock:^{
             Blog *blog = (Blog *)[self.managedObjectContext existingObjectWithID:blogObjectID
                                                                            error:nil];
-            if (blog) {
-                blog.options = [NSDictionary dictionaryWithDictionary:options];
-                float version = [[blog version] floatValue];
-                if (version < [MinimumVersion floatValue]) {
-                    if (blog.lastUpdateWarning == nil
-                        || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
-                    {
-                        // TODO :: Remove UI call from service layer
-                        [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
-                                            message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
-                        blog.lastUpdateWarning = MinimumVersion;
-                    }
+            if (!blog) {
+                if (completion) {
+                    completion();
                 }
+            }
+            blog.options = [NSDictionary dictionaryWithDictionary:options];
+            blog.privacy = @([[blog getOptionValue:@"blog_public"] integerValue]);
+            float version = [[blog version] floatValue];
+            if (version < [MinimumVersion floatValue]) {
+                if (blog.lastUpdateWarning == nil
+                    || [blog.lastUpdateWarning floatValue] < [MinimumVersion floatValue])
+                {
+                    // TODO :: Remove UI call from service layer
+                    [WPError showAlertWithTitle:NSLocalizedString(@"WordPress version too old", @"")
+                                        message:[NSString stringWithFormat:NSLocalizedString(@"The site at %@ uses WordPress %@. We recommend to update to the latest version, or at least %@", @""), [blog hostname], [blog version], MinimumVersion]];
+                    blog.lastUpdateWarning = MinimumVersion;
+                }
+            }
 
-                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-            }
-            if (completion) {
-                completion();
-            }
+            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
         }];
     };
 }
