@@ -80,6 +80,9 @@
 
 - (id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
 {
+    if (!identifier) {
+        return nil;
+    }
     id<WPMediaAsset> result = [self.deviceLibraryDataSource mediaWithIdentifier:identifier];
     if (result) {
         return result;
@@ -118,7 +121,7 @@
         return;
     }
     [self.deviceLibraryDataSource unregisterChangeObserver:keys[0]];
-    [self.mediaLibraryDataSource registerChangeObserverBlock:keys[1]];
+    [self.mediaLibraryDataSource unregisterChangeObserver:keys[1]];
 }
 
 - (void)loadDataWithSuccess:(WPMediaChangesBlock)successBlock

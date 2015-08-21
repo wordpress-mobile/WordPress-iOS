@@ -312,4 +312,19 @@
     self.localURL = localPath;
 }
 
+- (NSString *)posterImageURL
+{
+    if (!self.videopressGUID) {
+        return self.remoteThumbnailURL;
+    }
+
+    NSString *posterURL = [self absoluteThumbnailLocalURL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:posterURL isDirectory:nil]) {
+        return posterURL;
+    }
+    posterURL = self.remoteThumbnailURL;
+    return posterURL;
+}
+
 @end
