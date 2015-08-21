@@ -299,20 +299,20 @@ NSString * const PostFormatStandard = @"standard";
 - (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy
 {
     if (!self.privacy) {
-        return NSLocalizedString(@"Unknow", @"");
+        return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");
     }
     switch (privacy) {
         case BlogPrivacyPrivate:
-            return NSLocalizedString(@"Private", @"");
+            return NSLocalizedString(@"Private", @"Text for privacy settings: Private");
             break;
         case BlogPrivacyHidden:
-            return NSLocalizedString(@"Hidden", @"");
+            return NSLocalizedString(@"Hidden", @"Text for privacy settings: Hidden");
             break;
         case BlogPrivacyPublic:
-            return NSLocalizedString(@"Public", @"");
+            return NSLocalizedString(@"Public", @"Text for privacy settings: Public");
             break;
     }
-    return NSLocalizedString(@"Unknow", @"");;
+    return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");;
 }
 
 - (NSString *)textForCurrentBlogPrivacy
