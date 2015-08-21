@@ -111,7 +111,8 @@
     NSDictionary *parameters = @{ @"blogname" : blog.blogName,
                                   @"blogdescription" : blog.blogTagline,
                                   @"default_category" : blog.defaultCategoryID,
-                                  @"default_post_format" : blog.defaultPostFormat
+                                  @"default_post_format" : blog.defaultPostFormat,
+                                  @"blog_public" : blog.privacy
                                   };
     NSString *path = [NSString stringWithFormat:@"sites/%@/settings?context=edit", blog.dotComID];
     [self.api POST:path
@@ -225,6 +226,8 @@
     } else {
         remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
     }
+    
+    remoteSettings.privacy = [json numberForKeyPath:@"settings.blog_public"];
     
     return remoteSettings;
 }
