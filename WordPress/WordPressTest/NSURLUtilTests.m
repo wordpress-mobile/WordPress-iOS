@@ -30,4 +30,12 @@
     XCTAssertFalse(url.isUnknownGravatarUrl);
 }
 
+- (void)testRemoveGravatarFallback
+{
+    NSURL *url = [NSURL URLWithString:@"http://0.gravatar.com/12341?d=http://0.gravatar.com/123432"];
+    NSURL *expected = [NSURL URLWithString:@"http://0.gravatar.com/12341?s=256&d=404"];
+    
+    XCTAssertEqualObjects(expected, url.removeGravatarFallback, @"Error removing fallback URL");
+}
+
 @end
