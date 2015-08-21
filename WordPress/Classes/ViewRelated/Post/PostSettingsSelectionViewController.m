@@ -2,10 +2,12 @@
 #import "WPStyleGuide.h"
 #import "NSString+XMLExtensions.h"
 #import "WPTableViewCell.h"
+#import "WPTableViewSectionHeaderFooterView.h"
 
 NSString * const SettingsSelectionTitleKey = @"Title";
 NSString * const SettingsSelectionTitlesKey = @"Titles";
 NSString * const SettingsSelectionValuesKey = @"Values";
+NSString * const SettingsSelectionHintsKey = @"Hints";
 NSString * const SettingsSelectionDefaultValueKey = @"DefaultValue";
 NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
@@ -13,8 +15,10 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
 
 @property (nonatomic, strong) NSArray *titles;
 @property (nonatomic, strong) NSArray *values;
+@property (nonatomic, strong) NSArray *hints;
 @property (nonatomic, strong) NSString *defaultValue;
 @property (nonatomic, strong) NSObject *currentValue;
+@property (nonatomic, strong) WPTableViewSectionHeaderFooterView *hintView;
 
 @end
 
@@ -55,6 +59,7 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
         self.title = [dictionary objectForKey:SettingsSelectionTitleKey];
         _titles = [dictionary objectForKey:SettingsSelectionTitlesKey];
         _values = [dictionary objectForKey:SettingsSelectionValuesKey];
+        _hints = [dictionary objectForKey:SettingsSelectionHintsKey];
         _defaultValue = [dictionary objectForKey:SettingsSelectionDefaultValueKey];
         _currentValue = [dictionary objectForKey:SettingsSelectionCurrentValueKey];
 
@@ -97,6 +102,22 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     }
 }
 
+- (UIView *)hintView
+{
+    if (!self.hints) {
+        return nil;
+    }
+    if (!_hintView) {
+        _hintView = [[WPTableViewSectionHeaderFooterView alloc] initWithReuseIdentifier:nil style:WPTableViewSectionStyleFooter];
+    }
+    NSUInteger position = [self.values indexOfObject:self.currentValue];
+    NSString * hint = @"";
+    if (position != NSNotFound) {
+        hint = self.hints[position];
+    }
+    [_hintView setTitle:hint];
+    return _hintView;
+}
 
 #pragma mark - Table view data source
 
@@ -145,6 +166,11 @@ NSString * const SettingsSelectionCurrentValueKey = @"CurrentValue";
     if (self.onItemSelected != nil) {
         self.onItemSelected(val);
     }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return self.hintView;
 }
 
 - (void)dismiss
