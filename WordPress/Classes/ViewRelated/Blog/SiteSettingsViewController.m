@@ -707,6 +707,7 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
                                                                password:self.password];
     __weak __typeof__(self) weakSelf = self;
     [api getBlogOptionsWithSuccess:^(id options){
+        [SVProgressHUD dismiss];
         __typeof__(self) strongSelf = weakSelf;
         strongSelf.blog.password = self.password;
         [strongSelf.blog.managedObjectContext save:nil];
