@@ -82,6 +82,9 @@ static CGFloat const DefaultCellHeight = 44.0;
     // We check here vs in `controllerWillChangeContent:` in order to reload
     // the table view if necessary.
     if ([self.fetchedResultsBeforeChange count] == 0) {
+        if ([self.delegate respondsToSelector:@selector(tableViewHandlerWillRefreshTableViewPreservingOffset:)]) {
+            [self.delegate tableViewHandlerWillRefreshTableViewPreservingOffset:self];
+        }
         [self.tableView reloadData];
         [self discardPreservedRowInfo];
         return;
