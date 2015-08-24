@@ -260,6 +260,17 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
     }];
 }
 
+- (void)updatePassword:(NSString *)password forBlog:(Blog *)blog
+{
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlockAndWait:^{
+          Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+          blogInContext.password = password;
+          [self.managedObjectContext save:nil];
+    }];
+
+}
+
 - (void)migrateJetpackBlogsToXMLRPCWithCompletion:(void (^)())success
 {
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"username != NULL AND account != NULL"];
