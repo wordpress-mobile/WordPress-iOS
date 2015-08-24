@@ -41,7 +41,7 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  */
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
                     andBlogTitle:(NSString *)blogTitle
-                   andLanguageId:(NSNumber *)languageId
+                   andLanguageId:(NSString *)languageId
                          success:(WordPressComServiceSuccessBlock)success
                          failure:(WordPressComServiceFailureBlock)failure;
 
@@ -57,7 +57,7 @@ typedef void(^WordPressComServiceFailureBlock)(NSError *error);
  */
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl
                   andBlogTitle:(NSString *)blogTitle
-                 andLanguageId:(NSNumber *)languageId
+                 andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
                        success:(WordPressComServiceSuccessBlock)success
                        failure:(WordPressComServiceFailureBlock)failure;
