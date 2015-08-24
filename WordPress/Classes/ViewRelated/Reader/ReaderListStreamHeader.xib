@@ -11,20 +11,24 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iWB-Uw-beb">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWB-Uw-beb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-e0-BuO">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Q3K-e0-BuO">
                             <rect key="frame" x="14" y="14" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="KxR-cT-K27"/>
+                                <constraint firstAttribute="width" constant="32" id="bVN-si-EGf"/>
+                            </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="List Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uk5-Xp-lih">
-                            <rect key="frame" x="58" y="12" width="174" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="List Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uk5-Xp-lih">
+                            <rect key="frame" x="60" y="12" width="246" height="17"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="1 site, 1 follower" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLv-K5-Ki4">
-                            <rect key="frame" x="58" y="34" width="211" height="15"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="1 site, 1 follower" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mLv-K5-Ki4">
+                            <rect key="frame" x="60" y="33" width="246" height="14.5"/>
                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -32,13 +36,34 @@
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="uk5-Xp-lih" secondAttribute="trailing" constant="14" id="MSf-B3-dwh"/>
+                        <constraint firstAttribute="bottom" secondItem="Q3K-e0-BuO" secondAttribute="bottom" constant="14" id="QVw-Fa-cIt"/>
+                        <constraint firstItem="uk5-Xp-lih" firstAttribute="top" secondItem="iWB-Uw-beb" secondAttribute="top" constant="12" id="QwU-PY-n75"/>
+                        <constraint firstAttribute="bottom" secondItem="mLv-K5-Ki4" secondAttribute="bottom" constant="12" id="T6q-6g-ZEu"/>
+                        <constraint firstItem="mLv-K5-Ki4" firstAttribute="leading" secondItem="Q3K-e0-BuO" secondAttribute="trailing" constant="14" id="WPb-8N-H0e"/>
+                        <constraint firstAttribute="trailing" secondItem="mLv-K5-Ki4" secondAttribute="trailing" constant="14" id="bR2-Ac-c70"/>
+                        <constraint firstItem="Q3K-e0-BuO" firstAttribute="top" secondItem="iWB-Uw-beb" secondAttribute="top" constant="14" id="bis-26-ZXw"/>
+                        <constraint firstItem="Q3K-e0-BuO" firstAttribute="leading" secondItem="iWB-Uw-beb" secondAttribute="leading" constant="14" id="eb7-Vx-b0S"/>
+                        <constraint firstItem="uk5-Xp-lih" firstAttribute="leading" secondItem="Q3K-e0-BuO" secondAttribute="trailing" constant="14" id="rzx-Qx-G0r"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="iWB-Uw-beb" secondAttribute="bottom" id="TIK-0Z-wok"/>
+                <constraint firstAttribute="trailing" secondItem="iWB-Uw-beb" secondAttribute="trailing" id="bH6-nD-rMm"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="lV4-dt-Zjn" secondAttribute="leading" id="hbs-gX-qwe"/>
+                <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="lV4-dt-Zjn" secondAttribute="top" id="wni-EB-nsg"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="detailLabel" destination="mLv-K5-Ki4" id="cJz-Lv-f6a"/>
+                <outlet property="titleLabel" destination="uk5-Xp-lih" id="Fjq-r5-W5M"/>
+            </connections>
         </view>
     </objects>
 </document>
