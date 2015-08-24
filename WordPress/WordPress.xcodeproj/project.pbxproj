@@ -82,6 +82,7 @@
 		598351AE1A704E7A00B6DD4F /* WPWhatsNew.m in Sources */ = {isa = PBXBuildFile; fileRef = 598351AD1A704E7A00B6DD4F /* WPWhatsNew.m */; };
 		598F86A71B67B7A000550C9C /* RemoteTheme.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86A61B67B7A000550C9C /* RemoteTheme.m */; };
 		598F86AB1B67BD7600550C9C /* ThemeServiceRemoteTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */; };
+		599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = 5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */; };
 		59A9AB351B4C33A500A433DC /* ThemeService.m in Sources */ = {isa = PBXBuildFile; fileRef = 59A9AB341B4C33A500A433DC /* ThemeService.m */; };
 		59D328FD1ACC2D0700356827 /* WPLookbackPresenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 59D328FC1ACC2D0700356827 /* WPLookbackPresenter.m */; };
 		59DD94341AC479ED0032DD6B /* WPLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 59DD94331AC479ED0032DD6B /* WPLogger.m */; };
@@ -734,6 +735,8 @@
 		598F86A51B67B7A000550C9C /* RemoteTheme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemoteTheme.h; path = "Remote Objects/RemoteTheme.h"; sourceTree = "<group>"; };
 		598F86A61B67B7A000550C9C /* RemoteTheme.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemoteTheme.m; path = "Remote Objects/RemoteTheme.m"; sourceTree = "<group>"; };
 		598F86AA1B67BD7600550C9C /* ThemeServiceRemoteTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeServiceRemoteTests.m; sourceTree = "<group>"; };
+		5997383E1B87AD2600EC1C30 /* WordPressComServiceRemote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WordPressComServiceRemote.h; sourceTree = "<group>"; };
+		5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WordPressComServiceRemote.m; sourceTree = "<group>"; };
 		59A9AB331B4C33A500A433DC /* ThemeService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeService.h; sourceTree = "<group>"; };
 		59A9AB341B4C33A500A433DC /* ThemeService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeService.m; sourceTree = "<group>"; };
 		59A9AB391B4C3ECD00A433DC /* LocalCoreDataServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocalCoreDataServiceTests.m; sourceTree = "<group>"; };
@@ -2404,6 +2407,8 @@
 				E1F8E1251B0B422C0073E628 /* JetpackServiceRemote.m */,
 				FFC6ADDB1B56F3D2002F3C84 /* ThemeServiceRemote.h */,
 				FFC6ADDC1B56F3D2002F3C84 /* ThemeServiceRemote.m */,
+				5997383E1B87AD2600EC1C30 /* WordPressComServiceRemote.h */,
+				5997383F1B87AD2600EC1C30 /* WordPressComServiceRemote.m */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -4273,6 +4278,7 @@
 				E1B289DB19F7AF7000DB0707 /* RemoteBlog.m in Sources */,
 				5D0431AE1A7C31AB0025BDFD /* ReaderBrowseSiteViewController.m in Sources */,
 				E1A6DBDA19DC7D080071AC1E /* RemotePostCategory.m in Sources */,
+				599738401B87AD2600EC1C30 /* WordPressComServiceRemote.m in Sources */,
 				5D0A20D41AF11A7300E5C6BC /* PhotonImageURLHelper.m in Sources */,
 				85D2275918F1EB8A001DA8DA /* WPAnalyticsTrackerMixpanel.m in Sources */,
 				E1DF5DFE19E7CFAE004E70D5 /* PostCategoryServiceRemoteXMLRPC.m in Sources */,
