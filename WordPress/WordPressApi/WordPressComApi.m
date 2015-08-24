@@ -281,7 +281,7 @@ constructingBodyWithBlock:block
         return;
     }
 
-    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    NSString *path = [NSString stringWithFormat:@"v1.1/device/%@", deviceId];
     NSDictionary *parameters = @{@"settings": settings};
     [self POST:path
 	parameters:parameters
@@ -311,7 +311,7 @@ constructingBodyWithBlock:block
         return;
     }
     
-    NSString *path = [NSString stringWithFormat:@"device/%@", deviceId];
+    NSString *path = [NSString stringWithFormat:@"v1.1/device/%@", deviceId];
     [self GET:path
        parameters:nil
           success:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -337,7 +337,7 @@ constructingBodyWithBlock:block
         return;
     }
 
-    NSString *path = [NSString stringWithFormat:@"devices/%@/delete", deviceId];
+    NSString *path = [NSString stringWithFormat:@"v1.1/devices/%@/delete", deviceId];
     WordPressComApiRestSuccessResponseBlock successBlock = ^(AFHTTPRequestOperation *operation, id responseObject) {
         DDLogInfo(@"Successfully unregistered device ID %@", deviceId);
         if (success) {
@@ -378,7 +378,7 @@ constructingBodyWithBlock:block
                                  @"device_uuid"     : [[UIDevice currentDevice] wordPressIdentifier],
                                  };
     
-    [self POST:@"devices/new"
+    [self POST:@"v1.1/devices/new"
         parameters:parameters
            success:^(AFHTTPRequestOperation *operation, id responseObject) {
                NSAssert([responseObject isKindOfClass:[NSDictionary class]], @"Response should be a dictionary");
