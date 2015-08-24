@@ -16,7 +16,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                  failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    
+
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes/mine", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
@@ -33,7 +33,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                            failure(error);
                                        }
                                    }];
-    
+
     return operation;
 }
 
@@ -96,7 +96,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     static NSString* const path = @"themes";
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
@@ -110,7 +110,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                            failure(error);
                                        }
                                    }];
-    
+
     return operation;
 }
 
@@ -119,11 +119,11 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                             failure:(ThemeServiceRemoteFailureBlock)failure
 {
     NSParameterAssert([blogId isKindOfClass:[NSNumber class]]);
-    
+
     NSString *path = [NSString stringWithFormat:@"sites/%@/themes", blogId];
     NSString *requestUrl = [self pathForEndpoint:path
                                      withVersion:ServiceRemoteRESTApiVersion_1_1];
-    
+
     NSOperation *operation = [self.api GET:requestUrl
                                 parameters:nil
                                    success:^(AFHTTPRequestOperation *operation, NSDictionary *response) {
@@ -137,7 +137,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
                                            failure(error);
                                        }
                                    }];
-    
+
     return operation;
 }
 
@@ -202,7 +202,6 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     
     [self loadCostForTheme:theme fromDictionary:dictionary];
     [self loadLaunchDateForTheme:theme fromDictionary:dictionary];
-    
 
     theme.desc = [dictionary stringForKey:ThemeDescriptionKey];
     theme.downloadUrl = [dictionary stringForKey:ThemeDownloadURLKey];
@@ -214,7 +213,7 @@ static NSString* const ThemeServiceRemoteThemesKey = @"themes";
     theme.themeId = [dictionary stringForKey:ThemeIdKey];
     theme.trendingRank = [dictionary numberForKey:ThemeTrendingRankKey];
     theme.version = [dictionary stringForKey:ThemeVersionKey];
-    
+
     return theme;
 }
 
