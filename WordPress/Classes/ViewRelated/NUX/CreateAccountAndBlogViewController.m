@@ -782,10 +782,11 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     }];
 
     WPAsyncBlockOperation *userCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^createUserSuccess)(id) = ^(id responseObject){
+        WordPressComServiceSuccessBlock createUserSuccess = ^(NSDictionary *responseDictionary){
             [operation didSucceed];
         };
-        void (^createUserFailure)(NSError *) = ^(NSError *error) {
+        
+        WordPressComServiceFailureBlock createUserFailure = ^(NSError *error) {
             DDLogError(@"Failed creating user: %@", error);
             [operation didFail];
             [self setAuthenticating:NO];
