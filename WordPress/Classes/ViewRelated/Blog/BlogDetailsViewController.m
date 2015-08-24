@@ -464,12 +464,10 @@ NSInteger const BlogDetailsRowCountForSectionConfigurationType = 1;
 
     NSURL *targetURL = [NSURL URLWithString:blog.homeURL];
     WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:targetURL];
-    if (blog.isPrivate) {
-        webViewController.authToken = blog.authToken;
-        webViewController.username = blog.usernameForSite;
-        webViewController.password = blog.password;
-        webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
-    }
+    webViewController.authToken = blog.authToken;
+    webViewController.username = blog.usernameForSite;
+    webViewController.password = blog.password;
+    webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
     
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
