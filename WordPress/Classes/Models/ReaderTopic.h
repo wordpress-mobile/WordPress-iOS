@@ -22,4 +22,8 @@ extern NSString *const ReaderTopicTypeSite;
 @property (nonatomic, strong) NSNumber *topicID;
 @property (nonatomic, strong) NSString *type;
 
+- (BOOL)isList;
+- (BOOL)isTag;
+- (BOOL)isSite;
+
 @end

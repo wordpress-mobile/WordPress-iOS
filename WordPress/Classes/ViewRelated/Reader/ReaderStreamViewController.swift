@@ -1,9 +1,10 @@
 import Foundation
 
-@objc public class ReaderListViewController : UIViewController, UIActionSheetDelegate,
+@objc public class ReaderStreamViewController : UIViewController, UIActionSheetDelegate,
     WPContentSyncHelperDelegate,
     WPTableViewHandlerDelegate,
-    ReaderPostCellDelegate
+    ReaderPostCellDelegate,
+    ReaderStreamHeaderDelegate
 {
     // MARK: - Properties
 
@@ -15,7 +16,7 @@ import Foundation
     private var syncHelper: WPContentSyncHelper!
     private var tableViewController: UITableViewController!
     private var cellForLayout: ReaderPostCardCell!
-
+    private var resultsStatusView: WPNoResultsView!
     private var objectIDOfPostForMenu: NSManagedObjectID?
     private var actionSheet: UIActionSheet?
 
@@ -25,7 +26,6 @@ import Foundation
 
     private let refreshInterval = 300
     private var displayContext: NSManagedObjectContext?
-
     private var cleanupAndRefreshAfterScrolling = false
 
     public var readerTopic: ReaderTopic? {
@@ -44,9 +44,9 @@ import Foundation
 
         @return A ReaderListViewController instance.
     */
-    public class func controllerWithTopic(topic:ReaderTopic) -> ReaderListViewController {
+    public class func controllerWithTopic(topic:ReaderTopic) -> ReaderStreamViewController {
         let storyboard = UIStoryboard(name: "Reader", bundle: NSBundle.mainBundle())
-        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderListViewController") as! ReaderListViewController
+        let controller = storyboard.instantiateViewControllerWithIdentifier("ReaderStreamViewController") as! ReaderStreamViewController
         controller.readerTopic = topic
 
         return controller
@@ -66,6 +66,7 @@ import Foundation
         configureTableView()
         configureTableViewHandler()
         configureSyncHelper()
+        configureResultsStatusView()
 
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
 
@@ -111,20 +112,70 @@ import Foundation
     }
 
     private func configureCellForLayout() {
-        cellForLayout = NSBundle.mainBundle().loadNibNamed("ReaderPostCardCell", owner: nil, options: nil).first as? ReaderPostCardCell
+        cellForLayout = NSBundle.mainBundle().loadNibNamed("ReaderPostCardCell", owner: nil, options: nil).first as! ReaderPostCardCell
 
         // Add layout cell to superview (briefly) so constraint constants reflect the correct size class.
         view.addSubview(cellForLayout)
         cellForLayout.removeFromSuperview()
     }
 
+    private func configureResultsStatusView() {
+        resultsStatusView = WPNoResultsView()
+    }
+
+
+    // MARK: - Handling Loading and No Results
+
+    func displayLoadingViewIfNeeded() {
+        if let count = tableViewHandler.resultsController.fetchedObjects?.count {
+            if count > 0 {
+                return
+            }
+        }
+        resultsStatusView.titleText = NSLocalizedString("Fetching posts...", comment:"A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts.")
+        resultsStatusView.messageText = ""
+        resultsStatusView.accessoryView = WPAnimatedBox()
+        displayResultsStatus()
+    }
+
+    func displayNoResultsView() {
+        let response:NoResultsResponse = ReaderStreamViewController.responseForNoResults(readerTopic!)
+        resultsStatusView.titleText = response.title
+        resultsStatusView.messageText = response.message
+        resultsStatusView.accessoryView = nil
+        displayResultsStatus()
+    }
+
+    func displayResultsStatus() {
+        if resultsStatusView.isDescendantOfView(view) {
+            resultsStatusView.centerInSuperview()
+        } else {
+            view.addSubviewWithFadeAnimation(resultsStatusView)
+        }
+    }
+
+    func hideResultsStatus() {
+        resultsStatusView.removeFromSuperview()
+    }
+
 
     // MARK: - Topic Presentation
+
+    func displayStreamHeader() {
+        assert(readerTopic != nil, "A reader topic is required")
+        var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
+        header?.configureHeader(readerTopic!)
+        header?.delegate = self
+
+        tableView.tableHeaderView = header as? UIView
+    }
 
     func displayTopic() {
         assert(readerTopic != nil, "A reader topic is required")
         assert(isViewLoaded(), "The controller's view must be loaded before displaying the topic")
 
+        // TODO: Configure header view for the new topic (if needed)
+        displayStreamHeader()
         tableViewHandler.resultsController.fetchRequest.predicate = predicateForFetchRequest()
         var error:NSError?
         tableViewHandler.resultsController.performFetch(&error)
@@ -133,26 +184,30 @@ import Foundation
         }
         tableView.setContentOffset(CGPointZero, animated: false)
         tableViewHandler.refreshTableView()
+        syncIfAppropriate()
 
-        // TODO: Configure header view for the new topic (if needed)
-        /*
-        [self updateTitle];
-
-        [self.tableView setContentOffset:CGPointZero animated:NO];
-        [self.tableViewHandler clearCachedRowHeights];
-        [self updateAndPerformFetchRequest];
-        [self.tableView reloadData];
-        [self syncItemsWithUserInteraction:NO];
-
-        [WPAnalytics track:WPAnalyticsStatReaderLoadedTag withProperties:[self tagPropertyForStats]];
-        if ([self isCurrentTopicFreshlyPressed]) {
-        [WPAnalytics track:WPAnalyticsStatReaderLoadedFreshlyPressed];
+        var count = 0
+        if let fetchedCount = tableViewHandler.resultsController.fetchedObjects?.count {
+            count = fetchedCount
         }
-        */
+
+        // Make sure we're showing the no results view if appropriate
+        if !syncHelper.isSyncing && count == 0 {
+            displayNoResultsView()
+        }
+
+        WPAnalytics.track(.ReaderLoadedTag, withProperties: tagPropertyForStats())
+        if ReaderStreamViewController.topicIsFreshlyPressed(readerTopic!) {
+            WPAnalytics.track(.ReaderLoadedFreshlyPressed)
+        }
     }
 
 
     // MARK: - Instance Methods
+
+    private func tagPropertyForStats() -> [NSObject: AnyObject] {
+        return ["tag" : readerTopic!.title]
+    }
 
     private func showMenuForPost(post:ReaderPost, fromView anchorView:UIView) {
         objectIDOfPostForMenu = post.objectID
@@ -351,10 +406,9 @@ import Foundation
         - The current time must be greater than the last sync interval.
     */
     func syncIfAppropriate() {
-        if let lastSynced = readerTopic?.lastSynced {
-            if canSync() && Int(lastSynced.timeIntervalSinceNow) > refreshInterval {
-                syncHelper.syncContentWithUserInteraction(false)
-            }
+        let lastSynced = readerTopic?.lastSynced == nil ? NSDate(timeIntervalSince1970: 0) : readerTopic!.lastSynced
+        if canSync() && Int(lastSynced.timeIntervalSinceNow) < refreshInterval {
+            syncHelper.syncContentWithUserInteraction(false)
         }
     }
 
@@ -410,12 +464,13 @@ import Foundation
     }
 
     func loadMoreItems(success:((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
-
         let post = tableViewHandler.resultsController.fetchedObjects?.last as? ReaderPost
         if post == nil {
             // failsafe 
             return
         }
+
+        // TODO: show loading more ...
 
         let earlierThan = post!.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
@@ -442,10 +497,11 @@ import Foundation
                 })
         }
 
-//        [WPAnalytics track:WPAnalyticsStatReaderInfiniteScroll withProperties:[self tagPropertyForStats]];
+        WPAnalytics.track(.ReaderInfiniteScroll, withProperties: tagPropertyForStats())
     }
 
     func syncHelper(syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((hasMore: Bool) -> Void)?, failure: ((error: NSError) -> Void)?) {
+        displayLoadingViewIfNeeded()
         if userInteraction {
             syncItems(success, failure: failure)
 
@@ -478,12 +534,18 @@ import Foundation
             var error:NSError?
             self.tableViewHandler.resultsController.performFetch(&error);
             if let anError = error {
-                // TODO: Log error
-                //            DDLogError(error)
+                DDLogSwift.logError(anError.description)
             }
         }
     }
 
+    public func tableViewHandlerDidRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
+        if self.tableViewHandler.resultsController.fetchedObjects?.count == 0 {
+            self.displayNoResultsView()
+        } else {
+            self.hideResultsStatus()
+        }
+    }
 
     // MARK: - Helpers for TableViewHelper
 
