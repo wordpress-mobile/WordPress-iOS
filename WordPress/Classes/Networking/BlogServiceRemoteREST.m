@@ -210,20 +210,21 @@
 
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
 {
-    RemoteBlogSettings *remoteSettings = [[RemoteBlogSettings alloc] init];
+    NSDictionary *rawSettings = [json dictionaryForKey:@"settings"];
+    
+    RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
     
     remoteSettings.name = [json stringForKey:@"name"];
     remoteSettings.desc = [json stringForKey:@"description"];
-    
-    if (json[@"settings"][@"default_category"]) {
-        remoteSettings.defaultCategory = [json numberForKeyPath:@"settings.default_category"];
-    } else {
-        remoteSettings.defaultCategory = @(PostCategoryUncategorized);
-    }
-    if ([json[@"settings"][@"default_post_format"] isEqualToString:@"0"]) {
+    remoteSettings.defaultCategory = [rawSettings numberForKey:@"default_category"] ?: @(PostCategoryUncategorized);
+
+    // Note:
+    // YES, the backend might send '0' as a number, OR a string value.
+    //
+    if ([[rawSettings numberForKey:@"default_post_format"] isEqualToNumber:@(0)]) {
         remoteSettings.defaultPostFormat = PostFormatStandard;
     } else {
-        remoteSettings.defaultPostFormat = [json stringForKeyPath:@"settings.default_post_format"];
+        remoteSettings.defaultPostFormat = [rawSettings stringForKey:@"default_post_format"];
     }
     
     return remoteSettings;
