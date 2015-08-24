@@ -760,10 +760,10 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     // the situation could exist where a user account is created, but the site creation
     // fails.
     WPAsyncBlockOperation *siteValidation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation) {
-        void (^blogValidationSuccess)(id) = ^(id responseObject) {
+        WordPressComServiceSuccessBlock blogValidationSuccess = ^(NSDictionary *responseDictionary) {
             [operation didSucceed];
         };
-        void (^blogValidationFailure)(NSError *) = ^(NSError *error) {
+        WordPressComServiceFailureBlock blogValidationFailure = ^(NSError *error) {
             [operation didFail];
             [self setAuthenticating:NO];
             [self displayRemoteError:error];
@@ -833,11 +833,11 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
     }];
 
     WPAsyncBlockOperation *blogCreation = [WPAsyncBlockOperation operationWithBlock:^(WPAsyncBlockOperation *operation){
-        void (^createBlogSuccess)(id) = ^(id responseObject){
+        WordPressComServiceSuccessBlock createBlogSuccess = ^(NSDictionary *responseDictionary){
             [WPAnalytics track:WPAnalyticsStatCreatedAccount];
             [operation didSucceed];
 
-            NSMutableDictionary *blogOptions = [[responseObject dictionaryForKey:@"blog_details"] mutableCopy];
+            NSMutableDictionary *blogOptions = [[responseDictionary dictionaryForKey:@"blog_details"] mutableCopy];
             if ([blogOptions objectForKey:@"blogname"]) {
                 [blogOptions setObject:[blogOptions objectForKey:@"blogname"] forKey:@"blogName"];
                 [blogOptions removeObjectForKey:@"blogname"];
@@ -866,7 +866,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self setAuthenticating:NO];
             [self dismissViewControllerAnimated:YES completion:nil];
         };
-        void (^createBlogFailure)(NSError *error) = ^(NSError *error) {
+        WordPressComServiceFailureBlock createBlogFailure = ^(NSError *error) {
             DDLogError(@"Failed creating blog: %@", error);
             [self setAuthenticating:NO];
             [operation didFail];
