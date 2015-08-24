@@ -85,8 +85,13 @@ static CGFloat const DefaultCellHeight = 44.0;
         if ([self.delegate respondsToSelector:@selector(tableViewHandlerWillRefreshTableViewPreservingOffset:)]) {
             [self.delegate tableViewHandlerWillRefreshTableViewPreservingOffset:self];
         }
+
         [self.tableView reloadData];
         [self discardPreservedRowInfo];
+
+        if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {
+            [self.delegate tableViewHandlerDidRefreshTableViewPreservingOffset:self];
+        }
         return;
     }
 
@@ -141,21 +146,23 @@ static CGFloat const DefaultCellHeight = 44.0;
         newIndexPath = [self indexPathForFirstObjectPrecedingPreservedVisibleIndexPath:[visibleIndexPaths firstObject]];
     }
 
-    // Fail safe. If the new index path is nil set the offset to 0 and clean up.
     if (!newIndexPath) {
+        // Fail safe. If the new index path is nil set the offset to 0
         [self.tableView setContentOffset:CGPointZero];
-        [self discardPreservedRowInfo];
-        self.refreshingTableViewPreservingOffset = NO;
-        return;
+
+    } else {
+        // Now that we know the new location. Get the sum of the row heights for all
+        // preceeding rows. Add the delta and any adjustment.
+        CGFloat rowHeights = [self totalHeightForRowsAboveIndexPath:newIndexPath];
+        rowHeights += (offsetHeightDelta + heightAdjustment);
+        // Set the tableview to the new offset
+        CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
+        [self.tableView setContentOffset:newOffset];
     }
 
-    // Now that we know the new location. Get the sum of the row heights for all
-    // preceeding rows. Add the delta and any adjustment.
-    CGFloat rowHeights = [self totalHeightForRowsAboveIndexPath:newIndexPath];
-    rowHeights += (offsetHeightDelta + heightAdjustment);
-    // Set the tableview to the new offset
-    CGPoint newOffset = CGPointMake([self.tableView contentOffset].x, rowHeights);
-    [self.tableView setContentOffset:newOffset];
+    // Clean up
+    self.refreshingTableViewPreservingOffset = NO;
+    [self discardPreservedRowInfo];
 
     // Notify the delegate that a refresh has occured. Allows the delegate
     // perform any corrections to the offset, e.g. a negative offset due to a content
@@ -163,10 +170,6 @@ static CGFloat const DefaultCellHeight = 44.0;
     if ([self.delegate respondsToSelector:@selector(tableViewHandlerDidRefreshTableViewPreservingOffset:)]) {
         [self.delegate tableViewHandlerDidRefreshTableViewPreservingOffset:self];
     }
-
-    // Clean up
-    self.refreshingTableViewPreservingOffset = NO;
-    [self discardPreservedRowInfo];
 }
 
 
