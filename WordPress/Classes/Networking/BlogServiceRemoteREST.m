@@ -4,6 +4,14 @@
 #import "PostCategory.h"
 #import "RemoteBlogSettings.h"
 
+
+static NSString const *BlogRemoteNameKey                = @"name";
+static NSString const *BlogRemoteDescriptionKey         = @"description";
+static NSString const *BlogRemoteSettingsKey            = @"settings";
+static NSString const *BlogRemoteDefaultCategoryKey     = @"default_category";
+static NSString const *BlogRemoteDefaultPostFormatKey   = @"default_post_format";
+
+
 @implementation BlogServiceRemoteREST
 
 - (void)checkMultiAuthorForBlog:(Blog *)blog
@@ -210,23 +218,23 @@
 
 - (RemoteBlogSettings *)remoteBlogSettingFromJSONDictionary:(NSDictionary *)json
 {
-    NSDictionary *rawSettings = [json dictionaryForKey:@"settings"];
+    NSDictionary *rawSettings = [json dictionaryForKey:BlogRemoteSettingsKey];
     
     RemoteBlogSettings *remoteSettings = [RemoteBlogSettings new];
     
-    remoteSettings.name = [json stringForKey:@"name"];
-    remoteSettings.desc = [json stringForKey:@"description"];
-    remoteSettings.defaultCategory = [rawSettings numberForKey:@"default_category"] ?: @(PostCategoryUncategorized);
+    remoteSettings.name = [json stringForKey:BlogRemoteNameKey];
+    remoteSettings.desc = [json stringForKey:BlogRemoteDescriptionKey];
+    remoteSettings.defaultCategory = [rawSettings numberForKey:BlogRemoteDefaultCategoryKey] ?: @(PostCategoryUncategorized);
 
     // Note:
     // YES, the backend might send '0' as a number, OR a string value.
     // Reference: https://github.com/wordpress-mobile/WordPress-iOS/issues/4187
     //
-    if ([[rawSettings numberForKey:@"default_post_format"] isEqualToNumber:@(0)] ||
-        [[rawSettings stringForKey:@"default_post_format"] isEqualToString:@"0"]) {
+    if ([[rawSettings numberForKey:BlogRemoteDefaultPostFormatKey] isEqualToNumber:@(0)] ||
+        [[rawSettings stringForKey:BlogRemoteDefaultPostFormatKey] isEqualToString:@"0"]) {
         remoteSettings.defaultPostFormat = PostFormatStandard;
     } else {
-        remoteSettings.defaultPostFormat = [rawSettings stringForKey:@"default_post_format"];
+        remoteSettings.defaultPostFormat = [rawSettings stringForKey:BlogRemoteDefaultPostFormatKey];
     }
     
     return remoteSettings;
