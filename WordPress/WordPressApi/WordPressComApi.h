@@ -12,12 +12,6 @@ typedef NS_ENUM(NSUInteger, WordPressComApiError) {
     WordPressComApiErrorAuthorizationRequired,
 };
 
-typedef NS_ENUM(NSUInteger, WordPressComApiBlogVisibility) {
-    WordPressComApiBlogVisibilityPublic = 0,
-    WordPressComApiComBlogVisibilityPrivate = 1,
-    WordPressComApiBlogVisibilityHidden = 2,
-};
-
 extern NSString *const WordPressComApiErrorDomain;
 extern NSString *const WordPressComApiErrorCodeKey;
 extern NSString *const WordPressComApiErrorMessageKey;
@@ -54,10 +48,6 @@ extern NSString *const WordPressComApiPushAppId;
 // Wipe the OAuth2 token
 - (void)invalidateOAuth2Token;
 
-- (void)createWPComAccountWithEmail:(NSString *)email andUsername:(NSString *)username andPassword:(NSString *)password success:(void (^)(id responseObject))success failure:(void (^)(NSError *error))failure;
-- (void)validateWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-- (void)createWPComBlogWithUrl:(NSString *)blogUrl andBlogTitle:(NSString *)blogTitle andLanguageId:(NSNumber *)languageId andBlogVisibility:(WordPressComApiBlogVisibility)visibility success:(void (^)(id))success failure:(void (^)(NSError *))failure;
-
 
 ///--------------------
 /// @name Notifications
@@ -79,12 +69,5 @@ extern NSString *const WordPressComApiPushAppId;
 - (void)syncPushNotificationInfoWithDeviceToken:(NSString *)token
                                         success:(void (^)(NSString *deviceId, NSDictionary *settings))success
                                         failure:(void (^)(NSError *error))failure;
-
-///-----------------
-/// @name OAuth info
-///-----------------
-
-+ (NSString *)WordPressAppId;
-+ (NSString *)WordPressAppSecret;
 
 @end
