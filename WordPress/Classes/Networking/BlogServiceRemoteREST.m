@@ -220,6 +220,7 @@
 
     // Note:
     // YES, the backend might send '0' as a number, OR a string value.
+    // Reference: https://github.com/wordpress-mobile/WordPress-iOS/issues/4187
     //
     if ([[rawSettings numberForKey:@"default_post_format"] isEqualToNumber:@(0)] ||
         [[rawSettings stringForKey:@"default_post_format"] isEqualToString:@"0"]) {
