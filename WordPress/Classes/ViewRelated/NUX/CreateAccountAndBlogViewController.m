@@ -769,7 +769,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
         
         WordPressComApi *api = [WordPressComApi anonymousApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
@@ -873,7 +873,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
             [self displayRemoteError:error];
         };
 
-        NSNumber *languageId = [_currentLanguage objectForKey:@"lang_id"];
+        NSString *languageId = [_currentLanguage stringForKey:@"lang_id"];
         
         WordPressComApi *api = [_account restApi];
         WordPressComServiceRemote *service = [[WordPressComServiceRemote alloc] initWithApi:api];
