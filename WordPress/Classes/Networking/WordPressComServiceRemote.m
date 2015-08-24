@@ -79,7 +79,7 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     [self createWPComBlogWithUrl:blogUrl
                     andBlogTitle:blogTitle
                    andLanguageId:languageId
-               andBlogVisibility:WordPressComApiBlogVisibilityPublic
+               andBlogVisibility:WordPressComServiceBlogVisibilityPublic
                         validate:YES success:success
                          failure:failure];
 }
@@ -154,9 +154,9 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
     }
     
     int blogVisibility = 1;
-    if (visibility == WordPressComApiBlogVisibilityPublic) {
+    if (visibility == WordPressComServiceBlogVisibilityPublic) {
         blogVisibility = 1;
-    } else if (visibility == WordPressComApiComBlogVisibilityPrivate) {
+    } else if (visibility == WordPressComServiceBlogVisibilityPrivate) {
         blogVisibility = -1;
     } else {
         // Hidden
