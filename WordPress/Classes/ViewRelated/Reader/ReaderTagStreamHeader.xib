@@ -11,35 +11,62 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-P4-qyc">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="w2t-P4-qyc">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-5o-P7K">
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="OeG-5o-P7K">
                             <rect key="frame" x="14" y="14" width="32" height="32"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="32" id="Lw5-mV-4oQ"/>
+                                <constraint firstAttribute="width" constant="32" id="g5H-RL-frL"/>
+                            </constraints>
                         </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0E-MM-cCj">
-                            <rect key="frame" x="252" y="15" width="46" height="30"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tagname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f85-bJ-w04">
+                            <rect key="frame" x="60" y="21" width="189" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="S0E-MM-cCj" customClass="PostMetaButton">
+                            <rect key="frame" x="263" y="15" width="43" height="29"/>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <state key="normal" title="Follow">
                                 <color key="titleColor" red="0.0" green="0.50196081399917603" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
+                            <connections>
+                                <action selector="didTapFollowButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="Yxp-WC-ada"/>
+                            </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Tagname" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f85-bJ-w04">
-                            <rect key="frame" x="59" y="19" width="177" height="21"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="S0E-MM-cCj" firstAttribute="leading" secondItem="f85-bJ-w04" secondAttribute="trailing" constant="14" id="HuJ-aH-u17"/>
+                        <constraint firstItem="S0E-MM-cCj" firstAttribute="centerY" secondItem="OeG-5o-P7K" secondAttribute="centerY" id="YW1-md-OXP"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="top" secondItem="w2t-P4-qyc" secondAttribute="top" constant="14" id="aQr-XY-0Oo"/>
+                        <constraint firstAttribute="trailing" secondItem="S0E-MM-cCj" secondAttribute="trailing" constant="14" id="lEy-BK-56k"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="centerY" secondItem="f85-bJ-w04" secondAttribute="centerY" id="pyz-dc-YRO"/>
+                        <constraint firstItem="f85-bJ-w04" firstAttribute="leading" secondItem="OeG-5o-P7K" secondAttribute="trailing" constant="14" id="sDv-w7-oIb"/>
+                        <constraint firstAttribute="bottom" secondItem="OeG-5o-P7K" secondAttribute="bottom" constant="14" id="wrc-o3-nfw"/>
+                        <constraint firstItem="OeG-5o-P7K" firstAttribute="leading" secondItem="w2t-P4-qyc" secondAttribute="leading" constant="14" id="zcu-ZN-MsG"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="0AD-OG-fcy"/>
+                <constraint firstAttribute="bottom" secondItem="w2t-P4-qyc" secondAttribute="bottom" id="A2H-sg-sOi"/>
+                <constraint firstItem="w2t-P4-qyc" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="DNk-AU-4lT"/>
+                <constraint firstAttribute="trailing" secondItem="w2t-P4-qyc" secondAttribute="trailing" id="Fc1-aY-QAR"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <nil key="simulatedTopBarMetrics"/>
             <nil key="simulatedBottomBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="followButton" destination="S0E-MM-cCj" id="PEW-za-Q8v"/>
+                <outlet property="titleLabel" destination="f85-bJ-w04" id="fKz-3G-lF4"/>
+            </connections>
         </view>
     </objects>
 </document>
