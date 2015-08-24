@@ -221,7 +221,8 @@
     // Note:
     // YES, the backend might send '0' as a number, OR a string value.
     //
-    if ([[rawSettings numberForKey:@"default_post_format"] isEqualToNumber:@(0)]) {
+    if ([[rawSettings numberForKey:@"default_post_format"] isEqualToNumber:@(0)] ||
+        [[rawSettings stringForKey:@"default_post_format"] isEqualToString:@"0"]) {
         remoteSettings.defaultPostFormat = PostFormatStandard;
     } else {
         remoteSettings.defaultPostFormat = [rawSettings stringForKey:@"default_post_format"];
