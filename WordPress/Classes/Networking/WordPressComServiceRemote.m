@@ -12,22 +12,31 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 - (void)createWPComAccountWithEmail:(NSString *)email
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
-                            success:(void (^)(id responseObject))success
-                            failure:(void (^)(NSError *error))failure
+                            success:(WordPressComServiceSuccessBlock)success
+                            failure:(WordPressComServiceFailureBlock)failure
 {
-    [self createWPComAccountWithEmail:email andUsername:username andPassword:password validate:NO success:success failure:failure];
+    NSParameterAssert([email isKindOfClass:[NSString class]]);
+    NSParameterAssert([username isKindOfClass:[NSString class]]);
+    NSParameterAssert([password isKindOfClass:[NSString class]]);
+    
+    [self createWPComAccountWithEmail:email
+                          andUsername:username
+                          andPassword:password
+                             validate:NO
+                              success:success
+                              failure:failure];
 }
 
 - (void)createWPComAccountWithEmail:(NSString *)email
                         andUsername:(NSString *)username
                         andPassword:(NSString *)password
                            validate:(BOOL)validate
-                            success:(void (^)(id responseObject))success
-                            failure:(void (^)(NSError *error))failure
+                            success:(WordPressComServiceSuccessBlock)success
+                            failure:(WordPressComServiceFailureBlock)failure
 {
-    NSParameterAssert(email != nil);
-    NSParameterAssert(username != nil);
-    NSParameterAssert(password != nil);
+    NSParameterAssert([email isKindOfClass:[NSString class]]);
+    NSParameterAssert([username isKindOfClass:[NSString class]]);
+    NSParameterAssert([password isKindOfClass:[NSString class]]);
     
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         success(responseObject);
@@ -72,24 +81,25 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 - (void)validateWPComBlogWithUrl:(NSString *)blogUrl
                     andBlogTitle:(NSString *)blogTitle
-                   andLanguageId:(NSNumber *)languageId
-                         success:(void (^)(id))success
-                         failure:(void (^)(NSError *))failure
+                   andLanguageId:(NSString *)languageId
+                         success:(WordPressComServiceSuccessBlock)success
+                         failure:(WordPressComServiceFailureBlock)failure
 {
     [self createWPComBlogWithUrl:blogUrl
                     andBlogTitle:blogTitle
                    andLanguageId:languageId
                andBlogVisibility:WordPressComServiceBlogVisibilityPublic
-                        validate:YES success:success
+                        validate:YES
+                         success:success
                          failure:failure];
 }
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl
                   andBlogTitle:(NSString *)blogTitle
-                 andLanguageId:(NSNumber *)languageId
+                 andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
-                       success:(void (^)(id))success
-                       failure:(void (^)(NSError *))failure
+                       success:(WordPressComServiceSuccessBlock)success
+                       failure:(WordPressComServiceFailureBlock)failure
 {
     [self createWPComBlogWithUrl:blogUrl
                     andBlogTitle:blogTitle
@@ -102,14 +112,14 @@ NSString *const WordPressComApiErrorCodeKey = @"WordPressComApiErrorCodeKey";
 
 - (void)createWPComBlogWithUrl:(NSString *)blogUrl
                   andBlogTitle:(NSString *)blogTitle
-                 andLanguageId:(NSNumber *)languageId
+                 andLanguageId:(NSString *)languageId
              andBlogVisibility:(WordPressComServiceBlogVisibility)visibility
                       validate:(BOOL)validate
-                       success:(void (^)(id))success
-                       failure:(void (^)(NSError *))failure
+                       success:(WordPressComServiceSuccessBlock)success
+                       failure:(WordPressComServiceFailureBlock)failure
 {
-    NSParameterAssert(blogUrl != nil);
-    NSParameterAssert(languageId != nil);
+    NSParameterAssert([blogUrl isKindOfClass:[NSString class]]);
+    NSParameterAssert([languageId isKindOfClass:[NSString class]]);
     
     void (^successBlock)(AFHTTPRequestOperation *, id) = ^(AFHTTPRequestOperation *operation, id responseObject) {
         NSDictionary *response = responseObject;
