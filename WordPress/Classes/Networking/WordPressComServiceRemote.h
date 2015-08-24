@@ -1,9 +1,9 @@
 #import "ServiceRemoteREST.h"
 
 typedef NS_ENUM(NSUInteger, WordPressComServiceBlogVisibility) {
-    WordPressComApiBlogVisibilityPublic = 0,
-    WordPressComApiComBlogVisibilityPrivate = 1,
-    WordPressComApiBlogVisibilityHidden = 2,
+    WordPressComServiceBlogVisibilityPublic = 0,
+    WordPressComServiceBlogVisibilityPrivate = 1,
+    WordPressComServiceBlogVisibilityHidden = 2,
 };
 
 @interface WordPressComServiceRemote : ServiceRemoteREST
