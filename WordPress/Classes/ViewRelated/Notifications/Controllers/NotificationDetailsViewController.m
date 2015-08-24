@@ -847,7 +847,8 @@ static NSString *NotificationsCommentIdKey              = @"NotificationsComment
     BOOL success = false;
     
     if (!success && self.note.isFollow) {
-        success = [self displayFollowersWithSiteID:self.note.metaSiteID];
+        NSURL *resourceURL = [NSURL URLWithString:self.note.url];
+        success = [self displayBrowseSite:self.note.metaSiteID siteURL:resourceURL];
     }
     
     if (!success && self.note.metaCommentID) {
