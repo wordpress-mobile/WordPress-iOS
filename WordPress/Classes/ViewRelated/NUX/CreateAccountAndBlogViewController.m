@@ -880,7 +880,7 @@ static UIEdgeInsets const CreateAccountAndBlogHelpButtonPaddingPad  = {1.0, 0.0,
         [service createWPComBlogWithUrl:[self getSiteAddressWithoutWordPressDotCom]
                            andBlogTitle:[self generateSiteTitleFromUsername:_usernameField.text]
                           andLanguageId:languageId
-                      andBlogVisibility:WordPressComApiBlogVisibilityPublic
+                      andBlogVisibility:WordPressComServiceBlogVisibilityPublic
                                 success:createBlogSuccess
                                 failure:createBlogFailure];
     }];
