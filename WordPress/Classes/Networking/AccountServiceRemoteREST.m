@@ -14,7 +14,8 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
 
 @implementation AccountServiceRemoteREST
 
-- (void)getBlogsWithSuccess:(void (^)(NSArray *))success failure:(void (^)(NSError *))failure
+- (void)getBlogsWithSuccess:(void (^)(NSArray *))success
+                    failure:(void (^)(NSError *))failure
 {
     [self.api GET:@"me/sites"
        parameters:nil
@@ -55,6 +56,7 @@ static NSString * const UserDictionaryAvatarURLKey = @"avatar_URL";
               }
           }];
 }
+
 
 
 #pragma mark - Private Methods
