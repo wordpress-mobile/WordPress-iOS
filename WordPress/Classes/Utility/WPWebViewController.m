@@ -103,7 +103,9 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
     self.webView.scalesPageToFit            = YES;
     
     // Share
-    self.navigationItem.rightBarButtonItem  = self.optionsButton;
+    if (!self.secureInteraction) {
+        self.navigationItem.rightBarButtonItem  = self.optionsButton;
+    }
     
     // Fire away!
     [self applyModalStyleIfNeeded];
@@ -238,6 +240,10 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
 
 - (void)showBottomToolbarIfNeeded
 {
+    if (!self.secureInteraction) {
+        return;
+    }
+
     if (!self.webView.canGoBack && !self.webView.canGoForward) {
         return;
     }
@@ -395,6 +401,11 @@ static CGFloat const WPWebViewAnimationAlphaHidden          = 0.0;
         return;
     }
     
+    [self displayLoadError:error];
+}
+
+- (void)displayLoadError:(NSError *)error
+{
     [WPError showAlertWithTitle:NSLocalizedString(@"Error", nil) message:error.localizedDescription];
 }
 

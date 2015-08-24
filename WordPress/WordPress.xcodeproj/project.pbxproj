@@ -532,6 +532,7 @@
 		FA7D87CB1B82810500B608B9 /* Publicizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87CA1B82810500B608B9 /* Publicizer.m */; };
 		FA7D87CE1B82814800B608B9 /* PublicizerServiceRemote.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87CD1B82814800B608B9 /* PublicizerServiceRemote.m */; };
 		FA7D87D11B82816400B608B9 /* RemotePublicizer.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87D01B82816400B608B9 /* RemotePublicizer.m */; };
+		FA7D87D51B85524F00B608B9 /* SharingAuthorizationWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = FA7D87D41B85524F00B608B9 /* SharingAuthorizationWebViewController.m */; };
 		FD21397F13128C5300099582 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = FD21397E13128C5300099582 /* libiconv.dylib */; };
 		FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FD3D6D2B1349F5D30061136A /* ImageIO.framework */; };
 		FD75DDAD15B021C80043F12C /* UIViewController+Rotation.m in Sources */ = {isa = PBXBuildFile; fileRef = FD75DDAC15B021C80043F12C /* UIViewController+Rotation.m */; };
@@ -1539,6 +1540,8 @@
 		FA7D87CF1B82816400B608B9 /* RemotePublicizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RemotePublicizer.h; path = "Remote Objects/RemotePublicizer.h"; sourceTree = "<group>"; };
 		FA7D87D01B82816400B608B9 /* RemotePublicizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RemotePublicizer.m; path = "Remote Objects/RemotePublicizer.m"; sourceTree = "<group>"; };
 		FA7D87D21B82825D00B608B9 /* WordPress 38.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 38.xcdatamodel"; sourceTree = "<group>"; };
+		FA7D87D31B85524F00B608B9 /* SharingAuthorizationWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharingAuthorizationWebViewController.h; sourceTree = "<group>"; };
+		FA7D87D41B85524F00B608B9 /* SharingAuthorizationWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharingAuthorizationWebViewController.m; sourceTree = "<group>"; };
 		FD0D42C11499F31700F5E115 /* WordPress 4.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 4.xcdatamodel"; sourceTree = "<group>"; };
 		FD21397E13128C5300099582 /* libiconv.dylib */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		FD374343156CF4B800BAB5B5 /* WordPress 6.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 6.xcdatamodel"; sourceTree = "<group>"; };
@@ -2794,6 +2797,8 @@
 				FF8DDCE31B5EA6590098826F /* SettingsTextViewController.m */,
 				FF8DDCDD1B5DB1C10098826F /* SettingTableViewCell.h */,
 				FF8DDCDE1B5DB1C10098826F /* SettingTableViewCell.m */,
+				FA7D87D31B85524F00B608B9 /* SharingAuthorizationWebViewController.h */,
+				FA7D87D41B85524F00B608B9 /* SharingAuthorizationWebViewController.m */,
 				FA7D87C31B82802A00B608B9 /* SharingViewController.h */,
 				FA7D87C41B82802A00B608B9 /* SharingViewController.m */,
 				83FEFC7311FF6C5A0078B462 /* SiteSettingsViewController.h */,
@@ -4058,6 +4063,7 @@
 				5D6C4B091B603E03005E3C43 /* WPTableViewHandler.m in Sources */,
 				834CAE9F122D56B1003DDF49 /* UIImage+Alpha.m in Sources */,
 				B54866CA1A0D7042004AC79D /* NSAttributedString+Helpers.swift in Sources */,
+				FA7D87D51B85524F00B608B9 /* SharingAuthorizationWebViewController.m in Sources */,
 				834CAEA0122D56B1003DDF49 /* UIImage+RoundedCorner.m in Sources */,
 				E18EE95119349EC300B0A40C /* ReaderTopicServiceRemote.m in Sources */,
 				B5FD4544199D0F2800286FBB /* NotificationsViewController.m in Sources */,

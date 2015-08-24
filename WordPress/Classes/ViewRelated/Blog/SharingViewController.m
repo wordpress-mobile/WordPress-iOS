@@ -5,7 +5,7 @@
 #import "WPTableViewSectionHeaderFooterView.h"
 #import "Publicizer.h"
 #import "SVProgressHUD.h"
-#import "WPWebViewController.h"
+#import "SharingAuthorizationWebViewController.h"
 
 NS_ENUM(NSInteger, SharingSection) {
     SharingPublicize = 0,
@@ -17,7 +17,7 @@ NS_ENUM(NSInteger, SharingSection) {
 
 static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
-@interface SharingViewController ()
+@interface SharingViewController () <SharingAuthorizationDelegate>
 
 @property (nonatomic, strong, readonly) Blog *blog;
 
@@ -153,6 +153,8 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (void)connectPublicizer:(Publicizer *)publicizer interact:(BOOL)interact
 {
+    NSParameterAssert(publicizer);
+    
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService checkAuthorizationForPublicizer:publicizer success:^(NSDictionary *authorization) {
         [blogService connectPublicizer:publicizer
@@ -173,15 +175,35 @@ static NSString *const PublicizeCellIdentifier = @"PublicizeCell";
 
 - (void)authorizePublicizer:(Publicizer *)publicizer
 {
-    NSURL *authorizeURL = [NSURL URLWithString:publicizer.connect];
-    WPWebViewController *webViewController = [WPWebViewController webViewControllerWithURL:authorizeURL];
+    NSParameterAssert(publicizer);
+    
+    SharingAuthorizationWebViewController *webViewController = [SharingAuthorizationWebViewController controllerWithPublicizer:publicizer forBlog:self.blog];
+    webViewController.delegate = self;
+    
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     navController.modalPresentationStyle = UIModalPresentationFormSheet;
     [self presentViewController:navController animated:YES completion:nil];
 }
 
+- (void)authorizeDidSucceed:(Publicizer *)publicizer
+{
+    [self connectPublicizer:publicizer interact:NO];
+}
+
+- (void)authorize:(Publicizer *)publicizer didFailWithError:(NSError *)error
+{
+    [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Authorization failed", @"Message to show when Publicize authorization failed")];
+}
+
+- (void)authorizeDidCancel:(Publicizer *)publicizer
+{
+    // called in response to user dismissal
+}
+
 - (void)disconnectPublicizer:(Publicizer *)publicizer
 {
+    NSParameterAssert(publicizer);
+    
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
     [blogService disconnectPublicizer:publicizer success:^{
         [self refreshPublicizers];

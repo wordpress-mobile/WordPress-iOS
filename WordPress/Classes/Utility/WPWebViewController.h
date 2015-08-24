@@ -37,6 +37,11 @@
 @property (nonatomic, assign) BOOL      shouldScrollToBottom;
 
 /**
+ *	@brief		Optionally suppresses navigation and sharing
+ */
+@property (nonatomic, assign) BOOL      secureInteraction;
+
+/**
  *	@brief      Helper method to initialize a WebViewController Instance
  *
  *	@param		url         The URL that needs to be rendered
