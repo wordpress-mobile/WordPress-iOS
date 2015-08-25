@@ -28,13 +28,15 @@ import Foundation
     *  @param       failure     Closure to be executed on failure. Can be nil.
     */
     public func authorizeLogin(token: String, success: (() -> ())?, failure: (() -> ())?) {
-        let path        = "v1.1/me/two-step/push-authentication"
+        let path = "me/two-step/push-authentication"
+        let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        
         let parameters  = [
             "action"        : "authorize_login",
             "push_token"    : token
         ]
         
-        api.POST(path,
+        api.POST(requestUrl,
             parameters: parameters,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 success?()
