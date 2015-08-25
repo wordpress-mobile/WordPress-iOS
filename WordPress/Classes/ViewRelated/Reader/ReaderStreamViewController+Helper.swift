@@ -117,7 +117,7 @@ extension ReaderStreamViewController
     */
     public class func topicIsFreshlyPressed(topic: ReaderTopic) -> Bool {
         let path = topic.path as NSString!
-        return path.hasSuffix("/freshly-pressed/")
+        return path.hasSuffix("/freshly-pressed")
     }
 
     /**
@@ -128,7 +128,7 @@ extension ReaderStreamViewController
     */
     public class func topicIsFollowing(topic: ReaderTopic) -> Bool {
         let path = topic.path as NSString!
-        return path.hasSuffix("/read/following/")
+        return path.hasSuffix("/read/following")
     }
 
     /**
@@ -139,7 +139,7 @@ extension ReaderStreamViewController
     */
     public class func topicIsLiked(topic: ReaderTopic) -> Bool {
         let path = topic.path as NSString!
-        return path.hasSuffix("/read/liked/")
+        return path.hasSuffix("/read/liked")
     }
 
 }
