@@ -132,17 +132,7 @@
 
 - (NSComparisonResult)compare:(WPAccount *)account
 {
-    BOOL account1IsWPComAccount = [self isWPComAccount];
-    BOOL account2IsWPComAccount = [account isWPComAccount];
-    NSComparisonResult result = NSOrderedSame;
-    
-    if (account1IsWPComAccount && !account2IsWPComAccount) {
-        result = NSOrderedDescending;
-    } else if (!account1IsWPComAccount && account2IsWPComAccount) {
-        result = NSOrderedAscending;
-    }
-    
-    return result;
+	return NSOrderedSame;
 }
 
 @end
