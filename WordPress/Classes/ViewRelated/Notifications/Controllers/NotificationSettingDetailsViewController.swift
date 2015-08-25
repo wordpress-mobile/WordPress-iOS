@@ -76,7 +76,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     @IBAction private func reloadTable() {
-        
         sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
@@ -85,7 +84,13 @@ public class NotificationSettingDetailsViewController : UITableViewController
 
     // MARK: - Private Helpers
     private func sectionsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Section] {
+        // WordPress.com Channel requires a brief description per row.
+        // For that reason, we'll render each row in its own section, with it's very own footer
+        let singleSectionMode = settings.channel != .WordPressCom
+        
+        // Parse the Rows
         var rows = [Row]()
+        
         for key in settings.sortedPreferenceKeys(stream) {
             let description = settings.localizedDescription(key)
             let value       = stream.preferences?[key] ?? true
@@ -94,8 +99,22 @@ public class NotificationSettingDetailsViewController : UITableViewController
             rows.append(row)
         }
         
-        let section = Section(rows: rows, footerText: nil)
-        return [section]
+        // Single Section Mode: A single section will contain all of the rows
+        if singleSectionMode {
+            return [Section(rows: rows)]
+        }
+    
+        // Multi Section Mode: We'll have one Section per Row
+        var sections = [Section]()
+        
+        for row in rows {
+            let unwrappedKey    = row.key ?? String()
+            let details         = settings.localizedDetails(unwrappedKey)
+            let section         = Section(rows: [row], footerText: details)
+            sections.append(section)
+        }
+        
+        return sections
     }
     
     private func sectionsForDisabledDeviceStream() -> [Section] {
@@ -244,7 +263,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         var rows                : [Row]
         var footerText          : String?
         
-        init(rows: [Row], footerText: String?) {
+        init(rows: [Row], footerText: String? = nil) {
             self.rows           = rows
             self.footerText     = footerText
         }
