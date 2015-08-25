@@ -8,8 +8,6 @@ import Foundation
 {
     // MARK: - Properties
 
-    @IBOutlet private weak var footerView: UIView!
-
     private var tableView: UITableView!
     private var refreshControl: UIRefreshControl!
     private var tableViewHandler: WPTableViewHandler!
@@ -19,6 +17,7 @@ import Foundation
     private var resultsStatusView: WPNoResultsView!
     private var objectIDOfPostForMenu: NSManagedObjectID?
     private var actionSheet: UIActionSheet?
+    private var footerView: PostListFooterView!
 
     private let ReaderCardCellNibName = "ReaderPostCardCell"
     private let ReaderCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
@@ -64,6 +63,7 @@ import Foundation
 
         configureCellForLayout()
         configureTableView()
+        configureFooterView()
         configureTableViewHandler()
         configureSyncHelper()
         configureResultsStatusView()
@@ -123,6 +123,20 @@ import Foundation
         resultsStatusView = WPNoResultsView()
     }
 
+    private func configureFooterView() {
+        footerView = NSBundle.mainBundle().loadNibNamed("PostListFooterView", owner: nil, options: nil).first as! PostListFooterView
+        footerView.showSpinner(false)
+        tableView.tableFooterView = footerView
+/*
+        self.postListFooterView = (PostListFooterView *)[[[NSBundle mainBundle] loadNibNamed:NSStringFromClass([PostListFooterView class]) owner:nil options:nil] firstObject];
+        [self.postListFooterView showSpinner:NO];
+        CGRect frame = self.postListFooterView.frame;
+        frame.size.height = [self heightForFooterView];
+        self.postListFooterView.frame = frame;
+        self.tableView.tableFooterView = self.postListFooterView;
+*/
+    }
+
 
     // MARK: - Handling Loading and No Results
 
@@ -147,15 +161,17 @@ import Foundation
     }
 
     func displayResultsStatus() {
-        if resultsStatusView.isDescendantOfView(view) {
+        if resultsStatusView.isDescendantOfView(tableView) {
             resultsStatusView.centerInSuperview()
         } else {
-            view.addSubviewWithFadeAnimation(resultsStatusView)
+            tableView.addSubviewWithFadeAnimation(resultsStatusView)
         }
+        footerView.hidden = false
     }
 
     func hideResultsStatus() {
         resultsStatusView.removeFromSuperview()
+        footerView.hidden = false
     }
 
 
@@ -482,7 +498,7 @@ import Foundation
             return
         }
 
-        // TODO: show loading more ...
+        footerView.showSpinner(true)
 
         let earlierThan = post!.sortDate
         let syncContext = ContextManager.sharedInstance().newDerivedContext()
@@ -537,6 +553,7 @@ import Foundation
     public func cleanupAfterSync() {
         tableViewHandler.refreshTableViewPreservingOffset()
         refreshControl.endRefreshing()
+        footerView.showSpinner(false)
     }
 
     public func tableViewHandlerWillRefreshTableViewPreservingOffset(tableViewHandler: WPTableViewHandler!) {
