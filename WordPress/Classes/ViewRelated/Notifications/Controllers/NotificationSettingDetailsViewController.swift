@@ -12,13 +12,13 @@ public class NotificationSettingDetailsViewController : UITableViewController
 {
     // MARK: - Initializers
     public convenience init(settings: NotificationSettings) {
-        self.init(style: .Grouped)
-        setupWithSettings(settings, stream: settings.streams.first!)
+        self.init(settings: settings, stream: settings.streams.first!)
     }
     
     public convenience init(settings: NotificationSettings, stream: NotificationSettings.Stream) {
         self.init(style: .Grouped)
-        setupWithSettings(settings, stream: stream)
+        self.settings = settings
+        self.stream = stream
     }
     
     
@@ -28,6 +28,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         super.viewDidLoad()
         setupNotifications()
         setupTableView()
+        reloadTable()
     }
     
     public override func viewWillAppear(animated: Bool) {
@@ -43,6 +44,15 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Setup Helpers
+    private func setupTitle() {
+        switch settings!.channel {
+        case .WordPressCom:
+            title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
+        default:
+            title = stream!.kind.description()
+        }
+    }
+    
     private func setupNotifications() {
         // Reload whenever the app becomes active again since Push Settings may have changed in the meantime!
         let notificationCenter = NSNotificationCenter.defaultCenter()
@@ -64,27 +74,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
         WPStyleGuide.configureColorsForView(view, andTableView: tableView)
     }
     
-    
-    
-    // MARK: - Public Helpers
-    public func setupWithSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) {
-        // Title
-        switch settings.channel {
-        case .WordPressCom:
-            title = NSLocalizedString("WordPress.com Updates", comment: "WordPress.com Notification Settings Title")
-        default:
-            title = stream.kind.description()
-        }
-        
-        // Keep References
-        self.settings   = settings
-        self.stream     = stream
-        
-        // At last, reload!
-        reloadTable()
-    }
-
-    public func reloadTable() {
+    @IBAction private func reloadTable() {
         self.rows = rowsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
@@ -260,7 +250,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
     private let switchIdentifier    = SwitchTableViewCell.classNameWithoutNamespaces()
     private let sectionCount        = 1
     private let disabledRowCount    = 1
-    private let headerTitleInsets   = UIEdgeInsets(top: 16.0, left: 16.0, bottom: 16.0, right: 16.0)
     
     // MARK: - Private Properties
     private var settings            : NotificationSettings?
