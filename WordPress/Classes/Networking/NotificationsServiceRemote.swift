@@ -30,8 +30,9 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     */
     public func getAllSettings(deviceId: String, success: ([RemoteNotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
+        let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
 
-        api.GET(path,
+        api.GET(requestUrl,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
@@ -51,9 +52,11 @@ public class NotificationsServiceRemote : ServiceRemoteREST
     */
     public func updateSettings(settings: [String: AnyObject], success: (() -> ())?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/")
+        let requestUrl = self.pathForEndpoint(path, withVersion: ServiceRemoteRESTApiVersion_1_1)
+        
         let parameters = settings as NSDictionary
         
-        api.POST(path,
+        api.POST(requestUrl,
             parameters: parameters,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 success?()
