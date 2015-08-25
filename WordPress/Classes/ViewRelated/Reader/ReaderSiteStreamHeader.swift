@@ -5,7 +5,7 @@ import Foundation
     @IBOutlet private weak var avatarImageView: UIImageView!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var detailLabel: UILabel!
-    @IBOutlet private weak var followButton: UIButton!
+    @IBOutlet private weak var followButton: PostMetaButton!
     @IBOutlet private weak var followCountLabel: UILabel!
     @IBOutlet private weak var descriptionLabel: UILabel!
     @IBOutlet private weak var descriptionBottomConstraint: NSLayoutConstraint!
@@ -55,7 +55,7 @@ import Foundation
             return
         }
         if delegate!.respondsToSelector(Selector("handleFollowActionForHeader")) {
-            delegate!.handleFollowActionForHeader!(self)
+            delegate!.handleFollowActionForHeader(self)
         }
     }
 }
