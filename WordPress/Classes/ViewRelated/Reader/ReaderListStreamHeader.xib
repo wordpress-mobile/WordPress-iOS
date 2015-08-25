@@ -13,7 +13,7 @@
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPv-Yl-pZz">
                     <rect key="frame" x="-1" y="0.0" width="322" height="61"/>
-                    <color key="backgroundColor" red="0.52941176469999995" green="0.65098039220000004" blue="0.73725490199999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.84313725490196079" green="0.8901960784313725" blue="0.92156862745098034" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iWB-Uw-beb">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
@@ -64,7 +64,7 @@
                     </variation>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.7843137255" green="0.84313725490000002" blue="0.88235294119999996" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="top" secondItem="YPv-Yl-pZz" secondAttribute="top" id="CZB-46-q68"/>
                 <constraint firstItem="iWB-Uw-beb" firstAttribute="leading" secondItem="YPv-Yl-pZz" secondAttribute="leading" constant="1" id="Fs5-Ew-Ygm"/>
