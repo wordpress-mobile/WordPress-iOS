@@ -10,7 +10,7 @@ class PushAuthenticationServiceRemoteTests : XCTestCase {
     override func setUp() {
         super.setUp()
         mockRemoteApi = MockWordPressComApi()
-        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: mockRemoteApi)
+        pushAuthenticationServiceRemote = PushAuthenticationServiceRemote(api: mockRemoteApi)
     }
     
     func testAuthorizeLoginUsesTheCorrectPath() {

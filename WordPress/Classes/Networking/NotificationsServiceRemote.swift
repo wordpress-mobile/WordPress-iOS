@@ -8,15 +8,14 @@ import Foundation
 *                   here we'll deal mostly with the Settings / Push Notifications API.
 */
 
-public class NotificationsServiceRemote
+public class NotificationsServiceRemote : ServiceRemoteREST
 {
     /**
     *  @details     Designated Initializer. Fails if the remoteApi is nil.
     *  @param       remoteApi   A Reference to the WordPressComApi that should be used to interact with WordPress.com
     */
-    init?(api: WordPressComApi!) {
-        remoteApi = api
-        
+    public override init?(api: WordPressComApi!) {
+        super.init(api: api)
         if api == nil {
             return nil
         }
@@ -32,7 +31,7 @@ public class NotificationsServiceRemote
     public func getAllSettings(deviceId: String, success: ([RemoteNotificationSettings] -> Void)?, failure: (NSError! -> Void)?) {
         let path = String(format: "me/notifications/settings/?device_id=%@", deviceId)
 
-        remoteApi.GET(path,
+        api.GET(path,
             parameters: nil,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 let settings = RemoteNotificationSettings.fromDictionary(response as? NSDictionary)
@@ -54,7 +53,7 @@ public class NotificationsServiceRemote
         let path = String(format: "me/notifications/settings/")
         let parameters = settings as NSDictionary
         
-        remoteApi.POST(path,
+        api.POST(path,
             parameters: parameters,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 success?()
@@ -63,8 +62,4 @@ public class NotificationsServiceRemote
                 failure?(error)
             })
     }
-    
-    
-    // MARK: - Private Internal Constants
-    private let remoteApi: WordPressComApi!
 }
