@@ -18,7 +18,7 @@ import Foundation
     */
     public required override init(managedObjectContext: NSManagedObjectContext) {
         super.init(managedObjectContext: managedObjectContext)
-        self.authenticationServiceRemote = PushAuthenticationServiceRemote(remoteApi: apiForRequest())
+        self.authenticationServiceRemote = PushAuthenticationServiceRemote(api: apiForRequest())
     }
 
     /**
