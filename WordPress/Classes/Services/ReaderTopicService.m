@@ -384,7 +384,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         topic.type = ReaderTopicTypeSite;
         topic.title = [siteInfo.siteName length] ? siteInfo.siteName : [NSURL URLWithString:siteInfo.siteURL].host;
         topic.topicDescription = siteInfo.siteDescription;
-        topic.path = [NSString stringWithFormat:@"%@sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
+        topic.path = [NSString stringWithFormat:@"%@read/sites/%@/posts/", WordPressRestApiEndpointURL, siteInfo.siteID];
 
         NSError *error;
         [self.managedObjectContext obtainPermanentIDsForObjects:@[topic] error:&error];
