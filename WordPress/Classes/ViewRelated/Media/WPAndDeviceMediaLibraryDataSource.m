@@ -80,6 +80,9 @@
 
 - (id<WPMediaAsset>)mediaWithIdentifier:(NSString *)identifier
 {
+    if (!identifier) {
+        return nil;
+    }
     id<WPMediaAsset> result = [self.deviceLibraryDataSource mediaWithIdentifier:identifier];
     if (result) {
         return result;

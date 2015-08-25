@@ -19,12 +19,15 @@
 #import "SettingsTextViewController.h"
 #import "SettingsMultiTextViewController.h"
 #import "WPGUIConstants.h"
+#import "PostCategoryService.h"
+#import "PostCategory.h"
+#import "PostCategoriesViewController.h"
+#import "PostSettingsSelectionViewController.h"
 
 NS_ENUM(NSInteger, SiteSettingsGeneral) {
     SiteSettingsGeneralTitle = 0,
     SiteSettingsGeneralTagline,
     SiteSettingsGeneralURL,
-    SiteSettingsGeneralPushNotifications,
     SiteSettingsGeneralCount,
 };
 
@@ -36,6 +39,8 @@ NS_ENUM(NSInteger, SiteSettingsAccount) {
 
 NS_ENUM(NSInteger, SiteSettingsWriting) {
     SiteSettingsWritingGeotagging = 0,
+    SiteSettingsWritingDefaultCategory,
+    SiteSettingsWritingDefaultPostFormat,
     SiteSettingsWritingCount,
 };
 
@@ -50,24 +55,23 @@ NS_ENUM(NSInteger, SiteSettinsAlertTag) {
     SiteSettinsAlertTagSiteRemoval = 201,
 };
 
-NSInteger const EditSiteURLMinimumLabelWidth = 30;
-
-@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
+@interface SiteSettingsViewController () <UITableViewDelegate, UITextFieldDelegate,
+UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *tableSections;
 #pragma mark - General Section
 @property (nonatomic, strong) SettingTableViewCell *siteTitleCell;
 @property (nonatomic, strong) SettingTableViewCell *siteTaglineCell;
 @property (nonatomic, strong) SettingTableViewCell *addressTextCell;
-@property (nonatomic, strong) SettingTableViewCell *pushCell;
 #pragma mark - Account Section
 @property (nonatomic, strong) SettingTableViewCell *usernameTextCell;
 @property (nonatomic, strong) SettingTableViewCell *passwordTextCell;
 #pragma mark - Writing Section
 @property (nonatomic, strong) SettingTableViewCell *geotaggingCell;
+@property (nonatomic, strong) SettingTableViewCell *defaultCategoryCell;
+@property (nonatomic, strong) SettingTableViewCell *defaultPostFormatCell;
+
 @property (nonatomic, strong) UITableViewCell *removeSiteCell;
-#pragma mark - Other properties
-@property (nonatomic, strong) NSMutableDictionary *notificationPreferences;
 
 @property (nonatomic, strong) Blog *blog;
 @property (nonatomic, strong) NSString *authToken;
@@ -129,15 +133,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     self.startingPwd = self.password;
     self.startingUrl = self.url;
     self.geolocationEnabled = self.blog.geolocationEnabled;
-
-    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
-    if (!self.notificationPreferences) {
-        [NotificationsManager fetchNotificationSettingsWithSuccess:^{
-            [self reloadNotificationSettings];
-        } failure:^(NSError *error) {
-            [WPError showAlertWithTitle:NSLocalizedString(@"Error", @"") message:error.localizedDescription];
-        }];
-    }
     
     [self refreshData];
 }
@@ -171,7 +166,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             } else {
                 return SiteSettingsGeneralCount-1;
             }
-        } break;
+        }
+        break;
         case SiteSettingsSectionAccount:
             return SiteSettingsAccountCount;
         break;
@@ -217,7 +213,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 [self.usernameTextCell setTextValue:NSLocalizedString(@"Enter username", @"(placeholder) Help enter WordPress username")];
             }
             return self.usernameTextCell;
-        } break;
+        }
+        break;
         case SiteSettingsAccountPassword: {
             if (self.blog.password) {
                 [self.passwordTextCell setTextValue:@"••••••••"];
@@ -225,7 +222,8 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 [self.passwordTextCell setTextValue:NSLocalizedString(@"Enter password", @"(placeholder) Help enter WordPress password")];
             }
             return self.passwordTextCell;
-        } break;
+        }
+        break;
     }
     return nil;
 }
@@ -245,12 +243,51 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _geotaggingCell;
 }
 
+- (SettingTableViewCell *)defaultCategoryCell
+{
+    if (_defaultCategoryCell){
+        return _defaultCategoryCell;
+    }
+    _defaultCategoryCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Category", @"Label for selecting the default category of a post")
+                                                           editable:YES
+                                                    reuseIdentifier:nil];
+    return _defaultCategoryCell;
+}
+
+- (SettingTableViewCell *)defaultPostFormatCell
+{
+    if (_defaultPostFormatCell){
+        return _defaultPostFormatCell;
+    }
+    _defaultPostFormatCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Default Post Format", @"Label for selecting the default post format")
+                                                              editable:YES
+                                                       reuseIdentifier:nil];
+    return _defaultPostFormatCell;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForWritingSettingsAtRow:(NSInteger)row
 {
-    if (row == SiteSettingsWritingGeotagging) {
-        UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
-        geotaggingSwitch.on = self.geolocationEnabled;
-        return self.geotaggingCell;
+    switch (row) {
+        case (SiteSettingsWritingGeotagging):{
+            UISwitch *geotaggingSwitch =  (UISwitch *)self.geotaggingCell.accessoryView;
+            geotaggingSwitch.on = self.geolocationEnabled;
+            return self.geotaggingCell;
+        }
+        break;
+        case (SiteSettingsWritingDefaultCategory):{
+            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:self.blog.defaultCategoryID];
+            [self.defaultCategoryCell setTextValue:[postCategory categoryName]];
+            return self.defaultCategoryCell;
+        }
+        break;
+        case (SiteSettingsWritingDefaultPostFormat):{
+            [self.defaultPostFormatCell setTextValue:self.blog.defaultPostFormatText];
+            return self.defaultPostFormatCell;
+        }
+        break;
+
     }
     return nil;
 }
@@ -288,21 +325,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     return _addressTextCell;
 }
 
-- (SettingTableViewCell *)pushCell
-{
-    if (_pushCell) {
-        return _pushCell;
-    }
-    _pushCell = [[SettingTableViewCell alloc] initWithLabel:NSLocalizedString(@"Push Notifications", @"")
-                                                   editable:NO
-                                            reuseIdentifier:nil];
-    UISwitch *pushSwitch = [[UISwitch alloc] init];
-    [pushSwitch addTarget:self action:@selector(togglePushNotifications:) forControlEvents:UIControlEventValueChanged];
-    _pushCell.accessoryView = pushSwitch;
-    pushSwitch.on = [self getBlogPushNotificationsSetting];
-    return _pushCell;
-}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForGeneralSettingsInRow:(NSInteger)row
 {
     switch (row) {
@@ -329,11 +351,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 [self.addressTextCell setTextValue:NSLocalizedString(@"http://my-site-address (URL)", @"(placeholder) Help the user enter a URL into the field")];
             }
             return self.addressTextCell;
-        } break;
-        case SiteSettingsGeneralPushNotifications: {
-            UISwitch *pushSwitch = (UISwitch *)self.pushCell.accessoryView;
-            pushSwitch.on = [self getBlogPushNotificationsSetting];
-            return self.pushCell;
         } break;
     }
     return [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"NoCell"];
@@ -424,7 +441,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 self.siteTitleCell.detailTextLabel.text = value;
                 if (![value isEqualToString:self.blog.blogName]){
                     self.blog.blogName = value;
-                    [self save:nil];
+                    [self saveSettings];
                 }
             };
             [self.navigationController pushViewController:siteTitleViewController animated:YES];
@@ -440,7 +457,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
                 self.siteTaglineCell.detailTextLabel.text = normalizedTagline;
                 if (![normalizedTagline isEqualToString:self.blog.blogTagline]){
                     self.blog.blogTagline = normalizedTagline;
-                    [self save:nil];
+                    [self saveSettings];
                 }
             };
             [self.navigationController pushViewController:siteTaglineViewController animated:YES];
@@ -472,6 +489,69 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     }
 }
 
+- (void)showPostFormatSelector
+{
+    NSArray *titles = self.blog.sortedPostFormatNames;
+    NSArray *formats = self.blog.sortedPostFormats;
+    if (titles.count == 0 || self.blog.defaultPostFormatText == nil) {
+        return;
+    }
+    NSString *currentDefaultPostFormat = self.blog.defaultPostFormat;
+    if (!currentDefaultPostFormat) {
+        currentDefaultPostFormat = formats[0];
+    }
+    NSDictionary *postFormatsDict = @{
+                                      SettingsSelectionDefaultValueKey   : [formats firstObject],
+                                      SettingsSelectionTitleKey          : NSLocalizedString(@"Default Post Format", @"Title for screen to select a default post format for a blog"),
+                                      SettingsSelectionTitlesKey         : titles,
+                                      SettingsSelectionValuesKey         : formats,
+                                      SettingsSelectionCurrentValueKey   : currentDefaultPostFormat
+                                      };
+    
+    PostSettingsSelectionViewController *vc = [[PostSettingsSelectionViewController alloc] initWithDictionary:postFormatsDict];
+    __weak __typeof__(self) weakSelf = self;
+    vc.onItemSelected = ^(NSString *status) {
+        // Check if the object passed is indeed an NSString, otherwise we don't want to try to set it as the post format
+        if ([status isKindOfClass:[NSString class]]) {
+            if (weakSelf.blog.defaultPostFormat != status) {
+                weakSelf.blog.defaultPostFormat = status;
+                [weakSelf saveSettings];
+            }
+        }
+    };
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)tableView:(UITableView *)tableView didSelectInWritingSectionRow:(NSInteger)row
+{
+    switch (row) {
+        case SiteSettingsWritingDefaultCategory:{
+            PostCategoryService *postCategoryService = [[PostCategoryService alloc] initWithManagedObjectContext:[[ContextManager sharedInstance] mainContext]];
+            NSNumber *defaultCategoryID = self.blog.defaultCategoryID;
+            if (!defaultCategoryID) {
+                defaultCategoryID = @(PostCategoryUncategorized);
+            }
+            PostCategory *postCategory = [postCategoryService findWithBlogObjectID:self.blog.objectID andCategoryID:defaultCategoryID];
+            NSArray *currentSelection = @[];
+            if (postCategory){
+                currentSelection = @[postCategory];
+            }
+            PostCategoriesViewController *postCategoriesViewController = [[PostCategoriesViewController alloc] initWithBlog:self.blog
+                                                                                                           currentSelection:currentSelection
+                                                                                                              selectionMode:CategoriesSelectionModeBlogDefault];
+            postCategoriesViewController.delegate = self;
+            [self.navigationController pushViewController:postCategoriesViewController animated:YES];
+        }
+        break;
+        case SiteSettingsWritingDefaultPostFormat:{
+            [self showPostFormatSelector];
+        }
+        break;
+
+    }
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger settingsSection = [self.tableSections[indexPath.section] intValue];
@@ -483,7 +563,7 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self tableView:tableView didSelectInAccountSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionWriting:
-            
+            [self tableView:tableView didSelectInWritingSectionRow:indexPath.row];
             break;
         case SiteSettingsSectionRemoveSite:{
             [self showRemoveSiteForBlog:self.blog];
@@ -519,18 +599,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     
 }
 
-- (BOOL)canTogglePushNotifications
-{
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    AccountService *accountService = [[AccountService alloc] initWithManagedObjectContext:context];
-    WPAccount *defaultAccount = [accountService defaultWordPressComAccount];
-
-    return self.blog &&
-        [self.blog supports:BlogFeaturePushNotifications] &&
-        [[defaultAccount restApi] hasCredentials] &&
-        [NotificationsManager deviceRegisteredForPushNotifications];
-}
-
 - (void)toggleGeolocation:(id)sender
 {
     UISwitch *geolocationSwitch = (UISwitch *)sender;
@@ -541,33 +609,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
     [[ContextManager sharedInstance] saveContext:self.blog.managedObjectContext];
 }
 
-- (void)togglePushNotifications:(id)sender
-{
-    UISwitch *pushSwitch = (UISwitch *)sender;
-    BOOL muted = !pushSwitch.on;
-    if (_notificationPreferences) {
-        NSMutableDictionary *mutedBlogsDictionary = [[_notificationPreferences objectForKey:@"muted_blogs"] mutableCopy];
-        NSMutableArray *mutedBlogsArray = [[mutedBlogsDictionary objectForKey:@"value"] mutableCopy];
-        NSMutableDictionary *updatedPreference;
-
-        NSNumber *blogID = [self.blog dotComID];
-        for (NSUInteger i = 0; i < [mutedBlogsArray count]; i++) {
-            updatedPreference = [mutedBlogsArray[i] mutableCopy];
-            NSString *currentblogID = [updatedPreference objectForKey:@"blog_id"];
-            if ([blogID intValue] == [currentblogID intValue]) {
-                [updatedPreference setValue:[NSNumber numberWithBool:muted] forKey:@"value"];
-                [mutedBlogsArray setObject:updatedPreference atIndexedSubscript:i];
-                [mutedBlogsDictionary setValue:mutedBlogsArray forKey:@"value"];
-                [_notificationPreferences setValue:mutedBlogsDictionary forKey:@"muted_blogs"];
-                [[NSUserDefaults standardUserDefaults] setValue:_notificationPreferences forKey:@"notification_preferences"];
-
-                // Send these settings optimistically since they're low-impact (not ideal but works for now)
-                [NotificationsManager saveNotificationSettings];
-                return;
-            }
-        }
-    }
-}
 
 #pragma mark - Authentication methods
 
@@ -731,20 +772,12 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
 - (void)saveSettings
 {
     BlogService *blogService = [[BlogService alloc] initWithManagedObjectContext:self.blog.managedObjectContext];
-    self.blog.blogName = self.siteTitleCell.detailTextLabel.text;
-    self.blog.blogTagline = self.siteTaglineCell.detailTextLabel.text;
-    self.blog.geolocationEnabled = self.geolocationEnabled;
     if ([self.blog hasChanges]) {
         [blogService updateSettingForBlog:self.blog success:^{
         } failure:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:NSLocalizedString(@"Settings update failed", @"Message to show when setting save failed")];
         }];
     }
-}
-
-- (IBAction)save:(UIBarButtonItem *)sender
-{
-    [self saveSettings];
 }
 
 - (IBAction)cancel:(id)sender
@@ -760,30 +793,6 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
         BOOL wascancelled = (sender != nil);
         [self.delegate controllerDidDismiss:self cancelled:wascancelled];
     }
-}
-
-- (void)reloadNotificationSettings
-{
-    self.notificationPreferences = [[[NSUserDefaults standardUserDefaults] objectForKey:@"notification_preferences"] mutableCopy];
-    if (self.notificationPreferences) {
-        [self.tableView reloadData];
-    }
-}
-
-- (BOOL)getBlogPushNotificationsSetting
-{
-    if (self.notificationPreferences) {
-        NSDictionary *mutedBlogsDictionary = [self.notificationPreferences objectForKey:@"muted_blogs"];
-        NSArray *mutedBlogsArray = [mutedBlogsDictionary objectForKey:@"value"];
-        NSNumber *blogID = [self.blog dotComID];
-        for (NSDictionary *currentBlog in mutedBlogsArray ){
-            NSString *currentBlogID = [currentBlog objectForKey:@"blog_id"];
-            if ([blogID intValue] == [currentBlogID intValue]) {
-                return ![[currentBlog objectForKey:@"value"] boolValue];
-            }
-        }
-    }
-    return YES;
 }
 
 - (BOOL)canEditUsernameAndURL
@@ -846,6 +855,16 @@ NSInteger const EditSiteURLMinimumLabelWidth = 30;
             [self confirmRemoveSite];
         }
     }
+}
+
+#pragma mark - PostCategoriesViewControllerDelegate
+
+- (void)postCategoriesViewController:(PostCategoriesViewController *)controller
+                   didSelectCategory:(PostCategory *)category
+{
+    self.blog.defaultCategoryID = category.categoryID;
+    self.defaultCategoryCell.detailTextLabel.text = category.categoryName;
+    [self saveSettings];
 }
 
 @end
