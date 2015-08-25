@@ -7,18 +7,19 @@ import Foundation
 *                   required to handle WordPress.com 2FA Code Veritication via Push Notifications
 */
 
-@objc public class PushAuthenticationServiceRemote
+@objc public class PushAuthenticationServiceRemote : ServiceRemoteREST
 {
     /**
     *  @details     Designated Initializer. Fails if the remoteApi is nil.
     *  @param       remoteApi A Reference to the WordPressComApi that should be used to interact with WordPress.com
     */
-    public init?(remoteApi: WordPressComApi!) {
-        self.remoteApi = remoteApi
-        if remoteApi == nil {
+    public override init?(api: WordPressComApi!) {
+        super.init(api: api)
+        if api == nil {
             return nil
         }
     }
+    
     
     /**
     *  @details     Verifies a WordPress.com Login.
@@ -33,7 +34,7 @@ import Foundation
             "push_token"    : token
         ]
         
-        remoteApi.POST(path,
+        api.POST(path,
             parameters: parameters,
             success: { (operation: AFHTTPRequestOperation!, response: AnyObject!) -> Void in
                 success?()
@@ -42,8 +43,4 @@ import Foundation
                 failure?()
             })
     }
-
-    
-    // MARK: - Private Internal Constants
-    private var remoteApi: WordPressComApi!
 }
