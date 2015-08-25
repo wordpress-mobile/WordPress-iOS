@@ -64,4 +64,12 @@
  */
 - (BOOL)isWPComAccount;
 
+#pragma mark - Sorting support
+
+/**
+ *  @brief      Adds sorting support to this class.
+ *  @details    WordPress.com accounts go first, the rest is considered all the same.
+ */
+- (NSComparisonResult)compare:(WPAccount *)account;
+
 @end
