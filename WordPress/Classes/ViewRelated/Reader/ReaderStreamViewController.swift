@@ -163,11 +163,23 @@ import Foundation
 
     func displayStreamHeader() {
         assert(readerTopic != nil, "A reader topic is required")
-        var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
-        header?.configureHeader(readerTopic!)
-        header?.delegate = self
 
-        tableView.tableHeaderView = header as? UIView
+        var header:ReaderStreamHeader? = ReaderStreamViewController.headerForStream(readerTopic!)
+        if header == nil {
+            tableView.tableHeaderView = nil
+            return
+        }
+
+        header!.configureHeader(readerTopic!)
+        header!.delegate = self
+
+        // Wrap the header in another view as a layout helper
+        var headerView = header as! UIView
+        var headerWrapper = UIView(frame: headerView.frame)
+        headerWrapper.autoresizingMask = .FlexibleWidth
+        headerWrapper.addSubview(headerView)
+
+        tableView.tableHeaderView = headerWrapper
     }
 
     func displayTopic() {
