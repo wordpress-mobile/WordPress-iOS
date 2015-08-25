@@ -653,6 +653,13 @@ import Foundation
     }
 
 
+    // MARK: - ReaderStreamHeader Delegate Methods
+
+    public func handleFollowActionForHeader(header:ReaderStreamHeader) {
+        // TODO: Implement method
+    }
+
+
     // MARK: - ReaderCard Delegate Methods
 
     public func readerCell(cell: ReaderPostCardCell, headerActionForProvider provider: ReaderPostContentProvider) {

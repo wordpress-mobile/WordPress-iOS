@@ -3,7 +3,7 @@ import Foundation
 @objc public class ReaderTagStreamHeader: UIView, ReaderStreamHeader
 {
     @IBOutlet private weak var titleLabel: UILabel!
-    @IBOutlet private weak var followButton: UIButton!
+    @IBOutlet private weak var followButton: PostMetaButton!
     public var delegate: ReaderStreamHeaderDelegate?
 
 
@@ -39,7 +39,7 @@ import Foundation
             return
         }
         if delegate!.respondsToSelector(Selector("handleFollowActionForHeader")) {
-            delegate!.handleFollowActionForHeader!(self)
+            delegate!.handleFollowActionForHeader(self)
         }
     }
 }
