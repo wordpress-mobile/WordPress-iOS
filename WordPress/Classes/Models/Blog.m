@@ -298,9 +298,6 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)textForBlogPrivacy:(BlogPrivacy)privacy
 {
-    if (!self.privacy) {
-        return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");
-    }
     switch (privacy) {
         case BlogPrivacyPrivate:
             return NSLocalizedString(@"Private", @"Text for privacy settings: Private");
@@ -317,6 +314,9 @@ NSString * const PostFormatStandard = @"standard";
 
 - (NSString *)textForCurrentBlogPrivacy
 {
+    if (!self.privacy) {
+        return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");
+    }
     return [self textForBlogPrivacy:[self.privacy integerValue]];
 }
 
