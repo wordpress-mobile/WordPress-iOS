@@ -8,7 +8,7 @@
         <!--Reader-->
         <scene sceneID="Pcf-kc-h08">
             <objects>
-                <viewController storyboardIdentifier="ReaderListViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="His-O5-Cy6" customClass="ReaderStreamViewController" customModule="WordPress" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ReaderStreamViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="His-O5-Cy6" customClass="ReaderStreamViewController" customModule="WordPress" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Pyc-Kx-lnt"/>
                         <viewControllerLayoutGuide type="bottom" id="icf-FG-h6u"/>
