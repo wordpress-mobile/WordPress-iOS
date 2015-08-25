@@ -220,26 +220,37 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                     success:(void (^)())success
                     failure:(void (^)(NSError *error))failure
 {
-    id<BlogServiceRemote> remote = [self remoteForBlog:blog];
-    [remote syncSettingsForBlog:blog
-                        success:^(RemoteBlogSettings *settings) {
-                            blog.blogName = settings.name;
-                            blog.blogTagline = settings.desc;
-                            if (settings.defaultCategory) {
-                                blog.defaultCategoryID = settings.defaultCategory;
-                            }
-                            if (settings.defaultPostFormat) {
-                                blog.defaultPostFormat = settings.defaultPostFormat;
-                            }
-                            if (settings.privacy) {
-                                blog.privacy = settings.privacy;
-                            }
-                            [self.managedObjectContext save:nil];
-                            if (success) {
-                                success();
-                            }
-                        }
-                        failure:failure];
+    NSManagedObjectID *blogID = [blog objectID];
+    [self.managedObjectContext performBlock:^{
+        Blog *blogInContext = (Blog *)[self.managedObjectContext objectWithID:blogID];
+        if (!blogInContext) {
+            if (success) {
+                success();
+            }
+            return;
+        }
+        id<BlogServiceRemote> remote = [self remoteForBlog:blogInContext];
+        [remote syncSettingsForBlog:blog success:^(RemoteBlogSettings *settings) {
+            [self.managedObjectContext performBlock:^{
+                blog.blogName = settings.name;
+                blog.blogTagline = settings.desc;
+                if (settings.defaultCategory) {
+                    blog.defaultCategoryID = settings.defaultCategory;
+                }
+                if (settings.defaultPostFormat) {
+                    blog.defaultPostFormat = settings.defaultPostFormat;
+                }
+                if (settings.privacy) {
+                    blog.privacy = settings.privacy;
+                }
+                [self.managedObjectContext save:nil];
+                if (success) {
+                    success();
+                }
+            }];
+        }
+        failure:failure];
+    }];
 }
 
 - (void)updateSettingForBlog:(Blog *)blog
@@ -630,6 +641,7 @@ CGFloat const OneHourInSeconds = 60.0 * 60.0;
                 if (completion) {
                     completion();
                 }
+                return;
             }
             blog.options = [NSDictionary dictionaryWithDictionary:options];
             blog.privacy = @([[blog getOptionValue:@"blog_public"] integerValue]);
