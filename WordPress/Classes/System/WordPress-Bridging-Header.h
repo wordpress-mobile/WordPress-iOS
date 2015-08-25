@@ -22,6 +22,7 @@
 #import "NSURL+Util.h"
 
 #import "PhotonImageURLHelper.h"
+#import "PostListFooterView.h"
 #import "PostMetaButton.h"
 
 #import "ReaderBrowseSiteViewController.h"
