@@ -39,7 +39,6 @@
 			<array>
 				<string>wordpress-oauth-v2</string>
 				<string>${WPCOM_SCHEME}</string>
-				<string>fb249643311490</string>
 				<string>pocketapp12013</string>
 			</array>
 		</dict>
