@@ -26,6 +26,7 @@ public class NotificationSettingDetailsViewController : UITableViewController
     // MARK: - View Lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
+        setupTitle()
         setupNotifications()
         setupTableView()
         reloadTable()
@@ -64,8 +65,8 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     private func setupTableView() {
         // Register the cells
-        tableView.registerClass(SwitchTableViewCell.self, forCellReuseIdentifier: switchIdentifier)
-        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: defaultIdentifier)
+        tableView.registerClass(SwitchTableViewCell.self, forCellReuseIdentifier: Row.Kind.Setting.rawValue)
+        tableView.registerClass(WPTableViewCell.self, forCellReuseIdentifier: Row.Kind.Text.rawValue)
         
         // Hide the separators, whenever the table is empty
         tableView.tableFooterView = UIView()
@@ -75,73 +76,82 @@ public class NotificationSettingDetailsViewController : UITableViewController
     }
     
     @IBAction private func reloadTable() {
-        self.rows = rowsForSettings(settings!, stream: stream!)
+        
+        sections = isDeviceStreamDisabled() ? sectionsForDisabledDeviceStream() : sectionsForSettings(settings!, stream: stream!)
         tableView.reloadData()
     }
 
     
 
     // MARK: - Private Helpers
-    private func rowsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Row] {
+    private func sectionsForSettings(settings: NotificationSettings, stream: NotificationSettings.Stream) -> [Section] {
         var rows = [Row]()
         for key in settings.sortedPreferenceKeys(stream) {
-            let name    = settings.localizedDescription(key)
-            let value   = stream.preferences?[key] ?? true
+            let description = settings.localizedDescription(key)
+            let value       = stream.preferences?[key] ?? true
+            let row         = Row(kind: .Setting, description: description, key: key, value: value)
             
-            rows.append(Row(name: name, key: key, value: value))
+            rows.append(row)
         }
         
-        return rows
+        let section = Section(rows: rows, footerText: nil)
+        return [section]
+    }
+    
+    private func sectionsForDisabledDeviceStream() -> [Section] {
+        let description     = NSLocalizedString("Go to iPhone Settings", comment: "Opens WPiOS Settings.app Section")
+        let row             = Row(kind: .Text, description: description, key: nil, value: nil)
+        
+        let footerText      = NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
+                                                "Toggle \"Allow Notifications\" to turn them back on.",
+                                                comment: "Suggests to enable Push Notification Settings in Settings.app")
+        let section         = Section(rows: [row], footerText: footerText)
+        
+        return [section]
     }
     
 
     
     // MARK: - UITableView Delegate Methods
     public override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return sectionCount
+        return sections.count
     }
     
     public override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return isDeviceStreamDisabled() ? disabledRowCount : rows.count
+        return sections[section].rows.count
     }
     
     public override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        // Disabled Push Notifications:
-        // We'll render just one row, that should open Settings.app on press
-        //
-        if isDeviceStreamDisabled() {
-            let cell                = tableView.dequeueReusableCellWithIdentifier(defaultIdentifier) as! WPTableViewCell
-            cell.textLabel?.text    = NSLocalizedString("Go to iPhone Settings", comment: "Opens WPiOS Settings.app Section")
-            WPStyleGuide.configureTableViewCell(cell)
-            
-            return cell
-        }
+        let section = sections[indexPath.section]
+        let row     = section.rows[indexPath.row]
+        let cell    = tableView.dequeueReusableCellWithIdentifier(row.kind.rawValue) as! UITableViewCell
         
-        // Settings:
-        // One SwitchCell per setting!
-        //
-        let cell = tableView.dequeueReusableCellWithIdentifier(switchIdentifier) as! SwitchTableViewCell
-        configureSwitchCell(cell, indexPath: indexPath)
+        switch row.kind {
+        case .Text:
+            configureTextCell(cell as! WPTableViewCell, row: row)
+        case .Setting:
+            configureSwitchCell(cell as! SwitchTableViewCell, row: row)
+        }
         
         return cell
     }
     
     public override func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        if !isDeviceStreamDisabled() {
-            return CGFloat.min
+        if let footerText = sections[section].footerText {
+            return WPTableViewSectionHeaderFooterView.heightForFooter(footerText, width: view.bounds.width)
         }
-        
-        return WPTableViewSectionHeaderFooterView.heightForFooter(disabledDeviceFooterText(), width: view.bounds.width)
+
+        return CGFloat.min
     }
     
     public override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        if !isDeviceStreamDisabled() {
-            return nil
+        if let footerText = sections[section].footerText {
+            let footerView      = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
+            footerView.title    = footerText
+            return footerView
         }
-        
-        let footerView          = WPTableViewSectionHeaderFooterView(reuseIdentifier: nil, style: .Footer)
-        footerView.title        = disabledDeviceFooterText()
-        return footerView
+
+        return nil
     }
     
     
@@ -156,13 +166,18 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - UITableView Helpers
-    private func configureSwitchCell(cell: SwitchTableViewCell, indexPath: NSIndexPath) {
-        let row                 = rows[indexPath.row]
+    private func configureTextCell(cell: WPTableViewCell, row: Row) {
+        cell.textLabel?.text    = row.description
+        WPStyleGuide.configureTableViewCell(cell)
+    }
+    
+    private func configureSwitchCell(cell: SwitchTableViewCell, row: Row) {
+        let settingKey          = row.key ?? String()
         
-        cell.name               = row.name
-        cell.on                 = newValues[row.key] ?? (row.value ?? true)
+        cell.name               = row.description
+        cell.on                 = newValues[settingKey] ?? (row.value ?? true)
         cell.onChange           = { [weak self] (newValue: Bool) in
-            self?.newValues[row.key] = newValue
+            self?.newValues[settingKey] = newValue
         }
     }
     
@@ -173,12 +188,6 @@ public class NotificationSettingDetailsViewController : UITableViewController
         return stream?.kind == .Device && !NotificationsManager.pushNotificationsEnabledInDeviceSettings()
     }
     
-    private func disabledDeviceFooterText() -> String {
-        return NSLocalizedString("Push Notifications have been turned off in iOS Settings App. " +
-            "Toggle \"Allow Notifications\" to turn them back on.",
-            comment: "Suggests to enable Push Notification Settings in Settings.app")
-    }
-
     private func openApplicationSettings() {
         if !UIDevice.isOS8() {
             return
@@ -231,31 +240,41 @@ public class NotificationSettingDetailsViewController : UITableViewController
     
     
     // MARK: - Private Nested Class'ess
-    private class Row {
-        let name    : String
-        let key     : String
-        let value   : Bool
+    private class Section {
+        var rows                : [Row]
+        var footerText          : String?
         
-        init(name: String, key: String, value: Bool) {
-            self.name   = name
-            self.key    = key
-            self.value  = value
+        init(rows: [Row], footerText: String?) {
+            self.rows           = rows
+            self.footerText     = footerText
         }
     }
-
     
-
-    // MARK: - Private Constants
-    private let defaultIdentifier   = WPTableViewCell.classNameWithoutNamespaces()
-    private let switchIdentifier    = SwitchTableViewCell.classNameWithoutNamespaces()
-    private let sectionCount        = 1
-    private let disabledRowCount    = 1
+    private class Row {
+        let description         : String
+        let kind                : Kind
+        let key                 : String?
+        let value               : Bool?
+        
+        init(kind: Kind, description: String, key: String? = nil, value: Bool? = nil) {
+            self.description    = description
+            self.kind           = kind
+            self.key            = key
+            self.value          = value
+        }
+        
+        enum Kind : String {
+            case Setting        = "SwitchCell"
+            case Text           = "TextCell"
+        }
+    }
+    
     
     // MARK: - Private Properties
-    private var settings            : NotificationSettings?
-    private var stream              : NotificationSettings.Stream?
+    private var settings        : NotificationSettings?
+    private var stream          : NotificationSettings.Stream?
     
     // MARK: - Helpers
-    private var rows                = [Row]()
-    private var newValues           = [String: Bool]()
+    private var sections        = [Section]()
+    private var newValues       = [String: Bool]()
 }
