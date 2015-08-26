@@ -15,12 +15,18 @@ import Foundation
         label.textColor = WPStyleGuide.whisperGrey()
     }
 
-    public func setLabelText(text:String) {
-        label.text = text
-    }
+    public func setSiteName(name:String) {
+        let format = NSLocalizedString("The site %@ will no longer appear in your reader. Tap to undo.",
+            comment:"Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site.")
+        let str = NSString(format: format, name)
+        let range = str.rangeOfString(name)
 
-    public func setAttributedText(attributedText:NSAttributedString) {
-        label.attributedText = attributedText
+        let attributes = WPStyleGuide.subtitleAttributes()
+        let boldAttributes = WPStyleGuide.subtitleAttributesBold()
+
+        var attrStr = NSMutableAttributedString(string: str as String, attributes: attributes)
+        attrStr.setAttributes(boldAttributes, range: range)
+        label.attributedText = attrStr
     }
 
 }
