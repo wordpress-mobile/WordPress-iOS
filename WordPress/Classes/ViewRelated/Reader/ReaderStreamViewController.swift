@@ -25,6 +25,7 @@ import Foundation
     private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
     private let blockedRowHeight = CGFloat(66.0)
+    private let loadMoreThreashold = 4
 
     private let refreshInterval = 300
     private var displayContext: NSManagedObjectContext?
@@ -165,7 +166,7 @@ import Foundation
         } else {
             tableView.addSubviewWithFadeAnimation(resultsStatusView)
         }
-        footerView.hidden = false
+        footerView.hidden = true
     }
 
     func hideResultsStatus() {
@@ -641,6 +642,30 @@ import Foundation
         return cell
     }
 
+    public func tableView(tableView: UITableView!, willDisplayCell cell: UITableViewCell!, forRowAtIndexPath indexPath: NSIndexPath!) {
+        // Check to see if we need to load more.
+        let criticalRow = tableView.numberOfRowsInSection(indexPath.section) - loadMoreThreashold
+        if (indexPath.section == tableView.numberOfSections() - 1) && (indexPath.row >= criticalRow) {
+            if syncHelper.hasMoreContent {
+                syncHelper.syncMoreContent()
+            }
+        }
+    }
+
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+
+        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+            unblockSiteForPost(post)
+            return
+        }
+
+        let controller = ReaderPostDetailViewController.detailControllerWithPost(post)
+        navigationController?.pushViewController(controller, animated: true)
+    }
+
     public func configureCell(cell: UITableViewCell, atIndexPath indexPath: NSIndexPath) {
         if tableViewHandler.resultsController.fetchedObjects == nil {
             return
@@ -667,20 +692,6 @@ import Foundation
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
         cell.setSiteName(post.blogName)
-    }
-
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
-        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
-        let post = posts[indexPath.row]
-
-        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
-            unblockSiteForPost(post)
-            return
-        }
-
-        let controller = ReaderPostDetailViewController.detailControllerWithPost(post)
-        navigationController?.pushViewController(controller, animated: true)
     }
 
 
