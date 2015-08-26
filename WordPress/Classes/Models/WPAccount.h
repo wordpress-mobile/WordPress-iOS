@@ -64,4 +64,14 @@
  */
 - (BOOL)isWPComAccount;
 
+#pragma mark - Sorting support
+
+/**
+ *  @brief      Adds sorting support to this class.
+ *  @details    All blogs are the same.  The reason this was added is to be able to use WPAccounts
+ *              in sort descriptors.  When comparing against nil, this method is never called, but
+ *              if it wasn't present it would crash when comparing two real accounts.
+ */
+- (NSComparisonResult)compare:(WPAccount *)account;
+
 @end

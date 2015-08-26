@@ -128,4 +128,11 @@
     return self.restApi != nil;
 }
 
+#pragma mark - Sorting support
+
+- (NSComparisonResult)compare:(WPAccount *)account
+{
+	return NSOrderedSame;
+}
+
 @end
