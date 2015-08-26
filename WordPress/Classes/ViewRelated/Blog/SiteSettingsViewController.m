@@ -165,6 +165,8 @@ UIAlertViewDelegate, UIActionSheetDelegate, PostCategoriesViewControllerDelegate
         case SiteSettingsSectionGeneral: {
             NSInteger rowsToHide = 0;
             if (![self.blog supports:BlogFeatureWPComRESTAPI]) {
+                //  NOTE: Sergio Estevao (2015-08-25): Hides the privacy setting for self-hosted sites not in jetpack 
+                // because XML-RPC doens't support this setting to be read or changed.
                 rowsToHide += 1;
             }
             return SiteSettingsGeneralCount - rowsToHide;
