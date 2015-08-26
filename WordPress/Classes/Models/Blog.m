@@ -309,13 +309,13 @@ NSString * const PostFormatStandard = @"standard";
             return NSLocalizedString(@"Public", @"Text for privacy settings: Public");
             break;
     }
-    return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");;
+    return NSLocalizedString(@"Unknown", @"Text for unknow privacy setting");;
 }
 
 - (NSString *)textForCurrentBlogPrivacy
 {
     if (!self.privacy) {
-        return NSLocalizedString(@"Unknow", @"Text for unknow privacy setting");
+        return NSLocalizedString(@"Unknown", @"Text for unknow privacy setting");
     }
     return [self textForBlogPrivacy:[self.privacy integerValue]];
 }
