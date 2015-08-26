@@ -18,14 +18,25 @@ typedef enum {
 /**
  *	@brief	override points
  */
-@interface WPWebViewController ()
+@interface WPWebViewController () <UIWebViewDelegate>
 - (IBAction)dismiss;
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType;
 @end
 
 @interface SharingAuthorizationWebViewController ()
+
+/**
+ *	@brief	verification loading -- dismiss on completion
+ */
+@property (nonatomic, assign) BOOL loadingVerify;
+/**
+ *	@brief	blog a publicizer is being authorized for
+ */
 @property (nonatomic, strong) Blog *blog;
+/**
+ *	@brief	publicize service being authorized
+ */
 @property (nonatomic, strong) Publicizer *publicizer;
+
 @end
 
 @implementation SharingAuthorizationWebViewController
@@ -37,12 +48,14 @@ typedef enum {
     NSParameterAssert(blog);
     
     SharingAuthorizationWebViewController *webViewController = [[self alloc] initWithNibName:@"WPWebViewController" bundle:nil];
-
+    
+    webViewController.blog = blog;
     webViewController.authToken = blog.authToken;
     webViewController.username = blog.usernameForSite;
     webViewController.password = blog.password;
     webViewController.wpLoginURL = [NSURL URLWithString:blog.loginUrl];
-    
+    webViewController.publicizer = publicizer;
+
     NSURL *authorizeURL = [NSURL URLWithString:publicizer.connect];
     webViewController.url = authorizeURL;
     
@@ -70,6 +83,14 @@ typedef enum {
     }
 }
 
+- (IBAction)suceed
+{
+    [super dismiss];
+    if ([self.delegate respondsToSelector:@selector(authorizeDidCancel:)]) {
+        [self.delegate authorizeDidCancel:self.publicizer];
+    }
+}
+
 - (void)displayLoadError:(NSError *)error
 {
     [super dismiss];
@@ -90,18 +111,30 @@ typedef enum {
             return [super webView:webView shouldStartLoadWithRequest:request navigationType:navigationType];
 
         case AuthorizeActionVerify:
-            [super dismiss];
-            if ([self.delegate respondsToSelector:@selector(authorizeDidSucceed:)]) {
-                [self.delegate authorizeDidSucceed:self.publicizer];
-            }
-            return NO;
+            self.loadingVerify = YES;
+            return YES;
 
         case AuthorizeActionDeny:
-            [super dismiss];
-            if ([self.delegate respondsToSelector:@selector(authorizeDidCancel:)]) {
-                [self.delegate authorizeDidCancel:self.publicizer];
-            }
+            [self dismiss];
             return NO;
+    }
+}
+
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    if (self.loadingVerify) {
+        [self suceed];
+    } else {
+        [super webView:webView didFailLoadWithError:error];
+    }
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    if (self.loadingVerify) {
+        [self suceed];
+    } else {
+        [super webViewDidFinishLoad:webView];
     }
 }
 
@@ -110,7 +143,7 @@ typedef enum {
     if (![request.URL.absoluteString hasPrefix:@"https://public-api.wordpress.com/connect/"]) {
         return AuthorizeActionNone;
     }
-
+    
     NSRange requestRange = [request.URL.absoluteString rangeOfString:@"action=request"];
     if (requestRange.location != NSNotFound) {
         return AuthorizeActionRequest;
@@ -118,15 +151,12 @@ typedef enum {
 
     NSRange verifyRange = [request.URL.absoluteString rangeOfString:@"action=verify"];
     if (verifyRange.location != NSNotFound) {
-        NSRange deniedRange = [request.URL.absoluteString rangeOfString:@"denied="];
-        if (deniedRange.location != NSNotFound) {
-            return AuthorizeActionDeny;
-        }
-        NSRange errorRange = [request.URL.absoluteString rangeOfString:@"error="];
-        if (errorRange.location != NSNotFound) {
-            return AuthorizeActionDeny;
-        }
         return AuthorizeActionVerify;
+    }
+
+    NSRange denyRange = [request.URL.absoluteString rangeOfString:@"action=deny"];
+    if (denyRange.location != NSNotFound) {
+        return AuthorizeActionDeny;
     }
 
     return AuthorizeActionUnknown;
