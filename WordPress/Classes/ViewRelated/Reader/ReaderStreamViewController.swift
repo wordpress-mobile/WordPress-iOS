@@ -21,7 +21,10 @@ import Foundation
 
     private let readerCardCellNibName = "ReaderPostCardCell"
     private let readerCardCellReuseIdentifier = "ReaderCardCellReuseIdentifier"
+    private let readerBlockedCellNibName = "ReaderBlockedSiteCell"
+    private let readerBlockedCellReuseIdentifier = "ReaderBlockedCellReuseIdentifier"
     private let estimatedRowHeight = CGFloat(100.0)
+    private let blockedRowHeight = CGFloat(66.0)
 
     private let refreshInterval = 300
     private var displayContext: NSManagedObjectContext?
@@ -94,8 +97,11 @@ import Foundation
         refreshControl = tableViewController.refreshControl!
         refreshControl.addTarget(self, action: Selector("handleRefresh:"), forControlEvents: .ValueChanged)
 
-        let nib = UINib(nibName: readerCardCellNibName, bundle: nil)
+        var nib = UINib(nibName: readerCardCellNibName, bundle: nil)
         tableView.registerNib(nib, forCellReuseIdentifier: readerCardCellReuseIdentifier)
+
+        nib = UINib(nibName: readerBlockedCellNibName, bundle: nil)
+        tableView.registerNib(nib, forCellReuseIdentifier: readerBlockedCellReuseIdentifier)
     }
 
     private func configureTableViewHandler() {
@@ -333,7 +339,7 @@ import Foundation
 
         let service = ReaderSiteService(managedObjectContext: managedObjectContext())
         service.flagSiteWithID(post.siteID,
-            asBlocked: true,
+            asBlocked: false,
             success: nil,
             failure: { [weak self] (error:NSError!) in
                 self?.recentlyBlockedSitePostObjectIDs.addObject(objectID)
@@ -609,7 +615,11 @@ import Foundation
             return 0.0
         }
 
-        // TODO: handle cells for blocked content
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+            return blockedRowHeight
+        }
 
         configureCell(cellForLayout, atIndexPath: indexPath)
         let size = cellForLayout.sizeThatFits(CGSize(width:width, height:CGFloat.max))
@@ -617,6 +627,15 @@ import Foundation
     }
 
     public func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell? {
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+
+        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+            var cell = tableView.dequeueReusableCellWithIdentifier(readerBlockedCellReuseIdentifier) as! ReaderBlockedSiteCell
+            configureBlockedCell(cell, atIndexPath: indexPath)
+            return cell
+        }
+
         var cell = tableView.dequeueReusableCellWithIdentifier(readerCardCellReuseIdentifier) as! ReaderPostCardCell
         configureCell(cell, atIndexPath: indexPath)
         return cell
@@ -638,11 +657,28 @@ import Foundation
         postCell.delegate = self
     }
 
-    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+    public func configureBlockedCell(cell: ReaderBlockedSiteCell, atIndexPath indexPath: NSIndexPath) {
+        if tableViewHandler.resultsController.fetchedObjects == nil {
+            return
+        }
+        cell.accessoryType = .None
+        cell.selectionStyle = .None
 
         let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
         let post = posts[indexPath.row]
+        cell.setSiteName(post.blogName)
+    }
+
+    public func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        let posts = tableViewHandler.resultsController.fetchedObjects as! [ReaderPost]
+        let post = posts[indexPath.row]
+
+        if recentlyBlockedSitePostObjectIDs.containsObject(post.objectID) {
+            unblockSiteForPost(post)
+            return
+        }
+
         let controller = ReaderPostDetailViewController.detailControllerWithPost(post)
         navigationController?.pushViewController(controller, animated: true)
     }
