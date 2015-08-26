@@ -272,35 +272,12 @@ import Foundation
     }
 
     private func toggleLikeForPost(post: ReaderPost) {
-        // TODO: Refactor so the service handles this properly
-//        ReaderPost *post = [self postFromCellSubview:sender];
-//        BOOL wasLiked = post.isLiked;
-//
-//        NSManagedObjectContext *context = [[ContextManager sharedInstance] newDerivedContext];
-//        ReaderPostService *service = [[ReaderPostService alloc] initWithManagedObjectContext:context];
-//
-//        [context performBlock:^{
-//            ReaderPost *postInContext = (ReaderPost *)[context existingObjectWithID:post.objectID error:nil];
-//            if (!postInContext) {
-//            return;
-//            }
-//
-//            [service toggleLikedForPost:postInContext success:^{
-//            if (wasLiked) {
-//            return;
-//            }
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//            [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
-//            });
-//            } failure:^(NSError *error) {
-//            dispatch_async(dispatch_get_main_queue(), ^{
-//            DDLogError(@"Error Liking Post : %@", [error localizedDescription]);
-//            [postView updateActionButtons];
-//            });
-//            }];
-//            }];
-//        
-//        [postView updateActionButtons];
+        let service = ReaderPostService(managedObjectContext: managedObjectContext())
+        service.toggleLikedForPost(post, success: nil, failure: { (error:NSError?) in
+            if let anError = error {
+                DDLogSwift.logError("Error (un)liking post: \(anError.localizedDescription)")
+            }
+        })
     }
 
     private func updateAndPerformFetchRequest() {
