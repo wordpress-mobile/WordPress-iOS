@@ -115,59 +115,73 @@ static NSString * const SourceAttributionStandardTaxonomy = @"standard-pick";
 
 - (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)())success failure:(void (^)(NSError *error))failure
 {
-    // Get a the post in our own context
-    NSError *error;
-    ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
-    if (error) {
-        if (failure) {
-            failure(error);
+    [self.managedObjectContext performBlock:^{
+
+        // Get a the post in our own context
+        NSError *error;
+        ReaderPost *readerPost = (ReaderPost *)[self.managedObjectContext existingObjectWithID:post.objectID error:&error];
+        if (error) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+            return;
         }
-        return;
-    }
 
-    // Keep previous values in case of failure
-    BOOL oldValue = readerPost.isLiked;
-    BOOL like = !oldValue;
-    NSNumber *oldCount = [readerPost.likeCount copy];
+        // Keep previous values in case of failure
+        BOOL oldValue = readerPost.isLiked;
+        BOOL like = !oldValue;
+        NSNumber *oldCount = [readerPost.likeCount copy];
 
-    // Optimistically update
-    readerPost.isLiked = like;
-    if (like) {
-        readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
-    } else {
-        readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
-    }
-    [self.managedObjectContext performBlockAndWait:^{
+        // Optimistically update
+        readerPost.isLiked = like;
+        if (like) {
+            readerPost.likeCount = @([readerPost.likeCount integerValue] + 1);
+        } else {
+            readerPost.likeCount = @([readerPost.likeCount integerValue] - 1);
+        }
         [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+
+
+        // Define success block. Make sure work is performed on the main queue
+        void (^successBlock)() = ^void() {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (like) {
+                    [WPAnalytics track:WPAnalyticsStatReaderLikedArticle];
+                }
+                if (success) {
+                    success();
+                }
+            });
+        };
+
+        // Define failure block. Make sure rollback happens in the moc's queue,
+        // and failure is called on the main queue.
+        void (^failureBlock)(NSError *error) = ^void(NSError *error) {
+            [self.managedObjectContext performBlockAndWait:^{
+                // Revert changes on failure
+                readerPost.isLiked = oldValue;
+                readerPost.likeCount = oldCount;
+
+                [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
+            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (failure) {
+                    failure(error);
+                }
+            });
+        };
+
+        // Call the remote service.
+        ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
+        if (like) {
+            [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+        } else {
+            [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
+        }
+
     }];
-
-    // Define success block
-    void (^successBlock)() = ^void() {
-        if (success) {
-            success();
-        }
-    };
-
-    // Define failure block
-    void (^failureBlock)(NSError *error) = ^void(NSError *error) {
-        // Revert changes on failure
-        readerPost.isLiked = oldValue;
-        readerPost.likeCount = oldCount;
-        [self.managedObjectContext performBlockAndWait:^{
-            [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-        }];
-        if (failure) {
-            failure(error);
-        }
-    };
-
-    // Call the remote service
-    ReaderPostServiceRemote *remoteService = [[ReaderPostServiceRemote alloc] initWithApi:[self apiForRequest]];
-    if (like) {
-        [remoteService likePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-    } else {
-        [remoteService unlikePost:[readerPost.postID integerValue] forSite:[readerPost.siteID integerValue] success:successBlock failure:failureBlock];
-    }
 }
 
 - (void)setFollowing:(BOOL)following
